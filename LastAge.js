@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.1 2006/05/01 05:14:01 Jim Exp $ */
+/* $Id: LastAge.js,v 1.2 2006/05/04 13:44:54 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -20,8 +20,8 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 /* Loads the rules from Midnight Second Edition. */
 function MN2E() {
-  if(MN2E.AbilityRules != null) MN2E.AbilityRules();
   if(MN2E.RaceRules != null) MN2E.RaceRules();
+  if(MN2E.HeroicPathRules != null) MN2E.HeroicPathRules();
   if(MN2E.ClassRules != null) MN2E.ClassRules();
   if(MN2E.SkillRules != null) MN2E.SkillRules();
   if(MN2E.FeatRules != null) MN2E.FeatRules();
@@ -36,8 +36,8 @@ function MN2E() {
       'levels', 'name', 'race', 'shield', 'skills', 'specialization', 'spells',
       'strength', 'weapons', 'wisdom'
     );
-  MN2E.AbilityRules = null;
   MN2E.RaceRules = null;
+  MN2E.HeroicPathRules = null;
   MN2E.ClassRules = null;
   MN2E.SkillRules = null;
   MN2E.FeatRules = null;
@@ -51,6 +51,10 @@ MN2E.CLASSES = [
   'Channeler', 'Defender', 'Wildlander'
 ];
 MN2E.FEATS = [
+  /* Agrarian Halfling Features (MN 46) */
+  'Stout', 'Studious',
+  /* Nomadic Halfling Features (MN 46) */
+  'Bound To The Beast', 'Bound To The Spirits',
   /* Figher Warrior's Ways (MN 85) */
   'Adapter', 'Improviser', 'Leader Of Men', 'Survivor'
 ];
@@ -92,413 +96,11 @@ MN2E.ClassRules = function() {
 
     var klass = PH35.CLASSES[i];
 
-    if(klass == 'Barbarian') {
+    if(klass == 'Channeler') {
 
-      baseAttack = PH35.ATTACK_BONUS_GOOD;
-      features = [
-        1, 'Fast Movement', 1, 'Rage', 2, 'Uncanny Dodge', 3, 'Trap Sense',
-        5, 'Improved Uncanny Dodge', 7, 'Damage Reduction', 11, 'Greater Rage',
-        14, 'Indomitable Will', 17, 'Tireless Rage', 20, 'Mighty Rage'
-      ];
-      hitDie = 12;
-      notes = [
-        'abilityNotes.fastMovementFeature:+%V speed',
-        'meleeNotes.damageReductionFeature:%V subtracted from damage taken',
-        'meleeNotes.greaterRageFeature:+6 strength/constitution; +3 Will',
-        'meleeNotes.improvedUncannyDodgeFeature:' +
-          'Flanked only by rogue four levels higher',
-        'meleeNotes.mightyRageFeature:+8 strength/constitution; +4 Will save',
-        'meleeNotes.rageFeature:' +
-          '+4 strength/constitution/+2 Will save/-2 AC 5+conMod rounds %V/day',
-        'meleeNotes.tirelessRageFeature:Not exhausted after rage',
-        'meleeNotes.uncannyDodgeFeature:Always adds dexterity modifier to AC',
-        'saveNotes.indomitableWillFeature:+4 Will save while raging',
-        'saveNotes.trapSenseFeature:+%V Reflex and AC vs. traps'
-      ];
-      profArmor = PH35.ARMOR_PROFICIENCY_MEDIUM;
-      profShield = PH35.SHIELD_PROFICIENCY_HEAVY;
-      profWeapon = PH35.WEAPON_PROFICIENCY_MARTIAL;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_POOR;
-      skillPoints = 4;
-      skills = [
-        'Climb', 'Handle Animal', 'Intimidate', 'Jump', 'Listen', 'Ride',
-        'Survival', 'Swim'
-      ];
-      ScribeCustomRules('abilityNotes.fastMovementFeature',
-        'levels.Barbarian', '+=', '10'
-      );
-      ScribeCustomRules('meleeNotes.rageFeature',
-        'levels.Barbarian', '+=', '1 + Math.floor(source / 4)'
-      );
-      ScribeCustomRules('meleeNotes.damageReductionFeature',
-        'levels.Barbarian', '+=', 'source>=7 ? Math.floor((source-4)/3) : null'
-      );
-      ScribeCustomRules('saveNotes.trapSenseFeature',
-        'levels.Barbarian', '+=', 'source >= 3 ? Math.floor(source / 3) : null'
-      );
-      ScribeCustomRules('speed', 'abilityNotes.fastMovementFeature', '+', null);
+    } else if(klass == 'Defender') {
 
-    } else if(klass == 'Bard') {
-
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
-      features = [
-        1, 'Bardic Knowledge', 1, 'Countersong', 1, 'Fascinate',
-        1, 'Inspire Courage', 3, 'Inspire Competence', 6, 'Suggestion',
-        9, 'Inspire Greatness', 12, 'Song Of Freedom', 15, 'Inspire Heroics',
-        18, 'Mass Suggestion'
-      ];
-      hitDie = 6;
-      notes = [
-        'featureNotes.inspireCompetenceFeature:' +
-          '+2 allies skill checks while performing',
-        'featureNotes.inspireCourageFeature:' +
-          '+%V morale/attack/damage to allies while performing',
-        'featureNotes.inspireGreatnessFeature:' +
-           '%V allies get +2 HD/attack/+1 Fortitude save while performing',
-        'featureNotes.inspireHeroicsFeature:' +
-          'Single ally +4 morale/AC while performing',
-        'magicNotes.countersongFeature:' +
-          'Perform check vs. sonic magic within 30 ft',
-        'magicNotes.fascinateFeature:' +
-          'Hold %V creatures within 90 ft spellbound',
-        'magicNotes.songOfFreedomFeature:' +
-          'Break enchantment through performing',
-        'magicNotes.massSuggestionFeature:' +
-          'Make suggestion to all fascinated creatures',
-        'magicNotes.suggestionFeature:' +
-          'Make suggestion to a fascinated creature',
-        'skillNotes.bardicKnowledgeFeature:' +
-          '+%V Knowledge checks on local history'
-      ];
-      profArmor = PH35.ARMOR_PROFICIENCY_LIGHT;
-      profShield = PH35.SHIELD_PROFICIENCY_HEAVY;
-      profWeapon = PH35.WEAPON_PROFICIENCY_SIMPLE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_GOOD;
-      saveWill = PH35.SAVE_BONUS_GOOD;
-      skillPoints = 6;
-      skills = [
-        'Appraise', 'Balance', 'Bluff', 'Climb', 'Concentration',
-        'Decipher Script', 'Diplomacy', 'Disguise', 'Escape Artist',
-        'Gather Information', 'Hide', 'Jump', 'Knowledge (Arcana)',
-        'Knowledge (Architecture)', 'Knowledge (Engineering)',
-        'Knowledge (Dungeoneering)', 'Knowledge (Geography)',
-        'Knowledge (History)', 'Knowledge (Local)', 'Knowledge (Nature)',
-        'Knowledge (Nobility)', 'Knowledge (Planes)', 'Knowledge (Religion)',
-        'Listen', 'Move Silently', 'Perform (Act)', 'Perform (Comedy)',
-        'Perform (Dance)', 'Perform (Keyboard)', 'Perform (Oratory)',
-        'Perform (Percussion)', 'Perform (Sing)', 'Perform (String)',
-        'Perform (Wind)', 'Sense Motive', 'Sleight Of Hand', 'Speak Language',
-        'Spellcraft', 'Swim', 'Tumble', 'Use Magic Device'
-      ];
-      ScribeCustomRules
-        ('casterLevelArcane', 'spellsPerDayLevels.Bard', '^=', null);
-      ScribeCustomRules
-        ('features.Countersong', 'performRanks', '?', 'source >= 3');
-      ScribeCustomRules
-        ('features.Fascinate', 'performRanks', '?', 'source >= 3');
-      ScribeCustomRules
-        ('features.Inspire Competence', 'performRanks', '?', 'source >= 6');
-      ScribeCustomRules
-        ('features.Inspire Courage', 'performRanks', '?', 'source >= 3');
-      ScribeCustomRules
-        ('features.Inspire Greatness', 'performRanks', '?', 'source >= 12');
-      ScribeCustomRules
-        ('features.Inspire Heroics', 'performRanks', '?', 'source >= 18');
-      ScribeCustomRules
-        ('features.Mass Suggestion', 'performRanks', '?', 'source >= 21');
-      ScribeCustomRules
-        ('features.Song Of Freedom', 'performRanks', '?', 'source >= 15');
-      ScribeCustomRules
-        ('features.Suggestion', 'performRanks', '?', 'source >= 9');
-      ScribeCustomRules('featureNotes.inspireCourageFeature',
-        'levels.Bard', '+=', 'source >= 8 ? Math.floor((source + 4) / 6) : 1'
-      );
-      ScribeCustomRules('featureNotes.inspireGreatnessFeature',
-        'levels.Bard', '+=', 'source >= 12 ? Math.floor((source - 6) / 3) : 1'
-      );
-      ScribeCustomRules('magicNotes.fascinateFeature',
-        'levels.Bard', '+=', 'Math.floor((source + 2) / 3)'
-      );
-      ScribeCustomRules('performRanks',
-        'skills.Perform (Act)', '^=', null,
-        'skills.Perform (Comedy)', '^=', null,
-        'skills.Perform (Dance)', '^=', null,
-        'skills.Perform (Keyboard)', '^=', null,
-        'skills.Perform (Oratory)', '^=', null,
-        'skills.Perform (Percussion)', '^=', null,
-        'skills.Perform (Sing)', '^=', null,
-        'skills.Perform (String)', '^=', null,
-        'skills.Perform (Wind)', '^=', null
-      );
-      ScribeCustomRules('skillNotes.bardicKnowledgeFeature',
-        'features.Bardic Knowledge', '?', null,
-        'levels.Bard', '+=', null,
-        'intelligenceModifier', '+', null
-      );
-      ScribeCustomRules('spellsPerDay.B0',
-        'spellsPerDayLevels.Bard', '=', 'source == 1 ? 2 : source < 14 ? 3 : 4'
-      );
-      for(var j = 1; j <= 6; j++) {
-        var none = (j - 1) * 3 + (j == 1 ? 1 : 0);
-        var n2 = j == 1 || j == 6 ? 1 : 2;
-        var n3 = j == 6 ? 1 : ((6 - j) * 2);
-        ScribeCustomRules('spellsPerDay.B' + j,
-          'spellsPerDayLevels.Bard', '=',
-             'source <= ' + none + ' ? null : ' +
-             'source <= ' + (none + 1) + ' ? 0 : ' +
-             'source <= ' + (none + 2) + ' ? 1 : ' +
-             'source <= ' + (none + 2 + n2) + ' ? 2 : ' +
-             'source <= ' + (none + 2 + n2 + n3) + ' ? 3 : 4',
-          'charismaModifier', '+',
-             'source >= ' + j + ' ? Math.floor((source+' + (4-j) + ')/4) : null'
-        );
-        ScribeCustomRules('maxSpellLevelArcane', 'spellsPerDay.B' + j, '^=', j);
-      }
-      ScribeCustomRules('spellsPerDayLevels.Bard', 'levels.Bard', '=', null);
-
-    } else if(klass == 'Cleric') {
-
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
-      features = [1, 'Spontaneous Cleric Spell', 1, 'Turn Undead'];
-      hitDie = 8;
-      notes = [
-        'magicNotes.spontaneousClericSpellFeature:%V',
-        'meleeNotes.turnUndeadFeature:' +
-          'Turn (good) or rebuke (evil) undead creatures'
-      ];
-      profArmor = PH35.ARMOR_PROFICIENCY_HEAVY;
-      profShield = PH35.SHIELD_PROFICIENCY_HEAVY;
-      profWeapon = PH35.WEAPON_PROFICIENCY_SIMPLE;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
-      skillPoints = 2;
-      skills = [
-        'Concentration', 'Diplomacy', 'Heal', 'Knowledge (Arcana)',
-        'Knowledge (History)', 'Knowledge (Planes)', 'Knowledge (Religion)',
-        'Spellcraft'
-      ];
-      ScribeCustomRules
-        ('casterLevelDivine', 'spellsPerDayLevels.Cleric', '^=', null);
-      ScribeCustomRules('magicNotes.spontaneousClericSpellFeature',
-        'alignment', '=', 'source.indexOf("Evil") >= 0 ? "Inflict" : "Heal"'
-      );
-      ScribeCustomRules('spellsPerDay.C0',
-        'spellsPerDayLevels.Cleric', '=',
-          'source == 1 ? 3 : source <= 3 ? 4 : source <= 6 ? 5 : 6'
-      );
-      for(var j = 1; j <= 9; j++) {
-        var none = (j - 1) * 2;
-        ScribeCustomRules('spellsPerDay.C' + j,
-          'spellsPerDayLevels.Cleric', '=',
-             'source<=' + none + ' ? null : source<=' + (none+1) + ' ? 1 : ' +
-             'source<=' + (none+3) + ' ? 2 : source<=' + (none+6) + ' ? 3 : ' +
-             'source<=' + (none+10) + ' ? 4 : 5',
-          'wisdomModifier', '+',
-             'source>=' + j + ' ? Math.floor((source+' + (4-j) + ')/4) : null'
-        );
-        ScribeCustomRules('maxSpellLevelDivine', 'spellsPerDay.C' + j, '^=', j);
-        ScribeCustomRules
-          ('spellsPerDay.Dom' + j, 'spellsPerDay.C' + j, '=', '1');
-      }
-      ScribeCustomRules
-        ('spellsPerDayLevels.Cleric', 'levels.Cleric', '=', null);
-      ScribeCustomRules('turningLevel', 'levels.Cleric', '+=', null);
-
-    } else if(klass == 'Druid') {
-
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
-      features = [
-        1, 'Animal Companion', 1, 'Nature Sense', 1, 'Spontaneous Druid Spell',
-        1, 'Wild Empathy', 2, 'Woodland Stride', 3, 'Trackless Step',
-        4, 'Resist Nature', 5, 'Wild Shape', 9, 'Venom Immunity',
-        13, 'Thousand Faces', 15, 'Timeless Body'
-      ];
-      hitDie = 8;
-      notes = [
-        'featureNotes.animalCompanionFeature:Special bond/abilities',
-        'featureNotes.tracklessStepFeature:Untrackable outdoors',
-        'featureNotes.woodlandStrideFeature:' +
-          'Normal movement through undergrowth',
-        'featureNotes.timelessBodyFeature:No aging penalties',
-        'magicNotes.spontaneousDruidSpellFeature:' +
-          '<i>Summon Nature\'s Ally</i>',
-        'magicNotes.thousandFacesFeature:<i>Alter Self</i> at will',
-        'saveNotes.resistNatureFeature:+4 vs. spells of feys',
-        'saveNotes.venomImmunityFeature:Immune to organic poisons',
-        'skillNotes.natureSenseFeature:+2 Knowledge (Nature)/Survival',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy check with animals'
-      ];
-      profArmor = PH35.ARMOR_PROFICIENCY_MEDIUM;
-      profShield = PH35.SHIELD_PROFICIENCY_HEAVY;
-      profWeapon = PH35.WEAPON_PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
-      skillPoints = 4;
-      skills = [
-        'Concentration', 'Diplomacy', 'Handle Animal', 'Heal',
-        'Knowledge (Nature)', 'Listen', 'Ride', 'Spellcraft', 'Spot',
-        'Survival', 'Swim'
-      ];
-      ScribeCustomRules
-        ('casterLevelDivine', 'spellsPerDayLevels.Druid', '^=', null);
-      ScribeCustomRules('magicNotes.wildShapeFeature',
-        'levels.Druid', '=',
-          'source <  5 ? null : ' +
-          'source == 5 ? "Small-medium 1/day" : ' +
-          'source == 6 ? "Small-medium 2/day" : ' +
-          'source == 7 ? "Small-medium 3/day" : ' +
-          'source <  10 ? "Small-large 3/day" : ' +
-          'source == 10 ? "Small-large 4/day" : ' +
-          'source == 11 ? "Tiny-large 4/day" : ' +
-          'source <  14 ? "Tiny-large/plant 4/day" : ' +
-          'source == 14 ? "Tiny-large/plant 5/day" : ' +
-          'source == 15 ? "Tiny-huge/plant 5/day" : ' +
-          'source <  18 ? "Tiny-huge/plant 5/day; elemental 1/day" : ' +
-          'source <  20 ? "Tiny-huge/plant 6/Day; elemental 2/day" : ' +
-          '"Tiny-huge/plant 6/day; elemental 3/day"'
-      );
-      ScribeCustomRules('languageCount', 'levels.Druid', '+', '1');
-      ScribeCustomRules('languages.Druidic', 'levels.Druid', '=', '1');
-      ScribeCustomRules('skillNotes.wildEmpathyFeature',
-        'levels.Druid', '+=', null,
-        'charismaModifier', '+', null
-      );
-      ScribeCustomRules('spellsPerDay.D0',
-        'spellsPerDayLevels.Druid', '=',
-          'source == 1 ? 3 : source <= 3 ? 4 : source <= 6 ? 5 : 6'
-      );
-      for(var j = 1; j <= 9; j++) {
-        var none = (j - 1) * 2;
-        ScribeCustomRules('spellsPerDay.D' + j,
-          'spellsPerDayLevels.Druid', '=',
-             'source<=' + none + ' ? null : source<=' + (none+1) + ' ? 1 : ' +
-             'source<=' + (none+3) + ' ? 2 : source<=' + (none+6) + ' ? 3 : ' +
-             'source<=' + (none+10) + ' ? 4 : 5',
-          'wisdomModifier', '+',
-             'source>=' + j + ' ? Math.floor((source+' + (4-j) + ')/4) : null'
-        );
-        ScribeCustomRules('maxSpellLevelDivine', 'spellsPerDay.D' + j, '^=', j);
-      }
-      ScribeCustomRules('spellsPerDayLevels.Druid', 'levels.Druid', '=', null);
-
-    } else if(klass == 'Fighter') {
-
-      baseAttack = PH35.ATTACK_BONUS_GOOD;
-      features = null;
-      hitDie = 10;
-      notes = null;
-      profArmor = PH35.ARMOR_PROFICIENCY_HEAVY;
-      profShield = PH35.SHIELD_PROFICIENCY_TOWER;
-      profWeapon = PH35.WEAPON_PROFICIENCY_MARTIAL;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_POOR;
-      skillPoints = 2;
-      skills = [
-        'Climb', 'Handle Animal', 'Intimidate', 'Jump', 'Ride', 'Swim'
-      ];
-      ScribeCustomRules('featureNotes.classFeatCountBonus',
-        'levels.Fighter', '+=', '1 + Math.floor(source / 2)'
-      );
-
-    } else if(klass == 'Monk') {
-
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
-      features = [
-        1, 'Flurry Of Blows', 1, 'Improved Unarmed Strike', 2, 'Evasion',
-        3, 'Fast Movement', 3, 'Still Mind', 4, 'Ki Strike', 4, 'Slow Fall',
-        5, 'Purity Of Body', 7, 'Wholeness Of Body', 9, 'Improved Evasion',
-        11, 'Diamond Body', 11, 'Greater Flurry', 12, 'Abundant Step',
-        13, 'Diamond Soul', 15, 'Quivering Palm', 17, 'Timeless Body',
-        17, 'Tongue Of The Sun And Moon', 19, 'Empty Body', 20, 'Perfect Self'
-      ];
-      hitDie = 8;
-      notes = [
-        'abilityNotes.fastMovementFeature:+%V speed',
-        'featureNotes.timelessBodyFeature:No aging penalties',
-        'featureNotes.tongueOfTheSunAndMoonFeature:Speak w/any creature',
-        'magicNotes.abundantStepFeature:' +
-          '<i>Dimension Door</i> at level %V 1/day',
-        'magicNotes.emptyBodyFeature:Ethereal %V rounds/day',
-        'magicNotes.wholenessOfBodyFeature:Heal %V damage to self/day',
-        'meleeNotes.flurryOfBlowsFeature:Take %V penalty for extra attack',
-        'meleeNotes.greaterFlurryFeature:Extra attack',
-        'meleeNotes.kiStrikeFeature:Treat unarmed attacks as magic weapons',
-        'meleeNotes.perfectSelfFeature:' +
-          'Ignore first 10 points of non-magical damage',
-        'meleeNotes.quiveringPalmFeature:' +
-          'Foe makes DC %V Fortitude save or dies 1/week',
-        'saveNotes.diamondBodyFeature:Immune to poison',
-        'saveNotes.diamondSoulFeature:DC %V spell resistance',
-        'saveNotes.evasionFeature:Save yields no damage instead of 1/2',
-        'saveNotes.perfectSelfFeature:Treat as outsider for magic saves',
-        'saveNotes.purityOfBodyFeature:Immune to disease',
-        'saveNotes.slowFallFeature:' +
-          'Subtract %V ft from falling distance damage:',
-        'saveNotes.stillMindFeature:+2 vs. enchantments'
-      ];
-      profArmor = PH35.ARMOR_PROFICIENCY_NONE;
-      profShield = PH35.SHIELD_PROFICIENCY_NONE;
-      profWeapon = PH35.WEAPON_PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_GOOD;
-      saveWill = PH35.SAVE_BONUS_GOOD;
-      skillPoints = 4;
-      skills = [
-        'Balance', 'Climb', 'Concentration', 'Diplomacy', 'Escape Artist',
-        'Hide', 'Jump', 'Knowledge (Arcana)', 'Knowledge (Religion)', 'Listen',
-        'Move Silently', 'Perform (Act)', 'Perform (Comedy)',
-        'Perform (Dance)', 'Perform (Keyboard)', 'Perform (Oratory)',
-        'Perform (Percussion)', 'Perform (Sing)', 'Perform (String)',
-        'Perform (Wind)', 'Sense Motive', 'Spot', 'Swim', 'Tumble'
-      ];
-      ScribeCustomRules('abilityNotes.fastMovementFeature',
-        'levels.Monk', '+=', '10 * Math.floor(source / 3)'
-      );
-      ScribeCustomRules('armorClass',
-        'meleeNotes.classArmorClassAdjustment', '+', null,
-        'meleeNotes.wisdomArmorClassAdjustment', '+', null
-      );
-      ScribeCustomRules('featureNotes.classFeatCountBonus',
-        'levels.Monk', '+=', 'source < 2 ? 1 : source < 6 ? 2 : 3'
-      );
-      ScribeCustomRules('magicNotes.abundantStepFeature',
-        'levels.Monk', '+=', 'Math.floor(source / 2)'
-      );
-      ScribeCustomRules
-        ('magicNotes.emptyBodyFeature', 'levels.Monk', '+=', null);
-      ScribeCustomRules('meleeNotes.classArmorClassAdjustment',
-        'levels.Monk', '+=', 'Math.floor(source / 5)'
-      );
-      ScribeCustomRules('meleeNotes.flurryOfBlowsFeature',
-        'levels.Monk', '=', 'source < 5 ? -2 : source < 9 ? -1 : 0'
-      );
-      ScribeCustomRules('meleeNotes.quiveringPalmFeature',
-        'levels.Monk', '+=', '10 + Math.floor(source / 2)',
-        'wisdomModifier', '+', null
-      );
-      ScribeCustomRules
-        ('magicNotes.wholenessOfBodyFeature', 'levels.Monk', '+=', '2*source');
-      ScribeCustomRules('meleeNotes.wisdomArmorClassAdjustment',
-        'levels.Monk', '?', null,
-        'wisdomModifier', '+=', 'source <= 0 ? 0 : source'
-      );
-      ScribeCustomRules
-        ('saveNotes.diamondSoulFeature', 'levels.Monk', '+=', '10 + source');
-      ScribeCustomRules('saveNotes.slowFallFeature',
-        'levels.Monk', '=', 'source < 20 ? Math.floor(source / 2) * 10 : "all"'
-      );
-      ScribeCustomRules('speed', 'abilityNotes.fastMovementFeature', '+', null);
-      ScribeCustomRules('unarmedDamageMedium',
-        'levels.Monk', '=',
-          'source < 12 ? ("d" + (6 + Math.floor(source / 4) * 2)) : ' +
-          '              ("2d" + (6 + Math.floor((source - 12) / 4) * 2))'
-      );
+    } else if(klass == 'Wildlander') {
 
     } else if(klass == 'Paladin') {
 
@@ -577,249 +179,6 @@ MN2E.ClassRules = function() {
       ScribeCustomRules
         ('turningLevel', 'levels.Paladin', '+=', 'source>3 ? source-3 : null');
 
-    } else if(klass == 'Ranger') {
-
-      baseAttack = PH35.ATTACK_BONUS_GOOD;
-      features = [
-        1, 'Favored Enemy', 1, 'Track', 1, 'Wild Empathy', 3, 'Endurance',
-        4, 'Animal Companion', 7, 'Woodland Stride', 8, 'Swift Tracker',
-        9, 'Evasion', 13, 'Camouflage', 17, 'Hide In Plain Sight'
-      ];
-      hitDie = 8;
-      notes = [
-        'featureNotes.animalCompanionFeature:Special bond/abilities',
-        'featureNotes.combatStyle(Archery)Features:%V (light armor)',
-        'featureNotes.combatStyle(TwoWeaponCombat)Features:%V (light armor)',
-        'featureNotes.woodlandStrideFeature:' +
-          'Normal movement through undergrowth',
-        'meleeNotes.favoredEnemyFeature:' +
-          '+2 or more damage vs. %V type(s) of creatures',
-        'saveNotes.evasionFeature:Save yields no damage instead of 1/2',
-        'skillNotes.camouflageFeature:Hide in any natural terrain',
-        'skillNotes.favoredEnemyFeature:' +
-          '+2 or more vs. %V type(s) of creatures on Bluff/Listen/Sense Motive/Spot/Survival',
-        'skillNotes.hideInPlainSightFeature:Hide even when observed',
-        'skillNotes.swiftTrackerFeature:Track at full speed',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy check with animals'
-      ];
-      profArmor = PH35.ARMOR_PROFICIENCY_LIGHT;
-      profShield = PH35.SHIELD_PROFICIENCY_HEAVY;
-      profWeapon = PH35.WEAPON_PROFICIENCY_MARTIAL;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_GOOD;
-      saveWill = PH35.SAVE_BONUS_POOR;
-      skillPoints = 6;
-      skills = [
-        'Climb', 'Concentration', 'Handle Animal', 'Heal', 'Hide', 'Jump',
-        'Knowledge (Dungeoneering)', 'Knowledge (Geography)',
-        'Knowledge (Nature)', 'Listen', 'Move Silently', 'Ride', 'Search',
-        'Spot', 'Survival', 'Swim', 'Use Rope'
-      ];
-      ScribeCustomRules('casterLevelDivine',
-        'spellsPerDayLevels.Ranger', '^=',
-        'source < 4 ? null : Math.floor(source / 2)'
-      );
-      ScribeCustomRules('featureNotes.classFeatCountBonus',
-        'levels.Ranger', '+=', 'source >= 2 ? 1 : null'
-      );
-      ScribeCustomRules('featureNotes.combatStyle(Archery)Features',
-        'feats.Combat Style (Archery)', '?', null,
-        'levels.Ranger', '=',
-        '["Rapid Shot"].concat(source >= 6 ? ["Manyshot"] : []).concat' +
-        '(source >= 11 ? ["Improved Precise Shot"] : []).sort().join("/")'
-      );
-      ScribeCustomRules('featureNotes.combatStyle(TwoWeaponCombat)Features',
-        'feats.Combat Style (Two Weapon Combat)', '?', null,
-        'levels.Ranger', '=',
-        '["Two WeaponFighting"].concat' +
-        '(source >= 6 ? ["Improved Two Weapon Fighting"] : []).concat' +
-        '(source >= 11 ? ["Greater Two Weapon Fighting"] : []).sort().join("/")'
-      );
-      ScribeCustomRules('features.Improved Precise Shot',
-        'featureNotes.combatStyle(Archery)Features', '=',
-        'source.indexOf("Improved Precise Shot") >= 0 ? 1 : null'
-      );
-      ScribeCustomRules('features.Manyshot',
-        'featureNotes.combatStyle(Archery)Features', '=',
-        'source.indexOf("Manyshot") >= 0 ? 1 : null'
-      );
-      ScribeCustomRules('features.Rapid Shot',
-        'featureNotes.combatStyle(Archery)Features', '=',
-        'source.indexOf("Rapid Shot") >= 0 ? 1 : null'
-      );
-      ScribeCustomRules('features.Greater Two Weapon Fighting',
-        'featureNotes.combatStyle(TwoWeaponCombat)Features', '=',
-        'source.indexOf("Greater Two Weapon Fighting") >= 0 ? 1 : null'
-      );
-      ScribeCustomRules('features.Improved Two Weapon Fighting',
-        'featureNotes.combatStyle(TwoWeaponCombat)Features', '=',
-        'source.indexOf("Improved Two Weapon Fighting") >= 0 ? 1 : null'
-      );
-      ScribeCustomRules('features.Two Weapon Fighting',
-        'featureNotes.combatStyle(TwoWeaponCombat)Features', '=',
-        'source.indexOf("Two Weapon Fighting") >= 0 ? 1 : null'
-      );
-/* TODO
-  Evasion only if unencumbered
-*/
-      ScribeCustomRules('meleeNotes.favoredEnemyFeature',
-        'levels.Ranger', '+=', '1 + Math.floor(source / 5)'
-      );
-      ScribeCustomRules('skillNotes.favoredEnemyFeature',
-        'levels.Ranger', '+=', '1 + Math.floor(source / 5)'
-      );
-      ScribeCustomRules('skillNotes.wildEmpathyFeature',
-        'levels.Ranger', '+=', null,
-        'charismaModifier', '+', null
-      );
-      for(var j = 1; j <= 4; j++) {
-        var none = 3 * j + (j == 1 ? 0 : 1);
-        var n0 = j <= 2 ? 2 : 1;
-        var n1 = 8 - j + (j == 1 ? 1 : 0);
-        var n2 = 5 - j;
-        ScribeCustomRules('spellsPerDay.R' + j,
-          'spellsPerDayLevels.Ranger', '=',
-            'source<=' + none + ' ? null : source<=' + (none+n0) + ' ? 0 : ' +
-            'source<=' + (none + n0 + n1) + ' ? 1 : ' +
-            'source<=' + (none + n0 + n1 + n2) + ' ? 2 : 3',
-          'wisdomModifier', '+',
-             'source>=' + j + ' ? Math.floor((source + ' + (4-j) + ')/4) : null'
-        );
-        ScribeCustomRules('maxSpellLevelDivine', 'spellsPerDay.R' + j, '^=', j);
-      }
-      ScribeCustomRules
-        ('spellsPerDayLevels.Ranger', 'levels.Ranger', '=', null);
-
-    } else if(klass == 'Rogue') {
-
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
-      features = [
-        1, 'Sneak Attack', 1, 'Trapfinding', 2, 'Evasion', 3, 'Trap Sense',
-        4, 'Uncanny Dodge', 8, 'Improved Uncanny Dodge'
-      ];
-      hitDie = 6;
-      notes = [
-        'meleeNotes.sneakAttackFeature:' +
-          '%Vd6 extra damage when surprising or flanking',
-        'meleeNotes.uncannyDodgeFeature:' +
-          'Always adds dexterity modifier to AC',
-        'meleeNotes.improvedUncannyDodgeFeature:' +
-          'Flanked only by rogue four levels higher',
-        'saveNotes.evasionFeature:Save yields no damage instead of 1/2',
-        'saveNotes.trapSenseFeature:+%V Reflex and AC vs. traps',
-        'skillNotes.trapfindingFeature:Search to find/remove DC 20+ traps'
-      ];
-      profArmor = PH35.ARMOR_PROFICIENCY_LIGHT;
-      profShield = PH35.SHIELD_PROFICIENCY_NONE;
-      profWeapon = PH35.WEAPON_PROFICIENCY_SIMPLE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_GOOD;
-      saveWill = PH35.SAVE_BONUS_POOR;
-      skillPoints = 8;
-      skills = [
-        'Appraise', 'Balance', 'Bluff', 'Climb', 'Decipher Script',
-        'Diplomacy', 'Disable Device', 'Disguise', 'Escape Artist', 'Forgery',
-        'Gather Information', 'Hide', 'Intimidate', 'Jump',
-        'Knowledge (Local)', 'Listen', 'Move Silently', 'Open Lock',
-        'Perform (Act)', 'Perform (Comedy)', 'Perform (Dance)',
-        'Perform (Keyboard)', 'Perform (Oratory)', 'Perform (Percussion)',
-        'Perform (Sing)', 'Perform (String)', 'Perform (Wind)', 'Search',
-        'Sense Motive', 'Sleight Of Hand', 'Spot', 'Swim', 'Tumble',
-        'Use Magic Device', 'Use Rope'
-      ];
-      ScribeCustomRules('featureNotes.classFeatCountBonus',
-        'levels.Rogue', '+=', 'source>=10 ? Math.floor((source-7)/3) : null'
-      );
-      ScribeCustomRules('meleeNotes.sneakAttackFeature',
-        'levels.Rogue', '+=', 'Math.floor((source + 1) / 2)'
-      );
-      ScribeCustomRules('saveNotes.trapSenseFeature',
-        'levels.Rogue', '+=', 'source >= 3 ? Math.floor(source / 3) : null'
-      );
-
-    } else if(klass == 'Sorcerer') {
-
-      baseAttack = PH35.ATTACK_BONUS_POOR;
-      features = [1, 'Summon Familiar'];
-      hitDie = 4;
-      notes = [
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
-      ];
-      profArmor = PH35.ARMOR_PROFICIENCY_NONE;
-      profShield = PH35.SHIELD_PROFICIENCY_NONE;
-      profWeapon = PH35.WEAPON_PROFICIENCY_SIMPLE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
-      skillPoints = 2;
-      skills = [
-        'Bluff', 'Concentration', 'Knowledge (Arcana)', 'Spellcraft'
-      ];
-      ScribeCustomRules
-        ('casterLevelArcane', 'spellsPerDayLevels.Sorcerer', '^=', null);
-      ScribeCustomRules('spellsPerDay.S0',
-        'spellsPerDayLevels.Sorcerer', '=', 'source == 1 ? 5 : 6'
-      );
-      for(var j = 1; j <= 9; j++) {
-        var none = (j - 1) * 2 + (j == 1 ? 0 : 1);
-        ScribeCustomRules('spellsPerDay.S' + j,
-          'spellsPerDayLevels.Sorcerer', '=',
-             'source<=' + none + ' ? null : source>=' + (none + 5) + ' ? 6 : ' +
-             '(source - ' + none + ' + 2)',
-          'charismaModifier', '+',
-             'source>=' + j + ' ? Math.floor((source+' + (4-j) + ')/4) : null'
-        );
-        ScribeCustomRules('maxSpellLevelArcane', 'spellsPerDay.S' + j, '^=', j);
-      }
-      ScribeCustomRules
-        ('spellsPerDayLevels.Sorcerer', 'levels.Sorcerer', '=', null);
-
-    } else if(klass == 'Wizard') {
-
-      baseAttack = PH35.ATTACK_BONUS_POOR;
-      features = [1, 'Scribe Scroll', 1, 'Summon Familiar'];
-      hitDie = 4;
-      notes = [
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
-      ];
-      profArmor = PH35.ARMOR_PROFICIENCY_NONE;
-      profShield = PH35.SHIELD_PROFICIENCY_NONE;
-      profWeapon = PH35.WEAPON_PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
-      skillPoints = 2;
-      skills = [
-        'Concentration', 'Decipher Script', 'Knowledge (Arcana)',
-        'Knowledge (Dungeoneering)', 'Knowledge (Engineering)',
-        'Knowledge (Geography)', 'Knowledge (History)', 'Knowledge (Local)',
-        'Knowledge (Nature)', 'Knowledge (Nobility)', 'Knowledge (Planes)',
-        'Knowledge (Religion)', 'Spellcraft'
-      ];
-      ScribeCustomRules
-        ('casterLevelArcane', 'spellsPerDayLevels.Wizard', '^=', null);
-      ScribeCustomRules('featureNotes.classFeatCountBonus',
-        'levels.Wizard', '+=', 'source >= 5 ? Math.floor(source / 5) : null'
-      );
-      ScribeCustomRules('spellsPerDay.W0',
-        'spellsPerDayLevels.Wizard', '=', 'source == 1 ? 3 : 4',
-        'magicNotes.wizardSpecialization', '+', '1'
-      );
-      for(var j = 1; j <= 9; j++) {
-        var none = (j - 1) * 2;
-        ScribeCustomRules('spellsPerDay.W' + j,
-          'spellsPerDayLevels.Wizard', '=',
-             'source<=' + none + ' ? null : source<=' + (none+1) + ' ? 1 : ' +
-             'source<=' + (none+3) + ' ? 2 : source<=' + (none+6) + ' ? 3 : 4',
-          'intelligenceModifier', '+',
-             'source>=' + j + ' ? Math.floor((source+' + (4-j) + ')/4) : null',
-          'magicNotes.wizardSpecialization', '+', '1'
-        );
-        ScribeCustomRules('maxSpellLevelArcane', 'spellsPerDay.W' + j, '^=', j);
-      }
-      ScribeCustomRules
-        ('spellsPerDayLevels.Wizard', 'levels.Wizard', '=', null);
-
     } else
       continue;
 
@@ -831,9 +190,6 @@ MN2E.ClassRules = function() {
       ScribeCustomNotes(notes);
 
   }
-
-  ScribeCustomRules
-    ('featCount', 'featureNotes.classFeatCountBonus', '+', null);
 
 };
 
@@ -850,6 +206,8 @@ MN2E.EquipmentRules = function() {
 };
 
 MN2E.FeatRules = function() {
+
+  ScribeCustomChoices('feats', MN2E.FEATS);
 
 };
 
@@ -869,34 +227,147 @@ MN2E.RaceRules = function() {
     if(race == 'Agrarian Halfling') {
 
       features = [
-        1, 'Dextrous Hands', 1, 'Graceful', 1, 'Halfling Ability Adjustment', 1, 'Keen Senses', 1, 'Low Light Vision', 1, 'Lucky', 1, 'Slow', 1, 'Small', 1, 'Unafraid'
+        1, 'Dextrous Hands', 1, 'Graceful', 1, 'Halfling Ability Adjustment',
+        1, 'Keen Senses', 1, 'Low Light Vision', 1, 'Lucky', 1, 'Slow',
+        1, 'Small', 1, 'Unafraid'
       ];
       notes = [
         'abilityNotes.halflingAbilityAdjustmentFeature:' +
           '+2 dexterity/-2 strength',
         'featureNotes.lowLightVisionFeature:' +
           'Double normal distance in poor light',
+        'featureNotes.stoutFeature:Endurance/Toughness feats',
+        'featureNotes.studiousFeature:Magecraft feat',
         'saveNotes.luckyFeature:+1 all saves',
         'saveNotes.unafraidFeature:+2 vs. fear',
         'skillNotes.dextrousHandsFeature:+2 Heal',
-        'skillNotes.dextrousHandsFeature2:+2 Craft (non-metal or -wood)',
+        'skillNotes.dextrousHandsFeature2:+2 Craft (non-metal/non-wood)',
         'skillNotes.keenSensesFeature:+2 Listen/Spot',
         'skillNotes.gracefulFeature:+2 Climb/Jump/Move Silently/Tumble'
       ];
+      ScribeCustomRules('dexterity',
+        'abilityNotes.halflingAbilityAdjustmentFeature', '+', '2'
+      );
+      ScribeCustomRules('features.Endurance', 'features.Stout', '=', '1');
+      ScribeCustomRules('features.Magecraft', 'features.Studious', '=', '1');
+      ScribeCustomRules('features.Toughness', 'features.Stout', '=', '1');
+      ScribeCustomRules('strength',
+        'abilityNotes.halflingAbilityAdjustmentFeature', '+', '-2'
+      );
+      ScribeCustomRules('saveFortitude', 'saveNotes.luckyFeature', '+', '1');
+      ScribeCustomRules('saveReflex', 'saveNotes.luckyFeature', '+', '1');
+      ScribeCustomRules('saveWill', 'saveNotes.luckyFeature', '+', '1');
 
     } else if(race == 'Clan Dwarf') {
+
+      features = [
+        1, 'Darkvision', 1, 'Dwarf Ability Adjustment', 1, 'Dwarf Dodge',
+        1, 'Dwarf Favored Enemy', 1, 'Dwarf Favored Weapon', 1, 'Know Depth',
+        1, 'Resilient', 1, 'Slow', 1, 'Spell Resistance', 1, 'Stability',
+        1, 'Stonecunning', 1, 'Stone Familiarity'
+      ];
+      notes = [
+        'abilityNotes.dwarfAbilityAdjustmentFeature:' +
+          '+2 constitution/-2 charisma',
+        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'featureNotes.knowDepthFeature:Intuit approximate depth underground',
+        'meleeNotes.dwarfDodgeFeature:+1 AC vs. orc',
+        'meleeNotes.dwarfFavoredEnemyFeature:+1 attack vs. orc',
+        'meleeNotes.dwarfFavoredWeaponFeature:+1 attack with axes/hammers',
+        'meleeNotes.resilientFeature:+2 AC',
+        'saveNotes.resilientFeature:+2 vs. poison',
+        'saveNotes.spellResistanceFeature:+2 vs. spells',
+        'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip',
+        'skillNotes.stonecunningFeature:' +
+          '+2 Search involving stone or metal/automatic check w/in 10 ft',
+        'skillNotes.stoneFamiliarityFeature:' +
+          '+2 Appraise/Craft involving stone or metal'
+      ];
+      ScribeCustomRules('armorClass', 'meleeNotes.resilientFeature', '+', '2');
+      ScribeCustomRules('constitution',
+        'abilityNotes.dwarfAbilityAdjustmentFeature', '+', '2'
+      );
+      ScribeCustomRules('charisma',
+        'abilityNotes.dwarfAbilityAdjustmentFeature', '+', '-2'
+      );
+      ScribeCustomRules('meleeNotes.armorSpeedAdjustment',
+        'race', '^', 'source == "Dwarf" ? 0 : null'
+      );
+
     } else if(race == 'Dorn') {
     } else if(race == 'Dwarrow') {
     } else if(race == 'Dworg') {
     } else if(race == 'Elfling') {
-    } else if(race ==
-    'Erenlander') {
+    } else if(race == 'Erenlander') {
     } else if(race == 'Gnome') {
     } else if(race == 'Jungle Elf') {
     } else if(race == 'Kurgun Dwarf') {
+
+      features = [
+        1, 'Darkvision', 1, 'Dwarf Ability Adjustment',
+        1, 'Dwarf Favored Enemy', 1, 'Dwarf Favored Weapon',
+        1, 'Resilient', 1, 'Slow', 1, 'Spell Resistance',
+        1, 'Stone Familiarity'
+      ];
+      notes = [
+        'abilityNotes.dwarfAbilityAdjustmentFeature:' +
+          '+2 constitution/-2 charisma',
+        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'meleeNotes.dwarfFavoredEnemyFeature:+1 attack vs. orc',
+        'meleeNotes.dwarfFavoredWeaponFeature:+1 attack with axes/hammers',
+        'meleeNotes.resilientFeature:+2 AC',
+        'saveNotes.resilientFeature:+2 vs. poison',
+        'saveNotes.spellResistanceFeature:+2 vs. spells',
+        'skillNotes.stoneFamiliarityFeature:' +
+          '+2 Appraise/Craft involving stone or metal'
+      ];
+      ScribeCustomRules('armorClass', 'meleeNotes.resilientFeature', '+', '2');
+      ScribeCustomRules('constitution',
+        'abilityNotes.dwarfAbilityAdjustmentFeature', '+', '2'
+      );
+      ScribeCustomRules('charisma',
+        'abilityNotes.dwarfAbilityAdjustmentFeature', '+', '-2'
+      );
+      ScribeCustomRules('meleeNotes.armorSpeedAdjustment',
+        'race', '^', 'source == "Dwarf" ? 0 : null'
+      );
+
     } else if(race == 'Nomadic Halfling') {
-    } else if(race ==
-    'Orc') {
+
+      features = [
+        1, 'Dextrous Hands', 1, 'Graceful', 1, 'Halfling Ability Adjustment',
+        1, 'Keen Senses', 1, 'Low Light Vision', 1, 'Lucky', 1, 'Slow',
+        1, 'Small', 1, 'Unafraid'
+      ];
+      notes = [
+        'abilityNotes.halflingAbilityAdjustmentFeature:' +
+          '+2 dexterity/-2 strength',
+        'featureNotes.lowLightVisionFeature:' +
+          'Double normal distance in poor light',
+        'featureNotes.boundToTheBeastFeature:Mounted Combat feat',
+        'featureNotes.boundToTheSpiritsFeature:Magecraft feat',
+        'saveNotes.luckyFeature:+1 all saves',
+        'saveNotes.unafraidFeature:+2 vs. fear',
+        'skillNotes.dextrousHandsFeature:+2 Heal',
+        'skillNotes.dextrousHandsFeature2:+2 Craft (non-metal/non-wood)',
+        'skillNotes.keenSensesFeature:+2 Listen/Spot',
+        'skillNotes.gracefulFeature:+2 Climb/Jump/Move Silently/Tumble'
+      ];
+      ScribeCustomRules('dexterity',
+        'abilityNotes.halflingAbilityAdjustmentFeature', '+', '2'
+      );
+      ScribeCustomRules
+        ('features.Magecraft', 'features.Bound To The Spirits', '=', '1');
+      ScribeCustomRules
+        ('features.Mounted Combat', 'features.Bound To The Beast', '=', '1');
+      ScribeCustomRules('strength',
+        'abilityNotes.halflingAbilityAdjustmentFeature', '+', '-2'
+      );
+      ScribeCustomRules('saveFortitude', 'saveNotes.luckyFeature', '+', '1');
+      ScribeCustomRules('saveReflex', 'saveNotes.luckyFeature', '+', '1');
+      ScribeCustomRules('saveWill', 'saveNotes.luckyFeature', '+', '1');
+
+    } else if(race == 'Orc') {
     } else if(race == 'Sarcosan') {
     } else if(race == 'Sea Elf') {
     } else if(race == 'Snow Elf') {
@@ -905,25 +376,14 @@ MN2E.RaceRules = function() {
       continue;
     }
 
-        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
-        'featureNotes.knowDepthFeature:Intuit approximate depth underground',
+/*
         'meleeNotes.dodgeGiantsFeature:+4 AC vs. giant creatures',
-        'meleeNotes.dwarfFavoredEnemyFeature:' +
-          '+1 vs. bugbear/goblin/hobgoblin/orc',
-        'saveNotes.hardinessFeature:+2 vs. poison',
-        'saveNotes.magicResistanceFeature:+2 vs. spells',
-        'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip',
-        'skillNotes.stonecunningFeature:' +
-          '+2 Appraise/Craft/Search involving stone or metal'
       ];
       ScribeCustomRules('charisma',
         'abilityNotes.dwarfAbilityAdjustmentFeature', '+', '-2'
       );
       ScribeCustomRules('constitution',
         'abilityNotes.dwarfAbilityAdjustmentFeature', '+', '2'
-      );
-      ScribeCustomRules('meleeNotes.armorSpeedAdjustment',
-        'race', '^', 'source == "Dwarf" ? 0 : null'
       );
 
     } else if(race == 'Elf') {
@@ -1055,17 +515,13 @@ MN2E.RaceRules = function() {
 
     } else
       continue;
+*/
 
     ScribeCustomRace(race, features);
     if(notes != null)
       ScribeCustomNotes(notes);
 
   }
-
-  ScribeCustomRules('speed', null, '=', '30');
-  ScribeCustomRules('speed', 'features.Slow', '+', '-10');
-  ScribeCustomRules('runSpeed', 'speed', '=', null);
-  ScribeCustomRules('runSpeedMultiplier', null, '=', '4');
 
 };
 
