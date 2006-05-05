@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.3 2006/05/05 13:33:26 Jim Exp $ */
+/* $Id: LastAge.js,v 1.4 2006/05/05 23:04:04 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -25,23 +25,16 @@ function MN2E() {
   if(MN2E.ClassRules != null) MN2E.ClassRules();
   if(MN2E.SkillRules != null) MN2E.SkillRules();
   if(MN2E.FeatRules != null) MN2E.FeatRules();
-  if(MN2E.DescriptionRules != null) MN2E.DescriptionRules();
   if(MN2E.EquipmentRules != null) MN2E.EquipmentRules();
   if(MN2E.CombatRules != null) MN2E.CombatRules();
   if(MN2E.MagicRules != null) MN2E.MagicRules();
   if(MN2E.Randomize != null)
-    ScribeCustomRandomizers(MN2E.Randomize,
-      'alignment', 'armor', 'charisma', 'constitution', 'deity', 'dexterity',
-      'domains', 'feats', 'gender', 'hitPoints', 'intelligence', 'languages',
-      'levels', 'name', 'race', 'shield', 'skills', 'specialization', 'spells',
-      'strength', 'weapons', 'wisdom'
-    );
+    ScribeCustomRandomizers(MN2E.Randomize, 'heroicPath');
   MN2E.RaceRules = null;
   MN2E.HeroicPathRules = null;
   MN2E.ClassRules = null;
   MN2E.SkillRules = null;
   MN2E.FeatRules = null;
-  MN2E.DescriptionRules = null;
   MN2E.EquipmentRules = null;
   MN2E.CombatRules = null;
   MN2E.MagicRules = null;
@@ -60,10 +53,19 @@ MN2E.FEATS = [
 ];
 MN2E.LANGUAGES = [
 ];
+MN2E.PATHS = [
+  'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
+  'Faithful', 'Giantblooded', 'Guardian', 'Healer', 'Ironborn',
+  'Jack-Of-All-Trades', 'Mountainborn', 'Naturefriend', 'Northblooded',
+  'Quickened', 'Painless', 'Pureblood', 'Seaborn', 'Seer', 'Speaker',
+  'Spellsoul', 'Shadow Walker', 'Steelblooded', 'Sunderborn', 'Tactician',
+  'Warg'
+];
 MN2E.RACES = [
-  'Agrarian Halfling', 'Clan Dwarf', 'Dorn', 'Dwarrow', 'Dworg', 'Elfling',
-  'Erenlander', 'Gnome', 'Jungle Elf', 'Kurgun Dwarf', 'Nomadic Halfling',
-  'Orc', 'Plains Sarcosan', 'Sea Elf', 'Snow Elf', 'Urban Sarcosan', 'Wood Elf'
+  'Agrarian Halfling', 'Clan Dwarf', 'Dorn', 'Dwarf Raised Dwarrow', 'Dworg',
+  'Elfling', 'Erenlander', 'Gnome', 'Gnome Raised Dwarrow', 'Jungle Elf',
+  'Kurgun Dwarf', 'Nomadic Halfling', 'Orc', 'Plains Sarcosan', 'Sea Elf',
+  'Snow Elf', 'Urban Sarcosan', 'Wood Elf'
 ];
 MN2E.SKILLS = [
 ];
@@ -71,10 +73,6 @@ MN2E.SPELLS = [
 ];
 MN2E.WEAPONS = [
 ];
-
-MN2E.AbilityRules = function() {
-
-};
 
 MN2E.ClassRules = function() {
 
@@ -197,10 +195,6 @@ MN2E.CombatRules = function() {
 
 };
 
-MN2E.DescriptionRules = function() {
-
-};
-
 MN2E.EquipmentRules = function() {
 
 };
@@ -208,6 +202,12 @@ MN2E.EquipmentRules = function() {
 MN2E.FeatRules = function() {
 
   ScribeCustomChoices('feats', MN2E.FEATS);
+
+};
+
+MN2E.HeroicPathRules = function() {
+
+  ScribeCustomChoices('heroicPaths', MN2E.PATHS);
 
 };
 
@@ -256,7 +256,21 @@ MN2E.RaceRules = function() {
       ScribeCustomRules
         ('strength', 'abilityNotes.dornAbilityAdjustmentFeature', '+', '2');
 
-    } else if(race == 'Dwarrow') {
+    } else if(race.indexOf('Dwarrow') >= 0) {
+
+      features = [
+        1, 'Darkvision', 1, 'Dwarrow Ability Adjustment', 1, 'Small', 1, 'Slow',
+        1, 'Spell Resistance'
+      ];
+      notes = [
+        'abilityNotes.dwarrowAbilityAdjustmentFeature:+2 charisma',
+        'saveNotes.spellResistanceFeature:+2 vs. spells'
+      ];
+      if(race == 'Dwarf Raised Dwarrow') {
+      } else if(race == 'Gnome Raised Dwarrow') {
+      }
+      ScribeCustomRules
+        ('charisma', 'abilityNotes.dwarrorAbilityAdjustmentFeature', '+', '2');
 
     } else if(race.indexOf('Dwarf') >= 0) {
 
@@ -298,17 +312,24 @@ MN2E.RaceRules = function() {
         'abilityNotes.dwarfAbilityAdjustmentFeature', '+', '-2'
       );
       ScribeCustomRules('meleeNotes.armorSpeedAdjustment',
-        'race', '^', 'source == "Dwarf" ? 0 : null'
+        'race', '^', 'source.indexOf("Dwarf") >= 0 ? 0 : null'
       );
 
     } else if(race == 'Dworg') {
+
     } else if(race.indexOf('Elf') >= 0) {
+
+      if(race == 'Jungle Elf') {
+      } else if(race == 'Sea Elf') {
+      } else if(race == 'Snow Elf') {
+      } else if(race == 'Wood Elf') {
+      }
+
     } else if(race == 'Elfling') {
+
     } else if(race == 'Erenlander') {
 
-      features = [
-        1, 'Erenlander Ability Adjustment', 1, 'Human'
-      ];
+      features = [1, 'Erenlander Ability Adjustment'];
       notes = [
         'abilityNotes.erenlanderAbilityAdjustmentFeature:+2 any/-2 any'
       ];
@@ -325,6 +346,37 @@ MN2E.RaceRules = function() {
         ('skillPoints', 'skillNotes.erenlanderSkillPointsBonus', '+', null);
 
     } else if(race.indexOf('Gnome') >= 0) {
+
+      features = [
+        1, 'Dwarven Kin', 1, 'Gnome Ability Adjustment',
+        1, 'Low Light Vision', 1, 'Riverfolk', 1, 'Slow', 1, 'Small',
+        1, 'Swimmer', 1, 'Trader'
+      ];
+      notes = [
+        'abilityNotes.gnomeAbilityAdjustmentFeature:+4 charisma/-2 strength',
+        'featureNotes.lowLightVisionFeature:' +
+          'Double normal distance in poor light',
+        'saveNotes.dwarvenKinFeature:+1 Fortitude',
+        'saveNotes.dwarvenKinFeature2:+2 spells',
+        'skillNotes.riverfolkFeature:' +
+          '+2 Perform/Profession (Boater And Sailor)/Swim/UseRope',
+        'skillNotes.swimmerFeature:' +
+          'Swim at half speed as move action/hold breath for %V rounds',
+        'skillNotes.traderFeature:' +
+          '+2 Appraise/Bluff/Diplomacy/Forgery/Gather Information/Profession when smuggling/trading'
+      ];
+      ScribeCustomRules('charisma',
+        'abilityNotes.gnomeAbilityAdjustmentFeature', '+', '4'
+      );
+      ScribeCustomRules('skillNotes.swimmerFeature', 'constitution', '=', null);
+      ScribeCustomRules('strength',
+        'abilityNotes.gnomeAbilityAdjustmentFeature', '+', '-2'
+      );
+      ScribeCustomRules
+        ('saveFortitude', 'saveNotes.dwarvenKinFeature', '+', '1');
+      ScribeCustomRules
+        ('skillNotes.dwarvenKinFeature2', 'features.Dwarven Kin', '=', '1');
+
     } else if(race.indexOf('Halfling') >= 0) {
 
       features = [
@@ -367,9 +419,8 @@ MN2E.RaceRules = function() {
           ('features.Mounted Combat', 'features.Bound To The Beast', '=', '1');
       }
 
-    } else if(race.indexOf('Human') >= 0) {
-    } else if(race == 'Jungle Elf') {
     } else if(race == 'Orc') {
+
     } else if(race.indexOf('Sarcosan') >= 0) {
 
       features = [
@@ -569,3 +620,22 @@ MN2E.RaceRules = function() {
 MN2E.SkillRules = function() {
 
 };
+
+/*
+ * Sets the character's #attribute# attribute to a random value.  #rules# is
+ * the RuleEngine used to produce computed values; the function sometimes needs
+ * to apply the rules to determine valid values for some attributes.
+ */
+MN2E.Randomize = function(rules, attributes, attribute) {
+
+  /* Returns a random key of the object #o#. */
+  function RandomKey(o) {
+    var keys = Scribe.GetKeys(o);
+    return keys[Scribe.Random(0, keys.length - 1)];
+  }
+
+  if(attribute == 'heroicPath') {
+    attributes[attribute] = RandomKey(Scribe.heroicPaths);
+  }
+
+}
