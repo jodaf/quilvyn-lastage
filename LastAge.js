@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.4 2006/05/05 23:04:04 Jim Exp $ */
+/* $Id: LastAge.js,v 1.5 2006/05/07 06:28:37 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -62,8 +62,9 @@ MN2E.PATHS = [
   'Warg'
 ];
 MN2E.RACES = [
-  'Agrarian Halfling', 'Clan Dwarf', 'Dorn', 'Dwarf Raised Dwarrow', 'Dworg',
-  'Elfling', 'Erenlander', 'Gnome', 'Gnome Raised Dwarrow', 'Jungle Elf',
+  'Agrarian Halfling', 'Clan Dwarf', 'Danisil Raised Elfling', 'Dorn',
+  'Dwarf Raised Dwarrow', 'Dworg', 'Erenlander', 'Gnome',
+  'Gnome Raised Dwarrow', 'Halfling Raised Elfling', 'Jungle Elf',
   'Kurgun Dwarf', 'Nomadic Halfling', 'Orc', 'Plains Sarcosan', 'Sea Elf',
   'Snow Elf', 'Urban Sarcosan', 'Wood Elf'
 ];
@@ -267,10 +268,31 @@ MN2E.RaceRules = function() {
         'saveNotes.spellResistanceFeature:+2 vs. spells'
       ];
       if(race == 'Dwarf Raised Dwarrow') {
+        features = features.concat([
+          1, 'Dwarrow Dodge', 1, 'Stone Familiarity'
+        ]);
+        notes = notes.concat([
+          'meleeNotes.dwarrowDodgeFeature:+1 AC vs. orc',
+          'skillNotes.stoneFamiliarityFeature:' +
+            '+2 Appraise/Craft involving stone or metal'
+        ]);
       } else if(race == 'Gnome Raised Dwarrow') {
+        features = features.concat([
+          1, 'Natural Riverfolk', 1, 'Natural Swimmer', 1, 'Skilled Trader'
+        ]);
+        notes = notes.concat([
+          'skillNotes.naturalRiverfolkFeature:' +
+            '+2 Perform/Profession (Boater And Sailor)/Swim/UseRope',
+          'skillNotes.naturalSwimmerFeature:' +
+            'Swim at half speed as move action/hold breath for %V rounds',
+          'skillNotes.naturalTraderFeature:' +
+            '+2 Appraise/Bluff/Diplomacy/Forgery/Gather Information/Profession when smuggling/trading'
+        ]);
+        ScribeCustomRules
+          ('skillNotes.naturalSwimmerFeature', 'constitution', '=', null);
       }
       ScribeCustomRules
-        ('charisma', 'abilityNotes.dwarrorAbilityAdjustmentFeature', '+', '2');
+        ('charisma', 'abilityNotes.dwarrowAbilityAdjustmentFeature', '+', '2');
 
     } else if(race.indexOf('Dwarf') >= 0) {
 
@@ -292,6 +314,16 @@ MN2E.RaceRules = function() {
         'skillNotes.stoneFamiliarityFeature:' +
           '+2 Appraise/Craft involving stone or metal'
       ];
+      ScribeCustomRules('armorClass', 'meleeNotes.resilientFeature', '+', '2');
+      ScribeCustomRules('constitution',
+        'abilityNotes.dwarfAbilityAdjustmentFeature', '+', '2'
+      );
+      ScribeCustomRules('charisma',
+        'abilityNotes.dwarfAbilityAdjustmentFeature', '+', '-2'
+      );
+      ScribeCustomRules('meleeNotes.armorSpeedAdjustment',
+        'race', '^', 'source.indexOf("Dwarf") >= 0 ? 0 : null'
+      );
       if(race == 'Clan Dwarf') {
         features = features.concat([
           1, 'Dwarf Dodge', 1, 'Know Depth', 1, 'Stability'
@@ -304,18 +336,39 @@ MN2E.RaceRules = function() {
             '+2 Search involving stone or metal/automatic check w/in 10 ft'
         ]);
       }
-      ScribeCustomRules('armorClass', 'meleeNotes.resilientFeature', '+', '2');
-      ScribeCustomRules('constitution',
-        'abilityNotes.dwarfAbilityAdjustmentFeature', '+', '2'
-      );
-      ScribeCustomRules('charisma',
-        'abilityNotes.dwarfAbilityAdjustmentFeature', '+', '-2'
-      );
-      ScribeCustomRules('meleeNotes.armorSpeedAdjustment',
-        'race', '^', 'source.indexOf("Dwarf") >= 0 ? 0 : null'
-      );
 
     } else if(race == 'Dworg') {
+
+      features = [
+        1, 'Darkvision', 1, 'Dworg Ability Adjustment',
+        1, 'Dworg Favored Enemy', 1, 'Minor Light Sensitivity', 1, 'Rugged',
+        1, 'Spell Resistance'
+      ];
+      notes = [
+        'abilityNotes.dworgAbilityAdjustmentFeature:' +
+          '+2 strength/+2 constitution/-2 intelligence/-2 charisma',
+        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'meleeNotes.dworgFavoredEnemyFeature:+2 attack vs. orc',
+        'meleeNotes.minorLightSensitivityFeature:DC 15 Fortitude save in sunlight to avoid -1 attack',
+        'saveNotes.ruggedFeature:+2 all saves',
+        'saveNotes.spellResistanceFeature:+2 vs. spells'
+      ];
+      ScribeCustomRules('charisma',
+        'abilityNotes.dworgAbilityAdjustmentFeature', '+', '-2'
+      );
+      ScribeCustomRules('constitution',
+        'abilityNotes.dworgAbilityAdjustmentFeature', '+', '2'
+      );
+      ScribeCustomRules('intelligence',
+        'abilityNotes.dworgAbilityAdjustmentFeature', '+', '-2'
+      );
+      ScribeCustomRules
+        ('saveFortitude', 'abilityNotes.ruggedFeature', '+', '2');
+      ScribeCustomRules('saveReflex', 'abilityNotes.ruggedFeature', '+', '2');
+      ScribeCustomRules('saveWill', 'abilityNotes.ruggedFeature', '+', '2');
+      ScribeCustomRules('strength',
+        'abilityNotes.dworgAbilityAdjustmentFeature', '+', '2'
+      );
 
     } else if(race.indexOf('Elf') >= 0) {
 
@@ -325,7 +378,42 @@ MN2E.RaceRules = function() {
       } else if(race == 'Wood Elf') {
       }
 
-    } else if(race == 'Elfling') {
+    } else if(race.indexOf('Elfling') >= 0) {
+
+      features = [
+        1, 'Dextrous Hands', 1, 'Elfling Ability Adjustment', 1, 'Keen Senses',
+        1, 'Low Light Vision', 1, 'Natural Channeler', 1, 'Small'
+      ];
+      notes = [
+        'abilityNotes.elflingAbilityAdjustmentFeature:' +
+          '+4 dexterity/-2 strength/-2 constitution',
+        'featureNotes.lowLightVisionFeature:' +
+          'Double normal distance in poor light',
+        'featureNotes.naturalChannelerFeature:Innate Magic is a bonus feat',
+        'saveNotes.luckyFeature:+1 all saves',
+        'skillNotes.dextrousHandsFeature:+2 Heal',
+        'skillNotes.keenSensesFeature:+2 Listen/Spot',
+      ];
+      ScribeCustomRules('constitution',
+        'abilityNotes.elflingAbilityAdjustmentFeature', '+', '-2'
+      );
+      ScribeCustomRules('dexterity',
+        'abilityNotes.elflingAbilityAdjustmentFeature', '+', '4'
+      );
+      ScribesCustomRules('features.Innate Magic',
+        'featureNotes.naturalChannelerFeature', '=', '1'
+      );
+      ScribeCustomRules('saveFortitude', 'saveNotes.luckyFeature', '+', '1');
+      ScribeCustomRules('saveReflex', 'saveNotes.luckyFeature', '+', '1');
+      ScribeCustomRules('saveWill', 'saveNotes.luckyFeature', '+', '1');
+      ScribeCustomRules('strength',
+        'abilityNotes.elflingAbilityAdjustmentFeature', '+', '-2'
+      );
+      if(race == 'Halfling Raised Elfling') {
+        features = features.concat([1, 'Bound To The Beast']);
+        ScribeCustomRules
+          ('features.Mounted Combat', 'features.Bound To The Beast', '=', '1');
+      }
 
     } else if(race == 'Erenlander') {
 
@@ -349,8 +437,8 @@ MN2E.RaceRules = function() {
 
       features = [
         1, 'Dwarven Kin', 1, 'Gnome Ability Adjustment',
-        1, 'Low Light Vision', 1, 'Riverfolk', 1, 'Slow', 1, 'Small',
-        1, 'Swimmer', 1, 'Trader'
+        1, 'Low Light Vision', 1, 'Natural Riverfolk', 1, 'Natural Swimmer',
+        1, 'Natural Trader', 1, 'Slow', 1, 'Small'
       ];
       notes = [
         'abilityNotes.gnomeAbilityAdjustmentFeature:+4 charisma/-2 strength',
@@ -358,17 +446,18 @@ MN2E.RaceRules = function() {
           'Double normal distance in poor light',
         'saveNotes.dwarvenKinFeature:+1 Fortitude',
         'saveNotes.dwarvenKinFeature2:+2 spells',
-        'skillNotes.riverfolkFeature:' +
+        'skillNotes.naturalRiverfolkFeature:' +
           '+2 Perform/Profession (Boater And Sailor)/Swim/UseRope',
-        'skillNotes.swimmerFeature:' +
+        'skillNotes.naturalSwimmerFeature:' +
           'Swim at half speed as move action/hold breath for %V rounds',
-        'skillNotes.traderFeature:' +
-          '+2 Appraise/Bluff/Diplomacy/Forgery/Gather Information/Profession when smuggling/trading'
+        'skillNotes.naturalTraderFeature:' +
+          '+4 Appraise/Bluff/Diplomacy/Forgery/Gather Information/Profession when smuggling/trading'
       ];
       ScribeCustomRules('charisma',
         'abilityNotes.gnomeAbilityAdjustmentFeature', '+', '4'
       );
-      ScribeCustomRules('skillNotes.swimmerFeature', 'constitution', '=', null);
+      ScribeCustomRules
+        ('skillNotes.naturalSwimmerFeature', 'constitution', '=', null);
       ScribeCustomRules('strength',
         'abilityNotes.gnomeAbilityAdjustmentFeature', '+', '-2'
       );
