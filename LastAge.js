@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.5 2006/05/07 06:28:37 Jim Exp $ */
+/* $Id: LastAge.js,v 1.6 2006/05/12 04:54:57 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -91,9 +91,9 @@ MN2E.ClassRules = function() {
       skillPoints, skills;
   var prerequisites = null;  /* No base class has prerequisites */
 
-  for(var i = 0; i < PH35.CLASSES.length; i++) {
+  for(var i = 0; i < MN2E.CLASSES.length; i++) {
 
-    var klass = PH35.CLASSES[i];
+    var klass = MN2E.CLASSES[i];
 
     if(klass == 'Channeler') {
 
@@ -209,6 +209,51 @@ MN2E.FeatRules = function() {
 MN2E.HeroicPathRules = function() {
 
   ScribeCustomChoices('heroicPaths', MN2E.PATHS);
+
+  var features, notes;
+
+  for(var i = 0; i < MN2E.PATHS.length; i++) {
+
+    var path = MN2E.PATHS[i];
+
+    if(path == 'Beast') {
+
+      features = [
+        1, 'Vicious Assault', 1, 'Wild Sense', 2, 'Beastial Aura',
+        3, 'Magic Fang', 4, 'Bear\'s Endurance', 5, 'StrCon Bonus', 7, 'Rage',
+        8, 'Greater Magic Fang', 9, 'Cat\'s Grace', 10, 'DexWis Bonus',
+        12, 'Enhanced Beastial Aura', 14, 'Bull\'s Strength',
+        19, 'Freedom Of Movement'
+      ];
+      notes = [
+        'featureNotes.wildSenseFeature:Low-light Vision/Sense',
+        'magicNotes.magicFangFeature:<i>Magic Fang</i> %V/day',
+        'meleeNotes.beastialAuraFeature:Turn animals as cleric',
+        'meleeNotes.viciousAssaultFeature:Two claw attacks at 1d%V each'
+      ];
+      ScribeCustomRules('beastTurningLevel',
+        'heroicPath', '?', 'source == "Beast"',
+        'level', '=', null
+      );
+      ScribeCustomRules
+        ('magicNotes.magicFangFeature', 'level', '=', 'source >= 13 ? 2 : 1');
+      ScribeCustomRules('meleeNotes.viciousAssaultFeature',
+        'level', '=', 'source >= 11 ? 8 : source >= 6 ? 6 : 4'
+      );
+      ScribeCustomRules('turningLevel', 'beastTurningLevel', '+=', null);
+
+    } else
+      continue;
+
+    var note = path.substring(0, 1).toLowerCase() + path.substring(1);
+    note = note.replace(/ /g, '');
+    note = 'featureNotes.' + note + 'Features';
+    ScribeCustomFeatures('level', note, features);
+    ScribeCustomRules(note, 'heroicPath', '?', 'source == "' + path + '"');
+    if(notes != null)
+      ScribeCustomNotes(notes);
+
+  }
 
 };
 
