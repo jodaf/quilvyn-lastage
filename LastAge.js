@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.8 2006/05/17 06:14:11 Jim Exp $ */
+/* $Id: LastAge.js,v 1.9 2006/05/19 03:53:52 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -72,7 +72,7 @@ MN2E.LANGUAGES = [
 ];
 MN2E.PATHS = [
   'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
-  'Faithful', 'Giantblooded', 'Guardian', 'Healer', 'Ironborn',
+  'Faithful', 'Fellhunter', 'Giantblooded', 'Guardian', 'Healer', 'Ironborn',
   'Jack-Of-All-Trades', 'Mountainborn', 'Naturefriend', 'Northblooded',
   'Quickened', 'Painless', 'Pureblood', 'Seaborn', 'Seer', 'Speaker',
   'Spellsoul', 'Shadow Walker', 'Steelblooded', 'Sunderborn', 'Tactician',
@@ -159,9 +159,9 @@ MN2E.ClassRules = function() {
       );
       ScribeCustomRules('features.Magecraft', 'levels.Spellcaster', '=', '1');
       ScribeCustomRules
-        ('magicNotes.bonusSpellEnergyFeature', 'channelerLevels', '=', null);
+        ('magicNotes.bonusSpellEnergyFeature', 'channelerLevels', '+=', null);
       ScribeCustomRules('magicNotes.bonusSpellsFeature',
-        'channelerLevels', '=', '(source - 1) * 2'
+        'channelerLevels', '+=', '(source - 1) * 2'
       );
       ScribeCustomRules
         ('spellEnergy', 'magicNotes.bonusSpellEnergyFeature', '+', null);
@@ -360,45 +360,268 @@ MN2E.HeroicPathRules = function() {
     var features = null;
     var notes = null;
     var path = MN2E.PATHS[i];
+    var spellFeatures = null;
 
     if(path == 'Beast') {
 
       features = [
         1, 'Vicious Assault', 1, 'Wild Sense', 2, 'Beastial Aura',
-        3, 'Magic Fang', 4, 'Bear\'s Endurance', 5, 'StrCon Bonus', 7, 'Rage',
-        8, 'Greater Magic Fang', 9, 'Cat\'s Grace', 10, 'DexWis Bonus',
-        12, 'Enhanced Beastial Aura', 14, 'Bull\'s Strength',
-        19, 'Freedom Of Movement'
+        5, 'Str Or Con Bonus', 7, 'Rage', 10, 'Dex Or Wis Bonus'
+      ];
+      spellFeatures = [
+        3, 'Magic Fang%Vsource >= 13 ? 2 : 1', 4, 'Bear\'s Endurance',
+        8, 'Greater Magic Fang%Vsource >= 17 ? 2 : 1', 9, 'Cat\'s Grace',
+        14, 'Bull\'s Strength', 19, 'Freedom Of Movement'
       ];
       notes = [
-        'featureNotes.wildSenseFeature:Low Light Vision/Sense',
-        'magicNotes.magicFangFeature:<i>Magic Fang</i> %V/day',
-        'meleeNotes.beastialAuraFeature:Turn animals as cleric',
-        'meleeNotes.viciousAssaultFeature:Two claw attacks at 1d%V each'
+        'abilityNotes.strOrConBonusFeature:Add %V to strength or constitution',
+        'abilityNotes.dexOrWisBonusFeature:Add %V to dexterity or wisdom',
+        'featureNotes.wildSenseFeature:%V choices of Low Light Vision/Sense',
+        'meleeNotes.beastialAuraFeature:Turn animals as cleric %V/day',
+        'meleeNotes.rageFeature:' +
+          '+4 strength/constitution/+2 Will save/-2 AC 5+conMod rounds %V/day',
+        'meleeNotes.viciousAssaultFeature:Two claw attacks at %V each'
       ];
+      ScribeCustomRules
+        ('abilityNotes.dexOrWisBonusFeature', 'level', '=', 'source>=20?2:1');
+      ScribeCustomRules
+        ('abilityNotes.strOrConBonusFeature', 'level', '=', 'source>=15?2:1');
       ScribeCustomRules('beastTurningLevel',
-        'heroicPath', '?', 'source == "Beast"',
+        'meleeNotes.beastialAuraFeature', '?', null,
         'level', '=', null
       );
       ScribeCustomRules
-        ('magicNotes.magicFangFeature', 'level', '=', 'source >= 13 ? 2 : 1');
+        ('featureNotes.wildSenseFeature', 'level', '=', 'source >= 16 ? 2 : 1');
+      ScribeCustomRules
+        ('meleeNotes.beastialAuraFeature', 'level', '=', 'source>=12 ? 6 : 3');
+      ScribeCustomRules
+        ('meleeNotes.rageFeature', 'level', '+=', 'source >= 17 ? 2 : 1');
       ScribeCustomRules('meleeNotes.viciousAssaultFeature',
-        'level', '=', 'source >= 11 ? 8 : source >= 6 ? 6 : 4'
+        'mediumViciousAssault', '=', null,
+        'smallViciousAssault', '=', null
+      );
+      ScribeCustomRules('mediumViciousAssault',
+        'level', '=', 'source >= 11 ? "d8" : source >= 6 ? "d6" : "d4"'
+      );
+      ScribeCustomRules('smallViciousAssault',
+        'features.Small', '?', null,
+        'mediumViciousAssault', '=', 'Scribe.smallDamage[source]'
       );
       ScribeCustomRules('turningLevel', 'beastTurningLevel', '+=', null);
+
+    } else if(path == 'Chanceborn') {
+
+      features = [
+        1, 'Luck Of Heroes', 3, 'Unfettered', 4, 'Miss Chance', 6, 'Survivor',
+        9, 'Take Ten', 19, 'Take Twenty'
+      ];
+      spellFeatures = [
+        2, 'Resistance', 7, 'True Strike', 12, 'Aid', 17, 'Prayer'
+      ];
+      notes = [
+        'featureNotes.luckOfHeroesFeature:Add %V to any d20 roll 1/day',
+        'featureNotes.survivorFeature:' +
+          'Defensive Roll/Evasion/Slippery Mind/Uncanny Dodge %V/day',
+        'featureNotes.takeTenFeature:Take 10 on any d20 roll 1/day',
+        'featureNotes.takeTwentyFeature:Take 20 on any d20 roll 1/day',
+        'magicNotes.unfetteredFeature:<i>Freedom Of Movement</i> %V rounds/day',
+        'meleeNotes.missChanceFeature:%V% chance of foe miss'
+      ];
+      ScribeCustomRules('featureNotes.luckOfHeroesFeature',
+        'level', '=',
+        '"d4" + (source >= 5 ? "/d6" : "") + (source >= 10 ? "/d8" : "") + ' +
+        '(source >= 15 ? "/d10" : "") + (source >= 20 ? "/d12" : "")'
+      );
+      ScribeCustomRules('featureNotes.survivorFeature',
+        'level', '=', 'Math.floor((source - 1) / 5)'
+      );
+      ScribeCustomRules
+        ('features.Defensive Roll', 'features.Survivor', '=', '1');
+      ScribeCustomRules('features.Evasion', 'features.Survivor', '=', '1');
+      ScribeCustomRules
+        ('features.Slippery Mind', 'features.Survivor', '=', '1');
+      ScribeCustomRules
+        ('features.Uncanny Dodge', 'features.Survivor', '=', '1');
+      ScribeCustomRules('magicNotes.unfetteredFeature',
+        'level', '=', 'Math.floor((source + 2) / 5)'
+      );
+      ScribeCustomRules
+        ('meleeNotes.missChanceFeature', 'level', '=', 'source >= 14 ? 10 : 5');
+
+    } else if(path == 'Charismatic') {
+
+      features = [
+        4, 'Inspiring Oration', 5, 'Cha Bonus', 6, 'Leadership',
+        12, 'Natural Leader',
+      ];
+      spellFeatures = [
+        1, 'Charm Person', 2, 'Remove Fear', 3, 'Hypnotism', 7, 'Aid',
+        8, 'Daze Monster', 11, 'Heroism', 13, 'Charm Monster',
+        16, 'Suggestion', 17, 'Greater Heroism'
+      ];
+      notes = [
+        'abilityNotes.chaBonusFeature:Add %V to charisma',
+        'magicNotes.inspiringOrationFeature:' +
+          'Give speech to apply spell-like ability to allies w/in 60 ft %V/day'
+      ];
+      /* TODO Natural Leader */
+      ScribeCustomRules
+        ('abilityNotes.chaBonusFeature', 'level', '=', 'Math.floor(source/5)');
+      ScribeCustomRules('magicNotes.inspiringOrationFeature',
+        'level', '=', 'Math.floor((source + 1) / 5)'
+      );
+
+    } else if(path == 'Dragonblooded') {
+
+      features = [
+        1, 'Bolster Spell', 2, 'Bonus Spells', 3, 'Bonus Spell Energy',
+        4, 'Quickened Counterspelling', 6, 'Improved Spellcasting',
+        9, 'Spell Penetration', 19, 'Frightful Presence'
+      ];
+      spellFeatures = null;
+      notes = [
+        'magicNotes.bolsterSpellFeature:Add 1 to DC of %V chosen spells',
+        'magicNotes.bonusSpellEnergyFeature:%V extra spell energy points',
+        'magicNotes.bonusSpellsFeature:%V extra spells',
+        'magicNotes.frightfulPresenceFeature:' +
+          'Casting panics/shakes foes of lesser level 4d6 rounds failing DC %V Will save',
+        'magicNotes.improvedSpellcastingFeature:' +
+          'Reduce spell energy cost of spells from %V chosen schools by 1',
+        'magicNotes.quickenedCounterspellingFeature:' +
+          'Counterspell as move action 1/round',
+        'magicNotes.spellPenetrationFeature:Add %V to spell penetration checks'
+      ];
+      ScribeCustomRules('magicNotes.bolsterSpellFeature',
+        'level', '=', '1 + Math.floor(source / 5)'
+      );
+      ScribeCustomRules('magicNotes.bonusSpellEnergyFeature',
+        'level', '+=', 'source >= 16 ? 8 : source >= 15 ? 6 : ' +
+        '(Math.floor((source + 1) / 4) * 2)'
+      );
+      ScribeCustomRules('magicNotes.bonusSpellsFeature',
+        'level', '+=', 'Math.floor((source + 4) / 6)'
+      );
+      ScribeCustomRules('magicNotes.frightfulPresenceFeature',
+        'level', '=', '10 + Math.floor(source / 2)',
+        'charismaModifier', '+', null
+      );
+      ScribeCustomRules('magicNotes.improvedSpellcastingFeature',
+        'level', '+=', 'Math.floor(source / 6)'
+      );
+      ScribeCustomRules('magicNotes.spellPenetrationFeature',
+        'level', '+=', 'Math.floor((source - 5) / 4)'
+      );
+      ScribeCustomRules
+        ('spellEnergy', 'magicNotes.bonusSpellEnergyFeature', '+', null);
+
+    } else if(path == 'Earthbonded') {
+
+      features = [
+        1, 'Darkvision', 3, 'Natural Armor', 4, 'Stonecunning',
+        8, 'Improved Stonecunning', 12, 'Tremorsense', 16, 'Blindsense',
+        20, 'Blindsight'
+      ];
+      spellFeatures = [
+        2, 'Hold Portal', 5, 'Soften Earth And Stone', 6, 'Make Whole',
+        7, 'Spike Stones', 9, 'Stone Shape', 11, 'Meld Into Stone',
+        13, 'Transmute Rock To Mud', 14, 'Stoneskin', 15, 'Move Earth',
+        17, 'Stone Tell', 19, 'Earthquake'
+      ];
+      notes = [
+        'featureNotes.improvedStonecunningFeature:' +
+          'Automatic Search w/in 5 ft of concealed stone door',
+        'meleeNotes.naturalArmorFeature:+%V AC'
+      ];
+      /* TODO Tremorsense, Blindsense, Blindsight */
+      ScribeCustomRules
+        ('armorClass', 'meleeNotes.naturalArmorFeature', '+', null);
+      ScribeCustomRules('meleeNotes.naturalArmorFeature',
+        'level', '+=', 'source >= 18 ? 3 : source >= 10 ? 2 : 1'
+      );
+
+    } else if(path == 'Faithful') {
+
+      features = [
+        4, 'Turn Undead', 5, 'Wis Bonus'
+      ];
+      spellFeatures = [
+        1, 'Bless', 2, 'Protection From Evil', 3, 'Divine Favor', 6, 'Aid',
+        7, 'Bless Weapon', 8, 'Consecrate', 11, 'Daylight',
+        12, 'Magic Circle Against Evil', 13, 'Prayer', 16, 'Holy Smite',
+        17, 'Dispel Evil', 18, 'Holy Aura'
+      ];
+      notes = [
+        'abilityNotes.wisBonusFeature:Add %V to charisma'
+      ];
+      /* TODO Turning frequency Math.floor((level + 1) / 5) */
+      ScribeCustomRules
+        ('abilityNotes.wisBonusFeature', 'level', '=', 'Math.floor(source/5)');
+
+    } else if(path == 'Fellhunter') {
+
+      features = [
+        1, 'Sense The Dead', 2, 'Touch Of The Living', 3, 'Ward Of Life',
+        5, 'Disrupting Attack'
+      ];
+      spellFeatures = null;
+      notes = [
+        'meleeNotes.disruptingAttackFeature:' +
+           'Undead %V Will save or destroyed level/5/day',
+        'meleeNotes.senseTheDeadFeature:Detect undead %V ft at will',
+        'meleeNotes.touchOfTheLivingFeature:+%V damage vs. undead',
+        'meleeNotes.wardOfLifeFeature:Immune to undead %V'
+      ];
+      ScribeCustomRules('meleeNotes.disruptingAttackFeature',
+        'level', '=', '10 + Math.floor(source / 2)',
+        'charismaModifier', '+', null
+      );
+      /* TODO fix computation */
+      ScribeCustomRules('meleeNotes.senseTheDeadFeature',
+        'level', '=', '10 * Math.floor((source + 2) / 2.5)'
+      );
+      ScribeCustomRules('meleeNotes.touchOfTheLivingFeature',
+        'level', '=', 'Math.floor((source + 3) / 5)'
+      );
+      ScribeCustomRules('meleeNotes.wardOfLifeFeature',
+        'level', '=',
+        '"extraordinary special attacks" + ' +
+        '(source >= 8 ? "/ability damage" : "") + ' +
+        '(source >= 13 ? "/ability drain" : "") + ' +
+        '(source >= 18 ? "/energy drain" : "")'
+      );
 
     } else
       continue;
 
-    var note = path.substring(0, 1).toLowerCase() + path.substring(1);
-    note = note.replace(/ /g, '');
-    note = 'featureNotes.' + note + 'Features';
-    ScribeCustomFeatures('level', note, features);
-    ScribeCustomRules(note, 'heroicPath', '?', 'source == "' + path + '"');
+    var featureNote = path.substring(0, 1).toLowerCase() + path.substring(1);
+    featureNote = 'featureNotes.' + featureNote.replace(/ /g, '') + 'Features';
+    if(spellFeatures != null) {
+      for(var j = 1; j < spellFeatures.length; j += 2) {
+        var level = spellFeatures[j - 1];
+        var pieces = spellFeatures[j].split(/%V/);
+        var feature = pieces[0];
+        var magicNote =
+          feature.substring(0, 1).toLowerCase() + feature.substring(1);
+        magicNote = 'magicNotes.' + magicNote.replace(/ /g, '') + 'Feature'; 
+        var magicFormat = '<i>' + feature + '</i> 1/day';
+        if(pieces.length > 1) {
+          magicFormat = magicFormat.replace(/1.day/, '%V/day');
+          ScribeCustomRules(magicNote, 'level', '=', pieces[1]);
+        }
+        features = features.concat([level, feature]);
+        if(notes == null)
+          notes = [];
+        notes = notes.concat(magicNote + ':' + magicFormat);
+      }
+    }
+    ScribeCustomFeatures('level', featureNote, features);
+    ScribeCustomRules
+      (featureNote, 'heroicPath', '?', 'source == "' + path + '"');
     if(notes != null)
       ScribeCustomNotes(notes);
 
   }
+  ScribeCustomSheet('Heroic Path', 'Description', null, 'Alignment');
 
 };
 
