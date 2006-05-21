@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.9 2006/05/19 03:53:52 Jim Exp $ */
+/* $Id: LastAge.js,v 1.10 2006/05/21 07:43:05 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -201,11 +201,12 @@ MN2E.ClassRules = function() {
       hitDie = 8;
       notes = [
         'abilityNotes.incredibleSpeedFeature:Add up to %V speed',
-        'featureNotes.defenderAbilityFeature:%V defender ability feats',
-        'meleeNotes.incredibleResilienceFeature:Add up to %V HP',
-        'meleeNotes.masterfulStrikeFeature:' +
+        'combatNotes.incredibleResilienceFeature:Add up to %V HP',
+        'combatNotes.masterfulStrikeFeature:' +
            'Improved Unarmed Strike/extra unarmed damage',
-        'meleeNotes.preciseStrikeFeature:Ignore %V points of damage resistance'
+        'combatNotes.preciseStrikeFeature:' +
+          'Ignore %V points of damage resistance',
+        'featureNotes.defenderAbilityFeature:%V defender ability feats'
       ];
       profArmor = PH35.ARMOR_PROFICIENCY_NONE;
       profShield = PH35.SHIELD_PROFICIENCY_NONE;
@@ -222,6 +223,12 @@ MN2E.ClassRules = function() {
       ScribeCustomRules('abilityNotes.incredibleSpeedFeature',
         'levels.Defender', '=', '10 * Math.floor((source - 4) / 3)'
       );
+      ScribeCustomRules('abilityNotes.incredibleResilienceFeature',
+        'levels.Defender', '=', '3 * Math.floor((source - 4) / 3)'
+      );
+      ScribeCustomRules('combatNotes.preciseStrikeFeature',
+        'levels.Defender', '=', 'Math.floor((source + 2) / 6)'
+      );
       ScribeCustomRules
         ('featCount', 'featureNotes.defenderAbilityFeature', '+', null);
       ScribeCustomRules('featureNotes.defenderAbilityFeature',
@@ -229,12 +236,6 @@ MN2E.ClassRules = function() {
       );
       ScribeCustomRules('features.Improved Unarmed Strike',
         'features.Masterful Strike', '=', '1'
-      );
-      ScribeCustomRules('abilityNotes.incredibleResilienceFeature',
-        'levels.Defender', '=', '3 * Math.floor((source - 4) / 3)'
-      );
-      ScribeCustomRules('meleeNotes.preciseStrikeFeature',
-        'levels.Defender', '=', 'Math.floor((source + 2) / 6)'
       );
       ScribeCustomRules('weaponDamage.Unarmed',
         'levels.Defender', '=', '(1 + Math.floor(source / 6)) + "d6"'
@@ -253,15 +254,15 @@ MN2E.ClassRules = function() {
       ];
       hitDie = 10;
       notes = [
+        'combatNotes.smiteEvilFeature:' +
+          '%V/day add conMod to attack, paladin level to damage vs. evil',
+        'combatNotes.turnUndeadFeature:' +
+          'Turn (good) or rebuke (evil) undead creatures',
         'featureNotes.specialMountFeature:Magical mount w/special abilities',
         'magicNotes.auraOfGoodFeature:Visible to <i>Detect Good</i>',
         'magicNotes.detectEvilFeature:<i>Detect Evil</i> at will',
         'magicNotes.layOnHandsFeature:Harm undead or heal %V HP/day',
         'magicNotes.removeDiseaseFeature:<i>Remove Disease</i> %V/week',
-        'meleeNotes.smiteEvilFeature:' +
-          '%V/day add conMod to attack, paladin level to damage vs. evil',
-        'meleeNotes.turnUndeadFeature:' +
-          'Turn (good) or rebuke (evil) undead creatures',
         'saveNotes.auraOfCourageFeature:' +
           'Immune fear; +4 to allies w/in 30 ft',
         'saveNotes.divineGraceFeature:Add %V to saves',
@@ -282,15 +283,15 @@ MN2E.ClassRules = function() {
         'spellsPerDayLevels.Paladin', '^=',
         'source < 4 ? null : Math.floor(source / 2)'
       );
+      ScribeCustomRules('combatNotes.smiteEvilFeature',
+        'levels.Paladin', '=', '1 + Math.floor(source / 5)'
+      );
       ScribeCustomRules('magicNotes.layOnHandsFeature',
         'levels.Paladin', '+=', null,
         'charismaModifier', '*', null
       );
       ScribeCustomRules('magicNotes.removeDiseaseFeature',
         'levels.Paladin', '+=', 'Math.floor((source - 3) / 3)'
-      );
-      ScribeCustomRules('meleeNotes.smiteEvilFeature',
-        'levels.Paladin', '=', '1 + Math.floor(source / 5)'
       );
       ScribeCustomRules
         ('saveNotes.divineGraceFeature', 'charismaModifier', '=', null);
@@ -376,30 +377,30 @@ MN2E.HeroicPathRules = function() {
       notes = [
         'abilityNotes.strOrConBonusFeature:Add %V to strength or constitution',
         'abilityNotes.dexOrWisBonusFeature:Add %V to dexterity or wisdom',
-        'featureNotes.wildSenseFeature:%V choices of Low Light Vision/Sense',
-        'meleeNotes.beastialAuraFeature:Turn animals as cleric %V/day',
-        'meleeNotes.rageFeature:' +
+        'combatNotes.beastialAuraFeature:Turn animals as cleric %V/day',
+        'combatNotes.rageFeature:' +
           '+4 strength/constitution/+2 Will save/-2 AC 5+conMod rounds %V/day',
-        'meleeNotes.viciousAssaultFeature:Two claw attacks at %V each'
+        'combatNotes.viciousAssaultFeature:Two claw attacks at %V each',
+        'featureNotes.wildSenseFeature:%V choices of Low Light Vision/Sense'
       ];
       ScribeCustomRules
         ('abilityNotes.dexOrWisBonusFeature', 'level', '=', 'source>=20?2:1');
       ScribeCustomRules
         ('abilityNotes.strOrConBonusFeature', 'level', '=', 'source>=15?2:1');
       ScribeCustomRules('beastTurningLevel',
-        'meleeNotes.beastialAuraFeature', '?', null,
+        'combatNotes.beastialAuraFeature', '?', null,
         'level', '=', null
       );
       ScribeCustomRules
-        ('featureNotes.wildSenseFeature', 'level', '=', 'source >= 16 ? 2 : 1');
+        ('combatNotes.beastialAuraFeature', 'level', '=', 'source>=12 ? 6 : 3');
       ScribeCustomRules
-        ('meleeNotes.beastialAuraFeature', 'level', '=', 'source>=12 ? 6 : 3');
-      ScribeCustomRules
-        ('meleeNotes.rageFeature', 'level', '+=', 'source >= 17 ? 2 : 1');
-      ScribeCustomRules('meleeNotes.viciousAssaultFeature',
+        ('combatNotes.rageFeature', 'level', '+=', 'source >= 17 ? 2 : 1');
+      ScribeCustomRules('combatNotes.viciousAssaultFeature',
         'mediumViciousAssault', '=', null,
         'smallViciousAssault', '=', null
       );
+      ScribeCustomRules
+        ('featureNotes.wildSenseFeature', 'level', '=', 'source >= 16 ? 2 : 1');
       ScribeCustomRules('mediumViciousAssault',
         'level', '=', 'source >= 11 ? "d8" : source >= 6 ? "d6" : "d4"'
       );
@@ -419,14 +420,17 @@ MN2E.HeroicPathRules = function() {
         2, 'Resistance', 7, 'True Strike', 12, 'Aid', 17, 'Prayer'
       ];
       notes = [
+        'combatNotes.missChanceFeature:%V% chance of foe miss',
         'featureNotes.luckOfHeroesFeature:Add %V to any d20 roll 1/day',
         'featureNotes.survivorFeature:' +
           'Defensive Roll/Evasion/Slippery Mind/Uncanny Dodge %V/day',
         'featureNotes.takeTenFeature:Take 10 on any d20 roll 1/day',
         'featureNotes.takeTwentyFeature:Take 20 on any d20 roll 1/day',
-        'magicNotes.unfetteredFeature:<i>Freedom Of Movement</i> %V rounds/day',
-        'meleeNotes.missChanceFeature:%V% chance of foe miss'
+        'magicNotes.unfetteredFeature:<i>Freedom Of Movement</i> %V rounds/day'
       ];
+      ScribeCustomRules('combatNotes.missChanceFeature',
+        'level', '=', 'source >= 14 ? 10 : 5'
+      );
       ScribeCustomRules('featureNotes.luckOfHeroesFeature',
         'level', '=',
         '"d4" + (source >= 5 ? "/d6" : "") + (source >= 10 ? "/d8" : "") + ' +
@@ -445,8 +449,6 @@ MN2E.HeroicPathRules = function() {
       ScribeCustomRules('magicNotes.unfetteredFeature',
         'level', '=', 'Math.floor((source + 2) / 5)'
       );
-      ScribeCustomRules
-        ('meleeNotes.missChanceFeature', 'level', '=', 'source >= 14 ? 10 : 5');
 
     } else if(path == 'Charismatic') {
 
@@ -528,14 +530,14 @@ MN2E.HeroicPathRules = function() {
         17, 'Stone Tell', 19, 'Earthquake'
       ];
       notes = [
+        'combatNotes.naturalArmorFeature:+%V AC',
         'featureNotes.improvedStonecunningFeature:' +
-          'Automatic Search w/in 5 ft of concealed stone door',
-        'meleeNotes.naturalArmorFeature:+%V AC'
+          'Automatic Search w/in 5 ft of concealed stone door'
       ];
       /* TODO Tremorsense, Blindsense, Blindsight */
       ScribeCustomRules
-        ('armorClass', 'meleeNotes.naturalArmorFeature', '+', null);
-      ScribeCustomRules('meleeNotes.naturalArmorFeature',
+        ('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
+      ScribeCustomRules('combatNotes.naturalArmorFeature',
         'level', '+=', 'source >= 18 ? 3 : source >= 10 ? 2 : 1'
       );
 
@@ -565,24 +567,24 @@ MN2E.HeroicPathRules = function() {
       ];
       spellFeatures = null;
       notes = [
-        'meleeNotes.disruptingAttackFeature:' +
+        'combatNotes.disruptingAttackFeature:' +
            'Undead %V Will save or destroyed level/5/day',
-        'meleeNotes.senseTheDeadFeature:Detect undead %V ft at will',
-        'meleeNotes.touchOfTheLivingFeature:+%V damage vs. undead',
-        'meleeNotes.wardOfLifeFeature:Immune to undead %V'
+        'combatNotes.senseTheDeadFeature:Detect undead %V ft at will',
+        'combatNotes.touchOfTheLivingFeature:+%V damage vs. undead',
+        'combatNotes.wardOfLifeFeature:Immune to undead %V'
       ];
-      ScribeCustomRules('meleeNotes.disruptingAttackFeature',
+      ScribeCustomRules('combatNotes.disruptingAttackFeature',
         'level', '=', '10 + Math.floor(source / 2)',
         'charismaModifier', '+', null
       );
       /* TODO fix computation */
-      ScribeCustomRules('meleeNotes.senseTheDeadFeature',
+      ScribeCustomRules('combatNotes.senseTheDeadFeature',
         'level', '=', '10 * Math.floor((source + 2) / 2.5)'
       );
-      ScribeCustomRules('meleeNotes.touchOfTheLivingFeature',
+      ScribeCustomRules('combatNotes.touchOfTheLivingFeature',
         'level', '=', 'Math.floor((source + 3) / 5)'
       );
-      ScribeCustomRules('meleeNotes.wardOfLifeFeature',
+      ScribeCustomRules('combatNotes.wardOfLifeFeature',
         'level', '=',
         '"extraordinary special attacks" + ' +
         '(source >= 8 ? "/ability damage" : "") + ' +
@@ -635,11 +637,11 @@ MN2E.RaceRules = function() {
   var notes = [
     'abilityNotes.naturalMountaineerFeature:' +
        'Unimpeded movement in mountainous terrain',
+    'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
     'featureNotes.boundToTheBeastFeature:Mounted Combat feat',
     'saveNotes.coldHardy:+5 cold/half damage',
     'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
     'magicNotes.naturalChannelerFeature:Innate Magic',
-    'meleeNotes.dodgeOrcsFeature:+1 AC vs. orc',
     'saveNotes.hardyFeature:+1 Fortitude',
     'saveNotes.luckyFeature:+1 all saves',
     'saveNotes.poisonResistanceFeature:+2 vs. poison',
@@ -683,9 +685,9 @@ MN2E.RaceRules = function() {
       adjustment = '+2 strength/-2 intelligence';
       features = [1, 'Brotherhood', 1, 'Cold Hardy', 1, 'Hardy', 1, 'Strong'];
       notes = [
-        'meleeNotes.brotherhoodFeature:' +
+        'combatNotes.brotherhoodFeature:' +
           '+1 attack when fighting alongside 4+ Dorns',
-        'meleeNotes.strongFeature:+1 attack w/two-handed weapons'
+        'combatNotes.strongFeature:+1 attack w/two-handed weapons'
       ];
       ScribeCustomRules
         ('featCount', 'featureNotes.dornFeatCountBonus', '+', null);
@@ -708,14 +710,14 @@ MN2E.RaceRules = function() {
         1, 'Spell Resistance', 1, 'Stone Familiarity'
       ];
       notes = [
-        'meleeNotes.dwarfFavoredEnemyFeature:+1 attack vs. orc',
-        'meleeNotes.dwarfFavoredWeaponFeature:+1 attack with axes/hammers',
-        'meleeNotes.resilientFeature:+2 AC'
+        'combatNotes.dwarfFavoredEnemyFeature:+1 attack vs. orc',
+        'combatNotes.dwarfFavoredWeaponFeature:+1 attack with axes/hammers',
+        'combatNotes.resilientFeature:+2 AC'
       ];
       ScribeCustomRules('abilityNotes.armorSpeedAdjustment',
         'race', '^', 'source.indexOf("Dwarf") >= 0 ? 0 : null'
       );
-      ScribeCustomRules('armorClass', 'meleeNotes.resilientFeature', '+', '2');
+      ScribeCustomRules('armorClass', 'combatNotes.resilientFeature', '+', '2');
       if(race == 'Clan Dwarf') {
         features = features.concat([
           1, 'Dodge Orcs', 1, 'Know Depth', 1, 'Stability', 1, 'Stonecunning'
@@ -740,9 +742,9 @@ MN2E.RaceRules = function() {
         1, 'Spell Resistance', 1, 'Tough'
       ];
       notes = [
-        'meleeNotes.toughFeature:+1 AC'
+        'combatNotes.toughFeature:+1 AC'
       ];
-      ScribeCustomRules('armorClass', 'meleeNotes.toughFeature', '+', '1');
+      ScribeCustomRules('armorClass', 'combatNotes.toughFeature', '+', '1');
       if(race == 'Clan Raised Dwarrow') {
         features = features.concat([
           1, 'Dodge Orcs', 1, 'Stonecunning', 1, 'Stone Familiarity'
@@ -769,8 +771,8 @@ MN2E.RaceRules = function() {
         1, 'Minor Light Sensitivity', 1, 'Rugged', 1, 'Spell Resistance'
       ];
       notes = [
-        'meleeNotes.dworgFavoredEnemyFeature:+2 attack vs. orc',
-        'meleeNotes.minorLightSensitivityFeature:DC 15 Fortitude save in sunlight to avoid -1 attack',
+        'combatNotes.dworgFavoredEnemyFeature:+2 attack vs. orc',
+        'combatNotes.minorLightSensitivityFeature:DC 15 Fortitude save in sunlight to avoid -1 attack',
         'saveNotes.ruggedFeature:+2 all saves'
       ];
       ScribeCustomRules('saveFortitude', 'saveNotes.ruggedFeature', '+', '2');
@@ -946,8 +948,8 @@ MN2E.RaceRules = function() {
                   1, 'Night Fighter'
       ];
       notes = [
-        'meleeNotes.lightSensitivityFeature:+1 attack in daylight',
-        'meleeNotes.nightFighterFeature:+1 attack in darkness',
+        'combatNotes.lightSensitivityFeature:+1 attack in daylight',
+        'combatNotes.nightFighterFeature:+1 attack in darkness',
         'saveNotes.coldResistanceFeature:immune non-lethal/half lethal',
         'skillNotes.naturalPreditorFeature:+%V Indimidate'
       ];
@@ -957,7 +959,7 @@ MN2E.RaceRules = function() {
       adjustment = '+2 charisma/+2 intelligence/-2 wisdom';
       features = [1, 'Quick'];
       notes = [
-        'meleeNotes.quickFeature:+1 attack w/light weapons',
+        'combatNotes.quickFeature:+1 attack w/light weapons',
         'saveNotes.quickFeature:+1 Reflex'
       ];
       ScribeCustomRules
@@ -975,7 +977,7 @@ MN2E.RaceRules = function() {
       if(race == 'Plains Sarcosan') {
         features = features.concat([1, 'Natural Horseman']);
         notes = notes.concat([
-          'meleeNotes.naturalHorsemanFeature:' +
+          'combatNotes.naturalHorsemanFeature:' +
             '+1 melee damage/half ranged penalty',
           'skillNotes.naturalHorsemanFeature:' +
             '+4 Concentration (mounted)/Handle Animal (horse)/Ride (horse)'
