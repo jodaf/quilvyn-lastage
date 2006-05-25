@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.11 2006/05/24 13:47:19 Jim Exp $ */
+/* $Id: LastAge.js,v 1.12 2006/05/25 14:29:33 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -955,6 +955,103 @@ MN2E.HeroicPathRules = function() {
       );
       ScribeCustomRules('skillNotes.dolphin\'sGraceFeature',
         'level', '=', '(source >= 15 ? 3 : source >= 7 ? 2 : 1) * 20'
+      );
+
+    } else if(path == 'Seer') {
+
+      features = [3, 'Seer Sight'];
+      spellFeatures = [
+        1, 'Alarm', 2, 'Augury', 4, 'Clairaudience/Clairvoyance',
+        5, 'Locate Object', 7, 'Locate Creature', 8, 'Speak With Dead',
+        10, 'Divination', 11, 'Scrying', 13, 'Arcane Eye', 14, 'Divincation',
+        16, 'Prying Eyes', 17, 'Legend Lore', 19, 'Commune', 20, 'Vision'
+      ];
+      notes = [
+        'magicNotes.seerSightFeature:' +
+          'Discern recent history of touched object %V/day'
+      ];
+      ScribeCustomRules('magicNotes.seerSightFeature',
+        'level', '=', 'Math.floor((source + 6) / 6)'
+      );
+
+    } else if(path == 'Speaker') {
+
+      features = [
+        2, 'Persuasive Speaker', 3, 'Power Words', 5, 'Cha Bonus',
+        14, 'Language Savant'
+      ];
+      spellFeatures = [
+        1, 'Comprehend Languages', 4, 'Whispering Wind', 8, 'Tongues',
+        12, 'Shout', 18, 'Greater Shout'
+      ];
+      notes = [
+        'abilityNotes.chaBonusFeature:Add %V to charisma',
+        'magicNotes.powerWordsFeature:%V 3+conMod/day',
+        'skillNotes.languageSavantFeature:' +
+          'Fluent in any language after listening for 10 minutes',
+        'skillNotes.persuasiveSpeakerFeature:+%V on verbal charisma skills'
+      ];
+      ScribeCustomRules
+        ('abilityNotes.chaBonusFeature', 'level', '=', 'Math.floor(source/5)');
+      ScribeCustomFeatures('level', 'magicNotes.powerWordsFeature', [
+        3, 'Opening', 6, 'Shattering', 9, 'Silence', 13, 'Slumber',
+        16, 'Charming', 19, 'Holding'
+      ]);
+      ScribeCustomRules('skillNotes.persuasiveSpeakerFeature',
+        'level', '=', 'source == 2 ? 2 : (Math.floor((source + 1) / 4) * 2)'
+      );
+
+    } else if(path == 'Spellsoul') {
+
+      features = [
+        1, 'Untapped Potential', 2, 'Metamagic Aura', 3, 'Resistance',
+        4, 'Bonus Raw Energy'
+      ];
+      spellFeatures = null;
+      notes = [
+        'magicNotes.metamagicAuraFeature:Affect spells w/in 30 ft %V/day',
+        'magicNotes.untappedPotentialFeature:' +
+          'Contribute %V points to others\' spells w/in 30 ft',
+        'saveNotes.resistanceFeature:+%V vs spells'
+      ];
+      ScribeCustomFeatures('level', 'magicNotes.metamagicAuraFeature', [
+        2, 'Enlarge', 5, 'Extend', 8, 'Reduce', 11, 'Attract', 14, 'Empower',
+        17, 'Maximize', 20, 'Redirect'
+      ]);
+      ScribeCustomRules('magicNotes.metamagicAuraFeature',
+        'level', '=', 'source>=15?4:source>=10?3:source>=6?2:1'
+      );
+      ScribeCustomRules('magicNotes.untappedPotentialFeature',
+        'level', '=', 'source>=18?8:source>=13?6:source>=9?4:source>=2?2:0',
+        'charismaModifier', '^', 'source + 1',
+        'intelligenceModifier', '^', 'source + 1',
+        'wisdomModifier', '^', 'source + 1'
+      );
+      ScribeCustomRules('saveNotes.resistanceFeature',
+        'level', 'source>=19?5:source>=16?4:source>=12?3:source>=7?2:1'
+      );
+
+    } else if(path == 'Shadow Walker') {
+
+      features = [
+        1, 'Improved Darkvision', 2, 'Shadow Veil', 4, 'Shadow Jump',
+        11, 'Hide In Plain Sight'
+      ];
+      spellFeatures = [
+        3, 'Expeditious Retreat', 5, 'Blur', 7, 'Undetectable Alignment',
+        9, 'Displacement', 13, 'Expeditious Retreat', 15, 'Blur',
+        17, 'Undectable Alignment', 19, 'Displacement'
+      ];
+      notes = [
+        'featureNotes.improvedDarkvisionFeature:+60 ft',
+        'featureNotes.shadowJumpFeature:Move %V ft between shadows',
+        'skillNotes.shadowVeilFeature:+%V Hide'
+      ];
+      ScribeCustomRules('featureNotes.shadowJumpFeature',
+        'level', '=', 'Math.floor(source / 4) * 10'
+      );
+      ScribeCustomRules('skillNotes.shadowVeilFeature',
+        'level', '=', 'Math.floor((source + 2) / 4) * 2'
       );
 
     } else
