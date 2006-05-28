@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.12 2006/05/25 14:29:33 Jim Exp $ */
+/* $Id: LastAge.js,v 1.13 2006/05/28 06:23:32 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -45,6 +45,26 @@ MN2E.CLASSES = [
   'Spiritual Channeler', 'Wildlander'
 ];
 MN2E.FEATS = [
+];
+MN2E.LANGUAGES = [
+];
+MN2E.PATHS = [
+  'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
+  'Faithful', 'Fellhunter', 'Feyblooded', 'Giantblooded', 'Guardian', 'Healer',
+  'Ironborn', 'Jack-Of-All-Trades', 'Mountainborn', 'Naturefriend',
+  'Northblooded', 'Quickened', 'Painless', 'Pureblood', 'Seaborn', 'Seer',
+  'Speaker', 'Spellsoul', 'Shadow Walker', 'Steelblooded', 'Sunderborn',
+  'Tactician', 'Warg'
+];
+MN2E.RACES = [
+  'Agrarian Halfling', 'Clan Dwarf', 'Clan Raised Dwarrow', 'Clan Raised Dworg',
+  'Danisil Raised Elfling', 'Dorn', 'Erenlander', 'Gnome',
+  'Gnome Raised Dwarrow', 'Halfling Raised Elfling', 'Jungle Elf',
+  'Kurgun Dwarf', 'Kurgun Raised Dwarrow', 'Kurgun Raised Dworg',
+  'Nomadic Halfling', 'Orc', 'Plains Sarcosan', 'Sea Elf', 'Snow Elf',
+  'Urban Sarcosan', 'Wood Elf'
+];
+MN2E.SELECTABLE_FEATURES = [
   /* Agrarian Halfling Features (MN 46) */
   'Stout', 'Studious',
   /* Nomadic Halfling Features (MN 46) */
@@ -74,24 +94,6 @@ MN2E.FEATS = [
   'Overland Stride', 'Quick Stride', 'Rapid Response', 'Sense Dark Magic',
   'Skill Mastery', 'Slippery Mind', 'Trackless Step', 'True Aim',
   'Wild Empathy', 'Wilderness Trapfinding', 'Woodland Stride'
-];
-MN2E.LANGUAGES = [
-];
-MN2E.PATHS = [
-  'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
-  'Faithful', 'Fellhunter', 'Feyblooded', 'Giantblooded', 'Guardian', 'Healer',
-  'Ironborn', 'Jack-Of-All-Trades', 'Mountainborn', 'Naturefriend',
-  'Northblooded', 'Quickened', 'Painless', 'Pureblood', 'Seaborn', 'Seer',
-  'Speaker', 'Spellsoul', 'Shadow Walker', 'Steelblooded', 'Sunderborn',
-  'Tactician', 'Warg'
-];
-MN2E.RACES = [
-  'Agrarian Halfling', 'Clan Dwarf', 'Clan Raised Dwarrow', 'Clan Raised Dworg',
-  'Danisil Raised Elfling', 'Dorn', 'Erenlander', 'Gnome',
-  'Gnome Raised Dwarrow', 'Halfling Raised Elfling', 'Jungle Elf',
-  'Kurgun Dwarf', 'Kurgun Raised Dwarrow', 'Kurgun Raised Dworg',
-  'Nomadic Halfling', 'Orc', 'Plains Sarcosan', 'Sea Elf', 'Snow Elf',
-  'Urban Sarcosan', 'Wood Elf'
 ];
 MN2E.SKILLS = [
 ];
@@ -309,12 +311,20 @@ MN2E.FeatRules = function() {
     ScribeCustomRules
       ('features.' + MN2E.FEATS[i], 'feats.' + MN2E.FEATS[i], '=', '1');
   }
+  ScribeCustomChoices('selectableFeatures', MN2E.SELECTABLE_FEATURES);
+  for(var i = 0; i < MN2E.SELECTABLE_FEATURES.length; i++) {
+    ScribeCustomRules('features.' + MN2E.SELECTABLE_FEATURES[i],
+      'selectableFeatures.' + MN2E.SELECTABLE_FEATURES[i], '=', '1'
+    );
+  }
 
 };
 
 MN2E.HeroicPathRules = function() {
 
   ScribeCustomChoices('heroicPaths', MN2E.PATHS);
+
+  ScribeCustomRules('featCount', 'featureNotes.bonusFeatFeature', '+', null);
 
   for(var i = 0; i < MN2E.PATHS.length; i++) {
 
@@ -874,7 +884,6 @@ MN2E.HeroicPathRules = function() {
         'level', '=', 'Math.floor(source / 5)'
       );
       ScribeCustomRules('featCount',
-        'featureNotes.bonusFeatFeature', '+', null,
         'featureNotes.skillMasteryFeature', '+', null
       );
       ScribeCustomRules('featureNotes.bonusFeatFeature',
@@ -1052,6 +1061,63 @@ MN2E.HeroicPathRules = function() {
       );
       ScribeCustomRules('skillNotes.shadowVeilFeature',
         'level', '=', 'Math.floor((source + 2) / 4) * 2'
+      );
+
+    } else if(path == 'Stellblooded') {
+
+      features = [
+        1, 'Bonus Feat', 2, 'Offensive Tactic', 3, 'Strategic Blow',
+        4, 'Skilled Warrior', 14, 'Untouchable', 19, 'Improved Untouchable'
+      ];
+      spellFeatures = null;
+      notes = [
+        'combatNotes.improvedUntouchableFeature:' +
+           'No foe AOO from move/standard/full-round actions',
+        'combatNotes.offensiveTacticFeature:' +
+          '+%V to first attack or all damage when using full attack action',
+        'combatNotes.skilledWarriorFeature:' +
+           'Half penalty from %V choices of Fighting Defensively/Grapple ' +
+           'Attack/Non-proficient Weapon/Two-Weapon Fighting',
+        'combatNotes.strategicBlowFeature:Ignore %V points of damage reduction',
+        'combatNotes.untouchableFeature:No foe AOO from special attacks'
+      ];
+      ScribeCustomRules('combatNotes.offensiveTacticFeature',
+        'level', '=', 'source>=17 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
+      );
+      ScribeCustomRules('combatNotes.skilledWariorFeature',
+        'level', '=', 'source>=18 ? 4 : source>=13 ? 3 : source>=8 ? 2 : 1'
+      );
+      ScribeCustomRules('combatNotes.stategicBlowFeature',
+        'level', '=', 'source>=16?15 : source==15?12 : (Math.floor(source/3)*3)'
+      );
+      ScribeCustomRules('featureNotes.bonusFeatFeature',
+        'level', '=', '1 + Math.floor(source / 5)'
+      );
+
+    } else if(path == 'Sunderborn') {
+
+      features = [
+        1, 'Detect Outsider', 2, 'Blood Of The Planes', 4, 'Planar Fury',
+        7, 'Darkvision', 13, 'Magical Darkvision', 19, 'Invisibility Vision'
+      ];
+      spellFeatures = [
+        3, 'Summon Monster I', 6, 'Summon Monster II', 9, 'Summon Monster III',
+        12, 'Summon Monster IV', 15, 'Summon Monster V', 18, 'Summon Monster VI'
+      ];
+      notes = [
+        'combatNotes.planarFuryFeature:' +
+          '+2 strength/constitution/+1 Will save/-1 AC 5+conMod rounds %V/day',
+        'featureNotes.magicalDarkvisionFeature:See perfectly in any darkness',
+        'featureNotes.invisibilityVision:See invisible creatures',
+        'magicNotes.detectOutsiderFeature:Detect outsiders at will',
+        'skillNotes.bloodOfThePlanesFeature:' +
+          '+%V on charisma skills when dealing with outsiders'
+      ];
+      ScribeCustomRules('combatNotes.planarFuryFeature',
+        'level', '=', 'Math.floor((source + 2) / 6)'
+      );
+      ScribeCustomRules('skillNotes.bloodOfThePlanesFeature',
+        'level', '=', 'Math.floor((source + 1) / 3) * 2'
       );
 
     } else
