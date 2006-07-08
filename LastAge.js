@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.16 2006/07/07 13:32:10 Jim Exp $ */
+/* $Id: LastAge.js,v 1.17 2006/07/08 14:40:54 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -43,7 +43,7 @@ function MN2E() {
 }
 /* Choice lists */
 MN2E.CLASSES = [
-  'Charismatic Channeler', 'Defender', 'Hermetic Channler', 
+  'Charismatic Channeler', 'Defender', 'Fighter', 'Hermetic Channler', 
   'Spiritual Channeler', 'Wildlander'
 ];
 MN2E.FEATS = [
@@ -66,42 +66,36 @@ MN2E.RACES = [
   'Nomadic Halfling', 'Orc', 'Plains Sarcosan', 'Sea Elf', 'Snow Elf',
   'Urban Sarcosan', 'Wood Elf'
 ];
-MN2E.SELECTABLE_FEATURES = [
-  /* Agrarian Halfling Features (MN 46) */
-  'Stout', 'Studious',
-  /* Nomadic Halfling Features (MN 46) */
-  'Bound To The Beast', 'Bound To The Spirits',
-  /* Heroic Path ability bonuses */
-  'Charisma Bonus', 'Constitution Bonus', 'Dexterity Bonus',
-  'Intelligence Bonus', 'Strength Bonus', 'Wisdom Bonus',
-  /* Beast choices (MN 53) */
-  'Low Light Vision', 'Scent',
-  /* Fighter Warrior's Ways (MN 85) */
-  'Adapter', 'Improviser', 'Leader Of Men', 'Survivor',
-  /* Spiritual Channeler Gifts (MN 77) */
-  'Confident Effect', 'Heightened Effect', 'Mastery Of Nature',
-  'Mastery Of Spirits', 'Mastery Of The Unnatural', 'Powerful Effect',
-  'Precise Effect', 'Specific Effect', 'Universal Effect',
-  /* Hermetic Channeler Gifts (MN 78) */
-  'Foe Specialty', 'Knowledge Specialty','Quick Reference', 'Spell Specialty',
-  /* Charismatic Channeler Gifts (MN 79) */
-  'Greater Confidence', 'Greater Fury', 'Improved Confidence', 'Improved Fury',
-  'Inspire Confidence', 'Inspire Facination', 'Inspire Fury',
-  'Mass Suggestion', 'Suggestion',
-  /* Defender Abilities (MN 83) */
-  'Defensive Mastery', 'Dodge Training', 'Flurry Attack', 'Grappling Training',
-  'Offensive Training', 'Speed Training',
-  'Cover Ally', 'One With The Weapon', 'Rapid Strike', 'Strike And Hold',
-  'Counterattack', 'Devastating Strike', 'Furious Grapple',
-  'Retailiatory Strike', 'Weapon Trap',
-  /* Wildlander Traits (MN 88) */
-  'Animal Companion', 'Camouflage', 'Evasion', 'Hated Foe',
-  'Hide In Plain Sight', 'Hunted By The Shadow', 'Improved Evasion',
-  'Improved Woodland Stride', 'Instinctive Response', 'Master Hunter',
-  'Overland Stride', 'Quick Stride', 'Rapid Response', 'Sense Dark Magic',
-  'Skill Mastery', 'Slippery Mind', 'Trackless Step', 'True Aim',
-  'Wild Empathy', 'Wilderness Trapfinding', 'Woodland Stride'
-];
+MN2E.SELECTABLE_FEATURES = {
+  'Agrarian Halfling':'Stout/Studious', /* MN 46 */
+  'Nomadic Halfling':'Bound To The Beast/Bound To The Spirits', /* MN 46 */
+  'Beast':'Low Light Vision/Scent/Strength Bonus/Constitution Bonus/' +
+    'Dexterity Bonus/Wisdom Bonus', /* MN 53 */
+  'Fighter':'Adapter/Improviser/Leader Of Men/Survivor', /* MN 85 */
+  'Jack-Of-All-Trades':'Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
+    'Dexterity Bonus/Constitution Bonus/Charisma Bonus', /* MN 61 */
+  'Pureblood':'Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
+    'Dexterity Bonus/Constitution Bonus/Charisma Bonus', /* MN 65 */
+  'Spiritual Channeler':'Confident Effect/Heightened Effect/Mastery Of Nature/'+
+    'Mastery Of Spirits/Mastery Of The Unnatural/Powerful Effect/' +
+    'Precise Effect/Specific Effect/Universal Effect', /* MN 77 */
+  'Hermetic Channeler':'Foe Specialty/Knowledge Specialty/Quick Reference/' +
+    'Spell Specialty', /* MN 78 */
+  'Charismatic Channeler':'Greater Confidence/Greater Fury/' +
+    'Improved Confidence/Improved Fury/Inspire Confidence/Inspire Facination' +
+    'Inspire Fury/Mass Suggestion/Suggestion', /* MN 79 */
+  'Defender':'Defensive Mastery/Dodge Training/Flurry Attack/' +
+    'Grappling Training/Offensive Training/Speed Training/Cover Ally/' +
+    'One With The Weapon/Rapid Strike/Strike And Hold/Counterattack/' +
+    'Devastating Strike/Furious Grapple/Retailiatory Strike/Weapon Trap',
+    /* MN 83 */
+  'Wildlander':'Animal Companion/Camouflage/Evasion/Hated Foe/' +
+    'Hide In Plain Sight/Hunted By The Shadow/Improved Evasion/' +
+    'Improved Woodland Stride/Instinctive Response/Master Hunter/' +
+    'Overland Stride/Quick Stride/Rapid Response/Sense Dark Magic/' +
+    'Skill Mastery/Slippery Mind/Trackless Step/True Aim/Wild Empathy/' +
+    'Wilderness Trapfinding/Woodland Stride' /* MN 88 */
+};
 MN2E.SKILLS = [
 ];
 MN2E.SPELLS = [
@@ -252,6 +246,13 @@ MN2E.ClassRules = function() {
         'levels.Defender', '=', '(1 + Math.floor(source / 6)) + "d6"'
       );
 
+    } else if(klass == 'Fighter') {
+
+      ScribeCustomRules('selectableFeatureCount.Fighter',
+       'levels.Fighter', '=', 'source >= 4 ? 1 : null'
+      );
+      // TODO: Description of warrior's way effects
+
     } else if(klass == 'Wildlander') {
 
       baseAttack = PH35.ATTACK_BONUS_GOOD;
@@ -301,8 +302,6 @@ MN2E.ClassRules = function() {
 
   }
 
-  ScribeCustomChoices('classes', 'Test Class');
-
 };
 
 MN2E.CombatRules = function() {
@@ -320,10 +319,18 @@ MN2E.FeatRules = function() {
     ScribeCustomRules
       ('features.' + MN2E.FEATS[i], 'feats.' + MN2E.FEATS[i], '=', null);
   }
-  ScribeCustomChoices('selectableFeatures', MN2E.SELECTABLE_FEATURES);
-  for(var i = 0; i < MN2E.SELECTABLE_FEATURES.length; i++) {
-    ScribeCustomRules('features.' + MN2E.SELECTABLE_FEATURES[i],
-      'selectableFeatures.' + MN2E.SELECTABLE_FEATURES[i], '=', null
+  var uniquifier = {};
+  for(var attr in MN2E.SELECTABLE_FEATURES) {
+    var features = MN2E.SELECTABLE_FEATURES[attr].split("/");
+    for(var i = 0; i < features.length; i++) {
+      uniquifier[features[i]] = '';
+    }
+  }
+  var selectable = Scribe.GetKeys(uniquifier);
+  ScribeCustomChoices('selectableFeatures', selectable);
+  for(var i = 0; i < selectable.length; i++) {
+    ScribeCustomRules('features.' + selectable[i],
+      'selectableFeatures.' + selectable[i], '=', null
     );
   }
   ScribeCustomRules('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
@@ -941,6 +948,10 @@ MN2E.HeroicPathRules = function() {
       ScribeCustomRules
         ('combatNotes.painlessFeature', 'pathLevels.Painless', '+=', null);
       ScribeCustomRules('hitPoints', 'combatNotes.painlessFeature', '+', null);
+      ScribeCustomRules
+        ('resistance.Enchantment', 'saveNotes.uncaringMindFeature', '+=', null);
+      ScribeCustomRules
+        ('resistance.Pain', 'saveNotes.painlessFeature', '+=', null);
       ScribeCustomRules('saveNotes.uncaringMindFeature',
         'pathLevels.Painless', '+=', 'Math.floor((source + 2) / 5)'
       );
@@ -1130,6 +1141,9 @@ MN2E.HeroicPathRules = function() {
         'untappedPotentialHighestModifier', '=', 'source + 1',
         'pathLevels.Spellsoul', '+',
           'source>=18 ? 8 : source>=13 ? 6 : source>=9 ? 4 : source>=4 ? 2 : 0'
+      );
+      ScribeCustomRules('resistance.Spell',
+        'saveNotes.improvedSpellResistanceFeature', '+=', null
       );
       ScribeCustomRules('saveNotes.improvedSpellResistanceFeature',
         'pathLevels.Spellsoul', '=',
@@ -1365,6 +1379,10 @@ MN2E.RaceRules = function() {
 
   ];
   ScribeCustomNotes(notes);
+  ScribeCustomRules
+    ('resistance.Poison', 'saveNotes.poisonResistanceFeature', '+=', '2');
+  ScribeCustomRules
+    ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
 
   ScribeCustomRules
     ('features.Innate Magic', 'featureNotes.naturalChannelerFeature', '=', '1');
@@ -1373,7 +1391,7 @@ MN2E.RaceRules = function() {
   ScribeCustomRules
     ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
   ScribeCustomRules
-    ('saveFortitude', 'saveNotes.hardyFeature', '+', '1');
+    ('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
   ScribeCustomRules
     ('skillNotes.dextrousHandsFeature2', 'features.Dextrous Hands', '=', '1');
   ScribeCustomRules
@@ -1382,9 +1400,9 @@ MN2E.RaceRules = function() {
     'constitution', '=', 'source',
     'holdBreathMultiplier', '*', null
   );
-  ScribeCustomRules('saveFortitude', 'saveNotes.luckyFeature', '+', '1');
-  ScribeCustomRules('saveReflex', 'saveNotes.luckyFeature', '+', '1');
-  ScribeCustomRules('saveWill', 'saveNotes.luckyFeature', '+', '1');
+  ScribeCustomRules('save.Fortitude', 'saveNotes.luckyFeature', '+', '1');
+  ScribeCustomRules('save.Reflex', 'saveNotes.luckyFeature', '+', '1');
+  ScribeCustomRules('save.Will', 'saveNotes.luckyFeature', '+', '1');
 
   for(var i = 0; i < MN2E.RACES.length; i++) {
 
@@ -1486,9 +1504,9 @@ MN2E.RaceRules = function() {
         'combatNotes.minorLightSensitivityFeature:DC 15 Fortitude save in sunlight to avoid -1 attack',
         'saveNotes.ruggedFeature:+2 all saves'
       ];
-      ScribeCustomRules('saveFortitude', 'saveNotes.ruggedFeature', '+', '2');
-      ScribeCustomRules('saveReflex', 'saveNotes.ruggedFeature', '+', '2');
-      ScribeCustomRules('saveWill', 'saveNotes.ruggedFeature', '+', '2');
+      ScribeCustomRules('save.Fortitude', 'saveNotes.ruggedFeature', '+', '2');
+      ScribeCustomRules('save.Reflex', 'saveNotes.ruggedFeature', '+', '2');
+      ScribeCustomRules('save.Will', 'saveNotes.ruggedFeature', '+', '2');
       if(race == 'Clan Raised Dworg') {
         features = features.concat([1, 'Stonecunning']);
       } else if(race == 'Kurgun Raised Dworg') {
@@ -1522,7 +1540,9 @@ MN2E.RaceRules = function() {
         'saveNotes.enchantmentResistanceFeature:+2 vs. enchantments',
         'skillNotes.treeClimberFeature:+4 Balance (trees)/Climb (trees)'
       ];
-
+      ScribeCustomRules('resistance.Enchantment',
+        'saveNotes.enchantmentResistanceFeature', '+=', '2'
+      );
       ScribeCustomRules
         ('spellEnergyPoints', 'magicNotes.giftedChannelerFeature', '+', '2');
 
@@ -1619,6 +1639,8 @@ MN2E.RaceRules = function() {
         'skillNotes.alertSensesFeature:+2 Listen/Spot',
         'skillNotes.gracefulFeature:+2 Climb/Jump/Move Silently/Tumble'
       ];
+      ScribeCustomRules
+        ('resistance.Fear', 'saveNotes.unafraidFeature', '+=', '2');
 
       if(race == 'Agrarian Halfling') {
         features = features.concat([1, 'Dextrous Hands']);
