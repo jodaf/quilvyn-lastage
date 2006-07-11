@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.17 2006/07/08 14:40:54 Jim Exp $ */
+/* $Id: LastAge.js,v 1.18 2006/07/11 04:44:16 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -1100,10 +1100,12 @@ MN2E.HeroicPathRules = function() {
       ScribeCustomRules('features.Charisma Bonus',
         'pathLevels.Speaker', '+', 'Math.floor((source - 5) / 5)'
       );
+/* TODO
       ScribeCustomFeatures('pathLevels.Speaker', 'magicNotes.powerWordsFeature',
         [3, 'Opening', 6, 'Shattering', 9, 'Silence', 13, 'Slumber',
          16, 'Charming', 19, 'Holding']
       );
+*/
       ScribeCustomRules('skillNotes.persuasiveSpeakerFeature',
         'pathLevels.Speaker', '=',
         'source >= 17 ? 8 : source >= 11 ? 6 : source >= 7 ? 4 : 2'
@@ -1123,11 +1125,13 @@ MN2E.HeroicPathRules = function() {
           'Contribute %V points to others\' spells w/in 30 ft',
         'saveNotes.improvedSpellResistanceFeature:+%V vs. spells'
       ];
+/*
       ScribeCustomFeatures(
         'pathLevels.Spellsoul', 'magicNotes.metamagicAuraFeature2',
         [2, 'Enlarge', 5, 'Extend', 8, 'Reduce', 11, 'Attract', 14, 'Empower',
          17, 'Maximize', 20, 'Redirect']
       );
+*/
       ScribeCustomRules('untappedPotentialHighestModifier',
         'features.Untapped Potential', '?', null,
         'charismaModifier', '^=', null,
@@ -1304,24 +1308,32 @@ MN2E.HeroicPathRules = function() {
     } else
       continue;
 
-    var noteName = path.substring(0, 1).toLowerCase() + path.substring(1);
-    noteName = noteName.replace(/ /g, '');
+    var prefix =
+      name.substring(0, 1).toLowerCase() + name.substring(1).replace(/ /g, '');
     if(features != null) {
-      ScribeCustomFeatures
-        ('level', 'featureNotes.' + noteName + 'Features', features);
-      ScribeCustomRules('featureNotes.' + noteName + 'Features',
-        'heroicPath', '?', 'source == "' + path + '"'
-      );
+      for(var j = 1; j < features.length; j += 2) {
+        var feature = features[j];
+        var level = features[j - 1];
+        ScribeCustomRules(prefix + 'Features.' + feature,
+          'heroicPath', '?', 'source == "' + name + '"',
+          'level', '=', 'source >= ' + level
+        );
+        ScribeCustomRules
+          ('features.' + feature, prefix + 'Features.' + feature, '=', '1');
+      }
+      ScribeCustomSheet
+        (name + ' Features', 'FeaturesAndSkills', null, 'Feats', ' * ');
     }
     if(spellFeatures != null) {
-      for(var j = 1; j < spellFeatures.length; j += 2)
-        spellFeatures[j] = '<i>' + spellFeatures[j] + '</i>';
-      ScribeCustomFeatures
-        ('level', 'magicNotes.' + noteName + 'Spells', spellFeatures);
-      ScribeCustomRules('magicNotes.' + noteName + 'Spells',
-        'heroicPath', '?', 'source == "' + path + '"'
-      );
-      ScribeCustomNotes('magicNotes.' + noteName + 'Spells:%V 1/day');
+      for(var j = 1; j < spellFeatures.length; j += 2) {
+        var spell = '<i>' + spellFeatures[j] + '</i>';
+        var level = spellFeatures[j - 1];
+        ScribeCustomRules(prefix + 'Spells.' + spell,
+          'heroicPath', '?', 'source == "' + name + '"',
+          'level', '=', 'source >= ' + level
+        );
+      }
+      ScribeCustomSheet(name + ' Spells', 'Magic', null, 'Spells', ' * ');
     }
     if(notes != null)
       ScribeCustomNotes(notes);
