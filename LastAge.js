@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.18 2006/07/11 04:44:16 Jim Exp $ */
+/* $Id: LastAge.js,v 1.19 2006/07/13 05:50:26 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -67,29 +67,29 @@ MN2E.RACES = [
   'Urban Sarcosan', 'Wood Elf'
 ];
 MN2E.SELECTABLE_FEATURES = {
-  'Agrarian Halfling':'Stout/Studious', /* MN 46 */
-  'Nomadic Halfling':'Bound To The Beast/Bound To The Spirits', /* MN 46 */
-  'Beast':'Low Light Vision/Scent/Strength Bonus/Constitution Bonus/' +
+  'Agrarian Halfling:Stout/Studious', /* MN 46 */
+  'Nomadic Halfling:Bound To The Beast/Bound To The Spirits', /* MN 46 */
+  'Beast:Low Light Vision/Scent/Strength Bonus/Constitution Bonus/' +
     'Dexterity Bonus/Wisdom Bonus', /* MN 53 */
-  'Fighter':'Adapter/Improviser/Leader Of Men/Survivor', /* MN 85 */
+  'Fighter:Adapter/Improviser/Leader Of Men/Survivor', /* MN 85 */
   'Jack-Of-All-Trades':'Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
     'Dexterity Bonus/Constitution Bonus/Charisma Bonus', /* MN 61 */
-  'Pureblood':'Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
+  'Pureblood:Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
     'Dexterity Bonus/Constitution Bonus/Charisma Bonus', /* MN 65 */
-  'Spiritual Channeler':'Confident Effect/Heightened Effect/Mastery Of Nature/'+
+  'Spiritual Channeler:Confident Effect/Heightened Effect/Mastery Of Nature/'+
     'Mastery Of Spirits/Mastery Of The Unnatural/Powerful Effect/' +
     'Precise Effect/Specific Effect/Universal Effect', /* MN 77 */
-  'Hermetic Channeler':'Foe Specialty/Knowledge Specialty/Quick Reference/' +
+  'Hermetic Channeler:Foe Specialty/Knowledge Specialty/Quick Reference/' +
     'Spell Specialty', /* MN 78 */
-  'Charismatic Channeler':'Greater Confidence/Greater Fury/' +
+  'Charismatic Channeler:Greater Confidence/Greater Fury/' +
     'Improved Confidence/Improved Fury/Inspire Confidence/Inspire Facination' +
     'Inspire Fury/Mass Suggestion/Suggestion', /* MN 79 */
-  'Defender':'Defensive Mastery/Dodge Training/Flurry Attack/' +
+  'Defender:Defensive Mastery/Dodge Training/Flurry Attack/' +
     'Grappling Training/Offensive Training/Speed Training/Cover Ally/' +
     'One With The Weapon/Rapid Strike/Strike And Hold/Counterattack/' +
     'Devastating Strike/Furious Grapple/Retailiatory Strike/Weapon Trap',
     /* MN 83 */
-  'Wildlander':'Animal Companion/Camouflage/Evasion/Hated Foe/' +
+  'Wildlander:Animal Companion/Camouflage/Evasion/Hated Foe/' +
     'Hide In Plain Sight/Hunted By The Shadow/Improved Evasion/' +
     'Improved Woodland Stride/Instinctive Response/Master Hunter/' +
     'Overland Stride/Quick Stride/Rapid Response/Sense Dark Magic/' +
@@ -110,7 +110,6 @@ MN2E.ClassRules = function() {
       skillPoints, skills;
   var prerequisites = null;  /* No base class has prerequisites */
 
-  /* TODO Fighter's Warrior Ways */
   ScribeCustomRules('classSkills.Knowledge (Shadow)', 'levels.Rogue', '=', '1');
   ScribeCustomRules('classSkills.Speak Language', 'levels.Rogue', '=', '1');
 
@@ -319,19 +318,21 @@ MN2E.FeatRules = function() {
     ScribeCustomRules
       ('features.' + MN2E.FEATS[i], 'feats.' + MN2E.FEATS[i], '=', null);
   }
-  var uniquifier = {};
-  for(var attr in MN2E.SELECTABLE_FEATURES) {
-    var features = MN2E.SELECTABLE_FEATURES[attr].split("/");
-    for(var i = 0; i < features.length; i++) {
-      uniquifier[features[i]] = '';
+  ScribeCustomChoices('selectableFeatures', MN2E.SELECTABLE_FEATURES);
+  for(var i = 0; i < MN2E.SELECTABLE_FEATURES.length; i++) {
+    var pieces = MN2E.SELECTABLE_FEATURES[i].split(':');
+    var prefix = pieces[0].substring(0, 1).toLowerCase() +
+                 pieces[0].substring(1).replace(/ /g, '');
+    var selectables = pieces[1].split('/');
+    for(var j = 0; j < selectables.length; j++) {
+      var selectable = selectables[j];
+      ScribeCustomRules('features.' + selectable,
+        'selectableFeatures.' + selectable, '=', null
+      );
+      ScribeCustomRules(prefix + 'Features.' + selectable,
+        'selectableFeatures.' + selectable, '=', null
+      );
     }
-  }
-  var selectable = Scribe.GetKeys(uniquifier);
-  ScribeCustomChoices('selectableFeatures', selectable);
-  for(var i = 0; i < selectable.length; i++) {
-    ScribeCustomRules('features.' + selectable[i],
-      'selectableFeatures.' + selectable[i], '=', null
-    );
   }
   ScribeCustomRules('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
   ScribeCustomRules('charisma', 'features.Charisma Bonus', '+', null);
@@ -1769,15 +1770,7 @@ MN2E.SkillRules = function() {
  * to apply the rules to determine valid values for some attributes.
  */
 MN2E.Randomize = function(rules, attributes, attribute) {
-
-  /* Returns a random key of the object #o#. */
-  function RandomKey(o) {
-    var keys = Scribe.GetKeys(o);
-    return keys[Scribe.Random(0, keys.length - 1)];
-  }
-
   if(attribute == 'heroicPath') {
-    attributes[attribute] = RandomKey(Scribe.heroicPaths);
+    attributes[attribute] = ScribeUtils.RandomKey(Scribe.heroicPaths);
   }
-
 }
