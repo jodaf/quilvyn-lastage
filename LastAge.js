@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.19 2006/07/13 05:50:26 Jim Exp $ */
+/* $Id: LastAge.js,v 1.20 2006/07/25 20:43:02 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -40,11 +40,13 @@ function MN2E() {
   MN2E.MagicRules = null;
   ScribeCustomEditor
     ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
+  ScribeCustomChoices('heroicPaths', 'Null Path');
+  ScribeCustomChoices('races', 'Null Race');
 }
 /* Choice lists */
 MN2E.CLASSES = [
   'Charismatic Channeler', 'Defender', 'Fighter', 'Hermetic Channler', 
-  'Spiritual Channeler', 'Wildlander'
+  'Rogue', 'Spiritual Channeler', 'Wildlander'
 ];
 MN2E.FEATS = [
 ];
@@ -66,36 +68,8 @@ MN2E.RACES = [
   'Nomadic Halfling', 'Orc', 'Plains Sarcosan', 'Sea Elf', 'Snow Elf',
   'Urban Sarcosan', 'Wood Elf'
 ];
-MN2E.SELECTABLE_FEATURES = {
-  'Agrarian Halfling:Stout/Studious', /* MN 46 */
-  'Nomadic Halfling:Bound To The Beast/Bound To The Spirits', /* MN 46 */
-  'Beast:Low Light Vision/Scent/Strength Bonus/Constitution Bonus/' +
-    'Dexterity Bonus/Wisdom Bonus', /* MN 53 */
-  'Fighter:Adapter/Improviser/Leader Of Men/Survivor', /* MN 85 */
-  'Jack-Of-All-Trades':'Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
-    'Dexterity Bonus/Constitution Bonus/Charisma Bonus', /* MN 61 */
-  'Pureblood:Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
-    'Dexterity Bonus/Constitution Bonus/Charisma Bonus', /* MN 65 */
-  'Spiritual Channeler:Confident Effect/Heightened Effect/Mastery Of Nature/'+
-    'Mastery Of Spirits/Mastery Of The Unnatural/Powerful Effect/' +
-    'Precise Effect/Specific Effect/Universal Effect', /* MN 77 */
-  'Hermetic Channeler:Foe Specialty/Knowledge Specialty/Quick Reference/' +
-    'Spell Specialty', /* MN 78 */
-  'Charismatic Channeler:Greater Confidence/Greater Fury/' +
-    'Improved Confidence/Improved Fury/Inspire Confidence/Inspire Facination' +
-    'Inspire Fury/Mass Suggestion/Suggestion', /* MN 79 */
-  'Defender:Defensive Mastery/Dodge Training/Flurry Attack/' +
-    'Grappling Training/Offensive Training/Speed Training/Cover Ally/' +
-    'One With The Weapon/Rapid Strike/Strike And Hold/Counterattack/' +
-    'Devastating Strike/Furious Grapple/Retailiatory Strike/Weapon Trap',
-    /* MN 83 */
-  'Wildlander:Animal Companion/Camouflage/Evasion/Hated Foe/' +
-    'Hide In Plain Sight/Hunted By The Shadow/Improved Evasion/' +
-    'Improved Woodland Stride/Instinctive Response/Master Hunter/' +
-    'Overland Stride/Quick Stride/Rapid Response/Sense Dark Magic/' +
-    'Skill Mastery/Slippery Mind/Trackless Step/True Aim/Wild Empathy/' +
-    'Wilderness Trapfinding/Woodland Stride' /* MN 88 */
-};
+MN2E.SELECTABLE_FEATURES = [
+];
 MN2E.SKILLS = [
 ];
 MN2E.SPELLS = [
@@ -109,9 +83,6 @@ MN2E.ClassRules = function() {
       profShield, profWeapon, saveFortitude, saveReflex, saveWill,
       skillPoints, skills;
   var prerequisites = null;  /* No base class has prerequisites */
-
-  ScribeCustomRules('classSkills.Knowledge (Shadow)', 'levels.Rogue', '=', '1');
-  ScribeCustomRules('classSkills.Speak Language', 'levels.Rogue', '=', '1');
 
   for(var i = 0; i < MN2E.CLASSES.length; i++) {
 
@@ -129,7 +100,6 @@ MN2E.ClassRules = function() {
       notes = [
         'featureNotes.bonusFeatsFeature:%V arcane feats',
         'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
-        'featureNotes.traditionGiftFeature:%V tradition gift feats',
         'magicNotes.artOfMagicFeature:+1 character level for max spell level',
         'magicNotes.bonusSpellEnergyFeature:%V extra spell energy points',
         'magicNotes.bonusSpellsFeature:%V extra spells',
@@ -149,8 +119,7 @@ MN2E.ClassRules = function() {
       ];
       ScribeCustomRules('featCount',
         'featureNotes.bonusFeatsFeature', '+', null,
-        'featureNotes.bonusSpellcastingFeature', '+', null,
-        'featureNotes.traditionGiftFeature', '+', null
+        'featureNotes.bonusSpellcastingFeature', '+', null
       );
       ScribeCustomRules('featureNotes.bonusFeatsFeature',
         'channelerLevels', '=', 'Math.floor((source - 1) / 3)'
@@ -158,10 +127,6 @@ MN2E.ClassRules = function() {
       ScribeCustomRules('featureNotes.bonusSpellcastingFeature',
         'channelerLevels', '=', 'Math.floor((source + 1) / 3)'
       );
-      ScribeCustomRules('featureNotes.traditionGiftFeature',
-        'channelerLevels', '=', 'Math.floor(source / 3)'
-      );
-      ScribeCustomRules('features.Magecraft', 'levels.Spellcaster', '=', '1');
       ScribeCustomRules
         ('magicNotes.bonusSpellEnergyFeature', 'channelerLevels', '+=', null);
       ScribeCustomRules('magicNotes.bonusSpellsFeature',
@@ -171,46 +136,176 @@ MN2E.ClassRules = function() {
         ('spellEnergy', 'magicNotes.bonusSpellEnergyFeature', '+', null);
 
       if(klass == 'Charismatic Channeler') {
+        MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
+          'Charismatic Channeler:Greater Confidence/Greater Fury/' +
+          'Improved Confidence/Improved Fury/Inspire Confidence/' +
+          'Inspire Facination/Inspire Fury/Mass Suggestion/Suggestion';
         skills = skills.concat([
           'Bluff', 'Diplomacy', 'Gather Information', 'Intimidate',
           'Sense Motive'
         ]);
+        features = features.concat([3, 'Force Of Personality']);
+        notes = notes.concat([
+          'magicNotes.forceOfPersonalityFeature:' +
+            'Inspire Confidence/Fascination/Fury/Suggestion %V/day',
+          'magicNotes.greaterConfidenceFeature:' +
+            '<i>Break Enchantment</i> 1/5 rounds during Inspire Confidence',
+          'magicNotes.greaterFuryFeature:' +
+            'Ally gains 2d10 hit points/+2 attack/+1 Fortitude save',
+          'magicNotes.improvedConfidenceFeature:' +
+            'Allies failing enchantment saves affected for half duration; ' +
+            'fear reduced',
+          'magicNotes.improvedFuryFeature:' +
+            'Additional +%V initiative/attack/damage',
+          'magicNotes.inspireConfidenceFeature:' +
+            'Allies w/in 60 ft +4 save vs. enchantment/fear for %V rounds',
+          'magicNotes.inspireFascinationFeature:' +
+            '1 creature/level w/in 120 ft make %V DC Will save or enthralled ' +
+            '1 round/level',
+          'magicNotes.inspireFuryFeature:' +
+            'Allies w/in 60 ft +1 initiative/attack/damage %V rounds',
+          'magicNotes.massSuggestionFeature:' +
+            'Make suggestion to %V fascinated creatures',
+          'magicNotes.suggestionFeature:Make suggestion to fascinated creature'
+        ]);
         ScribeCustomRules
           ('channelerLevels', 'levels.Charismatic Channeler', '+=', null);
+        ScribeCustomRules('magicNotes.forceOfPersonalityFeature',
+          'charismaModifier', '=', '3 + source'
+        );
+        ScribeCustomRules('magicNotes.inspireConfidenceFeature',
+          'levels.Charismatic Channeler', '=', null
+        );
+        ScribeCustomRules('magicNotes.inspireFascinationFeature',
+          'levels.Charismatic Channeler', '=', '10 + Math.floor(source / 2)',
+          'charismaModifier', '+', null
+        );
+        ScribeCustomRules('magicNotes.inspireFuryFeature',
+          'levels.Charismatic Channeler', '=', 'source + 5'
+        );
+        ScribeCustomRules('magicNotes.massSuggestionFeature',
+          'levels.Charismatic Channeler', '=', 'Math.floor(source / 3)'
+        );
+        ScribeCustomRules('selectableFeatureCount.Charismatic Channeler',
+          'levels.Charismatic Channeler', '=', 'Math.floor(source / 3)'
+        );
       } else if(klass == 'Hermetic Channeler') {
+        MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
+          'Hermetic Channeler:Foe Specialty/Knowledge Specialty/' +
+          'Quick Reference/Spell Specialty';
         skills = skills.concat([
           'Knowledge (Arcana)', 'Knowledge (Dungeoneering)',
           'Knowledge (Engineering)', 'Knowledge (Geography)',
           'Knowledge (History)', 'Knowledge (Local)', 'Knowledge (Nature)',
           'Knowledge (Nobility)', 'Knowledge (Planes)', 'Knowledge (Religion)'
         ]);
+        features = features.concat([3, 'Lorebook']);
+        notes = notes.concat([
+          'skillNotes.foeSpecialtyFeature:' +
+            'Each day choose a creature type to take 10 on Knowledge checks',
+          'skillNotes.knowledgeSpecialtyFeature:' +
+            'Each day Choose a Knowledge Skill Focus',
+          'skillNotes.lorebookFeature:' +
+            'Study 1 minute for knowledge of situation; scan at -10',
+          'skillNotes.quickReferenceFeature:Reduce Lorebook scan penalty to -5',
+          'skillNotes.spellSpecialtyFeature:Each day choose a spell for +1 DC'
+        ]);
+        ScribeCustomRules('selectableFeatureCount.Hermetic Channeler',
+          'levels.Hermetic Channeler', '=', 'Math.floor(source / 3)'
+        );
         ScribeCustomRules
           ('channelerLevels', 'levels.Hermetic Channeler', '+=', null);
       } else if(klass == 'Spiritual Channeler') {
+        MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
+          'Spiritual Channeler:Confident Effect/Heightened Effect/'+
+          'Mastery Of Nature/Mastery Of Spirits/Mastery Of The Unnatural/' +
+          'Powerful Effect/Precise Effect/Specific Effect/Universal Effect';
+        features = features.concat([3, 'Master Of Two Worlds']);
+        notes = notes.concat([
+          'combatNotes.confidentEffectFeature:+4 Master of Two Worlds checks',
+          'combatNotes.heightenedEffectFeature:' +
+            '+2 level for Master of Two Worlds checks',
+          'combatNotes.masteryOfNatureFeature:Turn animals/plants as cleric',
+          'combatNotes.masteryOfSpiritsFeature:Turn exorcises spirits',
+          'combatNotes.masteryOfTheUnnaturalFeature:' +
+            'Turn constructs/outsiders (double hit die) as cleric',
+          'combatNotes.masterOfTwoWorldsFeature:' +
+            'Mastery of Nature/Spirits/The Unnatural %V/day',
+          'combatNotes.powerfulEffectFeature:+1d6 mastery damage',
+          'combatNotes.preciseEffectFeature:Choose type of creature to affect',
+          'combatNotes.specificEffectFeature:Choose individuals to affect',
+          'combatNotes.universalEffectFeature:' +
+            'Use multiple mastery powers simultaneously'
+        ]);
         skills = skills.concat([
           'Diplomacy', 'Knowledge (Nature)', 'Sense Motive', 'Survival', 'Swim'
         ]);
         ScribeCustomRules
           ('channelerLevels', 'levels.Spiritual Channeler', '+=', null);
+        ScribeCustomRules('featureNotes.masterOfTwoWorldsFeature',
+          'levels.Spiritual Channeler', '?', 'source >= 3',
+          'wisdomModifier', '=', '3 + source'
+        );
+        ScribeCustomRules('selectableFeatureCount.Spiritual Channeler',
+          'levels.Spiritual Channeler', '=', 'Math.floor(source / 3)'
+        );
+        ScribeCustomRules
+          ('turningLevel', 'levels.Spiritual Channeler', '+=', null);
       }
 
     } else if(klass == 'Defender') {
 
+      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
+       'Defender:Defensive Mastery/Dodge Training/Flurry Attack/' +
+       'Grappling Training/Offensive Training/Speed Training/Cover Ally/' +
+       'One With The Weapon/Rapid Strike/Strike And Hold/Counterattack/' +
+       'Devastating Strike/Furious Grapple/Retailiatory Strike/Weapon Trap';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
-        1, 'Masterful Strike', 2, 'Defender Ability', 2, 'Stunning Fist',
-        3, 'Improved Grapple', 4, 'Precise Strike',
-        5, 'Incredible Resilience', 5, 'Incredible Speed', 6, 'Masterful Strike'
+        1, 'Masterful Strike', 2, 'Defender Abilities',
+        2, 'Defender Stunning Fist', 3, 'Improved Grapple',
+        4, 'Precise Strike', 5, 'Incredible Resilience', 5, 'Incredible Speed',
+        6, 'Masterful Strike'
       ];
       hitDie = 8;
       notes = [
         'abilityNotes.incredibleSpeedFeature:Add up to %V speed',
+        'combatNotes.dodgeTrainingFeature:+%V AC',
+        'combatNotes.counterattackFeature:AOO on foe miss 1/round',
+        'combatNotes.coverAllyFeature:Take hit for ally w/in 5 ft 1/round',
+        'combatNotes.defenderAbilitiesFeature:' +
+          'Counterattack/Cover Ally/Defender Stunning Fist/Devastating ' +
+          'Strike/Rapid Strike/Retaliatory Strike/Strike And Hold/Weapon ' +
+          'Trap %V/day',
+        'combatNotes.defenderStunningFistFeature:' +
+          'Foe %V Fortitude save or stunned',
+        'combatNotes.devastativeAttackFeature:' +
+          'Bull Rush stunned opponent as free action w/out AOO',
+        'combatNotes.flurryAttackFeature:' +
+          'Two-weapon off hand penalty reduced by %V',
+        'combatNotes.furiousGrappleFeature:' +
+          'Extra grapple attack at highest attack bonus 1/round',
+        'combatNotes.grapplingTrainingFeature:' +
+          'Disarm/sunder/trip attacks use grapple check',
         'combatNotes.incredibleResilienceFeature:Add up to %V HP',
         'combatNotes.masterfulStrikeFeature:' +
            'Improved Unarmed Strike/extra unarmed damage',
+        'combatNotes.offensiveTrainingFeature:' +
+           'Stunned foe %V DC save to avoid blinding/deafening',
+        'combatNotes.oneWithTheWeaponFeature:' +
+          'Masterful Strike/Precise Strike/Stunning Fist w/chosen weapon',
         'combatNotes.preciseStrikeFeature:' +
           'Ignore %V points of damage resistance',
-        'featureNotes.defenderAbilityFeature:%V defender ability feats'
+        'combatNotes.rapidStrikeFeature:' +
+          'Extra attack at highest attack bonus 1/round',
+        'combatNotes.retaliatoryStrikeFeature:' +
+          'AOO vs. foe that strikes ally 1/round',
+        'combatNotes.speedTrainingFeature:Extra move action each round',
+        'combatNotes.strikeAndHoldFeature:' +
+          'Extra unarmed attack to grab foe',
+        'combatNotes.weaponTrapFeature:' +
+          'Attack to catch foe\'s weapon for disarm/damage/AOO 1/round',
+        'saveNotes.defensiveMasteryFeature:+%V all saves'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
       profShield = PH35.PROFICIENCY_NONE;
@@ -227,33 +322,66 @@ MN2E.ClassRules = function() {
       ScribeCustomRules('abilityNotes.incredibleSpeedFeature',
         'levels.Defender', '=', '10 * Math.floor((source - 4) / 3)'
       );
-      ScribeCustomRules('abilityNotes.incredibleResilienceFeature',
+      ScribeCustomRules('combatNotes.defenderAbilitiesFeature',
+        'levels.Defender', '=', 'source * 3 / 4',
+        'level', '+', 'source / 4'
+      );
+      ScribeCustomRules('combatNotes.defenderStunningFistFeature',
+        'levels.Defender', '=', '10 + Math.floor(source / 2)',
+        'strengthModifier', '+', null
+      );
+      ScribeCustomRules
+        ('armorClass', 'combatNotes.dodgeTrainingFeature', '+', null);
+      ScribeCustomRules('combatNotes.incredibleResilienceFeature',
         'levels.Defender', '=', '3 * Math.floor((source - 4) / 3)'
+      );
+      ScribeCustomRules('combatNotes.offensiveTrainingFeature',
+        'levels.Defender', '=', '14 + Math.floor(source / 2)',
+        'strengthModifier', '+', null
       );
       ScribeCustomRules('combatNotes.preciseStrikeFeature',
         'levels.Defender', '=', 'Math.floor((source + 2) / 6)'
       );
-      ScribeCustomRules
-        ('featCount', 'featureNotes.defenderAbilityFeature', '+', null);
-      ScribeCustomRules('featureNotes.defenderAbilityFeature',
-        'levels.Defender', '=', 'Math.floor((source + 1) / 3)'
-      );
       ScribeCustomRules('features.Improved Unarmed Strike',
         'features.Masterful Strike', '=', '1'
+      );
+      ScribeCustomRules('selectableFeatureCount.Defender',
+        'levels.Defender', '=', 'Math.floor((source + 1) / 3)'
       );
       ScribeCustomRules('weaponDamage.Unarmed',
         'levels.Defender', '=', '(1 + Math.floor(source / 6)) + "d6"'
       );
+      ScribeCustomRules
+        ('save.Fortitude', 'saveNotes.defensiveMasteryFeature', '+', null);
+      ScribeCustomRules
+        ('save.Reflex', 'saveNotes.defensiveMasteryFeature', '+', null);
+      ScribeCustomRules
+        ('save.Will', 'saveNotes.defensiveMasteryFeature', '+', null);
 
     } else if(klass == 'Fighter') {
 
+      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
+        'Fighter:Adapter/Improviser/Leader Of Men/Survivor';
       ScribeCustomRules('selectableFeatureCount.Fighter',
        'levels.Fighter', '=', 'source >= 4 ? 1 : null'
       );
       // TODO: Description of warrior's way effects
 
+    } else if(klass == 'Rogue') {
+
+      ScribeCustomRules
+        ('classSkills.Knowledge (Shadow)', 'levels.Rogue', '=', '1');
+      ScribeCustomRules('classSkills.Speak Language', 'levels.Rogue', '=', '1');
+
     } else if(klass == 'Wildlander') {
 
+      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
+        'Wildlander:Animal Companion/Camouflage/Evasion/Hated Foe/' +
+        'Hide In Plain Sight/Hunted By The Shadow/Improved Evasion/' +
+        'Improved Woodland Stride/Instinctive Response/Master Hunter/' +
+        'Overland Stride/Quick Stride/Rapid Response/Sense Dark Magic/' +
+        'Skill Mastery/Slippery Mind/Trackless Step/True Aim/Wild Empathy/' +
+        'Wilderness Trapfinding/Woodland Stride';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
         1, 'Track', 1, 'Wildlander Trait', 3, 'Danger Sense',
@@ -363,6 +491,9 @@ MN2E.HeroicPathRules = function() {
 
     if(path == 'Beast') {
 
+      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
+        'Beast:Low Light Vision/Scent/Strength Bonus/Constitution Bonus/' +
+        'Dexterity Bonus/Wisdom Bonus';
       features = [
         1, 'Vicious Assault', 2, 'Beastial Aura', 7, 'Rage', 12, 'Repel Animals'
       ];
@@ -768,6 +899,9 @@ MN2E.HeroicPathRules = function() {
 
     } else if(path == 'Jack-Of-All-Trades') {
 
+      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
+        'Jack-Of-All-Trades:Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
+        'Dexterity Bonus/Constitution Bonus/Charisma Bonus';
       features = [
         2, 'Spontaneous Spell', 3, 'Skill Boost', 4, 'Ability Boost',
         5, 'Save Boost', 7, 'Bonus feat'
@@ -962,6 +1096,9 @@ MN2E.HeroicPathRules = function() {
 
     } else if(path == 'Pureblood') {
 
+      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
+        'Pureblood:Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
+        'Dexterity Bonus/Constitution Bonus/Charisma Bonus';
       features = [
         1, 'Master Adventurer', 2, 'Blood Of Kings', 3, 'Bonus Feat',
         4, 'Skill Mastery'
@@ -1363,7 +1500,6 @@ MN2E.RaceRules = function() {
     'abilityNotes.naturalMountaineerFeature:' +
        'Unimpeded movement in mountainous terrain',
     'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
-    'featureNotes.boundToTheBeastFeature:Mounted Combat',
     'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
     'featureNotes.naturalChannelerFeature:Innate Magic',
     'magicNotes.spellResistanceFeature:-2 spell energy',
@@ -1399,8 +1535,6 @@ MN2E.RaceRules = function() {
 
   ScribeCustomRules
     ('features.Innate Magic', 'featureNotes.naturalChannelerFeature', '=', '1');
-  ScribeCustomRules
-    ('features.Mounted Combat', 'featureNotes.boundToTheBeastFeature', '=','1');
   ScribeCustomRules
     ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
   ScribeCustomRules
@@ -1537,7 +1671,13 @@ MN2E.RaceRules = function() {
         'skillNotes.nimbleFeature:+2 Climb/Hide'
       ];
       if(race == 'Halfling Raised Elfling') {
+        notes = notes.concat([
+          'featureNotes.boundToTheBeastFeature:Mounted Combat'
+        ]);
         features = features.concat([1, 'Bound To The Beast']);
+        ScribeCustomRules('features.Mounted Combat',
+          'featureNotes.boundToTheBeastFeature', '=', '1'
+        );
       }
 
     } else if(race.indexOf(' Elf') >= 0) {
@@ -1656,6 +1796,8 @@ MN2E.RaceRules = function() {
         ('resistance.Fear', 'saveNotes.unafraidFeature', '+=', '2');
 
       if(race == 'Agrarian Halfling') {
+        MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
+          'Agrarian Halfling:Stout/Studious';
         features = features.concat([1, 'Dextrous Hands']);
         notes = notes.concat([
           'featureNotes.stoutFeature:Endurance/Toughness',
@@ -1671,8 +1813,11 @@ MN2E.RaceRules = function() {
         ScribeCustomRules
           ('features.Toughness', 'featureNotes.stoutFeature', '=', '1');
       } else if(race == 'Nomadic Halfling') {
+        MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
+          'Nomadic Halfling:Bound To The Beast/Bound To The Spirits';
         features = features.concat([1, 'Skilled Rider']);
         notes = notes.concat([
+          'featureNotes.boundToTheBeastFeature:Mounted Combat',
           'featureNotes.boundToTheSpiritsFeature:Magecraft',
           'skillNotes.skilledRiderFeature:+2 Handle Animal/Ride',
           'skillNotes.skilledRiderFeature2:+2 Concentration (wogrenback)'
@@ -1682,6 +1827,9 @@ MN2E.RaceRules = function() {
         );
         ScribeCustomRules('features.Magecraft',
           'featureNotes.boundToTheSpiritsFeature', '=', '1'
+        );
+        ScribeCustomRules('features.Mounted Combat',
+          'featureNotes.boundToTheBeastFeature', '=', '1'
         );
         ScribeCustomRules('skillNotes.skilledRiderFeature2',
           'features.Skilled Rider', '=', '1'
@@ -1755,8 +1903,6 @@ MN2E.RaceRules = function() {
       ScribeCustomNotes(notes);
 
   }
-
-  ScribeCustomChoices('races', 'Test Race');
 
 };
 
