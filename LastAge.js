@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.20 2006/07/25 20:43:02 Jim Exp $ */
+/* $Id: LastAge.js,v 1.21 2006/08/02 06:34:14 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -81,7 +81,7 @@ MN2E.ClassRules = function() {
 
   var baseAttack, features, hitDie, notes, profArmor,
       profShield, profWeapon, saveFortitude, saveReflex, saveWill,
-      skillPoints, skills;
+      skillPoints, skills, tests;
   var prerequisites = null;  /* No base class has prerequisites */
 
   for(var i = 0; i < MN2E.CLASSES.length; i++) {
@@ -94,7 +94,7 @@ MN2E.ClassRules = function() {
       features = [
         1, 'Art Of Magic', 1, 'Bonus Spell Energy', 1, 'Magecraft',
         2, 'Bonus Spellcasting', 2, 'Bonus Spells', 2, 'Summon Familiar',
-        3, 'Tradition Gift', 4, 'Bonus Feats'
+        4, 'Bonus Feats'
       ];
       hitDie = 6;
       notes = [
@@ -140,10 +140,6 @@ MN2E.ClassRules = function() {
           'Charismatic Channeler:Greater Confidence/Greater Fury/' +
           'Improved Confidence/Improved Fury/Inspire Confidence/' +
           'Inspire Facination/Inspire Fury/Mass Suggestion/Suggestion';
-        skills = skills.concat([
-          'Bluff', 'Diplomacy', 'Gather Information', 'Intimidate',
-          'Sense Motive'
-        ]);
         features = features.concat([3, 'Force Of Personality']);
         notes = notes.concat([
           'magicNotes.forceOfPersonalityFeature:' +
@@ -168,6 +164,24 @@ MN2E.ClassRules = function() {
             'Make suggestion to %V fascinated creatures',
           'magicNotes.suggestionFeature:Make suggestion to fascinated creature'
         ]);
+        skills = skills.concat([
+          'Bluff', 'Diplomacy', 'Gather Information', 'Intimidate',
+          'Sense Motive'
+        ]);
+        tests = [
+          '{selectableFeatures.Improved Fury} == null || ' +
+            '{selectableFeatures.Inspire Fury} != null',
+          '{selectableFeatures.Improved Confidence} == null || ' +
+            '{selectableFeatures.Inspire Confidence} != null',
+          '{selectableFeatures.Suggestion} == null || ' +
+            '{selectableFeatures.Inspire Fascination} != null',
+          '{selectableFeatures.Greater Fury} == null || ' +
+            '{selectableFeatures.Improved Fury} != null',
+          '{selectableFeatures.Greater Confidence} == null || ' +
+            '{selectableFeatures.Improved Confidence} != null',
+          '{selectableFeatures.Mass Suggestion} == null || ' +
+            '{selectableFeatures.Suggestion} != null'
+        ];
         ScribeCustomRules
           ('channelerLevels', 'levels.Charismatic Channeler', '+=', null);
         ScribeCustomRules('magicNotes.forceOfPersonalityFeature',
@@ -193,12 +207,6 @@ MN2E.ClassRules = function() {
         MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
           'Hermetic Channeler:Foe Specialty/Knowledge Specialty/' +
           'Quick Reference/Spell Specialty';
-        skills = skills.concat([
-          'Knowledge (Arcana)', 'Knowledge (Dungeoneering)',
-          'Knowledge (Engineering)', 'Knowledge (Geography)',
-          'Knowledge (History)', 'Knowledge (Local)', 'Knowledge (Nature)',
-          'Knowledge (Nobility)', 'Knowledge (Planes)', 'Knowledge (Religion)'
-        ]);
         features = features.concat([3, 'Lorebook']);
         notes = notes.concat([
           'skillNotes.foeSpecialtyFeature:' +
@@ -210,6 +218,13 @@ MN2E.ClassRules = function() {
           'skillNotes.quickReferenceFeature:Reduce Lorebook scan penalty to -5',
           'skillNotes.spellSpecialtyFeature:Each day choose a spell for +1 DC'
         ]);
+        skills = skills.concat([
+          'Knowledge (Arcana)', 'Knowledge (Dungeoneering)',
+          'Knowledge (Engineering)', 'Knowledge (Geography)',
+          'Knowledge (History)', 'Knowledge (Local)', 'Knowledge (Nature)',
+          'Knowledge (Nobility)', 'Knowledge (Planes)', 'Knowledge (Religion)'
+        ]);
+        tests = null;
         ScribeCustomRules('selectableFeatureCount.Hermetic Channeler',
           'levels.Hermetic Channeler', '=', 'Math.floor(source / 3)'
         );
@@ -240,9 +255,35 @@ MN2E.ClassRules = function() {
         skills = skills.concat([
           'Diplomacy', 'Knowledge (Nature)', 'Sense Motive', 'Survival', 'Swim'
         ]);
+        tests = [
+          '{selectableFeatures.Confident Effect} == null || ' +
+            '{selectableFeatures.Mastery Of Nature} != null || ' +
+            '{selectableFeatures.Mastery Of Spirits} != null || ' +
+            '{selectableFeatures.Mastery Of The Unnatural} != null',
+          '{selectableFeatures.Heightened Effect} == null || ' +
+            '{selectableFeatures.Mastery Of Nature} != null || ' +
+            '{selectableFeatures.Mastery Of Spirits} != null || ' +
+            '{selectableFeatures.Mastery Of The Unnatural} != null',
+          '{selectableFeatures.Powerful Effect} == null || ' +
+            '{selectableFeatures.Mastery Of Nature} != null || ' +
+            '{selectableFeatures.Mastery Of Spirits} != null || ' +
+            '{selectableFeatures.Mastery Of The Unnatural} != null',
+          '{selectableFeatures.Precise Effect} == null || ' +
+            '{selectableFeatures.Mastery Of Nature} != null || ' +
+            '{selectableFeatures.Mastery Of Spirits} != null || ' +
+            '{selectableFeatures.Mastery Of The Unnatural} != null',
+          '{selectableFeatures.Specific Effect} == null || ' +
+            '{selectableFeatures.Mastery Of Nature} != null || ' +
+            '{selectableFeatures.Mastery Of Spirits} != null || ' +
+            '{selectableFeatures.Mastery Of The Unnatural} != null',
+          '{selectableFeatures.Universal Effect} == null || ' +
+            '{selectableFeatures.Mastery Of Nature} != null || ' +
+            '{selectableFeatures.Mastery Of Spirits} != null || ' +
+            '{selectableFeatures.Mastery Of The Unnatural} != null'
+        ];
         ScribeCustomRules
           ('channelerLevels', 'levels.Spiritual Channeler', '+=', null);
-        ScribeCustomRules('featureNotes.masterOfTwoWorldsFeature',
+        ScribeCustomRules('combatNotes.masterOfTwoWorldsFeature',
           'levels.Spiritual Channeler', '?', 'source >= 3',
           'wisdomModifier', '=', '3 + source'
         );
@@ -319,6 +360,31 @@ MN2E.ClassRules = function() {
         'Jump', 'Knowledge (Local)', 'Knowledge (Shadow)', 'Listen',
         'Move Silently', 'Sense Motive', 'Speak Language', 'Swim', 'Tumble'
       ];
+      tests = [
+        '{selectableFeatures.Cover Ally} == null || ' +
+          '{selectableFeatures.Dodge Training} != null',
+        '{selectableFeatures.One With The Weapon} == null || ' +
+          '{selectableFeatures.Offensive Training} != null',
+        '{selectableFeatures.Rapid Strike} == null || ' +
+          '{selectableFeatures.Speed Training} != null',
+        '{selectableFeatures.Strike And Hold} == null || ' +
+          '{selectableFeatures.Grappling Training} != null',
+        '{selectableFeatures.Counterattack} == null || ' +
+          '({selectableFeatures.Dodge Training} != null && ' +
+          '{selectableFeatures.Offensive Training} != null)',
+        '{selectableFeatures.Devastating Strike} == null || ' +
+          '({selectableFeatures.Grappling Training} != null && ' +
+          '{selectableFeatures.Offensive Training} != null)',
+        '{selectableFeatures.Furious Grapple} == null || ' +
+          '({selectableFeatures.Grappling Training} != null && ' +
+          '{selectableFeatures.Speed Training} != null)',
+        '{selectableFeatures.Retaliatory Strike} == null || ' +
+          '({selectableFeatures.Dodge Training} != null && ' +
+          '{selectableFeatures.Speed Training} != null)',
+        '{selectableFeatures.Weapon Trap} == null || ' +
+          '({selectableFeatures.Dodge Training} != null && ' +
+          '{selectableFeatures.Grappling Training} != null)'
+      ];
       ScribeCustomRules('abilityNotes.incredibleSpeedFeature',
         'levels.Defender', '=', '10 * Math.floor((source - 4) / 3)'
       );
@@ -362,6 +428,8 @@ MN2E.ClassRules = function() {
 
       MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
         'Fighter:Adapter/Improviser/Leader Of Men/Survivor';
+      notes = null;
+      tests = null;
       ScribeCustomRules('selectableFeatureCount.Fighter',
        'levels.Fighter', '=', 'source >= 4 ? 1 : null'
       );
@@ -369,6 +437,8 @@ MN2E.ClassRules = function() {
 
     } else if(klass == 'Rogue') {
 
+      notes = null;
+      tests = null;
       ScribeCustomRules
         ('classSkills.Knowledge (Shadow)', 'levels.Rogue', '=', '1');
       ScribeCustomRules('classSkills.Speak Language', 'levels.Rogue', '=', '1');
@@ -407,6 +477,43 @@ MN2E.ClassRules = function() {
         'Move Silently', 'Ride', 'Search', 'Speak Language', 'Spot',
         'Survival', 'Swim', 'Use Rope'
       ];
+      tests = [
+        '{selectableFeatures.Animal Companion} == null || ' +
+          '{selectableFeatures.Wild Empathy} != null',
+        '{selectableFeatures.Hated Foe} == null || ' +
+          '{selectableFeatures.Master Hunter} != null',
+        '{selectableFeatures.Instinctive Response} == null || ' +
+          '{selectableFeatures.Rapid Response} != null',
+        '{selectableFeatures.Overland Stride} == null || ' +
+          '{selectableFeatures.Quick Stride} != null',
+        '{selectableFeatures.Sense Dark Magic} == null || ' +
+          '{selectableFeatures.Master Hunter} != null',
+        '{selectableFeatures.Trackless Step} == null || ' +
+          '{selectableFeatures.Woodland Stride} != null',
+        '{selectableFeatures.Woodslore} == null || ' +
+          '{selectableFeatures.Wilderness Trapfinding} != null',
+        '{selectableFeatures.Camouflage} == null || ' +
+          '({selectableFeatures.Skill Mastery} != null && ' +
+          '{selectableFeatures.Trackless Step} != null)',
+        '{selectableFeatures.Evasion} == null || ' +
+          '({selectableFeatures.Quick Stride} != null && ' +
+          '{selectableFeatures.Instinctive Response} != null)',
+        '{selectableFeatures.Hunted By The Shadow} == null || ' +
+          '({selectableFeatures.Rapid Response} != null && ' +
+          '{selectableFeatures.Sense Dark Magic} != null)',
+        '{selectableFeatures.Improved Woodland Stride} == null || ' +
+          '({selectableFeatures.Woodland Stride} != null && ' +
+          '{selectableFeatures.Overland Stride} != null)',
+        '{selectableFeatures.True Aim} == null || ' +
+          '({selectableFeatures.Skill Mastery} != null && ' +
+          '{selectableFeatures.Hated Foe} != null)',
+        '{selectableFeatures.Hide In Plain Sight} == null || ' +
+          '{selectableFeatures.Camouflage} != null',
+        '{selectableFeatures.Improved Evasion} == null || ' +
+          '{selectableFeatures.Evasion} != null',
+        '{selectableFeatures.Slippery Mind} == null || ' +
+          '{selectableFeatures.Hunted By The Shadow} != null'
+      ];
       ScribeCustomRules('combatNotes.dangerSenseFeature',
         'levels.Wildlander', '=', 'Math.floor(source / 3)'
       );
@@ -426,6 +533,8 @@ MN2E.ClassRules = function() {
        prerequisites);
     if(notes != null)
       ScribeCustomNotes(notes);
+    if(tests != null)
+      ScribeCustomTests(tests);
 
   }
 
