@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.21 2006/08/02 06:34:14 Jim Exp $ */
+/* $Id: LastAge.js,v 1.22 2006/08/04 22:21:33 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -428,20 +428,51 @@ MN2E.ClassRules = function() {
 
       MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
         'Fighter:Adapter/Improviser/Leader Of Men/Survivor';
-      notes = null;
+      baseAttack = null;
+      features = [];
+      hitDie = null;
+      notes = [
+        'featureNotes.improviserFeature:%V bonus improvisation feats',
+        'featureNotes.leaderOfMenFeature:%V bonus leadership feats',
+        'featureNotes.survivorFeature:%V bonus survivor feats',
+        'skillNotes.adapterFeature:+%V skill points'
+      ];
+      profArmor = profShield = profWeapon = null;
+      saveFortitude = saveReflex = saveWill = null;
+      skillPoints = null;
+      skills = null;
       tests = null;
       ScribeCustomRules('selectableFeatureCount.Fighter',
        'levels.Fighter', '=', 'source >= 4 ? 1 : null'
       );
-      // TODO: Description of warrior's way effects
+      ScribeCustomRules('featCount',
+        'featureNotes.improviserFeature', '+', null,
+        'featureNotes.leaderOfMenFeature', '+', null,
+        'featureNotes.survivorFeature', '+', null
+      );
+      ScribeCustomRules('featureNotes.improviserFeature',
+        'levels.Fighter', '=', 'Math.floor((source + 2) / 6)'
+      );
+      ScribeCustomRules('featureNotes.leaderOfMenFeature',
+        'levels.Fighter', '=', 'Math.floor((source + 2) / 6)'
+      );
+      ScribeCustomRules('featureNotes.survivorFeature',
+        'levels.Fighter', '=', 'Math.floor((source + 2) / 6)'
+      );
+      ScribeCustomRules('skillNotes.adapterFeature',
+        'levels.Fighter', '=', 'source - 3 + ' +
+                               '(source >= 10 ? source - 9 : 0) + ' +
+                               '(source >= 16 ? source - 15 : 0)'
+      );
+      // TODO: adapter may alternately make a cross-class skill a class one
+      ScribeCustomRules('skillPoints', 'skillNotes.adapterFeature', '+', null);
 
     } else if(klass == 'Rogue') {
 
-      notes = null;
-      tests = null;
       ScribeCustomRules
         ('classSkills.Knowledge (Shadow)', 'levels.Rogue', '=', '1');
       ScribeCustomRules('classSkills.Speak Language', 'levels.Rogue', '=', '1');
+      continue; // Not defining a new class
 
     } else if(klass == 'Wildlander') {
 
