@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.22 2006/08/04 22:21:33 Jim Exp $ */
+/* $Id: LastAge.js,v 1.23 2006/08/08 07:26:58 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -49,6 +49,14 @@ MN2E.CLASSES = [
   'Rogue', 'Spiritual Channeler', 'Wildlander'
 ];
 MN2E.FEATS = [
+  'Craft Charm', 'Craft Greater Spell Talisman', 'Craft Spell Talisman',
+  'Devastating Mounted Assault', 'Drive It Deep', 'Extra Gift',
+  'Friendly Agent', 'Giant Fighter', 'Greater Spellcasting', 'Herbalist',
+  'Improvised Weapon', 'Innate Magic', 'Inconspicuous', 'Knife Thrower',
+  'Lucky', 'Magecraft', 'Magic Hardened', 'Natural Healer', 'Quickened Donning',
+  'Orc Slayer', 'Ritual Magic', 'Sarcosan Pureblood', 'Sense Nexus',
+  'Spellcasting', 'Spell Knowledge', 'Thick Skull', 'Warrior Of Shadow',
+  'Whispering Awareness'
 ];
 MN2E.HEROIC_PATHS = [
   'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
@@ -485,15 +493,47 @@ MN2E.ClassRules = function() {
         'Wilderness Trapfinding/Woodland Stride';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
-        1, 'Track', 1, 'Wildlander Trait', 3, 'Danger Sense',
-        4, 'Hunter\'s Strike'
+        1, 'Track', 3, 'Danger Sense', 4, 'Hunter\'s Strike'
       ];
       hitDie = 8;
       notes = [
+        'abilityNotes.quickStrideFeature:+%V * 10 speed',
         'combatNotes.dangerSenseFeature:Up to %V initiative bonus',
-        'combatNotes.hunter\'sStrikeFeature:Double damage %V/day',
-        'featureNotes.wildlanderTraitFeature:%V wildlander feats',
-        'skillNotes.dangerSenseFeature:Up to %V Listen/Spot bonus'
+        'combatNotes.huntedByTheShadowFeature:No surprise by servant of shadow',
+        'combatNotes.hunter\'sStrikeFeature:x2 damage %V/day',
+        'combatNotes.hatedFoeFeature:' +
+          'Additional Hunter\'s Strike vs. Master Hunter creature',
+        'combatNotes.instinctiveResponseFeature:Re-roll initiative check',
+        'combatNotes.masterHunterFeature:' +
+          '+2 or more damage vs. selected creature types',
+        'combatNotes.trueAimFeature:x3 damage on Hunter\'s Strike',
+        'featureNotes.animalCompanionFeature:Special bond/abilities',
+        'featureNotes.improvedWoodlandStrideFeature:' +
+          'Normal movement through enchanted terrain',
+        'featureNotes.overlandStrideFeature:' +
+          'Normal movement while using Survival',
+        'featureNotes.rapidResponseFeature:' +
+          'Alertness or Improved Initiative bonus feat',
+        'featureNotes.senseDarkMagicFeature:Scent vs. legate/outsider',
+        'featureNotes.skillMasteryFeature:Skill Mastery with %V chosen skills',
+        'featureNotes.tracklessStepFeature:Untrackable outdoors',
+        'featureNotes.woodlandStrideFeature:' +
+          'Normal movement through undergrowth',
+        'featureNotes.woodsloreFeature:' +
+          'Automatic Search vs. trap/concealed door w/in 5 ft',
+        'magicNotes.senseDarkMagicFeature:' +
+          '<i>Detect Magic</i> vs. legate/outsider',
+        'saveNotes.evasionFeature:Save yields no damage instead of 1/2',
+        'saveNotes.improvedEvasionFeature:Failed save yields 1/2 damage',
+        'saveNotes.slipperyMindFeature:Second save vs. enchantment',
+        'skillNotes.camouflageFeature:Hide in any natural terrain',
+        'skillNotes.dangerSenseFeature:Up to %V Listen/Spot bonus',
+        'skillNotes.hideInPlainSightFeature:Hide even when observed',
+        'skillNotes.masterHunterFeature:' +
+          '+2 or more Bluff/Listen/Sense Motive/Spot/Survival vs. selected creature types',
+        'skillNotes.wildEmpathyFeature:+%V Diplomacy check with animals',
+        'skillNotes.wildernessTrapfindingFeature:' +
+          'Search to find/Survival to remove DC 20+ traps'
       ];
       profArmor = PH35.PROFICIENCY_MEDIUM;
       profShield = PH35.PROFICIENCY_HEAVY;
@@ -551,9 +591,19 @@ MN2E.ClassRules = function() {
       ScribeCustomRules('combatNotes.hunter\'sStrikeFeature',
         'levels.Wildlander', '=', 'Math.floor(source / 4)'
       );
-      ScribeCustomRules('featureNotes.wildlanderTraitFeature',
+      ScribeCustomRules('featCount',
+        'featureNotes.rapidResponseFeature', '+', null,
+        'featureNotes.skillMasteryFeature', '+', null
+      );
+      ScribeCustomRules('selectableFeatureCount.Wildlander',
         'levels.Wildlander', '=', '1 + Math.floor((source + 1) / 3)'
       );
+      ScribeCustomRules('skillNotes.wildEmpathyFeature',
+        'levels.Wildlander', '+', 'source - 1',
+        'charismaModifier', '+', null
+      );
+      ScribeCustomRules
+        ('speed', 'abilityNotes.quickStrideFeature', '+', '10 * source');
 
     } else
       continue;
@@ -581,6 +631,16 @@ MN2E.EquipmentRules = function() {
 
 MN2E.FeatRules = function() {
 
+  var notes = [
+    'whisperingAwarenessFeature:DC 12 wisdom check to hear Whispering Wood'
+  ];
+  ScribeCustomNotes(notes);
+  var tests = [
+    '{feats.Whispering Awareness} == null || ' +
+      '"{race}".indexOf("Elfling") > 0 || "{race}".indexOf("Elf") < 0',
+    '{feats.Whispering Awareness} == null || {wisdom} >= 15'
+  ];
+  ScribeCustomTests(tests);
   ScribeCustomChoices('feats', MN2E.FEATS);
   for(var i = 0; i < MN2E.FEATS.length; i++) {
     ScribeCustomRules
@@ -1254,9 +1314,8 @@ MN2E.HeroicPathRules = function() {
       ScribeCustomRules('abilityNotes.abilityBonusFeature',
         'pathLevels.Pureblooded', '+=', 'Math.floor(source / 5)'
       );
-      ScribeCustomRules('featCount',
-        'featureNotes.skillMasteryFeature', '+', null
-      );
+      ScribeCustomRules
+        ('featCount', 'featureNotes.skillMasteryFeature', '+', null);
       ScribeCustomRules('features.Bonus Feat',
         'pathLevels.Pureblooded', '+=', 'Math.floor((source - 3) / 5)'
       );
