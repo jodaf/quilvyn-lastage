@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.23 2006/08/08 07:26:58 Jim Exp $ */
+/* $Id: LastAge.js,v 1.24 2006/08/09 00:39:30 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -46,7 +46,7 @@ function MN2E() {
 /* Choice lists */
 MN2E.CLASSES = [
   'Charismatic Channeler', 'Defender', 'Fighter', 'Hermetic Channler', 
-  'Rogue', 'Spiritual Channeler', 'Wildlander'
+  'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
 ];
 MN2E.FEATS = [
   'Craft Charm', 'Craft Greater Spell Talisman', 'Craft Spell Talisman',
@@ -67,6 +67,9 @@ MN2E.HEROIC_PATHS = [
   'Tactician', 'Warg'
 ];
 MN2E.LANGUAGES = [
+  'Black Tongue', 'Colonial', 'Courtier', 'Danisil', 'Erenlander', 'Halfling',
+  'High Elven', 'Norther', 'Old Dwarven', 'Orcish', 'Patrol Sign', 'Sylvan',
+  'Trader\'s Tongue'
 ];
 MN2E.RACES = [
   'Agrarian Halfling', 'Clan Dwarf', 'Clan Raised Dwarrow', 'Clan Raised Dworg',
@@ -79,6 +82,7 @@ MN2E.RACES = [
 MN2E.SELECTABLE_FEATURES = [
 ];
 MN2E.SKILLS = [
+  'Knowledge (Old Gods)', 'Knowledge (Shadow)', 'Knowledge (Spirits)'
 ];
 MN2E.SPELLS = [
 ];
@@ -102,7 +106,7 @@ MN2E.ClassRules = function() {
       features = [
         1, 'Art Of Magic', 1, 'Bonus Spell Energy', 1, 'Magecraft',
         2, 'Bonus Spellcasting', 2, 'Bonus Spells', 2, 'Summon Familiar',
-        4, 'Bonus Feats'
+        4, 'Bonus Feat'
       ];
       hitDie = 6;
       notes = [
@@ -126,11 +130,11 @@ MN2E.ClassRules = function() {
         'Speak Language', 'Spellcraft'
       ];
       ScribeCustomRules('featCount',
-        'featureNotes.bonusFeatsFeature', '+', null,
+        'featureNotes.bonusFeatFeature', '+', null,
         'featureNotes.bonusSpellcastingFeature', '+', null
       );
-      ScribeCustomRules('featureNotes.bonusFeatsFeature',
-        'channelerLevels', '=', 'Math.floor((source - 1) / 3)'
+      ScribeCustomRules('featureNotes.bonusFeatFeature',
+        'channelerLevels', '+=', 'Math.floor((source - 1) / 3)'
       );
       ScribeCustomRules('featureNotes.bonusSpellcastingFeature',
         'channelerLevels', '=', 'Math.floor((source + 1) / 3)'
@@ -472,8 +476,61 @@ MN2E.ClassRules = function() {
                                '(source >= 10 ? source - 9 : 0) + ' +
                                '(source >= 16 ? source - 15 : 0)'
       );
-      // TODO: adapter may alternately make a cross-class skill a class one
+      // TODO adapter may alternately make a cross-class skill a class one
       ScribeCustomRules('skillPoints', 'skillNotes.adapterFeature', '+', null);
+
+    } else if(klass == 'Legate') {
+
+      Scribe.spellsCategoryCodes['Legate'] = 'C';
+      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      features = [
+        1, 'Turn Undead', 1, 'Temple Dependency', 3, 'Astirax Companion'
+      ];
+      hitDie = 8;
+      notes = [
+        'combatNotes.turnUndeadFeature:' +
+          'Turn (good) or rebuke (evil) undead creatures',
+        'featureNotes.astiraxCompanion:Special bond/abilities',
+        'magicNotes.templeDependencyFeature:' +
+          'Must participate at temple to receive spells'
+      ];
+      profArmor = PH35.PROFICIENCY_HEAVY;
+      profShield = PH35.PROFICIENCY_HEAVY;
+      profWeapon = PH35.PROFICIENCY_LIGHT;
+      saveFortitude = PH35.SAVE_BONUS_GOOD;
+      saveReflex = PH35.SAVE_BONUS_POOR;
+      saveWill = PH35.SAVE_BONUS_GOOD;
+      skillPoints = 4;
+      skills = [
+        'Concentration', 'Diplomacy', 'Handle Animal', 'Heal', 'Intimidate',
+        'Knowledge (Arcana)', 'Knowledge (Shadow)', 'Knowledge (Spirits)',
+        'Speak Language', 'Spellcraft'
+      ];
+      tests = null;
+      ScribeCustomRules
+        ('casterLevelDivine', 'spellsPerDayLevels.Legate', '^=', null);
+      ScribeCustomRules('domainCount', 'levels.Legate', '+=', '2');
+      ScribeCustomRules('spellsPerDay.C0',
+        'spellsPerDayLevels.Legate', '=',
+          'source == 1 ? 3 : source <= 3 ? 4 : source <= 6 ? 5 : 6'
+      );
+      for(var j = 1; j <= 9; j++) {
+        var none = (j - 1) * 2;
+        ScribeCustomRules('spellsPerDay.C' + j,
+          'spellsPerDayLevels.Legate', '=',
+             'source<=' + none + ' ? null : source<=' + (none+1) + ' ? 1 : ' +
+             'source<=' + (none+3) + ' ? 2 : source<=' + (none+6) + ' ? 3 : ' +
+             'source<=' + (none+10) + ' ? 4 : 5',
+          'wisdomModifier', '+',
+             'source>=' + j + ' ? Math.floor((source+' + (4-j) + ')/4) : null'
+        );
+        ScribeCustomRules('maxSpellLevelDivine', 'spellsPerDay.C' + j, '^=', j);
+        ScribeCustomRules
+          ('spellsPerDay.Dom' + j, 'spellsPerDay.C' + j, '=', '1');
+      }
+      ScribeCustomRules
+        ('spellsPerDayLevels.Legate', 'levels.Legate', '=', null);
+      ScribeCustomRules('turningLevel', 'levels.Legate', '+=', null);
 
     } else if(klass == 'Rogue') {
 
@@ -632,10 +689,49 @@ MN2E.EquipmentRules = function() {
 MN2E.FeatRules = function() {
 
   var notes = [
-    'whisperingAwarenessFeature:DC 12 wisdom check to hear Whispering Wood'
+    'combatNotes.devastatingMountedAssaultFeature:' +
+      'Full attack after mount moves',
+    'combatNotes.driveItDeepFeature:Attack base -attack/+damage',
+    'combatNotes.giantFighterFeature:' +
+      '+4 AC/double critical range w/in 30 ft vs. giants',
+    'featureNotes.extraGiftFeature:' +
+      'Use Master Of Two Worlds/Force Of Personality +4 times/day',
+    'featureNotes.whisperingAwarenessFeature:' +
+      'DC 12 wisdom check to hear Whispering Wood',
+    'magicNotes.craftCharmFeature:Use Craft to create single-use magic item',
+    'magicNotes.craftGreaterSpellTalismanFeature:' +
+      'Talisman reduces spell energy cost of selected school\'s spells by 1',
+    'magicNotes.craftSpellTalismanFeature:' +
+      'Talisman reduces spell energy cost of selected spell by 1',
+    'skillNotes.friendlyAgentFeature:' +
+      '+4 Diplomacy (convince allegiance)/Sense Motive (determine allegiance)'
   ];
   ScribeCustomNotes(notes);
+  ScribeCustomRules('combatNotes.masterOfTwoWorldsFeature',
+    'featureNotes.extraGiftFeature', '+', '4'
+  );
+  ScribeCustomRules('magicNotes.forceOfPersonalityFeature',
+    'featureNotes.extraGiftFeature', '+', '4'
+  );
   var tests = [
+    '{feats.Craft Charm} == null || +/{^skills.Craft} >= 4',
+    '{feats.Craft Greater Spell Talisman} == null || {feats.Magecraft} != null',
+    // TODO Craft Greater Spell Talisman requires 3 Channeling feats
+    '{feats.Craft Greater Spell Talisman} == null || {level} >= 12',
+    '{feats.Craft Spell Talisman} == null || {feats.Magecraft} != null',
+    '{feats.Craft Spell Talisman} == null || {feats.Spellcasting} != null',
+    '{feats.Craft Spell Talisman} == null || {level} >= 3',
+    '{feats.Devastating Mounted Assault} == null || ' +
+      '{feats.Mounted Combat} != null',
+    '{feats.Devastating Mounted Assault} == null || {skills.Ride} >= 10',
+    '{feats.Drive It Deep} == null || {baseAttack} >= 1',
+    '{feats.Extra Gift} == null || ' +
+       '{levels.Charismatic Channeler}>=4 || {levels.Spiritual Channeler}>=4',
+    '{feats.Friendly Agent} == null || ' +
+       '"{race}".indexOf(" Gnome") >= 0 || "{race}".indexOf("Human") >= 0',
+    '{feats.Friendly Agent} == null || "{alignment}".indexOf("Good") >= 0',
+    '{feats.Giant Fighter} == null || {feats.Dodge} != null',
+    '{feats.Giant Fighter} == null || +/{^feats.Weapon Focus} > 0',
     '{feats.Whispering Awareness} == null || ' +
       '"{race}".indexOf("Elfling") > 0 || "{race}".indexOf("Elf") < 0',
     '{feats.Whispering Awareness} == null || {wisdom} >= 15'
@@ -662,13 +758,10 @@ MN2E.FeatRules = function() {
       );
     }
   }
-  ScribeCustomRules('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
   ScribeCustomRules('charisma', 'features.Charisma Bonus', '+', null);
   ScribeCustomRules('constitution', 'features.Constitution Bonus', '+', null);
   ScribeCustomRules('dexterity', 'features.Dexterity Bonus', '+', null);
-  ScribeCustomRules('featCount', 'featureNotes.bonusFeatFeature', '+', null);
   ScribeCustomRules('intelligence', 'features.Intelligence Bonus', '+', null);
-  ScribeCustomRules('speed', 'abilityNotes.fastMovementFeature', '+', null);
   ScribeCustomRules('strength', 'features.Strength Bonus', '+', null);
   ScribeCustomRules('wisdom', 'features.Wisdom Bonus', '+', null);
 
@@ -868,6 +961,8 @@ MN2E.HeroicPathRules = function() {
         'featureNotes.tremorsenseFeature:' +
           'Detect creatures in contact w/ground w/in 30 ft'
       ];
+      ScribeCustomRules
+        ('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
       ScribeCustomRules('combatNotes.naturalArmorFeature',
         'pathLevels.Earthbonded', '+=', 'source>=18 ? 3 : source>=10 ? 2 : 1'
       );
@@ -883,15 +978,17 @@ MN2E.HeroicPathRules = function() {
         12, 'Magic Circle Against Evil', 13, 'Prayer', 16, 'Holy Smite',
         17, 'Dispel Evil', 18, 'Holy Aura'
       ];
-      notes = null;
+      notes = [
+        'combatNotes.turnUndeadFeature:' +
+          'Turn (good) or rebuke (evil) undead creatures'
+      ];
       ScribeCustomRules('turningLevel',
         'pathLevels.Faithful', '+=', 'source >= 4 ? source : null'
       );
-/* TODO Cleric computation overrides this
+      // TODO turningLevel-based computation overrides this
       ScribeCustomRules('turningFrequency',
-        'pathLevels.Faithful', '=', 'Math.floor((source + 1) / 5)'
+        'pathLevels.Faithful', '+=', 'Math.floor((source + 1) / 5)'
       );
-*/
       ScribeCustomRules('features.Wisdom Bonus',
         'pathLevels.Faithful', '+', 'Math.floor((source - 5) / 5)'
       );
@@ -994,6 +1091,7 @@ MN2E.HeroicPathRules = function() {
       );
       ScribeCustomRules
         ('skills.Intimidate', 'skillNotes.intimidatingSizeFeature', '+', null);
+      ScribeCustomRules('speed', 'abilityNotes.fastMovementFeature', '+', null);
       ScribeCustomChoices('weapons', 'Boulder:d10 R30');
       ScribeCustomRules
         ('weapons.Boulder', 'combatNotes.rockThrowingFeature', '=', '1');
@@ -1081,6 +1179,8 @@ MN2E.HeroicPathRules = function() {
         'saveNotes.indefatigableFeature:Immune fatigue effects',
         'saveNotes.improvedIndefatigableFeature:Immune exhaustion effects'
       ];
+      ScribeCustomRules
+        ('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
       ScribeCustomRules('combatNotes.damageReductionFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor(source / 5)'
       );
@@ -1104,7 +1204,7 @@ MN2E.HeroicPathRules = function() {
         'Dexterity Bonus/Constitution Bonus/Charisma Bonus';
       features = [
         2, 'Spontaneous Spell', 3, 'Skill Boost', 4, 'Ability Boost',
-        5, 'Save Boost', 7, 'Bonus feat'
+        5, 'Save Boost', 7, 'Bonus Feat'
       ];
       spellFeatures = [
         1, 'W0', 6, 'W1', 10, 'W2', 13, 'W1', 19, 'W2'
@@ -1114,6 +1214,7 @@ MN2E.HeroicPathRules = function() {
           'Use %V spell as spell like ability 1/day',
         'skillNotes.skillBoostFeature:+4 to %V chosen skills'
       ];
+      ScribeCustomRules('featCount', 'features.Bonus Feat', '+', null);
       ScribeCustomRules('features.Bonus Feat',
         'pathLevels.Jack-Of-All-Trades', '+=', 'source >= 14 ? 1 : null'
       );
@@ -1314,8 +1415,10 @@ MN2E.HeroicPathRules = function() {
       ScribeCustomRules('abilityNotes.abilityBonusFeature',
         'pathLevels.Pureblooded', '+=', 'Math.floor(source / 5)'
       );
-      ScribeCustomRules
-        ('featCount', 'featureNotes.skillMasteryFeature', '+', null);
+      ScribeCustomRules('featCount',
+        'features.Bonus Feat', '+', null,
+        'featureNotes.skillMasteryFeature', '+', null
+      );
       ScribeCustomRules('features.Bonus Feat',
         'pathLevels.Pureblooded', '+=', 'Math.floor((source - 3) / 5)'
       );
@@ -1362,6 +1465,7 @@ MN2E.HeroicPathRules = function() {
       );
       ScribeCustomRules
         ('initiative', 'combatNotes.initiativeBonusFeature', '+', null);
+      ScribeCustomRules('speed', 'abilityNotes.fastMovementFeature', '+', null);
 
     } else if(path == 'Seaborn') {
 
@@ -1545,6 +1649,7 @@ MN2E.HeroicPathRules = function() {
         'pathLevels.Steelblooded', '+=',
         'source>=16 ? 15 : source>=12 ? 12 : source>=9 ? 9 : source>=6 ? 6 : 3'
       );
+      ScribeCustomRules('featCount', 'features.Bonus Feat', '+', null);
       ScribeCustomRules('features.Bonus Feat',
         'pathLevels.Steelblooded', '+=', 'Math.floor(source / 5)'
       );
@@ -1681,6 +1786,7 @@ MN2E.HeroicPathRules = function() {
 
   }
   ScribeCustomSheet('Heroic Path', 'Description', null, 'Alignment');
+  ScribeCustomSheet('Deity', null, null, null);
 
 };
 
@@ -1703,8 +1809,8 @@ MN2E.RaceRules = function() {
     'featureNotes.naturalChannelerFeature:Innate Magic',
     'magicNotes.spellResistanceFeature:-2 spell energy',
     'saveNotes.coldHardyFeature:+5 cold/half nonlethal damage',
+    'saveNotes.fortunateFeature:+1 all saves',
     'saveNotes.hardyFeature:+1 Fortitude',
-    'saveNotes.luckyFeature:+1 all saves',
     'saveNotes.poisonResistanceFeature:+2 vs. poison',
     'saveNotes.spellResistanceFeature:+2 vs. spells',
     'skillNotes.dextrousHandsFeature:+2 Heal',
@@ -1746,9 +1852,9 @@ MN2E.RaceRules = function() {
     'constitution', '=', 'source',
     'holdBreathMultiplier', '*', null
   );
-  ScribeCustomRules('save.Fortitude', 'saveNotes.luckyFeature', '+', '1');
-  ScribeCustomRules('save.Reflex', 'saveNotes.luckyFeature', '+', '1');
-  ScribeCustomRules('save.Will', 'saveNotes.luckyFeature', '+', '1');
+  ScribeCustomRules('save.Fortitude', 'saveNotes.fortunateFeature', '+', '1');
+  ScribeCustomRules('save.Reflex', 'saveNotes.fortunateFeature', '+', '1');
+  ScribeCustomRules('save.Will', 'saveNotes.fortunateFeature', '+', '1');
 
   for(var i = 0; i < MN2E.RACES.length; i++) {
 
@@ -1863,8 +1969,8 @@ MN2E.RaceRules = function() {
 
       adjustment = '+4 dexterity/-2 strength/-2 constitution';
       features = [
-        1, 'Dextrous Hands', 1, 'Keen Senses', 1, 'Low Light Vision',
-        1, 'Lucky', 1, 'Natural Channeler', 1, 'Nimble', 1, 'Small'
+        1, 'Dextrous Hands', 1, 'Fortunate', 1, 'Keen Senses',
+        1, 'Low Light Vision', 1, 'Natural Channeler', 1, 'Nimble', 1, 'Small'
       ];
       notes = [
         'skillNotes.nimbleFeature:+2 Climb/Hide'
@@ -1983,7 +2089,7 @@ MN2E.RaceRules = function() {
 
       adjustment = '+2 dexterity/-2 strength';
       features = [
-        1, 'Alert Senses', 1, 'Graceful', 1, 'Low Light Vision', 1, 'Lucky',
+        1, 'Alert Senses', 1, 'Fortunate', 1, 'Graceful', 1, 'Low Light Vision',
         1, 'Natural Channeler', 1, 'Slow', 1, 'Small', 1, 'Unafraid'
       ];
       notes = [
@@ -2106,7 +2212,20 @@ MN2E.RaceRules = function() {
 };
 
 MN2E.SkillRules = function() {
-
+  ScribeCustomChoices('languages', MN2E.LANGUAGES);
+  ScribeCustomChoices('skills', MN2E.SKILLS);
+  var notes = [
+    'skillNotes.knowledge(Local)Synergy2:' +
+       '+2 Knowledge (Shadow) (local beauracracy)',
+    'skillNotes.knowledge(Nature)Synergy2:+2 Knowledge (Spirits)',
+    'skillNotes.knowledge(Spirits)Synergy:+2 Knowledge (Nature)'
+  ];
+  ScribeCustomRules('skillNotes.knowledge(Nature)Synergy2',
+    'skills.Knowledge (Nature)', '=', 'source >= 5 ? 1 : null'
+  );
+  ScribeCustomRules('skills.Knowledge (Spirits)',
+    'skillNotes.knowledge(Nature)Synergy2', '+', '2'
+  );
 };
 
 /*
