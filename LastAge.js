@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.24 2006/08/09 00:39:30 Jim Exp $ */
+/* $Id: LastAge.js,v 1.25 2006/08/11 04:40:47 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -51,12 +51,18 @@ MN2E.CLASSES = [
 MN2E.FEATS = [
   'Craft Charm', 'Craft Greater Spell Talisman', 'Craft Spell Talisman',
   'Devastating Mounted Assault', 'Drive It Deep', 'Extra Gift',
-  'Friendly Agent', 'Giant Fighter', 'Greater Spellcasting', 'Herbalist',
-  'Improvised Weapon', 'Innate Magic', 'Inconspicuous', 'Knife Thrower',
-  'Lucky', 'Magecraft', 'Magic Hardened', 'Natural Healer', 'Quickened Donning',
-  'Orc Slayer', 'Ritual Magic', 'Sarcosan Pureblood', 'Sense Nexus',
-  'Spellcasting', 'Spell Knowledge', 'Thick Skull', 'Warrior Of Shadow',
-  'Whispering Awareness'
+  'Friendly Agent', 'Giant Fighter', 'Greater Spellcasting (Conjuration)',
+  'Greater Spellcasting (Evocation)', 'Herbalist', 'Improvised Weapon',
+  'Innate Magic', 'Inconspicuous', 'Knife Thrower', 'Lucky',
+  'Magecraft (Charismatic)', 'Magecraft (Hermetic)', 'Magecraft (Spiritual)',
+  'Magic Hardened', 'Natural Healer', 'Quickened Donning', 'Orc Slayer',
+  'Ritual Magic', 'Sarcosan Pureblood', 'Sense Nexus',
+  'Spellcasting (Abjuration)', 'Spellcasting (Conjuration)',
+  'Spellcasting (Divination)', 'Spellcasting (Enchantment)',
+  'Spellcasting (Evocation)', 'Spellcasting (Illusion)',
+  'Spellcasting (Necromancy)', 'Spellcasting (Transmutation)',
+  'Spell Knowledge', 'Thick Skull',
+  'Warrior Of Shadow', 'Whispering Awareness'
 ];
 MN2E.HEROIC_PATHS = [
   'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
@@ -85,8 +91,19 @@ MN2E.SKILLS = [
   'Knowledge (Old Gods)', 'Knowledge (Shadow)', 'Knowledge (Spirits)'
 ];
 MN2E.SPELLS = [
+  'Charm Repair:W3', 'Detect Astirax:D1/W1', 'Disguise Ally:W2',
+  'Disguise Weapon:W1', 'Far Whisper:D1/W1', 'Greeshield:D2/W2',
+  'Halfling Burrow:D3/W3', 'Lifetrap:D2/W2', 'Nature\'s Revelation:D2/W2',
+  'Nexus Fuel:C4/W5', 'Silver Blood:W2', 'Silver Storm:W4',
+  'Silver Wand:W3', 'Stone Soup:D1/W1'
 ];
 MN2E.WEAPONS = [
+  'Atharak:d6', 'Cedeku:d6@19', 'Crafted Vardatch:d10@19',
+  'Dornish Horse Spear:d10x3', 'Farmer\'s Rope:d2', 'Fighting Knife:d6@19x3',
+  'Great Sling:d6r60', 'Greater Vardatch:2d8', 'Halfling Lance:d8x3',
+  'Icewood Longbow:d8x3r120', 'Inutek:d3r20', 'Sarcosan Lance:d8x3',
+  'Sepi:d6@18', 'Shard Arrow:d6@16x1', 'Staghorn:d6', 'Tack Whip:d4',
+  'Urutuk Hatchet:d8x3r20', 'Vardatch:d12'
 ];
 
 MN2E.ClassRules = function() {
@@ -102,11 +119,11 @@ MN2E.ClassRules = function() {
 
     if(klass.indexOf(' Channeler') >= 0) {
 
+      Scribe.spellsCategoryCodes[klass] = 'W';
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        1, 'Art Of Magic', 1, 'Bonus Spell Energy', 1, 'Magecraft',
-        2, 'Bonus Spellcasting', 2, 'Bonus Spells', 2, 'Summon Familiar',
-        4, 'Bonus Feat'
+        1, 'Art Of Magic', 1, 'Bonus Spell Energy', 2, 'Bonus Spellcasting',
+        2, 'Bonus Spells', 2, 'Summon Familiar', 4, 'Bonus Feat'
       ];
       hitDie = 6;
       notes = [
@@ -145,14 +162,16 @@ MN2E.ClassRules = function() {
         'channelerLevels', '+=', '(source - 1) * 2'
       );
       ScribeCustomRules
-        ('spellEnergy', 'magicNotes.bonusSpellEnergyFeature', '+', null);
+        ('spellEnergyPoints', 'magicNotes.bonusSpellEnergyFeature', '+', null);
 
       if(klass == 'Charismatic Channeler') {
         MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
           'Charismatic Channeler:Greater Confidence/Greater Fury/' +
           'Improved Confidence/Improved Fury/Inspire Confidence/' +
           'Inspire Facination/Inspire Fury/Mass Suggestion/Suggestion';
-        features = features.concat([3, 'Force Of Personality']);
+        features = features.concat(
+          [1, 'Magecraft (Charismatic)', 3, 'Force Of Personality']
+        );
         notes = notes.concat([
           'magicNotes.forceOfPersonalityFeature:' +
             'Inspire Confidence/Fascination/Fury/Suggestion %V/day',
@@ -219,7 +238,7 @@ MN2E.ClassRules = function() {
         MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
           'Hermetic Channeler:Foe Specialty/Knowledge Specialty/' +
           'Quick Reference/Spell Specialty';
-        features = features.concat([3, 'Lorebook']);
+        features = features.concat([1, 'Magecraft (Hermetic)', 3, 'Lorebook']);
         notes = notes.concat([
           'skillNotes.foeSpecialtyFeature:' +
             'Each day choose a creature type to take 10 on Knowledge checks',
@@ -247,7 +266,9 @@ MN2E.ClassRules = function() {
           'Spiritual Channeler:Confident Effect/Heightened Effect/'+
           'Mastery Of Nature/Mastery Of Spirits/Mastery Of The Unnatural/' +
           'Powerful Effect/Precise Effect/Specific Effect/Universal Effect';
-        features = features.concat([3, 'Master Of Two Worlds']);
+        features = features.concat(
+          [1, 'Magecraft (Spiritual)', 3, 'Master Of Two Worlds']
+        );
         notes = notes.concat([
           'combatNotes.confidentEffectFeature:+4 Master of Two Worlds checks',
           'combatNotes.heightenedEffectFeature:' +
@@ -481,7 +502,7 @@ MN2E.ClassRules = function() {
 
     } else if(klass == 'Legate') {
 
-      Scribe.spellsCategoryCodes['Legate'] = 'C';
+      Scribe.spellsCategoryCodes[klass] = 'C';
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
         1, 'Turn Undead', 1, 'Temple Dependency', 3, 'Astirax Companion'
@@ -680,9 +701,13 @@ MN2E.ClassRules = function() {
 
 MN2E.CombatRules = function() {
 
+  // empty
+
 };
 
 MN2E.EquipmentRules = function() {
+
+  ScribeCustomChoices('weapons', MN2E.WEAPONS);
 
 };
 
@@ -694,8 +719,16 @@ MN2E.FeatRules = function() {
     'combatNotes.driveItDeepFeature:Attack base -attack/+damage',
     'combatNotes.giantFighterFeature:' +
       '+4 AC/double critical range w/in 30 ft vs. giants',
+    'combatNotes.improvisedWeaponFeature:' +
+      'No penalty for improvised weapon/-2 for non-proficient weapon',
+    'combatNotes.knifeThrowerFeature:+1 ranged attack/Quickdraw w/racial knife',
+    'combatNotes.orcSlayerFeature:+1 AC/damage vs. orcs/dworgs',
+    'skillNotes.sarcosanPurebloodFeature:+2 AC (horsed)',
+    'combatNotes.warriorOfShadowFeature:' +
+      'Substitute chaMod rounds of +%V damage for Turn Undead use',
     'featureNotes.extraGiftFeature:' +
       'Use Master Of Two Worlds/Force Of Personality +4 times/day',
+    'featureNotes.quickenedDonningFeature:No penalty for hastened donning',
     'featureNotes.whisperingAwarenessFeature:' +
       'DC 12 wisdom check to hear Whispering Wood',
     'magicNotes.craftCharmFeature:Use Craft to create single-use magic item',
@@ -703,23 +736,69 @@ MN2E.FeatRules = function() {
       'Talisman reduces spell energy cost of selected school\'s spells by 1',
     'magicNotes.craftSpellTalismanFeature:' +
       'Talisman reduces spell energy cost of selected spell by 1',
+    'magicNotes.greaterSpellcasting(Conjuration)Feature:' +
+       'Learn Greater Conjuration spells',
+    'magicNotes.greaterSpellcasting(Evocation)Feature:' +
+       'Learn Greater Evocation spells',
+    'magicNotes.herbalistFeature:Create herbal concoctions',
+    'magicNotes.innateMagicFeature:%V level 0 spells as at-will innate ability',
+    'magicNotes.magecraft(Charismatic)Feature:%V spell energy points',
+    'magicNotes.magecraft(Hermetic)Feature:%V spell energy points',
+    'magicNotes.magecraft(Spiritual)Feature:%V spell energy points',
+    'magicNotes.ritualMagicFeature:Learn and lead magic rituals',
+    'magicNotes.senseNexusFeature:DC wisdom check to sense nexus w/in 5 miles',
+    'magicNotes.spellKnowledgeFeature:2 bonus spells',
+    'saveNotes.luckyFeature:+1 bonus from luck charms/spells',
+    'saveNotes.magicHardenedFeature:+2 spell resistance',
+    'saveNotes.thickSkullFeature:DC 10 + damage save to stay at 1 hit point',
     'skillNotes.friendlyAgentFeature:' +
-      '+4 Diplomacy (convince allegiance)/Sense Motive (determine allegiance)'
+      '+4 Diplomacy (convince allegiance)/Sense Motive (determine allegiance)',
+    'skillNotes.inconspicuousFeature:' +
+      '+2 Bluff/Diplomacy/Hide/Sense Motive (shadow)',
+    'skillNotes.naturalHealerFeature:' +
+      'Successful Heal raises patient to 1 HP/triple normal healing rate',
+    'skillNotes.orcSlayerFeature:-4 charisma skills vs. orcs/dworgs',
+    'skillNotes.sarcosanPurebloodFeature:' +
+      'Diplomacy w/horses/+2 charisma skills (horses/Sarcosans)'
   ];
   ScribeCustomNotes(notes);
+  ScribeCustomRules
+    ('combatNotes.warriorOfShadowFeature', 'charismaModifier', '=', null);
   ScribeCustomRules('combatNotes.masterOfTwoWorldsFeature',
     'featureNotes.extraGiftFeature', '+', '4'
   );
   ScribeCustomRules('magicNotes.forceOfPersonalityFeature',
     'featureNotes.extraGiftFeature', '+', '4'
   );
+  ScribeCustomRules('magicNotes.innateMagicFeature',
+    'charismaModifier', '^=', null,
+    'intelligenceModifier', '^=', null,
+    'wisdomModifier', '^=', null
+  );
+  ScribeCustomRules
+    ('magicNotes.magecraft(Charismatic)Feature', 'charismaModifier', '=', null);
+  ScribeCustomRules
+    ('magicNotes.magecraft(Hermetic)Feature', 'intelligenceModifier', '=',null);
+  ScribeCustomRules
+    ('magicNotes.magecraft(Spiritual)Feature', 'wisdomModifier', '=', null);
+  ScribeCustomRules('spellEnergyPoints',
+    'magicNotes.magecraft(Charismatic)Feature', '+=', null
+  );
+  ScribeCustomRules('spellEnergyPoints',
+    'magicNotes.magecraft(Hermetic)Feature', '+=', null
+  );
+  ScribeCustomRules('spellEnergyPoints',
+    'magicNotes.magecraft(Spiritual)Feature', '+=', null
+  );
+  ScribeCustomRules
+    ('resistance.Spells', 'saveNotes.magicHardenedFeature', '+=', '2');
   var tests = [
     '{feats.Craft Charm} == null || +/{^skills.Craft} >= 4',
-    '{feats.Craft Greater Spell Talisman} == null || {feats.Magecraft} != null',
+    '{feats.Craft Greater Spell Talisman} == null || +/{feats.Magecraft} > 0',
     // TODO Craft Greater Spell Talisman requires 3 Channeling feats
     '{feats.Craft Greater Spell Talisman} == null || {level} >= 12',
-    '{feats.Craft Spell Talisman} == null || {feats.Magecraft} != null',
-    '{feats.Craft Spell Talisman} == null || {feats.Spellcasting} != null',
+    '{feats.Craft Spell Talisman} == null || +/{feats.Magecraft} > 0',
+    '{feats.Craft Spell Talisman} == null || +/{^feats.Spellcasting} > 0',
     '{feats.Craft Spell Talisman} == null || {level} >= 3',
     '{feats.Devastating Mounted Assault} == null || ' +
       '{feats.Mounted Combat} != null',
@@ -728,12 +807,29 @@ MN2E.FeatRules = function() {
     '{feats.Extra Gift} == null || ' +
        '{levels.Charismatic Channeler}>=4 || {levels.Spiritual Channeler}>=4',
     '{feats.Friendly Agent} == null || ' +
-       '"{race}".indexOf(" Gnome") >= 0 || "{race}".indexOf("Human") >= 0',
-    '{feats.Friendly Agent} == null || "{alignment}".indexOf("Good") >= 0',
+       '{race}.indexOf(" Gnome") >= 0 || {race}.indexOf("Human") >= 0',
+    '{feats.Friendly Agent} == null || {alignment}.indexOf("Good") >= 0',
     '{feats.Giant Fighter} == null || {feats.Dodge} != null',
     '{feats.Giant Fighter} == null || +/{^feats.Weapon Focus} > 0',
+    '{feats.Greater Spellcasting (Conjuration)} == null || ' +
+      '{feats.Spellcasting (Conjuration)} != null',
+    '{feats.Greater Spellcasting (Evocation)} == null || ' +
+      '{feats.Spellcasting (Evocation)} != null',
+    '{feats.Herbalist} == null || {skills.Profession (Herbalist)} >= 4',
+    '{feats.Innate Magic} == null || ' +
+      '{race}.indexOf("Elf") >= 0 || {race}.indexOf("Halfling") >= 0',
+    '{feats.Knife Thrower} == null || ' +
+      '{race} == "Jungle Elf" || {race} == "Snow Elf"',
+    '{feats.Magic Hardened} == null || ' +
+      '{race}.indexOf("Dwarf") >= 0 || {race}.indexOf("Dworg") >= 0 || ' +
+      '{race} == "Orc"',
+    '{feats.Ritual Magic} == null || +/{feats.Magecraft} > 0',
+    '{feats.Ritual Magic} == null || +/{^feats.Spellcasting} > 0',
+    '{feats.Spell Knowledge} == null || +/{^feats.Spellcasting} > 0',
+    '{feats.Warrior Of Shadow} == null || {levels.Legate} >= 5',
+    '{feats.Warrior Of Shadow} == null || {charisma} >= 12',
     '{feats.Whispering Awareness} == null || ' +
-      '"{race}".indexOf("Elfling") > 0 || "{race}".indexOf("Elf") < 0',
+      '{race}.indexOf("Elfling") >= 0 || {race}.indexOf("Elf") < 0',
     '{feats.Whispering Awareness} == null || {wisdom} >= 15'
   ];
   ScribeCustomTests(tests);
@@ -1290,7 +1386,7 @@ MN2E.HeroicPathRules = function() {
         'magicNotes.oneWithNatureFeature:<i>Commune With Nature</i> at will',
         'skillNotes.animalFriendFeature:+4 Handle Animal',
         'skillNotes.elementalFriendFeature:+4 Diplomacy (elementals)',
-        /* TODO Only if otherwise class skill */
+        // TODO Only if otherwise class skill
         'skillNotes.naturalBondFeature:+2 Knowledge (Nature)/Survival',
         'skillNotes.plantFriendFeature:+4 Diplomacy (plants)'
       ];
@@ -1792,6 +1888,7 @@ MN2E.HeroicPathRules = function() {
 
 MN2E.MagicRules = function() {
 
+  ScribeCustomChoices('spells', MN2E.SPELLS);
   ScribeCustomSheet
     ('Spell Energy Points', 'SpellStats', '<b>Spell Energy Points</b>: %V',
      'Spells Per Day');
@@ -2106,15 +2203,16 @@ MN2E.RaceRules = function() {
         features = features.concat([1, 'Dextrous Hands']);
         notes = notes.concat([
           'featureNotes.stoutFeature:Endurance/Toughness',
-          'featureNotes.studiousFeature:Magecraft'
+          'featureNotes.studiousFeature:Magecraft (Hermetic)'
         ]);
         ScribeCustomRules('selectableFeatureCount.Agrarian Halfling',
           'race', '=', 'source == "Agrarian Halfling" ? 1 : null'
         );
         ScribeCustomRules
           ('features.Endurance', 'featureNotes.stoutFeature', '=', '1');
-        ScribeCustomRules
-          ('features.Magecraft', 'featureNotes.studiousFeature', '=', '1');
+        ScribeCustomRules('features.Magecraft (Hermetic)',
+          'featureNotes.studiousFeature', '=', '1'
+        );
         ScribeCustomRules
           ('features.Toughness', 'featureNotes.stoutFeature', '=', '1');
       } else if(race == 'Nomadic Halfling') {
@@ -2123,14 +2221,14 @@ MN2E.RaceRules = function() {
         features = features.concat([1, 'Skilled Rider']);
         notes = notes.concat([
           'featureNotes.boundToTheBeastFeature:Mounted Combat',
-          'featureNotes.boundToTheSpiritsFeature:Magecraft',
+          'featureNotes.boundToTheSpiritsFeature:Magecraft (Spiritual)',
           'skillNotes.skilledRiderFeature:+2 Handle Animal/Ride',
           'skillNotes.skilledRiderFeature2:+2 Concentration (wogrenback)'
         ]);
         ScribeCustomRules('selectableFeatureCount.Nomadic Halfling',
           'race', '=', 'source == "Nomadic Halfling" ? 1 : null'
         );
-        ScribeCustomRules('features.Magecraft',
+        ScribeCustomRules('features.Magecraft (Spiritual)',
           'featureNotes.boundToTheSpiritsFeature', '=', '1'
         );
         ScribeCustomRules('features.Mounted Combat',
