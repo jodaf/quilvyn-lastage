@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.25 2006/08/11 04:40:47 Jim Exp $ */
+/* $Id: LastAge.js,v 1.26 2006/08/18 04:52:53 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -767,14 +767,16 @@ MN2E.FeatRules = function() {
   ScribeCustomRules('combatNotes.masterOfTwoWorldsFeature',
     'featureNotes.extraGiftFeature', '+', '4'
   );
-  ScribeCustomRules('magicNotes.forceOfPersonalityFeature',
-    'featureNotes.extraGiftFeature', '+', '4'
-  );
-  ScribeCustomRules('magicNotes.innateMagicFeature',
+  ScribeCustomRules('highestMagicModifier',
     'charismaModifier', '^=', null,
     'intelligenceModifier', '^=', null,
     'wisdomModifier', '^=', null
   );
+  ScribeCustomRules('magicNotes.forceOfPersonalityFeature',
+    'featureNotes.extraGiftFeature', '+', '4'
+  );
+  ScribeCustomRules
+    ('magicNotes.innateMagicFeature', 'highestMagicModifier', '=', null);
   ScribeCustomRules
     ('magicNotes.magecraft(Charismatic)Feature', 'charismaModifier', '=', null);
   ScribeCustomRules
@@ -1671,9 +1673,7 @@ MN2E.HeroicPathRules = function() {
 */
       ScribeCustomRules('untappedPotentialHighestModifier',
         'features.Untapped Potential', '?', null,
-        'charismaModifier', '^=', null,
-        'intelligenceModifier', '^=', null,
-        'wisdomModifier', '^=', null
+        'highestMagicModifier', '=', null
       );
       ScribeCustomRules('magicNotes.metamagicAuraFeature',
         'pathLevels.Spellsoul', '+=', 'source>=15?4:source>=10?3:source>=6?2:1'
@@ -1903,15 +1903,14 @@ MN2E.RaceRules = function() {
        'Unimpeded movement in mountainous terrain',
     'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
     'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
-    'featureNotes.naturalChannelerFeature:Innate Magic',
     'magicNotes.spellResistanceFeature:-2 spell energy',
     'saveNotes.coldHardyFeature:+5 cold/half nonlethal damage',
     'saveNotes.fortunateFeature:+1 all saves',
     'saveNotes.hardyFeature:+1 Fortitude',
     'saveNotes.poisonResistanceFeature:+2 vs. poison',
     'saveNotes.spellResistanceFeature:+2 vs. spells',
-    'skillNotes.dextrousHandsFeature:+2 Heal',
-    'skillNotes.dextrousHandsFeature2:+2 Craft (non-metal/non-wood)',
+    'skillNotes.dextrousHandsFeature:+2 Craft (non-metal/non-wood)',
+    'skillNotes.giftedHealerFeature:+2 Heal',
     'skillNotes.improvedNaturalSwimmerFeature:' +
        '+8 special action or avoid hazard/always take 10/run',
     'skillNotes.keenSensesFeature:+2 Listen/Search/Spot',
@@ -1922,7 +1921,7 @@ MN2E.RaceRules = function() {
       '+2 Perform/Profession (Sailor)/Swim/Use Rope',
     'skillNotes.stonecunningFeature:' +
       '+2 Search involving stone or metal/automatic check w/in 10 ft',
-    'skillNotes.stoneFamiliarityFeature:' +
+    'skillNotes.stoneKnowledgeFeature:' +
        '+2 Appraise/Craft involving stone or metal',
 
     'skillNotes.favoredRegion:' +
@@ -1936,13 +1935,9 @@ MN2E.RaceRules = function() {
     ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
 
   ScribeCustomRules
-    ('features.Innate Magic', 'featureNotes.naturalChannelerFeature', '=', '1');
-  ScribeCustomRules
     ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
   ScribeCustomRules
     ('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
-  ScribeCustomRules
-    ('skillNotes.dextrousHandsFeature2', 'features.Dextrous Hands', '=', '1');
   ScribeCustomRules
     ('spellEnergyPoints', 'magicNotes.spellResistanceFeature', '+', '-2');
   ScribeCustomRules('skillNotes.naturalSwimmerFeature',
@@ -1969,6 +1964,8 @@ MN2E.RaceRules = function() {
           '+1 attack when fighting alongside 4+ Dorns',
         'combatNotes.fierceFeature:+1 attack w/two-handed weapons'
       ];
+      // TODO Bonus feat must be fighter or weapon/armor/shield proficiency
+      // TODO Favored region: Northlands
       ScribeCustomRules
         ('featCount', 'featureNotes.dornFeatCountBonus', '+', null);
       ScribeCustomRules('featureNotes.dornFeatCountBonus',
@@ -1983,11 +1980,12 @@ MN2E.RaceRules = function() {
 
     } else if(race.indexOf(' Dwarf') >= 0) {
 
+      // TODO Favored region: Kaladrun/Subterranean Kaladrun Mountains
       adjustment = '+2 constitution/-2 charisma';
       features = [
         1, 'Darkvision', 1, 'Dwarf Favored Enemy', 1, 'Dwarf Favored Weapon',
         1, 'Poison Resistance', 1, 'Resilient', 1, 'Slow',
-        1, 'Spell Resistance', 1, 'Stone Familiarity'
+        1, 'Spell Resistance', 1, 'Stone Knowledge'
       ];
       notes = [
         'combatNotes.dwarfFavoredEnemyFeature:+1 attack vs. orc',
@@ -2007,6 +2005,7 @@ MN2E.RaceRules = function() {
           'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip',
         ]);
       } else if(race == 'Kurgun Dwarf') {
+        // TODO Favored region: Kaladrun/Surface Kaladrun Mountains
         features = features.concat([
           1, 'Natural Mountaineer'
         ]);
@@ -2025,7 +2024,7 @@ MN2E.RaceRules = function() {
       ScribeCustomRules('armorClass', 'combatNotes.sturdyFeature', '+', '1');
       if(race == 'Clan Raised Dwarrow') {
         features = features.concat([
-          1, 'Dodge Orcs', 1, 'Stonecunning', 1, 'Stone Familiarity'
+          1, 'Dodge Orcs', 1, 'Stonecunning', 1, 'Stone Knowledge'
         ]);
       } else if(race == 'Gnome Raised Dwarrow') {
         features = features.concat([
@@ -2037,7 +2036,7 @@ MN2E.RaceRules = function() {
         ];
       } else if(race == 'Kurgun Raised Dwarrow') {
         features = features.concat([
-          1, 'Dodge Orcs', 1, 'Natural Mountaineer', 1, 'Stone Familiarity'
+          1, 'Dodge Orcs', 1, 'Natural Mountaineer', 1, 'Stone Knowledge'
         ]);
       }
 
@@ -2066,8 +2065,9 @@ MN2E.RaceRules = function() {
 
       adjustment = '+4 dexterity/-2 strength/-2 constitution';
       features = [
-        1, 'Dextrous Hands', 1, 'Fortunate', 1, 'Keen Senses',
-        1, 'Low Light Vision', 1, 'Natural Channeler', 1, 'Nimble', 1, 'Small'
+        1, 'Dextrous Hands', 1, 'Fortunate', 1, 'Gifted Healer',
+        1, 'Innate Magic', 1, 'Keen Senses', 1, 'Low Light Vision',
+        1, 'Nimble', 1, 'Small'
       ];
       notes = [
         'skillNotes.nimbleFeature:+2 Climb/Hide'
@@ -2086,12 +2086,11 @@ MN2E.RaceRules = function() {
 
       adjustment = '+2 dexterity/-2 constitution';
       features = [
-        1, 'Enchantment Resistance', 1, 'Gifted Channeler', 1, 'Keen Senses',
+        1, 'Enchantment Resistance', 1, 'Innate Magic', 1, 'Keen Senses',
         1, 'Low Light Vision', 1, 'Natural Channeler', 1, 'Tree Climber'
       ];
       notes = [
-        'magicNotes.giftedChannelerFeature:+2 spell energy',
-        'magicNotes.improvedNaturalChannelerFeature:Bonus spell',
+        'magicNotes.naturalChannelerFeature:+2 spell energy',
         'saveNotes.enchantmentResistanceFeature:+2 vs. enchantments',
         'skillNotes.treeClimberFeature:+4 Balance (trees)/Climb (trees)'
       ];
@@ -2099,21 +2098,29 @@ MN2E.RaceRules = function() {
         'saveNotes.enchantmentResistanceFeature', '+=', '2'
       );
       ScribeCustomRules
-        ('spellEnergyPoints', 'magicNotes.giftedChannelerFeature', '+', '2');
+        ('spellEnergyPoints', 'magicNotes.naturalChannelerFeature', '+', '2');
 
       if(race == 'Jungle Elf') {
+        // TODO Favored region: Erethor/Aruun
         features = features.concat([
-          1, 'Feral Elf', 1, 'Improved Natural Channeler', 1, 'Spirit Foe'
+          1, 'Improved Innate Magic', 1, 'Improved Keen Senses',
+          1, 'Improved Tree Climber', 1, 'Spirit Foe'
         ]);
         notes = notes.concat([
+          'magicNotes.improvedInnateMagicFeature:Bonus Innate Magic spell',
           'saveNotes.spiritFoeFeature:+2 vs. outsiders',
-          'skillNotes.feralElfFeature:+2 Listen/Search/Spot',
-          'skillNotes.feralElfFeature2:+2 Balance (trees)/Climb (trees)',
+          'skillNotes.improvedKeenSensesFeature:+2 Listen/Search/Spot',
+          'skillNotes.improvedTreeClimberFeature:' +
+            '+2 Balance (trees)/Climb (trees)',
           'skillNotes.spiritFoeFeature:+4 Hide (nature)/Move Silently (nature)'
         ]);
+        ScribeCustomRules('magicNotes.innateMagicFeature',
+          'magicNotes.improvedInnateMagicFeature', '+', '1'
+        );
         ScribeCustomRules
           ('skillNotes.feralElfFeature2', 'features.Feral Elf', '=', '1');
       } else if(race == 'Sea Elf') {
+        // TODO Favored region: Erethor/Miraleen
         features = features.concat(
           [1, 'Improved Natural Swimmer', 1, 'Natural Sailor',
            1, 'Natural Swimmer']
@@ -2123,14 +2130,20 @@ MN2E.RaceRules = function() {
             '+2 Craft (ship/sea)/Profession (ship/sea)/Use Rope (ship/sea)'
         ]);
       } else if(race == 'Snow Elf') {
+        // TODO Favored region: Erethor/Veradeen
         features = features.concat([1, 'Cold Hardy', 1, 'Hardy']);
       } else if(race == 'Wood Elf') {
+        // Favored region: Erethor/Caraheen
         features = features.concat([
-          1, 'Improved Gifted Channeler', 1, 'Improved Natural Channeler'
+          1, 'Improved Innate Magic', 1, 'Improved Natural Channeler'
         ]);
         notes = notes.concat([
-          'magicNotes.improvedGiftedChannelerFeature:+1 spell energy'
+          'magicNotes.improvedInnateMagicFeature:Bonus Innate Magic spell',
+          'magicNotes.improvedNaturalChannelerFeature:+1 spell energy'
         ]);
+        ScribeCustomRules('magicNotes.innateMagicFeature',
+          'magicNotes.improvedInnateMagicFeature', '+', '1'
+        );
         ScribeCustomRules('skillNotes.woodElfSkillPointsBonus',
           'race', '?', 'source == "Wood Elf"',
           'level', '=', 'source'
@@ -2138,12 +2151,13 @@ MN2E.RaceRules = function() {
         ScribeCustomRules
           ('skillPoints', 'skillNotes.woodElfSkillPointsBonus', '+', null);
         ScribeCustomRules('spellEnergyPoints',
-          'magicNotes.improvedGiftedChannelerFeature', '+', '1'
+          'magicNotes.improvedNaturalChannelerFeature', '+', '1'
         );
       }
 
     } else if(race == 'Erenlander') {
 
+      // Favored region: Northern, Central, or Southern Erenland
       adjustment = null;
       features = [1, 'Heartlander'];
       notes = [
@@ -2169,6 +2183,7 @@ MN2E.RaceRules = function() {
 
     } else if(race == 'Gnome') {
 
+      // TODO Favored region: Central Erenland
       adjustment = '+4 charisma/-2 strength';
       features = [
         1, 'Hardy', 1, 'Low Light Vision', 1, 'Natural Riverfolk',
@@ -2184,10 +2199,11 @@ MN2E.RaceRules = function() {
 
     } else if(race.indexOf(' Halfling') >= 0) {
 
+      // TODO Favored region: Central Erenland
       adjustment = '+2 dexterity/-2 strength';
       features = [
-        1, 'Alert Senses', 1, 'Fortunate', 1, 'Graceful', 1, 'Low Light Vision',
-        1, 'Natural Channeler', 1, 'Slow', 1, 'Small', 1, 'Unafraid'
+        1, 'Alert Senses', 1, 'Fortunate', 1, 'Graceful', 1, 'Innate Magic',
+        1, 'Low Light Vision', 1, 'Slow', 1, 'Small', 1, 'Unafraid'
       ];
       notes = [
         'saveNotes.unafraidFeature:+2 vs. fear',
@@ -2200,52 +2216,70 @@ MN2E.RaceRules = function() {
       if(race == 'Agrarian Halfling') {
         MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
           'Agrarian Halfling:Stout/Studious';
-        features = features.concat([1, 'Dextrous Hands']);
+        features = features.concat([
+          1, 'Dextrous Hands', 1, 'Gifted Healer']
+        );
         notes = notes.concat([
           'featureNotes.stoutFeature:Endurance/Toughness',
           'featureNotes.studiousFeature:Magecraft (Hermetic)'
         ]);
+        ScribeCustomRules('agrarianHalflingFeatures.Endurance',
+          'featureNotes.stoutFeature', '=', '1'
+        );
+        ScribeCustomRules('agrarianHalflingFeatures.Toughness',
+          'featureNotes.stoutFeature', '=', '1'
+        );
+        ScribeCustomRules('agrarianHalflingFeatures.Magecraft (Hermetic)',
+          'featureNotes.studiousFeature', '=', '1'
+        );
+        ScribeCustomRules('features.Endurance',
+          'agrarianHalflingFeatures.Endurance', '=', '1'
+        );
+        ScribeCustomRules('features.Magecraft (Hermetic)',
+          'agrarianHalflingFeatures.Magecraft (Hermetic)', '=', '1'
+        );
+        ScribeCustomRules('features.Toughness',
+          'agrarianHalflingFeatures.Toughness', '=', '1'
+        );
         ScribeCustomRules('selectableFeatureCount.Agrarian Halfling',
           'race', '=', 'source == "Agrarian Halfling" ? 1 : null'
         );
-        ScribeCustomRules
-          ('features.Endurance', 'featureNotes.stoutFeature', '=', '1');
-        ScribeCustomRules('features.Magecraft (Hermetic)',
-          'featureNotes.studiousFeature', '=', '1'
-        );
-        ScribeCustomRules
-          ('features.Toughness', 'featureNotes.stoutFeature', '=', '1');
       } else if(race == 'Nomadic Halfling') {
         MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
           'Nomadic Halfling:Bound To The Beast/Bound To The Spirits';
-        features = features.concat([1, 'Skilled Rider']);
+        features = features.concat([1, 'Focused Rider', 1, 'Skilled Rider']);
         notes = notes.concat([
           'featureNotes.boundToTheBeastFeature:Mounted Combat',
           'featureNotes.boundToTheSpiritsFeature:Magecraft (Spiritual)',
-          'skillNotes.skilledRiderFeature:+2 Handle Animal/Ride',
-          'skillNotes.skilledRiderFeature2:+2 Concentration (wogrenback)'
+          'skillNotes.focusedRiderFeature:+2 Concentration (wogrenback)',
+          'skillNotes.skilledRiderFeature:' +
+            '+2 Handle Animal (wogren)/Ride (wogren)'
         ]);
-        ScribeCustomRules('selectableFeatureCount.Nomadic Halfling',
-          'race', '=', 'source == "Nomadic Halfling" ? 1 : null'
+        ScribeCustomRules('features.Mounted Combat',
+          'nomadicHalflingFeatures.Bound To The Beast', '=', '1'
         );
         ScribeCustomRules('features.Magecraft (Spiritual)',
-          'featureNotes.boundToTheSpiritsFeature', '=', '1'
+          'nomadicHalflingFeatures.Bound To The Spirits', '=', '1'
         );
-        ScribeCustomRules('features.Mounted Combat',
+        ScribeCustomRules('nomadicHalflingFeatures.Mounted Combat',
           'featureNotes.boundToTheBeastFeature', '=', '1'
         );
-        ScribeCustomRules('skillNotes.skilledRiderFeature2',
-          'features.Skilled Rider', '=', '1'
+        ScribeCustomRules('nomadicHalflingFeatures.Magecraft (Spiritual)',
+          'featureNotes.boundToTheSpiritsFeature', '=', '1'
+        );
+        ScribeCustomRules('selectableFeatureCount.Nomadic Halfling',
+          'race', '=', 'source == "Nomadic Halfling" ? 1 : null'
         );
       }
 
     } else if(race == 'Orc') {
 
+      // TODO Favored region: Northern Reaches
       adjustment = '+4 strength/-2 intelligence/-2 charisma';
-      features = [1, 'Cold Resistance', 1, 'Darkvision',
-                  1, 'Light Sensitivity', 1, 'Natural Preditor',
-                  1, 'Night Fighter', 1, 'Orc Favored Enemy', 1, 'Orc Valor',
-                  1, 'Spell Resistance'
+      features = [
+        1, 'Darkvision', 1, 'Improved Cold Hardy', 1, 'Light Sensitivity',
+        1, 'Natural Preditor', 1, 'Night Fighter', 1, 'Orc Favored Enemy',
+        1, 'Orc Valor', 1, 'Spell Resistance'
       ];
       notes = [
         'combatNotes.lightSensitivityFeature:-1 attack in daylight',
@@ -2253,7 +2287,7 @@ MN2E.RaceRules = function() {
         'combatNotes.orcValorFeature:' +
           '+1 attack when fighting alongside 9+ Orcs',
         'combatNotes.orcFavoredEnemyFeature:+1 damage vs. dwarves',
-        'saveNotes.coldResistanceFeature:Immune non-lethal/half lethal',
+        'saveNotes.improvedColdHardyFeature:Immune non-lethal/half lethal',
         'skillNotes.naturalPreditorFeature:+%V Intimidate'
       ];
       ScribeCustomRules
@@ -2282,6 +2316,7 @@ MN2E.RaceRules = function() {
       ScribeCustomRules
         ('skillPoints', 'skillNotes.sarcosanSkillPointsBonus', '+', null);
       if(race == 'Plains Sarcosan') {
+        // TODO Favored region: Southern Erenland
         features = features.concat([1, 'Natural Horseman']);
         notes = notes.concat([
           'combatNotes.naturalHorsemanFeature:' +
@@ -2290,10 +2325,11 @@ MN2E.RaceRules = function() {
             '+4 Concentration (horseback)/Handle Animal (horse)/Ride (horse)'
         ]);
       } else if(race == 'Urban Sarcosan') {
+        // TODO Favored region: none (special)
         features = features.concat([1, 'Interactive', 1, 'Urban']);
         notes = notes.concat([
           'skillNotes.urbanFeature:' +
-            '+2 Gather Information (urban)/untrained Knowledge (urban)',
+            '+2 Gather Information (urban)/untrained Knowledge in urban areas',
           'skillNotes.interactiveFeature:+2 Bluff/Diplomacy/Sense Motive'
         ]);
       }
