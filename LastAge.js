@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.27 2006/08/18 13:52:57 Jim Exp $ */
+/* $Id: LastAge.js,v 1.28 2006/08/24 14:12:06 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -866,29 +866,43 @@ MN2E.FeatRules = function() {
     for(var j = 0; j < selectables.length; j++) {
       var selectable = selectables[j];
       ScribeCustomRules('features.' + selectable,
-        'selectableFeatures.' + selectable, '=', null
-      );
-      ScribeCustomRules(prefix + 'Features.' + selectable,
-        'selectableFeatures.' + selectable, '=', null
+        'selectableFeatures.' + selectable, '+=', null
       );
     }
   }
-  ScribeCustomRules('charisma', 'features.Charisma Bonus', '+', null);
-  ScribeCustomRules('constitution', 'features.Constitution Bonus', '+', null);
-  ScribeCustomRules('dexterity', 'features.Dexterity Bonus', '+', null);
-  ScribeCustomRules('intelligence', 'features.Intelligence Bonus', '+', null);
-  ScribeCustomRules('strength', 'features.Strength Bonus', '+', null);
-  ScribeCustomRules('wisdom', 'features.Wisdom Bonus', '+', null);
 
 };
 
 MN2E.HeroicPathRules = function() {
 
   ScribeCustomChoices('heroicPaths', MN2E.HEROIC_PATHS);
-
-  // In general on bonuses (strength, fortitude, etc.), Scribe will
-  // automatically set the bonus to 1 when the appropriate level is reached.
-  // Computations below add additional bonuses for level advances.
+  ScribeCustomRules('abilityNotes.charismaBonusFeature',
+    'features.Charisma Bonus', '=', null
+  );
+  ScribeCustomRules('abilityNotes.constitutionBonusFeature',
+    'features.Constitution Bonus', '=', null
+  );
+  ScribeCustomRules('abilityNotes.dexterityBonusFeature',
+    'features.Dexterity Bonus', '=', null
+  );
+  ScribeCustomRules('abilityNotes.intelligenceBonusFeature',
+    'features.Intelligence Bonus', '=', null
+  );
+  ScribeCustomRules('abilityNotes.strengthBonusFeature',
+    'features.Strength Bonus', '=', null
+  );
+  ScribeCustomRules('abilityNotes.wisdomBonusFeature',
+    'features.Wisdom Bonus', '=', null
+  );
+  ScribeCustomRules('charisma', 'abilityNotes.charismaBonusFeature', '+', null);
+  ScribeCustomRules
+    ('constitution', 'abilityNotes.constitutionBonusFeature', '+', null);
+  ScribeCustomRules
+    ('dexterity', 'abilityNotes.dexterityBonusFeature', '+', null);
+  ScribeCustomRules
+    ('intelligence', 'abilityNotes.intelligenceBonusFeature', '+', null);
+  ScribeCustomRules('strength', 'abilityNotes.strengthBonusFeature', '+', null);
+  ScribeCustomRules('wisdom', 'abilityNotes.wisdomBonusFeature', '+', null);
 
   for(var i = 0; i < MN2E.HEROIC_PATHS.length; i++) {
 
@@ -917,7 +931,8 @@ MN2E.HeroicPathRules = function() {
         'combatNotes.viciousAssaultFeature:Two claw attacks at %V each',
         'featureNotes.repelAnimalsFeature:' +
           'Animals w/in 15 ft act negatively/cannot ride',
-        'skillNotes.beastialAuraFeature:-10 Handle Animal'
+        'featureNotes.scentFeature:', // TODO
+        'skillNotes.beastialAuraFeature:-10 Handle Animal/no Wild Empathy'
       ];
       ScribeCustomRules('combatNotes.beastialAuraFeature',
         'pathLevels.Beast', '+=', 'source >= 12 ? 6 : 3'
@@ -946,8 +961,8 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Chanceborn') {
 
       features = [
-        1, 'Luck Of Heroes', 3, 'Unfettered', 4, 'Miss Chance', 6, 'Survivor',
-        9, 'Take Ten', 19, 'Take Twenty'
+        1, 'Luck Of Heroes', 3, 'Unfettered', 4, 'Miss Chance',
+        6, 'Persistence', 9, 'Take Ten', 19, 'Take Twenty'
       ];
       spellFeatures = [
         2, 'Resistance', 7, 'True Strike', 12, 'Aid', 17, 'Prayer'
@@ -955,7 +970,7 @@ MN2E.HeroicPathRules = function() {
       notes = [
         'combatNotes.missChanceFeature:%V% chance of foe miss',
         'featureNotes.luckOfHeroesFeature:Add %V to any d20 roll 1/day',
-        'featureNotes.survivorFeature:' +
+        'featureNotes.persistenceFeature:' +
           'Defensive Roll/Evasion/Slippery Mind/Uncanny Dodge %V/day',
         'featureNotes.takeTenFeature:Take 10 on any d20 roll 1/day',
         'featureNotes.takeTwentyFeature:Take 20 on any d20 roll 1/day',
@@ -969,7 +984,7 @@ MN2E.HeroicPathRules = function() {
         '"d4" + (source >= 5 ? "/d6" : "") + (source >= 10 ? "/d8" : "") + ' +
         '(source >= 15 ? "/d10" : "") + (source >= 20 ? "/d12" : "")'
       );
-      ScribeCustomRules('featureNotes.survivorFeature',
+      ScribeCustomRules('featureNotes.persistenceFeature',
         'pathLevels.Chanceborn', '+=', 'Math.floor((source - 1) / 5)'
       );
       ScribeCustomRules
@@ -986,8 +1001,7 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Charismatic') {
 
       features = [
-        4, 'Inspiring Oration', 5, 'Charisma Bonus', 6, 'Leadership',
-        12, 'Natural Leader',
+        4, 'Inspiring Oration', 6, 'Leadership', 12, 'Natural Leader'
       ];
       spellFeatures = [
         1, 'Charm Person', 2, 'Remove Fear', 3, 'Hypnotism', 7, 'Aid',
@@ -999,11 +1013,14 @@ MN2E.HeroicPathRules = function() {
         'magicNotes.inspiringOrationFeature:' +
           'Give speech to apply spell-like ability to allies w/in 60 ft %V/day'
       ];
+      ScribeCustomRules('charismaticFeatures.Charisma Bonus',
+        'pathLevels.Charismatic', '=', 'source<5 ? null : Math.floor(source/5)'
+      );
       ScribeCustomRules('featureNotes.naturalLeaderFeature',
         'pathLevels.Charismatic', '=', 'source >= 18 ? 2 : 1'
       );
       ScribeCustomRules('features.Charisma Bonus',
-        'pathLevels.Charismatic', '+', 'Math.floor((source - 5) / 5)'
+       'charismaticFeatures.Charisma Bonus', '+=', null
       );
       ScribeCustomRules('magicNotes.inspiringOrationFeature',
         'pathLevels.Charismatic', '+=', 'Math.floor((source + 1) / 5)'
@@ -1055,9 +1072,8 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Earthbonded') {
 
       features = [
-        1, 'Darkvision', 3, 'Natural Armor', 4, 'Stonecunning',
-        8, 'Improved Stonecunning', 12, 'Tremorsense', 16, 'Blindsense',
-        20, 'Blindsight'
+        1, 'Darkvision', 4, 'Stonecunning', 8, 'Improved Stonecunning',
+        12, 'Tremorsense', 16, 'Blindsense', 20, 'Blindsight'
       ];
       spellFeatures = [
         2, 'Hold Portal', 5, 'Soften Earth And Stone', 6, 'Make Whole',
@@ -1079,13 +1095,20 @@ MN2E.HeroicPathRules = function() {
       ScribeCustomRules
         ('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
       ScribeCustomRules('combatNotes.naturalArmorFeature',
-        'pathLevels.Earthbonded', '+=', 'source>=18 ? 3 : source>=10 ? 2 : 1'
+        'earthbondedFeatures.Natural Armor', '+=', null
+      );
+      ScribeCustomRules('earthbondedFeatures.Natural Armor',
+        'pathLevels.Earthbonded', '=',
+        'source>=18 ? 3 : source>=10 ? 2 : source >= 3 ? 1 : null'
+      );
+      ScribeCustomRules('features.Natural Armor',
+       'earthbondedFeatures.Natural Armor', '+=', null
       );
 
     } else if(path == 'Faithful') {
 
       features = [
-        4, 'Turn Undead', 5, 'Wisdom Bonus'
+        4, 'Turn Undead'
       ];
       spellFeatures = [
         1, 'Bless', 2, 'Protection From Evil', 3, 'Divine Favor', 6, 'Aid',
@@ -1097,15 +1120,18 @@ MN2E.HeroicPathRules = function() {
         'combatNotes.turnUndeadFeature:' +
           'Turn (good) or rebuke (evil) undead creatures'
       ];
+      ScribeCustomRules('faithfulFeatures.Wisdom Bonus',
+        'pathLevels.Faithful', '=', 'source<5 ? null : Math.floor(source/5)'
+      );
+      ScribeCustomRules('features.Wisdom Bonus',
+       'faithfulFeatures.Wisdom Bonus', '+=', null
+      );
       ScribeCustomRules('turningLevel',
         'pathLevels.Faithful', '+=', 'source >= 4 ? source : null'
       );
       // TODO turningLevel-based computation overrides this
       ScribeCustomRules('turningFrequency',
         'pathLevels.Faithful', '+=', 'Math.floor((source + 1) / 5)'
-      );
-      ScribeCustomRules('features.Wisdom Bonus',
-        'pathLevels.Faithful', '+', 'Math.floor((source - 5) / 5)'
       );
 
     } else if(path == 'Fellhunter') {
@@ -1864,31 +1890,42 @@ MN2E.HeroicPathRules = function() {
       continue;
 
     var prefix =
-      name.substring(0, 1).toLowerCase() + name.substring(1).replace(/ /g, '');
+      path.substring(0, 1).toLowerCase() + path.substring(1).replace(/ /g, '');
     if(features != null) {
       for(var j = 1; j < features.length; j += 2) {
         var feature = features[j];
         var level = features[j - 1];
         ScribeCustomRules(prefix + 'Features.' + feature,
-          'heroicPath', '?', 'source == "' + name + '"',
-          'level', '=', 'source >= ' + level
+          'pathLevels.' + path, '=', 'source >= ' + level + ' ? 1 : null'
         );
         ScribeCustomRules
           ('features.' + feature, prefix + 'Features.' + feature, '=', '1');
       }
-      ScribeCustomSheet
-        (name + ' Features', 'FeaturesAndSkills', null, 'Feats', ' * ');
     }
+    ScribeCustomSheet
+      (path + ' Features', 'FeaturesAndSkills', null, 'Feats', ' * ');
     if(spellFeatures != null) {
+      var spellLevels = {};
       for(var j = 1; j < spellFeatures.length; j += 2) {
         var spell = '<i>' + spellFeatures[j] + '</i>';
         var level = spellFeatures[j - 1];
-        ScribeCustomRules(prefix + 'Spells.' + spell,
-          'heroicPath', '?', 'source == "' + name + '"',
-          'level', '=', 'source >= ' + level
-        );
+        if(spellLevels[spell] == null) {
+          spellLevels[spell] = [level];
+        } else {
+          spellLevels[spell][spellLevels[spell].length] = level;
+        }
       }
-      ScribeCustomSheet(name + ' Spells', 'Magic', null, 'Spells', ' * ');
+      for(spell in spellLevels) {
+        var levels = spellLevels[spell];
+        var rule = '';
+        for(var j = levels.length - 1; j >= 0; j--) {
+          rule += 'source >= ' + levels[j] + ' ? ' + (j + 1) + ' : ';
+        }
+        rule += 'null';
+        ScribeCustomRules
+          (prefix + 'Spells.' + spell, 'pathLevels.' + path, '=', rule);
+      }
+      ScribeCustomSheet(path + ' Spells', 'Magic', null, 'Spells', ' * ');
     }
     if(notes != null)
       ScribeCustomNotes(notes);
