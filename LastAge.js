@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.28 2006/08/24 14:12:06 Jim Exp $ */
+/* $Id: LastAge.js,v 1.29 2006/08/29 06:50:14 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -140,14 +140,13 @@ MN2E.ClassRules = function() {
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
         1, 'Art Of Magic', 1, 'Bonus Spell Energy', 2, 'Bonus Spellcasting',
-        2, 'Bonus Spells', 2, 'Summon Familiar', 4, 'Bonus Feat'
+        2, 'Bonus Spells', 2, 'Summon Familiar', 4, 'Arcane Feat Bonus'
       ];
       hitDie = 6;
       notes = [
-        'featureNotes.bonusFeatsFeature:%V arcane feats',
+        'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
         'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
         'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.bonusSpellEnergyFeature:%V extra spell energy points',
         'magicNotes.bonusSpellsFeature:%V extra spells',
         'magicNotes.summonFamiliarFeature:Special bond/abilities'
       ];
@@ -164,10 +163,10 @@ MN2E.ClassRules = function() {
         'Speak Language', 'Spellcraft'
       ];
       ScribeCustomRules('featCount',
-        'featureNotes.bonusFeatFeature', '+', null,
+        'featureNotes.arcaneFeatBonusFeature', '+', null,
         'featureNotes.bonusSpellcastingFeature', '+', null
       );
-      ScribeCustomRules('featureNotes.bonusFeatFeature',
+      ScribeCustomRules('featureNotes.arcaneFeatBonusFeature',
         'channelerLevels', '+=', 'Math.floor((source - 1) / 3)'
       );
       ScribeCustomRules('featureNotes.bonusSpellcastingFeature',
@@ -178,8 +177,6 @@ MN2E.ClassRules = function() {
       ScribeCustomRules('magicNotes.bonusSpellsFeature',
         'channelerLevels', '+=', '(source - 1) * 2'
       );
-      ScribeCustomRules
-        ('spellEnergyPoints', 'magicNotes.bonusSpellEnergyFeature', '+', null);
 
       if(klass == 'Charismatic Channeler') {
         MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
@@ -608,7 +605,7 @@ MN2E.ClassRules = function() {
         'featureNotes.overlandStrideFeature:' +
           'Normal movement while using Survival',
         'featureNotes.rapidResponseFeature:' +
-          'Alertness or Improved Initiative bonus feat',
+          'Alertness or Improved Initiative feat',
         'featureNotes.senseDarkMagicFeature:Scent vs. legate/outsider',
         'featureNotes.skillMasteryFeature:Skill Mastery with %V chosen skills',
         'featureNotes.tracklessStepFeature:Untrackable outdoors',
@@ -694,7 +691,7 @@ MN2E.ClassRules = function() {
         'levels.Wildlander', '=', '1 + Math.floor((source + 1) / 3)'
       );
       ScribeCustomRules('skillNotes.wildEmpathyFeature',
-        'levels.Wildlander', '+', 'source - 1',
+        'levels.Wildlander', '+=', 'source',
         'charismaModifier', '+', null
       );
       ScribeCustomRules
@@ -876,9 +873,8 @@ MN2E.FeatRules = function() {
 MN2E.HeroicPathRules = function() {
 
   ScribeCustomChoices('heroicPaths', MN2E.HEROIC_PATHS);
-  ScribeCustomRules('abilityNotes.charismaBonusFeature',
-    'features.Charisma Bonus', '=', null
-  );
+  ScribeCustomRules
+    ('abilityNotes.charismaBonusFeature', 'features.Charisma Bonus', '=', null);
   ScribeCustomRules('abilityNotes.constitutionBonusFeature',
     'features.Constitution Bonus', '=', null
   );
@@ -888,19 +884,36 @@ MN2E.HeroicPathRules = function() {
   ScribeCustomRules('abilityNotes.intelligenceBonusFeature',
     'features.Intelligence Bonus', '=', null
   );
-  ScribeCustomRules('abilityNotes.strengthBonusFeature',
-    'features.Strength Bonus', '=', null
-  );
-  ScribeCustomRules('abilityNotes.wisdomBonusFeature',
-    'features.Wisdom Bonus', '=', null
-  );
+  ScribeCustomRules
+    ('abilityNotes.strengthBonusFeature', 'features.Strength Bonus', '=', null);
+  ScribeCustomRules
+    ('abilityNotes.wisdomBonusFeature', 'features.Wisdom Bonus', '=', null);
+  ScribeCustomRules
+    ('armorClass', 'combatNotes.armorClassBonusFeature', '+', null);
   ScribeCustomRules('charisma', 'abilityNotes.charismaBonusFeature', '+', null);
+  ScribeCustomRules('combatNotes.armorClassBonusFeature',
+    'features.Armor Class Bonus', '=', null
+  );
   ScribeCustomRules
     ('constitution', 'abilityNotes.constitutionBonusFeature', '+', null);
   ScribeCustomRules
     ('dexterity', 'abilityNotes.dexterityBonusFeature', '+', null);
+  ScribeCustomRules('featCount', 'features.Feat Bonus', '+', null);
   ScribeCustomRules
     ('intelligence', 'abilityNotes.intelligenceBonusFeature', '+', null);
+  ScribeCustomRules
+    ('spellEnergyPoints', 'magicNotes.bonusSpellEnergyFeature', '+', null);
+  ScribeCustomRules
+    ('save.Fortitude', 'saveNotes.fortitudeBonusFeature', '+', null);
+  ScribeCustomRules('save.Reflex', 'saveNotes.reflexBonusFeature', '+', null);
+  ScribeCustomRules('save.Will', 'saveNotes.willBonusFeature', '+', null);
+  ScribeCustomRules
+    ('saveNotes.fortitudeBonusFeature', 'features.Fortitude Bonus', '=', null);
+  ScribeCustomRules
+    ('saveNotes.reflexBonusFeature', 'features.Reflex Bonus', '=', null);
+  ScribeCustomRules
+    ('saveNotes.willBonusFeature', 'features.Will Bonus', '=', null);
+  ScribeCustomRules('speed', 'abilityNotes.fastMovementFeature', '+', null);
   ScribeCustomRules('strength', 'abilityNotes.strengthBonusFeature', '+', null);
   ScribeCustomRules('wisdom', 'abilityNotes.wisdomBonusFeature', '+', null);
 
@@ -1001,7 +1014,8 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Charismatic') {
 
       features = [
-        4, 'Inspiring Oration', 6, 'Leadership', 12, 'Natural Leader'
+        4, 'Inspiring Oration', 5, 'Charisma Bonus', 6, 'Leadership',
+        12, 'Natural Leader'
       ];
       spellFeatures = [
         1, 'Charm Person', 2, 'Remove Fear', 3, 'Hypnotism', 7, 'Aid',
@@ -1014,13 +1028,10 @@ MN2E.HeroicPathRules = function() {
           'Give speech to apply spell-like ability to allies w/in 60 ft %V/day'
       ];
       ScribeCustomRules('charismaticFeatures.Charisma Bonus',
-        'pathLevels.Charismatic', '=', 'source<5 ? null : Math.floor(source/5)'
+        'level', '+', 'Math.floor((source - 5) / 5)'
       );
       ScribeCustomRules('featureNotes.naturalLeaderFeature',
         'pathLevels.Charismatic', '=', 'source >= 18 ? 2 : 1'
-      );
-      ScribeCustomRules('features.Charisma Bonus',
-       'charismaticFeatures.Charisma Bonus', '+=', null
       );
       ScribeCustomRules('magicNotes.inspiringOrationFeature',
         'pathLevels.Charismatic', '+=', 'Math.floor((source + 1) / 5)'
@@ -1036,7 +1047,6 @@ MN2E.HeroicPathRules = function() {
       spellFeatures = null;
       notes = [
         'magicNotes.bolsterSpellFeature:Add 1 to DC of %V chosen spells',
-        'magicNotes.bonusSpellEnergyFeature:%V extra spell energy points',
         'magicNotes.bonusSpellsFeature:%V extra spells',
         'magicNotes.frightfulPresenceFeature:' +
           'Casting panics/shakes foes of lesser level 4d6 rounds failing DC %V Will save',
@@ -1066,14 +1076,13 @@ MN2E.HeroicPathRules = function() {
       ScribeCustomRules('magicNotes.spellPenetrationFeature',
         'pathLevels.Dragonblooded', '+=', 'Math.floor((source - 5) / 4)'
       );
-      ScribeCustomRules
-        ('spellEnergyPoints', 'magicNotes.bonusSpellEnergyFeature', '+', null);
 
     } else if(path == 'Earthbonded') {
 
       features = [
-        1, 'Darkvision', 4, 'Stonecunning', 8, 'Improved Stonecunning',
-        12, 'Tremorsense', 16, 'Blindsense', 20, 'Blindsight'
+        1, 'Darkvision', 3, 'Armor Class Bonus', 4, 'Stonecunning',
+        8, 'Improved Stonecunning', 12, 'Tremorsense', 16, 'Blindsense',
+        20, 'Blindsight'
       ];
       spellFeatures = [
         2, 'Hold Portal', 5, 'Soften Earth And Stone', 6, 'Make Whole',
@@ -1082,7 +1091,6 @@ MN2E.HeroicPathRules = function() {
         17, 'Stone Tell', 19, 'Earthquake'
       ];
       notes = [
-        'combatNotes.naturalArmorFeature:+%V AC',
         'featureNotes.blindsenseFeature:' +
           'Other senses allow detection of unseen objects w/in 30 ft',
         'featureNotes.blindsightFeature:' +
@@ -1092,17 +1100,8 @@ MN2E.HeroicPathRules = function() {
         'featureNotes.tremorsenseFeature:' +
           'Detect creatures in contact w/ground w/in 30 ft'
       ];
-      ScribeCustomRules
-        ('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
-      ScribeCustomRules('combatNotes.naturalArmorFeature',
-        'earthbondedFeatures.Natural Armor', '+=', null
-      );
-      ScribeCustomRules('earthbondedFeatures.Natural Armor',
-        'pathLevels.Earthbonded', '=',
-        'source>=18 ? 3 : source>=10 ? 2 : source >= 3 ? 1 : null'
-      );
-      ScribeCustomRules('features.Natural Armor',
-       'earthbondedFeatures.Natural Armor', '+=', null
+      ScribeCustomRules('earthbondedFeatures.Armor Class Bonus',
+        'level', '+', 'source >= 18 ? 2 : source >= 10 ? 1 : null'
       );
 
     } else if(path == 'Faithful') {
@@ -1153,7 +1152,7 @@ MN2E.HeroicPathRules = function() {
         'charismaModifier', '+', null
       );
       ScribeCustomRules('combatNotes.touchOfTheLivingFeature',
-        'pathLevels.Fellhunter', '+=', 'Math.floor((source + 3) / 5)'
+        'pathLevels.Fellhunter', '+=', 'Math.floor((source + 3) / 5) * 2'
       );
       ScribeCustomRules('magicNotes.senseTheDeadFeature',
         'pathLevels.Fellhunter', '+=',
@@ -1169,8 +1168,11 @@ MN2E.HeroicPathRules = function() {
 
     } else if(path == 'Feyblooded') {
 
+      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
+        'Feyblooded:Armor Class Bonus/Dexterity Bonus/Fortitude Bonus/' +
+        'Reflex Bonus/Will Bonus';
       features = [
-        1, 'Low Light Vision', 4, 'Unearthly Grace', 7, 'Fey Vision'
+        1, 'Low Light Vision', 7, 'Fey Vision'
       ];
       spellFeatures = [
         2, 'Disguise Self', 3, 'Ventriloquism', 5, 'Magic Aura',
@@ -1179,13 +1181,13 @@ MN2E.HeroicPathRules = function() {
         17, 'Mislead', 18, 'Seeming'
       ];
       notes = [
-        'featureNotes.unearthlyGraceFeature:' +
-           'Charisma bonus to AC/saving throw/dexterity checks %V times',
         'magicNotes.feyVisionFeature:Detect %V auras at will'
       ];
-      // TODO See MN 56.  Probably no good way to encode this.
-      ScribeCustomRules('featureNotes.unearthlyGraceFeature',
-        'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)'
+      ScribeCustomRules('selectableFeatureCount.Feyblooded',
+        'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)',
+        'charismaModifier', '*', null,
+        'level', 'v', 'source<8 ? 1 : source<12 ? 3 : source<16 ? 6 : ' +
+                      'source<20 ? 10 : 15'
       );
       ScribeCustomRules('magicNotes.feyVisionFeature',
         'pathLevels.Feyblooded', '=',
@@ -1223,16 +1225,13 @@ MN2E.HeroicPathRules = function() {
         'pathLevels.Giantblooded', '=',
         'source >= 19 ? 120 : source >= 13 ? 90 : source >= 6 ? 60 : 30'
       );
-      ScribeCustomRules('features.Strength Bonus',
-        'pathLevels.Giantblooded', '+', 'Math.floor((source - 5) / 5)'
+      ScribeCustomRules('giantbloodedFeatures.Strength Bonus',
+        'level', '+', 'source >= 15 ? 1 : null'
       );
       ScribeCustomRules('skillNotes.intimidatingSizeFeature',
         'pathLevels.Giantblooded', '+=',
         'source>=17 ? 10 : source>=14 ? 8 : (Math.floor((source + 1) / 4) * 2)'
       );
-      ScribeCustomRules
-        ('skills.Intimidate', 'skillNotes.intimidatingSizeFeature', '+', null);
-      ScribeCustomRules('speed', 'abilityNotes.fastMovementFeature', '+', null);
       ScribeCustomChoices('weapons', 'Boulder:d10 R30');
       ScribeCustomRules
         ('weapons.Boulder', 'combatNotes.rockThrowingFeature', '=', '1');
@@ -1262,8 +1261,8 @@ MN2E.HeroicPathRules = function() {
           'Immune fear; +4 to allies w/in 30 ft',
         'saveNotes.deathWardFeature:Immune to negative energy/death effects'
       ];
-      ScribeCustomRules('features.Constitution Bonus',
-        'pathLevels.Guardian', '+', 'Math.floor((source - 5) / 5)'
+      ScribeCustomRules('guardianFeatures.Constitution Bonus',
+        'level', '+', 'Math.floor((source - 5) / 5)'
       );
       ScribeCustomRules('combatNotes.righteousFuryFeature',
         'pathLevels.Guardian', '+=',
@@ -1288,7 +1287,7 @@ MN2E.HeroicPathRules = function() {
 
       features = null;
       spellFeatures = [
-        1, 'Cure Light Wounds', 2, 'Restoration', 3, 'Cure Light Wounds',
+        1, 'Cure Light Wounds', 2, 'Lesser Restoration', 3, 'Cure Light Wounds',
         4, 'Cure Moderate Wounds', 5, 'Remove Disease',
         6, 'Cure Moderate Wounds', 7, 'Cure Serious Wounds',
         8, 'Remove Blindness/Deafness', 9, 'Cure Serious Wounds',
@@ -1302,37 +1301,33 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Ironborn') {
 
       features = [
-        1, 'Incredible Resilience', 2, 'Fortitude Bonus', 3, 'Natural Armor',
-        4, 'Improved Healing', 5, 'Damage Reduction',
+        1, 'Ironborn Resilience', 2, 'Fortitude Bonus',
+        3, 'Armor Class Bonus', 4, 'Improved Healing', 5, 'Damage Reduction',
         6, 'Elemental Resistance', 9, 'Indefatigable',
-        14, 'Greater Improved Healing', 9, 'Improved Indefatigable',
+        14, 'Greater Improved Healing', 19, 'Improved Indefatigable',
       ];
       spellFeatures = null;
       notes = [
-        'combatNotes.naturalArmorFeature:+%V AC',
         'combatNotes.greaterImprovedHealingFeature:' +
           'Regain 1 point ability damage/hour',
         'combatNotes.improvedHealingFeature:Regain %V HP/hour',
-        'combatNotes.incredibleResisilenceFeature:Improved hit die',
+        'combatNotes.ironbornResilienceFeature:Improved hit die',
         'saveNotes.elementalResistanceFeature:' +
           '%V resistance to acid/cold/electricity/fire',
-        'saveNotes.fortitudeBonusFeature:%V added to fortitude saves',
         'saveNotes.indefatigableFeature:Immune fatigue effects',
         'saveNotes.improvedIndefatigableFeature:Immune exhaustion effects'
       ];
-      ScribeCustomRules
-        ('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
       ScribeCustomRules('combatNotes.damageReductionFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor(source / 5)'
       );
       ScribeCustomRules('combatNotes.improvedHealingFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor(source / 2)'
       );
-      ScribeCustomRules('combatNotes.naturalArmorFeature',
-        'pathLevels.Ironborn', '+=', 'Math.floor((source + 2) / 5)'
+      ScribeCustomRules('ironbornFeatures.Fortitude Bonus',
+        'level', '+', 'Math.floor((source - 2) / 5)'
       );
-      ScribeCustomRules('features.Fortitude Bonus',
-        'pathLevels.Ironborn', '+=', 'Math.floor((source - 2) / 5)'
+      ScribeCustomRules('ironbornFeatures.Armor Class Bonus',
+        'level', '+', 'Math.floor((source - 3) / 5)'
       );
       ScribeCustomRules('saveNotes.elementalResistanceFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor((source - 1) / 5) * 3'
@@ -1344,20 +1339,24 @@ MN2E.HeroicPathRules = function() {
         'Jack-Of-All-Trades:Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
         'Dexterity Bonus/Constitution Bonus/Charisma Bonus';
       features = [
-        2, 'Spontaneous Spell', 3, 'Skill Boost', 4, 'Ability Boost',
-        5, 'Save Boost', 7, 'Bonus Feat'
+        1, 'Spell Choice', 2, 'Spontaneous Spell', 3, 'Skill Boost',
+        7, 'Feat Bonus'
       ];
-      spellFeatures = [
-        1, 'W0', 6, 'W1', 10, 'W2', 13, 'W1', 19, 'W2'
-      ];
+      spellFeatures = null;
       notes = [
+        'magicNotes.spellChoiceFeature:' +
+          'Use chosen %V spell as spell-like ability 1/day',
         'magicNotes.spontaneousSpellFeature:' +
-          'Use %V spell as spell like ability 1/day',
+          'Use any %V spell as spell-like ability 1/day',
         'skillNotes.skillBoostFeature:+4 to %V chosen skills'
       ];
-      ScribeCustomRules('featCount', 'features.Bonus Feat', '+', null);
-      ScribeCustomRules('features.Bonus Feat',
-        'pathLevels.Jack-Of-All-Trades', '+=', 'source >= 14 ? 1 : null'
+      ScribeCustomRules('jack-Of-All-TradesFeatures.Feat Bonus',
+        'level', '+', 'source >= 14 ? 1 : null'
+      );
+      ScribeCustomRules('magicNotes.spellChoiceFeature',
+        'pathLevels.Jack-Of-All-Trades', '=',
+        'source>=16 ? "W0/W1/W2/W3" : source>=10 ? "W0/W1/W2" : ' +
+        'source>=6 ? "W0/W1" : "W0"'
       );
       ScribeCustomRules('magicNotes.spontaneousSpellFeature',
         'pathLevels.Jack-Of-All-Trades', '=',
@@ -1365,19 +1364,22 @@ MN2E.HeroicPathRules = function() {
       );
       ScribeCustomRules('selectableFeatureCount.Jack-Of-All-Trades',
         'pathLevels.Jack-Of-All-Trades', '=',
-        'source >= 18 ? 7 : source >= 15 ? 6 : source >= 12 ? 5 : ' +
-        'source >= 9 ? 4 : source >= 8 ? 3 : source >= 5 ? 2 : 1'
+        'source>=18 ? 7 : source>=15 ? 6 : source>=12 ? 5 : source>=9 ? 4 : ' +
+        'source>=8 ? 3 : source>=5 ? 2 : source>=4 ? 1 : null'
       );
       ScribeCustomRules('skillNotes.skillBoostFeature',
         'pathLevels.Jack-Of-All-Trades', '=',
         'source >= 20 ? 4 : source >= 17 ? 3 : source >= 11 ? 2 : 1'
       );
+      ScribeCustomRules
+        ('skillPoints', 'skillNotes.skillBoostFeature', '+', '4 * source');
 
     } else if(path == 'Mountainborn') {
 
       features = [
-        1, 'Mountaineer', 3, 'Ambush', 4, 'Rallying Cry',
-        5, 'Constitution Bonus', 8, 'Improved Ambush', 18, 'Greater Ambush'
+        1, 'Mountaineer', 1, 'Mountain Survival', 3, 'Ambush',
+        4, 'Rallying Cry', 5, 'Constitution Bonus', 8, 'Improved Ambush',
+        13, 'Quick Ambush', 18, 'Greater Ambush'
       ];
       spellFeatures = [
         2, 'Endure Elements', 7, 'Pass Without Trace', 12, 'Meld Into Stone',
@@ -1391,28 +1393,28 @@ MN2E.HeroicPathRules = function() {
         'combatNotes.rallyingCryFeature:' +
           'Allies not flat-footed/+4 vs. surprise %V/day',
         'skillNotes.ambushFeature:Allies use character\'s Hide for ambush',
+        'skillNotes.quickAmbushFeature:Hide allies for ambush in half time',
         'skillNotes.mountaineerFeature:+%V Balance/Climb/Jump',
-        'skillNotes.mountaineerFeature2:+%V Survival (mountains)'
+        'skillNotes.mountainSurvivalFeature:+%V Survival (mountains)'
       ];
       ScribeCustomRules('combatNotes.rallyingCryFeature',
         'pathLevels.Mountainborn', '+=', 'Math.floor((source + 1) / 5)'
       );
-      ScribeCustomRules('features.Constitution Bonus',
-        'pathLevels.Mountainborn', '+', 'Math.floor((source - 5) / 5)'
+      ScribeCustomRules('mountainbornFeatures.Constitution Bonus',
+        'level', '+', 'Math.floor((source - 5) / 5)'
       );
       ScribeCustomRules('skillNotes.mountaineerFeature',
-        'pathLevels.Mountainborn', '+=', 'Math.floor((source + 4) / 2) * 2'
+        'pathLevels.Mountainborn', '+=', 'Math.floor((source + 4) / 5) * 2'
       );
-      ScribeCustomRules('skillNotes.mountaineerFeature2',
-        'features.Mountaineer', '?', null,
-        'pathLevels.Mountainborn', '+=', 'Math.floor((source + 4) / 2) * 2'
+      ScribeCustomRules('skillNotes.mountainSurvivalFeature',
+        'pathLevels.Mountainborn', '+=', 'Math.floor((source + 4) / 5) * 2'
       );
 
     } else if(path == 'Naturefriend') {
 
       features = [
-        1, 'Natural Bond', 5, 'Animal Friend', 10, 'Plant Friend',
-        15, 'Elemental Friend', 20, 'One With Nature'
+        1, 'Natural Bond', 1, 'Wild Empathy', 5, 'Animal Friend',
+        10, 'Plant Friend', 15, 'Elemental Friend', 20, 'One With Nature'
       ];
       spellFeatures = [
         2, 'Calm Animals', 3, 'Entangle', 4, 'Obscuring Mist',
@@ -1427,7 +1429,7 @@ MN2E.HeroicPathRules = function() {
           'Elementals DC %V Will save to attack',
         'combatNotes.plantFriendFeature:Plants DC %V Will save to attack',
         'featureNotes.naturalBondFeature:' +
-          'Wild Empathy/Knowledge (Nature) and Survival are class skills',
+          'Knowledge (Nature) and Survival are class skills',
         'magicNotes.oneWithNatureFeature:<i>Commune With Nature</i> at will',
         'skillNotes.animalFriendFeature:+4 Handle Animal',
         'skillNotes.elementalFriendFeature:+4 Diplomacy (elementals)',
@@ -1444,54 +1446,58 @@ MN2E.HeroicPathRules = function() {
       ScribeCustomRules('combatNotes.plantFriendFeature',
         'charismaModifier', '=', '10 + source'
       );
-      ScribeCustomRules
-        ('features.Wild Empathy', 'featureNotes.naturalBondFeature', '=', '1');
       ScribeCustomRules('classSkills.Knowledge (Nature)',
         'featureNotes.naturalBondFeature', '=', '1'
       );
       ScribeCustomRules
         ('classSkills.Survival', 'featureNotes.naturalBondFeature', '=', '1');
+      ScribeCustomRules
+        ('skillNotes.wildEmpathyFeature','pathLevels.Naturefriend','+=',null);
 
     } else if(path == 'Northblooded') {
 
       features = [
-        1, 'Northborn', 2, 'Cold Resistance', 3, 'Battle Cry',
-        4, 'Howling Winds', 5, 'Constitution Bonus', 6, 'Aura Of Warmth',
-        11, 'Improved Battle Cry', 13, 'Frost Weapon', 16, 'Cold Immunity',
-        18, 'Icy Burst Weapon'
+        1, 'Northborn', 1, 'Wild Empathy', 2, 'Cold Resistance',
+        3, 'Battle Cry', 4, 'Howling Winds', 5, 'Constitution Bonus',
+        6, 'Aura Of Warmth', 11, 'Improved Battle Cry', 13, 'Frost Weapon',
+        16, 'Cold Immunity', 18, 'Greater Frost Weapon'
       ];
       spellFeatures = null;
       notes = [
-        'combatNotes.battleCryFeature:%V bonus hit points after cry',
-        'combatNotes.frostWeaponFeature:Additional d6 cold damage on hit',
-        'combatNotes.improvedBattleCryFeature:+1 attack/damage',
-        'combatNotes.icyBurstWeaponFeature:' +
-          'Additional d10 cold damage/critical hit die on critical hit',
-        'featureNotes.northbornFeature:Wild Empathy (cold)',
+        'combatNotes.battleCryFeature:+Level hit points after cry %V/day',
+        'combatNotes.frostWeaponFeature:' +
+           '+d6 cold damage on hit for level rounds %V/day',
+        'combatNotes.greaterFrostWeaponFeature:' +
+          '+d10 cold damage/extra critical hit die on critical hit',
+        'combatNotes.improvedBattleCryFeature:+1 attack/damage after cry',
         'magicNotes.auraOfWarmthFeature:Allies w/in 10 ft +4 Fortitude vs cold',
         'magicNotes.howlingWindsFeature:' +
           '<i>Commune With Nature</i> (winds) %V/day',
-        'saveNotes.coldResistanceFeature:ignore first %V cold damage',
+        'saveNotes.coldImmunityFeature:', // TODO
+        'saveNotes.coldResistanceFeature:Ignore first %V points cold damage',
         'saveNotes.northbornFeature:Immune to non-lethal cold/exposure',
         'skillNotes.northbornFeature:' +
           '+2 Survival (cold)/Wild Empathy (cold natives)'
       ];
-      ScribeCustomRules
-        ('combatNotes.battleCryFeature', 'pathLevels.Northblooded', '=', null);
+      ScribeCustomRules('combatNotes.battleCryFeature',
+        'pathLevels.Northblooded', '=',
+        'source >= 17 ? 4 : source >= 14 ? 3 : source >= 7 ? 2 : 1'
+      );
       ScribeCustomRules('combatNotes.frostWeaponFeature',
-        'pathLevels.Northblooded', '=', null
+        'pathLevels.Northblooded', '=', 'source >= 19 ? 2 : 1'
       );
-      ScribeCustomRules('combatNotes.greaterFrostWeaponFeature',
-        'pathLevels.Northblooded', '=', null
+      ScribeCustomRules('northbloodedFeatures.Constitution Bonus',
+        'level', '+', 'Math.floor((source - 5) / 5)'
       );
-      ScribeCustomRules
-        ('features.Wild Empathy', 'featureNotes.northbornFeature', '=', '1');
       ScribeCustomRules('magicNotes.howlingWindsFeature',
         'pathLevels.Northblooded', '+=',
         'source >= 12 ? 3 : source >= 8 ? 2 : 1'
       );
       ScribeCustomRules('saveNotes.coldResistanceFeature',
         'pathLevels.Northblooded', '+=', 'source >= 9 ? 15 : 5'
+      );
+      ScribeCustomRules('skillNotes.wildEmpathyFeature',
+        'pathLevels.Northblooded', '+=', null
       );
 
     } else if(path == 'Painless') {
@@ -1505,25 +1511,39 @@ MN2E.HeroicPathRules = function() {
       notes = [
         'combatNotes.ferocityFeature:Remain conscious below 0 HP',
         'combatNotes.improvedRetributiveRageFeature:' +
-          '+%V next round damage after suffering 2 * level damage',
+          '+%V damage next round after suffering double level damage',
         'combatNotes.increasedDamageThresholdFeature:' +
           'Continue fighting until -%V HP',
-        'combatNotes.nonlethalDamageReductionFeature:%V',
+        'combatNotes.lastStandFeature:' +
+           '1 minute of %V spell resistance/15 damage reduction/30 energy ' +
+           'resistance/near death afterward',
+        'combatNotes.nonlethalDamageReductionFeature:' +
+          'Ignore first %V points of non-lethal damage',
         'combatNotes.painlessFeature:+%V HP',
         'combatNotes.retributiveRageFeature:' +
-          '+%V attack next round after suffering 2 * level damage',
+          '+%V attack next round after suffering double level damage',
         'saveNotes.painlessFeature:+%V vs. pain effects',
         'saveNotes.uncaringMindFeature:+%V vs. enchantment'
       ];
+      ScribeCustomRules('combatNotes.improvedRetributiveRageFeature',
+        'pathLevels.Painless', '+=', null
+      );
       ScribeCustomRules('combatNotes.increasedDamageThresholdFeature',
         'pathLevels.Painless', '+=',
         'source >= 20 ? 25 : source >= 15 ? 20 : 15'
+      );
+      // TODO Twice/day at level 19
+      ScribeCustomRules('combatNotes.lastStandFeature',
+        'pathLevels.Painless', '+=', '10 + source'
       );
       ScribeCustomRules('combatNotes.nonlethalDamageReductionFeature',
         'pathLevels.Painless', '+=', 'Math.floor((source + 3) / 5) * 3'
       );
       ScribeCustomRules
         ('combatNotes.painlessFeature', 'pathLevels.Painless', '+=', null);
+      ScribeCustomRules('combatNotes.retributiveRageFeature',
+        'pathLevels.Painless', '+=', null
+      );
       ScribeCustomRules('hitPoints', 'combatNotes.painlessFeature', '+', null);
       ScribeCustomRules
         ('resistance.Enchantment', 'saveNotes.uncaringMindFeature', '+=', null);
@@ -1542,71 +1562,69 @@ MN2E.HeroicPathRules = function() {
         'Pureblood:Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
         'Dexterity Bonus/Constitution Bonus/Charisma Bonus';
       features = [
-        1, 'Master Adventurer', 2, 'Blood Of Kings', 3, 'Bonus Feat',
+        1, 'Master Adventurer', 2, 'Blood Of Kings', 3, 'Feat Bonus',
         4, 'Skill Mastery'
       ];
       spellFeatures = null;
       notes =[
         'abilityNotes.abilityBonusFeature:+1 to %V different abilities',
-        'featureNotes.skillMasteryFeature:Skill Mastery with %V chosen skills',
+        'featureNotes.skillMasteryFeature:' +
+          'Skill Mastery feat with %V chosen skills',
         'skillNotes.bloodOfKingsFeature:' +
           'Daily +%V on charisma skills in shadow or resistance interactions',
-        'skillNotes.masterAdventurerFeature:+%V on three selected skills'
+        'skillNotes.masterAdventurerFeature:' +
+          '+%V on three selected non-charisma skills'
       ];
-      ScribeCustomRules('abilityNotes.abilityBonusFeature',
-        'pathLevels.Pureblooded', '+=', 'Math.floor(source / 5)'
-      );
       ScribeCustomRules('featCount',
-        'features.Bonus Feat', '+', null,
         'featureNotes.skillMasteryFeature', '+', null
       );
-      ScribeCustomRules('features.Bonus Feat',
-        'pathLevels.Pureblooded', '+=', 'Math.floor((source - 3) / 5)'
+      ScribeCustomRules('purebloodFeatures.Feat Bonus',
+        'level', '+', 'Math.floor((source - 3) / 5)'
       );
       ScribeCustomRules('featureNotes.skillMasteryFeature',
-        'pathLevels.Pureblooded', '+=', 'Math.floor((source + 1) / 5)'
+        'pathLevels.Pureblood', '+=', 'Math.floor((source + 1) / 5)'
       );
-      ScribeCustomRules('selectableFeatureCount.Pureblooded',
-        'pathLevels.Pureblooded', '=', 'Math.floor(source / 5)'
+      ScribeCustomRules('selectableFeatureCount.Pureblood',
+        'pathLevels.Pureblood', '=', 'source>=5 ? Math.floor(source / 5) : null'
       );
       ScribeCustomRules('skillNotes.bloodOfKingsFeature',
-        'pathLevels.Pureblooded', '+=', 'Math.floor((source + 3) / 5) * 2'
+        'pathLevels.Pureblood', '+=', 'Math.floor((source + 3) / 5) * 2'
       );
       ScribeCustomRules('skillNotes.masterAdventurerFeature',
-        'pathLevels.Pureblooded', '+=', 'Math.floor((source + 4) / 5) * 2'
+        'pathLevels.Pureblood', '+=', 'Math.floor((source + 4) / 5) * 2'
       );
+      ScribeCustomRules
+        ('skillPoints', 'skillNotes.masterAdventurerFeature', '+', '3*source');
 
     } else if(path == 'Quickened') {
 
       features = [
-        1, 'Initiative Bonus', 2, 'Dodge Bonus', 3, 'Fast Movement',
-        4, 'Burst Of Speed', 5, 'Dex Bonus'
+        1, 'Initiative Bonus', 2, 'Armor Class Bonus', 3, 'Fast Movement',
+        4, 'Burst Of Speed', 5, 'Dexterity Bonus'
       ];
       spellFeatures = null;
       notes = [
         'abilityNotes.fastMovementFeature:+%V speed',
         'combatNotes.burstOfSpeedFeature:' +
-          'Extra attack/move action for 3+conMod rounds %V/day',
-        'combatNotes.dodgeBonusFeature:+%V AC',
-        'combatNotes.initiativeBonusFeature:+%V initiative'
+          'Extra attack/move action for 3+conMod rounds %V/day/fatigued afterward'
       ];
       ScribeCustomRules('abilityNotes.fastMovementFeature',
-        'pathLevels.Quickened', '+=', 'Math.floor((source + 3) / 5) * 5'
+        'pathLevels.Quickened', '+=', 'Math.floor((source + 2) / 5) * 5'
       );
-      ScribeCustomRules
-        ('armorClass', 'combatNotes.dodgeBonusFeature', '+', null);
       ScribeCustomRules('combatNotes.burstOfSpeedFeature',
         'pathLevels.Quickened', '+=', 'Math.floor((source + 1) / 5)'
-      );
-      ScribeCustomRules('combatNotes.dodgeBonusFeature',
-        'pathLevels.Quickened', '+=', 'Math.floor((source + 3) / 5)'
       );
       ScribeCustomRules('combatNotes.initiativeBonusFeature',
         'pathLevels.Quickened', '+=', 'Math.floor((source + 4) / 5) * 2'
       );
       ScribeCustomRules
         ('initiative', 'combatNotes.initiativeBonusFeature', '+', null);
-      ScribeCustomRules('speed', 'abilityNotes.fastMovementFeature', '+', null);
+      ScribeCustomRules('quickenedFeatures.Armor Class Bonus',
+        'level', '+', 'Math.floor((source - 2) / 5)'
+      );
+      ScribeCustomRules('quickenedFeatures.Dexterity Bonus',
+        'level', '+', 'Math.floor((source - 5) / 5)'
+      );
 
     } else if(path == 'Seaborn') {
 
@@ -1622,18 +1640,22 @@ MN2E.HeroicPathRules = function() {
       ];
       notes = [
         'magicNotes.aquaticAllyFeature:Cast <i>Aquatic Ally</i> spells %V/day',
+        'saveNotes.coldResistanceFeature:Ignore first %V points cold damage',
         'skillNotes.aquaticAdaptationFeature:' +
            'Breathe through gills/no underwater pressure damage',
         'skillNotes.aquaticBlindsightFeature:' +
            'Detect creatures in opaque water up to %V feet',
-        'skillNotes.aquaticEmmisaryFeature:Speak to all aquatic animals',
+        'skillNotes.aquaticEmissaryFeature:Speak to all aquatic animals',
         'skillNotes.assistAlliesFeature:' +
           'Allies move through water at full speed/give oxygen to allies',
-        'skillNotes.dolphin\'sGraceFeature:+%V Swim speed/+8 Swim hazards',
+        'skillNotes.dolphin\'sGraceFeature:%V Swim speed/+8 Swim hazards',
         'skillNotes.deepLungsFeature:Hold breath for %V rounds'
       ];
       ScribeCustomRules('magicNotes.aquaticAllyFeature',
         'pathLevels.Seaborn', '+=', 'Math.floor(source / 4)'
+      );
+      ScribeCustomRules('saveNotes.coldResistanceFeature',
+        'pathLevels.Seaborn', '+=', 'source >= 14 ? 5 : null'
       );
       ScribeCustomRules('skillNotes.aquaticBlindsightFeature',
         'pathLevels.Seaborn', '+=', 'Math.floor((source + 5) / 8) * 30'
@@ -1663,6 +1685,28 @@ MN2E.HeroicPathRules = function() {
         'pathLevels.Seer', '=', 'Math.floor((source + 6) / 6)'
       );
 
+    } else if(path == 'Shadow Walker') {
+
+      features = [
+        1, 'Darkvision', 2, 'Shadow Veil', 4, 'Shadow Jump',
+        11, 'Hide In Plain Sight'
+      ];
+      spellFeatures = [
+        3, 'Expeditious Retreat', 5, 'Blur', 7, 'Undetectable Alignment',
+        9, 'Displacement', 13, 'Expeditious Retreat', 15, 'Blur',
+        17, 'Undetectable Alignment', 19, 'Displacement'
+      ];
+      notes = [
+        'featureNotes.shadowJumpFeature:Move %V ft between shadows',
+        'skillNotes.shadowVeilFeature:+%V Hide'
+      ];
+      ScribeCustomRules('featureNotes.shadowJumpFeature',
+        'pathLevels.Shadow Walker', '+=', 'Math.floor(source / 4) * 10'
+      );
+      ScribeCustomRules('skillNotes.shadowVeilFeature',
+        'pathLevels.Shadow Walker', '+=', 'Math.floor((source + 2) / 4) * 2'
+      );
+
     } else if(path == 'Speaker') {
 
       features = [
@@ -1674,20 +1718,22 @@ MN2E.HeroicPathRules = function() {
         12, 'Shout', 18, 'Greater Shout'
       ];
       notes = [
-        'magicNotes.powerWordsFeature:%V 3+conMod/day',
+        'magicNotes.powerWordsFeature:<i>Word of %V</i> 3+conMod/day',
         'skillNotes.languageSavantFeature:' +
           'Fluent in any language after listening for 10 minutes',
         'skillNotes.persuasiveSpeakerFeature:+%V on verbal charisma skills'
       ];
-      ScribeCustomRules('features.Charisma Bonus',
-        'pathLevels.Speaker', '+', 'Math.floor((source - 5) / 5)'
+      ScribeCustomRules('speakerFeatures.Charisma Bonus',
+        'level', '+', 'Math.floor((source - 5) / 5)'
       );
-/* TODO
-      ScribeCustomFeatures('pathLevels.Speaker', 'magicNotes.powerWordsFeature',
-        [3, 'Opening', 6, 'Shattering', 9, 'Silence', 13, 'Slumber',
-         16, 'Charming', 19, 'Holding']
+      ScribeCustomRules('magicNotes.powerWordsFeature',
+        'pathLevels.Speaker', '=',
+        '"Opening" + (source >= 6 ? "/Shattering" : "") + ' +
+                    '(source >= 9 ? "/Silence" : "") + ' +
+                    '(source >= 13  ? "/Slumber" : "") + ' +
+                    '(source >= 16 ? "/Charming" : "") + ' +
+                    '(source >= 19 ? "/Holding" : "")'
       );
-*/
       ScribeCustomRules('skillNotes.persuasiveSpeakerFeature',
         'pathLevels.Speaker', '=',
         'source >= 17 ? 8 : source >= 11 ? 6 : source >= 7 ? 4 : 2'
@@ -1697,33 +1743,37 @@ MN2E.HeroicPathRules = function() {
 
       features = [
         1, 'Untapped Potential', 2, 'Metamagic Aura',
-        3, 'Improved Spell Resistance', 4, 'Bonus Raw Energy'
+        3, 'Improved Spell Resistance', 4, 'Bonus Spell Energy'
       ];
       spellFeatures = null;
       notes = [
-        'magicNotes.metamagicAuraFeature:Affect spells w/in 30 ft %V/day',
-        'magicNotes.metamagicAuraFeature2:%V to spells up to 1/2 level',
+        'magicNotes.metamagicAuraFeature:' +
+          '%V others\'spells up to 1/2 level w/in 30 ft',
+        'magicNotes.metamagicAuraFeature2:%V/day',
         'magicNotes.untappedPotentialFeature:' +
           'Contribute %V points to others\' spells w/in 30 ft',
         'saveNotes.improvedSpellResistanceFeature:+%V vs. spells'
       ];
-/*
-      ScribeCustomFeatures(
-        'pathLevels.Spellsoul', 'magicNotes.metamagicAuraFeature2',
-        [2, 'Enlarge', 5, 'Extend', 8, 'Reduce', 11, 'Attract', 14, 'Empower',
-         17, 'Maximize', 20, 'Redirect']
-      );
-*/
-      ScribeCustomRules('untappedPotentialHighestModifier',
-        'features.Untapped Potential', '?', null,
-        'highestMagicModifier', '=', null
+      ScribeCustomRules('magicNotes.bonusSpellEnergyFeature',
+        'pathLevels.Spellsoul', '+=',
+         'source>=18?8 : source>=13 ? 6 : source>=9 ? 4 : source>=4 ? 2 : null'
       );
       ScribeCustomRules('magicNotes.metamagicAuraFeature',
-        'pathLevels.Spellsoul', '+=', 'source>=15?4:source>=10?3:source>=6?2:1'
+        'pathLevels.Spellsoul', '=',
+        '["Enlarge"].concat(source >= 5 ? ["Extend"] : [])' +
+                   '.concat(source >= 8 ? ["Reduce"] : [])' +
+                   '.concat(source >= 11 ? ["Attract"] : [])' +
+                   '.concat(source >= 14 ? ["Empower"] : [])' +
+                   '.concat(source >= 17 ? ["Maximize"] : [])' +
+                   '.concat(source >= 20 ? ["Redirect"] : []).sort().join("/")'
+      );
+      ScribeCustomRules('magicNotes.metamagicAuraFeature2',
+        'pathLevels.Spellsoul', '=',
+        'source >=15?4 : source>=10?3 : source>=6?2 : source>=2?1 : null'
       );
       ScribeCustomRules('magicNotes.untappedPotentialFeature',
-        'untappedPotentialHighestModifier', '=', 'source + 1',
-        'pathLevels.Spellsoul', '+',
+        'highestMagicModifier', '=', 'source + 1',
+        'level', '+',
           'source>=18 ? 8 : source>=13 ? 6 : source>=9 ? 4 : source>=4 ? 2 : 0'
       );
       ScribeCustomRules('resistance.Spell',
@@ -1732,36 +1782,13 @@ MN2E.HeroicPathRules = function() {
       ScribeCustomRules('saveNotes.improvedSpellResistanceFeature',
         'pathLevels.Spellsoul', '=',
         'source>=19 ? 5 : source>=16 ? 4 : source>=12 ? 3 : source>=7 ? 2 : ' +
-        'source >= 3 ? 1 : 0'
-      );
-
-    } else if(path == 'Shadow Walker') {
-
-      features = [
-        1, 'Improved Darkvision', 2, 'Shadow Veil', 4, 'Shadow Jump',
-        11, 'Hide In Plain Sight'
-      ];
-      spellFeatures = [
-        3, 'Expeditious Retreat', 5, 'Blur', 7, 'Undetectable Alignment',
-        9, 'Displacement', 13, 'Expeditious Retreat', 15, 'Blur',
-        17, 'Undectable Alignment', 19, 'Displacement'
-      ];
-      notes = [
-        'featureNotes.improvedDarkvisionFeature:+60 ft',
-        'featureNotes.shadowJumpFeature:Move %V ft between shadows',
-        'skillNotes.shadowVeilFeature:+%V Hide'
-      ];
-      ScribeCustomRules('featureNotes.shadowJumpFeature',
-        'pathLevels.Shadow Walker', '+=', 'Math.floor(source / 4) * 10'
-      );
-      ScribeCustomRules('skillNotes.shadowVeilFeature',
-        'pathLevels.Shadow Walker', '+=', 'Math.floor((source + 2) / 4) * 2'
+        'source>=3 ? 1 : null'
       );
 
     } else if(path == 'Steelblooded') {
 
       features = [
-        1, 'Bonus Feat', 2, 'Offensive Tactics', 3, 'Strategic Blow',
+        1, 'Feat Bonus', 2, 'Offensive Tactics', 3, 'Strategic Blow',
         4, 'Skilled Warrior', 14, 'Untouchable', 19, 'Improved Untouchable'
       ];
       spellFeatures = null;
@@ -1776,21 +1803,20 @@ MN2E.HeroicPathRules = function() {
         'combatNotes.strategicBlowFeature:Ignore %V points of damage reduction',
         'combatNotes.untouchableFeature:No foe AOO from special attacks'
       ];
-      ScribeCustomRules('combatNotes.offensiveTacticFeature',
+      ScribeCustomRules('combatNotes.offensiveTacticsFeature',
         'pathLevels.Steelblooded', '+=',
         'source>=17 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
       );
-      ScribeCustomRules('combatNotes.skilledWariorFeature',
+      ScribeCustomRules('combatNotes.skilledWarriorFeature',
         'pathLevels.Steelblooded', '+=',
         'source>=18 ? 4 : source>=13 ? 3 : source>=8 ? 2 : 1'
       );
-      ScribeCustomRules('combatNotes.stategicBlowFeature',
+      ScribeCustomRules('combatNotes.strategicBlowFeature',
         'pathLevels.Steelblooded', '+=',
         'source>=16 ? 15 : source>=12 ? 12 : source>=9 ? 9 : source>=6 ? 6 : 3'
       );
-      ScribeCustomRules('featCount', 'features.Bonus Feat', '+', null);
-      ScribeCustomRules('features.Bonus Feat',
-        'pathLevels.Steelblooded', '+=', 'Math.floor(source / 5)'
+      ScribeCustomRules('steelbloodedFeatures.Feat Bonus',
+        'level', '+', 'Math.floor(source / 5)'
       );
 
     } else if(path == 'Sunderborn') {
@@ -1807,7 +1833,7 @@ MN2E.HeroicPathRules = function() {
         'combatNotes.planarFuryFeature:' +
           '+2 strength/constitution/+1 Will save/-1 AC 5+conMod rounds %V/day',
         'featureNotes.magicalDarkvisionFeature:See perfectly in any darkness',
-        'featureNotes.invisibilityVision:See invisible creatures',
+        'featureNotes.invisibilityVisionFeature:See invisible creatures',
         'magicNotes.detectOutsiderFeature:Detect outsiders at will',
         'skillNotes.bloodOfThePlanesFeature:' +
           '+%V on charisma skills when dealing with outsiders'
@@ -1823,13 +1849,13 @@ MN2E.HeroicPathRules = function() {
 
       features = [
         1, 'Aid Another', 2, 'Combat Overview', 3, 'Coordinated Initiative',
-        4, 'Coordinated Attack', 13, 'Directed Attack', 18, 'Telling Blow',
-        20, 'Perfect Assault'
+        4, 'Coordinated Attack', 5, 'Aided Combat Bonus', 13, 'Directed Attack',
+        18, 'Telling Blow', 20, 'Perfect Assault'
       ];
       spellFeatures = null;
       notes = [
-        'combatNotes.aidAnotherFeature:' +
-          'Aid another as a move action; +%V bonus to ally attack or AC',
+        'combatNotes.aidAnotherFeature:Aid another as a move action',
+        'combatNotes.aidedCombatBonusFeature:Aided ally +%V to attack or AC',
         'combatNotes.combatOverviewFeature:' +
           'Ally w/in 60 ft avoid AOO/flat-footed or foe flat-footed %V/day',
         'combatNotes.coordinatedAttackFeature:' +
@@ -1838,12 +1864,12 @@ MN2E.HeroicPathRules = function() {
         'combatNotes.coordinatedInitiativeFeature:' +
           'Allies w/in 30 ft use character\'s initiative %V/day',
         'combatNotes.directedAttackFeature:' +
-          'Allies w/in 30 ft add 1/2 character\'s base attack 1/day',
+          'Ally w/in 30 ft add 1/2 character\'s base attack 1/day',
         'combatNotes.perfectAssaultFeature:' +
           'Allies w/in 30 ft threaten critical on any hit 1/day',
         'combatNotes.tellingBlowFeature:Allies w/in 30 ft re-roll damage 1/day'
       ];
-      ScribeCustomRules('combatNotes.aidAnotherFeature',
+      ScribeCustomRules('combatNotes.aidedCombatBonusFeature',
         'pathLevels.Tactician', '+=',
         'source>=19 ? 4 : source>=14 ? 3 : source>=9 ? 2 : source>=5 ? 1 : 0'
       );
@@ -1863,28 +1889,33 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Warg') {
 
       features = [
-        1, 'Wild Empathy', 2, 'Animal Companion', 3, 'Wild Sense',
-        5, 'Wild Shape', 13, 'Ferocity', 20, 'Blindsense'
+        1, 'Wild Empathy', 2, 'Animal Companion', 5, 'Wild Shape',
+        13, 'Ferocity', 20, 'Blindsense'
       ];
       spellFeatures = [
         4, 'Charm Animal', 7, 'Speak With Animals', 12, 'Charm Animal',
         17, 'Speak With Animals'
       ];
-      notes = null;
-      ScribeCustomRules('features.Animal Companion',
-        'pathLevels.Warg', '+', 'Math.floor((source - 2) / 4)'
+      notes = [
+        'combatNotes.ferocityFeature:', // TODO
+        'magicNotes.wildShapeFeature:Change into creature of size %V'
+      ];
+      ScribeCustomRules('wargFeatures.Animal Companion',
+        'level', '+', 'Math.floor((source - 2) / 4)'
       );
       ScribeCustomRules('magicNotes.wildShapeFeature',
-        'pathLevels.warg', '=',
-        'source >= 19 ? "Medium-huge 3/day" : ' +
-        'source >= 15 ? "Medium-large 3/day" : ' +
-        'source >= 11 ? "Medium-large 2/day" : ' +
-        'source >= 8 ? "Medium 2/day" : ' +
-        'source >= 5 ? "Medium 1/day" : null'
+        'pathLevels.Warg', '=',
+        'source >= 19 ? "medium-huge 3/day" : ' +
+        'source >= 15 ? "medium-large 3/day" : ' +
+        'source >= 11 ? "medium-large 2/day" : ' +
+        'source >= 8 ? "medium 2/day" : ' +
+        'source >= 5 ? "medium 1/day" : null'
       );
       ScribeCustomRules('selectableFeatureCount.Warg',
         'pathLevels.Warg', '=', 'source >= 16 ? 3 : source >= 9 ? 2 : 1'
       );
+      ScribeCustomRules
+        ('skillNotes.wildEmpathyFeature', 'pathLevels.Warg', '+=', null);
 
     } else
       continue;
@@ -1899,7 +1930,7 @@ MN2E.HeroicPathRules = function() {
           'pathLevels.' + path, '=', 'source >= ' + level + ' ? 1 : null'
         );
         ScribeCustomRules
-          ('features.' + feature, prefix + 'Features.' + feature, '=', '1');
+          ('features.' + feature, prefix + 'Features.' + feature, '+=', null);
       }
     }
     ScribeCustomSheet
@@ -2335,8 +2366,6 @@ MN2E.RaceRules = function() {
       ];
       ScribeCustomRules
         ('skillNotes.naturalPreditorFeature', 'strengthModifier', '=', null);
-      ScribeCustomRules
-        ('skills.Intimidate', 'skillNotes.naturalPreditorFeature', '+', null);
 
     } else if(race.indexOf(' Sarcosan') >= 0) {
 
