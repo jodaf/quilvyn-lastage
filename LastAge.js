@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.29 2006/08/29 06:50:14 Jim Exp $ */
+/* $Id: LastAge.js,v 1.30 2006/08/30 15:20:02 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -40,10 +40,14 @@ function MN2E() {
   MN2E.MagicRules = null;
   ScribeCustomEditor
     ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
+  // TODO Remove these null testing choices
   ScribeCustomChoices('heroicPaths', 'Null Path');
   ScribeCustomChoices('races', 'Null Race');
 }
-/* Choice lists */
+
+// Arrays of choices passed to Scribe.  Removing elements from these before
+// calling the rules functions will limit the user's options and eliminate
+// rules associated with the removed choices.
 MN2E.CLASSES = [
   'Charismatic Channeler', 'Defender', 'Fighter', 'Hermetic Channler', 
   'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
@@ -85,25 +89,6 @@ MN2E.RACES = [
   'Nomadic Halfling', 'Orc', 'Plains Sarcosan', 'Sea Elf', 'Snow Elf',
   'Urban Sarcosan', 'Wood Elf'
 ];
-MN2E.racesFavoredRegions = {
-  'Agrarian Halfling':'Central Erenland',
-  'Clan Dwarf':'Kaladrun Mountains/Subterranean',
-  'Clan Raised Dwarrow':'Kaladrun Mountains',
-  'Clan Raised Dworg':'Kaladrun Mountains',
-  'Danisil Raised Elfling':'Aruun', 'Dorn':'Northlands',
-  'Erenlander':'Erenland', 'Gnome':'Central Erenland',
-  'Gnome Raised Dwarrow':'Central Erenland',
-  'Halfling Raised Elfling':'Central Erenland', 'Jungle Elf':'Erethor/Aruun',
-  'Kurgun Dwarf':'Kaladrun Mountains/Surface',
-  'Kurgun Raised Dwarrow':'Kaladrun Mountains',
-  'Kurgun Raised Dworg':'Kaladrun Mountains',
-  'Nomadic Halfling':'Central Erenland', 'Orc':'Northern Reaches',
-  'Plains Sarcosan':'Southern Erenland', 'Sea Elf':'Erethor/Miraleen',
-  'Snow Elf':'Erethor/Veradeen', 'Urban Sarcosan':null,
-  'Wood Elf':'Erethor/Caraheen'
-};
-MN2E.SELECTABLE_FEATURES = [
-];
 MN2E.SKILLS = [
   'Knowledge (Old Gods)', 'Knowledge (Shadow)', 'Knowledge (Spirits)'
 ];
@@ -122,6 +107,27 @@ MN2E.WEAPONS = [
   'Sepi:d6@18', 'Shard Arrow:d6@16x1', 'Staghorn:d6', 'Tack Whip:d4',
   'Urutuk Hatchet:d8x3r20', 'Vardatch:d12'
 ];
+
+// Related information used internally by MN2E
+MN2E.racesFavoredRegions = {
+  'Agrarian Halfling':'Central Erenland',
+  'Clan Dwarf':'Kaladrun Mountains/Subterranean',
+  'Clan Raised Dwarrow':'Kaladrun Mountains',
+  'Clan Raised Dworg':'Kaladrun Mountains',
+  'Danisil Raised Elfling':'Aruun', 'Dorn':'Northlands',
+  'Erenlander':'Erenland', 'Gnome':'Central Erenland',
+  'Gnome Raised Dwarrow':'Central Erenland',
+  'Halfling Raised Elfling':'Central Erenland', 'Jungle Elf':'Erethor/Aruun',
+  'Kurgun Dwarf':'Kaladrun Mountains/Surface',
+  'Kurgun Raised Dwarrow':'Kaladrun Mountains',
+  'Kurgun Raised Dworg':'Kaladrun Mountains',
+  'Nomadic Halfling':'Central Erenland', 'Orc':'Northern Reaches',
+  'Plains Sarcosan':'Southern Erenland', 'Sea Elf':'Erethor/Miraleen',
+  'Snow Elf':'Erethor/Veradeen', 'Urban Sarcosan':null,
+  'Wood Elf':'Erethor/Caraheen'
+};
+MN2E.selectableFeatures = {
+};
 
 MN2E.ClassRules = function() {
 
@@ -179,10 +185,10 @@ MN2E.ClassRules = function() {
       );
 
       if(klass == 'Charismatic Channeler') {
-        MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
-          'Charismatic Channeler:Greater Confidence/Greater Fury/' +
-          'Improved Confidence/Improved Fury/Inspire Confidence/' +
-          'Inspire Facination/Inspire Fury/Mass Suggestion/Suggestion';
+        MN2E.selectableFeatures[klass] =
+          'Greater Confidence/Greater Fury/Improved Confidence/Improved Fury/' +
+          'Inspire Confidence/Inspire Facination/Inspire Fury/' +
+          'Mass Suggestion/Suggestion';
         features = features.concat(
           [1, 'Magecraft (Charismatic)', 3, 'Force Of Personality']
         );
@@ -249,9 +255,8 @@ MN2E.ClassRules = function() {
           'levels.Charismatic Channeler', '=', 'Math.floor(source / 3)'
         );
       } else if(klass == 'Hermetic Channeler') {
-        MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
-          'Hermetic Channeler:Foe Specialty/Knowledge Specialty/' +
-          'Quick Reference/Spell Specialty';
+        MN2E.selectableFeatures[klass] =
+          'Foe Specialty/Knowledge Specialty/Quick Reference/Spell Specialty';
         features = features.concat([1, 'Magecraft (Hermetic)', 3, 'Lorebook']);
         notes = notes.concat([
           'skillNotes.foeSpecialtyFeature:' +
@@ -276,10 +281,10 @@ MN2E.ClassRules = function() {
         ScribeCustomRules
           ('channelerLevels', 'levels.Hermetic Channeler', '+=', null);
       } else if(klass == 'Spiritual Channeler') {
-        MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
-          'Spiritual Channeler:Confident Effect/Heightened Effect/'+
-          'Mastery Of Nature/Mastery Of Spirits/Mastery Of The Unnatural/' +
-          'Powerful Effect/Precise Effect/Specific Effect/Universal Effect';
+        MN2E.selectableFeatures[klass] =
+          'Confident Effect/Heightened Effect/Mastery Of Nature/' +
+          'Mastery Of Spirits/Mastery Of The Unnatural/Powerful Effect/' +
+          'Precise Effect/Specific Effect/Universal Effect';
         features = features.concat(
           [1, 'Magecraft (Spiritual)', 3, 'Master Of Two Worlds']
         );
@@ -343,11 +348,11 @@ MN2E.ClassRules = function() {
 
     } else if(klass == 'Defender') {
 
-      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
-       'Defender:Defensive Mastery/Dodge Training/Flurry Attack/' +
-       'Grappling Training/Offensive Training/Speed Training/Cover Ally/' +
-       'One With The Weapon/Rapid Strike/Strike And Hold/Counterattack/' +
-       'Devastating Strike/Furious Grapple/Retailiatory Strike/Weapon Trap';
+      MN2E.selectableFeatures[klass] =
+       'Defensive Mastery/Dodge Training/Flurry Attack/Grappling Training/' +
+       'Offensive Training/Speed Training/Cover Ally/One With The Weapon/' +
+       'Rapid Strike/Strike And Hold/Counterattack/Devastating Strike/' +
+       'Furious Grapple/Retailiatory Strike/Weapon Trap';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
         1, 'Masterful Strike', 2, 'Defender Abilities',
@@ -473,8 +478,8 @@ MN2E.ClassRules = function() {
 
     } else if(klass == 'Fighter') {
 
-      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
-        'Fighter:Adapter/Improviser/Leader Of Men/Survivor';
+      MN2E.selectableFeatures[klass] =
+        'Adapter/Improviser/Leader Of Men/Survivor';
       baseAttack = null;
       features = [];
       hitDie = null;
@@ -576,13 +581,13 @@ MN2E.ClassRules = function() {
 
     } else if(klass == 'Wildlander') {
 
-      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
-        'Wildlander:Animal Companion/Camouflage/Evasion/Hated Foe/' +
-        'Hide In Plain Sight/Hunted By The Shadow/Improved Evasion/' +
-        'Improved Woodland Stride/Instinctive Response/Master Hunter/' +
-        'Overland Stride/Quick Stride/Rapid Response/Sense Dark Magic/' +
-        'Skill Mastery/Slippery Mind/Trackless Step/True Aim/Wild Empathy/' +
-        'Wilderness Trapfinding/Woodland Stride';
+      MN2E.selectableFeatures[klass] =
+        'Animal Companion/Camouflage/Evasion/Hated Foe/Hide In Plain Sight/' +
+        'Hunted By The Shadow/Improved Evasion/Improved Woodland Stride/' +
+        'Instinctive Response/Master Hunter/Overland Stride/Quick Stride/' +
+        'Rapid Response/Sense Dark Magic/Skill Mastery/Slippery Mind/' +
+        'Trackless Step/True Aim/Wild Empathy/Wilderness Trapfinding/' +
+        'Woodland Stride';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
         1, 'Track', 3, 'Danger Sense', 4, 'Hunter\'s Strike'
@@ -854,19 +859,21 @@ MN2E.FeatRules = function() {
     ScribeCustomRules
       ('features.' + MN2E.FEATS[i], 'feats.' + MN2E.FEATS[i], '=', null);
   }
-  ScribeCustomChoices('selectableFeatures', MN2E.SELECTABLE_FEATURES);
-  for(var i = 0; i < MN2E.SELECTABLE_FEATURES.length; i++) {
-    var pieces = MN2E.SELECTABLE_FEATURES[i].split(':');
-    var prefix = pieces[0].substring(0, 1).toLowerCase() +
-                 pieces[0].substring(1).replace(/ /g, '');
-    var selectables = pieces[1].split('/');
-    for(var j = 0; j < selectables.length; j++) {
-      var selectable = selectables[j];
+  var allSelectable = {};
+  for(var a in MN2E.selectableFeatures) {
+    PH35.selectableFeatures[a] = MN2E.selectableFeatures[a]; // for Randomize
+    var prefix = a.substring(0, 1).toLowerCase() +
+                 a.substring(1).replace(/ /g, '');
+    var features = MN2E.selectableFeatures[a].split('/');
+    for(var i = 0; i < features.length; i++) {
+      selectable = features[i];
       ScribeCustomRules('features.' + selectable,
         'selectableFeatures.' + selectable, '+=', null
       );
+      allSelectable[selectable] = '';
     }
   }
+  ScribeCustomChoices('selectableFeatures', ScribeUtils.GetKeys(allSelectable));
 
 };
 
@@ -926,8 +933,8 @@ MN2E.HeroicPathRules = function() {
 
     if(path == 'Beast') {
 
-      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
-        'Beast:Low Light Vision/Scent/Strength Bonus/Constitution Bonus/' +
+      MN2E.selectableFeatures[path] =
+        'Low Light Vision/Scent/Strength Bonus/Constitution Bonus/' +
         'Dexterity Bonus/Wisdom Bonus';
       features = [
         1, 'Vicious Assault', 2, 'Beastial Aura', 7, 'Rage', 12, 'Repel Animals'
@@ -1168,9 +1175,9 @@ MN2E.HeroicPathRules = function() {
 
     } else if(path == 'Feyblooded') {
 
-      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
-        'Feyblooded:Armor Class Bonus/Dexterity Bonus/Fortitude Bonus/' +
-        'Reflex Bonus/Will Bonus';
+      MN2E.selectableFeatures[path] =
+        'Armor Class Bonus/Dexterity Bonus/Fortitude Bonus/Reflex Bonus/' +
+        'Will Bonus';
       features = [
         1, 'Low Light Vision', 7, 'Fey Vision'
       ];
@@ -1335,9 +1342,9 @@ MN2E.HeroicPathRules = function() {
 
     } else if(path == 'Jack-Of-All-Trades') {
 
-      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
-        'Jack-Of-All-Trades:Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
-        'Dexterity Bonus/Constitution Bonus/Charisma Bonus';
+      MN2E.selectableFeatures[path] =
+        'Strength Bonus/Intelligence Bonus/Wisdom Bonus/Dexterity Bonus/' +
+         'Constitution Bonus/Charisma Bonus';
       features = [
         1, 'Spell Choice', 2, 'Spontaneous Spell', 3, 'Skill Boost',
         7, 'Feat Bonus'
@@ -1558,9 +1565,9 @@ MN2E.HeroicPathRules = function() {
 
     } else if(path == 'Pureblood') {
 
-      MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
-        'Pureblood:Strength Bonus/Intelligence Bonus/Wisdom Bonus/' +
-        'Dexterity Bonus/Constitution Bonus/Charisma Bonus';
+      MN2E.selectableFeatures[path] =
+        'Strength Bonus/Intelligence Bonus/Wisdom Bonus/Dexterity Bonus/' +
+        'Constitution Bonus/Charisma Bonus';
       features = [
         1, 'Master Adventurer', 2, 'Blood Of Kings', 3, 'Feat Bonus',
         4, 'Skill Mastery'
@@ -2289,8 +2296,7 @@ MN2E.RaceRules = function() {
         ('resistance.Fear', 'saveNotes.unafraidFeature', '+=', '2');
 
       if(race == 'Agrarian Halfling') {
-        MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
-          'Agrarian Halfling:Stout/Studious';
+        MN2E.selectableFeatures[race] = 'Stout/Studious';
         features = features.concat([
           1, 'Dextrous Hands', 1, 'Gifted Healer']
         );
@@ -2320,8 +2326,8 @@ MN2E.RaceRules = function() {
           'race', '=', 'source == "Agrarian Halfling" ? 1 : null'
         );
       } else if(race == 'Nomadic Halfling') {
-        MN2E.SELECTABLE_FEATURES[MN2E.SELECTABLE_FEATURES.length] =
-          'Nomadic Halfling:Bound To The Beast/Bound To The Spirits';
+        MN2E.selectableFeatures[race] =
+          'Bound To The Beast/Bound To The Spirits';
         features = features.concat([1, 'Focused Rider', 1, 'Skilled Rider']);
         notes = notes.concat([
           'featureNotes.boundToTheBeastFeature:Mounted Combat',
