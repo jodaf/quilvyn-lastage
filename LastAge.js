@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.30 2006/08/30 15:20:02 Jim Exp $ */
+/* $Id: LastAge.js,v 1.31 2006/09/24 16:06:43 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -145,8 +145,8 @@ MN2E.ClassRules = function() {
       Scribe.spellsCategoryCodes[klass] = 'W';
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        1, 'Art Of Magic', 1, 'Bonus Spell Energy', 2, 'Bonus Spellcasting',
-        2, 'Bonus Spells', 2, 'Summon Familiar', 4, 'Arcane Feat Bonus'
+        '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
+        '2:Bonus Spells', '2:Summon Familiar', '4:Arcane Feat Bonus'
       ];
       hitDie = 6;
       notes = [
@@ -190,7 +190,7 @@ MN2E.ClassRules = function() {
           'Inspire Confidence/Inspire Facination/Inspire Fury/' +
           'Mass Suggestion/Suggestion';
         features = features.concat(
-          [1, 'Magecraft (Charismatic)', 3, 'Force Of Personality']
+          ['1:Magecraft (Charismatic)', '3:Force Of Personality']
         );
         notes = notes.concat([
           'magicNotes.forceOfPersonalityFeature:' +
@@ -257,7 +257,7 @@ MN2E.ClassRules = function() {
       } else if(klass == 'Hermetic Channeler') {
         MN2E.selectableFeatures[klass] =
           'Foe Specialty/Knowledge Specialty/Quick Reference/Spell Specialty';
-        features = features.concat([1, 'Magecraft (Hermetic)', 3, 'Lorebook']);
+        features = features.concat(['1:Magecraft (Hermetic)', '3:Lorebook']);
         notes = notes.concat([
           'skillNotes.foeSpecialtyFeature:' +
             'Each day choose a creature type to take 10 on Knowledge checks',
@@ -286,7 +286,7 @@ MN2E.ClassRules = function() {
           'Mastery Of Spirits/Mastery Of The Unnatural/Powerful Effect/' +
           'Precise Effect/Specific Effect/Universal Effect';
         features = features.concat(
-          [1, 'Magecraft (Spiritual)', 3, 'Master Of Two Worlds']
+          ['1:Magecraft (Spiritual)', '3:Master Of Two Worlds']
         );
         notes = notes.concat([
           'combatNotes.confidentEffectFeature:+4 Master of Two Worlds checks',
@@ -355,10 +355,9 @@ MN2E.ClassRules = function() {
        'Furious Grapple/Retailiatory Strike/Weapon Trap';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
-        1, 'Masterful Strike', 2, 'Defender Abilities',
-        2, 'Defender Stunning Fist', 3, 'Improved Grapple',
-        4, 'Precise Strike', 5, 'Incredible Resilience', 5, 'Incredible Speed',
-        6, 'Masterful Strike'
+        '1:Masterful Strike', '2:Defender Abilities',
+        '2:Defender Stunning Fist', '3:Improved Grapple', '4:Precise Strike',
+        '5:Incredible Resilience', '5:Incredible Speed', '6:Masterful Strike'
       ];
       hitDie = 8;
       notes = [
@@ -524,7 +523,7 @@ MN2E.ClassRules = function() {
       Scribe.spellsCategoryCodes[klass] = 'C';
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        1, 'Turn Undead', 1, 'Temple Dependency', 3, 'Astirax Companion'
+        '1:Turn Undead', '1:Temple Dependency', '3:Astirax Companion'
       ];
       hitDie = 8;
       notes = [
@@ -590,7 +589,7 @@ MN2E.ClassRules = function() {
         'Woodland Stride';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
-        1, 'Track', 3, 'Danger Sense', 4, 'Hunter\'s Strike'
+        '1:Track', '3:Danger Sense', '4:Hunter\'s Strike'
       ];
       hitDie = 8;
       notes = [
@@ -937,12 +936,12 @@ MN2E.HeroicPathRules = function() {
         'Low Light Vision/Scent/Strength Bonus/Constitution Bonus/' +
         'Dexterity Bonus/Wisdom Bonus';
       features = [
-        1, 'Vicious Assault', 2, 'Beastial Aura', 7, 'Rage', 12, 'Repel Animals'
+        '1:Vicious Assault', '2:Beastial Aura', '7:Rage', '12:Repel Animals'
       ];
       spellFeatures = [
-        3, 'Magic Fang', 4, 'Bear\'s Endurance', 8, 'Greater Magic Fang',
-        9, 'Cat\'s Grace', 13, 'Magic Fang', 14, 'Bull\'s Strength',
-        17, 'Greater Magic Fang', 19, 'Freedom Of Movement'
+        '3:Magic Fang', '4:Bear\'s Endurance', '8:Greater Magic Fang',
+        '9:Cat\'s Grace', '13:Magic Fang', '14:Bull\'s Strength',
+        '17:Greater Magic Fang', '19:Freedom Of Movement'
       ];
       notes = [
         'combatNotes.beastialAuraFeature:Turn animals as cleric %V/day',
@@ -981,12 +980,10 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Chanceborn') {
 
       features = [
-        1, 'Luck Of Heroes', 3, 'Unfettered', 4, 'Miss Chance',
-        6, 'Persistence', 9, 'Take Ten', 19, 'Take Twenty'
+        '1:Luck Of Heroes', '3:Unfettered', '4:Miss Chance', '6:Persistence',
+        '9:Take Ten', '19:Take Twenty'
       ];
-      spellFeatures = [
-        2, 'Resistance', 7, 'True Strike', 12, 'Aid', 17, 'Prayer'
-      ];
+      spellFeatures = ['2:Resistance', '7:True Strike', '12:Aid', '17:Prayer'];
       notes = [
         'combatNotes.missChanceFeature:%V% chance of foe miss',
         'featureNotes.luckOfHeroesFeature:Add %V to any d20 roll 1/day',
@@ -1021,13 +1018,13 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Charismatic') {
 
       features = [
-        4, 'Inspiring Oration', 5, 'Charisma Bonus', 6, 'Leadership',
-        12, 'Natural Leader'
+        '4:Inspiring Oration', '5:Charisma Bonus', '6:Leadership',
+        '12:Natural Leader'
       ];
       spellFeatures = [
-        1, 'Charm Person', 2, 'Remove Fear', 3, 'Hypnotism', 7, 'Aid',
-        8, 'Daze Monster', 11, 'Heroism', 13, 'Charm Monster',
-        16, 'Suggestion', 17, 'Greater Heroism'
+        '1:Charm Person', '2:Remove Fear', '3:Hypnotism', '7:Aid',
+        '8:Daze Monster', '11:Heroism', '13:Charm Monster', '16:Suggestion',
+        '17:Greater Heroism'
       ];
       notes = [
         'featureNotes.naturalLeaderFeature: +%V Leadership score',
@@ -1047,9 +1044,9 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Dragonblooded') {
 
       features = [
-        1, 'Bolster Spell', 2, 'Bonus Spells', 3, 'Bonus Spell Energy',
-        4, 'Quickened Counterspelling', 6, 'Improved Spellcasting',
-        9, 'Spell Penetration', 19, 'Frightful Presence'
+        '1:Bolster Spell', '2:Bonus Spells', '3:Bonus Spell Energy',
+        '4:Quickened Counterspelling', '6:Improved Spellcasting',
+        '9:Spell Penetration', '19:Frightful Presence'
       ];
       spellFeatures = null;
       notes = [
@@ -1087,15 +1084,15 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Earthbonded') {
 
       features = [
-        1, 'Darkvision', 3, 'Armor Class Bonus', 4, 'Stonecunning',
-        8, 'Improved Stonecunning', 12, 'Tremorsense', 16, 'Blindsense',
-        20, 'Blindsight'
+        '1:Darkvision', '3:Armor Class Bonus', '4:Stonecunning',
+        '8:Improved Stonecunning', '12:Tremorsense', '16:Blindsense',
+        '20:Blindsight'
       ];
       spellFeatures = [
-        2, 'Hold Portal', 5, 'Soften Earth And Stone', 6, 'Make Whole',
-        7, 'Spike Stones', 9, 'Stone Shape', 11, 'Meld Into Stone',
-        13, 'Transmute Rock To Mud', 14, 'Stoneskin', 15, 'Move Earth',
-        17, 'Stone Tell', 19, 'Earthquake'
+        '2:Hold Portal', '5:Soften Earth And Stone', '6:Make Whole',
+        '7:Spike Stones', '9:Stone Shape', '11:Meld Into Stone',
+        '13:Transmute Rock To Mud', '14:Stoneskin', '15:Move Earth',
+        '17:Stone Tell', '19:Earthquake'
       ];
       notes = [
         'featureNotes.blindsenseFeature:' +
@@ -1113,14 +1110,12 @@ MN2E.HeroicPathRules = function() {
 
     } else if(path == 'Faithful') {
 
-      features = [
-        4, 'Turn Undead'
-      ];
+      features = ['4:Turn Undead'];
       spellFeatures = [
-        1, 'Bless', 2, 'Protection From Evil', 3, 'Divine Favor', 6, 'Aid',
-        7, 'Bless Weapon', 8, 'Consecrate', 11, 'Daylight',
-        12, 'Magic Circle Against Evil', 13, 'Prayer', 16, 'Holy Smite',
-        17, 'Dispel Evil', 18, 'Holy Aura'
+        '1:Bless', '2:Protection From Evil', '3:Divine Favor', '6:Aid',
+        '7:Bless Weapon', '8:Consecrate', '11:Daylight',
+        '12:Magic Circle Against Evil', '13:Prayer', '16:Holy Smite',
+        '17:Dispel Evil', '18:Holy Aura'
       ];
       notes = [
         'combatNotes.turnUndeadFeature:' +
@@ -1143,8 +1138,8 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Fellhunter') {
 
       features = [
-        1, 'Sense The Dead', 2, 'Touch Of The Living', 3, 'Ward Of Life',
-        5, 'Disrupting Attack'
+        '1:Sense The Dead', '2:Touch Of The Living', '3:Ward Of Life',
+        '5:Disrupting Attack'
       ];
       spellFeatures = null;
       notes = [
@@ -1178,14 +1173,12 @@ MN2E.HeroicPathRules = function() {
       MN2E.selectableFeatures[path] =
         'Armor Class Bonus/Dexterity Bonus/Fortitude Bonus/Reflex Bonus/' +
         'Will Bonus';
-      features = [
-        1, 'Low Light Vision', 7, 'Fey Vision'
-      ];
+      features = ['1:Low Light Vision', '7:Fey Vision'];
       spellFeatures = [
-        2, 'Disguise Self', 3, 'Ventriloquism', 5, 'Magic Aura',
-        6, 'Invisibility', 9, 'Nondetection', 10, 'Glibness',
-        11, 'Deep Slumber', 14, 'False Vision', 15, 'Rainbow Pattern',
-        17, 'Mislead', 18, 'Seeming'
+        '2:Disguise Self', '3:Ventriloquism', '5:Magic Aura',
+        '6:Invisibility', '9:Nondetection', '10:Glibness',
+        '11:Deep Slumber', '14:False Vision', '15:Rainbow Pattern',
+        '17:Mislead', '18:Seeming'
       ];
       notes = [
         'magicNotes.feyVisionFeature:Detect %V auras at will'
@@ -1205,9 +1198,9 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Giantblooded') {
 
       features = [
-        1, 'Obvious', 2, 'Rock Throwing', 3, 'Intimidating Size',
-        4, 'Fast Movement', 5, 'Strength Bonus', 8, 'Fearsome Charge',
-        10, 'Large', 20, 'Extra Reach'
+        '1:Obvious', '2:Rock Throwing', '3:Intimidating Size',
+        '4:Fast Movement', '5:Strength Bonus', '8:Fearsome Charge', '10:Large',
+        '20:Extra Reach'
       ];
       spellFeatures = null;
       notes = [
@@ -1250,9 +1243,9 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Guardian') {
 
       features = [
-        1, 'Inspire Valor', 2, 'Detect Evil', 3, 'Righteous Fury',
-        4, 'Smite Evil', 5, 'Constitution Bonus', 6, 'Lay On Hands',
-        12, 'Aura Of Courage', 16, 'Death Ward'
+        '1:Inspire Valor', '2:Detect Evil', '3:Righteous Fury', '4:Smite Evil',
+        '5:Constitution Bonus', '6:Lay On Hands', '12:Aura Of Courage',
+        '16:Death Ward'
       ];
       spellFeatures = null;
       notes = [
@@ -1294,24 +1287,24 @@ MN2E.HeroicPathRules = function() {
 
       features = null;
       spellFeatures = [
-        1, 'Cure Light Wounds', 2, 'Lesser Restoration', 3, 'Cure Light Wounds',
-        4, 'Cure Moderate Wounds', 5, 'Remove Disease',
-        6, 'Cure Moderate Wounds', 7, 'Cure Serious Wounds',
-        8, 'Remove Blindness/Deafness', 9, 'Cure Serious Wounds',
-        10, 'Cure Critical Wounds', 11, 'Neutralize Poison',
-        12, 'Cure Critical Wounds', 13, 'Mass Cure Light Wounds',
-        14, 'Restoration', 15, 'Mass Cure Light Wounds', 16, 'Heal',
-        17, 'Restoration', 18, 'Heal', 19, 'Regenerate', 20, 'Raise Dead'
+        '1:Cure Light Wounds', '2:Lesser Restoration', '3:Cure Light Wounds',
+        '4:Cure Moderate Wounds', '5:Remove Disease', '6:Cure Moderate Wounds',
+        '7:Cure Serious Wounds', '8:Remove Blindness/Deafness',
+        '9:Cure Serious Wounds', '10:Cure Critical Wounds',
+        '11:Neutralize Poison', '12:Cure Critical Wounds',
+        '13:Mass Cure Light Wounds', '14:Restoration',
+        '15:Mass Cure Light Wounds', '16:Heal', '17:Restoration', '18:Heal',
+        '19:Regenerate', '20:Raise Dead'
       ];
       notes = null;
 
     } else if(path == 'Ironborn') {
 
       features = [
-        1, 'Ironborn Resilience', 2, 'Fortitude Bonus',
-        3, 'Armor Class Bonus', 4, 'Improved Healing', 5, 'Damage Reduction',
-        6, 'Elemental Resistance', 9, 'Indefatigable',
-        14, 'Greater Improved Healing', 19, 'Improved Indefatigable',
+        '1:Ironborn Resilience', '2:Fortitude Bonus', '3:Armor Class Bonus',
+        '4:Improved Healing', '5:Damage Reduction', '6:Elemental Resistance',
+        '9:Indefatigable', '14:Greater Improved Healing',
+        '19:Improved Indefatigable',
       ];
       spellFeatures = null;
       notes = [
@@ -1346,8 +1339,7 @@ MN2E.HeroicPathRules = function() {
         'Strength Bonus/Intelligence Bonus/Wisdom Bonus/Dexterity Bonus/' +
          'Constitution Bonus/Charisma Bonus';
       features = [
-        1, 'Spell Choice', 2, 'Spontaneous Spell', 3, 'Skill Boost',
-        7, 'Feat Bonus'
+        '1:Spell Choice', '2:Spontaneous Spell', '3:Skill Boost', '7:Feat Bonus'
       ];
       spellFeatures = null;
       notes = [
@@ -1384,13 +1376,13 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Mountainborn') {
 
       features = [
-        1, 'Mountaineer', 1, 'Mountain Survival', 3, 'Ambush',
-        4, 'Rallying Cry', 5, 'Constitution Bonus', 8, 'Improved Ambush',
-        13, 'Quick Ambush', 18, 'Greater Ambush'
+        '1:Mountaineer', '1:Mountain Survival', '3:Ambush', '4:Rallying Cry',
+        '5:Constitution Bonus', '8:Improved Ambush', '13:Quick Ambush',
+        '18:Greater Ambush'
       ];
       spellFeatures = [
-        2, 'Endure Elements', 7, 'Pass Without Trace', 12, 'Meld Into Stone',
-        17, 'Stone Tell'
+        '2:Endure Elements', '7:Pass Without Trace', '12:Meld Into Stone',
+        '17:Stone Tell'
       ];
       notes = [
         'combatNotes.greaterAmbushFeature:' +
@@ -1420,15 +1412,15 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Naturefriend') {
 
       features = [
-        1, 'Natural Bond', 1, 'Wild Empathy', 5, 'Animal Friend',
-        10, 'Plant Friend', 15, 'Elemental Friend', 20, 'One With Nature'
+        '1:Natural Bond', '1:Wild Empathy', '5:Animal Friend',
+        '10:Plant Friend', '15:Elemental Friend', '20:One With Nature'
       ];
       spellFeatures = [
-        2, 'Calm Animals', 3, 'Entangle', 4, 'Obscuring Mist',
-        6, 'Animal Messenger', 7, 'Wood Shape', 8, 'Gust Of Wind',
-        9, 'Speak With Animals', 11, 'Speak With Plants', 12, 'Call Lightning',
-        13, 'Dominate Animal', 14, 'Spike Growth', 16, 'Sleet Storm',
-        17, 'Summon Nature\'s Ally IV', 18, 'Command Plants', 19, 'Ice Storm'
+        '2:Calm Animals', '3:Entangle', '4:Obscuring Mist',
+        '6:Animal Messenger', '7:Wood Shape', '8:Gust Of Wind',
+        '9:Speak With Animals', '11:Speak With Plants', '12:Call Lightning',
+        '13:Dominate Animal', '14:Spike Growth', '16:Sleet Storm',
+        '17:Summon Nature\'s Ally IV', '18:Command Plants', '19:Ice Storm'
       ];
       notes = [
         'combatNotes.animalFriendFeature:Animals DC %V Will save to attack',
@@ -1464,10 +1456,10 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Northblooded') {
 
       features = [
-        1, 'Northborn', 1, 'Wild Empathy', 2, 'Cold Resistance',
-        3, 'Battle Cry', 4, 'Howling Winds', 5, 'Constitution Bonus',
-        6, 'Aura Of Warmth', 11, 'Improved Battle Cry', 13, 'Frost Weapon',
-        16, 'Cold Immunity', 18, 'Greater Frost Weapon'
+        '1:Northborn', '1:Wild Empathy', '2:Cold Resistance', '3:Battle Cry',
+        '4:Howling Winds', '5:Constitution Bonus', '6:Aura Of Warmth',
+        '11:Improved Battle Cry', '13:Frost Weapon', '16:Cold Immunity',
+        '18:Greater Frost Weapon'
       ];
       spellFeatures = null;
       notes = [
@@ -1510,9 +1502,9 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Painless') {
 
       features = [
-        1, 'Painless', 2, 'Nonlethal Damage Reduction', 3, 'Uncaring Mind',
-        4, 'Retributive Rage', 5, 'Ferocity', 9, 'Last Stand',
-        10, 'Increased Damage Threshold', 14, 'Improved Retributive Rage'
+        '1:Painless', '2:Nonlethal Damage Reduction', '3:Uncaring Mind',
+        '4:Retributive Rage', '5:Ferocity', '9:Last Stand',
+        '10:Increased Damage Threshold', '14:Improved Retributive Rage'
       ];
       spellFeatures = null;
       notes = [
@@ -1569,8 +1561,8 @@ MN2E.HeroicPathRules = function() {
         'Strength Bonus/Intelligence Bonus/Wisdom Bonus/Dexterity Bonus/' +
         'Constitution Bonus/Charisma Bonus';
       features = [
-        1, 'Master Adventurer', 2, 'Blood Of Kings', 3, 'Feat Bonus',
-        4, 'Skill Mastery'
+        '1:Master Adventurer', '2:Blood Of Kings', '3:Feat Bonus',
+        '4:Skill Mastery'
       ];
       spellFeatures = null;
       notes =[
@@ -1606,8 +1598,8 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Quickened') {
 
       features = [
-        1, 'Initiative Bonus', 2, 'Armor Class Bonus', 3, 'Fast Movement',
-        4, 'Burst Of Speed', 5, 'Dexterity Bonus'
+        '1:Initiative Bonus', '2:Armor Class Bonus', '3:Fast Movement',
+        '4:Burst Of Speed', '5:Dexterity Bonus'
       ];
       spellFeatures = null;
       notes = [
@@ -1636,14 +1628,14 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Seaborn') {
 
       features = [
-        1, 'Dolphin\'s Grace', 2, 'Deep Lungs', 3, 'Aquatic Blindsight',
-        4, 'Aquatic Ally', 10, 'Aquatic Adaptation', 14, 'Cold Resistance',
-        17, 'Aquatic Emissary', 18, 'Assist Allies'
+        '1:Dolphin\'s Grace', '2:Deep Lungs', '3:Aquatic Blindsight',
+        '4:Aquatic Ally', '10:Aquatic Adaptation', '14:Cold Resistance',
+        '17:Aquatic Emissary', '18:Assist Allies'
       ];
       spellFeatures = [
-        4, 'Aquatic Ally II', 5, 'Blur', 8, 'Aquatic Ally III', 9, 'Fog Cloud',
-        12, 'Aquatic Ally IV', 13, 'Displacement', 16, 'Aquatic Ally V',
-        20, 'Aquatic Ally VI'
+        '4:Aquatic Ally II', '5:Blur', '8:Aquatic Ally III', '9:Fog Cloud',
+        '12:Aquatic Ally IV', '13:Displacement', '16:Aquatic Ally V',
+        '20:Aquatic Ally VI'
       ];
       notes = [
         'magicNotes.aquaticAllyFeature:Cast <i>Aquatic Ally</i> spells %V/day',
@@ -1677,12 +1669,12 @@ MN2E.HeroicPathRules = function() {
 
     } else if(path == 'Seer') {
 
-      features = [3, 'Seer Sight'];
+      features = ['3:Seer Sight'];
       spellFeatures = [
-        1, 'Alarm', 2, 'Augury', 4, 'Clairaudience/Clairvoyance',
-        5, 'Locate Object', 7, 'Locate Creature', 8, 'Speak With Dead',
-        10, 'Divination', 11, 'Scrying', 13, 'Arcane Eye', 14, 'Divincation',
-        16, 'Prying Eyes', 17, 'Legend Lore', 19, 'Commune', 20, 'Vision'
+        '1:Alarm', '2:Augury', '4:Clairaudience/Clairvoyance',
+        '5:Locate Object', '7:Locate Creature', '8:Speak With Dead',
+        '10:Divination', '11:Scrying', '13:Arcane Eye', '14:Divination',
+        '16:Prying Eyes', '17:Legend Lore', '19:Commune', '20:Vision'
       ];
       notes = [
         'magicNotes.seerSightFeature:' +
@@ -1695,13 +1687,13 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Shadow Walker') {
 
       features = [
-        1, 'Darkvision', 2, 'Shadow Veil', 4, 'Shadow Jump',
-        11, 'Hide In Plain Sight'
+        '1:Darkvision', '2:Shadow Veil', '4:Shadow Jump',
+        '11:Hide In Plain Sight'
       ];
       spellFeatures = [
-        3, 'Expeditious Retreat', 5, 'Blur', 7, 'Undetectable Alignment',
-        9, 'Displacement', 13, 'Expeditious Retreat', 15, 'Blur',
-        17, 'Undetectable Alignment', 19, 'Displacement'
+        '3:Expeditious Retreat', '5:Blur', '7:Undetectable Alignment',
+        '9:Displacement', '13:Expeditious Retreat', '15:Blur',
+        '17:Undetectable Alignment', '19:Displacement'
       ];
       notes = [
         'featureNotes.shadowJumpFeature:Move %V ft between shadows',
@@ -1717,12 +1709,12 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Speaker') {
 
       features = [
-        2, 'Persuasive Speaker', 3, 'Power Words', 5, 'Charisma Bonus',
-        14, 'Language Savant'
+        '2:Persuasive Speaker', '3:Power Words', '5:Charisma Bonus',
+        '14:Language Savant'
       ];
       spellFeatures = [
-        1, 'Comprehend Languages', 4, 'Whispering Wind', 8, 'Tongues',
-        12, 'Shout', 18, 'Greater Shout'
+        '1:Comprehend Languages', '4:Whispering Wind', '8:Tongues', '12:Shout',
+        '18:Greater Shout'
       ];
       notes = [
         'magicNotes.powerWordsFeature:<i>Word of %V</i> 3+conMod/day',
@@ -1749,8 +1741,8 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Spellsoul') {
 
       features = [
-        1, 'Untapped Potential', 2, 'Metamagic Aura',
-        3, 'Improved Spell Resistance', 4, 'Bonus Spell Energy'
+        '1:Untapped Potential', '2:Metamagic Aura',
+        '3:Improved Spell Resistance', '4:Bonus Spell Energy'
       ];
       spellFeatures = null;
       notes = [
@@ -1795,8 +1787,8 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Steelblooded') {
 
       features = [
-        1, 'Feat Bonus', 2, 'Offensive Tactics', 3, 'Strategic Blow',
-        4, 'Skilled Warrior', 14, 'Untouchable', 19, 'Improved Untouchable'
+        '1:Feat Bonus', '2:Offensive Tactics', '3:Strategic Blow',
+        '4:Skilled Warrior', '14:Untouchable', '19:Improved Untouchable'
       ];
       spellFeatures = null;
       notes = [
@@ -1829,12 +1821,12 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Sunderborn') {
 
       features = [
-        1, 'Detect Outsider', 2, 'Blood Of The Planes', 4, 'Planar Fury',
-        7, 'Darkvision', 13, 'Magical Darkvision', 19, 'Invisibility Vision'
+        '1:Detect Outsider', '2:Blood Of The Planes', '4:Planar Fury',
+        '7:Darkvision', '13:Magical Darkvision', '19:Invisibility Vision'
       ];
       spellFeatures = [
-        3, 'Summon Monster I', 6, 'Summon Monster II', 9, 'Summon Monster III',
-        12, 'Summon Monster IV', 15, 'Summon Monster V', 18, 'Summon Monster VI'
+        '3:Summon Monster I', '6:Summon Monster II', '9:Summon Monster III',
+        '12:Summon Monster IV', '15:Summon Monster V', '18:Summon Monster VI'
       ];
       notes = [
         'combatNotes.planarFuryFeature:' +
@@ -1855,9 +1847,9 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Tactician') {
 
       features = [
-        1, 'Aid Another', 2, 'Combat Overview', 3, 'Coordinated Initiative',
-        4, 'Coordinated Attack', 5, 'Aided Combat Bonus', 13, 'Directed Attack',
-        18, 'Telling Blow', 20, 'Perfect Assault'
+        '1:Aid Another', '2:Combat Overview', '3:Coordinated Initiative',
+        '4:Coordinated Attack', '5:Aided Combat Bonus', '13:Directed Attack',
+        '18:Telling Blow', '20:Perfect Assault'
       ];
       spellFeatures = null;
       notes = [
@@ -1896,12 +1888,12 @@ MN2E.HeroicPathRules = function() {
     } else if(path == 'Warg') {
 
       features = [
-        1, 'Wild Empathy', 2, 'Animal Companion', 5, 'Wild Shape',
-        13, 'Ferocity', 20, 'Blindsense'
+        '1:Wild Empathy', '2:Animal Companion', '5:Wild Shape', '13:Ferocity',
+        '20:Blindsense'
       ];
       spellFeatures = [
-        4, 'Charm Animal', 7, 'Speak With Animals', 12, 'Charm Animal',
-        17, 'Speak With Animals'
+        '4:Charm Animal', '7:Speak With Animals', '12:Charm Animal',
+        '17:Speak With Animals'
       ];
       notes = [
         'combatNotes.ferocityFeature:', // TODO
@@ -1931,8 +1923,9 @@ MN2E.HeroicPathRules = function() {
       path.substring(0, 1).toLowerCase() + path.substring(1).replace(/ /g, '');
     if(features != null) {
       for(var j = 1; j < features.length; j += 2) {
-        var feature = features[j];
-        var level = features[j - 1];
+        var levelAndFeature = features[j].split(/:/);
+        var feature = levelAndFeature[levelAndFeature.length == 1 ? 0 : 1];
+        var level = levelAndFeature.length == 1 ? 1 : levelAndFeature[0];
         ScribeCustomRules(prefix + 'Features.' + feature,
           'pathLevels.' + path, '=', 'source >= ' + level + ' ? 1 : null'
         );
@@ -1945,8 +1938,10 @@ MN2E.HeroicPathRules = function() {
     if(spellFeatures != null) {
       var spellLevels = {};
       for(var j = 1; j < spellFeatures.length; j += 2) {
-        var spell = '<i>' + spellFeatures[j] + '</i>';
-        var level = spellFeatures[j - 1];
+        var levelAndSpell = spellFeatures[j].split(/:/);
+        var level = levelAndSpell.length == 1 ? 1 : levelAndSpell[0];
+        var spell = levelAndSpell[levelAndSpell.length == 1 ? 0 : 1];
+        spell = '<i>' + spell + '</i>';
         if(spellLevels[spell] == null) {
           spellLevels[spell] = [level];
         } else {
@@ -2051,7 +2046,7 @@ MN2E.RaceRules = function() {
     if(race == 'Dorn') {
 
       adjustment = '+2 strength/-2 intelligence';
-      features = [1, 'Brotherhood', 1, 'Cold Hardy', 1, 'Fierce', 1, 'Hardy'];
+      features = ['Brotherhood', 'Cold Hardy', 'Fierce', 'Hardy'];
       notes = [
         'combatNotes.brotherhoodFeature:' +
           '+1 attack when fighting alongside 4+ Dorns',
@@ -2074,9 +2069,9 @@ MN2E.RaceRules = function() {
 
       adjustment = '+2 constitution/-2 charisma';
       features = [
-        1, 'Darkvision', 1, 'Dwarf Favored Enemy', 1, 'Dwarf Favored Weapon',
-        1, 'Poison Resistance', 1, 'Resilient', 1, 'Slow',
-        1, 'Spell Resistance', 1, 'Stone Knowledge'
+        'Darkvision', 'Dwarf Favored Enemy', 'Dwarf Favored Weapon',
+        'Poison Resistance', 'Resilient', 'Slow', 'Spell Resistance',
+        'Stone Knowledge'
       ];
       notes = [
         'combatNotes.dwarfFavoredEnemyFeature:+1 attack vs. orc',
@@ -2089,24 +2084,22 @@ MN2E.RaceRules = function() {
       ScribeCustomRules('armorClass', 'combatNotes.resilientFeature', '+', '2');
       if(race == 'Clan Dwarf') {
         features = features.concat([
-          1, 'Dodge Orcs', 1, 'Know Depth', 1, 'Stability', 1, 'Stonecunning'
+          'Dodge Orcs', 'Know Depth', 'Stability', 'Stonecunning'
         ]);
         notes = notes.concat([
           'featureNotes.knowDepthFeature:Intuit approximate depth underground',
           'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip',
         ]);
       } else if(race == 'Kurgun Dwarf') {
-        features = features.concat([
-          1, 'Natural Mountaineer'
-        ]);
+        features = features.concat(['Natural Mountaineer']);
       }
 
     } else if(race.indexOf(' Dwarrow') >= 0) {
 
       adjustment = '+2 charisma';
       features = [
-        1, 'Darkvision', 1, 'Poison Resistance', 1, 'Small', 1, 'Slow',
-        1, 'Spell Resistance', 1, 'Sturdy'
+        'Darkvision', 'Poison Resistance', 'Small', 'Slow', 'Spell Resistance',
+        'Sturdy'
       ];
       notes = [
         'combatNotes.sturdyFeature:+1 AC'
@@ -2114,11 +2107,11 @@ MN2E.RaceRules = function() {
       ScribeCustomRules('armorClass', 'combatNotes.sturdyFeature', '+', '1');
       if(race == 'Clan Raised Dwarrow') {
         features = features.concat([
-          1, 'Dodge Orcs', 1, 'Stonecunning', 1, 'Stone Knowledge'
+          'Dodge Orcs', 'Stonecunning', 'Stone Knowledge'
         ]);
       } else if(race == 'Gnome Raised Dwarrow') {
         features = features.concat([
-          1, 'Natural Riverfolk', 1, 'Natural Swimmer', 1, 'Skilled Trader'
+          'Natural Riverfolk', 'Natural Swimmer', 'Skilled Trader'
         ]);
         notes = [
           'skillNotes.skilledTraderFeature:' +
@@ -2126,7 +2119,7 @@ MN2E.RaceRules = function() {
         ];
       } else if(race == 'Kurgun Raised Dwarrow') {
         features = features.concat([
-          1, 'Dodge Orcs', 1, 'Natural Mountaineer', 1, 'Stone Knowledge'
+          'Dodge Orcs', 'Natural Mountaineer', 'Stone Knowledge'
         ]);
       }
 
@@ -2134,8 +2127,8 @@ MN2E.RaceRules = function() {
 
       adjustment = '+2 strength/+2 constitution/-2 intelligence/-2 charisma';
       features = [
-        1, 'Darkvision', 1, 'Dworg Favored Enemy',
-        1, 'Minor Light Sensitivity', 1, 'Rugged', 1, 'Spell Resistance'
+        'Darkvision', 'Dworg Favored Enemy', 'Minor Light Sensitivity',
+        'Rugged', 'Spell Resistance'
       ];
       notes = [
         'combatNotes.dworgFavoredEnemyFeature:+2 attack vs. orc',
@@ -2146,17 +2139,17 @@ MN2E.RaceRules = function() {
       ScribeCustomRules('save.Reflex', 'saveNotes.ruggedFeature', '+', '2');
       ScribeCustomRules('save.Will', 'saveNotes.ruggedFeature', '+', '2');
       if(race == 'Clan Raised Dworg') {
-        features = features.concat([1, 'Stonecunning']);
+        features = features.concat(['Stonecunning']);
       } else if(race == 'Kurgun Raised Dworg') {
-        features = features.concat([1, 'Natural Mountaineer']);
+        features = features.concat(['Natural Mountaineer']);
       }
 
     } else if(race.indexOf(' Elfling') >= 0) {
 
       adjustment = '+4 dexterity/-2 strength/-2 constitution';
       features = [
-        1, 'Fortunate', 1, 'Gifted Healer', 1, 'Innate Magic',
-        1, 'Keen Senses', 1, 'Low Light Vision', 1, 'Nimble', 1, 'Small'
+        'Fortunate', 'Gifted Healer', 'Innate Magic', 'Keen Senses',
+        'Low Light Vision', 'Nimble', 'Small'
       ];
       notes = [
         'skillNotes.nimbleFeature:+2 Climb/Hide'
@@ -2165,7 +2158,7 @@ MN2E.RaceRules = function() {
         notes = notes.concat([
           'featureNotes.boundToTheBeastFeature:Mounted Combat'
         ]);
-        features = features.concat([1, 'Bound To The Beast']);
+        features = features.concat(['Bound To The Beast']);
         ScribeCustomRules('features.Mounted Combat',
           'featureNotes.boundToTheBeastFeature', '=', '1'
         );
@@ -2175,8 +2168,8 @@ MN2E.RaceRules = function() {
 
       adjustment = '+2 dexterity/-2 constitution';
       features = [
-        1, 'Enchantment Resistance', 1, 'Innate Magic', 1, 'Keen Senses',
-        1, 'Low Light Vision', 1, 'Natural Channeler', 1, 'Tree Climber'
+        'Enchantment Resistance', 'Innate Magic', 'Keen Senses',
+        'Low Light Vision', 'Natural Channeler', 'Tree Climber'
       ];
       notes = [
         'magicNotes.naturalChannelerFeature:+2 spell energy',
@@ -2191,8 +2184,8 @@ MN2E.RaceRules = function() {
 
       if(race == 'Jungle Elf') {
         features = features.concat([
-          1, 'Improved Innate Magic', 1, 'Improved Keen Senses',
-          1, 'Improved Tree Climber', 1, 'Spirit Foe'
+          'Improved Innate Magic', 'Improved Keen Senses',
+          'Improved Tree Climber', 'Spirit Foe'
         ]);
         notes = notes.concat([
           'magicNotes.improvedInnateMagicFeature:Bonus Innate Magic spell',
@@ -2208,19 +2201,18 @@ MN2E.RaceRules = function() {
         ScribeCustomRules
           ('skillNotes.feralElfFeature2', 'features.Feral Elf', '=', '1');
       } else if(race == 'Sea Elf') {
-        features = features.concat(
-          [1, 'Improved Natural Swimmer', 1, 'Natural Sailor',
-           1, 'Natural Swimmer']
-        );
+        features = features.concat([
+          'Improved Natural Swimmer', 'Natural Sailor', 'Natural Swimmer'
+        ]);
         notes = notes.concat([
           'skillNotes.naturalSailorFeature:' +
             '+2 Craft (ship/sea)/Profession (ship/sea)/Use Rope (ship/sea)'
         ]);
       } else if(race == 'Snow Elf') {
-        features = features.concat([1, 'Cold Hardy', 1, 'Hardy']);
+        features = features.concat(['Cold Hardy', 'Hardy']);
       } else if(race == 'Wood Elf') {
         features = features.concat([
-          1, 'Improved Innate Magic', 1, 'Improved Natural Channeler'
+          'Improved Innate Magic', 'Improved Natural Channeler'
         ]);
         notes = notes.concat([
           'magicNotes.improvedInnateMagicFeature:Bonus Innate Magic spell',
@@ -2243,7 +2235,7 @@ MN2E.RaceRules = function() {
     } else if(race == 'Erenlander') {
 
       adjustment = null;
-      features = [1, 'Heartlander'];
+      features = ['Heartlander'];
       notes = [
         'abilityNotes.erenlanderAbilityAdjustment:+2 any/-2 any',
         'skillNotes.heartlanderFeature:+4 Craft/Profession ranks'
@@ -2269,9 +2261,8 @@ MN2E.RaceRules = function() {
 
       adjustment = '+4 charisma/-2 strength';
       features = [
-        1, 'Hardy', 1, 'Low Light Vision', 1, 'Natural Riverfolk',
-        1, 'Natural Swimmer', 1, 'Natural Trader', 1, 'Slow', 1, 'Small',
-        1, 'Spell Resistance'
+        'Hardy', 'Low Light Vision', 'Natural Riverfolk', 'Natural Swimmer',
+        'Natural Trader', 'Slow', 'Small', 'Spell Resistance'
       ];
       notes = [
         'featureNotes.lowLightVisionFeature:' +
@@ -2284,8 +2275,8 @@ MN2E.RaceRules = function() {
 
       adjustment = '+2 dexterity/-2 strength';
       features = [
-        1, 'Alert Senses', 1, 'Fortunate', 1, 'Graceful', 1, 'Innate Magic',
-        1, 'Low Light Vision', 1, 'Slow', 1, 'Small', 1, 'Unafraid'
+        'Alert Senses', 'Fortunate', 'Graceful', 'Innate Magic',
+        'Low Light Vision', 'Slow', 'Small', 'Unafraid'
       ];
       notes = [
         'saveNotes.unafraidFeature:+2 vs. fear',
@@ -2297,9 +2288,7 @@ MN2E.RaceRules = function() {
 
       if(race == 'Agrarian Halfling') {
         MN2E.selectableFeatures[race] = 'Stout/Studious';
-        features = features.concat([
-          1, 'Dextrous Hands', 1, 'Gifted Healer']
-        );
+        features = features.concat(['Dextrous Hands', 'Gifted Healer']);
         notes = notes.concat([
           'featureNotes.stoutFeature:Endurance/Toughness',
           'featureNotes.studiousFeature:Magecraft (Hermetic)'
@@ -2328,7 +2317,7 @@ MN2E.RaceRules = function() {
       } else if(race == 'Nomadic Halfling') {
         MN2E.selectableFeatures[race] =
           'Bound To The Beast/Bound To The Spirits';
-        features = features.concat([1, 'Focused Rider', 1, 'Skilled Rider']);
+        features = features.concat(['Focused Rider', 'Skilled Rider']);
         notes = notes.concat([
           'featureNotes.boundToTheBeastFeature:Mounted Combat',
           'featureNotes.boundToTheSpiritsFeature:Magecraft (Spiritual)',
@@ -2357,9 +2346,9 @@ MN2E.RaceRules = function() {
 
       adjustment = '+4 strength/-2 intelligence/-2 charisma';
       features = [
-        1, 'Darkvision', 1, 'Improved Cold Hardy', 1, 'Light Sensitivity',
-        1, 'Natural Preditor', 1, 'Night Fighter', 1, 'Orc Favored Enemy',
-        1, 'Orc Valor', 1, 'Spell Resistance'
+        'Darkvision', 'Improved Cold Hardy', 'Light Sensitivity',
+        'Natural Preditor', 'Night Fighter', 'Orc Favored Enemy',
+        'Orc Valor', 'Spell Resistance'
       ];
       notes = [
         'combatNotes.lightSensitivityFeature:-1 attack in daylight',
@@ -2376,7 +2365,7 @@ MN2E.RaceRules = function() {
     } else if(race.indexOf(' Sarcosan') >= 0) {
 
       adjustment = '+2 charisma/+2 intelligence/-2 wisdom';
-      features = [1, 'Quick'];
+      features = ['Quick'];
       notes = [
         'combatNotes.quickFeature:+1 attack w/light weapons',
         'saveNotes.quickFeature:+1 Reflex'
@@ -2394,7 +2383,7 @@ MN2E.RaceRules = function() {
       ScribeCustomRules
         ('skillPoints', 'skillNotes.sarcosanSkillPointsBonus', '+', null);
       if(race == 'Plains Sarcosan') {
-        features = features.concat([1, 'Natural Horseman']);
+        features = features.concat(['Natural Horseman']);
         notes = notes.concat([
           'combatNotes.naturalHorsemanFeature:' +
             '+1 melee damage (horseback)/half ranged penalty (horseback)',
@@ -2402,7 +2391,7 @@ MN2E.RaceRules = function() {
             '+4 Concentration (horseback)/Handle Animal (horse)/Ride (horse)'
         ]);
       } else if(race == 'Urban Sarcosan') {
-        features = features.concat([1, 'Interactive', 1, 'Urban']);
+        features = features.concat(['Interactive', 'Urban']);
         notes = notes.concat([
           'skillNotes.urbanFeature:' +
             '+2 Gather Information (urban)/untrained Knowledge in urban areas',
