@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.32 2006/09/26 15:17:46 Jim Exp $ */
+/* $Id: LastAge.js,v 1.33 2006/09/29 20:31:32 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -41,8 +41,8 @@ function MN2E() {
   ScribeRules.defineEditorElement
     ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
   // TODO Remove these null testing choices
-  ScribeRules.defineChoices('heroicPaths', 'Null Path');
-  ScribeRules.defineChoices('races', 'Null Race');
+  ScribeRules.defineChoice('heroicPaths', 'Null Path');
+  ScribeRules.defineChoice('races', 'Null Race');
 }
 
 // Arrays of choices passed to Scribe.  Removing elements from these before
@@ -565,8 +565,6 @@ MN2E.classRules = function() {
              'source>=' + j + ' ? Math.floor((source+' + (4-j) + ')/4) : null'
         );
         ScribeRules.defineRule
-          ('maxSpellLevelDivine', 'spellsPerDay.C' + j, '^=', j);
-        ScribeRules.defineRule
           ('spellsPerDay.Dom' + j, 'spellsPerDay.C' + j, '=', '1');
       }
       ScribeRules.defineRule
@@ -712,7 +710,7 @@ MN2E.classRules = function() {
        saveWill, profArmor, profShield, profWeapon, skills, features,
        prerequisites);
     if(notes != null)
-      ScribeRules.defineNotes(notes);
+      ScribeRules.defineNote(notes);
     if(tests != null)
       ScribeRules.defineTest(tests);
 
@@ -725,7 +723,7 @@ MN2E.combatRules = function() {
 };
 
 MN2E.equipmentRules = function() {
-  ScribeRules.defineChoices('weapons', MN2E.WEAPONS);
+  ScribeRules.defineChoice('weapons', MN2E.WEAPONS);
 };
 
 MN2E.featRules = function() {
@@ -778,7 +776,7 @@ MN2E.featRules = function() {
     'skillNotes.sarcosanPurebloodFeature:' +
       'Diplomacy w/horses/+2 charisma skills (horses/Sarcosans)'
   ];
-  ScribeRules.defineNotes(notes);
+  ScribeRules.defineNote(notes);
   ScribeRules.defineRule
     ('combatNotes.warriorOfShadowFeature', 'charismaModifier', '=', null);
   ScribeRules.defineRule('combatNotes.masterOfTwoWorldsFeature',
@@ -852,7 +850,7 @@ MN2E.featRules = function() {
     '{feats.Whispering Awareness} == null || {wisdom} >= 15'
   ];
   ScribeRules.defineTest(tests);
-  ScribeRules.defineChoices('feats', MN2E.FEATS);
+  ScribeRules.defineChoice('feats', MN2E.FEATS);
   for(var i = 0; i < MN2E.FEATS.length; i++) {
     ScribeRules.defineRule
       ('features.' + MN2E.FEATS[i], 'feats.' + MN2E.FEATS[i], '=', null);
@@ -871,14 +869,14 @@ MN2E.featRules = function() {
       allSelectable[selectable] = '';
     }
   }
-  ScribeRules.defineChoices
+  ScribeRules.defineChoice
     ('selectableFeatures', ScribeUtils.getKeys(allSelectable));
 
 };
 
 MN2E.heroicPathRules = function() {
 
-  ScribeRules.defineChoices('heroicPaths', MN2E.HEROIC_PATHS);
+  ScribeRules.defineChoice('heroicPaths', MN2E.HEROIC_PATHS);
   ScribeRules.defineRule
     ('abilityNotes.charismaBonusFeature', 'features.Charisma Bonus', '=', null);
   ScribeRules.defineRule('abilityNotes.constitutionBonusFeature',
@@ -1239,7 +1237,7 @@ MN2E.heroicPathRules = function() {
         'pathLevels.Giantblooded', '+=',
         'source>=17 ? 10 : source>=14 ? 8 : (Math.floor((source + 1) / 4) * 2)'
       );
-      ScribeRules.defineChoices('weapons', 'Boulder:d10 R30');
+      ScribeRules.defineChoice('weapons', 'Boulder:d10 R30');
       ScribeRules.defineRule
         ('weapons.Boulder', 'combatNotes.rockThrowingFeature', '=', '1');
       ScribeRules.defineRule('weaponDamage.Boulder',
@@ -1970,7 +1968,7 @@ MN2E.heroicPathRules = function() {
         (path + ' Spells', 'Magic', null, 'Spells', ' * ');
     }
     if(notes != null)
-      ScribeRules.defineNotes(notes);
+      ScribeRules.defineNote(notes);
     ScribeRules.defineRule('pathLevels.' + path,
       'heroicPath', '?', 'source == "' + path + '"',
       'level', '=', null
@@ -1985,7 +1983,7 @@ MN2E.heroicPathRules = function() {
 
 MN2E.magicRules = function() {
 
-  ScribeRules.defineChoices('spells', MN2E.SPELLS);
+  ScribeRules.defineChoice('spells', MN2E.SPELLS);
   ScribeRules.defineSheetElement
     ('Spell Energy Points', 'SpellStats', '<b>Spell Energy Points</b>: %V',
      'Spells Per Day');
@@ -2024,7 +2022,7 @@ MN2E.raceRules = function() {
     'skillNotes.stoneKnowledgeFeature:' +
        '+2 Appraise/Craft involving stone or metal'
   ];
-  ScribeRules.defineNotes(notes);
+  ScribeRules.defineNote(notes);
   ScribeRules.defineRule
     ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
   ScribeRules.defineRule
@@ -2419,15 +2417,15 @@ MN2E.raceRules = function() {
 
     ScribeRules.defineRace(race, adjustment, features);
     if(notes != null)
-      ScribeRules.defineNotes(notes);
+      ScribeRules.defineNote(notes);
 
   }
 
 };
 
 MN2E.skillRules = function() {
-  ScribeRules.defineChoices('languages', MN2E.LANGUAGES);
-  ScribeRules.defineChoices('skills', MN2E.SKILLS);
+  ScribeRules.defineChoice('languages', MN2E.LANGUAGES);
+  ScribeRules.defineChoice('skills', MN2E.SKILLS);
   var notes = [
     'skillNotes.knowledge(Local)Synergy2:' +
        '+2 Knowledge (Shadow) (local beauracracy)',
