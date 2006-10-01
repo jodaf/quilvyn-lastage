@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.33 2006/09/29 20:31:32 Jim Exp $ */
+/* $Id: LastAge.js,v 1.34 2006/10/01 03:45:44 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -142,7 +142,6 @@ MN2E.classRules = function() {
 
     if(klass.indexOf(' Channeler') >= 0) {
 
-      Scribe.spellsCategoryCodes[klass] = 'W';
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
         '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
@@ -521,7 +520,6 @@ MN2E.classRules = function() {
 
     } else if(klass == 'Legate') {
 
-      Scribe.spellsCategoryCodes[klass] = 'C';
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
         '1:Turn Undead', '1:Temple Dependency', '3:Astirax Companion'
