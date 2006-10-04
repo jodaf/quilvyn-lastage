@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.34 2006/10/01 03:45:44 Jim Exp $ */
+/* $Id: LastAge.js,v 1.35 2006/10/04 14:28:12 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
