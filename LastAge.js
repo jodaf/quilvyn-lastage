@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.35 2006/10/04 14:28:12 Jim Exp $ */
+/* $Id: LastAge.js,v 1.36 2006/10/06 14:39:41 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -951,7 +951,8 @@ MN2E.heroicPathRules = function() {
         'combatNotes.viciousAssaultFeature:Two claw attacks at %V each',
         'featureNotes.repelAnimalsFeature:' +
           'Animals w/in 15 ft act negatively/cannot ride',
-        'featureNotes.scentFeature:', // TODO
+        'featureNotes.scentFeature:' +
+          'Detect creatures\' presence w/in 30 ft/track by smell',
         'skillNotes.beastialAuraFeature:-10 Handle Animal/no Wild Empathy'
       ];
       ScribeRules.defineRule('combatNotes.beastialAuraFeature',
@@ -1475,7 +1476,8 @@ MN2E.heroicPathRules = function() {
         'magicNotes.auraOfWarmthFeature:Allies w/in 10 ft +4 Fortitude vs cold',
         'magicNotes.howlingWindsFeature:' +
           '<i>Commune With Nature</i> (winds) %V/day',
-        'saveNotes.coldImmunityFeature:', // TODO
+        'saveNotes.coldImmunityFeature:' +
+          'No damage from cold/50% greater damage from fire',
         'saveNotes.coldResistanceFeature:Ignore first %V points cold damage',
         'saveNotes.northbornFeature:Immune to non-lethal cold/exposure',
         'skillNotes.northbornFeature:' +
@@ -1511,7 +1513,7 @@ MN2E.heroicPathRules = function() {
       ];
       spellFeatures = null;
       notes = [
-        'combatNotes.ferocityFeature:Remain conscious below 0 HP',
+        'combatNotes.ferocityFeature:Continue fighting below 0 HP',
         'combatNotes.improvedRetributiveRageFeature:' +
           '+%V damage next round after suffering double level damage',
         'combatNotes.increasedDamageThresholdFeature:' +
@@ -1900,7 +1902,7 @@ MN2E.heroicPathRules = function() {
         '17:Speak With Animals'
       ];
       notes = [
-        'combatNotes.ferocityFeature:', // TODO
+        'combatNotes.ferocityFeature:Continue fighting below 0 HP',
         'magicNotes.wildShapeFeature:Change into creature of size %V'
       ];
       ScribeRules.defineRule('wargFeatures.Animal Companion',
