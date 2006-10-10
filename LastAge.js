@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.36 2006/10/06 14:39:41 Jim Exp $ */
+/* $Id: LastAge.js,v 1.37 2006/10/10 12:22:33 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -20,29 +20,53 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 /* Loads the rules from Midnight Second Edition. */
 function MN2E() {
-  if(MN2E.raceRules != null) MN2E.raceRules();
-  if(MN2E.heroicPathRules != null) MN2E.heroicPathRules();
-  if(MN2E.classRules != null) MN2E.classRules();
-  if(MN2E.skillRules != null) MN2E.skillRules();
-  if(MN2E.featRules != null) MN2E.featRules();
-  if(MN2E.equipmentRules != null) MN2E.equipmentRules();
-  if(MN2E.combatRules != null) MN2E.combatRules();
-  if(MN2E.magicRules != null) MN2E.magicRules();
+  var rules = new ScribeRules();
+  PH35.CLASSES = ['Barbarian', 'Fighter', 'Rogue'];
+  PH35.DEITIES = ['Izrador (NE):Death/Destruction/Evil/Magic/War'];
+  PH35.RACES = [];
+  PH35.deitiesFavoredWeapons = {'Izrador (LE)': 'Longsword'};
+  if(PH35.createViewer != null) {
+    MN2E.viewer = new ObjectViewer();
+    PH35.createViewer(MN2E.viewer);
+    rules.defineViewer("Standard", MN2E.viewer);
+  }
+  if(PH35.abilityRules != null) PH35.abilityRules(rules);
+  if(PH35.raceRules != null) PH35.raceRules(rules);
+  if(PH35.classRules != null) PH35.classRules(rules);
+  if(PH35.skillRules != null) PH35.skillRules(rules);
+  if(PH35.featRules != null) PH35.featRules(rules);
+  if(PH35.descriptionRules != null) PH35.descriptionRules(rules);
+  if(PH35.equipmentRules != null) PH35.equipmentRules(rules);
+  if(PH35.combatRules != null) PH35.combatRules(rules);
+  if(PH35.adventuringRules != null) PH35.adventuringRules(rules);
+  if(PH35.magicRules != null) PH35.magicRules(rules);
+  if(PH35.randomize != null) {
+    rules.defineRandomizer(PH35.randomize,
+      'alignment', 'armor', 'charisma', 'constitution', 'deity', 'dexterity',
+      'domains', 'feats', 'gender', 'hitPoints', 'intelligence', 'languages',
+      'levels', 'name', 'race', 'selectableFeatures', 'shield', 'skills',
+      'specialization', 'spells', 'strength', 'weapons', 'wisdom'
+    );
+  }
+  // A rule for handling DM-only information
+  rules.defineRule('dmNotes', 'dmonly', '?', null);
+  if(MN2E.raceRules != null) MN2E.raceRules(rules);
+  if(MN2E.heroicPathRules != null) MN2E.heroicPathRules(rules);
+  if(MN2E.classRules != null) MN2E.classRules(rules);
+  if(MN2E.skillRules != null) MN2E.skillRules(rules);
+  if(MN2E.featRules != null) MN2E.featRules(rules);
+  if(MN2E.equipmentRules != null) MN2E.equipmentRules(rules);
+  if(MN2E.combatRules != null) MN2E.combatRules(rules);
+  if(MN2E.magicRules != null) MN2E.magicRules(rules);
   if(MN2E.randomize != null)
-    ScribeRules.defineRandomizer(MN2E.randomize, 'heroicPath');
-  MN2E.raceRules = null;
-  MN2E.heroicPathRules = null;
-  MN2E.classRules = null;
-  MN2E.skillRules = null;
-  MN2E.featRules = null;
-  MN2E.equipmentRules = null;
-  MN2E.combatRules = null;
-  MN2E.magicRules = null;
-  ScribeRules.defineEditorElement
+    rules.defineRandomizer(MN2E.randomize, 'heroicPath');
+  rules.defineEditorElement
     ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
   // TODO Remove these null testing choices
-  ScribeRules.defineChoice('heroicPaths', 'Null Path');
-  ScribeRules.defineChoice('races', 'Null Race');
+  rules.defineChoice('heroicPaths', 'Null Path');
+  rules.defineChoice('races', 'Null Race');
+  Scribe.addRuleSet('MN2E', rules);
+  MN2E.rules = rules;
 }
 
 // Arrays of choices passed to Scribe.  Removing elements from these before
@@ -129,15 +153,14 @@ MN2E.racesFavoredRegions = {
 MN2E.selectableFeatures = {
 };
 
-MN2E.classRules = function() {
-
-  var baseAttack, features, hitDie, notes, profArmor,
-      profShield, profWeapon, saveFortitude, saveReflex, saveWill,
-      skillPoints, skills, tests;
-  var prerequisites = null;  /* No base class has prerequisites */
+MN2E.classRules = function(rules) {
 
   for(var i = 0; i < MN2E.CLASSES.length; i++) {
 
+    var baseAttack, features, hitDie, notes, prerequisites, profArmor,
+        profShield, profWeapon, saveFortitude, saveReflex, saveWill,
+        skillPoints, skills, spellsKnown, spellsPerDay, spellsPerDayAbility,
+        tests;
     var klass = MN2E.CLASSES[i];
 
     if(klass.indexOf(' Channeler') >= 0) {
@@ -155,6 +178,7 @@ MN2E.classRules = function() {
         'magicNotes.bonusSpellsFeature:%V extra spells',
         'magicNotes.summonFamiliarFeature:Special bond/abilities'
       ];
+      prerequisites = null;
       profArmor = PH35.PROFICIENCY_NONE;
       profShield = PH35.PROFICIENCY_NONE;
       profWeapon = PH35.PROFICIENCY_LIGHT;
@@ -167,19 +191,22 @@ MN2E.classRules = function() {
         'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
         'Speak Language', 'Spellcraft'
       ];
-      ScribeRules.defineRule('featCount',
+      spellsKnown = null;
+      spellsPerDay = null;
+      spellsPerDayAbility = null;
+      rules.defineRule('featCount',
         'featureNotes.arcaneFeatBonusFeature', '+', null,
         'featureNotes.bonusSpellcastingFeature', '+', null
       );
-      ScribeRules.defineRule('featureNotes.arcaneFeatBonusFeature',
+      rules.defineRule('featureNotes.arcaneFeatBonusFeature',
         'channelerLevels', '+=', 'Math.floor((source - 1) / 3)'
       );
-      ScribeRules.defineRule('featureNotes.bonusSpellcastingFeature',
+      rules.defineRule('featureNotes.bonusSpellcastingFeature',
         'channelerLevels', '=', 'Math.floor((source + 1) / 3)'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('magicNotes.bonusSpellEnergyFeature', 'channelerLevels', '+=', null);
-      ScribeRules.defineRule('magicNotes.bonusSpellsFeature',
+      rules.defineRule('magicNotes.bonusSpellsFeature',
         'channelerLevels', '+=', '(source - 1) * 2'
       );
 
@@ -232,25 +259,25 @@ MN2E.classRules = function() {
           '{selectableFeatures.Mass Suggestion} == null || ' +
             '{selectableFeatures.Suggestion} != null'
         ];
-        ScribeRules.defineRule
+        rules.defineRule
           ('channelerLevels', 'levels.Charismatic Channeler', '+=', null);
-        ScribeRules.defineRule('magicNotes.forceOfPersonalityFeature',
+        rules.defineRule('magicNotes.forceOfPersonalityFeature',
           'charismaModifier', '=', '3 + source'
         );
-        ScribeRules.defineRule('magicNotes.inspireConfidenceFeature',
+        rules.defineRule('magicNotes.inspireConfidenceFeature',
           'levels.Charismatic Channeler', '=', null
         );
-        ScribeRules.defineRule('magicNotes.inspireFascinationFeature',
+        rules.defineRule('magicNotes.inspireFascinationFeature',
           'levels.Charismatic Channeler', '=', '10 + Math.floor(source / 2)',
           'charismaModifier', '+', null
         );
-        ScribeRules.defineRule('magicNotes.inspireFuryFeature',
+        rules.defineRule('magicNotes.inspireFuryFeature',
           'levels.Charismatic Channeler', '=', 'source + 5'
         );
-        ScribeRules.defineRule('magicNotes.massSuggestionFeature',
+        rules.defineRule('magicNotes.massSuggestionFeature',
           'levels.Charismatic Channeler', '=', 'Math.floor(source / 3)'
         );
-        ScribeRules.defineRule('selectableFeatureCount.Charismatic Channeler',
+        rules.defineRule('selectableFeatureCount.Charismatic Channeler',
           'levels.Charismatic Channeler', '=', 'Math.floor(source / 3)'
         );
       } else if(klass == 'Hermetic Channeler') {
@@ -274,10 +301,10 @@ MN2E.classRules = function() {
           'Knowledge (Nobility)', 'Knowledge (Planes)', 'Knowledge (Religion)'
         ]);
         tests = null;
-        ScribeRules.defineRule('selectableFeatureCount.Hermetic Channeler',
+        rules.defineRule('selectableFeatureCount.Hermetic Channeler',
           'levels.Hermetic Channeler', '=', 'Math.floor(source / 3)'
         );
-        ScribeRules.defineRule
+        rules.defineRule
           ('channelerLevels', 'levels.Hermetic Channeler', '+=', null);
       } else if(klass == 'Spiritual Channeler') {
         MN2E.selectableFeatures[klass] =
@@ -332,16 +359,16 @@ MN2E.classRules = function() {
             '{selectableFeatures.Mastery Of Spirits} != null || ' +
             '{selectableFeatures.Mastery Of The Unnatural} != null'
         ];
-        ScribeRules.defineRule
+        rules.defineRule
           ('channelerLevels', 'levels.Spiritual Channeler', '+=', null);
-        ScribeRules.defineRule('combatNotes.masterOfTwoWorldsFeature',
+        rules.defineRule('combatNotes.masterOfTwoWorldsFeature',
           'levels.Spiritual Channeler', '?', 'source >= 3',
           'wisdomModifier', '=', '3 + source'
         );
-        ScribeRules.defineRule('selectableFeatureCount.Spiritual Channeler',
+        rules.defineRule('selectableFeatureCount.Spiritual Channeler',
           'levels.Spiritual Channeler', '=', 'Math.floor(source / 3)'
         );
-        ScribeRules.defineRule
+        rules.defineRule
           ('turningLevel', 'levels.Spiritual Channeler', '+=', null);
       }
 
@@ -398,6 +425,7 @@ MN2E.classRules = function() {
           'Attack to catch foe\'s weapon for disarm/damage/AOO 1/round',
         'saveNotes.defensiveMasteryFeature:+%V all saves'
       ];
+      prerequisites = null;
       profArmor = PH35.PROFICIENCY_NONE;
       profShield = PH35.PROFICIENCY_NONE;
       profWeapon = PH35.PROFICIENCY_NONE;
@@ -410,6 +438,9 @@ MN2E.classRules = function() {
         'Jump', 'Knowledge (Local)', 'Knowledge (Shadow)', 'Listen',
         'Move Silently', 'Sense Motive', 'Speak Language', 'Swim', 'Tumble'
       ];
+      spellsKnown = null;
+      spellsPerDay = null;
+      spellsPerDayAbility = null;
       tests = [
         '{selectableFeatures.Cover Ally} == null || ' +
           '{selectableFeatures.Dodge Training} != null',
@@ -435,43 +466,43 @@ MN2E.classRules = function() {
           '({selectableFeatures.Dodge Training} != null && ' +
           '{selectableFeatures.Grappling Training} != null)'
       ];
-      ScribeRules.defineRule('abilityNotes.incredibleSpeedFeature',
+      rules.defineRule('abilityNotes.incredibleSpeedFeature',
         'levels.Defender', '=', '10 * Math.floor((source - 4) / 3)'
       );
-      ScribeRules.defineRule('combatNotes.defenderAbilitiesFeature',
+      rules.defineRule('combatNotes.defenderAbilitiesFeature',
         'levels.Defender', '=', 'source * 3 / 4',
         'level', '+', 'source / 4'
       );
-      ScribeRules.defineRule('combatNotes.defenderStunningFistFeature',
+      rules.defineRule('combatNotes.defenderStunningFistFeature',
         'levels.Defender', '=', '10 + Math.floor(source / 2)',
         'strengthModifier', '+', null
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('armorClass', 'combatNotes.dodgeTrainingFeature', '+', null);
-      ScribeRules.defineRule('combatNotes.incredibleResilienceFeature',
+      rules.defineRule('combatNotes.incredibleResilienceFeature',
         'levels.Defender', '=', '3 * Math.floor((source - 4) / 3)'
       );
-      ScribeRules.defineRule('combatNotes.offensiveTrainingFeature',
+      rules.defineRule('combatNotes.offensiveTrainingFeature',
         'levels.Defender', '=', '14 + Math.floor(source / 2)',
         'strengthModifier', '+', null
       );
-      ScribeRules.defineRule('combatNotes.preciseStrikeFeature',
+      rules.defineRule('combatNotes.preciseStrikeFeature',
         'levels.Defender', '=', 'Math.floor((source + 2) / 6)'
       );
-      ScribeRules.defineRule('features.Improved Unarmed Strike',
+      rules.defineRule('features.Improved Unarmed Strike',
         'features.Masterful Strike', '=', '1'
       );
-      ScribeRules.defineRule('selectableFeatureCount.Defender',
+      rules.defineRule('selectableFeatureCount.Defender',
         'levels.Defender', '=', 'Math.floor((source + 1) / 3)'
       );
-      ScribeRules.defineRule('weaponDamage.Unarmed',
+      rules.defineRule('weaponDamage.Unarmed',
         'levels.Defender', '=', '(1 + Math.floor(source / 6)) + "d6"'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('save.Fortitude', 'saveNotes.defensiveMasteryFeature', '+', null);
-      ScribeRules.defineRule
+      rules.defineRule
         ('save.Reflex', 'saveNotes.defensiveMasteryFeature', '+', null);
-      ScribeRules.defineRule
+      rules.defineRule
         ('save.Will', 'saveNotes.defensiveMasteryFeature', '+', null);
 
     } else if(klass == 'Fighter') {
@@ -487,51 +518,57 @@ MN2E.classRules = function() {
         'featureNotes.survivorFeature:%V bonus survivor feats',
         'skillNotes.adapterFeature:+%V skill points'
       ];
+      prerequisites = null;
       profArmor = profShield = profWeapon = null;
       saveFortitude = saveReflex = saveWill = null;
       skillPoints = null;
       skills = null;
+      spellsKnown = null;
+      spellsPerDay = null;
+      spellsPerDayAbility = null;
       tests = null;
-      ScribeRules.defineRule('selectableFeatureCount.Fighter',
+      rules.defineRule('selectableFeatureCount.Fighter',
        'levels.Fighter', '=', 'source >= 4 ? 1 : null'
       );
-      ScribeRules.defineRule('featCount',
+      rules.defineRule('featCount',
         'featureNotes.improviserFeature', '+', null,
         'featureNotes.leaderOfMenFeature', '+', null,
         'featureNotes.survivorFeature', '+', null
       );
-      ScribeRules.defineRule('featureNotes.improviserFeature',
+      rules.defineRule('featureNotes.improviserFeature',
         'levels.Fighter', '=', 'Math.floor((source + 2) / 6)'
       );
-      ScribeRules.defineRule('featureNotes.leaderOfMenFeature',
+      rules.defineRule('featureNotes.leaderOfMenFeature',
         'levels.Fighter', '=', 'Math.floor((source + 2) / 6)'
       );
-      ScribeRules.defineRule('featureNotes.survivorFeature',
+      rules.defineRule('featureNotes.survivorFeature',
         'levels.Fighter', '=', 'Math.floor((source + 2) / 6)'
       );
-      ScribeRules.defineRule('skillNotes.adapterFeature',
+      rules.defineRule('skillNotes.adapterFeature',
         'levels.Fighter', '=', 'source - 3 + ' +
                                '(source >= 10 ? source - 9 : 0) + ' +
                                '(source >= 16 ? source - 15 : 0)'
       );
       // TODO adapter may alternately make a cross-class skill a class one
-      ScribeRules.defineRule
-        ('skillPoints', 'skillNotes.adapterFeature', '+', null);
+      rules.defineRule('skillPoints', 'skillNotes.adapterFeature', '+', null);
 
     } else if(klass == 'Legate') {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        '1:Turn Undead', '1:Temple Dependency', '3:Astirax Companion'
+        '1:Spontaneous Legate Spell', '1:Temple Dependency', '1:Turn Undead',
+        '3:Astirax Companion'
       ];
       hitDie = 8;
       notes = [
         'combatNotes.turnUndeadFeature:' +
           'Turn (good) or rebuke (evil) undead creatures',
         'featureNotes.astiraxCompanion:Special bond/abilities',
+        'magicNotes.spontaneousLegateSpellFeature:Inflict',
         'magicNotes.templeDependencyFeature:' +
           'Must participate at temple to receive spells'
       ];
+      prerequisites = null;
       profArmor = PH35.PROFICIENCY_HEAVY;
       profShield = PH35.PROFICIENCY_HEAVY;
       profWeapon = PH35.PROFICIENCY_LIGHT;
@@ -544,36 +581,45 @@ MN2E.classRules = function() {
         'Knowledge (Arcana)', 'Knowledge (Shadow)', 'Knowledge (Spirits)',
         'Speak Language', 'Spellcraft'
       ];
+      spellsKnown = [
+        'C0:1:"all"', 'C1:1:"all"', 'C2:3:"all"', 'C3:5:"all"',
+        'C4:7:"all"', 'C5:9:"all"', 'C6:11:"all"', 'C7:13:"all"',
+        'C8:15:"all"', 'C9:17:"all"',
+        'Dom1:1:"all"', 'Dom2:3:"all"', 'Dom3:5:"all"', 'Dom4:7:"all"',
+        'Dom5:9:"all"', 'Dom6:11:"all"', 'Dom7:13:"all"', 'Dom8:15:"all"',
+        'Dom9:17:"all"'
+      ];
+      spellsPerDay = [
+        'C0:1:3/2:4/4:5/7:6',
+        'C1:1:1/2:2/4:3/7:4/11:5',
+        'C2:3:1/4:2/6:3/9:4/13:5',
+        'C3:5:1/6:2/8:3/11:4/15:5',
+        'C4:7:1/8:2/10:3/13:4/17:5',
+        'C5:9:1/10:2/12:3/15:4/19:5',
+        'C6:11:1/12:2/14:3/17:4',
+        'C7:13:1/14:2/16:3/19:4',
+        'C8:15:1/16:2/18:3/20:4',
+        'C9:17:1/18:2/19:3/20:4'
+      ];
+      spellsPerDayAbility = 'wisdom';
       tests = null;
-      ScribeRules.defineRule
+      rules.defineRule
         ('casterLevelDivine', 'spellsPerDayLevels.Legate', '^=', null);
-      ScribeRules.defineRule('domainCount', 'levels.Legate', '+=', '2');
-      ScribeRules.defineRule('spellsPerDay.C0',
-        'spellsPerDayLevels.Legate', '=',
-          'source == 1 ? 3 : source <= 3 ? 4 : source <= 6 ? 5 : 6'
-      );
-      for(var j = 1; j <= 9; j++) {
-        var none = (j - 1) * 2;
-        ScribeRules.defineRule('spellsPerDay.C' + j,
-          'spellsPerDayLevels.Legate', '=',
-             'source<=' + none + ' ? null : source<=' + (none+1) + ' ? 1 : ' +
-             'source<=' + (none+3) + ' ? 2 : source<=' + (none+6) + ' ? 3 : ' +
-             'source<=' + (none+10) + ' ? 4 : 5',
-          'wisdomModifier', '+',
-             'source>=' + j + ' ? Math.floor((source+' + (4-j) + ')/4) : null'
-        );
-        ScribeRules.defineRule
-          ('spellsPerDay.Dom' + j, 'spellsPerDay.C' + j, '=', '1');
-      }
-      ScribeRules.defineRule
+      rules.defineRule('domainCount', 'levels.Legate', '+=', '2');
+      rules.defineRule
         ('spellsPerDayLevels.Legate', 'levels.Legate', '=', null);
-      ScribeRules.defineRule('turningLevel', 'levels.Legate', '+=', null);
+      for(var j = 1; j < 10; j++) {
+        rules.defineRule('spellsPerDay.Dom' + j,
+          'spellsPerDayLevels.Legate', '=',
+          'source >= ' + (j * 2 - 1) + ' ? 1 : null');
+      }
+      rules.defineRule('turningLevel', 'levels.Legate', '+=', null);
 
     } else if(klass == 'Rogue') {
 
-      ScribeRules.defineRule
+      rules.defineRule
         ('classSkills.Knowledge (Shadow)', 'levels.Rogue', '=', '1');
-      ScribeRules.defineRule
+      rules.defineRule
         ('classSkills.Speak Language', 'levels.Rogue', '=', '1');
       continue; // Not defining a new class
 
@@ -630,6 +676,7 @@ MN2E.classRules = function() {
         'skillNotes.wildernessTrapfindingFeature:' +
           'Search to find/Survival to remove DC 20+ traps'
       ];
+      prerequisites = null;
       profArmor = PH35.PROFICIENCY_MEDIUM;
       profShield = PH35.PROFICIENCY_HEAVY;
       profWeapon = PH35.PROFICIENCY_MEDIUM;
@@ -643,6 +690,9 @@ MN2E.classRules = function() {
         'Move Silently', 'Ride', 'Search', 'Speak Language', 'Spot',
         'Survival', 'Swim', 'Use Rope'
       ];
+      spellsKnown = null;
+      spellsPerDay = null;
+      spellsPerDayAbility = null;
       tests = [
         '{selectableFeatures.Animal Companion} == null || ' +
           '{selectableFeatures.Wild Empathy} != null',
@@ -680,51 +730,51 @@ MN2E.classRules = function() {
         '{selectableFeatures.Slippery Mind} == null || ' +
           '{selectableFeatures.Hunted By The Shadow} != null'
       ];
-      ScribeRules.defineRule('combatNotes.dangerSenseFeature',
+      rules.defineRule('combatNotes.dangerSenseFeature',
         'levels.Wildlander', '=', 'Math.floor(source / 3)'
       );
-      ScribeRules.defineRule('combatNotes.hunter\'sStrikeFeature',
+      rules.defineRule('combatNotes.hunter\'sStrikeFeature',
         'levels.Wildlander', '=', 'Math.floor(source / 4)'
       );
-      ScribeRules.defineRule('featCount',
+      rules.defineRule('featCount',
         'featureNotes.rapidResponseFeature', '+', null,
         'featureNotes.skillMasteryFeature', '+', null
       );
-      ScribeRules.defineRule('selectableFeatureCount.Wildlander',
+      rules.defineRule('selectableFeatureCount.Wildlander',
         'levels.Wildlander', '=', '1 + Math.floor((source + 1) / 3)'
       );
-      ScribeRules.defineRule('skillNotes.wildEmpathyFeature',
+      rules.defineRule('skillNotes.wildEmpathyFeature',
         'levels.Wildlander', '+=', 'source',
         'charismaModifier', '+', null
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('speed', 'abilityNotes.quickStrideFeature', '+', '10 * source');
 
     } else
       continue;
 
-    ScribeRules.defineClass
+    rules.defineClass
       (klass, hitDie, skillPoints, baseAttack, saveFortitude, saveReflex,
        saveWill, profArmor, profShield, profWeapon, skills, features,
-       prerequisites);
+       prerequisites, spellsKnown, spellsPerDay, spellsPerDayAbility);
     if(notes != null)
-      ScribeRules.defineNote(notes);
+      rules.defineNote(notes);
     if(tests != null)
-      ScribeRules.defineTest(tests);
+      rules.defineTest(tests);
 
   }
 
 };
 
-MN2E.combatRules = function() {
+MN2E.combatRules = function(rules) {
   // empty
 };
 
-MN2E.equipmentRules = function() {
-  ScribeRules.defineChoice('weapons', MN2E.WEAPONS);
+MN2E.equipmentRules = function(rules) {
+  rules.defineChoice('weapons', MN2E.WEAPONS);
 };
 
-MN2E.featRules = function() {
+MN2E.featRules = function(rules) {
 
   var notes = [
     'combatNotes.devastatingMountedAssaultFeature:' +
@@ -774,39 +824,41 @@ MN2E.featRules = function() {
     'skillNotes.sarcosanPurebloodFeature:' +
       'Diplomacy w/horses/+2 charisma skills (horses/Sarcosans)'
   ];
-  ScribeRules.defineNote(notes);
-  ScribeRules.defineRule
+  rules.defineNote(notes);
+  rules.defineRule
     ('combatNotes.warriorOfShadowFeature', 'charismaModifier', '=', null);
-  ScribeRules.defineRule('combatNotes.masterOfTwoWorldsFeature',
+  rules.defineRule('combatNotes.masterOfTwoWorldsFeature',
     'featureNotes.extraGiftFeature', '+', '4'
   );
-  ScribeRules.defineRule('highestMagicModifier',
+  rules.defineRule('highestMagicModifier',
     'charismaModifier', '^=', null,
     'intelligenceModifier', '^=', null,
     'wisdomModifier', '^=', null
   );
-  ScribeRules.defineRule('magicNotes.forceOfPersonalityFeature',
+  rules.defineRule('magicNotes.forceOfPersonalityFeature',
     'featureNotes.extraGiftFeature', '+', '4'
   );
-  ScribeRules.defineRule
+  rules.defineRule
     ('magicNotes.innateMagicFeature', 'highestMagicModifier', '=', null);
-  ScribeRules.defineRule
+  rules.defineRule
     ('magicNotes.magecraft(Charismatic)Feature', 'charismaModifier', '=', null);
-  ScribeRules.defineRule
+  rules.defineRule
     ('magicNotes.magecraft(Hermetic)Feature', 'intelligenceModifier', '=',null);
-  ScribeRules.defineRule
+  rules.defineRule
     ('magicNotes.magecraft(Spiritual)Feature', 'wisdomModifier', '=', null);
-  ScribeRules.defineRule('spellEnergyPoints',
+  rules.defineRule('spellEnergyPoints',
     'magicNotes.magecraft(Charismatic)Feature', '+=', null
   );
-  ScribeRules.defineRule('spellEnergyPoints',
+  rules.defineRule('spellEnergyPoints',
     'magicNotes.magecraft(Hermetic)Feature', '+=', null
   );
-  ScribeRules.defineRule('spellEnergyPoints',
+  rules.defineRule('spellEnergyPoints',
     'magicNotes.magecraft(Spiritual)Feature', '+=', null
   );
-  ScribeRules.defineRule
+  rules.defineRule
     ('resistance.Spells', 'saveNotes.magicHardenedFeature', '+=', '2');
+  rules.defineRule('spellsKnown.W0', 'features.Magecraft', '=', '3');
+  rules.defineRule('spellsKnown.W1', 'features.Magecraft', '=', '1');
   var tests = [
     '{feats.Craft Charm} == null || +/{^skills.Craft} >= 4',
     '{feats.Craft Greater Spell Talisman} == null || +/{feats.Magecraft} > 0',
@@ -847,10 +899,10 @@ MN2E.featRules = function() {
       '{race}.indexOf("Elfling") >= 0 || {race}.indexOf("Elf") < 0',
     '{feats.Whispering Awareness} == null || {wisdom} >= 15'
   ];
-  ScribeRules.defineTest(tests);
-  ScribeRules.defineChoice('feats', MN2E.FEATS);
+  rules.defineTest(tests);
+  rules.defineChoice('feats', MN2E.FEATS);
   for(var i = 0; i < MN2E.FEATS.length; i++) {
-    ScribeRules.defineRule
+    rules.defineRule
       ('features.' + MN2E.FEATS[i], 'feats.' + MN2E.FEATS[i], '=', null);
   }
   var allSelectable = {};
@@ -861,68 +913,65 @@ MN2E.featRules = function() {
     var features = MN2E.selectableFeatures[a].split('/');
     for(var i = 0; i < features.length; i++) {
       selectable = features[i];
-      ScribeRules.defineRule('features.' + selectable,
+      rules.defineRule('features.' + selectable,
         'selectableFeatures.' + selectable, '+=', null
       );
       allSelectable[selectable] = '';
     }
   }
-  ScribeRules.defineChoice
+  rules.defineChoice
     ('selectableFeatures', ScribeUtils.getKeys(allSelectable));
 
 };
 
-MN2E.heroicPathRules = function() {
+MN2E.heroicPathRules = function(rules) {
 
-  ScribeRules.defineChoice('heroicPaths', MN2E.HEROIC_PATHS);
-  ScribeRules.defineRule
+  rules.defineChoice('heroicPaths', MN2E.HEROIC_PATHS);
+  rules.defineRule
     ('abilityNotes.charismaBonusFeature', 'features.Charisma Bonus', '=', null);
-  ScribeRules.defineRule('abilityNotes.constitutionBonusFeature',
+  rules.defineRule('abilityNotes.constitutionBonusFeature',
     'features.Constitution Bonus', '=', null
   );
-  ScribeRules.defineRule('abilityNotes.dexterityBonusFeature',
+  rules.defineRule('abilityNotes.dexterityBonusFeature',
     'features.Dexterity Bonus', '=', null
   );
-  ScribeRules.defineRule('abilityNotes.intelligenceBonusFeature',
+  rules.defineRule('abilityNotes.intelligenceBonusFeature',
     'features.Intelligence Bonus', '=', null
   );
-  ScribeRules.defineRule
+  rules.defineRule
     ('abilityNotes.strengthBonusFeature', 'features.Strength Bonus', '=', null);
-  ScribeRules.defineRule
+  rules.defineRule
     ('abilityNotes.wisdomBonusFeature', 'features.Wisdom Bonus', '=', null);
-  ScribeRules.defineRule
+  rules.defineRule
     ('armorClass', 'combatNotes.armorClassBonusFeature', '+', null);
-  ScribeRules.defineRule
+  rules.defineRule
     ('charisma', 'abilityNotes.charismaBonusFeature', '+', null);
-  ScribeRules.defineRule('combatNotes.armorClassBonusFeature',
+  rules.defineRule('combatNotes.armorClassBonusFeature',
     'features.Armor Class Bonus', '=', null
   );
-  ScribeRules.defineRule
+  rules.defineRule
     ('constitution', 'abilityNotes.constitutionBonusFeature', '+', null);
-  ScribeRules.defineRule
+  rules.defineRule
     ('dexterity', 'abilityNotes.dexterityBonusFeature', '+', null);
-  ScribeRules.defineRule('featCount', 'features.Feat Bonus', '+', null);
-  ScribeRules.defineRule
+  rules.defineRule('featCount', 'features.Feat Bonus', '+', null);
+  rules.defineRule
     ('intelligence', 'abilityNotes.intelligenceBonusFeature', '+', null);
-  ScribeRules.defineRule
+  rules.defineRule
     ('spellEnergyPoints', 'magicNotes.bonusSpellEnergyFeature', '+', null);
-  ScribeRules.defineRule
+  rules.defineRule
     ('save.Fortitude', 'saveNotes.fortitudeBonusFeature', '+', null);
-  ScribeRules.defineRule
+  rules.defineRule
     ('save.Reflex', 'saveNotes.reflexBonusFeature', '+', null);
-  ScribeRules.defineRule('save.Will', 'saveNotes.willBonusFeature', '+', null);
-  ScribeRules.defineRule
+  rules.defineRule('save.Will', 'saveNotes.willBonusFeature', '+', null);
+  rules.defineRule
     ('saveNotes.fortitudeBonusFeature', 'features.Fortitude Bonus', '=', null);
-  ScribeRules.defineRule
+  rules.defineRule
     ('saveNotes.reflexBonusFeature', 'features.Reflex Bonus', '=', null);
-  ScribeRules.defineRule
+  rules.defineRule
     ('saveNotes.willBonusFeature', 'features.Will Bonus', '=', null);
-  ScribeRules.defineRule
-    ('speed', 'abilityNotes.fastMovementFeature', '+', null);
-  ScribeRules.defineRule
-    ('strength', 'abilityNotes.strengthBonusFeature', '+', null);
-  ScribeRules.defineRule
-    ('wisdom', 'abilityNotes.wisdomBonusFeature', '+', null);
+  rules.defineRule('speed', 'abilityNotes.fastMovementFeature', '+', null);
+  rules.defineRule('strength', 'abilityNotes.strengthBonusFeature', '+', null);
+  rules.defineRule('wisdom', 'abilityNotes.wisdomBonusFeature', '+', null);
 
   for(var i = 0; i < MN2E.HEROIC_PATHS.length; i++) {
 
@@ -955,28 +1004,28 @@ MN2E.heroicPathRules = function() {
           'Detect creatures\' presence w/in 30 ft/track by smell',
         'skillNotes.beastialAuraFeature:-10 Handle Animal/no Wild Empathy'
       ];
-      ScribeRules.defineRule('combatNotes.beastialAuraFeature',
+      rules.defineRule('combatNotes.beastialAuraFeature',
         'pathLevels.Beast', '+=', 'source >= 12 ? 6 : 3'
       );
-      ScribeRules.defineRule('combatNotes.rageFeature',
+      rules.defineRule('combatNotes.rageFeature',
         'pathLevels.Beast', '+=', 'source >= 17 ? 2 : 1'
       );
-      ScribeRules.defineRule('combatNotes.viciousAssaultFeature',
+      rules.defineRule('combatNotes.viciousAssaultFeature',
         'mediumViciousAssault', '=', null,
         'smallViciousAssault', '=', null
       );
-      ScribeRules.defineRule('mediumViciousAssault',
+      rules.defineRule('mediumViciousAssault',
         'pathLevels.Beast', '=', 'source>=11 ? "d8" : source>=6 ? "d6" : "d4"'
       );
-      ScribeRules.defineRule('selectableFeatureCount.Beast',
+      rules.defineRule('selectableFeatureCount.Beast',
         'pathLevels.Beast', '=',
         'Math.floor(source / 5) + ((source >= 16) ? 2 : 1)'
       );
-      ScribeRules.defineRule('smallViciousAssault',
+      rules.defineRule('smallViciousAssault',
         'features.Small', '?', null,
         'mediumViciousAssault', '=', 'Scribe.smallDamage[source]'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('turningLevel', 'pathLevels.Beast', '+=', 'source>=2 ? source : null');
 
     } else if(path == 'Chanceborn') {
@@ -995,25 +1044,25 @@ MN2E.heroicPathRules = function() {
         'featureNotes.takeTwentyFeature:Take 20 on any d20 roll 1/day',
         'magicNotes.unfetteredFeature:<i>Freedom Of Movement</i> %V rounds/day'
       ];
-      ScribeRules.defineRule('combatNotes.missChanceFeature',
+      rules.defineRule('combatNotes.missChanceFeature',
         'pathLevels.Chanceborn', '+=', 'source >= 14 ? 10 : 5'
       );
-      ScribeRules.defineRule('featureNotes.luckOfHeroesFeature',
+      rules.defineRule('featureNotes.luckOfHeroesFeature',
         'pathLevels.Chanceborn', '=',
         '"d4" + (source >= 5 ? "/d6" : "") + (source >= 10 ? "/d8" : "") + ' +
         '(source >= 15 ? "/d10" : "") + (source >= 20 ? "/d12" : "")'
       );
-      ScribeRules.defineRule('featureNotes.persistenceFeature',
+      rules.defineRule('featureNotes.persistenceFeature',
         'pathLevels.Chanceborn', '+=', 'Math.floor((source - 1) / 5)'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('features.Defensive Roll', 'features.Survivor', '=', '1');
-      ScribeRules.defineRule('features.Evasion', 'features.Survivor', '=', '1');
-      ScribeRules.defineRule
+      rules.defineRule('features.Evasion', 'features.Survivor', '=', '1');
+      rules.defineRule
         ('features.Slippery Mind', 'features.Survivor', '=', '1');
-      ScribeRules.defineRule
+      rules.defineRule
         ('features.Uncanny Dodge', 'features.Survivor', '=', '1');
-      ScribeRules.defineRule('magicNotes.unfetteredFeature',
+      rules.defineRule('magicNotes.unfetteredFeature',
         'pathLevels.Chanceborn', '+=', 'Math.floor((source + 2) / 5)'
       );
 
@@ -1033,13 +1082,13 @@ MN2E.heroicPathRules = function() {
         'magicNotes.inspiringOrationFeature:' +
           'Give speech to apply spell-like ability to allies w/in 60 ft %V/day'
       ];
-      ScribeRules.defineRule('charismaticFeatures.Charisma Bonus',
+      rules.defineRule('charismaticFeatures.Charisma Bonus',
         'level', '+', 'Math.floor((source - 5) / 5)'
       );
-      ScribeRules.defineRule('featureNotes.naturalLeaderFeature',
+      rules.defineRule('featureNotes.naturalLeaderFeature',
         'pathLevels.Charismatic', '=', 'source >= 18 ? 2 : 1'
       );
-      ScribeRules.defineRule('magicNotes.inspiringOrationFeature',
+      rules.defineRule('magicNotes.inspiringOrationFeature',
         'pathLevels.Charismatic', '+=', 'Math.floor((source + 1) / 5)'
       );
 
@@ -1062,24 +1111,24 @@ MN2E.heroicPathRules = function() {
           'Counterspell as move action 1/round',
         'magicNotes.spellPenetrationFeature:Add %V to spell penetration checks'
       ];
-      ScribeRules.defineRule('magicNotes.bolsterSpellFeature',
+      rules.defineRule('magicNotes.bolsterSpellFeature',
         'pathLevels.Dragonblooded', '+=', '1 + Math.floor(source / 5)'
       );
-      ScribeRules.defineRule('magicNotes.bonusSpellEnergyFeature',
+      rules.defineRule('magicNotes.bonusSpellEnergyFeature',
         'pathLevels.Dragonblooded', '+=',
         '2 * (source>=16 ? 4 : source>=15 ? 3 : Math.floor((source + 1) / 4))'
       );
-      ScribeRules.defineRule('magicNotes.bonusSpellsFeature',
+      rules.defineRule('magicNotes.bonusSpellsFeature',
         'pathLevels.Dragonblooded', '+=', 'source>=14 ? 3 : source>=8 ? 2 : 1'
       );
-      ScribeRules.defineRule('magicNotes.frightfulPresenceFeature',
+      rules.defineRule('magicNotes.frightfulPresenceFeature',
         'pathLevels.Dragonblooded', '+=', '10 + Math.floor(source / 2)',
         'charismaModifier', '+', null
       );
-      ScribeRules.defineRule('magicNotes.improvedSpellcastingFeature',
+      rules.defineRule('magicNotes.improvedSpellcastingFeature',
         'pathLevels.Dragonblooded', '+=', 'Math.floor(source / 6)'
       );
-      ScribeRules.defineRule('magicNotes.spellPenetrationFeature',
+      rules.defineRule('magicNotes.spellPenetrationFeature',
         'pathLevels.Dragonblooded', '+=', 'Math.floor((source - 5) / 4)'
       );
 
@@ -1106,7 +1155,7 @@ MN2E.heroicPathRules = function() {
         'featureNotes.tremorsenseFeature:' +
           'Detect creatures in contact w/ground w/in 30 ft'
       ];
-      ScribeRules.defineRule('earthbondedFeatures.Armor Class Bonus',
+      rules.defineRule('earthbondedFeatures.Armor Class Bonus',
         'level', '+', 'source >= 18 ? 2 : source >= 10 ? 1 : null'
       );
 
@@ -1123,17 +1172,17 @@ MN2E.heroicPathRules = function() {
         'combatNotes.turnUndeadFeature:' +
           'Turn (good) or rebuke (evil) undead creatures'
       ];
-      ScribeRules.defineRule('faithfulFeatures.Wisdom Bonus',
+      rules.defineRule('faithfulFeatures.Wisdom Bonus',
         'pathLevels.Faithful', '=', 'source<5 ? null : Math.floor(source/5)'
       );
-      ScribeRules.defineRule('features.Wisdom Bonus',
+      rules.defineRule('features.Wisdom Bonus',
        'faithfulFeatures.Wisdom Bonus', '+=', null
       );
-      ScribeRules.defineRule('turningLevel',
+      rules.defineRule('turningLevel',
         'pathLevels.Faithful', '+=', 'source >= 4 ? source : null'
       );
       // TODO turningLevel-based computation overrides this
-      ScribeRules.defineRule('turningFrequency',
+      rules.defineRule('turningFrequency',
         'pathLevels.Faithful', '+=', 'Math.floor((source + 1) / 5)'
       );
 
@@ -1151,18 +1200,18 @@ MN2E.heroicPathRules = function() {
         'magicNotes.senseTheDeadFeature:Detect undead %V ft at will',
         'saveNotes.wardOfLifeFeature:Immune to undead %V'
       ];
-      ScribeRules.defineRule('combatNotes.disruptingAttackFeature',
+      rules.defineRule('combatNotes.disruptingAttackFeature',
         'pathLevels.Fellhunter', '+=', '10 + Math.floor(source / 2)',
         'charismaModifier', '+', null
       );
-      ScribeRules.defineRule('combatNotes.touchOfTheLivingFeature',
+      rules.defineRule('combatNotes.touchOfTheLivingFeature',
         'pathLevels.Fellhunter', '+=', 'Math.floor((source + 3) / 5) * 2'
       );
-      ScribeRules.defineRule('magicNotes.senseTheDeadFeature',
+      rules.defineRule('magicNotes.senseTheDeadFeature',
         'pathLevels.Fellhunter', '+=',
           '10 * (Math.floor((source + 4) / 5) + Math.floor((source + 1) / 5))'
       );
-      ScribeRules.defineRule('saveNotes.wardOfLifeFeature',
+      rules.defineRule('saveNotes.wardOfLifeFeature',
         'pathLevels.Fellhunter', '=',
         '"extraordinary special attacks" + ' +
         '(source >= 8 ? "/ability damage" : "") + ' +
@@ -1185,13 +1234,13 @@ MN2E.heroicPathRules = function() {
       notes = [
         'magicNotes.feyVisionFeature:Detect %V auras at will'
       ];
-      ScribeRules.defineRule('selectableFeatureCount.Feyblooded',
+      rules.defineRule('selectableFeatureCount.Feyblooded',
         'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)',
         'charismaModifier', '*', null,
         'level', 'v', 'source<8 ? 1 : source<12 ? 3 : source<16 ? 6 : ' +
                       'source<20 ? 10 : 15'
       );
-      ScribeRules.defineRule('magicNotes.feyVisionFeature',
+      rules.defineRule('magicNotes.feyVisionFeature',
         'pathLevels.Feyblooded', '=',
         'source >= 19 ? "all magic" : ' +
         'source >= 13 ? "enchantment/illusion" : "enchantment"'
@@ -1215,31 +1264,29 @@ MN2E.heroicPathRules = function() {
         'skillNotes.intimidatingSizeFeature:+%V Intimidate',
         'skillNotes.obviousFeature:-4 Hide'
       ];
-      ScribeRules.defineRule('abilityNotes.fastMovementFeature',
+      rules.defineRule('abilityNotes.fastMovementFeature',
         'pathLevels.Giantblooded', '+=', 'Math.floor((source + 4) / 8) * 5'
       );
-      ScribeRules.defineRule
-        ('armorClass', 'combatNotes.largeFeature', '+', '-1');
-      ScribeRules.defineRule
-        ('baseAttack', 'combatNotes.largeFeature', '+', '-1');
-      ScribeRules.defineRule('combatNotes.fearsomeChargeFeature',
+      rules.defineRule('armorClass', 'combatNotes.largeFeature', '+', '-1');
+      rules.defineRule('baseAttack', 'combatNotes.largeFeature', '+', '-1');
+      rules.defineRule('combatNotes.fearsomeChargeFeature',
         'pathLevels.Giantblooded', '+=', 'Math.floor((source + 2) / 10)'
       );
-      ScribeRules.defineRule('combatNotes.rockThrowingFeature',
+      rules.defineRule('combatNotes.rockThrowingFeature',
         'pathLevels.Giantblooded', '=',
         'source >= 19 ? 120 : source >= 13 ? 90 : source >= 6 ? 60 : 30'
       );
-      ScribeRules.defineRule('giantbloodedFeatures.Strength Bonus',
+      rules.defineRule('giantbloodedFeatures.Strength Bonus',
         'level', '+', 'source >= 15 ? 1 : null'
       );
-      ScribeRules.defineRule('skillNotes.intimidatingSizeFeature',
+      rules.defineRule('skillNotes.intimidatingSizeFeature',
         'pathLevels.Giantblooded', '+=',
         'source>=17 ? 10 : source>=14 ? 8 : (Math.floor((source + 1) / 4) * 2)'
       );
-      ScribeRules.defineChoice('weapons', 'Boulder:d10 R30');
-      ScribeRules.defineRule
+      rules.defineChoice('weapons', 'Boulder:d10 R30');
+      rules.defineRule
         ('weapons.Boulder', 'combatNotes.rockThrowingFeature', '=', '1');
-      ScribeRules.defineRule('weaponDamage.Boulder',
+      rules.defineRule('weaponDamage.Boulder',
         'pathLevels.Giantblooded', '=',
         'source >= 16 ? "2d8" : source >= 9 ? "2d6" : "d10"'
       );
@@ -1265,24 +1312,24 @@ MN2E.heroicPathRules = function() {
           'Immune fear; +4 to allies w/in 30 ft',
         'saveNotes.deathWardFeature:Immune to negative energy/death effects'
       ];
-      ScribeRules.defineRule('guardianFeatures.Constitution Bonus',
+      rules.defineRule('guardianFeatures.Constitution Bonus',
         'level', '+', 'Math.floor((source - 5) / 5)'
       );
-      ScribeRules.defineRule('combatNotes.righteousFuryFeature',
+      rules.defineRule('combatNotes.righteousFuryFeature',
         'pathLevels.Guardian', '+=',
         'source >= 17 ? 12 : source >= 12 ? 9 : ' +
         '(Math.floor((source + 1) / 4) * 3)'
       );
-      ScribeRules.defineRule('combatNotes.smiteEvilFeature',
+      rules.defineRule('combatNotes.smiteEvilFeature',
         'pathLevels.Guardian', '+=',
         'source >= 18 ? 4 : source >= 14 ? 3 : source >= 8 ? 2 : 1'
       );
-      ScribeRules.defineRule('featureNotes.inspireValorFeature',
+      rules.defineRule('featureNotes.inspireValorFeature',
         'pathLevels.Guardian', '=',
         'source >= 19 ? "+2 3/day" : source >= 13 ? "+2 2/day" : ' +
         'source >= 9 ? "+1 2/day" : "+1 1/day"'
       );
-      ScribeRules.defineRule('magicNotes.layOnHandsFeature',
+      rules.defineRule('magicNotes.layOnHandsFeature',
         'pathLevels.Guardian', '+=', null,
         'charismaModifier', '*', null
       );
@@ -1321,19 +1368,19 @@ MN2E.heroicPathRules = function() {
         'saveNotes.indefatigableFeature:Immune fatigue effects',
         'saveNotes.improvedIndefatigableFeature:Immune exhaustion effects'
       ];
-      ScribeRules.defineRule('combatNotes.damageReductionFeature',
+      rules.defineRule('combatNotes.damageReductionFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor(source / 5)'
       );
-      ScribeRules.defineRule('combatNotes.improvedHealingFeature',
+      rules.defineRule('combatNotes.improvedHealingFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor(source / 2)'
       );
-      ScribeRules.defineRule('ironbornFeatures.Fortitude Bonus',
+      rules.defineRule('ironbornFeatures.Fortitude Bonus',
         'level', '+', 'Math.floor((source - 2) / 5)'
       );
-      ScribeRules.defineRule('ironbornFeatures.Armor Class Bonus',
+      rules.defineRule('ironbornFeatures.Armor Class Bonus',
         'level', '+', 'Math.floor((source - 3) / 5)'
       );
-      ScribeRules.defineRule('saveNotes.elementalResistanceFeature',
+      rules.defineRule('saveNotes.elementalResistanceFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor((source - 1) / 5) * 3'
       );
 
@@ -1353,28 +1400,28 @@ MN2E.heroicPathRules = function() {
           'Use any %V spell as spell-like ability 1/day',
         'skillNotes.skillBoostFeature:+4 to %V chosen skills'
       ];
-      ScribeRules.defineRule('jack-Of-All-TradesFeatures.Feat Bonus',
+      rules.defineRule('jack-Of-All-TradesFeatures.Feat Bonus',
         'level', '+', 'source >= 14 ? 1 : null'
       );
-      ScribeRules.defineRule('magicNotes.spellChoiceFeature',
+      rules.defineRule('magicNotes.spellChoiceFeature',
         'pathLevels.Jack-Of-All-Trades', '=',
         'source>=16 ? "W0/W1/W2/W3" : source>=10 ? "W0/W1/W2" : ' +
         'source>=6 ? "W0/W1" : "W0"'
       );
-      ScribeRules.defineRule('magicNotes.spontaneousSpellFeature',
+      rules.defineRule('magicNotes.spontaneousSpellFeature',
         'pathLevels.Jack-Of-All-Trades', '=',
         'source >= 19 ? "W0/W1/W2" : source >= 13 ? "W0/W1" : "W0"'
       );
-      ScribeRules.defineRule('selectableFeatureCount.Jack-Of-All-Trades',
+      rules.defineRule('selectableFeatureCount.Jack-Of-All-Trades',
         'pathLevels.Jack-Of-All-Trades', '=',
         'source>=18 ? 7 : source>=15 ? 6 : source>=12 ? 5 : source>=9 ? 4 : ' +
         'source>=8 ? 3 : source>=5 ? 2 : source>=4 ? 1 : null'
       );
-      ScribeRules.defineRule('skillNotes.skillBoostFeature',
+      rules.defineRule('skillNotes.skillBoostFeature',
         'pathLevels.Jack-Of-All-Trades', '=',
         'source >= 20 ? 4 : source >= 17 ? 3 : source >= 11 ? 2 : 1'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('skillPoints', 'skillNotes.skillBoostFeature', '+', '4 * source');
 
     } else if(path == 'Mountainborn') {
@@ -1400,16 +1447,16 @@ MN2E.heroicPathRules = function() {
         'skillNotes.mountaineerFeature:+%V Balance/Climb/Jump',
         'skillNotes.mountainSurvivalFeature:+%V Survival (mountains)'
       ];
-      ScribeRules.defineRule('combatNotes.rallyingCryFeature',
+      rules.defineRule('combatNotes.rallyingCryFeature',
         'pathLevels.Mountainborn', '+=', 'Math.floor((source + 1) / 5)'
       );
-      ScribeRules.defineRule('mountainbornFeatures.Constitution Bonus',
+      rules.defineRule('mountainbornFeatures.Constitution Bonus',
         'level', '+', 'Math.floor((source - 5) / 5)'
       );
-      ScribeRules.defineRule('skillNotes.mountaineerFeature',
+      rules.defineRule('skillNotes.mountaineerFeature',
         'pathLevels.Mountainborn', '+=', 'Math.floor((source + 4) / 5) * 2'
       );
-      ScribeRules.defineRule('skillNotes.mountainSurvivalFeature',
+      rules.defineRule('skillNotes.mountainSurvivalFeature',
         'pathLevels.Mountainborn', '+=', 'Math.floor((source + 4) / 5) * 2'
       );
 
@@ -1440,21 +1487,21 @@ MN2E.heroicPathRules = function() {
         'skillNotes.naturalBondFeature:+2 Knowledge (Nature)/Survival',
         'skillNotes.plantFriendFeature:+4 Diplomacy (plants)'
       ];
-      ScribeRules.defineRule('combatNotes.animalFriendFeature',
+      rules.defineRule('combatNotes.animalFriendFeature',
         'charismaModifier', '=', '10 + source'
       );
-      ScribeRules.defineRule('combatNotes.elementalFriendFeature',
+      rules.defineRule('combatNotes.elementalFriendFeature',
         'charismaModifier', '=', '10 + source'
       );
-      ScribeRules.defineRule('combatNotes.plantFriendFeature',
+      rules.defineRule('combatNotes.plantFriendFeature',
         'charismaModifier', '=', '10 + source'
       );
-      ScribeRules.defineRule('classSkills.Knowledge (Nature)',
+      rules.defineRule('classSkills.Knowledge (Nature)',
         'featureNotes.naturalBondFeature', '=', '1'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('classSkills.Survival', 'featureNotes.naturalBondFeature', '=', '1');
-      ScribeRules.defineRule
+      rules.defineRule
         ('skillNotes.wildEmpathyFeature','pathLevels.Naturefriend','+=',null);
 
     } else if(path == 'Northblooded') {
@@ -1483,24 +1530,24 @@ MN2E.heroicPathRules = function() {
         'skillNotes.northbornFeature:' +
           '+2 Survival (cold)/Wild Empathy (cold natives)'
       ];
-      ScribeRules.defineRule('combatNotes.battleCryFeature',
+      rules.defineRule('combatNotes.battleCryFeature',
         'pathLevels.Northblooded', '=',
         'source >= 17 ? 4 : source >= 14 ? 3 : source >= 7 ? 2 : 1'
       );
-      ScribeRules.defineRule('combatNotes.frostWeaponFeature',
+      rules.defineRule('combatNotes.frostWeaponFeature',
         'pathLevels.Northblooded', '=', 'source >= 19 ? 2 : 1'
       );
-      ScribeRules.defineRule('northbloodedFeatures.Constitution Bonus',
+      rules.defineRule('northbloodedFeatures.Constitution Bonus',
         'level', '+', 'Math.floor((source - 5) / 5)'
       );
-      ScribeRules.defineRule('magicNotes.howlingWindsFeature',
+      rules.defineRule('magicNotes.howlingWindsFeature',
         'pathLevels.Northblooded', '+=',
         'source >= 12 ? 3 : source >= 8 ? 2 : 1'
       );
-      ScribeRules.defineRule('saveNotes.coldResistanceFeature',
+      rules.defineRule('saveNotes.coldResistanceFeature',
         'pathLevels.Northblooded', '+=', 'source >= 9 ? 15 : 5'
       );
-      ScribeRules.defineRule('skillNotes.wildEmpathyFeature',
+      rules.defineRule('skillNotes.wildEmpathyFeature',
         'pathLevels.Northblooded', '+=', null
       );
 
@@ -1529,35 +1576,35 @@ MN2E.heroicPathRules = function() {
         'saveNotes.painlessFeature:+%V vs. pain effects',
         'saveNotes.uncaringMindFeature:+%V vs. enchantment'
       ];
-      ScribeRules.defineRule('combatNotes.improvedRetributiveRageFeature',
+      rules.defineRule('combatNotes.improvedRetributiveRageFeature',
         'pathLevels.Painless', '+=', null
       );
-      ScribeRules.defineRule('combatNotes.increasedDamageThresholdFeature',
+      rules.defineRule('combatNotes.increasedDamageThresholdFeature',
         'pathLevels.Painless', '+=',
         'source >= 20 ? 25 : source >= 15 ? 20 : 15'
       );
       // TODO Twice/day at level 19
-      ScribeRules.defineRule('combatNotes.lastStandFeature',
+      rules.defineRule('combatNotes.lastStandFeature',
         'pathLevels.Painless', '+=', '10 + source'
       );
-      ScribeRules.defineRule('combatNotes.nonlethalDamageReductionFeature',
+      rules.defineRule('combatNotes.nonlethalDamageReductionFeature',
         'pathLevels.Painless', '+=', 'Math.floor((source + 3) / 5) * 3'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('combatNotes.painlessFeature', 'pathLevels.Painless', '+=', null);
-      ScribeRules.defineRule('combatNotes.retributiveRageFeature',
+      rules.defineRule('combatNotes.retributiveRageFeature',
         'pathLevels.Painless', '+=', null
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('hitPoints', 'combatNotes.painlessFeature', '+', null);
-      ScribeRules.defineRule
+      rules.defineRule
         ('resistance.Enchantment', 'saveNotes.uncaringMindFeature', '+=', null);
-      ScribeRules.defineRule
+      rules.defineRule
         ('resistance.Pain', 'saveNotes.painlessFeature', '+=', null);
-      ScribeRules.defineRule('saveNotes.uncaringMindFeature',
+      rules.defineRule('saveNotes.uncaringMindFeature',
         'pathLevels.Painless', '+=', 'Math.floor((source + 2) / 5)'
       );
-      ScribeRules.defineRule('saveNotes.painlessFeature',
+      rules.defineRule('saveNotes.painlessFeature',
         'pathLevels.Painless', '=', 'Math.floor((source + 4) / 5) * 5'
       );
 
@@ -1580,25 +1627,24 @@ MN2E.heroicPathRules = function() {
         'skillNotes.masterAdventurerFeature:' +
           '+%V on three selected non-charisma skills'
       ];
-      ScribeRules.defineRule('featCount',
-        'featureNotes.skillMasteryFeature', '+', null
-      );
-      ScribeRules.defineRule('purebloodFeatures.Feat Bonus',
+      rules.defineRule
+        ('featCount', 'featureNotes.skillMasteryFeature', '+', null);
+      rules.defineRule('purebloodFeatures.Feat Bonus',
         'level', '+', 'Math.floor((source - 3) / 5)'
       );
-      ScribeRules.defineRule('featureNotes.skillMasteryFeature',
+      rules.defineRule('featureNotes.skillMasteryFeature',
         'pathLevels.Pureblood', '+=', 'Math.floor((source + 1) / 5)'
       );
-      ScribeRules.defineRule('selectableFeatureCount.Pureblood',
+      rules.defineRule('selectableFeatureCount.Pureblood',
         'pathLevels.Pureblood', '=', 'source>=5 ? Math.floor(source / 5) : null'
       );
-      ScribeRules.defineRule('skillNotes.bloodOfKingsFeature',
+      rules.defineRule('skillNotes.bloodOfKingsFeature',
         'pathLevels.Pureblood', '+=', 'Math.floor((source + 3) / 5) * 2'
       );
-      ScribeRules.defineRule('skillNotes.masterAdventurerFeature',
+      rules.defineRule('skillNotes.masterAdventurerFeature',
         'pathLevels.Pureblood', '+=', 'Math.floor((source + 4) / 5) * 2'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('skillPoints', 'skillNotes.masterAdventurerFeature', '+', '3*source');
 
     } else if(path == 'Quickened') {
@@ -1613,21 +1659,21 @@ MN2E.heroicPathRules = function() {
         'combatNotes.burstOfSpeedFeature:' +
           'Extra attack/move action for 3+conMod rounds %V/day/fatigued afterward'
       ];
-      ScribeRules.defineRule('abilityNotes.fastMovementFeature',
+      rules.defineRule('abilityNotes.fastMovementFeature',
         'pathLevels.Quickened', '+=', 'Math.floor((source + 2) / 5) * 5'
       );
-      ScribeRules.defineRule('combatNotes.burstOfSpeedFeature',
+      rules.defineRule('combatNotes.burstOfSpeedFeature',
         'pathLevels.Quickened', '+=', 'Math.floor((source + 1) / 5)'
       );
-      ScribeRules.defineRule('combatNotes.initiativeBonusFeature',
+      rules.defineRule('combatNotes.initiativeBonusFeature',
         'pathLevels.Quickened', '+=', 'Math.floor((source + 4) / 5) * 2'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('initiative', 'combatNotes.initiativeBonusFeature', '+', null);
-      ScribeRules.defineRule('quickenedFeatures.Armor Class Bonus',
+      rules.defineRule('quickenedFeatures.Armor Class Bonus',
         'level', '+', 'Math.floor((source - 2) / 5)'
       );
-      ScribeRules.defineRule('quickenedFeatures.Dexterity Bonus',
+      rules.defineRule('quickenedFeatures.Dexterity Bonus',
         'level', '+', 'Math.floor((source - 5) / 5)'
       );
 
@@ -1656,20 +1702,20 @@ MN2E.heroicPathRules = function() {
         'skillNotes.dolphin\'sGraceFeature:%V Swim speed/+8 Swim hazards',
         'skillNotes.deepLungsFeature:Hold breath for %V rounds'
       ];
-      ScribeRules.defineRule('magicNotes.aquaticAllyFeature',
+      rules.defineRule('magicNotes.aquaticAllyFeature',
         'pathLevels.Seaborn', '+=', 'Math.floor(source / 4)'
       );
-      ScribeRules.defineRule('saveNotes.coldResistanceFeature',
+      rules.defineRule('saveNotes.coldResistanceFeature',
         'pathLevels.Seaborn', '+=', 'source >= 14 ? 5 : null'
       );
-      ScribeRules.defineRule('skillNotes.aquaticBlindsightFeature',
+      rules.defineRule('skillNotes.aquaticBlindsightFeature',
         'pathLevels.Seaborn', '+=', 'Math.floor((source + 5) / 8) * 30'
       );
-      ScribeRules.defineRule('skillNotes.deepLungsFeature',
+      rules.defineRule('skillNotes.deepLungsFeature',
         'pathLevels.Seaborn', '+=', 'source >= 6 ? 4 : 3',
         'constitution', '*', null
       );
-      ScribeRules.defineRule('skillNotes.dolphin\'sGraceFeature',
+      rules.defineRule('skillNotes.dolphin\'sGraceFeature',
         'pathLevels.Seaborn', '+=', 'source >= 15 ? 60 : source >= 7 ? 40 : 20'
       );
 
@@ -1686,7 +1732,7 @@ MN2E.heroicPathRules = function() {
         'magicNotes.seerSightFeature:' +
           'Discern recent history of touched object %V/day'
       ];
-      ScribeRules.defineRule('magicNotes.seerSightFeature',
+      rules.defineRule('magicNotes.seerSightFeature',
         'pathLevels.Seer', '=', 'Math.floor((source + 6) / 6)'
       );
 
@@ -1705,10 +1751,10 @@ MN2E.heroicPathRules = function() {
         'featureNotes.shadowJumpFeature:Move %V ft between shadows',
         'skillNotes.shadowVeilFeature:+%V Hide'
       ];
-      ScribeRules.defineRule('featureNotes.shadowJumpFeature',
+      rules.defineRule('featureNotes.shadowJumpFeature',
         'pathLevels.Shadow Walker', '+=', 'Math.floor(source / 4) * 10'
       );
-      ScribeRules.defineRule('skillNotes.shadowVeilFeature',
+      rules.defineRule('skillNotes.shadowVeilFeature',
         'pathLevels.Shadow Walker', '+=', 'Math.floor((source + 2) / 4) * 2'
       );
 
@@ -1728,10 +1774,10 @@ MN2E.heroicPathRules = function() {
           'Fluent in any language after listening for 10 minutes',
         'skillNotes.persuasiveSpeakerFeature:+%V on verbal charisma skills'
       ];
-      ScribeRules.defineRule('speakerFeatures.Charisma Bonus',
+      rules.defineRule('speakerFeatures.Charisma Bonus',
         'level', '+', 'Math.floor((source - 5) / 5)'
       );
-      ScribeRules.defineRule('magicNotes.powerWordsFeature',
+      rules.defineRule('magicNotes.powerWordsFeature',
         'pathLevels.Speaker', '=',
         '"Opening" + (source >= 6 ? "/Shattering" : "") + ' +
                     '(source >= 9 ? "/Silence" : "") + ' +
@@ -1739,7 +1785,7 @@ MN2E.heroicPathRules = function() {
                     '(source >= 16 ? "/Charming" : "") + ' +
                     '(source >= 19 ? "/Holding" : "")'
       );
-      ScribeRules.defineRule('skillNotes.persuasiveSpeakerFeature',
+      rules.defineRule('skillNotes.persuasiveSpeakerFeature',
         'pathLevels.Speaker', '=',
         'source >= 17 ? 8 : source >= 11 ? 6 : source >= 7 ? 4 : 2'
       );
@@ -1759,11 +1805,11 @@ MN2E.heroicPathRules = function() {
           'Contribute %V points to others\' spells w/in 30 ft',
         'saveNotes.improvedSpellResistanceFeature:+%V vs. spells'
       ];
-      ScribeRules.defineRule('magicNotes.bonusSpellEnergyFeature',
+      rules.defineRule('magicNotes.bonusSpellEnergyFeature',
         'pathLevels.Spellsoul', '+=',
          'source>=18?8 : source>=13 ? 6 : source>=9 ? 4 : source>=4 ? 2 : null'
       );
-      ScribeRules.defineRule('magicNotes.metamagicAuraFeature',
+      rules.defineRule('magicNotes.metamagicAuraFeature',
         'pathLevels.Spellsoul', '=',
         '["Enlarge"].concat(source >= 5 ? ["Extend"] : [])' +
                    '.concat(source >= 8 ? ["Reduce"] : [])' +
@@ -1772,19 +1818,19 @@ MN2E.heroicPathRules = function() {
                    '.concat(source >= 17 ? ["Maximize"] : [])' +
                    '.concat(source >= 20 ? ["Redirect"] : []).sort().join("/")'
       );
-      ScribeRules.defineRule('magicNotes.metamagicAuraFeature2',
+      rules.defineRule('magicNotes.metamagicAuraFeature2',
         'pathLevels.Spellsoul', '=',
         'source >=15?4 : source>=10?3 : source>=6?2 : source>=2?1 : null'
       );
-      ScribeRules.defineRule('magicNotes.untappedPotentialFeature',
+      rules.defineRule('magicNotes.untappedPotentialFeature',
         'highestMagicModifier', '=', 'source + 1',
         'level', '+',
           'source>=18 ? 8 : source>=13 ? 6 : source>=9 ? 4 : source>=4 ? 2 : 0'
       );
-      ScribeRules.defineRule('resistance.Spell',
+      rules.defineRule('resistance.Spell',
         'saveNotes.improvedSpellResistanceFeature', '+=', null
       );
-      ScribeRules.defineRule('saveNotes.improvedSpellResistanceFeature',
+      rules.defineRule('saveNotes.improvedSpellResistanceFeature',
         'pathLevels.Spellsoul', '=',
         'source>=19 ? 5 : source>=16 ? 4 : source>=12 ? 3 : source>=7 ? 2 : ' +
         'source>=3 ? 1 : null'
@@ -1808,19 +1854,19 @@ MN2E.heroicPathRules = function() {
         'combatNotes.strategicBlowFeature:Ignore %V points of damage reduction',
         'combatNotes.untouchableFeature:No foe AOO from special attacks'
       ];
-      ScribeRules.defineRule('combatNotes.offensiveTacticsFeature',
+      rules.defineRule('combatNotes.offensiveTacticsFeature',
         'pathLevels.Steelblooded', '+=',
         'source>=17 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
       );
-      ScribeRules.defineRule('combatNotes.skilledWarriorFeature',
+      rules.defineRule('combatNotes.skilledWarriorFeature',
         'pathLevels.Steelblooded', '+=',
         'source>=18 ? 4 : source>=13 ? 3 : source>=8 ? 2 : 1'
       );
-      ScribeRules.defineRule('combatNotes.strategicBlowFeature',
+      rules.defineRule('combatNotes.strategicBlowFeature',
         'pathLevels.Steelblooded', '+=',
         'source>=16 ? 15 : source>=12 ? 12 : source>=9 ? 9 : source>=6 ? 6 : 3'
       );
-      ScribeRules.defineRule('steelbloodedFeatures.Feat Bonus',
+      rules.defineRule('steelbloodedFeatures.Feat Bonus',
         'level', '+', 'Math.floor(source / 5)'
       );
 
@@ -1843,10 +1889,10 @@ MN2E.heroicPathRules = function() {
         'skillNotes.bloodOfThePlanesFeature:' +
           '+%V on charisma skills when dealing with outsiders'
       ];
-      ScribeRules.defineRule('combatNotes.planarFuryFeature',
+      rules.defineRule('combatNotes.planarFuryFeature',
         'pathLevels.Sunderborn', '+=', 'Math.floor((source + 2) / 6)'
       );
-      ScribeRules.defineRule('skillNotes.bloodOfThePlanesFeature',
+      rules.defineRule('skillNotes.bloodOfThePlanesFeature',
         'pathLevels.Sunderborn', '+=', 'Math.floor((source + 1) / 3) * 2'
       );
 
@@ -1874,19 +1920,19 @@ MN2E.heroicPathRules = function() {
           'Allies w/in 30 ft threaten critical on any hit 1/day',
         'combatNotes.tellingBlowFeature:Allies w/in 30 ft re-roll damage 1/day'
       ];
-      ScribeRules.defineRule('combatNotes.aidedCombatBonusFeature',
+      rules.defineRule('combatNotes.aidedCombatBonusFeature',
         'pathLevels.Tactician', '+=',
         'source>=19 ? 4 : source>=14 ? 3 : source>=9 ? 2 : source>=5 ? 1 : 0'
       );
-      ScribeRules.defineRule('combatNotes.combatOverviewFeature',
+      rules.defineRule('combatNotes.combatOverviewFeature',
         'pathLevels.Tactician', '+=',
         'source>=15 ? 4 : source>=10 ? 3 : source>=6 ? 2 : 1'
       );
-      ScribeRules.defineRule('combatNotes.coordinatedAttackFeature',
+      rules.defineRule('combatNotes.coordinatedAttackFeature',
         'pathLevels.Tactician', '+=',
         'source>=17 ? 4 : source==16 ? 3 : Math.floor(source / 4)'
       );
-      ScribeRules.defineRule('combatNotes.coordinatedInitiativeFeature',
+      rules.defineRule('combatNotes.coordinatedInitiativeFeature',
         'pathLevels.Tactician', '+=',
         'source>=16 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
       );
@@ -1905,10 +1951,10 @@ MN2E.heroicPathRules = function() {
         'combatNotes.ferocityFeature:Continue fighting below 0 HP',
         'magicNotes.wildShapeFeature:Change into creature of size %V'
       ];
-      ScribeRules.defineRule('wargFeatures.Animal Companion',
+      rules.defineRule('wargFeatures.Animal Companion',
         'level', '+', 'Math.floor((source - 2) / 4)'
       );
-      ScribeRules.defineRule('magicNotes.wildShapeFeature',
+      rules.defineRule('magicNotes.wildShapeFeature',
         'pathLevels.Warg', '=',
         'source >= 19 ? "medium-huge 3/day" : ' +
         'source >= 15 ? "medium-large 3/day" : ' +
@@ -1916,10 +1962,10 @@ MN2E.heroicPathRules = function() {
         'source >= 8 ? "medium 2/day" : ' +
         'source >= 5 ? "medium 1/day" : null'
       );
-      ScribeRules.defineRule('selectableFeatureCount.Warg',
+      rules.defineRule('selectableFeatureCount.Warg',
         'pathLevels.Warg', '=', 'source >= 16 ? 3 : source >= 9 ? 2 : 1'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('skillNotes.wildEmpathyFeature', 'pathLevels.Warg', '+=', null);
 
     } else
@@ -1932,14 +1978,14 @@ MN2E.heroicPathRules = function() {
         var levelAndFeature = features[j].split(/:/);
         var feature = levelAndFeature[levelAndFeature.length == 1 ? 0 : 1];
         var level = levelAndFeature.length == 1 ? 1 : levelAndFeature[0];
-        ScribeRules.defineRule(prefix + 'Features.' + feature,
+        rules.defineRule(prefix + 'Features.' + feature,
           'pathLevels.' + path, '=', 'source >= ' + level + ' ? 1 : null'
         );
-        ScribeRules.defineRule
+        rules.defineRule
           ('features.' + feature, prefix + 'Features.' + feature, '+=', null);
       }
     }
-    ScribeRules.defineSheetElement
+    rules.defineSheetElement
       (path + ' Features', 'FeaturesAndSkills', null, 'Feats', ' * ');
     if(spellFeatures != null) {
       var spellLevels = {};
@@ -1961,36 +2007,35 @@ MN2E.heroicPathRules = function() {
           rule += 'source >= ' + levels[j] + ' ? ' + (j + 1) + ' : ';
         }
         rule += 'null';
-        ScribeRules.defineRule
+        rules.defineRule
           (prefix + 'Spells.' + spell, 'pathLevels.' + path, '=', rule);
       }
-      ScribeRules.defineSheetElement
+      rules.defineSheetElement
         (path + ' Spells', 'Magic', null, 'Spells', ' * ');
     }
     if(notes != null)
-      ScribeRules.defineNote(notes);
-    ScribeRules.defineRule('pathLevels.' + path,
+      rules.defineNote(notes);
+    rules.defineRule('pathLevels.' + path,
       'heroicPath', '?', 'source == "' + path + '"',
       'level', '=', null
     );
 
   }
-  ScribeRules.defineSheetElement
-    ('Heroic Path', 'Description', null, 'Alignment');
-  ScribeRules.defineSheetElement('Deity', null, null, null);
+  rules.defineSheetElement('Heroic Path', 'Description', null, 'Alignment');
+  rules.defineSheetElement('Deity', null, null, null);
 
 };
 
-MN2E.magicRules = function() {
+MN2E.magicRules = function(rules) {
 
-  ScribeRules.defineChoice('spells', MN2E.SPELLS);
-  ScribeRules.defineSheetElement
+  rules.defineChoice('spells', MN2E.SPELLS);
+  rules.defineSheetElement
     ('Spell Energy Points', 'SpellStats', '<b>Spell Energy Points</b>: %V',
      'Spells Per Day');
 
 };
 
-MN2E.raceRules = function() {
+MN2E.raceRules = function(rules) {
 
   /* Notes and rules that apply to multiple races */
   var notes = [
@@ -2022,28 +2067,28 @@ MN2E.raceRules = function() {
     'skillNotes.stoneKnowledgeFeature:' +
        '+2 Appraise/Craft involving stone or metal'
   ];
-  ScribeRules.defineNote(notes);
-  ScribeRules.defineRule
+  rules.defineNote(notes);
+  rules.defineRule
     ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
-  ScribeRules.defineRule
+  rules.defineRule
     ('resistance.Poison', 'saveNotes.poisonResistanceFeature', '+=', '2');
-  ScribeRules.defineRule
+  rules.defineRule
     ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
-  ScribeRules.defineRule
+  rules.defineRule
     ('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
-  ScribeRules.defineRule('skillNotes.favoredRegion',
+  rules.defineRule('skillNotes.favoredRegion',
     'race', '=', 'MN2E.racesFavoredRegions[source]'
   );
-  ScribeRules.defineRule
+  rules.defineRule
     ('spellEnergyPoints', 'magicNotes.spellResistanceFeature', '+', '-2');
-  ScribeRules.defineRule('skillNotes.naturalSwimmerFeature',
+  rules.defineRule('skillNotes.naturalSwimmerFeature',
     'constitution', '=', 'source',
     'holdBreathMultiplier', '*', null
   );
-  ScribeRules.defineRule
+  rules.defineRule
     ('save.Fortitude', 'saveNotes.fortunateFeature', '+', '1');
-  ScribeRules.defineRule('save.Reflex', 'saveNotes.fortunateFeature', '+', '1');
-  ScribeRules.defineRule('save.Will', 'saveNotes.fortunateFeature', '+', '1');
+  rules.defineRule('save.Reflex', 'saveNotes.fortunateFeature', '+', '1');
+  rules.defineRule('save.Will', 'saveNotes.fortunateFeature', '+', '1');
 
   for(var i = 0; i < MN2E.RACES.length; i++) {
 
@@ -2062,16 +2107,16 @@ MN2E.raceRules = function() {
         'combatNotes.fierceFeature:+1 attack w/two-handed weapons'
       ];
       // TODO Bonus feat must be fighter or weapon/armor/shield proficiency
-      ScribeRules.defineRule
+      rules.defineRule
         ('featCount', 'featureNotes.dornFeatCountBonus', '+', null);
-      ScribeRules.defineRule('featureNotes.dornFeatCountBonus',
+      rules.defineRule('featureNotes.dornFeatCountBonus',
         'race', '=', 'source == "Dorn" ? 1 : null'
       );
-      ScribeRules.defineRule('skillNotes.dornSkillPointsBonus',
+      rules.defineRule('skillNotes.dornSkillPointsBonus',
         'race', '?', 'source == "Dorn"',
         'level', '=', 'source + 3'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('skillPoints', 'skillNotes.dornSkillPointsBonus', '+', null);
 
     } else if(race.indexOf(' Dwarf') >= 0) {
@@ -2087,10 +2132,10 @@ MN2E.raceRules = function() {
         'combatNotes.dwarfFavoredWeaponFeature:+1 attack with axes/hammers',
         'combatNotes.resilientFeature:+2 AC'
       ];
-      ScribeRules.defineRule('abilityNotes.armorSpeedAdjustment',
+      rules.defineRule('abilityNotes.armorSpeedAdjustment',
         'race', '^', 'source.indexOf("Dwarf") >= 0 ? 0 : null'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('armorClass', 'combatNotes.resilientFeature', '+', '2');
       if(race == 'Clan Dwarf') {
         features = features.concat([
@@ -2114,7 +2159,7 @@ MN2E.raceRules = function() {
       notes = [
         'combatNotes.sturdyFeature:+1 AC'
       ];
-      ScribeRules.defineRule
+      rules.defineRule
         ('armorClass', 'combatNotes.sturdyFeature', '+', '1');
       if(race == 'Clan Raised Dwarrow') {
         features = features.concat([
@@ -2146,11 +2191,9 @@ MN2E.raceRules = function() {
         'combatNotes.minorLightSensitivityFeature:DC 15 Fortitude save in sunlight to avoid -1 attack',
         'saveNotes.ruggedFeature:+2 all saves'
       ];
-      ScribeRules.defineRule
-        ('save.Fortitude', 'saveNotes.ruggedFeature', '+', '2');
-      ScribeRules.defineRule
-        ('save.Reflex', 'saveNotes.ruggedFeature', '+', '2');
-      ScribeRules.defineRule('save.Will', 'saveNotes.ruggedFeature', '+', '2');
+      rules.defineRule('save.Fortitude', 'saveNotes.ruggedFeature', '+', '2');
+      rules.defineRule('save.Reflex', 'saveNotes.ruggedFeature', '+', '2');
+      rules.defineRule('save.Will', 'saveNotes.ruggedFeature', '+', '2');
       if(race == 'Clan Raised Dworg') {
         features = features.concat(['Stonecunning']);
       } else if(race == 'Kurgun Raised Dworg') {
@@ -2172,7 +2215,7 @@ MN2E.raceRules = function() {
           'featureNotes.boundToTheBeastFeature:Mounted Combat'
         ]);
         features = features.concat(['Bound To The Beast']);
-        ScribeRules.defineRule('features.Mounted Combat',
+        rules.defineRule('features.Mounted Combat',
           'featureNotes.boundToTheBeastFeature', '=', '1'
         );
       }
@@ -2189,10 +2232,10 @@ MN2E.raceRules = function() {
         'saveNotes.enchantmentResistanceFeature:+2 vs. enchantments',
         'skillNotes.treeClimberFeature:+4 Balance (trees)/Climb (trees)'
       ];
-      ScribeRules.defineRule('resistance.Enchantment',
+      rules.defineRule('resistance.Enchantment',
         'saveNotes.enchantmentResistanceFeature', '+=', '2'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('spellEnergyPoints', 'magicNotes.naturalChannelerFeature', '+', '2');
 
       if(race == 'Jungle Elf') {
@@ -2208,10 +2251,10 @@ MN2E.raceRules = function() {
             '+2 Balance (trees)/Climb (trees)',
           'skillNotes.spiritFoeFeature:+4 Hide (nature)/Move Silently (nature)'
         ]);
-        ScribeRules.defineRule('magicNotes.innateMagicFeature',
+        rules.defineRule('magicNotes.innateMagicFeature',
           'magicNotes.improvedInnateMagicFeature', '+', '1'
         );
-        ScribeRules.defineRule
+        rules.defineRule
           ('skillNotes.feralElfFeature2', 'features.Feral Elf', '=', '1');
       } else if(race == 'Sea Elf') {
         features = features.concat([
@@ -2231,16 +2274,16 @@ MN2E.raceRules = function() {
           'magicNotes.improvedInnateMagicFeature:Bonus Innate Magic spell',
           'magicNotes.improvedNaturalChannelerFeature:+1 spell energy'
         ]);
-        ScribeRules.defineRule('magicNotes.innateMagicFeature',
+        rules.defineRule('magicNotes.innateMagicFeature',
           'magicNotes.improvedInnateMagicFeature', '+', '1'
         );
-        ScribeRules.defineRule('skillNotes.woodElfSkillPointsBonus',
+        rules.defineRule('skillNotes.woodElfSkillPointsBonus',
           'race', '?', 'source == "Wood Elf"',
           'level', '=', 'source'
         );
-        ScribeRules.defineRule
+        rules.defineRule
           ('skillPoints', 'skillNotes.woodElfSkillPointsBonus', '+', null);
-        ScribeRules.defineRule('spellEnergyPoints',
+        rules.defineRule('spellEnergyPoints',
           'magicNotes.improvedNaturalChannelerFeature', '+', '1'
         );
       }
@@ -2253,19 +2296,19 @@ MN2E.raceRules = function() {
         'abilityNotes.erenlanderAbilityAdjustment:+2 any/-2 any',
         'skillNotes.heartlanderFeature:+4 Craft/Profession ranks'
       ];
-      ScribeRules.defineRule('abilityNotes.erenlanderAbilityAdjustment',
+      rules.defineRule('abilityNotes.erenlanderAbilityAdjustment',
         'race', '=', 'source == "Erenlander" ? 1 : null'
       );
-      ScribeRules.defineRule
+      rules.defineRule
         ('featCount', 'featureNotes.erenlanderFeatCountBonus', '+', null);
-      ScribeRules.defineRule('featureNotes.erenlanderFeatCountBonus',
+      rules.defineRule('featureNotes.erenlanderFeatCountBonus',
         'race', '=', 'source == "Erenlander" ? 2 : null'
       );
-      ScribeRules.defineRule('skillNotes.erenlanderSkillPointsBonus',
+      rules.defineRule('skillNotes.erenlanderSkillPointsBonus',
         'race', '?', 'source == "Erenlander"',
         'level', '=', '(source + 3) * 2'
       );
-      ScribeRules.defineRule('skillPoints',
+      rules.defineRule('skillPoints',
         'skillNotes.heartlanderFeature', '+', '4',
         'skillNotes.erenlanderSkillPointsBonus', '+', null
       );
@@ -2296,7 +2339,7 @@ MN2E.raceRules = function() {
         'skillNotes.alertSensesFeature:+2 Listen/Spot',
         'skillNotes.gracefulFeature:+2 Climb/Jump/Move Silently/Tumble'
       ];
-      ScribeRules.defineRule
+      rules.defineRule
         ('resistance.Fear', 'saveNotes.unafraidFeature', '+=', '2');
 
       if(race == 'Agrarian Halfling') {
@@ -2306,25 +2349,25 @@ MN2E.raceRules = function() {
           'featureNotes.stoutFeature:Endurance/Toughness',
           'featureNotes.studiousFeature:Magecraft (Hermetic)'
         ]);
-        ScribeRules.defineRule('agrarianHalflingFeatures.Endurance',
+        rules.defineRule('agrarianHalflingFeatures.Endurance',
           'featureNotes.stoutFeature', '=', '1'
         );
-        ScribeRules.defineRule('agrarianHalflingFeatures.Toughness',
+        rules.defineRule('agrarianHalflingFeatures.Toughness',
           'featureNotes.stoutFeature', '=', '1'
         );
-        ScribeRules.defineRule('agrarianHalflingFeatures.Magecraft (Hermetic)',
+        rules.defineRule('agrarianHalflingFeatures.Magecraft (Hermetic)',
           'featureNotes.studiousFeature', '=', '1'
         );
-        ScribeRules.defineRule('features.Endurance',
+        rules.defineRule('features.Endurance',
           'agrarianHalflingFeatures.Endurance', '=', '1'
         );
-        ScribeRules.defineRule('features.Magecraft (Hermetic)',
+        rules.defineRule('features.Magecraft (Hermetic)',
           'agrarianHalflingFeatures.Magecraft (Hermetic)', '=', '1'
         );
-        ScribeRules.defineRule('features.Toughness',
+        rules.defineRule('features.Toughness',
           'agrarianHalflingFeatures.Toughness', '=', '1'
         );
-        ScribeRules.defineRule('selectableFeatureCount.Agrarian Halfling',
+        rules.defineRule('selectableFeatureCount.Agrarian Halfling',
           'race', '=', 'source == "Agrarian Halfling" ? 1 : null'
         );
       } else if(race == 'Nomadic Halfling') {
@@ -2338,19 +2381,19 @@ MN2E.raceRules = function() {
           'skillNotes.skilledRiderFeature:' +
             '+2 Handle Animal (wogren)/Ride (wogren)'
         ]);
-        ScribeRules.defineRule('features.Mounted Combat',
+        rules.defineRule('features.Mounted Combat',
           'nomadicHalflingFeatures.Bound To The Beast', '=', '1'
         );
-        ScribeRules.defineRule('features.Magecraft (Spiritual)',
+        rules.defineRule('features.Magecraft (Spiritual)',
           'nomadicHalflingFeatures.Bound To The Spirits', '=', '1'
         );
-        ScribeRules.defineRule('nomadicHalflingFeatures.Mounted Combat',
+        rules.defineRule('nomadicHalflingFeatures.Mounted Combat',
           'featureNotes.boundToTheBeastFeature', '=', '1'
         );
-        ScribeRules.defineRule('nomadicHalflingFeatures.Magecraft (Spiritual)',
+        rules.defineRule('nomadicHalflingFeatures.Magecraft (Spiritual)',
           'featureNotes.boundToTheSpiritsFeature', '=', '1'
         );
-        ScribeRules.defineRule('selectableFeatureCount.Nomadic Halfling',
+        rules.defineRule('selectableFeatureCount.Nomadic Halfling',
           'race', '=', 'source == "Nomadic Halfling" ? 1 : null'
         );
       }
@@ -2372,7 +2415,7 @@ MN2E.raceRules = function() {
         'saveNotes.improvedColdHardyFeature:Immune non-lethal/half lethal',
         'skillNotes.naturalPreditorFeature:+%V Intimidate'
       ];
-      ScribeRules.defineRule
+      rules.defineRule
         ('skillNotes.naturalPreditorFeature', 'strengthModifier', '=', null);
 
     } else if(race.indexOf(' Sarcosan') >= 0) {
@@ -2383,17 +2426,17 @@ MN2E.raceRules = function() {
         'combatNotes.quickFeature:+1 attack w/light weapons',
         'saveNotes.quickFeature:+1 Reflex'
       ];
-      ScribeRules.defineRule
+      rules.defineRule
         ('featCount', 'featureNotes.sarcosanFeatCountBonus', '+', null);
-      ScribeRules.defineRule('featureNotes.sarcosanFeatCountBonus',
+      rules.defineRule('featureNotes.sarcosanFeatCountBonus',
         'race', '=', 'source.indexOf("Sarcosan") >= 0 ? 1 : null'
       );
-      ScribeRules.defineRule('skillNotes.sarcosanSkillPointsBonus',
+      rules.defineRule('skillNotes.sarcosanSkillPointsBonus',
         'race', '?', 'source.indexOf("Sarcosan") >= 0',
         'level', '=', 'source + 3'
       );
-      ScribeRules.defineRule('saveReflex', 'saveNotes.quickFeature', '+', '1');
-      ScribeRules.defineRule
+      rules.defineRule('saveReflex', 'saveNotes.quickFeature', '+', '1');
+      rules.defineRule
         ('skillPoints', 'skillNotes.sarcosanSkillPointsBonus', '+', null);
       if(race == 'Plains Sarcosan') {
         features = features.concat(['Natural Horseman']);
@@ -2415,27 +2458,27 @@ MN2E.raceRules = function() {
     } else
       continue;
 
-    ScribeRules.defineRace(race, adjustment, features);
+    rules.defineRace(race, adjustment, features);
     if(notes != null)
-      ScribeRules.defineNote(notes);
+      rules.defineNote(notes);
 
   }
 
 };
 
-MN2E.skillRules = function() {
-  ScribeRules.defineChoice('languages', MN2E.LANGUAGES);
-  ScribeRules.defineChoice('skills', MN2E.SKILLS);
+MN2E.skillRules = function(rules) {
+  rules.defineChoice('languages', MN2E.LANGUAGES);
+  rules.defineChoice('skills', MN2E.SKILLS);
   var notes = [
     'skillNotes.knowledge(Local)Synergy2:' +
        '+2 Knowledge (Shadow) (local beauracracy)',
     'skillNotes.knowledge(Nature)Synergy2:+2 Knowledge (Spirits)',
     'skillNotes.knowledge(Spirits)Synergy:+2 Knowledge (Nature)'
   ];
-  ScribeRules.defineRule('skillNotes.knowledge(Nature)Synergy2',
+  rules.defineRule('skillNotes.knowledge(Nature)Synergy2',
     'skills.Knowledge (Nature)', '=', 'source >= 5 ? 1 : null'
   );
-  ScribeRules.defineRule('skills.Knowledge (Spirits)',
+  rules.defineRule('skills.Knowledge (Spirits)',
     'skillNotes.knowledge(Nature)Synergy2', '+', '2'
   );
 };
