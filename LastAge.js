@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.37 2006/10/10 12:22:33 Jim Exp $ */
+/* $Id: LastAge.js,v 1.38 2006/10/13 10:21:41 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -20,7 +20,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 /* Loads the rules from Midnight Second Edition. */
 function MN2E() {
-  var rules = new ScribeRules();
+  var rules = new ScribeRules('MN2E');
   PH35.CLASSES = ['Barbarian', 'Fighter', 'Rogue'];
   PH35.DEITIES = ['Izrador (NE):Death/Destruction/Evil/Magic/War'];
   PH35.RACES = [];
@@ -65,7 +65,7 @@ function MN2E() {
   // TODO Remove these null testing choices
   rules.defineChoice('heroicPaths', 'Null Path');
   rules.defineChoice('races', 'Null Race');
-  Scribe.addRuleSet('MN2E', rules);
+  Scribe.addRuleSet(rules);
   MN2E.rules = rules;
 }
 
