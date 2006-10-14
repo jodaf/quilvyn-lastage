@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.39 2006/10/14 07:07:37 Jim Exp $ */
+/* $Id: LastAge.js,v 1.40 2006/10/14 22:10:15 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -2493,3 +2493,52 @@ MN2E.randomize = function(rules, attributes, attribute) {
     attributes[attribute] = ScribeUtils.randomKey(Scribe.heroicPaths);
   }
 }
+
+/* Convenience functions that invoke ScribeRules methods on the MN2E rules. */
+MN2E.defineChoice = function() {
+  return ScribeRules.prototype.defineChoice.apply(MN2E.rules, arguments);
+};
+
+MN2E.defineClass = function() {
+  return ScribeRules.prototype.defineClass.apply(MN2E.rules, arguments);
+};
+
+MN2E.defineEditorElement = function() {
+  return ScribeRules.prototype.defineEditorElement.apply(MN2E.rules, arguments);
+};
+
+MN2E.defineNote = function() {
+  return ScribeRules.prototype.defineNote.apply(MN2E.rules, arguments);
+};
+
+MN2E.defineRace = function() {
+  return ScribeRules.prototype.defineRace.apply(MN2E.rules, arguments);
+};
+
+MN2E.defineRandomizer = function() {
+  return ScribeRules.prototype.defineRandomizer.apply(MN2E.rules, arguments);
+};
+
+MN2E.defineRule = function() {
+  return ScribeRules.prototype.defineRule.apply(MN2E.rules, arguments);
+};
+
+MN2E.defineSheetElement = function() {
+  return ScribeRules.prototype.defineSheetElement.apply(MN2E.rules, arguments);
+};
+
+MN2E.defineTest = function() {
+  return ScribeRules.prototype.defineTest.apply(MN2E.rules, arguments);
+};
+
+MN2E.getChoices = function() {
+  return ScribeRules.prototype.getChoices.apply(MN2E.rules, arguments);
+};
+
+MN2E.getTests = function() {
+  return ScribeRules.prototype.getTests.apply(MN2E.rules, arguments);
+};
+
+MN2E.isSource = function() {
+  return ScribeRules.prototype.isSource.apply(MN2E.rules, arguments);
+};
