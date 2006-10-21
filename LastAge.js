@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.40 2006/10/14 22:10:15 Jim Exp $ */
+/* $Id: LastAge.js,v 1.41 2006/10/21 00:41:07 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -114,7 +114,8 @@ MN2E.RACES = [
   'Urban Sarcosan', 'Wood Elf'
 ];
 MN2E.SKILLS = [
-  'Knowledge (Old Gods)', 'Knowledge (Shadow)', 'Knowledge (Spirits)'
+  'Knowledge (Old Gods):int/trained', 'Knowledge (Shadow):int/trained',
+  'Knowledge (Spirits):int/trained'
 ];
 MN2E.SPELLS = [
   'Charm Repair:W3', 'Detect Astirax:D1/W1', 'Disguise Ally:W2',
@@ -202,7 +203,7 @@ MN2E.classRules = function(rules) {
         'channelerLevels', '+=', 'Math.floor((source - 1) / 3)'
       );
       rules.defineRule('featureNotes.bonusSpellcastingFeature',
-        'channelerLevels', '=', 'Math.floor((source + 1) / 3)'
+        'channelerLevels', '+=', 'Math.floor((source + 1) / 3)'
       );
       rules.defineRule
         ('magicNotes.bonusSpellEnergyFeature', 'channelerLevels', '+=', null);
@@ -800,9 +801,9 @@ MN2E.featRules = function(rules) {
     'magicNotes.craftSpellTalismanFeature:' +
       'Talisman reduces spell energy cost of selected spell by 1',
     'magicNotes.greaterSpellcasting(Conjuration)Feature:' +
-       'Learn Greater Conjuration spells',
+      'May learn school spells/bonus school spell',
     'magicNotes.greaterSpellcasting(Evocation)Feature:' +
-       'Learn Greater Evocation spells',
+      'May learn school spells/bonus school spell',
     'magicNotes.herbalistFeature:Create herbal concoctions',
     'magicNotes.innateMagicFeature:%V level 0 spells as at-will innate ability',
     'magicNotes.magecraft(Charismatic)Feature:%V spell energy points',
@@ -811,6 +812,22 @@ MN2E.featRules = function(rules) {
     'magicNotes.ritualMagicFeature:Learn and lead magic rituals',
     'magicNotes.senseNexusFeature:DC wisdom check to sense nexus w/in 5 miles',
     'magicNotes.spellKnowledgeFeature:2 bonus spells',
+    'magicNotes.spellcasting(Abjuration)Feature:' +
+      'May learn school spells/bonus school spell',
+    'magicNotes.spellcasting(Conjuration)Feature:' +
+      'May learn school spells/bonus school spell',
+    'magicNotes.spellcasting(Divination)Feature:' +
+      'May learn school spells/bonus school spell',
+    'magicNotes.spellcasting(Enchantment)Feature:' +
+      'May learn school spells/bonus school spell',
+    'magicNotes.spellcasting(Evocation)Feature:' +
+      'May learn school spells/bonus school spell',
+    'magicNotes.spellcasting(Illusion)Feature:' +
+      'May learn school spells/bonus school spell',
+    'magicNotes.spellcasting(Necromancy)Feature:' +
+      'May learn school spells/bonus school spell',
+    'magicNotes.spellcasting(Transmutation)Feature:' +
+      'May learn school spells/bonus school spell',
     'saveNotes.luckyFeature:+1 bonus from luck charms/spells',
     'saveNotes.magicHardenedFeature:+2 spell resistance',
     'saveNotes.thickSkullFeature:DC 10 + damage save to stay at 1 hit point',
@@ -846,13 +863,13 @@ MN2E.featRules = function(rules) {
     ('magicNotes.magecraft(Hermetic)Feature', 'intelligenceModifier', '=',null);
   rules.defineRule
     ('magicNotes.magecraft(Spiritual)Feature', 'wisdomModifier', '=', null);
-  rules.defineRule('spellEnergyPoints',
+  rules.defineRule('spellEnergy',
     'magicNotes.magecraft(Charismatic)Feature', '+=', null
   );
-  rules.defineRule('spellEnergyPoints',
+  rules.defineRule('spellEnergy',
     'magicNotes.magecraft(Hermetic)Feature', '+=', null
   );
-  rules.defineRule('spellEnergyPoints',
+  rules.defineRule('spellEnergy',
     'magicNotes.magecraft(Spiritual)Feature', '+=', null
   );
   rules.defineRule
@@ -957,7 +974,7 @@ MN2E.heroicPathRules = function(rules) {
   rules.defineRule
     ('intelligence', 'abilityNotes.intelligenceBonusFeature', '+', null);
   rules.defineRule
-    ('spellEnergyPoints', 'magicNotes.bonusSpellEnergyFeature', '+', null);
+    ('spellEnergy', 'magicNotes.bonusSpellEnergyFeature', '+', null);
   rules.defineRule
     ('save.Fortitude', 'saveNotes.fortitudeBonusFeature', '+', null);
   rules.defineRule
@@ -2080,7 +2097,7 @@ MN2E.raceRules = function(rules) {
     'race', '=', 'MN2E.racesFavoredRegions[source]'
   );
   rules.defineRule
-    ('spellEnergyPoints', 'magicNotes.spellResistanceFeature', '+', '-2');
+    ('spellEnergy', 'magicNotes.spellResistanceFeature', '+', '-2');
   rules.defineRule('skillNotes.naturalSwimmerFeature',
     'constitution', '=', 'source',
     'holdBreathMultiplier', '*', null
@@ -2236,7 +2253,7 @@ MN2E.raceRules = function(rules) {
         'saveNotes.enchantmentResistanceFeature', '+=', '2'
       );
       rules.defineRule
-        ('spellEnergyPoints', 'magicNotes.naturalChannelerFeature', '+', '2');
+        ('spellEnergy', 'magicNotes.naturalChannelerFeature', '+', '2');
 
       if(race == 'Jungle Elf') {
         features = features.concat([
@@ -2283,7 +2300,7 @@ MN2E.raceRules = function(rules) {
         );
         rules.defineRule
           ('skillPoints', 'skillNotes.woodElfSkillPointsBonus', '+', null);
-        rules.defineRule('spellEnergyPoints',
+        rules.defineRule('spellEnergy',
           'magicNotes.improvedNaturalChannelerFeature', '+', '1'
         );
       }
