@@ -329,69 +329,111 @@ MN2EPrestige.prestigeClassRules = function() {
 
     } else if(klass == 'Druid') {
 
-      continue; // TODO
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
-        '2:Bonus Spells', '2:Summon Familiar', '4:Arcane Feat Bonus'
+        '1:Mastery Of Nature', '1:Animal Companion', '2:Druidcraft',
+        '2:Nature Sense', '3:Commune With Nature', '5:Find The Way',
+        '8:Venom Immunity'
       ];
-      hitDie = 6;
+      hitDie = 8;
       notes = [
-        'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
-        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.bonusSpellsFeature:%V extra spells',
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
+        'combatNotes.masteryOfNatureFeature:Turn animals/plants as cleric',
+        'featureNotes.animalCompanionFeature:Special bond/abilities',
+        'magicNotes.communeWithNatureFeature:<i>Commune With Nature</i> %V/day',
+        'magicNotes.druidcraftFeature:Energy cost of Druid spells reduced by 1',
+        'saveNotes.venomImmunityFeature:Immune to poisons',
+        'skillNotes.natureSenseFeature:' +
+          'Identify animals/plants/unsafe food/drink'
+        // TODO: Find The Way: Woodland Stride, Trackless Step, Pass w/out Trace
       ];
-      prerequisites = null;
+      prerequisites = [
+        '{features.Magecraft (Spiritual)} != null',
+        '{features.Mastery Of Nature} != null || ' +
+        '{features.Wild Empathy} != null',
+        '+/{^features.Spellcasting} >= 2',
+        '{skills.Knowledge (Nature)} >= 8',
+        '{skills.Survival} >= 8'
+      ];
       profArmor = PH35.PROFICIENCY_NONE;
       profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_LIGHT;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
+      profWeapon = PH35.PROFICIENCY_NONE;
+      saveFortitude = PH35.SAVE_BONUS_GOOD;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
       skillPoints = 4;
       skills = [
-        'Concentration', 'Decipher Script', 'Handle Animal', 'Heal',
-        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
-        'Speak Language', 'Spellcraft'
+        'Concentration', 'Handle Animal', 'Heal', 'Knowledge (Arcana)',
+        'Knowledge (Geography)', 'Knowledge (Nature)', 'Knowledge (Spirits)',
+        'Speak Language', 'Spellcraft', 'Survival'
       ];
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule('magicNotes.communeWithNatureFeature',
+        'levels.Druid', '=', 'Math.floor(source / 3)'
+      );
 
     } else if(klass == 'Elven Raider') {
 
-      continue; // TODO
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
-        '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
-        '2:Bonus Spells', '2:Summon Familiar', '4:Arcane Feat Bonus'
+        '1:Ranged Sneak Attack', '2:Improved Sneak Attack', '3:Meticulous Aim',
+        '4:Intimidating Shot', '6:Leaf Reader', '7:Disarming Shot',
+        '9:Close Combat Archery'
       ];
-      hitDie = 6;
+      hitDie = 8;
       notes = [
-        'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
-        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.bonusSpellsFeature:%V extra spells',
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
+        'combatNotes.closeCombatArchery:' +
+          'Use bow w/out foe AOO; use arrows as light weapons',
+        'combatNotes.disarmingShotFeature:' +
+          'Ranged touch attack to attempt disarm',
+        'combatNotes.improvedSneakAttackFeature:' +
+          'Ranged sneak attack up to %V ft',
+        'combatNotes.intimidatingShotFeature:' +
+          'Intimidate check after attack w/bonus of 1/2 damage',
+        'combatNotes.leafReaderFeature:' +
+          'Spot check to eliminate vegetation concealment',
+        'combatNotes.meticulousFeature:' +
+          '+1 critical range for every 2 rounds aiming; +%V max',
+        'combatNotes.rangedSneakAttackFeature:' +
+          '%Vd6 extra damage when surprising or flanking w/in 30 ft',
       ];
-      prerequisites = null;
-      profArmor = PH35.PROFICIENCY_NONE;
+      prerequisites = [
+        '{baseAttack} >= 5',
+        '{feats.Point Blank Shot} != null',
+        '{feats.Rapid Shot} != null',
+        '{feats.Weapon Focus (Longbow)} != null || ' +
+        '{feats.Weapon Focus (Componsite Longbow)} != null',
+        '{race}.indexOf("Elf") >= 0',
+        '{skills.Hide} >= 8',
+        '{skills.Move Silently} >= 8',
+        '{skills.Survival} >= 8'
+      ];
+      profArmor = PH35.PROFICIENCY_LIGHT;
       profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_LIGHT;
+      profWeapon = PH35.PROFICIENCY_MEDIUM;
       saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
+      saveReflex = PH35.SAVE_BONUS_GOOD;
+      saveWill = PH35.SAVE_BONUS_POOR;
       skillPoints = 4;
       skills = [
-        'Concentration', 'Decipher Script', 'Handle Animal', 'Heal',
-        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
-        'Speak Language', 'Spellcraft'
+        'Balance', 'Climb', 'Heal', 'Hide', 'Intimidate', 'Jump', 'Listen',
+        'Move Silently', 'Ride', 'Search', 'Speak Language', 'Spot',
+        'Survival', 'Swim', 'Use Rope'
       ];
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule('combatNotes.improvedSneakAttackFeature',
+        'levels.Elven Raider', '+=', '30 + Math.floor((source + 1) / 3) * 15'
+      );
+      MN2E.defineRule('combatNotes.meticulousFeature',
+        'levels.Elven Raider', '+=', 'Math.floor(source / 2)'
+      );
+      MN2E.defineRule('combatNotes.rangedSneakAttackFeature',
+        'levels.Elven Raider', '+=', 'Math.floor((source + 2) / 3)',
+        'combatNotes.sneakAttackFeature', '+', null
+      );
 
     } else if(klass == 'Freerider') {
 
