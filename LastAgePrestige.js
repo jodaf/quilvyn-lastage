@@ -49,7 +49,7 @@ function MN2EPrestige() {
 MN2EPrestige.PRESTIGE_CLASSES = [
   'Ancestral Bladebearer', 'Aradil\'s Eye', 'Avenging Knife',
   'Bane Of Legates', 'Druid', 'Elven Raider', 'Freerider', 'Haunted One',
-  'Insurgent Spy', 'Smuggler', 'Warrior Alchemist', 'Whisper Adept', 'Wizard',
+  'Insurgent Spy', 'Smuggler', 'Warrior Arcanist', 'Whisper Adept', 'Wizard',
   'Wogren Rider'
 ];
 
@@ -266,6 +266,7 @@ MN2EPrestige.prestigeClassRules = function() {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
+        // TODO Improved spellcasting
         '1:Improved Spellcasting', '1:Resist Izrador\'s Will', '3:See Astirax',
         '4:Counter Izrador\'s Will', '5:Bonus Spellcasting', '6:Bind Astirax',
         '8:Conceal Magic', '10:Sundered Spirit'
@@ -289,7 +290,7 @@ MN2EPrestige.prestigeClassRules = function() {
       ];
       prerequisites = [
         '{features.Iron Will} != null',
-        '{features.Magecraft} != null',
+        '+/{^features.Magecraft} > 0',
         '{skills.Knowledge (Arcana)} >= 13',
         '{skills.Knowledge (Shadow)} >= 8',
         '{skills.Spellcraft} >= 10',
@@ -331,6 +332,7 @@ MN2EPrestige.prestigeClassRules = function() {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
+        // TODO Improved spellcasting
         '1:Mastery Of Nature', '1:Animal Companion', '2:Druidcraft',
         '2:Nature Sense', '3:Commune With Nature', '5:Find The Way',
         '8:Venom Immunity'
@@ -400,10 +402,10 @@ MN2EPrestige.prestigeClassRules = function() {
       ];
       prerequisites = [
         '{baseAttack} >= 5',
-        '{feats.Point Blank Shot} != null',
-        '{feats.Rapid Shot} != null',
-        '{feats.Weapon Focus (Longbow)} != null || ' +
-        '{feats.Weapon Focus (Componsite Longbow)} != null',
+        '{features.Point Blank Shot} != null',
+        '{features.Rapid Shot} != null',
+        '{features.Weapon Focus (Longbow)} != null || ' +
+        '{features.Weapon Focus (Componsite Longbow)} != null',
         '{race}.indexOf("Elf") >= 0',
         '{skills.Hide} >= 8',
         '{skills.Move Silently} >= 8',
@@ -437,267 +439,466 @@ MN2EPrestige.prestigeClassRules = function() {
 
     } else if(klass == 'Freerider') {
 
-      continue; // TODO
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      MN2EPrestige.selectableFeatures[klass] =
+        'Deft Dodging/Dismounting Cut/Erratic Attack/Hit And Run/Wheel About';
+      baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
-        '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
-        '2:Bonus Spells', '2:Summon Familiar', '4:Arcane Feat Bonus'
+        '1:Horse Lord', '1:Special Mount', '2:Mounted Maneuver', '4:Spur On',
+        '7:Devastating Mounted Assault', '10:Sweeping Strike'
       ];
-      hitDie = 6;
+      hitDie = 10;
       notes = [
-        'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
-        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.bonusSpellsFeature:%V extra spells',
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
+        // TODO No attack penalty if already has DMA feat
+        'combatNotes.devastatingMountedAssaultFeature:' +
+          'Full attack after mount moves',
+        'combatNotes.sweepingStrikeFeature:' +
+          'Attack all threatened foes during mount\'s move',
+        'featureNotes.specialMountFeature:Special bond/abilities',
+        'featureNotes.spurOnFeature:' +
+          'Double mount speed during charge/double move',
+        'skillNotes.horseLord:+1 Handle Animal (horse)/Ride (horse)'
       ];
-      prerequisites = null;
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_LIGHT;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
+      prerequisites = [
+        '{baseAttack} >= 6',
+        '{features.Mounted Combat} != null',
+        '{features.Ride By Attack} != null',
+        '{features.Spirited Charge} != null',
+        '{race}.indexOf("Sarcosan") >= 0 || {race} == "Erenlander"',
+        '{skills.Handle Animal} >= 4',
+        '{skills.Ride} >= 8',
+        '{skills.Survival} >= 4'
+      ];
+      profArmor = PH35.PROFICIENCY_HEAVY;
+      profShield = PH35.PROFICIENCY_MEDIUM;
+      profWeapon = PH35.PROFICIENCY_MEDIUM;
+      saveFortitude = PH35.SAVE_BONUS_GOOD;
       saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
-      skillPoints = 4;
+      saveWill = PH35.SAVE_BONUS_POOR;
+      skillPoints = 2;
       skills = [
-        'Concentration', 'Decipher Script', 'Handle Animal', 'Heal',
-        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
-        'Speak Language', 'Spellcraft'
+        'Climb', 'Diplomacy', 'Handle Animal', 'Jump', 'Ride',
+        'Speak Language', 'Spot', 'Survival', 'Swim'
       ];
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule('featCount',
+        'featureNotes.freeriderFeatCountBonus', '+', null
+      );
+      MN2E.defineRule('featureNotes.freeriderFeatCountBonus',
+        'levels.Freerider', '=', 'Math.floor(source / 3)'
+      );
+      MN2E.defineRule('selectableFeatureCount.Freerider',
+        'levels.Freerider', '=', 'Math.floor((source + 1) / 3)'
+      );
 
     } else if(klass == 'Haunted One') {
 
-      continue; // TODO
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
-        '2:Bonus Spells', '2:Summon Familiar', '4:Arcane Feat Bonus'
+        //TODO Improved spellcasting
+        '1:Seance', '2:Spiritcraft', '2:Spirit Manipulation', '3:Ghost Sight',
+        '5:Spell Focus (Divination)', '9:Spell Focus (Necromancy)'
       ];
       hitDie = 6;
       notes = [
-        'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
-        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.bonusSpellsFeature:%V extra spells',
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
+        'magicNotes.ghostSightFeature:' +
+          'See invisible/incorporeal creates at will',
+        'magicNotes.seanceFeature:' +
+          '<i>Augury</i>/<i>Legend Lore</i> via spirits %V/day',
+        'magicNotes.spellFocus(Divination)Feature:+1 DC on Divination spells',
+        'magicNotes.spellFocus(Necromancy)Feature:+1 DC on Necromancy spells',
+        'magicNotes.spiritcraftFeature:' +
+          'Divination/Necromancy spell energy cost reduced by 1',
+        'magicNotes.spiritManipulationFeature:' +
+          '%V chosen Divination/Necromancy spells as spell-like ability 1/day'
       ];
-      prerequisites = null;
+      prerequisites = [
+        '+/{^features.Magecraft} > 0',
+        '{features.Spellcasting (Divination)} != null',
+        '{features.Spellcasting (Necromancy)} != null',
+        '{skills.Knowledge (Arcana)} >= 8',
+        '{skills.Knowledge (Spirits)} >= 10'
+      ];
       profArmor = PH35.PROFICIENCY_NONE;
       profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_LIGHT;
+      profWeapon = PH35.PROFICIENCY_NONE;
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
-      skillPoints = 4;
+      skillPoints = 2;
       skills = [
-        'Concentration', 'Decipher Script', 'Handle Animal', 'Heal',
-        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
+        'Concentration', 'Knowledge (Arcana)', 'Knowledge (Dungeoneering)',
+        'Knowledge (Engineering)', 'Knowledge (Geography)',
+        'Knowledge (History)', 'Knowledge (Local)', 'Knowledge (Nature)',
+        'Knowledge (Nobility)', 'Knowledge (Old Gods)', 'Knowledge (Planes)',
+        'Knowledge (Religion)', 'Knowledge (Shadow)', 'Knowledge (Spirits)',
         'Speak Language', 'Spellcraft'
       ];
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule('magicNotes.seanceFeature',
+        'levels.Haunted One', '=', 'Math.floor((source + 2) / 3)'
+      );
+      MN2E.defineRule('magicNotes.spiritManipulationFeature',
+        'levels.Haunted One', '=', 'Math.floor(source / 2)'
+      );
 
     } else if(klass == 'Insurgent Spy') {
 
-      continue; // TODO
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
-        '2:Bonus Spells', '2:Summon Familiar', '4:Arcane Feat Bonus'
+        '1:Conceal Magic', '1:Shadow Contacts', '2:Shadow Speak',
+        '3:Sneak Attack'
       ];
       hitDie = 6;
       notes = [
-        'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
-        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.bonusSpellsFeature:%V extra spells',
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
+        'combatNotes.sneakAttackFeature:' +
+          '%Vd6 extra damage when surprising or flanking',
+        'featureNotes.concealMagicFeature:Conceal %V magical auras',
+        'skillNotes.shadowContactsFeature:' +
+          'Gather Information to obtain favor from Shadow minion',
+        'skillNotes.shadowSpeakFeature:' +
+          '+%V Bluff/Diplomacy/Intimidate/Sense Motive w/Shadow minions'
       ];
-      prerequisites = null;
+      prerequisites = [
+        '{features.Inconspicuous} != null',
+        '{skills.Bluff} >= 8',
+        '{skills.Diplomacy} >= 5',
+        '{skills.Gather Information} >= 8',
+        '{skills.Sense Motive} >= 5'
+      ];
       profArmor = PH35.PROFICIENCY_NONE;
       profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_LIGHT;
+      profWeapon = PH35.PROFICIENCY_NONE;
       saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
-      skillPoints = 4;
+      saveReflex = PH35.SAVE_BONUS_GOOD;
+      saveWill = PH35.SAVE_BONUS_POOR;
+      skillPoints = 8;
       skills = [
-        'Concentration', 'Decipher Script', 'Handle Animal', 'Heal',
-        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
-        'Speak Language', 'Spellcraft'
+        'Appraise', 'Balance', 'Bluff', 'Climb', 'Decipher Sccript',
+        'Diplomacy', 'Disable Device', 'Disguise', 'Escape Artist', 'Forgery',
+        'Gather Information', 'Hide', 'Intimidate', 'Jump',
+        'Knowledge (Shadow)', 'Listen', 'Move Silently', 'Open Lock',
+        'Perform (Act)', 'Perform (Comedy)', 'Perform (Dance)',
+        'Perform (Keyboard)', 'Perform (Oratory)', 'Perform (Percussion)',
+        'Perform (Sing)', 'Perform (String)', 'Perform (Wind)', 'Search',
+        'Sense Motive', 'Sleight Of Hand', 'Speak Language', 'Spot', 'Swim',
+        'Tumble', 'Use Magic Device', 'Use Rope'
       ];
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule('combatNotes.sneakAttackFeature',
+        'levels.Insurgent Spy', '+=', 'Math.floor((source - 1) / 2)'
+      );
+      MN2E.defineRule
+        ('featureNotes.concealMagicFeature', 'levels.Insurgent Spy', '=', null);
+      MN2E.defineRule('skillNotes.shadowSpeakFeature',
+        'levels.Insurgent Spy', '=', 'Math.floor(source / 2)'
+      );
 
     } else if(klass == 'Smuggler') {
 
-      continue; // TODO
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
-        '2:Bonus Spells', '2:Summon Familiar', '4:Arcane Feat Bonus'
+        '1:Smuggler\'s Trade', '2:Dominant Will', '3:Mystifying Speech',
+        '4:Information Network', '5:Disguise Contraband', '10:Slippery Mind'
       ];
       hitDie = 6;
       notes = [
-        'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
-        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.bonusSpellsFeature:%V extra spells',
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
+        'magicNotes.disguiseContrabandFeature:' +
+          '<i>Misdirection</i> on 1 cu ft/level of contraband 1 hour/level',
+        // TODO Mystifying speech 2/day @ level 7
+        'magicNotes.mystifyingSpeechFeature:DC %V <i>Modify Memory</i> 1/day',
+        'saveNotes.dominantWillFeature:' +
+          '+%V Will vs. detection/compulsion spells to reveal activities',
+        'saveNotes.slipperyMindFeature:Second save vs. enchantment',
+        'skillNotes.informationNetworkFeature:' +
+          'One hour to take %V on Gather Information in new locale',
+        'skillNotes.smuggler\'sTradeFeature:' +
+          '+%V or take 10 on Bluff/Disguise/Forgery/Gather Information ' +
+          'when smuggling'
       ];
-      prerequisites = null;
+      prerequisites = [
+        '{features.Friendly Agent} != null',
+        '{skills.Bluff} >= 8',
+        '{skills.Forgery} >= 5',
+        '{skills.Gather Information} >= 8',
+        '{skills.Hide} >= 5'
+      ];
       profArmor = PH35.PROFICIENCY_NONE;
       profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_LIGHT;
+      profWeapon = PH35.PROFICIENCY_NONE;
       saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_POOR;
+      saveReflex = PH35.SAVE_BONUS_GOOD;
       saveWill = PH35.SAVE_BONUS_GOOD;
-      skillPoints = 4;
+      skillPoints = 8;
       skills = [
-        'Concentration', 'Decipher Script', 'Handle Animal', 'Heal',
-        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
-        'Speak Language', 'Spellcraft'
+        'Appraise', 'Balance', 'Bluff', 'Climb', 'Decipher Script',
+        'Diplomacy', 'Disable Device', 'Disguise', 'Escape Artist', 'Forgery',
+        'Gather Information', 'Hide', 'Jump', 'Listen', 'Move Silently',
+        'Open Lock', 'Perform (Act)', 'Perform (Comedy)', 'Perform (Dance)',
+        'Perform (Keyboard)', 'Perform (Oratory)', 'Perform (Percussion)',
+        'Perform (Sing)', 'Perform (String)', 'Perform (Wind)', 'Search',
+        'Sense Motive', 'Sleight Of Hand', 'Spot', 'Swim', 'Tumble',
+        'Use Magic Device', 'Use Rope'
       ];
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule('magicNotes.mystifyingSpeechFeature',
+        'levels.Smuggler', '=', '10 + source',
+        'charismaModifier', '+', null
+      );
+      MN2E.defineRule('saveNotes.dominantWillFeature',
+        'levels.Smuggler', '=', 'source >= 6 ? 4 : 2'
+      );
+      MN2E.defineRule('skillNotes.informationNetworkFeature',
+        'levels.Smuggler', '=', 'source >= 7 ? 20 : 10'
+      );
+      MN2E.defineRule('skillNotes.smuggler\'sTradeFeature',
+        'levels.Smuggler', '=', 'Math.floor((source + 1) / 2) * 2'
+      );
 
-    } else if(klass == 'Warrior Alchemist') {
+    } else if(klass == 'Warrior Arcanist') {
 
-      continue; // TODO
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      // TODO Improved spellcasting
+      baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
-        '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
-        '2:Bonus Spells', '2:Summon Familiar', '4:Arcane Feat Bonus'
+        '1:Armored Casting', '1:Channeled Combat (Attack)',
+        '4:Channeled Combat (Armor Class)', '6:Melee Caster',
+        '8:Channeled Combat (Damage)', '10:Regenerative Strike'
       ];
-      hitDie = 6;
+      hitDie = 8;
       notes = [
-        'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
-        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.bonusSpellsFeature:%V extra spells',
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
+        'magicNotes.armoredCastingFeature:Reduce arcane casting penalty by %V%',
+        'magicNotes.channeledCombat(Armor Class)Feature:' +
+          'Use 1 spell energy point to gain +%V AC for 1 round',
+        'magicNotes.channeledCombat(Attack)Feature:' +
+          'Use 1 spell energy point to gain +%V attack for 1 round',
+        'magicNotes.channeledCombat(Damage)Feature:' +
+          'Use 1 spell energy point to gain +%V damage for 1 round',
+        'magicNotes.meleeCasterFeature:Deliver spell via weapon',
+        'magicNotes.regenerativeStrikeFeature:' +
+          'Recover spell energy equal to 2*weapon multiplier on critical hit'
       ];
-      prerequisites = null;
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_LIGHT;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
+      prerequisites = [
+        '{baseAttack} >= 4',
+        '+/{^features.Magecraft} > 0',
+        '+/{^features.Spellcasting} != null',
+        '+/{^features.Weapon Focus} >= 1',
+        '{skills.Spellcraft} >= 8'
+        // TODO Proficiency
+      ];
+      profArmor = PH35.PROFICIENCY_MEDIUM;
+      profShield = PH35.PROFICIENCY_HEAVY;
+      profWeapon = PH35.PROFICIENCY_MEDIUM;
+      saveFortitude = PH35.SAVE_BONUS_GOOD;
       saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
-      skillPoints = 4;
+      saveWill = PH35.SAVE_BONUS_POOR;
+      skillPoints = 2;
       skills = [
-        'Concentration', 'Decipher Script', 'Handle Animal', 'Heal',
-        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
-        'Speak Language', 'Spellcraft'
+        'Concentration', 'Intimidate', 'Jump', 'Knowledge (Arcana)', 'Ride',
+        'Speak Language', 'Spellcraft', 'Swim'
       ];
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule('magicNotes.arcaneSpellFailure',
+        'magicNotes.armoredCastingFeature', '+', '-source',
+        null, '^', '0'
+      );
+      MN2E.defineRule('magicNotes.armoredCastingFeature',
+        'levels.Warrior Arcanist', '=', 'Math.floor((source + 1) / 2) * 5'
+      );
+      MN2E.defineRule('magicNotes.channeledCombat(Armor Class)Feature',
+        'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
+      );
+      MN2E.defineRule('magicNotes.channeledCombat(Attack)Feature',
+        'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
+      );
+      MN2E.defineRule('magicNotes.channeledCombat(Damage)Feature',
+        'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
+      );
 
     } else if(klass == 'Whisper Adept') {
 
-      continue; // TODO
+      // TODO Improved spellcasting
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
-        '2:Bonus Spells', '2:Summon Familiar', '4:Arcane Feat Bonus'
+        '1:Whisper Sense', '2:Whisper Sense (Initiative)', '3:Fell Touch',
+        '4:Whisper Sense (Surprise)', '5:Tree Meld',
+        '6:Whisper Sense (Clairaudience)', '7:Strength Of The Wood',
+        '8:Whisper Sense (Clairvoyance)', '9:Whisper\'s Ward',
+        '10:Whisper Sense (Commune)'
       ];
-      hitDie = 6;
+      hitDie = 8;
       notes = [
-        'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
-        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.bonusSpellsFeature:%V extra spells',
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
+        'combatNotes.whisperSense(Initiative)Feature:+2 Initiative',
+        'combatNotes.whisperSense(Surprise)Feature:Cannot be surprised',
+        'featureNotes.whisperSenseFeature:No wisdom check to sense voices',
+        'magicNotes.fellTouchFeature:Prevent fallen from becoming Fell/Lost',
+        'magicNotes.strengthOfTheWoodFeature:' +
+          'Recover 1 spell energy point/round while inside tree',
+        'magicNotes.treeMeldFeature:Merge into tree',
+        'magicNotes.whisperSense(Clairaudience)Feature:' +
+          '<i>Clairaudience</i> w/in wood',
+        'magicNotes.whisperSense(Clairvoyance)Feature:' +
+          '<i>Clairvoyance</i> w/in wood',
+        'magicNotes.whisperSense(Commune)Feature:' +
+          '<i>Commune With Nature</i> w/in wood',
+        'saveNotes.whisper\'sWardFeature:Immune to mind-affecting effects'
       ];
-      prerequisites = null;
+      prerequisites = [
+        '+/{^features.Magecraft} >= 1',
+        '+/{^features.Spellcraft} >= 2',
+        '{race}.indexOf("Elf") >= 0',
+        '{skills.Knowledge (Nature)} >= 8',
+        '{skills.Knowledge (Spirits)} >= 10',
+        '{skills.Survival} >= 8'
+      ];
       profArmor = PH35.PROFICIENCY_NONE;
       profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_LIGHT;
+      profWeapon = PH35.PROFICIENCY_NONE;
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
       skillPoints = 4;
       skills = [
-        'Concentration', 'Decipher Script', 'Handle Animal', 'Heal',
-        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
-        'Speak Language', 'Spellcraft'
+        'Concentration', 'Handle Animal', 'Heal', 'Knowledge (Arcana)',
+        'Knowledge (Dungeoneering)', 'Knowledge (Engineering)',
+        'Knowledge (Geography)', 'Knowledge (History)', 'Knowledge (Local)',
+        'Knowledge (Nature)', 'Knowledge (Nobility)', 'Knowledge (Old Gods)',
+        'Knowledge (Planes)', 'Knowledge (Religion)', 'Knowledge (Shadow)',
+        'Knowledge (Spirits)', 'Speak Language', 'Spellcraft', 'Survival'
       ];
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule
+        ('initiative', 'combatNotes.whisperSense(Initiative)Feature', '+', '2');
 
     } else if(klass == 'Wizard') {
 
-      continue; // TODO
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      // TODO Improved spellcasting
+      MN2EPrestige.selectableFeatures[klass] =
+        'Spellcasting (Abjuration)/Spellcasting (Conjuration)/' +
+        'Spellcasting (Divination)/Spellcasting (Enchantment)/' +
+        'Spellcasting (Evocation)/Spellcasting (Illusion)/' +
+        'Spellcasting (Necromancy)/Spellcasting (Transmutation)';
+      baseAttack = PH35.ATTACK_BONUS_POOR;
       features = [
-        '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
-        '2:Bonus Spells', '2:Summon Familiar', '4:Arcane Feat Bonus'
+        '1:Wizardcraft', '2:Efficient Study'
       ];
-      hitDie = 6;
+      hitDie = 4;
       notes = [
-        'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
-        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.bonusSpellsFeature:%V extra spells',
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
+        'featureNotes.efficientStudyFeature:' +
+          'XP cost for learning spells/creating magic items reduced by %V%',
+        'magicNotes.wizardcraftFeature:' +
+          'Prepare spells ahead of time for half energy cost'
       ];
-      prerequisites = null;
+      prerequisites = [
+        // TODO 1 item creation, 1 metamagic feat
+        '{features.Magecraft (Hermetic)} != null',
+        '+/{^features.Spellcraft} >= 2',
+        '{skills.Knowledge (Arcana)} >= 10',
+        '{skills.Spellcraft} >= 10'
+      ];
       profArmor = PH35.PROFICIENCY_NONE;
       profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_LIGHT;
+      profWeapon = PH35.PROFICIENCY_NONE;
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
-      skillPoints = 4;
+      skillPoints = 2;
       skills = [
-        'Concentration', 'Decipher Script', 'Handle Animal', 'Heal',
-        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
+        'Concentration', 'Knowledge (Arcana)', 'Knowledge (Dungeoneering)',
+        'Knowledge (Engineering)', 'Knowledge (Geography)',
+        'Knowledge (History)', 'Knowledge (Local)', 'Knowledge (Nature)',
+        'Knowledge (Nobility)', 'Knowledge (Old Gods)', 'Knowledge (Planes)',
+        'Knowledge (Religion)', 'Knowledge (Shadow)', 'Knowledge (Spirits)',
         'Speak Language', 'Spellcraft'
       ];
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule('featureNotes.efficientStudyFeature',
+        'levels.Wizard', '=', 'Math.floor((source + 1) / 3) * 10'
+      );
+      MN2E.defineRule
+        ('featCount', 'featureNotes.wizardFeatCountBonus', '+', null);
+      MN2E.defineRule('featureNotes.wizardFeatCountBonus',
+        'levels.Wizard', '=', 'Math.floor(source / 3)'
+      );
+      MN2E.defineRule('selectableFeatureCount.Wizard',
+        'levels.Wizard', '=', 'Math.floor((source - 1) / 3)'
+      );
 
     } else if(klass == 'Wogren Rider') {
 
-      continue; // TODO
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      MN2EPrestige.selectableFeatures[klass] =
+        'Improved Mounted Archery/Improved Mounted Combat/' +
+        'Improved Ride By Attack/Improved Spirited Charge/Improved Trample/'
+        'Ride By Attack/Trample';
+      baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
-        '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
-        '2:Bonus Spells', '2:Summon Familiar', '4:Arcane Feat Bonus'
+        '1:Coordinated Attack', '1:Special Mount', '3:Speed Mount',
+        '5:Mounted Hide', '7:Wogren Dodge', '9:Wogren\'s Sight'
       ];
-      hitDie = 6;
+      hitDie = 8;
       notes = [
-        'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
-        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.bonusSpellsFeature:%V extra spells',
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
+        'combatNotes.coordinatedAttackFeature:' +
+          'Rider/mount +2 attack on same target when other hits',
+        'combatNotes.improvedMountedArcheryFeature:' +
+          'No ranged attack penalty when mounted/mounted Rapid Shot',
+        'combatNotes.improvedMountedCombatFeature:Mounted Combat %V/round',
+        'combatNotes.improvedRideByAttackFeature:Charge in any direction',
+        'combatNotes.improvedTrampleFeature:No foe AOO during overrun',
+        'combatNotes.rapidShotFeature:Normal and extra ranged -2 attacks',
+        'combatNotes.rideByAttackFeature:Move before and after mounted attack',
+        'combatNotes.speedMountFeature:Dis/mount as free action',
+        'combatNotes.trampleFeature:' +
+          'Mounted overrun unavoidable/bonus hoof attack',
+        'combatNotes.wogrenDodgeFeature:+2 AC during mounted move',
+        'featureNotes.blindsenseFeature:' +
+          'Other senses allow detection of unseen objects w/in 30 ft',
+        'featureNotes.specialMountFeature:Special bond/abilities',
+        'featureNotes.wogren\'sSightFeature:Blindsense while mounted',
+        'skillNotes.mountedHideFeature:Hide while mounted'
       ];
-      prerequisites = null;
-      profArmor = PH35.PROFICIENCY_NONE;
+      prerequisites = [
+        '{features.Mounted Archery} != null',
+        '{features.Mounted Combat} != null',
+        '{race}.indexOf("Halfling") >= 0',
+        '{skills.Ride} >= 8',
+        '{skills.Survival} >= 4'
+      ];
+      profArmor = PH35.PROFICIENCY_MEDIUM;
       profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_LIGHT;
+      profWeapon = PH35.PROFICIENCY_MEDIUM;
       saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
+      saveReflex = PH35.SAVE_BONUS_GOOD;
+      saveWill = PH35.SAVE_BONUS_POOR;
       skillPoints = 4;
       skills = [
-        'Concentration', 'Decipher Script', 'Handle Animal', 'Heal',
-        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
-        'Speak Language', 'Spellcraft'
+        'Climb', 'Handle Animal', 'Heal', 'Hide', 'Jump', 'Listen',
+        'Move Silently', 'Ride', 'Speak Language', 'Spot', 'Survival', 'Swim'
       ];
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule('combatNotes.improvedMountedCombatFeature',
+        'dexterityModifier', '=', null
+      );
+      MN2E.defineRule
+        ('features.Blindsense', 'features.Wogren\'s Sight', '=', '1');
+      MN2E.defineRule
+        ('features.Rapid Shot', 'features.Improved Mounted Archery', '=', '1');
+      MN2E.defineRule('selectableFeatureCount.Wogren Rider',
+        'levels.Wogren Rider', '=', 'Math.floor(source / 2)'
+      );
 
     } else
       continue;
