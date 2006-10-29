@@ -112,7 +112,7 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
-      MN2E.defineRule('combatNotesadvanceAncestralBladeFeature',
+      MN2E.defineRule('combatNotes.advanceAncestralBladeFeature',
         'levels.Ancestral Bladebearer', '=', 'Math.floor((source + 2) / 4)'
       );
       MN2E.defineRule('featCount',

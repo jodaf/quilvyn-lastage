@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.42 2006/10/29 07:32:29 Jim Exp $ */
+/* $Id: LastAge.js,v 1.43 2006/10/29 13:31:19 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -119,7 +119,7 @@ MN2E.SKILLS = [
 ];
 MN2E.SPELLS = [
   'Charm Repair:W3', 'Detect Astirax:D1/W1', 'Disguise Ally:W2',
-  'Disguise Weapon:W1', 'Far Whisper:D1/W1', 'Greeshield:D2/W2',
+  'Disguise Weapon:W1', 'Far Whisper:D1/W1', 'Greenshield:D2/W2',
   'Halfling Burrow:D3/W3', 'Lifetrap:D2/W2', 'Nature\'s Revelation:D2/W2',
   'Nexus Fuel:C4/W5', 'Silver Blood:W2', 'Silver Storm:W4',
   'Silver Wand:W3', 'Stone Soup:D1/W1'
