@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.41 2006/10/21 00:41:07 Jim Exp $ */
+/* $Id: LastAge.js,v 1.42 2006/10/29 07:32:29 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -73,7 +73,7 @@ function MN2E() {
 // calling the rules functions will limit the user's options and eliminate
 // rules associated with the removed choices.
 MN2E.CLASSES = [
-  'Charismatic Channeler', 'Defender', 'Fighter', 'Hermetic Channler', 
+  'Charismatic Channeler', 'Defender', 'Fighter', 'Hermetic Channeler', 
   'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
 ];
 MN2E.FEATS = [
@@ -214,7 +214,7 @@ MN2E.classRules = function(rules) {
       if(klass == 'Charismatic Channeler') {
         MN2E.selectableFeatures[klass] =
           'Greater Confidence/Greater Fury/Improved Confidence/Improved Fury/' +
-          'Inspire Confidence/Inspire Facination/Inspire Fury/' +
+          'Inspire Confidence/Inspire Fascination/Inspire Fury/' +
           'Mass Suggestion/Suggestion';
         features = features.concat(
           ['1:Magecraft (Charismatic)', '3:Force Of Personality']
@@ -379,7 +379,7 @@ MN2E.classRules = function(rules) {
        'Defensive Mastery/Dodge Training/Flurry Attack/Grappling Training/' +
        'Offensive Training/Speed Training/Cover Ally/One With The Weapon/' +
        'Rapid Strike/Strike And Hold/Counterattack/Devastating Strike/' +
-       'Furious Grapple/Retailiatory Strike/Weapon Trap';
+       'Furious Grapple/Retaliatory Strike/Weapon Trap';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
         '1:Masterful Strike', '2:Defender Abilities',
@@ -2420,7 +2420,7 @@ MN2E.raceRules = function(rules) {
       adjustment = '+4 strength/-2 intelligence/-2 charisma';
       features = [
         'Darkvision', 'Improved Cold Hardy', 'Light Sensitivity',
-        'Natural Preditor', 'Night Fighter', 'Orc Favored Enemy',
+        'Natural Predator', 'Night Fighter', 'Orc Favored Enemy',
         'Orc Valor', 'Spell Resistance'
       ];
       notes = [
@@ -2430,10 +2430,10 @@ MN2E.raceRules = function(rules) {
           '+1 attack when fighting alongside 9+ Orcs',
         'combatNotes.orcFavoredEnemyFeature:+1 damage vs. dwarves',
         'saveNotes.improvedColdHardyFeature:Immune non-lethal/half lethal',
-        'skillNotes.naturalPreditorFeature:+%V Intimidate'
+        'skillNotes.naturalPredatorFeature:+%V Intimidate'
       ];
       rules.defineRule
-        ('skillNotes.naturalPreditorFeature', 'strengthModifier', '=', null);
+        ('skillNotes.naturalPredatorFeature', 'strengthModifier', '=', null);
 
     } else if(race.indexOf(' Sarcosan') >= 0) {
 
@@ -2488,7 +2488,7 @@ MN2E.skillRules = function(rules) {
   rules.defineChoice('skills', MN2E.SKILLS);
   var notes = [
     'skillNotes.knowledge(Local)Synergy2:' +
-       '+2 Knowledge (Shadow) (local beauracracy)',
+       '+2 Knowledge (Shadow) (local bureaucracy)',
     'skillNotes.knowledge(Nature)Synergy2:+2 Knowledge (Spirits)',
     'skillNotes.knowledge(Spirits)Synergy:+2 Knowledge (Nature)'
   ];

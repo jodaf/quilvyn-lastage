@@ -177,7 +177,7 @@ MN2EPrestige.prestigeClassRules = function() {
         'Disable Device', 'Disguise', 'Escape Artist', 'Forgery',
         'Gather Information', 'Hide', 'Intimidate', 'Jump', 'Listen',
         'Move Silently', 'Open Lock', 'Search', 'Sense Motive',
-        'Sleight Of Hand', 'Speak Language', 'Spot', 'Survivial', 'Swim',
+        'Sleight Of Hand', 'Speak Language', 'Spot', 'Survival', 'Swim',
         'Tumble', 'Use Rope'
       ];
       spellsKnown = null;
@@ -405,7 +405,7 @@ MN2EPrestige.prestigeClassRules = function() {
         '{features.Point Blank Shot} != null',
         '{features.Rapid Shot} != null',
         '{features.Weapon Focus (Longbow)} != null || ' +
-        '{features.Weapon Focus (Componsite Longbow)} != null',
+        '{features.Weapon Focus (Composite Longbow)} != null',
         '{race}.indexOf("Elf") >= 0',
         '{skills.Hide} >= 8',
         '{skills.Move Silently} >= 8',
@@ -577,7 +577,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveWill = PH35.SAVE_BONUS_POOR;
       skillPoints = 8;
       skills = [
-        'Appraise', 'Balance', 'Bluff', 'Climb', 'Decipher Sccript',
+        'Appraise', 'Balance', 'Bluff', 'Climb', 'Decipher Script',
         'Diplomacy', 'Disable Device', 'Disguise', 'Escape Artist', 'Forgery',
         'Gather Information', 'Hide', 'Intimidate', 'Jump',
         'Knowledge (Shadow)', 'Listen', 'Move Silently', 'Open Lock',
