@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.43 2006/10/29 13:31:19 Jim Exp $ */
+/* $Id: LastAge.js,v 1.44 2006/11/04 14:56:23 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -65,6 +65,7 @@ function MN2E() {
   // TODO Remove these null testing choices
   rules.defineChoice('heroicPaths', 'Null Path');
   rules.defineChoice('races', 'Null Race');
+  rules.defineSheetElement('Deity', null, null, null);
   Scribe.addRuleSet(rules);
   MN2E.rules = rules;
 }
@@ -168,15 +169,14 @@ MN2E.classRules = function(rules) {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        '1:Art Of Magic', '1:Bonus Spell Energy', '2:Bonus Spellcasting',
-        '2:Bonus Spells', '2:Summon Familiar', '4:Arcane Feat Bonus'
+        '1:Art Of Magic', '2:Bonus Spellcasting', '2:Summon Familiar',
+        '4:Arcane Feat Bonus'
       ];
       hitDie = 6;
       notes = [
         'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
         'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
         'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.bonusSpellsFeature:%V extra spells',
         'magicNotes.summonFamiliarFeature:Special bond/abilities'
       ];
       prerequisites = null;
@@ -205,11 +205,15 @@ MN2E.classRules = function(rules) {
       rules.defineRule('featureNotes.bonusSpellcastingFeature',
         'channelerLevels', '+=', 'Math.floor((source + 1) / 3)'
       );
-      rules.defineRule
-        ('magicNotes.bonusSpellEnergyFeature', 'channelerLevels', '+=', null);
-      rules.defineRule('magicNotes.bonusSpellsFeature',
-        'channelerLevels', '+=', '(source - 1) * 2'
+      rules.defineRule('magicNotes.channelerSpellsKnown',
+        'channelerLevels', '=', '(source - 1) * 2'
       );
+      rules.defineRule
+        ('magicNotes.channelerSpellEnergy', 'channelerLevels', '=', null);
+      rules.defineRule
+        ('spellEnergy', 'magicNotes.channelerSpellEnergy', '+', null);
+      rules.defineRule
+        ('spellsKnown.W1', 'magicNotes.channelerSpellsKnown', '+', null);
 
       if(klass == 'Charismatic Channeler') {
         MN2E.selectableFeatures[klass] =
@@ -514,9 +518,9 @@ MN2E.classRules = function(rules) {
       features = [];
       hitDie = null;
       notes = [
-        'featureNotes.improviserFeature:%V bonus improvisation feats',
-        'featureNotes.leaderOfMenFeature:%V bonus leadership feats',
-        'featureNotes.survivorFeature:%V bonus survivor feats',
+        'featureNotes.improviserFeature:+%V improvisation feats',
+        'featureNotes.leaderOfMenFeature:+%V leadership feats',
+        'featureNotes.survivorFeature:+%V survivor feats',
         'skillNotes.adapterFeature:+%V skill points'
       ];
       prerequisites = null;
@@ -640,7 +644,7 @@ MN2E.classRules = function(rules) {
       hitDie = 8;
       notes = [
         'abilityNotes.quickStrideFeature:+%V * 10 speed',
-        'combatNotes.dangerSenseFeature:Up to %V initiative bonus',
+        'combatNotes.dangerSenseFeature:Up to +%V initiative',
         'combatNotes.huntedByTheShadowFeature:No surprise by servant of shadow',
         'combatNotes.hunter\'sStrikeFeature:x2 damage %V/day',
         'combatNotes.hatedFoeFeature:' +
@@ -669,7 +673,7 @@ MN2E.classRules = function(rules) {
         'saveNotes.improvedEvasionFeature:Failed save yields 1/2 damage',
         'saveNotes.slipperyMindFeature:Second save vs. enchantment',
         'skillNotes.camouflageFeature:Hide in any natural terrain',
-        'skillNotes.dangerSenseFeature:Up to %V Listen/Spot bonus',
+        'skillNotes.dangerSenseFeature:Up to +%V Listen/Spot',
         'skillNotes.hideInPlainSightFeature:Hide even when observed',
         'skillNotes.masterHunterFeature:' +
           '+2 or more Bluff/Listen/Sense Motive/Spot/Survival vs. selected creature types',
@@ -801,34 +805,34 @@ MN2E.featRules = function(rules) {
     'magicNotes.craftSpellTalismanFeature:' +
       'Talisman reduces spell energy cost of selected spell by 1',
     'magicNotes.greaterSpellcasting(Conjuration)Feature:' +
-      'May learn school spells/bonus school spell',
+      'May learn school spells/+1 school spell',
     'magicNotes.greaterSpellcasting(Evocation)Feature:' +
-      'May learn school spells/bonus school spell',
+      'May learn school spells/+1 school spell',
     'magicNotes.herbalistFeature:Create herbal concoctions',
     'magicNotes.innateMagicFeature:%V level 0 spells as at-will innate ability',
-    'magicNotes.magecraft(Charismatic)Feature:%V spell energy points',
-    'magicNotes.magecraft(Hermetic)Feature:%V spell energy points',
-    'magicNotes.magecraft(Spiritual)Feature:%V spell energy points',
+    'magicNotes.magecraft(Charismatic)Feature:4 spells/%V spell energy points',
+    'magicNotes.magecraft(Hermetic)Feature:4 spells/%V spell energy points',
+    'magicNotes.magecraft(Spiritual)Feature:4 spells/%V spell energy points',
     'magicNotes.ritualMagicFeature:Learn and lead magic rituals',
     'magicNotes.senseNexusFeature:DC wisdom check to sense nexus w/in 5 miles',
-    'magicNotes.spellKnowledgeFeature:2 bonus spells',
+    'magicNotes.spellKnowledgeFeature:+2 spells',
     'magicNotes.spellcasting(Abjuration)Feature:' +
-      'May learn school spells/bonus school spell',
+      'May learn school spells/+1 school spell',
     'magicNotes.spellcasting(Conjuration)Feature:' +
-      'May learn school spells/bonus school spell',
+      'May learn school spells/+1 school spell',
     'magicNotes.spellcasting(Divination)Feature:' +
-      'May learn school spells/bonus school spell',
+      'May learn school spells/+1 school spell',
     'magicNotes.spellcasting(Enchantment)Feature:' +
-      'May learn school spells/bonus school spell',
+      'May learn school spells/+1 school spell',
     'magicNotes.spellcasting(Evocation)Feature:' +
-      'May learn school spells/bonus school spell',
+      'May learn school spells/+1 school spell',
     'magicNotes.spellcasting(Illusion)Feature:' +
-      'May learn school spells/bonus school spell',
+      'May learn school spells/+1 school spell',
     'magicNotes.spellcasting(Necromancy)Feature:' +
-      'May learn school spells/bonus school spell',
+      'May learn school spells/+1 school spell',
     'magicNotes.spellcasting(Transmutation)Feature:' +
-      'May learn school spells/bonus school spell',
-    'saveNotes.luckyFeature:+1 bonus from luck charms/spells',
+      'May learn school spells/+1 school spell',
+    'saveNotes.luckyFeature:+1 from luck charms/spells',
     'saveNotes.magicHardenedFeature:+2 spell resistance',
     'saveNotes.thickSkullFeature:DC 10 + damage save to stay at 1 hit point',
     'skillNotes.friendlyAgentFeature:' +
@@ -864,18 +868,33 @@ MN2E.featRules = function(rules) {
   rules.defineRule
     ('magicNotes.magecraft(Spiritual)Feature', 'wisdomModifier', '=', null);
   rules.defineRule('spellEnergy',
-    'magicNotes.magecraft(Charismatic)Feature', '+=', null
-  );
-  rules.defineRule('spellEnergy',
-    'magicNotes.magecraft(Hermetic)Feature', '+=', null
-  );
-  rules.defineRule('spellEnergy',
+    'magicNotes.magecraft(Charismatic)Feature', '+=', null,
+    'magicNotes.magecraft(Hermetic)Feature', '+=', null,
     'magicNotes.magecraft(Spiritual)Feature', '+=', null
   );
   rules.defineRule
     ('resistance.Spells', 'saveNotes.magicHardenedFeature', '+=', '2');
-  rules.defineRule('spellsKnown.W0', 'features.Magecraft', '=', '3');
-  rules.defineRule('spellsKnown.W1', 'features.Magecraft', '=', '1');
+  rules.defineRule('spellsKnown.W0',
+    'magicNotes.magecraft(Charismatic)Feature', '+=', '3',
+    'magicNotes.magecraft(Hermetic)Feature', '+=', '3',
+    'magicNotes.magecraft(Spiritual)Feature', '+=', '3'
+  );
+  rules.defineRule('spellsKnown.W1',
+    'magicNotes.greaterSpellcasting(Conjuration)Feature', '+=', '1',
+    'magicNotes.greaterSpellcasting(Evocation)Feature', '+=', '1',
+    'magicNotes.magecraft(Charismatic)Feature', '+=', '1',
+    'magicNotes.magecraft(Hermetic)Feature', '+=', '1',
+    'magicNotes.magecraft(Spiritual)Feature', '+=', '1',
+    'magicNotes.spellcasting(Abjuration)Feature', '+=', '1',
+    'magicNotes.spellcasting(Conjuration)Feature', '+=', '1',
+    'magicNotes.spellcasting(Divination)Feature', '+=', '1',
+    'magicNotes.spellcasting(Enchantment)Feature', '+=', '1',
+    'magicNotes.spellcasting(Evocation)Feature', '+=', '1',
+    'magicNotes.spellcasting(Illusion)Feature', '+=', '1',
+    'magicNotes.spellcasting(Necromancy)Feature', '+=', '1',
+    'magicNotes.spellcasting(Transmutation)Feature', '+=', '1',
+    'magicNotes.spellKnowledgeFeature', '+=', '2'
+  );
   var tests = [
     '{feats.Craft Charm} == null || +/{^skills.Craft} >= 4',
     '{feats.Craft Greater Spell Talisman} == null || +/{feats.Magecraft} > 0',
@@ -973,8 +992,6 @@ MN2E.heroicPathRules = function(rules) {
   rules.defineRule('featCount', 'features.Feat Bonus', '+', null);
   rules.defineRule
     ('intelligence', 'abilityNotes.intelligenceBonusFeature', '+', null);
-  rules.defineRule
-    ('spellEnergy', 'magicNotes.bonusSpellEnergyFeature', '+', null);
   rules.defineRule
     ('save.Fortitude', 'saveNotes.fortitudeBonusFeature', '+', null);
   rules.defineRule
@@ -1112,14 +1129,13 @@ MN2E.heroicPathRules = function(rules) {
     } else if(path == 'Dragonblooded') {
 
       features = [
-        '1:Bolster Spell', '2:Bonus Spells', '3:Bonus Spell Energy',
-        '4:Quickened Counterspelling', '6:Improved Spellcasting',
-        '9:Spell Penetration', '19:Frightful Presence'
+        '1:Bolster Spell', '4:Quickened Counterspelling',
+        '6:Improved Spellcasting', '9:Spell Penetration',
+        '19:Frightful Presence'
       ];
       spellFeatures = null;
       notes = [
         'magicNotes.bolsterSpellFeature:Add 1 to DC of %V chosen spells',
-        'magicNotes.bonusSpellsFeature:%V extra spells',
         'magicNotes.frightfulPresenceFeature:' +
           'Casting panics/shakes foes of lesser level 4d6 rounds failing DC %V Will save',
         'magicNotes.improvedSpellcastingFeature:' +
@@ -1131,11 +1147,11 @@ MN2E.heroicPathRules = function(rules) {
       rules.defineRule('magicNotes.bolsterSpellFeature',
         'pathLevels.Dragonblooded', '+=', '1 + Math.floor(source / 5)'
       );
-      rules.defineRule('magicNotes.bonusSpellEnergyFeature',
-        'pathLevels.Dragonblooded', '+=',
+      rules.defineRule('magicNotes.dragonbloodedSpellEnergy',
+        'pathLevels.Dragonblooded', '=',
         '2 * (source>=16 ? 4 : source>=15 ? 3 : Math.floor((source + 1) / 4))'
       );
-      rules.defineRule('magicNotes.bonusSpellsFeature',
+      rules.defineRule('magicNotes.dragonbloodedSpellsKnown',
         'pathLevels.Dragonblooded', '+=', 'source>=14 ? 3 : source>=8 ? 2 : 1'
       );
       rules.defineRule('magicNotes.frightfulPresenceFeature',
@@ -1148,6 +1164,10 @@ MN2E.heroicPathRules = function(rules) {
       rules.defineRule('magicNotes.spellPenetrationFeature',
         'pathLevels.Dragonblooded', '+=', 'Math.floor((source - 5) / 4)'
       );
+      rules.defineRule
+        ('spellEnergy', 'magicNotes.dragonbloodedSpellEnergy', '+', null);
+      rules.defineRule
+        ('spellsKnown.W1', 'magicNotes.dragonbloodedSpellsKnown', '+', null);
 
     } else if(path == 'Earthbonded') {
 
@@ -1322,7 +1342,7 @@ MN2E.heroicPathRules = function(rules) {
         'combatNotes.smiteEvilFeature:' +
           '%V/day add conMod to attack, level to damage vs. evil foe',
         'featureNotes.inspireValorFeature:' +
-          'Allies w/in 30 ft bonus attack/fear saves 1 round/level %V',
+          'Allies w/in 30 ft extra attack/fear saves 1 round/level %V',
         'magicNotes.detectEvilFeature:<i>Detect Evil</i> at will',
         'magicNotes.layOnHandsFeature:Harm undead or heal %V HP/day',
         'saveNotes.auraOfCourageFeature:' +
@@ -1372,7 +1392,7 @@ MN2E.heroicPathRules = function(rules) {
         '1:Ironborn Resilience', '2:Fortitude Bonus', '3:Armor Class Bonus',
         '4:Improved Healing', '5:Damage Reduction', '6:Elemental Resistance',
         '9:Indefatigable', '14:Greater Improved Healing',
-        '19:Improved Indefatigable',
+        '19:Improved Indefatigable'
       ];
       spellFeatures = null;
       notes = [
@@ -1636,7 +1656,6 @@ MN2E.heroicPathRules = function(rules) {
       ];
       spellFeatures = null;
       notes =[
-        'abilityNotes.abilityBonusFeature:+1 to %V different abilities',
         'featureNotes.skillMasteryFeature:' +
           'Skill Mastery feat with %V chosen skills',
         'skillNotes.bloodOfKingsFeature:' +
@@ -1811,7 +1830,7 @@ MN2E.heroicPathRules = function(rules) {
 
       features = [
         '1:Untapped Potential', '2:Metamagic Aura',
-        '3:Improved Spell Resistance', '4:Bonus Spell Energy'
+        '3:Improved Spell Resistance'
       ];
       spellFeatures = null;
       notes = [
@@ -1822,7 +1841,7 @@ MN2E.heroicPathRules = function(rules) {
           'Contribute %V points to others\' spells w/in 30 ft',
         'saveNotes.improvedSpellResistanceFeature:+%V vs. spells'
       ];
-      rules.defineRule('magicNotes.bonusSpellEnergyFeature',
+      rules.defineRule('magicNotes.spellsoulSpellEnergy',
         'pathLevels.Spellsoul', '+=',
          'source>=18?8 : source>=13 ? 6 : source>=9 ? 4 : source>=4 ? 2 : null'
       );
@@ -1852,6 +1871,7 @@ MN2E.heroicPathRules = function(rules) {
         'source>=19 ? 5 : source>=16 ? 4 : source>=12 ? 3 : source>=7 ? 2 : ' +
         'source>=3 ? 1 : null'
       );
+      rules.defineRule('spellEnergy', 'spellsoulSpellEnergy', '+', null);
 
     } else if(path == 'Steelblooded') {
 
@@ -2039,7 +2059,6 @@ MN2E.heroicPathRules = function(rules) {
 
   }
   rules.defineSheetElement('Heroic Path', 'Description', null, 'Alignment');
-  rules.defineSheetElement('Deity', null, null, null);
 
 };
 
@@ -2047,8 +2066,7 @@ MN2E.magicRules = function(rules) {
 
   rules.defineChoice('spells', MN2E.SPELLS);
   rules.defineSheetElement
-    ('Spell Energy Points', 'SpellStats', '<b>Spell Energy Points</b>: %V',
-     'Spells Per Day');
+    ('Spell Energy', 'SpellStats', null, 'Spells Per Day');
 
 };
 
@@ -2124,9 +2142,8 @@ MN2E.raceRules = function(rules) {
         'combatNotes.fierceFeature:+1 attack w/two-handed weapons'
       ];
       // TODO Bonus feat must be fighter or weapon/armor/shield proficiency
-      rules.defineRule
-        ('featCount', 'featureNotes.dornFeatCountBonus', '+', null);
-      rules.defineRule('featureNotes.dornFeatCountBonus',
+      rules.defineRule('featCount', 'featureNotes.dornFeatCount', '+', null);
+      rules.defineRule('featureNotes.dornFeatCount',
         'race', '=', 'source == "Dorn" ? 1 : null'
       );
       rules.defineRule('skillNotes.dornSkillPointsBonus',
@@ -2160,7 +2177,7 @@ MN2E.raceRules = function(rules) {
         ]);
         notes = notes.concat([
           'featureNotes.knowDepthFeature:Intuit approximate depth underground',
-          'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip',
+          'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip'
         ]);
       } else if(race == 'Kurgun Dwarf') {
         features = features.concat(['Natural Mountaineer']);
@@ -2261,7 +2278,7 @@ MN2E.raceRules = function(rules) {
           'Improved Tree Climber', 'Spirit Foe'
         ]);
         notes = notes.concat([
-          'magicNotes.improvedInnateMagicFeature:Bonus Innate Magic spell',
+          'magicNotes.improvedInnateMagicFeature:+1 Innate Magic spell',
           'saveNotes.spiritFoeFeature:+2 vs. outsiders',
           'skillNotes.improvedKeenSensesFeature:+2 Listen/Search/Spot',
           'skillNotes.improvedTreeClimberFeature:' +
@@ -2288,7 +2305,7 @@ MN2E.raceRules = function(rules) {
           'Improved Innate Magic', 'Improved Natural Channeler'
         ]);
         notes = notes.concat([
-          'magicNotes.improvedInnateMagicFeature:Bonus Innate Magic spell',
+          'magicNotes.improvedInnateMagicFeature:+1 Innate Magic spell',
           'magicNotes.improvedNaturalChannelerFeature:+1 spell energy'
         ]);
         rules.defineRule('magicNotes.innateMagicFeature',
@@ -2317,8 +2334,8 @@ MN2E.raceRules = function(rules) {
         'race', '=', 'source == "Erenlander" ? 1 : null'
       );
       rules.defineRule
-        ('featCount', 'featureNotes.erenlanderFeatCountBonus', '+', null);
-      rules.defineRule('featureNotes.erenlanderFeatCountBonus',
+        ('featCount', 'featureNotes.erenlanderFeatCount', '+', null);
+      rules.defineRule('featureNotes.erenlanderFeatCount',
         'race', '=', 'source == "Erenlander" ? 2 : null'
       );
       rules.defineRule('skillNotes.erenlanderSkillPointsBonus',
@@ -2444,8 +2461,8 @@ MN2E.raceRules = function(rules) {
         'saveNotes.quickFeature:+1 Reflex'
       ];
       rules.defineRule
-        ('featCount', 'featureNotes.sarcosanFeatCountBonus', '+', null);
-      rules.defineRule('featureNotes.sarcosanFeatCountBonus',
+        ('featCount', 'featureNotes.sarcosanFeatCount', '+', null);
+      rules.defineRule('featureNotes.sarcosanFeatCount',
         'race', '=', 'source.indexOf("Sarcosan") >= 0 ? 1 : null'
       );
       rules.defineRule('skillNotes.sarcosanSkillPointsBonus',

@@ -266,7 +266,6 @@ MN2EPrestige.prestigeClassRules = function() {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        // TODO Improved spellcasting
         '1:Improved Spellcasting', '1:Resist Izrador\'s Will', '3:See Astirax',
         '4:Counter Izrador\'s Will', '5:Bonus Spellcasting', '6:Bind Astirax',
         '8:Conceal Magic', '10:Sundered Spirit'
@@ -325,14 +324,23 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('featureNotes.bonusSpellcastingFeature',
         'levels.Bane Of Legates', '+=', 'Math.floor((source - 1) / 4)'
       );
+      MN2E.defineRule('magicNotes.baneOfLegatesSpellEnergy',
+        'levels.Bane Of Legates', '=', null
+      );
       MN2E.defineRule
         ('magicNotes.bindAstiraxFeature', 'levels.Bane Of Legates', '=', null);
+      MN2E.defineRule('magicNotes.baneOfLegatesSpellsKnown',
+        'levels.Bane Of Legates', '=', null
+      );
+      MN2E.defineRule
+        ('spellEnergy', 'magicNotes.baneOfLegatesSpellEnergy', '+', null);
+      MN2E.defineRule
+        ('spellsKnown.W1', 'magicNotes.baneOfLegatesSpellsKnown', '+', null);
 
     } else if(klass == 'Druid') {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        // TODO Improved spellcasting
         '1:Mastery Of Nature', '1:Animal Companion', '2:Druidcraft',
         '2:Nature Sense', '3:Commune With Nature', '5:Find The Way',
         '8:Venom Immunity'
@@ -374,6 +382,11 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('magicNotes.communeWithNatureFeature',
         'levels.Druid', '=', 'Math.floor(source / 3)'
       );
+      MN2E.defineRule('magicNotes.druidSpellEnergy', 'levels.Druid', '=', null);
+      MN2E.defineRule('magicNotes.druidSpellsKnown', 'levels.Druid', '=', null);
+      MN2E.defineRule('spellEnergy', 'magicNotes.druidSpellEnergy', '+', null);
+      MN2E.defineRule
+        ('spellsKnown.W1', 'magicNotes.druidSpellsKnown', '+', null);
 
     } else if(klass == 'Elven Raider') {
 
@@ -398,7 +411,7 @@ MN2EPrestige.prestigeClassRules = function() {
         'combatNotes.meticulousFeature:' +
           '+1 critical range for every 2 rounds aiming; +%V max',
         'combatNotes.rangedSneakAttackFeature:' +
-          '%Vd6 extra damage when surprising or flanking w/in 30 ft',
+          '%Vd6 extra damage when surprising or flanking w/in 30 ft'
       ];
       prerequisites = [
         '{baseAttack} >= 5',
@@ -496,7 +509,6 @@ MN2EPrestige.prestigeClassRules = function() {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        //TODO Improved spellcasting
         '1:Seance', '2:Spiritcraft', '2:Spirit Manipulation', '3:Ghost Sight',
         '5:Spell Focus (Divination)', '9:Spell Focus (Necromancy)'
       ];
@@ -538,12 +550,20 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule
+        ('magicNotes.hauntedOneSpellEnergy', 'levels.Haunted One', '=', null);
+      MN2E.defineRule
+        ('magicNotes.hauntedOneSpellsKnown', 'levels.Haunted One', '=', null);
       MN2E.defineRule('magicNotes.seanceFeature',
         'levels.Haunted One', '=', 'Math.floor((source + 2) / 3)'
       );
       MN2E.defineRule('magicNotes.spiritManipulationFeature',
         'levels.Haunted One', '=', 'Math.floor(source / 2)'
       );
+      MN2E.defineRule
+        ('spellEnergy', 'magicNotes.hauntedOneSpellEnergy', '+', null);
+      MN2E.defineRule
+        ('spellsKnown.W1', 'magicNotes.hauntedOneSpellsKnown', '+', null);
 
     } else if(klass == 'Insurgent Spy') {
 
@@ -664,7 +684,6 @@ MN2EPrestige.prestigeClassRules = function() {
 
     } else if(klass == 'Warrior Arcanist') {
 
-      // TODO Improved spellcasting
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
         '1:Armored Casting', '1:Channeled Combat (Attack)',
@@ -722,10 +741,19 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('magicNotes.channeledCombat(Damage)Feature',
         'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
       );
+      MN2E.defineRule('magicNotes.warriorArcanistSpellEnergy',
+        'levels.WarriorArcanist', '=', 'Math.floor(source / 2)'
+      );
+      MN2E.defineRule('magicNotes.warriorArcanistSpellsKnown',
+        'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
+      );
+      MN2E.defineRule
+        ('spellEnergy', 'magicNotes.warriorArcanistSpellEnergy', '+', null);
+      MN2E.defineRule
+        ('spellsKnown.W1', 'magicNotes.warriorArcanistSpellsKnown', '+', null);
 
     } else if(klass == 'Whisper Adept') {
 
-      // TODO Improved spellcasting
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
         '1:Whisper Sense', '2:Whisper Sense (Initiative)', '3:Fell Touch',
@@ -779,10 +807,19 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsPerDayAbility = null;
       MN2E.defineRule
         ('initiative', 'combatNotes.whisperSense(Initiative)Feature', '+', '2');
+      MN2E.defineRule('magicNotes.whisperAdeptSpellEnergy',
+        'levels.Whisper Adept', '=', null
+      );
+      MN2E.defineRule('magicNotes.whisperAdeptSpellsKnown',
+        'levels.Whisper Adept', '=', null
+      );
+      MN2E.defineRule
+        ('spellEnergy', 'magicNotes.whisperAdeptSpellEnergy', '+', null);
+      MN2E.defineRule
+        ('spellsKnown.W1', 'magicNotes.whisperAdeptSpellsKnown', '+', null);
 
     } else if(klass == 'Wizard') {
 
-      // TODO Improved spellcasting
       MN2EPrestige.selectableFeatures[klass] =
         'Spellcasting (Abjuration)/Spellcasting (Conjuration)/' +
         'Spellcasting (Divination)/Spellcasting (Enchantment)/' +
@@ -827,14 +864,21 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('featureNotes.efficientStudyFeature',
         'levels.Wizard', '=', 'Math.floor((source + 1) / 3) * 10'
       );
-      MN2E.defineRule
-        ('featCount', 'featureNotes.wizardFeatCountBonus', '+', null);
       MN2E.defineRule('featureNotes.wizardFeatCountBonus',
         'levels.Wizard', '=', 'Math.floor(source / 3)'
       );
+      MN2E.defineRule
+        ('featCount', 'featureNotes.wizardFeatCountBonus', '+', null);
+      MN2E.defineRule
+        ('magicNotes.wizardSpellEnergy', 'levels.Wizard', '=', null);
+      MN2E.defineRule
+        ('magicNotes.wizardSpellsKnown', 'levels.Wizard', '=', null);
       MN2E.defineRule('selectableFeatureCount.Wizard',
         'levels.Wizard', '=', 'Math.floor((source - 1) / 3)'
       );
+      MN2E.defineRule('spellEnergy', 'magicNotes.wizardSpellEnergy', '+', null);
+      MN2E.defineRule
+        ('spellsKnown.W1', 'magicNotes.wizardSpellsKnown', '+', null);
 
     } else if(klass == 'Wogren Rider') {
 
