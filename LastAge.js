@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.44 2006/11/04 14:56:23 Jim Exp $ */
+/* $Id: LastAge.js,v 1.45 2006/11/18 17:41:05 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -213,7 +213,7 @@ MN2E.classRules = function(rules) {
       rules.defineRule
         ('spellEnergy', 'magicNotes.channelerSpellEnergy', '+', null);
       rules.defineRule
-        ('spellsKnown.W1', 'magicNotes.channelerSpellsKnown', '+', null);
+        ('spellsKnownBonus', 'magicNotes.channelerSpellsKnown', '+', null);
 
       if(klass == 'Charismatic Channeler') {
         MN2E.selectableFeatures[klass] =
@@ -880,11 +880,13 @@ MN2E.featRules = function(rules) {
     'magicNotes.magecraft(Spiritual)Feature', '+=', '3'
   );
   rules.defineRule('spellsKnown.W1',
-    'magicNotes.greaterSpellcasting(Conjuration)Feature', '+=', '1',
-    'magicNotes.greaterSpellcasting(Evocation)Feature', '+=', '1',
     'magicNotes.magecraft(Charismatic)Feature', '+=', '1',
     'magicNotes.magecraft(Hermetic)Feature', '+=', '1',
-    'magicNotes.magecraft(Spiritual)Feature', '+=', '1',
+    'magicNotes.magecraft(Spiritual)Feature', '+=', '1'
+  );
+  rules.defineRule('spellsKnownBonus',
+    'magicNotes.greaterSpellcasting(Conjuration)Feature', '+=', '1',
+    'magicNotes.greaterSpellcasting(Evocation)Feature', '+=', '1',
     'magicNotes.spellcasting(Abjuration)Feature', '+=', '1',
     'magicNotes.spellcasting(Conjuration)Feature', '+=', '1',
     'magicNotes.spellcasting(Divination)Feature', '+=', '1',
@@ -893,7 +895,7 @@ MN2E.featRules = function(rules) {
     'magicNotes.spellcasting(Illusion)Feature', '+=', '1',
     'magicNotes.spellcasting(Necromancy)Feature', '+=', '1',
     'magicNotes.spellcasting(Transmutation)Feature', '+=', '1',
-    'magicNotes.spellKnowledgeFeature', '+=', '2'
+    'magicNotes.spellKnowledgeFeature', '+', '2'
   );
   var tests = [
     '{feats.Craft Charm} == null || +/{^skills.Craft} >= 4',
@@ -1167,7 +1169,7 @@ MN2E.heroicPathRules = function(rules) {
       rules.defineRule
         ('spellEnergy', 'magicNotes.dragonbloodedSpellEnergy', '+', null);
       rules.defineRule
-        ('spellsKnown.W1', 'magicNotes.dragonbloodedSpellsKnown', '+', null);
+        ('spellsKnownBonus', 'magicNotes.dragonbloodedSpellsKnown', '+', null);
 
     } else if(path == 'Earthbonded') {
 
@@ -2067,6 +2069,19 @@ MN2E.magicRules = function(rules) {
   rules.defineChoice('spells', MN2E.SPELLS);
   rules.defineSheetElement
     ('Spell Energy', 'SpellStats', null, 'Spells Per Day');
+  rules.defineSheetElement
+    ('Allocated Spells', 'SpellStats', null, 'Spells Per Day');
+  rules.defineRule('maxSpellLevel',
+    'level', '=', 'source / 2',
+    'channelerLevels', '+', '0.5'
+  );
+  for(var i = 0; i < 10; i++) {
+    rules.defineRule('allocatedSpells.W' + i,
+      'maxSpellLevel', '?', 'Math.floor(source) >= ' + i,
+      'spellsKnownBonus', '=', '1'
+    );
+    rules.defineRule('spellsKnown.W' + i, 'allocatedSpells.W' + i, '+=', null);
+  }
 
 };
 

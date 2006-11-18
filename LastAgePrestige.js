@@ -335,7 +335,7 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule
         ('spellEnergy', 'magicNotes.baneOfLegatesSpellEnergy', '+', null);
       MN2E.defineRule
-        ('spellsKnown.W1', 'magicNotes.baneOfLegatesSpellsKnown', '+', null);
+        ('spellsKnownBonus', 'magicNotes.baneOfLegatesSpellsKnown', '+', null);
 
     } else if(klass == 'Druid') {
 
@@ -386,7 +386,7 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('magicNotes.druidSpellsKnown', 'levels.Druid', '=', null);
       MN2E.defineRule('spellEnergy', 'magicNotes.druidSpellEnergy', '+', null);
       MN2E.defineRule
-        ('spellsKnown.W1', 'magicNotes.druidSpellsKnown', '+', null);
+        ('spellsKnownBonus', 'magicNotes.druidSpellsKnown', '+', null);
 
     } else if(klass == 'Elven Raider') {
 
@@ -563,7 +563,7 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule
         ('spellEnergy', 'magicNotes.hauntedOneSpellEnergy', '+', null);
       MN2E.defineRule
-        ('spellsKnown.W1', 'magicNotes.hauntedOneSpellsKnown', '+', null);
+        ('spellsKnownBonus', 'magicNotes.hauntedOneSpellsKnown', '+', null);
 
     } else if(klass == 'Insurgent Spy') {
 
@@ -749,8 +749,9 @@ MN2EPrestige.prestigeClassRules = function() {
       );
       MN2E.defineRule
         ('spellEnergy', 'magicNotes.warriorArcanistSpellEnergy', '+', null);
-      MN2E.defineRule
-        ('spellsKnown.W1', 'magicNotes.warriorArcanistSpellsKnown', '+', null);
+      MN2E.defineRule('spellsKnownBonus',
+        'magicNotes.warriorArcanistSpellsKnown', '+', null
+      );
 
     } else if(klass == 'Whisper Adept') {
 
@@ -816,7 +817,7 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule
         ('spellEnergy', 'magicNotes.whisperAdeptSpellEnergy', '+', null);
       MN2E.defineRule
-        ('spellsKnown.W1', 'magicNotes.whisperAdeptSpellsKnown', '+', null);
+        ('spellsKnownBonus', 'magicNotes.whisperAdeptSpellsKnown', '+', null);
 
     } else if(klass == 'Wizard') {
 
@@ -878,7 +879,7 @@ MN2EPrestige.prestigeClassRules = function() {
       );
       MN2E.defineRule('spellEnergy', 'magicNotes.wizardSpellEnergy', '+', null);
       MN2E.defineRule
-        ('spellsKnown.W1', 'magicNotes.wizardSpellsKnown', '+', null);
+        ('spellsKnownBonus', 'magicNotes.wizardSpellsKnown', '+', null);
 
     } else if(klass == 'Wogren Rider') {
 
