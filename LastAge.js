@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.45 2006/11/18 17:41:05 Jim Exp $ */
+/* $Id: LastAge.js,v 1.46 2006/11/25 15:36:52 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -119,11 +119,13 @@ MN2E.SKILLS = [
   'Knowledge (Spirits):int/trained'
 ];
 MN2E.SPELLS = [
-  'Charm Repair:W3', 'Detect Astirax:D1/W1', 'Disguise Ally:W2',
-  'Disguise Weapon:W1', 'Far Whisper:D1/W1', 'Greenshield:D2/W2',
-  'Halfling Burrow:D3/W3', 'Lifetrap:D2/W2', 'Nature\'s Revelation:D2/W2',
-  'Nexus Fuel:C4/W5', 'Silver Blood:W2', 'Silver Storm:W4',
-  'Silver Wand:W3', 'Stone Soup:D1/W1'
+  'Charm Repair:W3/Transmutation', 'Detect Astirax:D1/W1/Divination',
+  'Disguise Ally:W2/Illusion', 'Disguise Weapon:W1/Illusion',
+  'Far Whisper:D1/W1/Divination', 'Greenshield:D2/W2/Illusion',
+  'Halfling Burrow:D3/W3/Transmutation', 'Lifetrap:D2/W2/Transmutation',
+  'Nature\'s Revelation:D2/W2/Transmutation', 'Nexus Fuel:C4/W5/Necromancy',
+  'Silver Blood:W2/Transmutation', 'Silver Storm:W4/Transmutation',
+  'Silver Wand:W3/Conjuration', 'Stone Soup:D1/W1/Transmutation'
 ];
 MN2E.WEAPONS = [
   'Atharak:d6', 'Cedeku:d6@19', 'Crafted Vardatch:d10@19',
@@ -2066,7 +2068,16 @@ MN2E.heroicPathRules = function(rules) {
 
 MN2E.magicRules = function(rules) {
 
-  rules.defineChoice('spells', MN2E.SPELLS);
+  for(var i = 0; i < MN2E.SPELLS.length; i++) {
+    var pieces = MN2E.SPELLS[i].split(':');
+    var codes = pieces[1].split('/');
+    var school = codes[codes.length - 1].substring(0, 4);
+    for(var j = 0; j < codes.length - 1; j++) {
+      var spell =
+        pieces[0] + '(' + codes[j] + ' ' + school + ')';
+      rules.defineChoice('spells', spell);
+    }
+  }
   rules.defineSheetElement
     ('Spell Energy', 'SpellStats', null, 'Spells Per Day');
   rules.defineSheetElement
