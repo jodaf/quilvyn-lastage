@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.46 2006/11/25 15:36:52 Jim Exp $ */
+/* $Id: LastAge.js,v 1.47 2006/11/27 05:45:04 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -17,8 +17,15 @@ this program; if not, write to the Free Software Foundation, Inc., 59 Temple
 Place, Suite 330, Boston, MA 02111-1307 USA.
 */
 
-
-/* Loads the rules from Midnight Second Edition. */
+/*
+ * This module loads the rules from the Midnight Second Edition core rule book.
+ * The MN2E function contains methods that load rules for particular
+ * parts/chapters of the rule book; raceRules for character races, magicRules
+ * for spells, etc.  Any of these member methods can be set to null or
+ * overridden before calling MN2E in order to use a subset of the MN2E rules.
+ * Similarly, the constant fields of MN2E--FEATS, HEROIC_PATHS, etc.--can be
+ * manipulated in order to trim the choices offered.
+ */
 function MN2E() {
   var rules = new ScribeRules('Midnight 2nd Edition');
   PH35.CLASSES = ['Barbarian', 'Fighter', 'Rogue'];
@@ -45,7 +52,7 @@ function MN2E() {
       'alignment', 'armor', 'charisma', 'constitution', 'deity', 'dexterity',
       'domains', 'feats', 'gender', 'hitPoints', 'intelligence', 'languages',
       'levels', 'name', 'race', 'selectableFeatures', 'shield', 'skills',
-      'specialization', 'spells', 'strength', 'weapons', 'wisdom'
+      'spells', 'strength', 'weapons', 'wisdom'
     );
   }
   // A rule for handling DM-only information
@@ -56,13 +63,12 @@ function MN2E() {
   if(MN2E.skillRules != null) MN2E.skillRules(rules);
   if(MN2E.featRules != null) MN2E.featRules(rules);
   if(MN2E.equipmentRules != null) MN2E.equipmentRules(rules);
-  if(MN2E.combatRules != null) MN2E.combatRules(rules);
   if(MN2E.magicRules != null) MN2E.magicRules(rules);
   if(MN2E.randomize != null)
     rules.defineRandomizer(MN2E.randomize, 'heroicPath');
   rules.defineEditorElement
     ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
-  // TODO Remove these null testing choices
+  // TODO Remove these null testing choices later
   rules.defineChoice('heroicPaths', 'Null Path');
   rules.defineChoice('races', 'Null Race');
   rules.defineSheetElement('Deity', null, null, null);
@@ -70,9 +76,7 @@ function MN2E() {
   MN2E.rules = rules;
 }
 
-// Arrays of choices passed to Scribe.  Removing elements from these before
-// calling the rules functions will limit the user's options and eliminate
-// rules associated with the removed choices.
+// Arrays of choices passed to Scribe.
 MN2E.CLASSES = [
   'Charismatic Channeler', 'Defender', 'Fighter', 'Hermetic Channeler', 
   'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
@@ -154,9 +158,11 @@ MN2E.racesFavoredRegions = {
   'Snow Elf':'Erethor/Veradeen', 'Urban Sarcosan':null,
   'Wood Elf':'Erethor/Caraheen'
 };
+// Filled in by the classes that define selectable features.
 MN2E.selectableFeatures = {
 };
 
+/* Defines the rules related to MN2E Chapter 3, Core Classes. */
 MN2E.classRules = function(rules) {
 
   for(var i = 0; i < MN2E.CLASSES.length; i++) {
@@ -773,14 +779,12 @@ MN2E.classRules = function(rules) {
 
 };
 
-MN2E.combatRules = function(rules) {
-  // empty
-};
-
+/* Defines the rules related to MN2E Chapter 5, Player Options/Starting Equipment. */
 MN2E.equipmentRules = function(rules) {
   rules.defineChoice('weapons', MN2E.WEAPONS);
 };
 
+/* Defines the rules related to MN2E Chapter 5, Player Options/Feats. */
 MN2E.featRules = function(rules) {
 
   var notes = [
@@ -964,6 +968,7 @@ MN2E.featRules = function(rules) {
 
 };
 
+/* Defines the rules related to MN2E Chapter 2, Heroic Paths. */
 MN2E.heroicPathRules = function(rules) {
 
   rules.defineChoice('heroicPaths', MN2E.HEROIC_PATHS);
@@ -2066,6 +2071,7 @@ MN2E.heroicPathRules = function(rules) {
 
 };
 
+/* Defines the rules related to MN2E Chapter 5, Player Options/Magic. */
 MN2E.magicRules = function(rules) {
 
   for(var i = 0; i < MN2E.SPELLS.length; i++) {
@@ -2096,6 +2102,7 @@ MN2E.magicRules = function(rules) {
 
 };
 
+/* Defines the rules related to MN2E Chapter 1, Races of Midnight. */
 MN2E.raceRules = function(rules) {
 
   /* Notes and rules that apply to multiple races */
@@ -2526,6 +2533,7 @@ MN2E.raceRules = function(rules) {
 
 };
 
+/* Defines the rules related to MN2E Chapter 5, Player Options/Skills. */
 MN2E.skillRules = function(rules) {
   rules.defineChoice('languages', MN2E.LANGUAGES);
   rules.defineChoice('skills', MN2E.SKILLS);

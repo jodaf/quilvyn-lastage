@@ -15,10 +15,14 @@ this program; if not, write to the Free Software Foundation, Inc., 59 Temple
 Place, Suite 330, Boston, MA 02111-1307 USA.
 */
 
+/*
+ * This module loads the rules from the Midnight Second Edition core rule book,
+ * Chapter 4, Prestige Classes.  The MN2EPrestige.PRESTIGE_CLASSES constant
+ * fields can be manipulated in order to trim the choices offered.
+ */
 function MN2EPrestige() {
 
-  if(MN2EPrestige.prestigeClassRules != null)
-    MN2EPrestige.prestigeClassRules();
+  if(MN2EPrestige.prestigeClassRules != null) MN2EPrestige.prestigeClassRules();
   var allSelectable = {};
   for(var a in MN2EPrestige.selectableFeatures) {
     var prefix = a.substring(0, 1).toLowerCase() +
@@ -35,13 +39,19 @@ function MN2EPrestige() {
   MN2E.defineChoice('selectableFeatures', ScribeUtils.getKeys(allSelectable));
   var existingSpells = MN2E.getChoices('spells');
   for(var i = 0; i < MN2EPrestige.spells.length; i++) {
-    var spell = MN2EPrestige.spells[i].split(/:/);
-    var name = spell[0];
-    var level = spell[1];
-    if(existingSpells[name] != null) {
-      level = existingSpells[name] + '/' + level;
+    var pieces = MN2EPrestige.spells[i].split(/:/);
+    var level = pieces[1];
+    var name = pieces[0];
+    var matchInfo;
+    var schoolPat = name + '\\([A-Z]+[0-9]+ ([A-Za-z]+)\\)';
+    var spell = name + '(' + level + ' Univ)';
+    for(var a in existingSpells) {
+      if((matchInfo = a.match(schoolPat)) != null) {
+        spell = spell.replace('Univ)', matchInfo[1] + ')');
+        break;
+      }
     }
-    MN2E.defineChoice('spells', name + ':' + level);
+    MN2E.defineChoice('spells', spell);
   }
 
 }
