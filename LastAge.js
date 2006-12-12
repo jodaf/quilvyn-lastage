@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.47 2006/11/27 05:45:04 Jim Exp $ */
+/* $Id: LastAge.js,v 1.48 2006/12/12 02:43:21 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -47,14 +47,9 @@ function MN2E() {
   if(PH35.combatRules != null) PH35.combatRules(rules);
   if(PH35.adventuringRules != null) PH35.adventuringRules(rules);
   if(PH35.magicRules != null) PH35.magicRules(rules);
-  if(PH35.randomize != null) {
-    rules.defineRandomizer(PH35.randomize,
-      'alignment', 'armor', 'charisma', 'constitution', 'deity', 'dexterity',
-      'domains', 'feats', 'gender', 'hitPoints', 'intelligence', 'languages',
-      'levels', 'name', 'race', 'selectableFeatures', 'shield', 'skills',
-      'spells', 'strength', 'weapons', 'wisdom'
-    );
-  }
+  rules.defineChoice(
+    'random', MN2E.RANDOMIZABLE_ATTRIBUTES.concat(PH35.RANDOMIZABLE_ATTRIBUTES)
+  );
   // A rule for handling DM-only information
   rules.defineRule('dmNotes', 'dmonly', '?', null);
   if(MN2E.raceRules != null) MN2E.raceRules(rules);
@@ -64,14 +59,12 @@ function MN2E() {
   if(MN2E.featRules != null) MN2E.featRules(rules);
   if(MN2E.equipmentRules != null) MN2E.equipmentRules(rules);
   if(MN2E.magicRules != null) MN2E.magicRules(rules);
-  if(MN2E.randomize != null)
-    rules.defineRandomizer(MN2E.randomize, 'heroicPath');
-  rules.defineEditorElement
-    ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
   // TODO Remove these null testing choices later
   rules.defineChoice('heroicPaths', 'Null Path');
   rules.defineChoice('races', 'Null Race');
   rules.defineSheetElement('Deity', null, null, null);
+  rules.randomizeAllAttributes = MN2E.randomizeAllAttributes;
+  rules.randomizeOneAttribute = MN2E.randomizeOneAttribute;
   Scribe.addRuleSet(rules);
   MN2E.rules = rules;
 }
@@ -118,6 +111,7 @@ MN2E.RACES = [
   'Nomadic Halfling', 'Orc', 'Plains Sarcosan', 'Sea Elf', 'Snow Elf',
   'Urban Sarcosan', 'Wood Elf'
 ];
+MN2E.RANDOMIZABLE_ATTRIBUTES = ['heroicPath'];
 MN2E.SKILLS = [
   'Knowledge (Old Gods):int/trained', 'Knowledge (Shadow):int/trained',
   'Knowledge (Spirits):int/trained'
@@ -951,7 +945,6 @@ MN2E.featRules = function(rules) {
   }
   var allSelectable = {};
   for(var a in MN2E.selectableFeatures) {
-    PH35.selectableFeatures[a] = MN2E.selectableFeatures[a]; // for randomize
     var prefix = a.substring(0, 1).toLowerCase() +
                  a.substring(1).replace(/ /g, '');
     var features = MN2E.selectableFeatures[a].split('/');
@@ -1066,7 +1059,7 @@ MN2E.heroicPathRules = function(rules) {
       );
       rules.defineRule('smallViciousAssault',
         'features.Small', '?', null,
-        'mediumViciousAssault', '=', 'Scribe.smallDamage[source]'
+        'mediumViciousAssault', '=', 'Scribe.SMALL_DAMAGE[source]'
       );
       rules.defineRule
         ('turningLevel', 'pathLevels.Beast', '+=', 'source>=2 ? source : null');
@@ -2067,6 +2060,8 @@ MN2E.heroicPathRules = function(rules) {
     );
 
   }
+  rules.defineEditorElement
+    ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
   rules.defineSheetElement('Heroic Path', 'Description', null, 'Alignment');
 
 };
@@ -2087,18 +2082,7 @@ MN2E.magicRules = function(rules) {
   rules.defineSheetElement
     ('Spell Energy', 'SpellStats', null, 'Spells Per Day');
   rules.defineSheetElement
-    ('Allocated Spells', 'SpellStats', null, 'Spells Per Day');
-  rules.defineRule('maxSpellLevel',
-    'level', '=', 'source / 2',
-    'channelerLevels', '+', '0.5'
-  );
-  for(var i = 0; i < 10; i++) {
-    rules.defineRule('allocatedSpells.W' + i,
-      'maxSpellLevel', '?', 'Math.floor(source) >= ' + i,
-      'spellsKnownBonus', '=', '1'
-    );
-    rules.defineRule('spellsKnown.W' + i, 'allocatedSpells.W' + i, '+=', null);
-  }
+    ('Spells Known Bonus', 'SpellStats', null, 'Spells Per Day');
 
 };
 
@@ -2552,14 +2536,80 @@ MN2E.skillRules = function(rules) {
 };
 
 /*
- * Sets the character's #attribute# attribute to a random value.  #rules# is
- * the RuleEngine used to produce computed values; the function sometimes needs
- * to apply the rules to determine valid values for some attributes.
+ * Returns a character with randomized settings for all randomizable attributes
+ * except for those in #fixedAttributes#, which are copied to the result.
  */
-MN2E.randomize = function(rules, attributes, attribute) {
-  if(attribute == 'heroicPath') {
-    attributes[attribute] = ScribeUtils.randomKey(Scribe.heroicPaths);
+MN2E.randomizeAllAttributes = function(fixedAttributes) {
+  var result = { };
+  for(var a in fixedAttributes) {
+    result[a] = fixedAttributes[a];
   }
+  var attributes =
+    MN2E.RANDOMIZABLE_ATTRIBUTES.concat(PH35.RANDOMIZABLE_ATTRIBUTES);
+  for(var i = 0; i < attributes.length; i++) {
+    var a = attributes[i];
+    if(a == 'levels') {
+      var totalLevels = ScribeUtils.sumMatching(result, /^levels\./);
+      if(ScribeUtils.sumMatching(result, /^levels\./) == 0) {
+        MN2E.randomizeOneAttribute(result, a);
+      }
+      var totalLevels = ScribeUtils.sumMatching(result, /^levels\./);
+      result.experience = totalLevels * (totalLevels - 1) * 1000 / 2;
+    } else if(result[a] == null) {
+      MN2E.randomizeOneAttribute(result, a);
+    }
+  }
+  return result;
+};
+
+/* Sets #attributes#'s #attribute# attribute to a random value. */
+MN2E.randomizeOneAttribute = function(attributes, attribute) {
+  var savedFeatures = PH35.selectableFeatures;
+  var savedRules = PH35.rules;
+  PH35.selectableFeatures = MN2E.selectableFeatures;
+  PH35.rules = MN2E.rules;
+  if(attribute == 'heroicPath') {
+    attributes[attribute] =
+      ScribeUtils.randomKey(MN2E.rules.getChoices(attribute + 's'));
+  } else if(attribute == 'spells') {
+    // First, take care of fixed spells from, e.g., Magecraft
+    PH35.randomizeOneAttribute(attributes, attribute);
+    // Find out if the character has any bonus spells
+    var attrs = MN2E.rules.applyRules(attributes);
+    var spellsKnownBonus = attrs.spellsKnownBonus;
+    if(spellsKnownBonus != null) {
+      var maxSpellLevel =
+        Math.floor((attrs.level + (attrs.channelerLevels != null ? 1 : 0)) / 2);
+      // Temporarily set prohibit.* attributes to keep PH35 from assigning
+      // spells from schools where the character doesn't have Spellcasting
+      for(var a in savedRules.getChoices('schools')) {
+        if(attributes['feats.Spellcasting (' + a + ')'] == null)
+          attributes['prohibit.' + a] = 1;
+      }
+      // Allocate bonus spells round-robin among all possible spell levels
+      for(var spellLevel = maxSpellLevel;
+          spellsKnownBonus > 0;
+          spellLevel = (spellLevel == 0) ? maxSpellLevel : spellLevel - 1,
+          spellsKnownBonus--) {
+        var currentCount = attributes['spellsKnown.W' + spellLevel];
+        attributes['spellsKnown.W' + spellLevel] =
+          currentCount != null ? currentCount + 1 : 1;
+      }
+      // Let PH35 pick spells
+      PH35.randomizeOneAttribute(attributes, attribute);
+      // Now get rid of the temporary attribute assignments
+      for(var a in savedRules.getChoices('schools')) {
+        delete attributes['prohibit.' + a];
+      }
+      for(var spellLevel = 0; spellLevel <= maxSpellLevel; spellLevel++) {
+        delete attributes['spellsKnown.W' + spellLevel];
+      }
+    }
+  } else {
+    PH35.randomizeOneAttribute(attributes, attribute);
+  }
+  PH35.selectableFeatures = savedFeatures;
+  PH35.rules = savedRules;
 }
 
 /* Convenience functions that invoke ScribeRules methods on the MN2E rules. */
@@ -2581,10 +2631,6 @@ MN2E.defineNote = function() {
 
 MN2E.defineRace = function() {
   return ScribeRules.prototype.defineRace.apply(MN2E.rules, arguments);
-};
-
-MN2E.defineRandomizer = function() {
-  return ScribeRules.prototype.defineRandomizer.apply(MN2E.rules, arguments);
 };
 
 MN2E.defineRule = function() {
