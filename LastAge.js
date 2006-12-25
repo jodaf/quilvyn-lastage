@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.49 2006/12/24 02:09:30 Jim Exp $ */
+/* $Id: LastAge.js,v 1.50 2006/12/25 15:45:14 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -979,8 +979,9 @@ MN2E.heroicPathRules = function(rules) {
     ('abilityNotes.strengthBonusFeature', 'features.Strength Bonus', '=', null);
   rules.defineRule
     ('abilityNotes.wisdomBonusFeature', 'features.Wisdom Bonus', '=', null);
-  rules.defineRule
-    ('armorClass', 'combatNotes.armorClassBonusFeature', '+', null);
+  rules.defineRule('armorClass',
+    'combatNotes.armorClassBonusFeature', '+', null
+  );
   rules.defineRule
     ('charisma', 'abilityNotes.charismaBonusFeature', '+', null);
   rules.defineRule('combatNotes.armorClassBonusFeature',
@@ -1151,10 +1152,11 @@ MN2E.heroicPathRules = function(rules) {
       );
       rules.defineRule('magicNotes.dragonbloodedSpellEnergy',
         'pathLevels.Dragonblooded', '=',
-        '2 * (source>=16 ? 4 : source>=15 ? 3 : Math.floor((source + 1) / 4))'
+        'source>=16 ? 8 : source>=11 ? 6 : source>=7 ? 4 : source>=3 ? 2 : null'
       );
       rules.defineRule('magicNotes.dragonbloodedSpellsKnown',
-        'pathLevels.Dragonblooded', '+=', 'source>=14 ? 3 : source>=8 ? 2 : 1'
+        'pathLevels.Dragonblooded', '=',
+        'source>=14 ? 3 : source>=8 ? 2 : source>=2 ? 1 : null'
       );
       rules.defineRule('magicNotes.frightfulPresenceFeature',
         'pathLevels.Dragonblooded', '+=', '10 + Math.floor(source / 2)',
@@ -1174,7 +1176,7 @@ MN2E.heroicPathRules = function(rules) {
     } else if(path == 'Earthbonded') {
 
       features = [
-        '1:Darkvision', '3:Armor Class Bonus', '4:Stonecunning',
+        '1:Darkvision', '3:Natural Armor', '4:Stonecunning',
         '8:Improved Stonecunning', '12:Tremorsense', '16:Blindsense',
         '20:Blindsight'
       ];
@@ -1185,6 +1187,7 @@ MN2E.heroicPathRules = function(rules) {
         '17:Stone Tell', '19:Earthquake'
       ];
       notes = [
+        'combatNotes.naturalArmorFeature:+%V AC',
         'featureNotes.blindsenseFeature:' +
           'Other senses allow detection of unseen objects w/in 30 ft',
         'featureNotes.blindsightFeature:' +
@@ -1194,7 +1197,13 @@ MN2E.heroicPathRules = function(rules) {
         'featureNotes.tremorsenseFeature:' +
           'Detect creatures in contact w/ground w/in 30 ft'
       ];
-      rules.defineRule('earthbondedFeatures.Armor Class Bonus',
+      rules.defineRule('armorClass',
+        'combatNotes.naturalArmorFeature', '+', null
+      );
+      rules.defineRule('combatNotes.naturalArmorFeature',
+        'earthbondedFeatures.Natural Armor', '+=', null
+      );
+      rules.defineRule('earthbondedFeatures.Natural Armor',
         'level', '+', 'source >= 18 ? 2 : source >= 10 ? 1 : null'
       );
 
@@ -1299,7 +1308,7 @@ MN2E.heroicPathRules = function(rules) {
         'combatNotes.fearsomeChargeFeature:' +
            '+%V damage/-1 AC for every 10 ft in charge',
         'combatNotes.largeFeature:+4 bull rush/disarm/grapple/-1 AC/attack',
-        'combatNotes.rockThrowingFeature:Use boulders as %V ft ranged weapons',
+        'combatNotes.rockThrowingFeature:Use debris as ranged weapon',
         'skillNotes.intimidatingSizeFeature:+%V Intimidate',
         'skillNotes.obviousFeature:-4 Hide'
       ];
@@ -1311,10 +1320,6 @@ MN2E.heroicPathRules = function(rules) {
       rules.defineRule('combatNotes.fearsomeChargeFeature',
         'pathLevels.Giantblooded', '+=', 'Math.floor((source + 2) / 10)'
       );
-      rules.defineRule('combatNotes.rockThrowingFeature',
-        'pathLevels.Giantblooded', '=',
-        'source >= 19 ? 120 : source >= 13 ? 90 : source >= 6 ? 60 : 30'
-      );
       rules.defineRule('giantbloodedFeatures.Strength Bonus',
         'level', '+', 'source >= 15 ? 1 : null'
       );
@@ -1322,12 +1327,16 @@ MN2E.heroicPathRules = function(rules) {
         'pathLevels.Giantblooded', '+=',
         'source>=17 ? 10 : source>=14 ? 8 : (Math.floor((source + 1) / 4) * 2)'
       );
-      rules.defineChoice('weapons', 'Boulder:d10 R30');
       rules.defineRule
-        ('weapons.Boulder', 'combatNotes.rockThrowingFeature', '=', '1');
-      rules.defineRule('weaponDamage.Boulder',
+        ('weapons.Debris', 'combatNotes.rockThrowingFeature', '=', '1');
+      // Note: damage skewed to allow for Large adjustment starting level 10
+      rules.defineRule('weaponDamage.Debris',
         'pathLevels.Giantblooded', '=',
-        'source >= 16 ? "2d8" : source >= 9 ? "2d6" : "d10"'
+        'source>=16 ? "d10" : source>=10 ? "d8" : source>=9 ? "2d6" : "d10"'
+      );
+      rules.defineRule('weaponRange.Debris',
+        'pathLevels.Giantblooded', '=',
+        'source >= 19 ? 120 : source >= 13 ? 90 : source >= 6 ? 60 : 30'
       );
 
     } else if(path == 'Guardian') {
@@ -1391,7 +1400,7 @@ MN2E.heroicPathRules = function(rules) {
     } else if(path == 'Ironborn') {
 
       features = [
-        '1:Ironborn Resilience', '2:Fortitude Bonus', '3:Armor Class Bonus',
+        '1:Ironborn Resilience', '2:Fortitude Bonus', '3:Natural Armor',
         '4:Improved Healing', '5:Damage Reduction', '6:Elemental Resistance',
         '9:Indefatigable', '14:Greater Improved Healing',
         '19:Improved Indefatigable'
@@ -1402,23 +1411,39 @@ MN2E.heroicPathRules = function(rules) {
           'Regain 1 point ability damage/hour',
         'combatNotes.improvedHealingFeature:Regain %V HP/hour',
         'combatNotes.ironbornResilienceFeature:Improved hit die',
+        'combatNotes.naturalArmorFeature:+%V AC',
         'saveNotes.elementalResistanceFeature:' +
           '%V resistance to acid/cold/electricity/fire',
         'saveNotes.indefatigableFeature:Immune fatigue effects',
         'saveNotes.improvedIndefatigableFeature:Immune exhaustion effects'
       ];
+      rules.defineRule('armorClass',
+        'combatNotes.naturalArmorFeature', '+', null
+      );
       rules.defineRule('combatNotes.damageReductionFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor(source / 5)'
       );
       rules.defineRule('combatNotes.improvedHealingFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor(source / 2)'
       );
+      rules.defineRule('combatNotes.naturalArmorFeature',
+        'ironbornFeatures.Natural Armor', '+=', null
+      );
       rules.defineRule('ironbornFeatures.Fortitude Bonus',
         'level', '+', 'Math.floor((source - 2) / 5)'
       );
-      rules.defineRule('ironbornFeatures.Armor Class Bonus',
+      rules.defineRule('ironbornFeatures.Natural Armor',
         'level', '+', 'Math.floor((source - 3) / 5)'
       );
+      rules.defineRule
+        ('resistance.Acid', 'saveNotes.elementalResistanceFeature', '+=', null);
+      rules.defineRule
+        ('resistance.Cold', 'saveNotes.elementalResistanceFeature', '+=', null);
+      rules.defineRule('resistance.Electricity',
+        'saveNotes.elementalResistanceFeature', '+=', null
+      );
+      rules.defineRule
+        ('resistance.Fire', 'saveNotes.elementalResistanceFeature', '+=', null);
       rules.defineRule('saveNotes.elementalResistanceFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor((source - 1) / 5) * 3'
       );
@@ -2082,7 +2107,7 @@ MN2E.magicRules = function(rules) {
   rules.defineSheetElement
     ('Spell Energy', 'SpellStats', null, 'Spells Per Day');
   rules.defineSheetElement
-    ('Spells Known Bonus', 'SpellStats', null, 'Spells Per Day');
+    ('Spells Known Bonus', 'SpellStats', null, 'Spell Energy');
 
 };
 
