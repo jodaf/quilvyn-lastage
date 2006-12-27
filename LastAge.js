@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.50 2006/12/25 15:45:14 Jim Exp $ */
+/* $Id: LastAge.js,v 1.51 2006/12/27 15:39:20 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -419,7 +419,7 @@ MN2E.classRules = function(rules) {
         'combatNotes.oneWithTheWeaponFeature:' +
           'Masterful Strike/Precise Strike/Stunning Fist w/chosen weapon',
         'combatNotes.preciseStrikeFeature:' +
-          'Ignore %V points of damage resistance',
+          'Overcome %V points of foe damage reduction',
         'combatNotes.rapidStrikeFeature:' +
           'Extra attack at highest attack bonus 1/round',
         'combatNotes.retaliatoryStrikeFeature:' +
@@ -792,7 +792,7 @@ MN2E.featRules = function(rules) {
     'combatNotes.orcSlayerFeature:+1 AC/damage vs. orcs/dworgs',
     'skillNotes.sarcosanPurebloodFeature:+2 AC (horsed)',
     'combatNotes.warriorOfShadowFeature:' +
-      'Substitute chaMod rounds of +%V damage for Turn Undead use',
+      'Substitute ChaMod rounds of +%V damage for Turn Undead use',
     'featureNotes.extraGiftFeature:' +
       'Use Master Of Two Worlds/Force Of Personality +4 times/day',
     'featureNotes.quickenedDonningFeature:No penalty for hastened donning',
@@ -1033,7 +1033,7 @@ MN2E.heroicPathRules = function(rules) {
       notes = [
         'combatNotes.beastialAuraFeature:Turn animals as cleric %V/day',
         'combatNotes.rageFeature:' +
-          '+4 strength/constitution/+2 Will save/-2 AC 5+conMod rounds %V/day',
+          '+4 strength/constitution/+2 Will save/-2 AC 5+ConMod rounds %V/day',
         'combatNotes.viciousAssaultFeature:Two claw attacks at %V each',
         'featureNotes.enhancedBeastialAuraFeature:' +
           'Animals w/in 15 ft act negatively/cannot ride',
@@ -1349,9 +1349,9 @@ MN2E.heroicPathRules = function(rules) {
       spellFeatures = null;
       notes = [
         'combatNotes.righteousFuryFeature:' +
-          'Ignore %V points melee damage reduction vs. evil foe',
+          'Overcome %V points of evil foe melee damage reduction',
         'combatNotes.smiteEvilFeature:' +
-          '%V/day add conMod to attack, level to damage vs. evil foe',
+          '%V/day add ChaMod to attack, level to damage vs. evil foe',
         'featureNotes.inspireValorFeature:' +
           'Allies w/in 30 ft extra attack/fear saves 1 round/level %V',
         'magicNotes.detectEvilFeature:<i>Detect Evil</i> at will',
@@ -1493,19 +1493,19 @@ MN2E.heroicPathRules = function(rules) {
       features = [
         '1:Mountaineer', '1:Mountain Survival', '3:Ambush', '4:Rallying Cry',
         '5:Constitution Bonus', '8:Improved Ambush', '13:Quick Ambush',
-        '18:Greater Ambush'
+        '18:Sniping Ambush'
       ];
       spellFeatures = [
         '2:Endure Elements', '7:Pass Without Trace', '12:Meld Into Stone',
         '17:Stone Tell'
       ];
       notes = [
-        'combatNotes.greaterAmbushFeature:' +
-          'Reduced Hide penalty for using ranged weapons',
         'combatNotes.improvedAmbushFeature:' +
            'Allies +2 damage vs. flat-footed foes on surprise/1st melee rounds',
         'combatNotes.rallyingCryFeature:' +
           'Allies not flat-footed/+4 vs. surprise %V/day',
+        'combatNotes.snipingAmbushFeature:' +
+          'Reduced Hide penalty for using ranged weapons',
         'skillNotes.ambushFeature:Allies use character\'s Hide for ambush',
         'skillNotes.quickAmbushFeature:Hide allies for ambush in half time',
         'skillNotes.mountaineerFeature:+%V Balance/Climb/Jump',
@@ -1720,7 +1720,7 @@ MN2E.heroicPathRules = function(rules) {
       notes = [
         'abilityNotes.fastMovementFeature:+%V speed',
         'combatNotes.burstOfSpeedFeature:' +
-          'Extra attack/move action for 3+conMod rounds %V/day/fatigued afterward'
+          'Extra attack/move action for 3+ConMod rounds %V/day/fatigued afterward'
       ];
       rules.defineRule('abilityNotes.fastMovementFeature',
         'pathLevels.Quickened', '+=', 'Math.floor((source + 2) / 5) * 5'
@@ -1832,7 +1832,7 @@ MN2E.heroicPathRules = function(rules) {
         '18:Greater Shout'
       ];
       notes = [
-        'magicNotes.powerWordsFeature:<i>Word of %V</i> 3+conMod/day',
+        'magicNotes.powerWordsFeature:<i>Word of %V</i> 3+ChaMod/day',
         'skillNotes.languageSavantFeature:' +
           'Fluent in any language after listening for 10 minutes',
         'skillNotes.persuasiveSpeakerFeature:+%V on verbal charisma skills'
@@ -1863,27 +1863,19 @@ MN2E.heroicPathRules = function(rules) {
       notes = [
         'magicNotes.metamagicAuraFeature:' +
           '%V others\'spells up to 1/2 level w/in 30 ft',
-        'magicNotes.metamagicAuraFeature2:%V/day',
         'magicNotes.untappedPotentialFeature:' +
           'Contribute %V points to others\' spells w/in 30 ft',
         'saveNotes.improvedSpellResistanceFeature:+%V vs. spells'
       ];
-      rules.defineRule('magicNotes.spellsoulSpellEnergy',
-        'pathLevels.Spellsoul', '+=',
-         'source>=18?8 : source>=13 ? 6 : source>=9 ? 4 : source>=4 ? 2 : null'
-      );
       rules.defineRule('magicNotes.metamagicAuraFeature',
         'pathLevels.Spellsoul', '=',
-        '["Enlarge"].concat(source >= 5 ? ["Extend"] : [])' +
-                   '.concat(source >= 8 ? ["Reduce"] : [])' +
-                   '.concat(source >= 11 ? ["Attract"] : [])' +
-                   '.concat(source >= 14 ? ["Empower"] : [])' +
-                   '.concat(source >= 17 ? ["Maximize"] : [])' +
-                   '.concat(source >= 20 ? ["Redirect"] : []).sort().join("/")'
-      );
-      rules.defineRule('magicNotes.metamagicAuraFeature2',
-        'pathLevels.Spellsoul', '=',
-        'source >=15?4 : source>=10?3 : source>=6?2 : source>=2?1 : null'
+        '(source>=15 ? 4 : source>=10 ? 3 : source>=6 ? 2 : 1) + "/day " + ' +
+        '["enlarge"].concat(source >= 5 ? ["extend"] : [])' +
+                   '.concat(source >= 8 ? ["reduce"] : [])' +
+                   '.concat(source >= 11 ? ["attract"] : [])' +
+                   '.concat(source >= 14 ? ["empower"] : [])' +
+                   '.concat(source >= 17 ? ["maximize"] : [])' +
+                   '.concat(source >= 20 ? ["redirect"] : []).sort().join("/")'
       );
       rules.defineRule('magicNotes.untappedPotentialFeature',
         'highestMagicModifier', '=', 'source + 1',
@@ -1898,7 +1890,6 @@ MN2E.heroicPathRules = function(rules) {
         'source>=19 ? 5 : source>=16 ? 4 : source>=12 ? 3 : source>=7 ? 2 : ' +
         'source>=3 ? 1 : null'
       );
-      rules.defineRule('spellEnergy', 'spellsoulSpellEnergy', '+', null);
 
     } else if(path == 'Steelblooded') {
 
@@ -1915,7 +1906,8 @@ MN2E.heroicPathRules = function(rules) {
         'combatNotes.skilledWarriorFeature:' +
            'Half penalty from %V choices of Fighting Defensively/Grapple ' +
            'Attack/Non-proficient Weapon/Two-Weapon Fighting',
-        'combatNotes.strategicBlowFeature:Ignore %V points of damage reduction',
+        'combatNotes.strategicBlowFeature:' +
+          'Overcome %V points of foe damage reduction',
         'combatNotes.untouchableFeature:No foe AOO from special attacks'
       ];
       rules.defineRule('combatNotes.offensiveTacticsFeature',
@@ -1938,7 +1930,7 @@ MN2E.heroicPathRules = function(rules) {
 
       features = [
         '1:Detect Outsider', '2:Blood Of The Planes', '4:Planar Fury',
-        '7:Darkvision', '13:Magical Darkvision', '19:Invisibility Vision'
+        '7:Darkvision', '13:Magical Darkvision', '19:See Invisible'
       ];
       spellFeatures = [
         '3:Summon Monster I', '6:Summon Monster II', '9:Summon Monster III',
@@ -1946,9 +1938,9 @@ MN2E.heroicPathRules = function(rules) {
       ];
       notes = [
         'combatNotes.planarFuryFeature:' +
-          '+2 strength/constitution/+1 Will save/-1 AC 5+conMod rounds %V/day',
+          '+2 strength/constitution/+1 Will save/-1 AC 5+ConMod rounds %V/day',
         'featureNotes.magicalDarkvisionFeature:See perfectly in any darkness',
-        'featureNotes.invisibilityVisionFeature:See invisible creatures',
+        'featureNotes.seeInvisibleFeature:See invisible creatures',
         'magicNotes.detectOutsiderFeature:Detect outsiders at will',
         'skillNotes.bloodOfThePlanesFeature:' +
           '+%V on charisma skills when dealing with outsiders'
@@ -1964,7 +1956,7 @@ MN2E.heroicPathRules = function(rules) {
 
       features = [
         '1:Aid Another', '2:Combat Overview', '3:Coordinated Initiative',
-        '4:Coordinated Attack', '5:Aided Combat Bonus', '13:Directed Attack',
+        '4:Joint Attack', '5:Aided Combat Bonus', '13:Directed Attack',
         '18:Telling Blow', '20:Perfect Assault'
       ];
       spellFeatures = null;
@@ -1972,14 +1964,14 @@ MN2E.heroicPathRules = function(rules) {
         'combatNotes.aidAnotherFeature:Aid another as a move action',
         'combatNotes.aidedCombatBonusFeature:Aided ally +%V to attack or AC',
         'combatNotes.combatOverviewFeature:' +
-          'Ally w/in 60 ft avoid AOO/flat-footed or foe flat-footed %V/day',
-        'combatNotes.coordinatedAttackFeature:' +
-          'Allies w/in 30 ft attack single foe at +1/participant (+5 max) ' +
-          '%V/day',
+          'Ally w/in 60 ft avoid AOO/avoid flat-footed/foe flat-footed %V/day',
         'combatNotes.coordinatedInitiativeFeature:' +
           'Allies w/in 30 ft use character\'s initiative %V/day',
         'combatNotes.directedAttackFeature:' +
           'Ally w/in 30 ft add 1/2 character\'s base attack 1/day',
+        'combatNotes.jointAttackFeature:' +
+          'Allies w/in 30 ft attack single foe at +1/participant (+5 max) ' +
+          '%V/day',
         'combatNotes.perfectAssaultFeature:' +
           'Allies w/in 30 ft threaten critical on any hit 1/day',
         'combatNotes.tellingBlowFeature:Allies w/in 30 ft re-roll damage 1/day'
@@ -1992,17 +1984,18 @@ MN2E.heroicPathRules = function(rules) {
         'pathLevels.Tactician', '+=',
         'source>=15 ? 4 : source>=10 ? 3 : source>=6 ? 2 : 1'
       );
-      rules.defineRule('combatNotes.coordinatedAttackFeature',
-        'pathLevels.Tactician', '+=',
-        'source>=17 ? 4 : source==16 ? 3 : Math.floor(source / 4)'
-      );
       rules.defineRule('combatNotes.coordinatedInitiativeFeature',
         'pathLevels.Tactician', '+=',
         'source>=16 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
       );
+      rules.defineRule('combatNotes.jointAttackFeature',
+        'pathLevels.Tactician', '+=',
+        'source>=17 ? 4 : source==16 ? 3 : Math.floor(source / 4)'
+      );
 
     } else if(path == 'Warg') {
 
+      MN2E.selectableFeatures[path] = 'Low Light Vision/Scent';
       features = [
         '1:Wild Empathy', '2:Animal Companion', '5:Wild Shape', '13:Ferocity',
         '20:Blindsense'
