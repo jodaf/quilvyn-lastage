@@ -895,7 +895,7 @@ MN2EPrestige.prestigeClassRules = function() {
 
       MN2EPrestige.selectableFeatures[klass] =
         'Improved Mounted Archery/Improved Mounted Combat/' +
-        'Improved Ride By Attack/Improved Spirited Charge/Improved Trample/'
+        'Improved Ride By Attack/Improved Spirited Charge/Improved Trample/' +
         'Ride By Attack/Trample';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [

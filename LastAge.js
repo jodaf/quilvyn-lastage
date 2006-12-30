@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.51 2006/12/27 15:39:20 Jim Exp $ */
+/* $Id: LastAge.js,v 1.52 2006/12/30 05:22:33 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -31,7 +31,7 @@ function MN2E() {
   PH35.CLASSES = ['Barbarian', 'Fighter', 'Rogue'];
   PH35.DEITIES = ['Izrador (NE):Death/Destruction/Evil/Magic/War'];
   PH35.RACES = [];
-  PH35.deitiesFavoredWeapons = {'Izrador (LE)': 'Longsword'};
+  PH35.deitiesFavoredWeapons = {'Izrador (NE)': 'Longsword'};
   if(PH35.createViewer != null) {
     MN2E.viewer = new ObjectViewer();
     PH35.createViewer(MN2E.viewer);
@@ -70,8 +70,8 @@ function MN2E() {
 
 // Arrays of choices passed to Scribe.
 MN2E.CLASSES = [
-  'Charismatic Channeler', 'Defender', 'Fighter', 'Hermetic Channeler', 
-  'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
+  'Barbarian', 'Charismatic Channeler', 'Defender', 'Fighter',
+  'Hermetic Channeler', 'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
 ];
 MN2E.FEATS = [
   'Craft Charm', 'Craft Greater Spell Talisman', 'Craft Spell Talisman',
@@ -166,7 +166,13 @@ MN2E.classRules = function(rules) {
         tests;
     var klass = MN2E.CLASSES[i];
 
-    if(klass.indexOf(' Channeler') >= 0) {
+    if(klass == 'Barbarian') {
+
+      rules.defineRule
+        ('classSkills.Speak Language', 'levels.Barbarian', '=', '1');
+      continue; // Not defining a new class
+
+    } else if(klass.indexOf(' Channeler') >= 0) {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
@@ -235,7 +241,7 @@ MN2E.classRules = function(rules) {
             'Allies failing enchantment saves affected for half duration; ' +
             'fear reduced',
           'magicNotes.improvedFuryFeature:' +
-            'Additional +%V initiative/attack/damage',
+            'Additional +1 initiative/attack/damage',
           'magicNotes.inspireConfidenceFeature:' +
             'Allies w/in 60 ft +4 save vs. enchantment/fear for %V rounds',
           'magicNotes.inspireFascinationFeature:' +
@@ -284,7 +290,8 @@ MN2E.classRules = function(rules) {
           'levels.Charismatic Channeler', '=', 'Math.floor(source / 3)'
         );
         rules.defineRule('selectableFeatureCount.Charismatic Channeler',
-          'levels.Charismatic Channeler', '=', 'Math.floor(source / 3)'
+          'levels.Charismatic Channeler', '=',
+          'source < 3 ? null : Math.floor(source / 3)'
         );
       } else if(klass == 'Hermetic Channeler') {
         MN2E.selectableFeatures[klass] =
@@ -297,7 +304,7 @@ MN2E.classRules = function(rules) {
             'Each day Choose a Knowledge Skill Focus',
           'skillNotes.lorebookFeature:' +
             'Study 1 minute for knowledge of situation; scan at -10',
-          'skillNotes.quickReferenceFeature:Reduce Lorebook scan penalty to -5',
+          'skillNotes.quickReferenceFeature:Reduce Lorebook scan penalty by %V',
           'skillNotes.spellSpecialtyFeature:Each day choose a spell for +1 DC'
         ]);
         skills = skills.concat([
@@ -307,11 +314,15 @@ MN2E.classRules = function(rules) {
           'Knowledge (Nobility)', 'Knowledge (Planes)', 'Knowledge (Religion)'
         ]);
         tests = null;
-        rules.defineRule('selectableFeatureCount.Hermetic Channeler',
-          'levels.Hermetic Channeler', '=', 'Math.floor(source / 3)'
-        );
         rules.defineRule
           ('channelerLevels', 'levels.Hermetic Channeler', '+=', null);
+        rules.defineRule('selectableFeatureCount.Hermetic Channeler',
+          'levels.Hermetic Channeler', '=',
+          'source < 3 ? null : Math.floor(source / 3)'
+        );
+        rules.defineRule('skillNotes.quickReferenceFeature',
+          'selectableFeatures.Quick Reference', '=', '5 * source'
+        );
       } else if(klass == 'Spiritual Channeler') {
         MN2E.selectableFeatures[klass] =
           'Confident Effect/Heightened Effect/Mastery Of Nature/' +
@@ -325,7 +336,8 @@ MN2E.classRules = function(rules) {
           'combatNotes.heightenedEffectFeature:' +
             '+2 level for Master of Two Worlds checks',
           'combatNotes.masteryOfNatureFeature:Turn animals/plants as cleric',
-          'combatNotes.masteryOfSpiritsFeature:Turn exorcises spirits',
+          'combatNotes.masteryOfSpiritsFeature:' +
+            'Successful turning exorcises spirits',
           'combatNotes.masteryOfTheUnnaturalFeature:' +
             'Turn constructs/outsiders (double hit die) as cleric',
           'combatNotes.masterOfTwoWorldsFeature:' +
@@ -372,7 +384,8 @@ MN2E.classRules = function(rules) {
           'wisdomModifier', '=', '3 + source'
         );
         rules.defineRule('selectableFeatureCount.Spiritual Channeler',
-          'levels.Spiritual Channeler', '=', 'Math.floor(source / 3)'
+          'levels.Spiritual Channeler', '=',
+          'source < 3 ? null : Math.floor(source / 3)'
         );
         rules.defineRule
           ('turningLevel', 'levels.Spiritual Channeler', '+=', null);
@@ -382,18 +395,19 @@ MN2E.classRules = function(rules) {
 
       MN2E.selectableFeatures[klass] =
        'Defensive Mastery/Dodge Training/Flurry Attack/Grappling Training/' +
-       'Offensive Training/Speed Training/Cover Ally/One With The Weapon/' +
-       'Rapid Strike/Strike And Hold/Counterattack/Devastating Strike/' +
-       'Furious Grapple/Retaliatory Strike/Weapon Trap';
+       'Incredible Resilience/Incredible Speed/Offensive Training/' +
+       'Speed Training/Cover Ally/One With The Weapon/Rapid Strike/' +
+       'Strike And Hold/Counterattack/Devastating Strike/Furious Grapple/' +
+       'Retaliatory Strike/Weapon Trap';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
-        '1:Masterful Strike', '2:Defender Abilities',
-        '2:Defender Stunning Fist', '3:Improved Grapple', '4:Precise Strike',
-        '5:Incredible Resilience', '5:Incredible Speed', '6:Masterful Strike'
+        '1:Improved Unarmed Strike', '1:Masterful Strike',
+        '2:Defender Abilities', '2:Defender Stunning Fist',
+        '3:Improved Grapple', '4:Precise Strike'
       ];
       hitDie = 8;
       notes = [
-        'abilityNotes.incredibleSpeedFeature:Add up to %V speed',
+        'abilityNotes.incredibleSpeedFeature:+%V speed',
         'combatNotes.dodgeTrainingFeature:+%V AC',
         'combatNotes.counterattackFeature:AOO on foe miss 1/round',
         'combatNotes.coverAllyFeature:Take hit for ally w/in 5 ft 1/round',
@@ -403,17 +417,16 @@ MN2E.classRules = function(rules) {
           'Trap %V/day',
         'combatNotes.defenderStunningFistFeature:' +
           'Foe %V Fortitude save or stunned',
-        'combatNotes.devastativeAttackFeature:' +
-          'Bull Rush stunned opponent as free action w/out AOO',
+        'combatNotes.devastatingStrikeFeature:' +
+          'Bull Rush stunned opponent as free action w/out foe AOO',
         'combatNotes.flurryAttackFeature:' +
           'Two-weapon off hand penalty reduced by %V',
         'combatNotes.furiousGrappleFeature:' +
           'Extra grapple attack at highest attack bonus 1/round',
         'combatNotes.grapplingTrainingFeature:' +
           'Disarm/sunder/trip attacks use grapple check',
-        'combatNotes.incredibleResilienceFeature:Add up to %V HP',
-        'combatNotes.masterfulStrikeFeature:' +
-           'Improved Unarmed Strike/extra unarmed damage',
+        'combatNotes.incredibleResilienceFeature:+%V HP',
+        'combatNotes.masterfulStrikeFeature:%V unarmed damage',
         'combatNotes.offensiveTrainingFeature:' +
            'Stunned foe %V DC save to avoid blinding/deafening',
         'combatNotes.oneWithTheWeaponFeature:' +
@@ -425,8 +438,7 @@ MN2E.classRules = function(rules) {
         'combatNotes.retaliatoryStrikeFeature:' +
           'AOO vs. foe that strikes ally 1/round',
         'combatNotes.speedTrainingFeature:Extra move action each round',
-        'combatNotes.strikeAndHoldFeature:' +
-          'Extra unarmed attack to grab foe',
+        'combatNotes.strikeAndHoldFeature:Extra unarmed attack to grab foe',
         'combatNotes.weaponTrapFeature:' +
           'Attack to catch foe\'s weapon for disarm/damage/AOO 1/round',
         'saveNotes.defensiveMasteryFeature:+%V all saves'
@@ -473,36 +485,70 @@ MN2E.classRules = function(rules) {
           '{selectableFeatures.Grappling Training} != null)'
       ];
       rules.defineRule('abilityNotes.incredibleSpeedFeature',
-        'levels.Defender', '=', '10 * Math.floor((source - 4) / 3)'
+        'selectableFeatures.Incredible Speed', '=', '10 * source'
+      );
+      rules.defineRule('armorClass',
+        'combatNotes.defenderArmorClassAdjustment', '+', null,
+        'combatNotes.dodgeTrainingFeature', '+', null
       );
       rules.defineRule('combatNotes.defenderAbilitiesFeature',
-        'levels.Defender', '=', 'source * 3 / 4',
+        'levels.Defender', '=', '3 + source * 3 / 4',
         'level', '+', 'source / 4'
+      );
+      rules.defineRule('combatNotes.defenderArmorClassAdjustment',
+        'levels.Defender', '=', 'Math.floor((source + 1) / 2)'
       );
       rules.defineRule('combatNotes.defenderStunningFistFeature',
         'levels.Defender', '=', '10 + Math.floor(source / 2)',
         'strengthModifier', '+', null
       );
-      rules.defineRule
-        ('armorClass', 'combatNotes.dodgeTrainingFeature', '+', null);
+      rules.defineRule('combatNotes.dodgeTrainingFeature',
+        'selectableFeatures.Dodge Training', '=', null
+      );
+      rules.defineRule('combatNotes.flurryAttackFeature',
+        'selectableFeatures.Flurry Attack', '=', null
+      );
       rules.defineRule('combatNotes.incredibleResilienceFeature',
-        'levels.Defender', '=', '3 * Math.floor((source - 4) / 3)'
+        'selectableFeatures.Incredible Resilience', '=', '3 * source'
+      );
+      rules.defineRule('combatNotes.masterfulStrikeFeature',
+        'defenderUnarmedDamageLarge', '=', null,
+        'defenderUnarmedDamageMedium', '=', null,
+        'defenderUnarmedDamageSmall', '=', null
       );
       rules.defineRule('combatNotes.offensiveTrainingFeature',
         'levels.Defender', '=', '14 + Math.floor(source / 2)',
         'strengthModifier', '+', null
       );
       rules.defineRule('combatNotes.preciseStrikeFeature',
-        'levels.Defender', '=', 'Math.floor((source + 2) / 6)'
+        'levels.Defender', '=', '3 * Math.floor((source + 2) / 6)'
+      );
+      rules.defineRule('defenderUnarmedDamageLarge',
+        'features.Large', '?', null,
+        'defenderUnarmedDamageMedium', '=', 'source.replace(/6/, "8")'
+      );
+      rules.defineRule('defenderUnarmedDamageMedium',
+        'levels.Defender', '=',
+        '"1d6" + (source < 7 ? "" : ("+" + Math.floor((source-1) / 6) + "d6"))'
+      );
+      rules.defineRule('defenderUnarmedDamageSmall',
+        'features.Small', '?', null,
+        'defenderUnarmedDamageMedium', '=', 'source.replace(/6/, "4")'
       );
       rules.defineRule('features.Improved Unarmed Strike',
         'features.Masterful Strike', '=', '1'
       );
+      rules.defineRule
+        ('hitPoints', 'combatNotes.incredibleResilienceFeature', '+', null);
       rules.defineRule('selectableFeatureCount.Defender',
-        'levels.Defender', '=', 'Math.floor((source + 1) / 3)'
+        'levels.Defender', '=',
+        'source < 2 ? null : (Math.floor((source + 1) / 3) + ' +
+                             '(source < 6 ? 0 : Math.floor((source - 3) / 3)))'
       );
+      rules.defineRule
+        ('speed', 'abilityNotes.incredibleSpeedFeature', '+', null);
       rules.defineRule('weaponDamage.Unarmed',
-        'levels.Defender', '=', '(1 + Math.floor(source / 6)) + "d6"'
+        'combatNotes.masterfulStrikeFeature', '=', null
       );
       rules.defineRule
         ('save.Fortitude', 'saveNotes.defensiveMasteryFeature', '+', null);
@@ -510,6 +556,9 @@ MN2E.classRules = function(rules) {
         ('save.Reflex', 'saveNotes.defensiveMasteryFeature', '+', null);
       rules.defineRule
         ('save.Will', 'saveNotes.defensiveMasteryFeature', '+', null);
+      rules.defineRule('saveNotes.defensiveMasteryFeature',
+        'selectableFeatures.Defensive Mastery', '=', null
+      );
 
     } else if(klass == 'Fighter') {
 
@@ -551,9 +600,8 @@ MN2E.classRules = function(rules) {
         'levels.Fighter', '=', 'Math.floor((source + 2) / 6)'
       );
       rules.defineRule('skillNotes.adapterFeature',
-        'levels.Fighter', '=', 'source - 3 + ' +
-                               '(source >= 10 ? source - 9 : 0) + ' +
-                               '(source >= 16 ? source - 15 : 0)'
+        'levels.Fighter', '=',
+        'source < 4 ? null : (source * Math.floor((source + 2) / 6))'
       );
       // TODO adapter may alternately make a cross-class skill a class one
       rules.defineRule('skillPoints', 'skillNotes.adapterFeature', '+', null);
@@ -2595,7 +2643,10 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
   var savedRules = PH35.rules;
   PH35.selectableFeatures = MN2E.selectableFeatures;
   PH35.rules = MN2E.rules;
-  if(attribute == 'heroicPath') {
+  if(attribute == 'deity') {
+    attributes[attribute] =
+      attributes['levels.Legate'] != null ? 'Izrador (NE)' : 'None';
+  } else if(attribute == 'heroicPath') {
     attributes[attribute] =
       ScribeUtils.randomKey(MN2E.rules.getChoices(attribute + 's'));
   } else if(attribute == 'spells') {
