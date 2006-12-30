@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.52 2006/12/30 05:22:33 Jim Exp $ */
+/* $Id: LastAge.js,v 1.53 2006/12/30 19:12:52 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -680,52 +680,51 @@ MN2E.classRules = function(rules) {
     } else if(klass == 'Wildlander') {
 
       MN2E.selectableFeatures[klass] =
-        'Animal Companion/Camouflage/Evasion/Hated Foe/Hide In Plain Sight/' +
-        'Hunted By The Shadow/Improved Evasion/Improved Woodland Stride/' +
+        'Alertness/Animal Companion/Camouflage/Danger Sense/Evasion/' +
+        'Hated Foe/Hide In Plain Sight/Hunted By The Shadow/Improved Evasion/' +
+        'Improved Initiative/Improved Woodland Stride/Initiative Bonus/' +
         'Instinctive Response/Master Hunter/Overland Stride/Quick Stride/' +
-        'Rapid Response/Sense Dark Magic/Skill Mastery/Slippery Mind/' +
-        'Trackless Step/True Aim/Wild Empathy/Wilderness Trapfinding/' +
-        'Woodland Stride';
+        'Sense Dark Magic/Skill Mastery/Slippery Mind/Trackless Step/' +
+        'True Aim/Wild Empathy/Wilderness Trapfinding/Woodland Stride/' +
+        'Woodslore';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
-        '1:Track', '3:Danger Sense', '4:Hunter\'s Strike'
+        '1:Track', '3:Danger Sense', '3:Initiative Bonus', '4:Hunter\'s Strike'
       ];
       hitDie = 8;
       notes = [
-        'abilityNotes.quickStrideFeature:+%V * 10 speed',
-        'combatNotes.dangerSenseFeature:Up to +%V initiative',
+        'abilityNotes.quickStrideFeature:+%V speed',
         'combatNotes.huntedByTheShadowFeature:No surprise by servant of shadow',
         'combatNotes.hunter\'sStrikeFeature:x2 damage %V/day',
         'combatNotes.hatedFoeFeature:' +
           'Additional Hunter\'s Strike vs. Master Hunter creature',
         'combatNotes.instinctiveResponseFeature:Re-roll initiative check',
         'combatNotes.masterHunterFeature:' +
-          '+2 or more damage vs. selected creature types',
+          '+2 or more damage vs. selected creature type(s)',
         'combatNotes.trueAimFeature:x3 damage on Hunter\'s Strike',
         'featureNotes.animalCompanionFeature:Special bond/abilities',
         'featureNotes.improvedWoodlandStrideFeature:' +
           'Normal movement through enchanted terrain',
         'featureNotes.overlandStrideFeature:' +
           'Normal movement while using Survival',
-        'featureNotes.rapidResponseFeature:' +
-          'Alertness or Improved Initiative feat',
         'featureNotes.senseDarkMagicFeature:Scent vs. legate/outsider',
-        'featureNotes.skillMasteryFeature:Skill Mastery with %V chosen skills',
         'featureNotes.tracklessStepFeature:Untrackable outdoors',
         'featureNotes.woodlandStrideFeature:' +
           'Normal movement through undergrowth',
         'featureNotes.woodsloreFeature:' +
           'Automatic Search vs. trap/concealed door w/in 5 ft',
         'magicNotes.senseDarkMagicFeature:' +
-          '<i>Detect Magic</i> vs. legate/outsider',
+          '<i>Detect Magic</i> vs. legate/outsider at will',
         'saveNotes.evasionFeature:Save yields no damage instead of 1/2',
         'saveNotes.improvedEvasionFeature:Failed save yields 1/2 damage',
         'saveNotes.slipperyMindFeature:Second save vs. enchantment',
         'skillNotes.camouflageFeature:Hide in any natural terrain',
-        'skillNotes.dangerSenseFeature:Up to +%V Listen/Spot',
+        'skillNotes.dangerSenseFeature:+%V Listen/Spot',
         'skillNotes.hideInPlainSightFeature:Hide even when observed',
         'skillNotes.masterHunterFeature:' +
           '+2 or more Bluff/Listen/Sense Motive/Spot/Survival vs. selected creature types',
+        'skillNotes.skillMasteryFeature:' +
+          '+3 bonus/take 10 despite distraction on %V designated skills',
         'skillNotes.wildEmpathyFeature:+%V Diplomacy check with animals',
         'skillNotes.wildernessTrapfindingFeature:' +
           'Search to find/Survival to remove DC 20+ traps'
@@ -784,25 +783,35 @@ MN2E.classRules = function(rules) {
         '{selectableFeatures.Slippery Mind} == null || ' +
           '{selectableFeatures.Hunted By The Shadow} != null'
       ];
-      rules.defineRule('combatNotes.dangerSenseFeature',
-        'levels.Wildlander', '=', 'Math.floor(source / 3)'
+      rules.defineRule('abilityNotes.quickStrideFeature',
+        'selectableFeatures.Quick Stride', '=', '10 * source'
       );
       rules.defineRule('combatNotes.hunter\'sStrikeFeature',
         'levels.Wildlander', '=', 'Math.floor(source / 4)'
       );
-      rules.defineRule('featCount',
-        'featureNotes.rapidResponseFeature', '+', null,
-        'featureNotes.skillMasteryFeature', '+', null
+      rules.defineRule('combatNotes.initiativeBonusFeature',
+        'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
+        'selectableFeatures.Initiative Bonus', '+', null
       );
+      rules.defineRule
+        ('initiative', 'combatNotes.initiativeBonusFeature', '+', null);
       rules.defineRule('selectableFeatureCount.Wildlander',
-        'levels.Wildlander', '=', '1 + Math.floor((source + 1) / 3)'
+        'levels.Wildlander', '=',
+        '1 + Math.floor((source + 1) / 3) + ' +
+        '(source < 6 ? 0 : Math.floor((source - 3) / 3))'
+      );
+      rules.defineRule('skillNotes.dangerSenseFeature',
+        'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
+        'selectableFeatures.Danger Sense', '+', null
+      );
+      rules.defineRule('skillNotes.skillMasteryFeature',
+        'selectableFeatures.Skill Mastery', '+=', null
       );
       rules.defineRule('skillNotes.wildEmpathyFeature',
         'levels.Wildlander', '+=', 'source',
         'charismaModifier', '+', null
       );
-      rules.defineRule
-        ('speed', 'abilityNotes.quickStrideFeature', '+', '10 * source');
+      rules.defineRule('speed', 'abilityNotes.quickStrideFeature', '+', null);
 
     } else
       continue;
@@ -1727,27 +1736,25 @@ MN2E.heroicPathRules = function(rules) {
         'Strength Bonus/Wisdom Bonus';
       features = [
         '1:Master Adventurer', '2:Blood Of Kings', '3:Feat Bonus',
-        '4:Skill Mastery'
+        '4:Skill Fixation'
       ];
       spellFeatures = null;
       notes =[
-        'featureNotes.skillMasteryFeature:' +
-          'Skill Mastery feat with %V chosen skills',
         'skillNotes.bloodOfKingsFeature:' +
           'Daily +%V on charisma skills in shadow or resistance interactions',
         'skillNotes.masterAdventurerFeature:' +
-          '+%V on three selected non-charisma skills'
+          '+%V on three selected non-charisma skills',
+        'skillNotes.skillFixationFeature:' +
+          'Take 10 despite distraction on %V designated skills',
       ];
-      rules.defineRule
-        ('featCount', 'featureNotes.skillMasteryFeature', '+', null);
       rules.defineRule('purebloodFeatures.Feat Bonus',
         'level', '+', 'Math.floor((source - 3) / 5)'
       );
-      rules.defineRule('featureNotes.skillMasteryFeature',
-        'pathLevels.Pureblood', '+=', 'Math.floor((source + 1) / 5)'
-      );
       rules.defineRule('selectableFeatureCount.Pureblood',
         'pathLevels.Pureblood', '=', 'source>=5 ? Math.floor(source / 5) : null'
+      );
+      rules.defineRule('skillNotes.skillFixationFeature',
+        'pathLevels.Pureblood', '+=', 'Math.floor((source + 1) / 5)'
       );
       rules.defineRule('skillNotes.bloodOfKingsFeature',
         'pathLevels.Pureblood', '+=', 'Math.floor((source + 3) / 5) * 2'
