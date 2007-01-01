@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.54 2007/01/01 02:39:51 Jim Exp $ */
+/* $Id: LastAge.js,v 1.55 2007/01/01 17:15:56 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -617,7 +617,7 @@ MN2E.classRules = function(rules) {
       notes = [
         'combatNotes.turnUndeadFeature:' +
           'Turn (good) or rebuke (evil) undead creatures',
-        'featureNotes.astiraxCompanion:Special bond/abilities',
+        'featureNotes.astiraxCompanionFeature:Special bond/abilities',
         'magicNotes.spontaneousLegateSpellFeature:Inflict',
         'magicNotes.templeDependencyFeature:' +
           'Must participate at temple to receive spells'
@@ -1463,20 +1463,17 @@ MN2E.heroicPathRules = function(rules) {
       features = [
         '1:Ironborn Resilience', '2:Fortitude Bonus', '3:Natural Armor',
         '4:Improved Healing', '5:Damage Reduction', '6:Elemental Resistance',
-        '9:Indefatigable', '14:Greater Improved Healing',
-        '19:Improved Indefatigable'
+        '9:Indefatigable', '14:Ability Recovery'
       ];
       spellFeatures = null;
       notes = [
-        'combatNotes.greaterImprovedHealingFeature:' +
-          'Regain 1 point ability damage/hour',
+        'combatNotes.abilityRecoveryFeature:Regain 1 point ability damage/hour',
         'combatNotes.improvedHealingFeature:Regain %V HP/hour',
         'combatNotes.ironbornResilienceFeature:Improved hit die',
         'combatNotes.naturalArmorFeature:+%V AC',
         'saveNotes.elementalResistanceFeature:' +
           '%V resistance to acid/cold/electricity/fire',
-        'saveNotes.indefatigableFeature:Immune fatigue effects',
-        'saveNotes.improvedIndefatigableFeature:Immune exhaustion effects'
+        'saveNotes.indefatigableFeature:Immune %V effects'
       ];
       rules.defineRule('armorClass',
         'combatNotes.naturalArmorFeature', '+', null
@@ -1507,6 +1504,10 @@ MN2E.heroicPathRules = function(rules) {
         ('resistance.Fire', 'saveNotes.elementalResistanceFeature', '+=', null);
       rules.defineRule('saveNotes.elementalResistanceFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor((source - 1) / 5) * 3'
+      );
+      rules.defineRule('saveNotes.indefatigableFeature',
+        'pathLevels.Ironborn', '=',
+         'source < 9 ? null : source < 19 ? "fatigue" : "fatigue/exhaustion"'
       );
 
     } else if(path == 'Jack-Of-All-Trades') {

@@ -481,7 +481,6 @@ MN2EPrestige.prestigeClassRules = function() {
       ];
       hitDie = 10;
       notes = [
-        // TODO No attack penalty if already has DMA feat
         'combatNotes.devastatingMountedAssaultFeature:' +
           'Full attack after mount moves',
         'combatNotes.deftDodgingFeature:' +
@@ -742,8 +741,8 @@ MN2EPrestige.prestigeClassRules = function() {
         '+/{^features.Magecraft} > 0',
         '+/{^features.Spellcasting} != null',
         '+/{^features.Weapon Focus} >= 1',
-        '{skills.Spellcraft} >= 8'
-        // TODO Proficiency
+        '{skills.Spellcraft} >= 8',
+        '{weaponProficiency} == "Martial"'
       ];
       profArmor = PH35.PROFICIENCY_MEDIUM;
       profShield = PH35.PROFICIENCY_HEAVY;
@@ -791,27 +790,23 @@ MN2EPrestige.prestigeClassRules = function() {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        '1:Whisper Sense', '2:Whisper Sense (Initiative)', '3:Fell Touch',
-        '4:Whisper Sense (Surprise)', '5:Tree Meld',
-        '6:Whisper Sense (Clairaudience)', '7:Strength Of The Wood',
-        '8:Whisper Sense (Clairvoyance)', '9:Whisper\'s Ward',
-        '10:Whisper Sense (Commune)'
+        '1:Art Of Magic', '1:Whisper Sense', '2:Whisper Initiative',
+        '3:Fell Touch', '4:Whisper Surprise', '5:Tree Meld',
+        '6:Whisper Clairaudience', '7:Strength Of The Wood',
+        '8:Whisper Clairvoyance', '9:Whisper\'s Ward', '10:Whisper Commune'
       ];
       hitDie = 8;
       notes = [
-        'combatNotes.whisperSense(Initiative)Feature:+2 Initiative',
-        'combatNotes.whisperSense(Surprise)Feature:Cannot be surprised',
+        'combatNotes.whisperInitiativeFeature:+2 Initiative',
+        'combatNotes.whisperSurpriseFeature:Cannot be surprised',
         'featureNotes.whisperSenseFeature:No wisdom check to sense voices',
         'magicNotes.fellTouchFeature:Prevent fallen from becoming Fell/Lost',
         'magicNotes.strengthOfTheWoodFeature:' +
-          'Recover 1 spell energy point/round while inside tree',
+          'Recover 1 spell energy point/hour while inside tree',
         'magicNotes.treeMeldFeature:Merge into tree',
-        'magicNotes.whisperSense(Clairaudience)Feature:' +
-          '<i>Clairaudience</i> w/in wood',
-        'magicNotes.whisperSense(Clairvoyance)Feature:' +
-          '<i>Clairvoyance</i> w/in wood',
-        'magicNotes.whisperSense(Commune)Feature:' +
-          '<i>Commune With Nature</i> w/in wood',
+        'magicNotes.whisperClairaudienceFeature:<i>Clairaudience</i> w/in wood',
+        'magicNotes.whisperClairvoyanceFeature:<i>Clairvoyance</i> w/in wood',
+        'magicNotes.whisperCommuneFeature:<i>Commune With Nature</i> w/in wood',
         'saveNotes.whisper\'sWardFeature:Immune to mind-affecting effects'
       ];
       prerequisites = [
@@ -841,7 +836,7 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsPerDay = null;
       spellsPerDayAbility = null;
       MN2E.defineRule
-        ('initiative', 'combatNotes.whisperSense(Initiative)Feature', '+', '2');
+        ('initiative', 'combatNotes.whisperInitiativeFeature', '+', '2');
       MN2E.defineRule('magicNotes.whisperAdeptSpellEnergy',
         'levels.Whisper Adept', '=', null
       );
@@ -855,17 +850,14 @@ MN2EPrestige.prestigeClassRules = function() {
 
     } else if(klass == 'Wizard') {
 
-      MN2EPrestige.selectableFeatures[klass] =
-        'Spellcasting (Abjuration)/Spellcasting (Conjuration)/' +
-        'Spellcasting (Divination)/Spellcasting (Enchantment)/' +
-        'Spellcasting (Evocation)/Spellcasting (Illusion)/' +
-        'Spellcasting (Necromancy)/Spellcasting (Transmutation)';
       baseAttack = PH35.ATTACK_BONUS_POOR;
       features = [
-        '1:Wizardcraft', '2:Efficient Study'
+        '1:Art Of Magic', '1:Wizardcraft', '2:Efficient Study',
+        '4:Bonus Spellcasting'
       ];
       hitDie = 4;
       notes = [
+        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
         'featureNotes.efficientStudyFeature:' +
           'XP cost for learning spells/creating magic items reduced by %V%',
         'magicNotes.wizardcraftFeature:' +
@@ -902,15 +894,17 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('featureNotes.wizardFeatCountBonus',
         'levels.Wizard', '=', 'Math.floor(source / 3)'
       );
-      MN2E.defineRule
-        ('featCount', 'featureNotes.wizardFeatCountBonus', '+', null);
+      MN2E.defineRule('featCount',
+        'featureNotes.bonusSpellcastingFeature', '+', null,
+        'featureNotes.wizardFeatCountBonus', '+', null
+      );
+      MN2E.defineRule('featureNotes.bonusSpellcastingFeature',
+        'levels.Wizard', '+=', 'source<4 ? null : Math.floor((source - 1) / 3)'
+      );
       MN2E.defineRule
         ('magicNotes.wizardSpellEnergy', 'levels.Wizard', '=', null);
       MN2E.defineRule
         ('magicNotes.wizardSpellsKnown', 'levels.Wizard', '=', null);
-      MN2E.defineRule('selectableFeatureCount.Wizard',
-        'levels.Wizard', '=', 'Math.floor((source - 1) / 3)'
-      );
       MN2E.defineRule('spellEnergy', 'magicNotes.wizardSpellEnergy', '+', null);
       MN2E.defineRule
         ('spellsKnownBonus', 'magicNotes.wizardSpellsKnown', '+', null);
@@ -920,7 +914,7 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2EPrestige.selectableFeatures[klass] =
         'Improved Mounted Archery/Improved Mounted Combat/' +
         'Improved Ride By Attack/Improved Spirited Charge/Improved Trample/' +
-        'Ride By Attack/Trample';
+        'Ride By Attack/Spirited Charge/Trample';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
         '1:Coordinated Attack', '1:Special Mount', '3:Speed Mount',
@@ -932,12 +926,17 @@ MN2EPrestige.prestigeClassRules = function() {
           'Rider/mount +2 attack on same target when other hits',
         'combatNotes.improvedMountedArcheryFeature:' +
           'No ranged attack penalty when mounted/mounted Rapid Shot',
-        'combatNotes.improvedMountedCombatFeature:Mounted Combat %V/round',
+        'combatNotes.improvedMountedCombatFeature:' +
+          'Use Mounted Combat additional %V times/round',
         'combatNotes.improvedRideByAttackFeature:Charge in any direction',
+        'combatNotes.improvedSpiritedChargeFeature:' +
+          'Improved Critical w/charging weapon',
         'combatNotes.improvedTrampleFeature:No foe AOO during overrun',
         'combatNotes.rapidShotFeature:Normal and extra ranged -2 attacks',
         'combatNotes.rideByAttackFeature:Move before and after mounted attack',
         'combatNotes.speedMountFeature:Dis/mount as free action',
+        'combatNotes.spiritedChargeFeature:' +
+          'x2 damage (x3 lance) from mounted charge',
         'combatNotes.trampleFeature:' +
           'Mounted overrun unavoidable/bonus hoof attack',
         'combatNotes.wogrenDodgeFeature:+2 AC during mounted move',
@@ -969,7 +968,7 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsPerDay = null;
       spellsPerDayAbility = null;
       MN2E.defineRule('combatNotes.improvedMountedCombatFeature',
-        'dexterityModifier', '=', null
+        'dexterityModifier', '=', 'source > 0 ? source : 1'
       );
       MN2E.defineRule
         ('features.Blindsense', 'features.Wogren\'s Sight', '=', '1');
