@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.53 2006/12/30 19:12:52 Jim Exp $ */
+/* $Id: LastAge.js,v 1.54 2007/01/01 02:39:51 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -702,7 +702,8 @@ MN2E.classRules = function(rules) {
         'combatNotes.masterHunterFeature:' +
           '+2 or more damage vs. selected creature type(s)',
         'combatNotes.trueAimFeature:x3 damage on Hunter\'s Strike',
-        'featureNotes.animalCompanionFeature:Special bond/abilities',
+        'featureNotes.animalCompanionFeature:' +
+          'Special bond/abilities w/up to %V animals',
         'featureNotes.improvedWoodlandStrideFeature:' +
           'Normal movement through enchanted terrain',
         'featureNotes.overlandStrideFeature:' +
@@ -792,6 +793,9 @@ MN2E.classRules = function(rules) {
       rules.defineRule('combatNotes.initiativeBonusFeature',
         'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
         'selectableFeatures.Initiative Bonus', '+', null
+      );
+      rules.defineRule('featureNotes.animalCompanionFeature',
+        'selectableFeatures.Animal Companion', '+=', null
       );
       rules.defineRule
         ('initiative', 'combatNotes.initiativeBonusFeature', '+', null);
@@ -2152,6 +2156,7 @@ MN2E.magicRules = function(rules) {
       rules.defineChoice('spells', spell);
     }
   }
+  rules.defineRule('casterLevelArcane', 'spellEnergy', '^=', '1');
   rules.defineSheetElement
     ('Spell Energy', 'SpellStats', null, 'Spells Per Day');
   rules.defineSheetElement

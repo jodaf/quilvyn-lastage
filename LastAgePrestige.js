@@ -97,7 +97,7 @@ MN2EPrestige.prestigeClassRules = function() {
           'Detect weapon if separated; if unconscious, weapon fights',
         'magicNotes.ancestralAdvisorFeature:<i>Augury</i> via weapon %V/day',
         'magicNotes.ancestralGuideFeature:' +
-          '<i>Detect Secret Doors</i> via weapon at will',
+          '<i>Detect Secret Doors</i> w/in 10 ft via weapon at will',
         'magicNotes.ancestralProtectorFeature:' +
           'Continuous <i>Protection From Arrows</i> via weapon',
         'magicNotes.ancestralWatcherFeature:Weapon has continuous <i>Alarm</i>'
@@ -140,9 +140,9 @@ MN2EPrestige.prestigeClassRules = function() {
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
         '1:Alter Ego', '1:Mindbond', '2:Spy Initiate', '4:Closed Mind',
-        '5:Quick Change Alter Ego', '5:Spy', '6:Hide In Plain Sight',
+        '5:Quick Alteration', '5:Spy', '6:Hide In Plain Sight',
         '7:Slippery Mind', '8:Undetectable Alignment',
-        '9:Nonmagical Alter Ego', '10:Master Spy'
+        '9:Nonmagical Alteration', '10:Master Spy'
       ];
       hitDie = 6;
       notes = [
@@ -150,9 +150,9 @@ MN2EPrestige.prestigeClassRules = function() {
         'featureNotes.masterSpyFeature:' +
           'Mindbond to all known Master Spies and those in homeland at will',
         'featureNotes.mindbondFeature:Telepathic link to mentor 1/day',
-        'featureNotes.nonmagicalAlterEgoFeature:' +
+        'featureNotes.nonmagicalAlterationFeature:' +
           'Transform to alter ego as a extraordinary ability',
-        'featureNotes.quickChangeAlterEgoFeature:' +
+        'featureNotes.quickAlterationFeature:' +
           'Change to alter ego as a full round action',
         'featureNotes.spyFeature:' +
           '%V% chance of help from d3 Aradil\'s Eyes in dire need',
@@ -257,7 +257,7 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
-      PH35.defineRule('combatNotes.deathAttackFeature',
+      MN2E.defineRule('combatNotes.deathAttackFeature',
         'levels.Avenging Knife', '+=', '10 + source',
         'intelligenceModifier', '+', null
       );
@@ -276,15 +276,15 @@ MN2EPrestige.prestigeClassRules = function() {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        '1:Improved Spellcasting', '1:Resist Izrador\'s Will', '3:See Astirax',
+        '1:Art Of Magic', '1:Resist Izrador\'s Will', '3:See Astirax',
         '4:Counter Izrador\'s Will', '5:Bonus Spellcasting', '6:Bind Astirax',
         '8:Conceal Magic', '10:Sundered Spirit'
       ];
       hitDie = 6;
       notes = [
         'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
-        'featureNotes.seeAstirax:See astirax as shadowy form',
-          'Reduce energy cost of spells from %V chosen schools by 1',
+        'featureNotes.seeAstiraxFeature:See astirax as shadowy form',
+        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
         'magicNotes.bindAstiraxFeature:' +
           'Astirax w/in 60 ft Will save or bound to current form for %V hours',
         'magicNotes.concealMagicFeature:' +
@@ -293,8 +293,6 @@ MN2EPrestige.prestigeClassRules = function() {
           'Radiates <i>Antimagic Field</i> for divine magic',
         'magicNotes.counterIzrador\'sWillFeature:' +
           '<i>Dispel Magic</i> vs. legates',
-        'magicNotes.improvedSpellcastingFeature:' +
-          'Reduce energy cost of spells from %V chosen schools by 1',
         'saveNotes.resistIzrador\'sWillFeature:+10 vs. legate magic'
       ];
       prerequisites = [
@@ -351,20 +349,22 @@ MN2EPrestige.prestigeClassRules = function() {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        '1:Mastery Of Nature', '1:Animal Companion', '2:Druidcraft',
-        '2:Nature Sense', '3:Commune With Nature', '5:Find The Way',
-        '8:Venom Immunity'
+        '1:Art Of Magic', '1:Mastery Of Nature', '1:Animal Companion',
+        '2:Druidcraft', '2:Nature Sense', '3:Commune With Nature',
+        '5:Find The Way', '8:Venom Immunity'
       ];
       hitDie = 8;
       notes = [
         'combatNotes.masteryOfNatureFeature:Turn animals/plants as cleric',
-        'featureNotes.animalCompanionFeature:Special bond/abilities',
+        'featureNotes.animalCompanionFeature:' +
+          'Special bond/abilities w/up to %V animals',
+        'featureNotes.findTheWayFeature:%V',
+        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
         'magicNotes.communeWithNatureFeature:<i>Commune With Nature</i> %V/day',
         'magicNotes.druidcraftFeature:Energy cost of Druid spells reduced by 1',
-        'saveNotes.venomImmunityFeature:Immune to poisons',
+        'saveNotes.venomImmunityFeature:Immune to organic poisons',
         'skillNotes.natureSenseFeature:' +
           'Identify animals/plants/unsafe food/drink'
-        // TODO: Find The Way: Woodland Stride, Trackless Step, Pass w/out Trace
       ];
       prerequisites = [
         '{features.Magecraft (Spiritual)} != null',
@@ -389,6 +389,14 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule('featureNotes.findTheWayFeature',
+        '', '=', '"Normal movement through undergrowth"',
+        'features.Woodland Stride', '=', '"Untrackable outdoors"',
+        'features.Trackless Step', '=', '"Continuous <i>Pass Without Trace</i>"'
+      );
+      MN2E.defineRule('featureNotes.animalCompanionFeature',
+        'levels.Druid', '+=', 'Math.floor((source + 2) / 3)'
+      );
       MN2E.defineRule('magicNotes.communeWithNatureFeature',
         'levels.Druid', '=', 'Math.floor(source / 3)'
       );
@@ -397,6 +405,8 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('spellEnergy', 'magicNotes.druidSpellEnergy', '+', null);
       MN2E.defineRule
         ('spellsKnownBonus', 'magicNotes.druidSpellsKnown', '+', null);
+      // TODO Half character level if non-channeler
+      MN2E.defineRule('turningLevel', 'levels.Druid', '+=', null);
 
     } else if(klass == 'Elven Raider') {
 
@@ -408,7 +418,7 @@ MN2EPrestige.prestigeClassRules = function() {
       ];
       hitDie = 8;
       notes = [
-        'combatNotes.closeCombatArchery:' +
+        'combatNotes.closeCombatArcheryFeature:' +
           'Use bow w/out foe AOO; use arrows as light weapons',
         'combatNotes.disarmingShotFeature:' +
           'Ranged touch attack to attempt disarm',
@@ -417,8 +427,8 @@ MN2EPrestige.prestigeClassRules = function() {
         'combatNotes.intimidatingShotFeature:' +
           'Intimidate check after attack w/bonus of 1/2 damage',
         'combatNotes.leafReaderFeature:' +
-          'Spot check to eliminate vegetation concealment',
-        'combatNotes.meticulousFeature:' +
+          'DC 10 Spot check to eliminate vegetation concealment',
+        'combatNotes.meticulousAimFeature:' +
           '+1 critical range for every 2 rounds aiming; +%V max',
         'combatNotes.rangedSneakAttackFeature:' +
           '%Vd6 extra damage when surprising or flanking w/in 30 ft'
@@ -452,7 +462,7 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('combatNotes.improvedSneakAttackFeature',
         'levels.Elven Raider', '+=', '30 + Math.floor((source + 1) / 3) * 15'
       );
-      MN2E.defineRule('combatNotes.meticulousFeature',
+      MN2E.defineRule('combatNotes.meticulousAimFeature',
         'levels.Elven Raider', '+=', 'Math.floor(source / 2)'
       );
       MN2E.defineRule('combatNotes.rangedSneakAttackFeature',
@@ -474,12 +484,22 @@ MN2EPrestige.prestigeClassRules = function() {
         // TODO No attack penalty if already has DMA feat
         'combatNotes.devastatingMountedAssaultFeature:' +
           'Full attack after mount moves',
+        'combatNotes.deftDodgingFeature:' +
+          '+4 self/mount AC on full round mounted move',
+        'combatNotes.dismountingCutFeature:' +
+          'Trip attack w/weapon to dismount opponent',
+        'combatNotes.erraticAttackFeature:' +
+          '+2 self/mount AC when either attacks',
+        'combatNotes.hitAndRunFeature:' +
+          'Move away from foe after attack w/out foe AOO',
         'combatNotes.sweepingStrikeFeature:' +
           'Attack all threatened foes during mount\'s move',
+        'combatNotes.wheelAboutFeature:' +
+          'May make 90 degree turn during mounted charge',
         'featureNotes.specialMountFeature:Special bond/abilities',
         'featureNotes.spurOnFeature:' +
           'Double mount speed during charge/double move',
-        'skillNotes.horseLord:+1 Handle Animal (horse)/Ride (horse)'
+        'skillNotes.horseLordFeature:+1 Handle Animal (horse)/Ride (horseback)'
       ];
       prerequisites = [
         '{baseAttack} >= 6',
@@ -519,13 +539,13 @@ MN2EPrestige.prestigeClassRules = function() {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        '1:Seance', '2:Spiritcraft', '2:Spirit Manipulation', '3:Ghost Sight',
-        '5:Spell Focus (Divination)', '9:Spell Focus (Necromancy)'
+        '1:Art Of Magic', '1:Seance', '2:Spiritcraft', '2:Spirit Manipulation',
+        '3:Ghost Sight', '5:Spell Focus (Divination)',
+        '9:Spell Focus (Necromancy)'
       ];
       hitDie = 6;
       notes = [
-        'magicNotes.ghostSightFeature:' +
-          'See invisible/incorporeal creates at will',
+        'magicNotes.ghostSightFeature:<i>See Invisible</i> at will',
         'magicNotes.seanceFeature:' +
           '<i>Augury</i>/<i>Legend Lore</i> via spirits %V/day',
         'magicNotes.spellFocus(Divination)Feature:+1 DC on Divination spells',
@@ -579,16 +599,16 @@ MN2EPrestige.prestigeClassRules = function() {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
-        '1:Conceal Magic', '1:Shadow Contacts', '2:Shadow Speak',
+        '1:Conceal Aura', '1:Shadow Contacts', '2:Shadow Speak',
         '3:Sneak Attack'
       ];
       hitDie = 6;
       notes = [
         'combatNotes.sneakAttackFeature:' +
           '%Vd6 extra damage when surprising or flanking',
-        'featureNotes.concealMagicFeature:Conceal %V magical auras',
+        'featureNotes.concealAuraFeature:Conceal %V magical auras',
         'skillNotes.shadowContactsFeature:' +
-          'Gather Information to obtain favor from Shadow minion',
+          'Gather Information to obtain %V favor from Shadow minion',
         'skillNotes.shadowSpeakFeature:' +
           '+%V Bluff/Diplomacy/Intimidate/Sense Motive w/Shadow minions'
       ];
@@ -624,7 +644,11 @@ MN2EPrestige.prestigeClassRules = function() {
         'levels.Insurgent Spy', '+=', 'Math.floor((source - 1) / 2)'
       );
       MN2E.defineRule
-        ('featureNotes.concealMagicFeature', 'levels.Insurgent Spy', '=', null);
+        ('featureNotes.concealAuraFeature', 'levels.Insurgent Spy', '=', null);
+      MN2E.defineRule('skillNotes.shadowContactsFeature',
+        'levels.Insurgent Spy', '=',
+        'source >= 5 ? "incredible" : source >= 3 ? "major" : "minor"'
+      );
       MN2E.defineRule('skillNotes.shadowSpeakFeature',
         'levels.Insurgent Spy', '=', 'Math.floor(source / 2)'
       );
@@ -641,15 +665,15 @@ MN2EPrestige.prestigeClassRules = function() {
         'magicNotes.disguiseContrabandFeature:' +
           '<i>Misdirection</i> on 1 cu ft/level of contraband 1 hour/level',
         // TODO Mystifying speech 2/day @ level 7
-        'magicNotes.mystifyingSpeechFeature:DC %V <i>Modify Memory</i> 1/day',
+        'magicNotes.mystifyingSpeechFeature:<i>Modify Memory</i> DC %V 1/day',
         'saveNotes.dominantWillFeature:' +
           '+%V Will vs. detection/compulsion spells to reveal activities',
         'saveNotes.slipperyMindFeature:Second save vs. enchantment',
         'skillNotes.informationNetworkFeature:' +
           'One hour to take %V on Gather Information in new locale',
         'skillNotes.smuggler\'sTradeFeature:' +
-          '+%V or take 10 on Bluff/Disguise/Forgery/Gather Information ' +
-          'when smuggling'
+          '+%V/take 10 on Bluff/Disguise/Forgery/Gather Information when ' +
+          'smuggling'
       ];
       prerequisites = [
         '{features.Friendly Agent} != null',
@@ -696,18 +720,18 @@ MN2EPrestige.prestigeClassRules = function() {
 
       baseAttack = PH35.ATTACK_BONUS_GOOD;
       features = [
-        '1:Armored Casting', '1:Channeled Combat (Attack)',
-        '4:Channeled Combat (Armor Class)', '6:Melee Caster',
-        '8:Channeled Combat (Damage)', '10:Regenerative Strike'
+        '1:Art Of Magic', '1:Armored Casting', '1:Channeled Attack',
+        '4:Channeled Armor Class', '6:Melee Caster', '8:Channeled Damage',
+        '10:Regenerative Strike'
       ];
       hitDie = 8;
       notes = [
         'magicNotes.armoredCastingFeature:Reduce arcane casting penalty by %V%',
-        'magicNotes.channeledCombat(Armor Class)Feature:' +
+        'magicNotes.channeledArmorClassFeature:' +
           'Use 1 spell energy point to gain +%V AC for 1 round',
-        'magicNotes.channeledCombat(Attack)Feature:' +
+        'magicNotes.channeledAttackFeature:' +
           'Use 1 spell energy point to gain +%V attack for 1 round',
-        'magicNotes.channeledCombat(Damage)Feature:' +
+        'magicNotes.channeledDamageFeature:' +
           'Use 1 spell energy point to gain +%V damage for 1 round',
         'magicNotes.meleeCasterFeature:Deliver spell via weapon',
         'magicNotes.regenerativeStrikeFeature:' +
@@ -742,17 +766,17 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('magicNotes.armoredCastingFeature',
         'levels.Warrior Arcanist', '=', 'Math.floor((source + 1) / 2) * 5'
       );
-      MN2E.defineRule('magicNotes.channeledCombat(Armor Class)Feature',
-        'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
+      MN2E.defineRule('magicNotes.channeledArmorClassFeature',
+        'level', '=', 'Math.floor(source / 2)'
       );
-      MN2E.defineRule('magicNotes.channeledCombat(Attack)Feature',
-        'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
+      MN2E.defineRule('magicNotes.channeledAttackFeature',
+        'level', '=', 'Math.floor(source / 2)'
       );
-      MN2E.defineRule('magicNotes.channeledCombat(Damage)Feature',
-        'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
+      MN2E.defineRule('magicNotes.channeledDamageFeature',
+        'level', '=', 'Math.floor(source / 2)'
       );
       MN2E.defineRule('magicNotes.warriorArcanistSpellEnergy',
-        'levels.WarriorArcanist', '=', 'Math.floor(source / 2)'
+        'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
       );
       MN2E.defineRule('magicNotes.warriorArcanistSpellsKnown',
         'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
