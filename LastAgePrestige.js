@@ -389,6 +389,12 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule('druidTurningLevel',
+        'levels.Druid', '+=', 'source / 2',
+        'levels.Charismatic Channeler', '*', '2'
+        'levels.Hermetic Channeler', '*', '2'
+        'levels.Spiritual Channeler', '*', '2'
+      );
       MN2E.defineRule('featureNotes.findTheWayFeature',
         '', '=', '"Normal movement through undergrowth"',
         'features.Woodland Stride', '=', '"Untrackable outdoors"',
@@ -405,8 +411,7 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('spellEnergy', 'magicNotes.druidSpellEnergy', '+', null);
       MN2E.defineRule
         ('spellsKnownBonus', 'magicNotes.druidSpellsKnown', '+', null);
-      // TODO Half character level if non-channeler
-      MN2E.defineRule('turningLevel', 'levels.Druid', '+=', null);
+      MN2E.defineRule('turningLevel', 'druidTurningLevel', '+=', null);
 
     } else if(klass == 'Elven Raider') {
 
@@ -663,8 +668,7 @@ MN2EPrestige.prestigeClassRules = function() {
       notes = [
         'magicNotes.disguiseContrabandFeature:' +
           '<i>Misdirection</i> on 1 cu ft/level of contraband 1 hour/level',
-        // TODO Mystifying speech 2/day @ level 7
-        'magicNotes.mystifyingSpeechFeature:<i>Modify Memory</i> DC %V 1/day',
+        'magicNotes.mystifyingSpeechFeature:DC %V <i>Modify Memory</i>',
         'saveNotes.dominantWillFeature:' +
           '+%V Will vs. detection/compulsion spells to reveal activities',
         'saveNotes.slipperyMindFeature:Second save vs. enchantment',
@@ -701,6 +705,7 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      // TODO 1/day < level 7; 2/day >= 7
       MN2E.defineRule('magicNotes.mystifyingSpeechFeature',
         'levels.Smuggler', '=', '10 + source',
         'charismaModifier', '+', null

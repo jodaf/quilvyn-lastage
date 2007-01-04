@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.55 2007/01/01 17:15:56 Jim Exp $ */
+/* $Id: LastAge.js,v 1.56 2007/01/04 16:43:28 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -1709,7 +1709,7 @@ MN2E.heroicPathRules = function(rules) {
         'pathLevels.Painless', '+=',
         'source >= 20 ? 25 : source >= 15 ? 20 : 15'
       );
-      // TODO Twice/day at level 19
+      // TODO 1/day < level 19; 2/day >= 19
       rules.defineRule('combatNotes.lastStandFeature',
         'pathLevels.Painless', '+=', '10 + source'
       );
