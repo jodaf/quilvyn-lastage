@@ -132,19 +132,14 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('magicNotes.ancestralAdvisorFeature',
         'charismaModifier', '=', 'source > 1 ? source : 1'
       );
-      MN2E.defineRule
-        ('numberOfWeaponFocusFeats', /^features\.Weapon Focus/, '+=', '1');
-      MN2E.defineRule('numberOfWeaponSpecializationFeats',
-        /^features\.Weapon Specialization/, '+=', '1'
-      );
       MN2E.defineRule('validationNotes.ancestralBladebearerCombat',
-        'levels.Ancestral Bladebearer', '=', '1',
-        'baseAttack', '+', 'source > 6 ? -1 : null'
+        'levels.Ancestral Bladebearer', '=', '-1',
+        'baseAttack', '+', 'source > 6 ? 1 : null'
       );
       MN2E.defineRule('validationNotes.ancestralBladebearerFeatures',
-        'levels.Ancestral Bladebearer', '=', '2',
-        'numberOfWeaponFocusFeats', '+', 'source >= 1 ? -1 : null',
-        'numberOfWeaponSpecializationFeats', '+', 'source >= 1 ? -1 : null'
+        'levels.Ancestral Bladebearer', '=', '-2',
+        'subfeatCount.Weapon Focus', '+', 'source >= 1 ? 1 : null',
+        'subfeatCount.Weapon Specialization', '+', 'source >= 1 ? 1 : null'
       );
 
     } else if(klass == 'Aradil\'s Eye') {
@@ -208,22 +203,22 @@ MN2EPrestige.prestigeClassRules = function() {
         'levels.Aradil\'s Eye', '=', 'source >= 10 ? 10 : source >= 5 ? 8 : 4'
       );
       MN2E.defineRule('validationNotes.aradil\'sEyeFeatures',
-        'levels.Aradil\'s Eye', '=', '1',
-        'features.Inconspicuous', '+', '-1'
+        'levels.Aradil\'s Eye', '=', '-1',
+        'features.Inconspicuous', '+', '1'
       );
       MN2E.defineRule('validationNotes.aradil\'sEyeRace',
-        'levels.Aradil\'s Eye', '=', '1',
-        'race', '+', 'source == "Wood Elf" ? -1 : null'
+        'levels.Aradil\'s Eye', '=', '-1',
+        'race', '+', 'source == "Wood Elf" ? 1 : null'
       );
       MN2E.defineRule('validationNotes.aradil\'sEyeSkills',
-        'levels.Aradil\'s Eye', '=', '7',
-        'skills.Bluff', '+', 'source >= 8 ? -1 : null',
-        'skills.Disguise', '+', 'source >= 5 ? -1 : null',
-        'skills.Gather Informaiton', '+', 'source >= 8 ? -1 : null',
-        'skills.Hide', '+', 'source >= 8 ? -1 : null',
-        'skills.Move Silently', '+', 'source >= 5 ? -1 : null',
-        'skills.Sense Motive', '+', 'source >= 5 ? -1 : null',
-        'skills.Spot', '+', 'source >= 5 ? -1 : null'
+        'levels.Aradil\'s Eye', '=', '-7',
+        'skills.Bluff', '+', 'source >= 8 ? 1 : null',
+        'skills.Disguise', '+', 'source >= 5 ? 1 : null',
+        'skills.Gather Informaiton', '+', 'source >= 8 ? 1 : null',
+        'skills.Hide', '+', 'source >= 8 ? 1 : null',
+        'skills.Move Silently', '+', 'source >= 5 ? 1 : null',
+        'skills.Sense Motive', '+', 'source >= 5 ? 1 : null',
+        'skills.Spot', '+', 'source >= 5 ? 1 : null'
       );
 
     } else if(klass == 'Avenging Knife') {
@@ -290,21 +285,21 @@ MN2EPrestige.prestigeClassRules = function() {
         'levels.Avenging Knife', '=', 'Math.floor((source + 2) / 3)'
       );
       MN2E.defineRule('validationNotes.avengingKnifeAlignment',
-        'levels.Avenging Knife', '=', '1',
-        'alignment', '+', '!source.match(/Evil/) ? -1 : null'
+        'levels.Avenging Knife', '=', '-1',
+        'alignment', '+', '!source.match(/Evil/) ? 1 : null'
       );
       MN2E.defineRule('validationNotes.avengingKnifeFeatures',
-        'levels.Avenging Knife', '=', '3',
-        'features.Improved Initiative', '+', '-1',
-        'features.Inconspicuous', '+', '-1',
-        'features.Sneak Attack', '+', '-1'
+        'levels.Avenging Knife', '=', '-3',
+        'features.Improved Initiative', '+', '1',
+        'features.Inconspicuous', '+', '1',
+        'features.Sneak Attack', '+', '1'
       );
       MN2E.defineRule('validationNotes.avengingKnifeSkills',
-        'levels.Avenging Knife', '=', '4',
-        'skills.Bluff', '+', 'source >= 5 ? -1 : null',
-        'skills.Gather Information', '+', 'source >= 5 ? -1 : null',
-        'skills.Hide', '+', 'source >= 8 ? -1 : null',
-        'skills.Move Silently', '+', 'source >= 8 ? -1 : null'
+        'levels.Avenging Knife', '=', '-4',
+        'skills.Bluff', '+', 'source >= 5 ? 1 : null',
+        'skills.Gather Information', '+', 'source >= 5 ? 1 : null',
+        'skills.Hide', '+', 'source >= 8 ? 1 : null',
+        'skills.Move Silently', '+', 'source >= 8 ? 1 : null'
       );
 
     } else if(klass == 'Bane Of Legates') {
@@ -376,19 +371,19 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule
         ('spellsKnownBonus', 'magicNotes.baneOfLegatesSpellsKnown', '+', null);
       MN2E.defineRule('validationNotes.baneOfLegatesFeatures',
-        'levels.Bane Of Legates', '=', '2',
-        'features.Iron Will', '+', '-1',
-        'numberOfMagecraftFeats', '+', 'source >= 1 ? -1 : null'
+        'levels.Bane Of Legates', '=', '-2',
+        'features.Iron Will', '+', '1',
+        'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null'
       );
       MN2E.defineRule('validationNotes.baneOfLegatesMagic',
-        'levels.Bane Of Legates', '=', '1',
-        'spellEnergy', '+', 'source >= 10 ? -1 : null'
+        'levels.Bane Of Legates', '=', '-1',
+        'spellEnergy', '+', 'source >= 10 ? 1 : null'
       );
       MN2E.defineRule('validationNotes.baneOfLegatesSkills',
-        'levels.Bane Of Legates', '=', '3',
-        'skills.Knowledge (Arcana)', '+', 'source >= 13 ? -1 : null',
-        'skills.Knowledge (Shadow)', '+', 'source >= 8 ? -1 : null',
-        'skills.Spellcraft', '+', 'source >= 10 ? -1 : null'
+        'levels.Bane Of Legates', '=', '-3',
+        'skills.Knowledge (Arcana)', '+', 'source >= 13 ? 1 : null',
+        'skills.Knowledge (Shadow)', '+', 'source >= 8 ? 1 : null',
+        'skills.Spellcraft', '+', 'source >= 10 ? 1 : null'
       );
 
     } else if(klass == 'Druid') {
@@ -455,16 +450,16 @@ MN2EPrestige.prestigeClassRules = function() {
         ('spellsKnownBonus', 'magicNotes.druidSpellsKnown', '+', null);
       MN2E.defineRule('turningLevel', 'druidTurningLevel', '+=', null);
       MN2E.defineRule('validationNotes.druidFeatures',
-        'levels.Druid', '=', '4',
-        'features.Magecraft (Spiritual)', '+', '-1',
-        'features.Mastery Of Nature', '+', '-1',
-        'features.Wild Empathy', '+', '-1',
-        'numberOfSpellcastingFeats', '+', 'source >= 1 ? -1 : null'
+        'levels.Druid', '=', '-4',
+        'features.Magecraft (Spiritual)', '+', '1',
+        'features.Mastery Of Nature', '+', '1',
+        'features.Wild Empathy', '+', '1',
+        'subfeatCount.Spellcasting', '+', 'source >= 1 ? 1 : null'
       );
       MN2E.defineRule('validationNotes.druidSkills',
-        'levels.Druid', '=', '2',
-        'skills.Knowledge (Nature)', '+', 'source >= 8 ? -1 : null',
-        'skills.Survival', '+', 'source >= 8 ? -1 : null'
+        'levels.Druid', '=', '-2',
+        'skills.Knowledge (Nature)', '+', 'source >= 8 ? 1 : null',
+        'skills.Survival', '+', 'source >= 8 ? 1 : null'
       );
 
     } else if(klass == 'Elven Raider') {
@@ -524,26 +519,26 @@ MN2EPrestige.prestigeClassRules = function() {
         'combatNotes.sneakAttackFeature', '+', null
       );
       MN2E.defineRule('validationNotes.elvenRaiderCombat',
-        'levels.Elven Raider', '=', '1',
-        'baseAttack', '+', 'source >= 5 ? -1 : null'
+        'levels.Elven Raider', '=', '-1',
+        'baseAttack', '+', 'source >= 5 ? 1 : null'
       );
       MN2E.defineRule('validationNotes.elvenRaiderFeatures',
-        'levels.Elven Raider', '=', '3',
-        'features.Point Blank Shot', '+', '-1',
-        'features.Rapid Shot', '+', '-1',
-        // TODO: Bug if has both Weapon Focus (Longbow) & (Composite Longbow)
-        'features.Weapon Focus (Composite Longbow)', '+', '-1',
-        'features.Weapon Focus (Longbow)', '+', '-1'
+        'levels.Elven Raider', '=', '-3',
+        'features.Point Blank Shot', '+', '1',
+        'features.Rapid Shot', '+', '1',
+        'features.Weapon Focus (Composite Longbow)', '+', '1',
+        'features.Weapon Focus (Longbow)', '+', '1',
+        '', 'v', '0'
       );
       MN2E.defineRule('validationNotes.elvenRaiderRace',
-        'levels.Elven Raider', '=', '1',
-        'race', '+', 'source.match(/Elf$/) ? -1 : null'
+        'levels.Elven Raider', '=', '-1',
+        'race', '+', 'source.match(/Elf$/) ? 1 : null'
       );
       MN2E.defineRule('validationNotes.elvenRaiderSkills',
-        'levels.Elven Raider', '=', '3',
-        'skills.Hide', '+', 'source >= 8 ? -1 : null',
-        'skills.Move Silently', '+', 'source >= 8 ? -1 : null',
-        'skills.Survival', '+', 'source >= 8 ? -1 : null'
+        'levels.Elven Raider', '=', '-3',
+        'skills.Hide', '+', 'source >= 8 ? 1 : null',
+        'skills.Move Silently', '+', 'source >= 8 ? 1 : null',
+        'skills.Survival', '+', 'source >= 8 ? 1 : null'
       );
 
     } else if(klass == 'Freerider') {
@@ -606,24 +601,24 @@ MN2EPrestige.prestigeClassRules = function() {
         'levels.Freerider', '=', 'Math.floor((source + 1) / 3)'
       );
       MN2E.defineRule('validationNotes.freeriderCombat',
-        'levels.Freerider', '=', '1',
-        'baseAttack', '+', 'source >= 6 ? -1 : null'
+        'levels.Freerider', '=', '-1',
+        'baseAttack', '+', 'source >= 6 ? 1 : null'
       );
       MN2E.defineRule('validationNotes.freeriderFeatures',
-        'levels.Freerider', '=', '3',
-        'features.Mounted Combat', '+', '-1',
-        'features.Ride By Attack', '+', '-1',
-        'features.Spirited Charge', '+', '-1'
+        'levels.Freerider', '=', '-3',
+        'features.Mounted Combat', '+', '1',
+        'features.Ride By Attack', '+', '1',
+        'features.Spirited Charge', '+', '1'
       );
       MN2E.defineRule('validationNotes.freeriderRace',
-        'levels.Freerider', '=', '1',
-        'race', '+', 'source.match(/Erenlander|Sarcosan/) ? -1 : null'
+        'levels.Freerider', '=', '-1',
+        'race', '+', 'source.match(/Erenlander|Sarcosan/) ? 1 : null'
       );
       MN2E.defineRule('validationNotes.freeriderSkills',
-        'levels.Freerider', '=', '3',
-        'skills.Handle Animal', '+', 'source >= 4 ? -1 : null',
-        'skills.Ride', '+', 'source >= 8 ? -1 : null',
-        'skills.Survival', '+', 'source >= 4 ? -1 : null'
+        'levels.Freerider', '=', '-3',
+        'skills.Handle Animal', '+', 'source >= 4 ? 1 : null',
+        'skills.Ride', '+', 'source >= 8 ? 1 : null',
+        'skills.Survival', '+', 'source >= 4 ? 1 : null'
       );
 
     } else if(klass == 'Haunted One') {
@@ -691,15 +686,15 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule
         ('spellsKnownBonus', 'magicNotes.hauntedOneSpellsKnown', '+', null);
       MN2E.defineRule('validationNotes.hauntedOneFeatures',
-        'levels.Haunted One', '=', '3',
-        'features.Spellcasting (Divination)', '+', '-1',
-        'features.Spellcasting (Necromancy)', '+', '-1',
-        'numberOfMagecraftFeats', '+', 'source >= 1 ? -1 : null'
+        'levels.Haunted One', '=', '-3',
+        'features.Spellcasting (Divination)', '+', '1',
+        'features.Spellcasting (Necromancy)', '+', '1',
+        'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null'
       );
       MN2E.defineRule('validationNotes.hauntedOneSkills',
-        'levels.Haunted One', '=', '2',
-        'skills.Knowledge (Arcana)', '+', 'source >= 8 ? -1 : null',
-        'skills.Knowledge (Spirits)', '+', 'source >= 10 ? -1 : null'
+        'levels.Haunted One', '=', '-2',
+        'skills.Knowledge (Arcana)', '+', 'source >= 8 ? 1 : null',
+        'skills.Knowledge (Spirits)', '+', 'source >= 10 ? 1 : null'
       );
 
     } else if(klass == 'Insurgent Spy') {
@@ -756,15 +751,15 @@ MN2EPrestige.prestigeClassRules = function() {
         'levels.Insurgent Spy', '=', 'Math.floor(source / 2)'
       );
       MN2E.defineRule('validationNotes.insurgentSpyFeatures',
-        'levels.Insurgent Spy', '=', '1',
-        'features.Inconspicuous', '+', '-1'
+        'levels.Insurgent Spy', '=', '-1',
+        'features.Inconspicuous', '+', '1'
       );
       MN2E.defineRule('validationNotes.insurgentSpySkills',
-        'levels.Insurgent Spy', '=', '4',
-        'skills.Bluff', '+', 'source >= 8 ? -1 : null',
-        'skills.Diplomacy', '+', 'source >= 5 ? -1 : null',
-        'skills.Gather Information', '+', 'source >= 8 ? -1 : null',
-        'skills.Sense Motive', '+', 'source >= 5 ? -1 : null'
+        'levels.Insurgent Spy', '=', '-4',
+        'skills.Bluff', '+', 'source >= 8 ? 1 : null',
+        'skills.Diplomacy', '+', 'source >= 5 ? 1 : null',
+        'skills.Gather Information', '+', 'source >= 8 ? 1 : null',
+        'skills.Sense Motive', '+', 'source >= 5 ? 1 : null'
       );
 
     } else if(klass == 'Smuggler') {
@@ -826,15 +821,15 @@ MN2EPrestige.prestigeClassRules = function() {
         'levels.Smuggler', '=', 'Math.floor((source + 1) / 2) * 2'
       );
       MN2E.defineRule('validationNotes.smugglerFeatures',
-        'levels.Smuggler', '=', '1',
-        'features.Friendly Agent', '+', '-1'
+        'levels.Smuggler', '=', '-1',
+        'features.Friendly Agent', '+', '1'
       );
       MN2E.defineRule('validationNotes.smugglerSkills',
-        'levels.Smuggler', '=', '4',
-        'skills.Bluff', '+', 'source >= 8 ? -1 : null',
-        'skills.Forgery', '+', 'source >= 5 ? -1 : null',
-        'skills.Gather Information', '+', 'source >= 8 ? -1 : null',
-        'skills.Hide', '+', 'source >= 5 ? -1 : null'
+        'levels.Smuggler', '=', '-4',
+        'skills.Bluff', '+', 'source >= 8 ? 1 : null',
+        'skills.Forgery', '+', 'source >= 5 ? 1 : null',
+        'skills.Gather Information', '+', 'source >= 8 ? 1 : null',
+        'skills.Hide', '+', 'source >= 5 ? 1 : null'
       );
 
     } else if(klass == 'Warrior Arcanist') {
@@ -900,26 +895,25 @@ MN2EPrestige.prestigeClassRules = function() {
         'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
       );
       MN2E.defineRule
-        ('numberOfWeaponFocusFeats', /^features\.Weapon Focus/, '+=', '1');
-      MN2E.defineRule
         ('spellEnergy', 'magicNotes.warriorArcanistSpellEnergy', '+', null);
       MN2E.defineRule('spellsKnownBonus',
         'magicNotes.warriorArcanistSpellsKnown', '+', null
       );
       MN2E.defineRule('validationNotes.warriorAranistCombat',
-        'levels.Warrior Arcanist', '=', '2',
-        'baseAttack', '+', 'source >= 4 ? -1 : null',
-        'weaponProficiency', '+', 'source == "Martial" ? -1 : null'
+        'levels.Warrior Arcanist', '=', '-2',
+        'baseAttack', '+', 'source >= 4 ? 1 : null',
+        'weaponProficiencyLevel', '+',
+          'source >= ' + PH35.PROFICIENCY_MEDIUM + ' ? 1 : null'
       );
       MN2E.defineRule('validationNotes.warriorAranistFeatures',
-        'levels.Warrior Arcanist', '=', '3',
-        'numberOfMagecraftFeats', '+', 'source >= 1 ? -1 : null',
-        'numberOfSpellcastingFeats', '+', 'source >= 1 ? -1 : null',
-        'numberOfWeaponFocusFeats', '+', 'source >= 1 ? -1 : null'
+        'levels.Warrior Arcanist', '=', '-3',
+        'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null',
+        'subfeatCount.Spellcasting', '+', 'source >= 1 ? 1 : null',
+        'subfeatCount.Weapon Focus', '+', 'source >= 1 ? 1 : null'
       );
       MN2E.defineRule('validationNotes.warriorAranistSkills',
-        'levels.Warrior Arcanist', '=', '1',
-        'skills.Spellcraft', '+', 'source >= 8 ? -1 : null'
+        'levels.Warrior Arcanist', '=', '-1',
+        'skills.Spellcraft', '+', 'source >= 8 ? 1 : null'
       );
 
     } else if(klass == 'Whisper Adept') {
@@ -980,19 +974,19 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule
         ('spellsKnownBonus', 'magicNotes.whisperAdeptSpellsKnown', '+', null);
       MN2E.defineRule('validationNotes.whisperAdeptFeatures',
-        'levels.Whisper Adept', '=', '2',
-        'numberOfMagecraftFeats', '+', 'source >= 1 ? -1 : null',
-        'numberOfSpellcraftFeats', '+', 'source >= 2 ? -1 : null'
+        'levels.Whisper Adept', '=', '-2',
+        'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null',
+        'subfeatCount.Spellcraft', '+', 'source >= 2 ? 1 : null'
       );
       MN2E.defineRule('validationNotes.whisperAdeptRace',
-        'levels.Whisper Adept', '=', '1',
-        'race', '+', 'source.match(/Elf$/) ? -1 : null'
+        'levels.Whisper Adept', '=', '-1',
+        'race', '+', 'source.match(/Elf$/) ? 1 : null'
       );
       MN2E.defineRule('validationNotes.whisperAdeptSkills',
-        'levels.Whisper Adept', '=', '3',
-        'skills.Knowledge (Nature)', '+', 'source >= 8 ? -1 : null',
-        'skills.Knowledge (Spirits)', '+', 'source >= 10 ? -1 : null',
-        'skills.Survival', '+', 'source >= 8 ? -1 : null'
+        'levels.Whisper Adept', '=', '-3',
+        'skills.Knowledge (Nature)', '+', 'source >= 8 ? 1 : null',
+        'skills.Knowledge (Spirits)', '+', 'source >= 10 ? 1 : null',
+        'skills.Survival', '+', 'source >= 8 ? 1 : null'
       );
 
     } else if(klass == 'Wizard') {
@@ -1054,15 +1048,15 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule
         ('spellsKnownBonus', 'magicNotes.wizardSpellsKnown', '+', null);
       MN2E.defineRule('validationNotes.wizardFeatures',
-        'levels.Wizard', '=', '2',
-        'features.Magecraft (Hermetic)', '+', '-1',
-        'numberOfSpellcastingFeatures', '+', 'source >= 2 ? -1 : null'
+        'levels.Wizard', '=', '-2',
+        'features.Magecraft (Hermetic)', '+', '1',
+        'subfeatCount.Spellcasting', '+', 'source >= 2 ? 1 : null'
         // TODO 1 item creation/1 metamagic
       );
       MN2E.defineRule('validationNotes.wizardSkills',
-        'levels.Wizard', '=', '2',
-        'skills.Knowledge (Arcana)', '+', 'source >= 10 ? -1 : null',
-        'skills.Spellcraft', '+', 'source >= 10 ? -1 : null'
+        'levels.Wizard', '=', '-2',
+        'skills.Knowledge (Arcana)', '+', 'source >= 10 ? 1 : null',
+        'skills.Spellcraft', '+', 'source >= 10 ? 1 : null'
       );
 
     } else if(klass == 'Wogren Rider') {
@@ -1131,18 +1125,18 @@ MN2EPrestige.prestigeClassRules = function() {
         'levels.Wogren Rider', '=', 'Math.floor(source / 2)'
       );
       MN2E.defineRule('validationNotes.wogrenRiderFeatures',
-        'levels.Wogren Rider', '=', '2',
-        'features.Mounted Archery', '+', '-1',
-        'features.Mounted Combat', '+', '-1'
+        'levels.Wogren Rider', '=', '-2',
+        'features.Mounted Archery', '+', '1',
+        'features.Mounted Combat', '+', '1'
       );
       MN2E.defineRule('validationNotes.wogrenRiderRace',
-        'levels.Wogren Rider', '=', '',
-        'race', '+', 'source.match(/Halfling/) ? -1 : null'
+        'levels.Wogren Rider', '=', '-1',
+        'race', '+', 'source.match(/Halfling/) ? 1 : null'
       );
       MN2E.defineRule('validationNotes.wogrenRiderSkills',
-        'levels.Wogren Rider', '=', '2',
-        'skills.Ride', '+', 'source >= 8 ? -1 : null',
-        'skills.Survival', '+', 'source >= 4 ? -1 : null'
+        'levels.Wogren Rider', '=', '-2',
+        'skills.Ride', '+', 'source >= 8 ? 1 : null',
+        'skills.Survival', '+', 'source >= 4 ? 1 : null'
       );
 
     } else
@@ -1157,8 +1151,5 @@ MN2EPrestige.prestigeClassRules = function() {
 
   }
 
-  MN2E.defineRule('numberOfMagecraftFeats', /^features\.Magecraft/, '+=', '1');
-  MN2E.defineRule
-    ('numberOfSpellcastingFeats', /^features\.Spellcasting/, '+=', '1');
 
 };
