@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.59 2007/02/13 00:49:30 Jim Exp $ */
+/* $Id: LastAge.js,v 1.60 2007/02/13 01:26:05 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -75,13 +75,14 @@ MN2E.CLASSES = [
 ];
 MN2E.FEATS = [
   'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
-  'Craft Spell Talisman:Item Creation', 'Devastating Mounted Assault:',
-  'Drive It Deep:Fighter Bonus', 'Extra Gift:', 'Friendly Agent:',
-  'Giant Fighter:', 'Greater Spellcasting:Channeling/Spellcasting',
-  'Herbalist:Item Creation', 'Improvised Weapon:Fighter Bonus',
-  'Innate Magic:', 'Inconspicuous:', 'Knife Thrower:Fighter Bonus', 'Lucky:',
-  'Magecraft:Channeling', 'Magic Hardened:', 'Natural Healer:',
-  'Orc Slayer:Fighter Bonus', 'Quickened Donning:', 'Ritual Magic:Channeling',
+  'Craft Spell Talisman:Item Creation',
+  'Devastating Mounted Assault:Fighter Bonus', 'Drive It Deep:Fighter Bonus',
+  'Extra Gift:', 'Friendly Agent:', 'Giant Fighter:Fighter Bonus',
+  'Greater Spellcasting:Channeling/Spellcasting', 'Herbalist:Item Creation',
+  'Improvised Weapon:Fighter Bonus', 'Innate Magic:', 'Inconspicuous:',
+  'Knife Thrower:Fighter Bonus', 'Lucky:', 'Magecraft:Channeling',
+  'Magic Hardened:', 'Natural Healer:', 'Orc Slayer:Fighter Bonus',
+  'Quickened Donning:Fighter Bonus', 'Ritual Magic:Channeling',
   'Sarcosan Pureblood:', 'Sense Nexus:', 'Spellcasting:Channeling/Spellcasting',
   'Spell Knowledge:', 'Thick Skull:', 'Warrior Of Shadow:',
   'Whispering Awareness:'
@@ -180,7 +181,7 @@ MN2E.classRules = function(rules) {
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
         '1:Art Of Magic', '2:Bonus Spellcasting', '2:Summon Familiar',
-        '4:Channeler Feat Bonus'
+        '4:Feat Bonus'
       ];
       hitDie = 6;
       notes = [
@@ -202,7 +203,9 @@ MN2E.classRules = function(rules) {
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
-      // Spiritual: Extra Gift/Spell Knowledge/Item Creation
+      // TODO Spiritual: Extra Gift/Spell Knowledge/Item Creation
+      //      Hermetic: Spell Knowledge/Item Creation/Metamagic
+      //      Charismatic: Extra Gift/Spell Focus/Greater Spell Focus/Spell Knowledge
       rules.defineRule('featCount.Channeler',
         'channelerLevels', '+=', 'Math.floor((source - 1) / 3)'
       );
@@ -2008,7 +2011,7 @@ MN2E.heroicPathRules = function(rules) {
         'skillNotes.masterAdventurerFeature:' +
           '+%V on three selected non-charisma skills',
         'skillNotes.skillFixationFeature:' +
-          'Take 10 despite distraction on %V designated skills',
+          'Take 10 despite distraction on %V designated skills'
       ];
       rules.defineRule('purebloodFeatures.Feat Bonus',
         'level', '+', 'Math.floor((source - 3) / 5)'
@@ -2216,7 +2219,7 @@ MN2E.heroicPathRules = function(rules) {
 
     } else if(path == 'Steelblooded') {
 
-      // TODO: Exotic Weapon Proficiency/Greater Weapon Focus/Greater Weapon Specialization/Martial Weapon Proficiency/Weapon Focus/Weapon Specialization
+      // TODO: Exotic Weapon Proficiency/Improved Weapon Focus/Improved Weapon Specialization/Martial Weapon Proficiency/Weapon Focus/Weapon Specialization
       features = [
         '1:Feat Bonus', '2:Offensive Tactics', '3:Strategic Blow',
         '4:Skilled Warrior', '14:Untouchable', '19:Improved Untouchable'
@@ -2432,7 +2435,7 @@ MN2E.magicRules = function(rules) {
 /* Defines the rules related to MN2E Chapter 1, Races of Midnight. */
 MN2E.raceRules = function(rules) {
 
-  /* Notes and rules that apply to multiple races */
+  // Notes and rules that apply to multiple races
   var notes = [
     'abilityNotes.naturalMountaineerFeature:' +
        'Unimpeded movement in mountainous terrain',

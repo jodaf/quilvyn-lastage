@@ -309,7 +309,6 @@ MN2EPrestige.prestigeClassRules = function() {
       ];
       hitDie = 6;
       notes = [
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
         'featureNotes.seeAstiraxFeature:See astirax as shadowy form',
         'magicNotes.artOfMagicFeature:+1 character level for max spell level',
         'magicNotes.bindAstiraxFeature:' +
@@ -992,7 +991,6 @@ MN2EPrestige.prestigeClassRules = function() {
       ];
       hitDie = 4;
       notes = [
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
         'featureNotes.efficientStudyFeature:' +
           'XP cost for learning spells/creating magic items reduced by %V%',
         'magicNotes.wizardcraftFeature:' +
