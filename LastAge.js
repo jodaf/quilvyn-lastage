@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.58 2007/02/10 21:04:13 Jim Exp $ */
+/* $Id: LastAge.js,v 1.59 2007/02/13 00:49:30 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -74,14 +74,17 @@ MN2E.CLASSES = [
   'Hermetic Channeler', 'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
 ];
 MN2E.FEATS = [
-  'Craft Charm', 'Craft Greater Spell Talisman', 'Craft Spell Talisman',
-  'Devastating Mounted Assault', 'Drive It Deep', 'Extra Gift',
-  'Friendly Agent', 'Giant Fighter', 'Greater Spellcasting', 'Herbalist',
-  'Improvised Weapon', 'Innate Magic', 'Inconspicuous', 'Knife Thrower',
-  'Lucky', 'Magecraft', 'Magic Hardened', 'Natural Healer',
-  'Quickened Donning', 'Orc Slayer', 'Ritual Magic', 'Sarcosan Pureblood',
-  'Sense Nexus', 'Spellcasting', 'Spell Knowledge', 'Thick Skull',
-  'Warrior Of Shadow', 'Whispering Awareness'
+  'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
+  'Craft Spell Talisman:Item Creation', 'Devastating Mounted Assault:',
+  'Drive It Deep:Fighter Bonus', 'Extra Gift:', 'Friendly Agent:',
+  'Giant Fighter:', 'Greater Spellcasting:Channeling/Spellcasting',
+  'Herbalist:Item Creation', 'Improvised Weapon:Fighter Bonus',
+  'Innate Magic:', 'Inconspicuous:', 'Knife Thrower:Fighter Bonus', 'Lucky:',
+  'Magecraft:Channeling', 'Magic Hardened:', 'Natural Healer:',
+  'Orc Slayer:Fighter Bonus', 'Quickened Donning:', 'Ritual Magic:Channeling',
+  'Sarcosan Pureblood:', 'Sense Nexus:', 'Spellcasting:Channeling/Spellcasting',
+  'Spell Knowledge:', 'Thick Skull:', 'Warrior Of Shadow:',
+  'Whispering Awareness:'
 ];
 MN2E.HEROIC_PATHS = [
   'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
@@ -177,12 +180,10 @@ MN2E.classRules = function(rules) {
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       features = [
         '1:Art Of Magic', '2:Bonus Spellcasting', '2:Summon Familiar',
-        '4:Arcane Feat Bonus'
+        '4:Channeler Feat Bonus'
       ];
       hitDie = 6;
       notes = [
-        'featureNotes.arcaneFeatBonusFeature:%V arcane feats',
-        'featureNotes.bonusSpellcastingFeature:%V Spellcasting feats',
         'magicNotes.artOfMagicFeature:+1 character level for max spell level',
         'magicNotes.summonFamiliarFeature:Special bond/abilities'
       ];
@@ -201,14 +202,11 @@ MN2E.classRules = function(rules) {
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
-      rules.defineRule('featCount',
-        'featureNotes.arcaneFeatBonusFeature', '+', null,
-        'featureNotes.bonusSpellcastingFeature', '+', null
-      );
-      rules.defineRule('featureNotes.arcaneFeatBonusFeature',
+      // Spiritual: Extra Gift/Spell Knowledge/Item Creation
+      rules.defineRule('featCount.Channeler',
         'channelerLevels', '+=', 'Math.floor((source - 1) / 3)'
       );
-      rules.defineRule('featureNotes.bonusSpellcastingFeature',
+      rules.defineRule('featCount.Spellcasting',
         'channelerLevels', '+=', 'Math.floor((source + 1) / 3)'
       );
       rules.defineRule('magicNotes.channelerSpellsKnown',
@@ -635,8 +633,11 @@ MN2E.classRules = function(rules) {
       features = [];
       hitDie = null;
       notes = [
+      // TODO Improvised Weapon/Improved Grapply/Unarmed Strike/Stunning Fist
         'featureNotes.improviserFeature:+%V improvisation feats',
+      // TODO Iron Will/Leadership/Skill Focus (Diplomacy)/Skill Focus (Profession (Soldier))
         'featureNotes.leaderOfMenFeature:+%V leadership feats',
+      // TODO Combat Expertise/Dodge/Endurance
         'featureNotes.survivorFeature:+%V survivor feats',
         'skillNotes.adapterFeature:+%V skill points'
       ];
@@ -650,7 +651,7 @@ MN2E.classRules = function(rules) {
       rules.defineRule('selectableFeatureCount.Fighter',
        'levels.Fighter', '=', 'source >= 4 ? 1 : null'
       );
-      rules.defineRule('featCount',
+      rules.defineRule('featCount.Fighter Bonus',
         'featureNotes.improviserFeature', '+', null,
         'featureNotes.leaderOfMenFeature', '+', null,
         'featureNotes.survivorFeature', '+', null
@@ -960,25 +961,29 @@ MN2E.featRules = function(rules) {
 
   var allFeats = [];
   for(var i = 0; i < MN2E.FEATS.length; i++) {
-    var feat = MN2E.FEATS[i];
+    var pieces = MN2E.FEATS[i].split(/:/);
+    var feat = pieces[0];
     var subfeats = MN2E.featsSubfeats[feat];
     if(subfeats == null) {
-      allFeats[allFeats.length] = feat;
+      allFeats[allFeats.length] = feat + ':' + pieces[1];
     } else {
       rules.defineRule('subfeatCount.' + feat,
-        new RegExp('^features\\.' + feat + ' \\('), '+=', '1'
+        new RegExp('^feats\\.' + feat + ' \\('), '+=', '1'
       );
       if(subfeats != '') {
         subfeats = subfeats.split(/\//);
         for(var j = 0; j < subfeats.length; j++) {
-          allFeats[allFeats.length] = feat + ' (' + subfeats[j] + ')';
+          allFeats[allFeats.length] =
+            feat + ' (' + subfeats[j] + '):' + pieces[1];
         }
       }
     }
   }
 
   for(var i = 0; i < allFeats.length; i++) {
-    var feat = allFeats[i];
+    var pieces = allFeats[i].split(/:/);
+    var feat = pieces[0];
+    var matchInfo;
     var notes;
     if(feat == 'Craft Charm') {
       notes = [
@@ -1244,17 +1249,16 @@ MN2E.featRules = function(rules) {
         'wisdom', '+', 'source >= 15 ? 1 : null'
       );
     } else
-      conintue;
-    rules.defineChoice('feats', feat);
+      continue;
+    rules.defineChoice('feats', feat + ':' + pieces[1]);
     rules.defineRule('features.' + feat, 'feats.' + feat, '=', null);
-    if(notes != null)
+    if(notes != null) {
       rules.defineNote(notes);
+    }
   }
 
   var allSelectable = {};
   for(var a in MN2E.selectableFeatures) {
-    var prefix = a.substring(0, 1).toLowerCase() +
-                 a.substring(1).replace(/ /g, '');
     var features = MN2E.selectableFeatures[a].split('/');
     for(var i = 0; i < features.length; i++) {
       selectable = features[i];
@@ -1306,7 +1310,7 @@ MN2E.heroicPathRules = function(rules) {
     ('constitution', 'abilityNotes.constitutionBonusFeature', '+', null);
   rules.defineRule
     ('dexterity', 'abilityNotes.dexterityBonusFeature', '+', null);
-  rules.defineRule('featCount', 'features.Feat Bonus', '+', null);
+  rules.defineRule('featCount.Any', 'features.Feat Bonus', '+', null);
   rules.defineRule
     ('intelligence', 'abilityNotes.intelligenceBonusFeature', '+', null);
   rules.defineRule
@@ -1386,7 +1390,7 @@ MN2E.heroicPathRules = function(rules) {
         '1:Luck Of Heroes', '3:Unfettered', '4:Miss Chance', '6:Persistence',
         '9:Take Ten', '19:Take Twenty'
       ];
-      spellFeatures = ['2:Resistance', '7:True Strike', '12:Aid', '17:Prayer'];
+      spellFeatures = ['2:Persistance', '7:True Strike', '12:Aid', '17:Prayer'];
       notes = [
         'combatNotes.missChanceFeature:%V% chance of foe miss',
         'featureNotes.luckOfHeroesFeature:Add %V to any d20 roll 1/day',
@@ -2212,6 +2216,7 @@ MN2E.heroicPathRules = function(rules) {
 
     } else if(path == 'Steelblooded') {
 
+      // TODO: Exotic Weapon Proficiency/Greater Weapon Focus/Greater Weapon Specialization/Martial Weapon Proficiency/Weapon Focus/Weapon Specialization
       features = [
         '1:Feat Bonus', '2:Offensive Tactics', '3:Strategic Blow',
         '4:Skilled Warrior', '14:Untouchable', '19:Improved Untouchable'
@@ -2502,9 +2507,10 @@ MN2E.raceRules = function(rules) {
           '+1 attack when fighting alongside 4+ Dorns',
         'combatNotes.fierceFeature:+1 attack w/two-handed weapons'
       ];
-      // TODO Bonus feat must be fighter or weapon/armor/shield proficiency
-      rules.defineRule('featCount', 'featureNotes.dornFeatCount', '+', null);
-      rules.defineRule('featureNotes.dornFeatCount',
+      rules.defineRule('featCount.Fighter Bonus',
+        'featureNotes.dornFeatCounBonus', '+=', null
+      );
+      rules.defineRule('featureNotes.dornFeatCountBonus',
         'race', '=', 'source == "Dorn" ? 1 : null'
       );
       rules.defineRule('skillNotes.dornSkillPointsBonus',
@@ -2699,8 +2705,8 @@ MN2E.raceRules = function(rules) {
         'race', '=', 'source == "Erenlander" ? 1 : null'
       );
       rules.defineRule
-        ('featCount', 'featureNotes.erenlanderFeatCount', '+', null);
-      rules.defineRule('featureNotes.erenlanderFeatCount',
+        ('featCount.Any', 'featureNotes.erenlanderFeatCountBonus', '+=', null);
+      rules.defineRule('featureNotes.erenlanderFeatCountBonus',
         'race', '=', 'source == "Erenlander" ? 2 : null'
       );
       rules.defineRule('skillNotes.erenlanderSkillPointsBonus',
@@ -2825,8 +2831,8 @@ MN2E.raceRules = function(rules) {
         'saveNotes.quickFeature:+1 Reflex'
       ];
       rules.defineRule
-        ('featCount', 'featureNotes.sarcosanFeatCount', '+', null);
-      rules.defineRule('featureNotes.sarcosanFeatCount',
+        ('featCount.Any', 'featureNotes.sarcosanFeatCountBonus', '+', null);
+      rules.defineRule('featureNotes.sarcosanFeatCountBonus',
         'race', '=', 'source.indexOf("Sarcosan") >= 0 ? 1 : null'
       );
       rules.defineRule('skillNotes.sarcosanSkillPointsBonus',
@@ -2967,8 +2973,10 @@ MN2E.randomizeAllAttributes = function(fixedAttributes) {
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
 MN2E.randomizeOneAttribute = function(attributes, attribute) {
+  var savedFeats = PH35.feats;
   var savedFeatures = PH35.selectableFeatures;
   var savedRules = PH35.rules;
+  PH35.feats = MN2E.feats;
   PH35.selectableFeatures = MN2E.selectableFeatures;
   PH35.rules = MN2E.rules;
   if(attribute == 'deity') {
@@ -3014,6 +3022,7 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
   } else {
     PH35.randomizeOneAttribute(attributes, attribute);
   }
+  PH35.feats = savedFeats;
   PH35.selectableFeatures = savedFeatures;
   PH35.rules = savedRules;
 }

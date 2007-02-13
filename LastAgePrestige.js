@@ -123,10 +123,7 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('combatNotes.advanceAncestralBladeFeature',
         'levels.Ancestral Bladebearer', '=', 'Math.floor((source + 2) / 4)'
       );
-      MN2E.defineRule('featCount',
-        'featureNotes.ancestralBladebearerFeatCountBonus', '+', null
-      );
-      MN2E.defineRule('featureNotes.ancestralBladebearerFeatCountBonus',
+      MN2E.defineRule('featCount.Fighter Bonus',
         'levels.Ancestral Bladebearer', '=', 'Math.floor(source / 3)'
       );
       MN2E.defineRule('magicNotes.ancestralAdvisorFeature',
@@ -348,15 +345,11 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
-      MN2E.defineRule('featCount',
-        'featureNotes.baneOfLegatesFeatCountBonus', '+', null,
-        'featureNotes.bonusSpellcastingFeature', '+', null
-      );
-      MN2E.defineRule('featureNotes.baneOfLegatesFeatCountBonus',
-        'levels.Bane Of Legates', '=', 'Math.floor((source + 3) / 5)'
-      );
-      MN2E.defineRule('featureNotes.bonusSpellcastingFeature',
+      MN2E.defineRule('featCount.Spellcasting',
         'levels.Bane Of Legates', '+=', 'Math.floor((source - 1) / 4)'
+      );
+      MN2E.defineRule('featCount.Wizard Bonus',
+        'levels.Bane Of Legates', '=', 'Math.floor((source + 3) / 5)'
       );
       MN2E.defineRule('magicNotes.baneOfLegatesSpellEnergy',
         'levels.Bane Of Legates', '=', null
@@ -591,7 +584,8 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
-      MN2E.defineRule('featCount',
+      // TODO Mounted Archery/Sarcosan Pureblood/Skill Focus (Ride)/Trample/Weapon Focus (Sarcosan Lance/Scimitar/Composite Longbow)/Weapon Specialization (Sarcosan Lance/Smimitar/Composite Longbow)
+      MN2E.defineRule('featCount.Figher Bonus',
         'featureNotes.freeriderFeatCountBonus', '+', null
       );
       MN2E.defineRule('featureNotes.freeriderFeatCountBonus',
@@ -1027,18 +1021,14 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
+      MN2E.defineRule('featCount.Spellcasting',
+        'levels.Wizard', '+=', 'source<4 ? null : Math.floor((source - 1) / 3)'
+      );
+      MN2E.defineRule('featCount.Wizard Bonus',
+        'levels.Wizard', '+=', 'Math.floor(source / 3)'
+      );
       MN2E.defineRule('featureNotes.efficientStudyFeature',
         'levels.Wizard', '=', 'Math.floor((source + 1) / 3) * 10'
-      );
-      MN2E.defineRule('featureNotes.wizardFeatCountBonus',
-        'levels.Wizard', '=', 'Math.floor(source / 3)'
-      );
-      MN2E.defineRule('featCount',
-        'featureNotes.bonusSpellcastingFeature', '+', null,
-        'featureNotes.wizardFeatCountBonus', '+', null
-      );
-      MN2E.defineRule('featureNotes.bonusSpellcastingFeature',
-        'levels.Wizard', '+=', 'source<4 ? null : Math.floor((source - 1) / 3)'
       );
       MN2E.defineRule
         ('magicNotes.wizardSpellEnergy', 'levels.Wizard', '=', null);
