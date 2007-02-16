@@ -21,39 +21,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
  * fields can be manipulated in order to trim the choices offered.
  */
 function MN2EPrestige() {
-
   if(MN2EPrestige.prestigeClassRules != null) MN2EPrestige.prestigeClassRules();
-  var allSelectable = {};
-  for(var a in MN2EPrestige.selectableFeatures) {
-    var prefix = a.substring(0, 1).toLowerCase() +
-                 a.substring(1).replace(/ /g, '');
-    var features = MN2EPrestige.selectableFeatures[a].split('/');
-    for(var i = 0; i < features.length; i++) {
-      selectable = features[i];
-      MN2E.defineRule('features.' + selectable,
-        'selectableFeatures.' + selectable, '+=', null
-      );
-      allSelectable[selectable] = '';
-    }
-  }
-  MN2E.defineChoice('selectableFeatures', ScribeUtils.getKeys(allSelectable));
-  var existingSpells = MN2E.getChoices('spells');
-  for(var i = 0; i < MN2EPrestige.spells.length; i++) {
-    var pieces = MN2EPrestige.spells[i].split(/:/);
-    var level = pieces[1];
-    var name = pieces[0];
-    var matchInfo;
-    var schoolPat = name + '\\([A-Z]+[0-9]+ ([A-Za-z]+)\\)';
-    var spell = name + '(' + level + ' Univ)';
-    for(var a in existingSpells) {
-      if((matchInfo = a.match(schoolPat)) != null) {
-        spell = spell.replace('Univ)', matchInfo[1] + ')');
-        break;
-      }
-    }
-    MN2E.defineChoice('spells', spell);
-  }
-
 }
 
 MN2EPrestige.PRESTIGE_CLASSES = [
@@ -63,23 +31,19 @@ MN2EPrestige.PRESTIGE_CLASSES = [
   'Wogren Rider'
 ];
 
-// Filled in by the classes that define selectable features/spells.
-MN2EPrestige.selectableFeatures = { };
-MN2EPrestige.spells = [
-];
-
 MN2EPrestige.prestigeClassRules = function() {
 
   for(var i = 0; i < MN2EPrestige.PRESTIGE_CLASSES.length; i++) {
 
-    var baseAttack, features, hitDie, notes, profArmor, profShield, profWeapon,
-        saveFortitude, saveReflex, saveWill, skillPoints, skills, spellsKnown,
-        spellsPerDay, spellsPerDayAbility;
+    var baseAttack, feats, features, hitDie, notes, profArmor, profShield,
+        profWeapon, saveFortitude, saveReflex, saveWill, selectableFeatures,
+        skillPoints, skills, spellsKnown, spellsPerDay, spellsPerDayAbility;
     var klass = MN2EPrestige.PRESTIGE_CLASSES[i];
 
     if(klass == 'Ancestral Bladebearer') {
 
       baseAttack = PH35.ATTACK_BONUS_GOOD;
+      feats = null;
       features = [
         '1:Unbreakable Blade', '2:Advance Ancestral Blade',
         '3:Ancestral Watcher', '4:Immovable Blade', '5:Ancestral Advisor',
@@ -112,6 +76,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_GOOD;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_POOR;
+      selectableFeatues = null;
       skillPoints = 2;
       skills = [
         'Climb', 'Handle Animal', 'Intimidate', 'Jump', 'Ride',
@@ -142,6 +107,7 @@ MN2EPrestige.prestigeClassRules = function() {
     } else if(klass == 'Aradil\'s Eye') {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      feats = null;
       features = [
         '1:Alter Ego', '1:Mindbond', '2:Spy Initiate', '4:Closed Mind',
         '5:Quick Alteration', '5:Spy', '6:Hide In Plain Sight',
@@ -178,6 +144,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
+      selectableFeatues = null;
       skillPoints = 8;
       skills = [
         'Balance', 'Bluff', 'Climb', 'Decipher Script', 'Diplomacy',
@@ -221,6 +188,7 @@ MN2EPrestige.prestigeClassRules = function() {
     } else if(klass == 'Avenging Knife') {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      feats = null;
       features = [
         '1:The Drop', '2:Security Breach', '3:Sneak Attack', '4:Target Study',
         '5:Fast Hands', '6:Cover Story', '7:Stunning Sneak Attack',
@@ -257,6 +225,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_GOOD;
       saveWill = PH35.SAVE_BONUS_POOR;
+      selectableFeatues = null;
       skillPoints = 6;
       skills = [
         'Balance', 'Bluff', 'Decipher Script', 'Disguise', 'Escape Artist',
@@ -302,6 +271,7 @@ MN2EPrestige.prestigeClassRules = function() {
     } else if(klass == 'Bane Of Legates') {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      feats = null;
       features = [
         '1:Art Of Magic', '1:Resist Izrador\'s Will', '3:See Astirax',
         '4:Counter Izrador\'s Will', '5:Bonus Spellcasting', '6:Bind Astirax',
@@ -331,6 +301,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
+      selectableFeatues = null;
       skillPoints = 4;
       skills = [
         'Bluff', 'Concentration', 'Gather Information', 'Handle Animal',
@@ -381,6 +352,7 @@ MN2EPrestige.prestigeClassRules = function() {
     } else if(klass == 'Druid') {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      feats = null;
       features = [
         '1:Art Of Magic', '1:Mastery Of Nature', '1:Animal Companion',
         '2:Druidcraft', '2:Nature Sense', '3:Commune With Nature',
@@ -409,6 +381,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_GOOD;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
+      selectableFeatues = null;
       skillPoints = 4;
       skills = [
         'Concentration', 'Handle Animal', 'Heal', 'Knowledge (Arcana)',
@@ -457,6 +430,7 @@ MN2EPrestige.prestigeClassRules = function() {
     } else if(klass == 'Elven Raider') {
 
       baseAttack = PH35.ATTACK_BONUS_GOOD;
+      feats = null;
       features = [
         '1:Ranged Sneak Attack', '2:Improved Sneak Attack', '3:Meticulous Aim',
         '4:Intimidating Shot', '6:Leaf Reader', '7:Disarming Shot',
@@ -491,6 +465,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_GOOD;
       saveWill = PH35.SAVE_BONUS_POOR;
+      selectableFeatues = null;
       skillPoints = 4;
       skills = [
         'Balance', 'Climb', 'Heal', 'Hide', 'Intimidate', 'Jump', 'Listen',
@@ -535,9 +510,15 @@ MN2EPrestige.prestigeClassRules = function() {
 
     } else if(klass == 'Freerider') {
 
-      MN2EPrestige.selectableFeatures[klass] =
-        'Deft Dodging/Dismounting Cut/Erratic Attack/Hit And Run/Wheel About';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
+      feats = [
+        'Mounted Archery', 'Sarcosan Pureblood', 'Skill Focus (Ride)',
+        'Trample', 'Weapon Focus (Composite Longbow)',
+        'Weapon Focus (Sarcosan Lance)', 'Weapon Focus (Scimitar)',
+        'Weapon Specialization (Composite Longbow)',
+        'Weapon Specialization (Sarcosan Lance)',
+        'Weapon Specialization (Scimitar)'
+      ];
       features = [
         '1:Horse Lord', '1:Special Mount', '2:Mounted Maneuver', '4:Spur On',
         '7:Devastating Mounted Assault', '10:Sweeping Strike'
@@ -575,6 +556,10 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_GOOD;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_POOR;
+      selectableFeatures = [
+        'Deft Dodging', 'Dismounting Cut', 'Erratic Attack', 'Hit And Run',
+        'Wheel About'
+      ]
       skillPoints = 2;
       skills = [
         'Climb', 'Diplomacy', 'Handle Animal', 'Jump', 'Ride',
@@ -583,11 +568,7 @@ MN2EPrestige.prestigeClassRules = function() {
       spellsKnown = null;
       spellsPerDay = null;
       spellsPerDayAbility = null;
-      // TODO Mounted Archery/Sarcosan Pureblood/Skill Focus (Ride)/Trample/Weapon Focus (Sarcosan Lance/Scimitar/Composite Longbow)/Weapon Specialization (Sarcosan Lance/Smimitar/Composite Longbow)
-      MN2E.defineRule('featCount.Figher Bonus',
-        'featureNotes.freeriderFeatCountBonus', '+', null
-      );
-      MN2E.defineRule('featureNotes.freeriderFeatCountBonus',
+      MN2E.defineRule('featCount.Freerider',
         'levels.Freerider', '=', 'Math.floor(source / 3)'
       );
       MN2E.defineRule('selectableFeatureCount.Freerider',
@@ -617,6 +598,7 @@ MN2EPrestige.prestigeClassRules = function() {
     } else if(klass == 'Haunted One') {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      feats = null;
       features = [
         '1:Art Of Magic', '1:Seance', '2:Spiritcraft', '2:Spirit Manipulation',
         '3:Ghost Sight', '5:Spell Focus (Divination)',
@@ -652,6 +634,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
+      selectableFeatues = null;
       skillPoints = 2;
       skills = [
         'Concentration', 'Knowledge (Arcana)', 'Knowledge (Dungeoneering)',
@@ -693,6 +676,7 @@ MN2EPrestige.prestigeClassRules = function() {
     } else if(klass == 'Insurgent Spy') {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      feats = null;
       features = [
         '1:Conceal Aura', '1:Shadow Contacts', '2:Shadow Speak',
         '3:Sneak Attack'
@@ -716,6 +700,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_GOOD;
       saveWill = PH35.SAVE_BONUS_POOR;
+      selectableFeatues = null;
       skillPoints = 8;
       skills = [
         'Appraise', 'Balance', 'Bluff', 'Climb', 'Decipher Script',
@@ -758,6 +743,7 @@ MN2EPrestige.prestigeClassRules = function() {
     } else if(klass == 'Smuggler') {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      feats = null;
       features = [
         '1:Smuggler\'s Trade', '2:Dominant Will', '3:Mystifying Speech',
         '4:Information Network', '5:Disguise Contraband', '10:Slippery Mind'
@@ -785,6 +771,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_GOOD;
       saveWill = PH35.SAVE_BONUS_GOOD;
+      selectableFeatues = null;
       skillPoints = 8;
       skills = [
         'Appraise', 'Balance', 'Bluff', 'Climb', 'Decipher Script',
@@ -828,6 +815,7 @@ MN2EPrestige.prestigeClassRules = function() {
     } else if(klass == 'Warrior Arcanist') {
 
       baseAttack = PH35.ATTACK_BONUS_GOOD;
+      feats = null;
       features = [
         '1:Art Of Magic', '1:Armored Casting', '1:Channeled Attack',
         '4:Channeled Armor Class', '6:Melee Caster', '8:Channeled Damage',
@@ -857,6 +845,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_GOOD;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_POOR;
+      selectableFeatues = null;
       skillPoints = 2;
       skills = [
         'Concentration', 'Intimidate', 'Jump', 'Knowledge (Arcana)', 'Ride',
@@ -912,6 +901,7 @@ MN2EPrestige.prestigeClassRules = function() {
     } else if(klass == 'Whisper Adept') {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      feats = null;
       features = [
         '1:Art Of Magic', '1:Whisper Sense', '2:Whisper Initiative',
         '3:Fell Touch', '4:Whisper Surprise', '5:Tree Meld',
@@ -942,6 +932,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
+      selectableFeatues = null;
       skillPoints = 4;
       skills = [
         'Concentration', 'Handle Animal', 'Heal', 'Knowledge (Arcana)',
@@ -985,6 +976,7 @@ MN2EPrestige.prestigeClassRules = function() {
     } else if(klass == 'Wizard') {
 
       baseAttack = PH35.ATTACK_BONUS_POOR;
+      feats = null;
       features = [
         '1:Art Of Magic', '1:Wizardcraft', '2:Efficient Study',
         '4:Bonus Spellcasting'
@@ -1007,6 +999,7 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
+      selectableFeatues = null;
       skillPoints = 2;
       skills = [
         'Concentration', 'Knowledge (Arcana)', 'Knowledge (Dungeoneering)',
@@ -1049,11 +1042,8 @@ MN2EPrestige.prestigeClassRules = function() {
 
     } else if(klass == 'Wogren Rider') {
 
-      MN2EPrestige.selectableFeatures[klass] =
-        'Improved Mounted Archery/Improved Mounted Combat/' +
-        'Improved Ride By Attack/Improved Spirited Charge/Improved Trample/' +
-        'Ride By Attack/Spirited Charge/Trample';
       baseAttack = PH35.ATTACK_BONUS_GOOD;
+      feats = null;
       features = [
         '1:Coordinated Attack', '1:Special Mount', '3:Speed Mount',
         '5:Mounted Hide', '7:Wogren Dodge', '9:Wogren\'s Sight'
@@ -1094,6 +1084,11 @@ MN2EPrestige.prestigeClassRules = function() {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_GOOD;
       saveWill = PH35.SAVE_BONUS_POOR;
+      selectableFeatures = [
+        'Improved Mounted Archery', 'Improved Mounted Combat',
+        'Improved Ride By Attack', 'Improved Spirited Charge',
+        'Improved Trample', 'Ride By Attack', 'Spirited Charge', 'Trample'
+      ];
       skillPoints = 4;
       skills = [
         'Climb', 'Handle Animal', 'Heal', 'Hide', 'Jump', 'Listen',
@@ -1134,10 +1129,23 @@ MN2EPrestige.prestigeClassRules = function() {
       (klass, hitDie, skillPoints, baseAttack, saveFortitude, saveReflex,
        saveWill, profArmor, profShield, profWeapon, skills, features,
        spellsKnown, spellsPerDay, spellsPerDayAbility);
+    if(feats != null) {
+      for(var j = 0; j < feats.length; j++) {
+        MN2E.defineChoice('feats', feats[j] + ':' + klass);
+      }
+    }
     if(notes != null)
       MN2E.defineNote(notes);
+    if(selectableFeatures != null) {
+      for(var j = 0; j < selectableFeatures.length; j++) {
+        var selectable = selectableFeatures[j];
+        MN2E.defineChoice('selectableFeatures', selectable + ':' + klass);
+        MN2E.defineRule('features.' + selectable,
+          'selectableFeatures.' + selectable, '+=', null
+        );
+      }
+    }
 
   }
-
 
 };
