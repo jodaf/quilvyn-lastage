@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.61 2007/02/16 06:37:15 Jim Exp $ */
+/* $Id: LastAge.js,v 1.62 2007/02/17 00:33:41 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -72,14 +72,13 @@ MN2E.CLASSES = [
 ];
 MN2E.FEATS = [
   'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
-  'Craft Spell Talisman:Item Creation',
-  'Devastating Mounted Assault:Fighter Bonus', 'Drive It Deep:Fighter Bonus',
-  'Extra Gift:', 'Friendly Agent:', 'Giant Fighter:Fighter Bonus',
-  'Greater Spellcasting:Channeling/Spellcasting', 'Herbalist:Item Creation',
-  'Improvised Weapon:Fighter Bonus', 'Innate Magic:', 'Inconspicuous:',
-  'Knife Thrower:Fighter Bonus', 'Lucky:', 'Magecraft:Channeling',
-  'Magic Hardened:', 'Natural Healer:', 'Orc Slayer:Fighter Bonus',
-  'Quickened Donning:Fighter Bonus', 'Ritual Magic:Channeling',
+  'Craft Spell Talisman:Item Creation', 'Devastating Mounted Assault:Fighter',
+  'Drive It Deep:Fighter', 'Extra Gift:', 'Friendly Agent:',
+  'Giant Fighter:Fighter', 'Greater Spellcasting:Channeling/Spellcasting',
+  'Herbalist:Item Creation', 'Improvised Weapon:Fighter', 'Innate Magic:',
+  'Inconspicuous:', 'Knife Thrower:Fighter', 'Lucky:', 'Magecraft:Channeling',
+  'Magic Hardened:', 'Natural Healer:', 'Orc Slayer:Fighter',
+  'Quickened Donning:Fighter', 'Ritual Magic:Channeling',
   'Sarcosan Pureblood:', 'Sense Nexus:', 'Spellcasting:Channeling/Spellcasting',
   'Spell Knowledge:', 'Thick Skull:', 'Warrior Of Shadow:',
   'Whispering Awareness:'

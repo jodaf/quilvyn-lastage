@@ -881,19 +881,19 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule('spellsKnownBonus',
         'magicNotes.warriorArcanistSpellsKnown', '+', null
       );
-      MN2E.defineRule('validationNotes.warriorAranistCombat',
+      MN2E.defineRule('validationNotes.warriorArcanistCombat',
         'levels.Warrior Arcanist', '=', '-2',
         'baseAttack', '+', 'source >= 4 ? 1 : null',
         'weaponProficiencyLevel', '+',
           'source >= ' + PH35.PROFICIENCY_MEDIUM + ' ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.warriorAranistFeatures',
+      MN2E.defineRule('validationNotes.warriorArcanistFeatures',
         'levels.Warrior Arcanist', '=', '-3',
         'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null',
         'subfeatCount.Spellcasting', '+', 'source >= 1 ? 1 : null',
         'subfeatCount.Weapon Focus', '+', 'source >= 1 ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.warriorAranistSkills',
+      MN2E.defineRule('validationNotes.warriorArcanistSkills',
         'levels.Warrior Arcanist', '=', '-1',
         'skills.Spellcraft', '+', 'source >= 8 ? 1 : null'
       );
