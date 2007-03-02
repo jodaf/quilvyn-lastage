@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.62 2007/02/17 00:33:41 Jim Exp $ */
+/* $Id: LastAge.js,v 1.63 2007/03/02 04:08:44 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -21,48 +21,48 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
  * This module loads the rules from the Midnight Second Edition core rule book.
  * The MN2E function contains methods that load rules for particular
  * parts/chapters of the rule book; raceRules for character races, magicRules
- * for spells, etc.  Any of these member methods can be set to null or
- * overridden before calling MN2E in order to use a subset of the MN2E rules.
- * Similarly, the constant fields of MN2E--FEATS, HEROIC_PATHS, etc.--can be
- * manipulated in order to trim the choices offered.
+ * for spells, etc.  Any of these member methods can be called independently
+ * in order to use a subset of the MN2E rules.  Similarly, the constant fields
+ * of MN2E--FEATS, HEROIC_PATHS, etc.--can be manipulated in order to modify
+ * the choices offered.
  */
 function MN2E() {
+
   var rules = new ScribeRules('Midnight 2nd Edition');
-  PH35.CLASSES = ['Barbarian', 'Fighter', 'Rogue'];
-  PH35.DEITIES = ['Izrador (NE):Death/Destruction/Evil/Magic/War'];
-  PH35.RACES = [];
   PH35.deitiesFavoredWeapons = {'Izrador (NE)': 'Longsword'};
-  if(PH35.createViewer != null) {
-    MN2E.viewer = new ObjectViewer();
-    PH35.createViewer(MN2E.viewer);
-    rules.defineViewer("Standard", MN2E.viewer);
-  }
-  if(PH35.abilityRules != null) PH35.abilityRules(rules);
-  if(PH35.raceRules != null) PH35.raceRules(rules);
-  if(PH35.classRules != null) PH35.classRules(rules);
-  if(PH35.skillRules != null) PH35.skillRules(rules);
-  if(PH35.featRules != null) PH35.featRules(rules);
-  if(PH35.descriptionRules != null) PH35.descriptionRules(rules);
-  if(PH35.equipmentRules != null) PH35.equipmentRules(rules);
-  if(PH35.combatRules != null) PH35.combatRules(rules);
-  if(PH35.adventuringRules != null) PH35.adventuringRules(rules);
-  if(PH35.magicRules != null) PH35.magicRules(rules);
+
+  MN2E.viewer = new ObjectViewer();
+  PH35.createViewer(MN2E.viewer);
+  rules.defineViewer("Standard", MN2E.viewer);
+
+  PH35.abilityRules(rules);
+  PH35.raceRules(rules, [], []);
+  PH35.classRules(rules, MN2E.CLASSES);
+  PH35.skillRules(rules, PH35.SKILLS, PH35.SUBSKILLS);
+  PH35.featRules(rules, PH35.FEATS, PH35.SUBFEATS);
+  PH35.descriptionRules(rules, PH35.ALIGNMENTS, MN2E.DEITIES, PH35.GENDERS);
+  PH35.equipmentRules
+    (rules, PH35.ARMORS, PH35.GOODIES, PH35.SHIELDS, PH35.WEAPONS);
+  PH35.combatRules(rules);
+  PH35.adventuringRules(rules);
+  PH35.magicRules(rules, PH35.DOMAINS, PH35.SCHOOLS, PH35.SPELLS);
+
   rules.defineChoice('random', MN2E.RANDOMIZABLE_ATTRIBUTES);
-  // A rule for handling DM-only information
-  rules.defineRule('dmNotes', 'dmonly', '?', null);
-  if(MN2E.raceRules != null) MN2E.raceRules(rules);
-  if(MN2E.heroicPathRules != null) MN2E.heroicPathRules(rules);
-  if(MN2E.classRules != null) MN2E.classRules(rules);
-  if(MN2E.skillRules != null) MN2E.skillRules(rules);
-  if(MN2E.featRules != null) MN2E.featRules(rules);
-  if(MN2E.equipmentRules != null) MN2E.equipmentRules(rules);
-  if(MN2E.magicRules != null) MN2E.magicRules(rules);
+  MN2E.raceRules(rules, MN2E.LANGUAGES, MN2E.RACES);
+  MN2E.heroicPathRules(rules, MN2E.HEROIC_PATHS);
+  MN2E.classRules(rules, MN2E.CLASSES);
+  MN2E.skillRules(rules, MN2E.SKILLS, MN2E.SUBSKILLS);
+  MN2E.featRules(rules, MN2E.FEATS, MN2E.SUBFEATS);
+  MN2E.equipmentRules(rules, MN2E.WEAPONS);
+  MN2E.magicRules(rules, MN2E.SPELLS);
+
   // TODO Remove this null testing choice later
   rules.defineChoice('races', 'None');
   rules.defineSheetElement('Deity', null, null, null);
   rules.randomizeOneAttribute = MN2E.randomizeOneAttribute;
   Scribe.addRuleSet(rules);
   MN2E.rules = rules;
+
 }
 
 // Arrays of choices passed to Scribe.
@@ -70,15 +70,17 @@ MN2E.CLASSES = [
   'Barbarian', 'Charismatic Channeler', 'Defender', 'Fighter',
   'Hermetic Channeler', 'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
 ];
+MN2E.DEITIES = ['Izrador (NE):Death/Destruction/Evil/Magic/War'];
 MN2E.FEATS = [
   'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
-  'Craft Spell Talisman:Item Creation', 'Devastating Mounted Assault:Fighter',
-  'Drive It Deep:Fighter', 'Extra Gift:', 'Friendly Agent:',
-  'Giant Fighter:Fighter', 'Greater Spellcasting:Channeling/Spellcasting',
-  'Herbalist:Item Creation', 'Improvised Weapon:Fighter', 'Innate Magic:',
-  'Inconspicuous:', 'Knife Thrower:Fighter', 'Lucky:', 'Magecraft:Channeling',
-  'Magic Hardened:', 'Natural Healer:', 'Orc Slayer:Fighter',
-  'Quickened Donning:Fighter', 'Ritual Magic:Channeling',
+  'Craft Spell Talisman:Item Creation',
+  'Devastating Mounted Assault:Fighter Bonus', 'Drive It Deep:Fighter Bonus',
+  'Extra Gift:', 'Friendly Agent:', 'Giant Fighter:Fighter Bonus',
+  'Greater Spellcasting:Channeling/Spellcasting', 'Herbalist:Item Creation',
+  'Improvised Weapon:Fighter Bonus', 'Innate Magic:', 'Inconspicuous:',
+  'Knife Thrower:Fighter Bonus', 'Lucky:', 'Magecraft:Channeling',
+  'Magic Hardened:', 'Natural Healer:', 'Orc Slayer:Fighter Bonus',
+  'Quickened Donning:Fighter Bonus', 'Ritual Magic:Channeling',
   'Sarcosan Pureblood:', 'Sense Nexus:', 'Spellcasting:Channeling/Spellcasting',
   'Spell Knowledge:', 'Thick Skull:', 'Warrior Of Shadow:',
   'Whispering Awareness:'
@@ -92,9 +94,9 @@ MN2E.HEROIC_PATHS = [
   'Tactician', 'Warg'
 ];
 MN2E.LANGUAGES = [
-  'Black Tongue', 'Colonial', 'Courtier', 'Danisil', 'Erenlander', 'Halfling',
-  'High Elven', 'Norther', 'Old Dwarven', 'Orcish', 'Patrol Sign', 'Sylvan',
-  'Trader\'s Tongue'
+  'Black Tongue', 'Clan Dwarven', 'Colonial', 'Courtier', 'Erenlander',
+  'Halfling', 'High Elven', 'Jungle Mouth', 'Norther', 'Old Dwarven', 'Orcish',
+  'Patrol Sign', 'Sylvan', 'Trader\'s Tongue'
 ];
 MN2E.RACES = [
   'Agrarian Halfling', 'Clan Dwarf', 'Clan Raised Dwarrow', 'Clan Raised Dworg',
@@ -118,6 +120,14 @@ MN2E.SPELLS = [
   'Silver Blood:W2/Transmutation', 'Silver Storm:W4/Transmutation',
   'Silver Wand:W3/Conjuration', 'Stone Soup:D1/W1/Transmutation'
 ];
+MN2E.SUBFEATS = {
+  'Greater Spellcasting':'Conjuration/Evocation',
+  'Magecraft':'Charismatic/Hermetic/Spiritual',
+  'Spellcasting':PH35.SCHOOLS.join('/')
+};
+MN2E.SUBSKILLS = {
+  'Knowledge':'Old Gods/Shadow/Spirits'
+};
 MN2E.WEAPONS = [
   'Atharak:d6', 'Cedeku:d6@19', 'Crafted Vardatch:d10@19',
   'Dornish Horse Spear:d10x3', 'Farmer\'s Rope:d2', 'Fighting Knife:d6@19x3',
@@ -145,24 +155,85 @@ MN2E.racesFavoredRegions = {
   'Snow Elf':'Erethor/Veradeen', 'Urban Sarcosan':null,
   'Wood Elf':'Erethor/Caraheen'
 };
-MN2E.featsSubfeats = {
-  'Greater Spellcasting':'Conjuration/Evocation',
-  'Magecraft':'Charismatic/Hermetic/Spiritual',
-  'Spellcasting':PH35.SCHOOLS.join('/')
-};
-MN2E.skillsSubskills = {
-  'Knowledge':'Old Gods/Shadow/Spirits'
+MN2E.racesLanguages = {
+  "Agrarian Halfling":
+    "Colonial:3/Halfling:3/" +
+    "Black Tongue:0/Courtier:0/Erenlander:0/Jungle Mouth:0/Orcish:0/" +
+    "Trader's Tongue:0",
+  "Clan Dwarf":
+    "Clan Dwarven:3/Old Dwarven:3/" +
+    "Clan Dwarven:0/Orcish:0",
+  "Clan Raised Dwarrow":
+    "Clan Dwarven:3/Old Dwarven:3/Trader's Tongue:1/" +
+    "Clan Dwarven:0/Orcish:0",
+  "Clan Raised Dworg":
+    "Clan Dwarven:3/Old Dwarven:1/Orcish:1/" +
+    "Clan Dwarven:0/Trader's Tongue:0",
+  "Danisil Raised Elfling":
+    "Halfling:1/High Elven:3/Jungle Mouth:3/" +
+    "Colonial:0/Erenlander:0/Orcish:0/Trader's Tongue:0",
+  "Dorn":
+    "Erenlander:3/Norther:3/" +
+    "Colonial:0/High Elven:0/Orcish:0/Trader's Tongue:0",
+  "Erenlander":
+    "Erenlander:3/" +
+    "Any:0",
+  "Gnome":
+    "Trader's Tongue:3/Any:2/Any:1" +
+    "Any:0",
+  "Gnome Raised Dwarrow":
+    "Clan Dwarven:2/Old Dwarven:1/Trader's Tongue:1/Any:1/Any:1/" +
+    "Any:0",
+  "Halfling Raised Elfling":
+    "Erenlander:3/Halfling:3/Jungle Mouth:1/" +
+    "Colonial:0/Orcish:0/Trader's Tongue:0",
+  "Jungle Elf":
+    "Jungle Mouth:3/" +
+    "Colonial:0/Erenlander:0/Halfling:0/High Elven:0/Sylvan:0/" +
+    "Trader's Tongue:0",
+  "Kurgun Dwarf":
+    "Clan Dwarven:3/Old Dwarven:3/" +
+    "Clan Dwarven:0/Orcish:0/Trader's Tongue:0",
+  "Kurgun Raised Dwarrow":
+    "Clan Dwarven:3/Old Dwarven:3/Trader's Tongue:1/" +
+    "Clan Dwarven:0/Orcish:0",
+  "Kurgun Raised Dworg":
+    "Clan Dwarven:3/Old Dwarven:1/Orcish:1/" +
+    "Clan Dwarven:0/Trader's Tongue:0",
+  "Nomadic Halfling":
+    "Colonial:3/Halfling:3/" +
+    "Black Tongue:0/Courtier:0/Erenlander:0/Jungle Mouth:0/Orcish:0/" +
+    "Trader's Tongue:0",
+  "Orc":
+    "Black Tongue:1/Old Dwarven:1/High Elven:1/Orcish:3/" +
+    "Any:0",
+  "Plains Sarcosan":
+    "Colonial:3/Erenlander:3/" +
+    "Courtier:0/Halfling:0/Norther:0/Orcish:0/Trader's Tongue:0",
+  "Sea Elf":
+    "High Elven:3/Jungle Mouth:3/" +
+    "Halfling:0/Sylvan:0/Trader's Tongue:0",
+  "Snow Elf":
+    "High Elven:3/Orcish:1/Patrol Sign:1/" +
+    "Black Tongue:0/Erenlander:0/Norther:0/Sylvan:0/Trader's Tongue:0",
+  "Urban Sarcosan":
+    "Colonial:3/Erenlander:3/" +
+    "Courtier:0/Halfling:0/Norther:0/Orcish:0/Trader's Tongue:0",
+  "Wood Elf":
+    "High Elven:3/" +
+    "Colonial:0/Erenlander:0/Halfling:0/Jungle Mouth:0/Old Dwarven:0/" +
+    "Orcish:0/Sylvan:0/Trader's Tongue:0"
 };
 
 /* Defines the rules related to MN2E Chapter 3, Core Classes. */
-MN2E.classRules = function(rules) {
+MN2E.classRules = function(rules, classes) {
 
-  for(var i = 0; i < MN2E.CLASSES.length; i++) {
+  for(var i = 0; i < classes.length; i++) {
 
     var baseAttack, feats, features, hitDie, notes, profArmor, profShield,
         profWeapon, saveFortitude, saveReflex, saveWill, selectableFeatures,
         skillPoints, skills, spellsKnown, spellsPerDay, spellsPerDayAbility;
-    var klass = MN2E.CLASSES[i];
+    var klass = classes[i];
 
     if(klass == 'Barbarian') {
 
@@ -963,7 +1034,7 @@ MN2E.classRules = function(rules) {
         'selectableFeatures.Improved Evasion', '=', '-1',
         'features.Evasion', '+', '1'
       );
-      rules.defineRule('validationNotes.slipperyMindSightSelectableFeature',
+      rules.defineRule('validationNotes.slipperyMindSelectableFeature',
         'selectableFeatures.Slippery Mind', '=', '-1',
         'features.Hunted By The Shadow', '+', '1'
       );
@@ -980,8 +1051,8 @@ MN2E.classRules = function(rules) {
     if(feats != null) {
       for(var j = 0; j < feats.length; j++) {
         rules.defineChoice('feats', feats[j] + ':' + klass);
-      } 
-    } 
+      }
+    }
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
@@ -997,29 +1068,29 @@ MN2E.classRules = function(rules) {
 };
 
 /* Defines the rules related to MN2E Chapter 5, Player Options/Starting Equipment. */
-MN2E.equipmentRules = function(rules) {
-  rules.defineChoice('weapons', MN2E.WEAPONS);
+MN2E.equipmentRules = function(rules, weapons) {
+  rules.defineChoice('weapons', weapons);
 };
 
 /* Defines the rules related to MN2E Chapter 5, Player Options/Feats. */
-MN2E.featRules = function(rules) {
+MN2E.featRules = function(rules, feats, subfeats) {
 
   var allFeats = [];
-  for(var i = 0; i < MN2E.FEATS.length; i++) {
-    var pieces = MN2E.FEATS[i].split(/:/);
+  for(var i = 0; i < feats.length; i++) {
+    var pieces = feats[i].split(/:/);
     var feat = pieces[0];
-    var subfeats = MN2E.featsSubfeats[feat];
-    if(subfeats == null) {
+    var featSubfeats = subfeats[feat];
+    if(featSubfeats == null) {
       allFeats[allFeats.length] = feat + ':' + pieces[1];
     } else {
       rules.defineRule('subfeatCount.' + feat,
         new RegExp('^feats\\.' + feat + ' \\('), '+=', '1'
       );
-      if(subfeats != '') {
-        subfeats = subfeats.split(/\//);
-        for(var j = 0; j < subfeats.length; j++) {
+      if(featSubfeats != '') {
+        featSubfeats = featSubfeats.split(/\//);
+        for(var j = 0; j < featSubfeats.length; j++) {
           allFeats[allFeats.length] =
-            feat + ' (' + subfeats[j] + '):' + pieces[1];
+            feat + ' (' + featSubfeats[j] + '):' + pieces[1];
         }
       }
     }
@@ -1305,9 +1376,9 @@ MN2E.featRules = function(rules) {
 };
 
 /* Defines the rules related to MN2E Chapter 2, Heroic Paths. */
-MN2E.heroicPathRules = function(rules) {
+MN2E.heroicPathRules = function(rules, paths) {
 
-  rules.defineChoice('heroicPaths', MN2E.HEROIC_PATHS, 'None');
+  rules.defineChoice('heroicPaths', paths, 'None');
   rules.defineRule
     ('abilityNotes.charismaBonusFeature', 'features.Charisma Bonus', '=', null);
   rules.defineRule('abilityNotes.constitutionBonusFeature',
@@ -1352,9 +1423,9 @@ MN2E.heroicPathRules = function(rules) {
   rules.defineRule('strength', 'abilityNotes.strengthBonusFeature', '+', null);
   rules.defineRule('wisdom', 'abilityNotes.wisdomBonusFeature', '+', null);
 
-  for(var i = 0; i < MN2E.HEROIC_PATHS.length; i++) {
+  for(var i = 0; i < paths.length; i++) {
 
-    var path = MN2E.HEROIC_PATHS[i];
+    var path = paths[i];
     var feats, features, notes, selectableFeatures, spellFeatures;
 
     if(path == 'Beast') {
@@ -1539,7 +1610,9 @@ MN2E.heroicPathRules = function(rules) {
         'featureNotes.improvedStonecunningFeature:' +
           'Automatic Search w/in 5 ft of concealed stone door',
         'featureNotes.tremorsenseFeature:' +
-          'Detect creatures in contact w/ground w/in 30 ft'
+          'Detect creatures in contact w/ground w/in 30 ft',
+        'skillNotes.stonecunningFeature:' +
+          '+2 Search involving stone or metal/automatic check w/in 10 ft'
       ];
       selectableFeatures = null;
       spellFeatures = [
@@ -2450,7 +2523,7 @@ MN2E.heroicPathRules = function(rules) {
       for(var j = 0; j < feats.length; j++) {
         rules.defineChoice('feats', feats[j] + ':' + path);
       }
-    } 
+    }
     if(features != null) {
       for(var j = 0; j < features.length; j++) {
         var levelAndFeature = features[j].split(/:/);
@@ -2509,10 +2582,10 @@ MN2E.heroicPathRules = function(rules) {
 };
 
 /* Defines the rules related to MN2E Chapter 5, Player Options/Magic. */
-MN2E.magicRules = function(rules) {
+MN2E.magicRules = function(rules, spells) {
 
-  for(var i = 0; i < MN2E.SPELLS.length; i++) {
-    var pieces = MN2E.SPELLS[i].split(':');
+  for(var i = 0; i < spells.length; i++) {
+    var pieces = spells[i].split(':');
     var codes = pieces[1].split('/');
     var school = codes[codes.length - 1].substring(0, 4);
     for(var j = 0; j < codes.length - 1; j++) {
@@ -2530,70 +2603,50 @@ MN2E.magicRules = function(rules) {
 };
 
 /* Defines the rules related to MN2E Chapter 1, Races of Midnight. */
-MN2E.raceRules = function(rules) {
+MN2E.raceRules = function(rules, languages, races) {
 
-  // Notes and rules that apply to multiple races
+  for(var i = 0; i < languages.length; i++) {
+    var language = languages[i];
+    rules.defineRule('languages.' + language,
+      'race', '+=',
+      'MN2E.racesLanguages[source] == null ? null : ' +
+      'MN2E.racesLanguages[source].indexOf("' + language + ':3") >= 0 ? 3 : ' +
+      'MN2E.racesLanguages[source].indexOf("' + language + ':2") >= 0 ? 2 : ' +
+      'MN2E.racesLanguages[source].indexOf("' + language + ':1") >= 0 ? 1 : ' +
+      'null'
+    );
+  }
+  rules.defineChoice('languages', languages);
+  rules.defineRule('languageCount',
+    'race', '=',
+      'MN2E.racesLanguages[source] == null ? 0 : ' +
+      'eval(MN2E.racesLanguages[source].replace(/\\D+/g, "+"))',
+    'intelligenceModifier', '+', 'source > 0 ? source : null',
+    'skills.Speak Language', '+', '2 * source'
+  );
+  rules.defineRule('validationNotes.totalLanguages',
+    'languageCount', '+=', '-source',
+    /^languages\./, '+=', null
+  );
+
   var notes = [
-    'abilityNotes.naturalMountaineerFeature:' +
-       'Unimpeded movement in mountainous terrain',
-    'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
-    'combatNotes.smallFeature:+1 AC/attack',
-    'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
-    'magicNotes.spellResistanceFeature:-2 spell energy',
-    'saveNotes.coldHardyFeature:+5 cold/half nonlethal damage',
-    'saveNotes.fortunateFeature:+1 all saves',
-    'saveNotes.hardyFeature:+1 Fortitude',
-    'saveNotes.poisonResistanceFeature:+2 vs. poison',
-    'saveNotes.spellResistanceFeature:+2 vs. spells',
-    'skillNotes.dextrousHandsFeature:+2 Craft (non-metal/non-wood)',
     'skillNotes.favoredRegion:' +
       '%V; Knowledge (Local) is a class skill/+2 Survival/Knowledge (Nature)',
-    'skillNotes.giftedHealerFeature:+2 Heal',
-    'skillNotes.improvedFavoredRegion:%V; +2 Survival/Knowledge (Nature)',
-    'skillNotes.improvedNaturalSwimmerFeature:' +
-       '+8 special action or avoid hazard/always take 10/run',
-    'skillNotes.keenSensesFeature:+2 Listen/Search/Spot',
-    'skillNotes.naturalMountaineerFeature:+2 Climb',
-    'skillNotes.naturalSwimmerFeature:' +
-       'Swim at half speed as move action/hold breath for %V rounds',
-    'skillNotes.naturalRiverfolkFeature:' +
-      '+2 Perform/Profession (Sailor)/Swim/Use Rope',
-    'skillNotes.smallFeature:+4 Hide',
-    'skillNotes.stonecunningFeature:' +
-      '+2 Search involving stone or metal/automatic check w/in 10 ft',
-    'skillNotes.stoneKnowledgeFeature:' +
-       '+2 Appraise/Craft involving stone or metal'
+    'skillNotes.illiteracyFeature:Must spend 2 skill points to read/write',
+    'validationNotes.totalLanguages:Allocated languages differ from ' +
+      'language total by %V'
   ];
   rules.defineNote(notes);
-  rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
-  rules.defineRule
-    ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
-  rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
-  rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
-  rules.defineRule
-    ('resistance.Poison', 'saveNotes.poisonResistanceFeature', '+=', '2');
-  rules.defineRule
-    ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
-  rules.defineRule
-    ('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
   rules.defineRule('skillNotes.favoredRegion',
     'race', '=', 'MN2E.racesFavoredRegions[source]'
   );
-  rules.defineRule('speed', 'features.Slow', '+', '-10');
+  rules.defineRule('features.Illiteracy', '', '=', '1');
   rules.defineRule
-    ('spellEnergy', 'magicNotes.spellResistanceFeature', '+', '-2');
-  rules.defineRule('skillNotes.naturalSwimmerFeature',
-    'constitution', '=', 'source',
-    'holdBreathMultiplier', '*', null
-  );
-  rules.defineRule
-    ('save.Fortitude', 'saveNotes.fortunateFeature', '+', '1');
-  rules.defineRule('save.Reflex', 'saveNotes.fortunateFeature', '+', '1');
-  rules.defineRule('save.Will', 'saveNotes.fortunateFeature', '+', '1');
+    ('skills.Speak Language', 'skillNotes.illiteracyFeature', '+', '-2');
 
-  for(var i = 0; i < MN2E.RACES.length; i++) {
+  for(var i = 0; i < races.length; i++) {
 
-    var race = MN2E.RACES[i];
+    var race = races[i];
     var adjustment, features, notes, selectableFeatures;
 
     if(race == 'Dorn') {
@@ -2603,7 +2656,9 @@ MN2E.raceRules = function(rules) {
       notes = [
         'combatNotes.brotherhoodFeature:' +
           '+1 attack when fighting alongside 4+ Dorns',
-        'combatNotes.fierceFeature:+1 attack w/two-handed weapons'
+        'combatNotes.fierceFeature:+1 attack w/two-handed weapons',
+        'saveNotes.coldHardyFeature:+5 cold/half nonlethal damage',
+        'saveNotes.hardyFeature:+1 Fortitude'
       ];
       selectableFeatures = null;
       rules.defineRule('featCount.Fighter Bonus',
@@ -2612,6 +2667,7 @@ MN2E.raceRules = function(rules) {
       rules.defineRule('featureNotes.dornFeatCountBonus',
         'race', '=', 'source == "Dorn" ? 1 : null'
       );
+      rules.defineRule('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
       rules.defineRule('skillNotes.dornSkillPointsBonus',
         'race', '?', 'source == "Dorn"',
         'level', '=', 'source + 3'
@@ -2630,7 +2686,11 @@ MN2E.raceRules = function(rules) {
       notes = [
         'combatNotes.dwarfFavoredEnemyFeature:+1 attack vs. orc',
         'combatNotes.dwarfFavoredWeaponFeature:+1 attack with axes/hammers',
-        'combatNotes.resilientFeature:+2 AC'
+        'combatNotes.resilientFeature:+2 AC',
+        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'magicNotes.spellResistanceFeature:-2 spell energy',
+        'saveNotes.poisonResistanceFeature:+2 vs. poison',
+        'saveNotes.spellResistanceFeature:+2 vs. spells'
       ];
       selectableFeatures = null;
       rules.defineRule('abilityNotes.armorSpeedAdjustment',
@@ -2638,16 +2698,31 @@ MN2E.raceRules = function(rules) {
       );
       rules.defineRule
         ('armorClass', 'combatNotes.resilientFeature', '+', '2');
+      rules.defineRule
+        ('resistance.Poison', 'saveNotes.poisonResistanceFeature', '+=', '2');
+      rules.defineRule
+        ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
+      rules.defineRule('speed', 'features.Slow', '+', '-10');
+      rules.defineRule
+        ('spellEnergy', 'magicNotes.spellResistanceFeature', '+', '-2');
       if(race == 'Clan Dwarf') {
         features = features.concat([
           'Dodge Orcs', 'Know Depth', 'Stability', 'Stonecunning'
         ]);
         notes = notes.concat([
+          'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
           'featureNotes.knowDepthFeature:Intuit approximate depth underground',
-          'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip'
+          'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip',
+          'skillNotes.stonecunningFeature:' +
+            '+2 Search involving stone or metal/automatic check w/in 10 ft'
         ]);
       } else if(race == 'Kurgun Dwarf') {
         features = features.concat(['Natural Mountaineer']);
+        notes = notes.concat([
+          'abilityNotes.naturalMountaineerFeature:' +
+             'Unimpeded movement in mountainous terrain',
+          'skillNotes.naturalMountaineerFeature:+2 Climb'
+        ]);
       }
 
     } else if(race.indexOf(' Dwarrow') >= 0) {
@@ -2658,26 +2733,66 @@ MN2E.raceRules = function(rules) {
         'Sturdy'
       ];
       notes = [
-        'combatNotes.sturdyFeature:+1 AC'
+        'combatNotes.smallFeature:+1 AC/attack',
+        'combatNotes.sturdyFeature:+1 AC',
+        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'magicNotes.spellResistanceFeature:-2 spell energy',
+        'saveNotes.poisonResistanceFeature:+2 vs. poison',
+        'saveNotes.spellResistanceFeature:+2 vs. spells',
+        'skillNotes.smallFeature:+4 Hide'
       ];
       selectableFeatures = null;
+      rules.defineRule('armorClass',
+        'combatNotes.smallFeature', '+', '1',
+        'combatNotes.sturdyFeature', '+', '1'
+      );
+      rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
-        ('armorClass', 'combatNotes.sturdyFeature', '+', '1');
+        ('resistance.Poison', 'saveNotes.poisonResistanceFeature', '+=', '2');
+      rules.defineRule
+        ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
+      rules.defineRule('speed', 'features.Slow', '+', '-10');
+      rules.defineRule
+        ('spellEnergy', 'magicNotes.spellResistanceFeature', '+', '-2');
       if(race == 'Clan Raised Dwarrow') {
         features = features.concat([
           'Dodge Orcs', 'Stonecunning', 'Stone Knowledge'
+        ]);
+        notes = notes.concat([
+          'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
+          'skillNotes.stonecunningFeature:' +
+            '+2 Search involving stone or metal/automatic check w/in 10 ft',
+          'skillNotes.stoneKnowledgeFeature:' +
+             '+2 Appraise/Craft involving stone or metal'
         ]);
       } else if(race == 'Gnome Raised Dwarrow') {
         features = features.concat([
           'Natural Riverfolk', 'Natural Swimmer', 'Skilled Trader'
         ]);
         notes = [
+          'skillNotes.naturalSwimmerFeature:' +
+             'Swim at half speed as move action/hold breath for %V rounds',
+          'skillNotes.naturalRiverfolkFeature:' +
+            '+2 Perform/Profession (Sailor)/Swim/Use Rope',
           'skillNotes.skilledTraderFeature:' +
             '+2 Appraise/Bluff/Diplomacy/Forgery/Gather Information/Profession when smuggling/trading'
         ];
+        rules.defineRule
+          ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
+        rules.defineRule('skillNotes.naturalSwimmerFeature',
+          'constitution', '=', 'source',
+          'holdBreathMultiplier', '*', null
+        );
       } else if(race == 'Kurgun Raised Dwarrow') {
         features = features.concat([
           'Dodge Orcs', 'Natural Mountaineer', 'Stone Knowledge'
+        ]);
+        notes = notes.concat([
+          'abilityNotes.naturalMountaineerFeature:' +
+             'Unimpeded movement in mountainous terrain',
+          'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
+          'skillNotes.naturalMountaineerFeature:+2 Climb'
         ]);
       }
 
@@ -2691,16 +2806,32 @@ MN2E.raceRules = function(rules) {
       notes = [
         'combatNotes.dworgFavoredEnemyFeature:+2 attack vs. orc',
         'combatNotes.minorLightSensitivityFeature:DC 15 Fortitude save in sunlight to avoid -1 attack',
-        'saveNotes.ruggedFeature:+2 all saves'
+        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'magicNotes.spellResistanceFeature:-2 spell energy',
+        'saveNotes.ruggedFeature:+2 all saves',
+        'saveNotes.spellResistanceFeature:+2 vs. spells'
       ];
       selectableFeatures = null;
+      rules.defineRule
+        ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
       rules.defineRule('save.Fortitude', 'saveNotes.ruggedFeature', '+', '2');
       rules.defineRule('save.Reflex', 'saveNotes.ruggedFeature', '+', '2');
       rules.defineRule('save.Will', 'saveNotes.ruggedFeature', '+', '2');
+      rules.defineRule
+        ('spellEnergy', 'magicNotes.spellResistanceFeature', '+', '-2');
       if(race == 'Clan Raised Dworg') {
         features = features.concat(['Stonecunning']);
+        notes = notes.concat([
+          'skillNotes.stonecunningFeature:' +
+            '+2 Search involving stone or metal/automatic check w/in 10 ft'
+        ]);
       } else if(race == 'Kurgun Raised Dworg') {
         features = features.concat(['Natural Mountaineer']);
+        notes = notes.concat([
+          'abilityNotes.naturalMountaineerFeature:' +
+             'Unimpeded movement in mountainous terrain',
+          'skillNotes.naturalMountaineerFeature:+2 Climb'
+        ]);
       }
 
     } else if(race.indexOf(' Elfling') >= 0) {
@@ -2711,14 +2842,27 @@ MN2E.raceRules = function(rules) {
         'Low Light Vision', 'Nimble', 'Small'
       ];
       notes = [
-        'skillNotes.nimbleFeature:+2 Climb/Hide'
+        'combatNotes.smallFeature:+1 AC/attack',
+        'saveNotes.fortunateFeature:+1 all saves',
+        'skillNotes.giftedHealerFeature:+2 Heal',
+        'skillNotes.keenSensesFeature:+2 Listen/Search/Spot',
+        'skillNotes.nimbleFeature:+2 Climb/Hide',
+        'skillNotes.smallFeature:+4 Hide'
       ];
       selectableFeatures = null;
-      if(race == 'Halfling Raised Elfling') {
+      rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule
+        ('save.Fortitude', 'saveNotes.fortunateFeature', '+', '1');
+      rules.defineRule('save.Reflex', 'saveNotes.fortunateFeature', '+', '1');
+      rules.defineRule('save.Will', 'saveNotes.fortunateFeature', '+', '1');
+      if(race == 'Danisil Raised Elfling') {
+      } else if(race == 'Halfling Raised Elfling') {
+        features = features.concat(['Bound To The Beast']);
         notes = notes.concat([
           'featureNotes.boundToTheBeastFeature:Mounted Combat'
         ]);
-        features = features.concat(['Bound To The Beast']);
         rules.defineRule('features.Mounted Combat',
           'featureNotes.boundToTheBeastFeature', '=', '1'
         );
@@ -2734,6 +2878,7 @@ MN2E.raceRules = function(rules) {
       notes = [
         'magicNotes.naturalChannelerFeature:+2 spell energy',
         'saveNotes.enchantmentResistanceFeature:+2 vs. enchantments',
+        'skillNotes.keenSensesFeature:+2 Listen/Search/Spot',
         'skillNotes.treeClimberFeature:+4 Balance (trees)/Climb (trees)'
       ];
       selectableFeatures = null;
@@ -2766,11 +2911,26 @@ MN2E.raceRules = function(rules) {
           'Improved Natural Swimmer', 'Natural Sailor', 'Natural Swimmer'
         ]);
         notes = notes.concat([
+          'skillNotes.improvedNaturalSwimmerFeature:' +
+             '+8 special action or avoid hazard/always take 10/run',
           'skillNotes.naturalSailorFeature:' +
-            '+2 Craft (ship/sea)/Profession (ship/sea)/Use Rope (ship/sea)'
+            '+2 Craft (ship/sea)/Profession (ship/sea)/Use Rope (ship/sea)',
+          'skillNotes.naturalSwimmerFeature:' +
+             'Swim at half speed as move action/hold breath for %V rounds'
         ]);
+        rules.defineRule
+          ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
+        rules.defineRule('skillNotes.naturalSwimmerFeature',
+          'constitution', '=', 'source',
+          'holdBreathMultiplier', '*', null
+        );
       } else if(race == 'Snow Elf') {
         features = features.concat(['Cold Hardy', 'Hardy']);
+        notes = notes.concat([
+          'saveNotes.coldHardyFeature:+5 cold/half nonlethal damage',
+          'saveNotes.hardyFeature:+1 Fortitude'
+        ]);
+        rules.defineRule('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
       } else if(race == 'Wood Elf') {
         features = features.concat([
           'Improved Innate Magic', 'Improved Natural Channeler'
@@ -2832,12 +2992,36 @@ MN2E.raceRules = function(rules) {
         'Natural Trader', 'Slow', 'Small', 'Spell Resistance'
       ];
       notes = [
+        'combatNotes.smallFeature:+1 AC/attack',
         'featureNotes.lowLightVisionFeature:' +
           'Double normal distance in poor light',
+        'magicNotes.spellResistanceFeature:-2 spell energy',
+        'saveNotes.hardyFeature:+1 Fortitude',
+        'skillNotes.naturalRiverfolkFeature:' +
+          '+2 Perform/Profession (Sailor)/Swim/Use Rope',
+        'skillNotes.naturalSwimmerFeature:' +
+           'Swim at half speed as move action/hold breath for %V rounds',
+        'saveNotes.spellResistanceFeature:+2 vs. spells',
         'skillNotes.naturalTraderFeature:' +
-          '+4 Appraise/Bluff/Diplomacy/Forgery/Gather Information/Profession when smuggling/trading'
+          '+4 Appraise/Bluff/Diplomacy/Forgery/Gather Information/Profession when smuggling/trading',
+        'skillNotes.smallFeature:+4 Hide'
       ];
       selectableFeatures = null;
+      rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule
+        ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
+      rules.defineRule('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
+      rules.defineRule
+        ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
+      rules.defineRule('skillNotes.naturalSwimmerFeature',
+        'constitution', '=', 'source',
+        'holdBreathMultiplier', '*', null
+      );
+      rules.defineRule('speed', 'features.Slow', '+', '-10');
+      rules.defineRule
+        ('spellEnergy', 'magicNotes.spellResistanceFeature', '+', '-2');
 
     } else if(race.indexOf(' Halfling') >= 0) {
 
@@ -2847,20 +3031,33 @@ MN2E.raceRules = function(rules) {
         'Low Light Vision', 'Slow', 'Small', 'Unafraid'
       ];
       notes = [
+        'combatNotes.smallFeature:+1 AC/attack',
+        'saveNotes.fortunateFeature:+1 all saves',
         'saveNotes.unafraidFeature:+2 vs. fear',
         'skillNotes.alertSensesFeature:+2 Listen/Spot',
-        'skillNotes.gracefulFeature:+2 Climb/Jump/Move Silently/Tumble'
+        'skillNotes.gracefulFeature:+2 Climb/Jump/Move Silently/Tumble',
+        'skillNotes.smallFeature:+4 Hide'
       ];
       selectableFeatures = null;
+      rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
         ('resistance.Fear', 'saveNotes.unafraidFeature', '+=', '2');
+      rules.defineRule
+        ('save.Fortitude', 'saveNotes.fortunateFeature', '+', '1');
+      rules.defineRule('save.Reflex', 'saveNotes.fortunateFeature', '+', '1');
+      rules.defineRule('save.Will', 'saveNotes.fortunateFeature', '+', '1');
+      rules.defineRule('speed', 'features.Slow', '+', '-10');
 
       if(race == 'Agrarian Halfling') {
         selectableFeatures = ['Stout', 'Studious'];
         features = features.concat(['Dextrous Hands', 'Gifted Healer']);
         notes = notes.concat([
           'featureNotes.stoutFeature:Endurance/Toughness',
-          'featureNotes.studiousFeature:Magecraft (Hermetic)'
+          'featureNotes.studiousFeature:Magecraft (Hermetic)',
+          'skillNotes.dextrousHandsFeature:+2 Craft (non-metal/non-wood)',
+          'skillNotes.giftedHealerFeature:+2 Heal'
         ]);
         rules.defineRule('agrarianHalflingFeatures.Endurance',
           'featureNotes.stoutFeature', '=', '1'
@@ -2923,12 +3120,19 @@ MN2E.raceRules = function(rules) {
         'combatNotes.nightFighterFeature:+1 attack in darkness',
         'combatNotes.orcFrenzyFeature:+1 attack when fighting among 10+ Orcs',
         'combatNotes.orcFavoredEnemyFeature:+1 damage vs. dwarves',
+        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'magicNotes.spellResistanceFeature:-2 spell energy',
         'saveNotes.improvedColdHardyFeature:Immune non-lethal/half lethal',
+        'saveNotes.spellResistanceFeature:+2 vs. spells',
         'skillNotes.naturalPredatorFeature:+%V Intimidate'
       ];
       selectableFeatures = null;
       rules.defineRule
+        ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
+      rules.defineRule
         ('skillNotes.naturalPredatorFeature', 'strengthModifier', '=', null);
+      rules.defineRule
+        ('spellEnergy', 'magicNotes.spellResistanceFeature', '+', '-2');
 
     } else if(race.indexOf(' Sarcosan') >= 0) {
 
@@ -2989,7 +3193,7 @@ MN2E.raceRules = function(rules) {
 };
 
 /* Defines the rules related to MN2E Chapter 5, Player Options/Skills. */
-MN2E.skillRules = function(rules) {
+MN2E.skillRules = function(rules, skills, subskills) {
 
   var abilityNames = {
     'cha':'charisma', 'con':'constitution', 'dex':'dexterity',
@@ -2998,11 +3202,11 @@ MN2E.skillRules = function(rules) {
   var synergies = {
   };
   var allSkills = [];
-  for(var i = 0; i < MN2E.SKILLS.length; i++) {
-    var pieces = MN2E.SKILLS[i].split(/:/);
+  for(var i = 0; i < skills.length; i++) {
+    var pieces = skills[i].split(/:/);
     var skill = pieces[0];
-    var subskills = MN2E.skillsSubskills[skill];
-    if(subskills == null) {
+    var skillsSubskills = subskills[skill];
+    if(skillsSubskills == null) {
       allSkills[allSkills.length] = skill + ':' + pieces[1];
     } else {
       rules.defineRule('subskillCount.' + skill,
@@ -3014,10 +3218,10 @@ MN2E.skillRules = function(rules) {
       rules.defineRule('subskillTotal.' + skill,
         new RegExp('^skills\\.' + skill + ' \\('), '+=', null
       );
-      if(subskills != '') {
-        subskills = subskills.split(/\//);
-        for(var j = 0; j < subskills.length; j++) {
-          var subskill = skill + ' (' + subskills[j] + ')';
+      if(skillsSubskills != '') {
+        skillsSubskills = skillsSubskills.split(/\//);
+        for(var j = 0; j < skillsSubskills.length; j++) {
+          var subskill = skill + ' (' + skillsSubskills[j] + ')';
           allSkills[allSkills.length] = subskill + ':' + pieces[1];
           rules.defineRule
             ('classSkills.' + subskill, 'classSkills.' + skill, '=', '1');
@@ -3058,7 +3262,6 @@ MN2E.skillRules = function(rules) {
   rules.defineRule('skills.Knowledge (Spirits)',
     'skillNotes.knowledge(Nature)Synergy2', '+', '2'
   );
-  rules.defineChoice('languages', MN2E.LANGUAGES);
 
 };
 
@@ -3068,7 +3271,49 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
     attributes[attribute] =
       attributes['levels.Legate'] != null ? 'Izrador (NE)' : 'None';
   } else if(attribute == 'languages') {
-    // TODO
+    var attrs = this.applyRules(attributes);
+    var choices;
+    var howMany =
+      attrs.languageCount - ScribeUtils.sumMatching(attrs, /^languages\./);
+    if(attrs.race == null || MN2E.racesLanguages[attrs.race] == null) {
+      // Allow any non-restricted language
+      choices = this.getChoices('languages');
+      delete choices['Patrol Sign'];
+      delete choices['Sylvan'];
+      choices = ScribeUtils.getKeys(choices);
+    } else if(MN2E.racesLanguages[attrs.race].indexOf('Any') >= 0) {
+      // Allow (at least) any non-restricted language
+      choices = this.getChoices('languages');
+      if(MN2E.racesLanguages[attrs.race].indexOf('Patrol Sign') < 0)
+        delete choices['Patrol Sign'];
+      if(MN2E.racesLanguages[attrs.race].indexOf('Sylvan') < 0)
+        delete choices['Sylvan'];
+      choices = ScribeUtils.getKeys(choices);
+    } else {
+      // Allow only those listed for this race
+      choices = MN2E.racesLanguages[attrs.race].replace(/:\d*/g, '').split('/');
+    }
+    while(howMany > 0 && choices.length > 0) {
+      var i = ScribeUtils.random(0, choices.length - 1);
+      var language = choices[i];
+      var attr = 'languages.' + language;
+      var currentPoints = attrs[attr] == null ? 0 : attrs[attr];
+      var maxPoints = 'Black Tongue/Patrol Sign'.indexOf(language) < 0 ? 3 : 1;
+      if(currentPoints < maxPoints) {
+        // Maximize half the time; otherwise, randomize
+        var addedPoints = ScribeUtils.random(0, 99) < 50 ?
+                          maxPoints - currentPoints:
+                          ScribeUtils.random(1, maxPoints - currentPoints);
+        if(addedPoints > howMany)
+          addedPoints = howMany;
+        attrs[attr] = currentPoints + addedPoints;
+        attributes[attr] =
+          (attributes[attr] == null ? 0 : attributes[attr]) + addedPoints;
+        howMany -= addedPoints;
+      } else {
+        choices = choices.slice(0, i).concat(choices.slice(i + 1));
+      }
+    }
   } else if(attribute == 'spells') {
     // First, take care of fixed spells from, e.g., Magecraft
     PH35.randomizeOneAttribute.apply(this, [attributes, attribute]);
@@ -3144,3 +3389,15 @@ MN2E.getChoices = function() {
 MN2E.isSource = function() {
   return MN2E.rules.isSource.apply(MN2E.rules, arguments);
 };
+
+// Pidgin Colonial or Norther -> Pidgin Erenlander
+// Basic Colonial and Norther -> Basic Erenlander
+// Basic High Elven -> Pidgin Jungle Mouth
+// Basic Halfling -> Pidgin Jungle Mouth
+// Basic Jungle Mouth -> Pidgin Halfling
+// Basic Colonial -> Pidgin Trader's Tongue
+// Basic Erenlander -> Pidgin Trader's Tongue
+// Basic Halfling -> Pidgin Trader's Tongue
+// Basic High Elven -> Pidgin Trader's Tongue
+// Basic Norther -> Pidgin Trader's Tongue
+// Basic Old Dwarven -> Pidgin Trader's Tongue
