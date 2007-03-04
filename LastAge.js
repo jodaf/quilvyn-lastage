@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.63 2007/03/02 04:08:44 Jim Exp $ */
+/* $Id: LastAge.js,v 1.64 2007/03/04 00:25:21 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -1038,6 +1038,40 @@ MN2E.classRules = function(rules, classes) {
         'selectableFeatures.Slippery Mind', '=', '-1',
         'features.Hunted By The Shadow', '+', '1'
       );
+      rules.defineRule
+        ('companionLevel', 'features.Animal Companion', '+=', null);
+      var companionFeatures = [
+        '1:Devotion', '2:Magical Beast', '3:Helper Evasion', '4:Improved Speed',
+        '5:Empathic Link'
+      ];
+      var companionNotes = [
+        'helperNotes.helperEvasionFeature:' +
+          'Reflex save yields no damage instead of 1/2',
+        'helperNotes.devotionFeature:+4 Will vs. enchantment',
+        'helperNotes.empathicLinkFeature:Share emotions up to 1 mile',
+        'helperNotes.improvedSpeedFeature:+10 speed',
+        'helperNotes.magicalBeastFeature:' +
+          'Treated as magical beast for type-based effects'
+      ];
+      for(var j = 0; j < companionFeatures.length; j++) {
+        var levelAndFeature = companionFeatures[j].split(/:/);
+        var feature = levelAndFeature[levelAndFeature.length == 1 ? 0 : 1];
+        var level = levelAndFeature.length == 1 ? 1 : levelAndFeature[0];
+        rules.defineRule('companionFeatures.' + feature,
+          'companionLevel', '=', 'source >= ' + level + ' ? 1 : null'
+        );
+        rules.defineRule
+          ('features.' + feature, 'companionFeatures.' + feature, '=', '1');
+      }
+      rules.defineRule
+        ('companionArmorClass', 'companionLevel', '=', '(source-1) * 2');
+      rules.defineRule
+        ('companionDexterity', 'companionLevel', '=', 'source - 1');
+      rules.defineRule
+        ('companionHitDice', 'companionLevel', '=', '(source - 1) * 2');
+      rules.defineRule('companionStrength', 'companionLevel', '=', 'source*2');
+      rules.defineRule('companionTricks', 'companionLevel', '=', 'source + 1');
+      notes = notes.concat(companionNotes);
 
     } else
       continue;
