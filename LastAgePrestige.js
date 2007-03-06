@@ -21,7 +21,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
  * fields can be manipulated in order to trim the choices offered.
  */
 function MN2EPrestige() {
-  if(MN2EPrestige.prestigeClassRules != null) MN2EPrestige.prestigeClassRules();
+  MN2EPrestige.prestigeClassRules(MN2EPrestige.PRESTIGE_CLASSES);
 }
 
 MN2EPrestige.PRESTIGE_CLASSES = [
@@ -31,14 +31,14 @@ MN2EPrestige.PRESTIGE_CLASSES = [
   'Wogren Rider'
 ];
 
-MN2EPrestige.prestigeClassRules = function() {
+MN2EPrestige.prestigeClassRules = function(classes) {
 
-  for(var i = 0; i < MN2EPrestige.PRESTIGE_CLASSES.length; i++) {
+  for(var i = 0; i < classes.length; i++) {
 
     var baseAttack, feats, features, hitDie, notes, profArmor, profShield,
         profWeapon, saveFortitude, saveReflex, saveWill, selectableFeatures,
         skillPoints, skills, spellsKnown, spellsPerDay, spellsPerDayAbility;
-    var klass = MN2EPrestige.PRESTIGE_CLASSES[i];
+    var klass = classes[i];
 
     if(klass == 'Ancestral Bladebearer') {
 
@@ -1029,10 +1029,14 @@ MN2EPrestige.prestigeClassRules = function() {
       MN2E.defineRule
         ('spellsKnownBonus', 'magicNotes.wizardSpellsKnown', '+', null);
       MN2E.defineRule('validationNotes.wizardFeatures',
-        'levels.Wizard', '=', '-2',
+        'levels.Wizard', '=', '-4',
+        // NOTE: False positive w/multiple item creation/metamagic feats
         'features.Magecraft (Hermetic)', '+', '1',
-        'subfeatCount.Spellcasting', '+', 'source >= 2 ? 1 : null'
-        // TODO 1 item creation/1 metamagic
+        'subfeatCount.Spellcasting', '+', 'source >= 2 ? 1 : null',
+        // NOTE: Metamagic feat names all end in 'Spell''
+        /^features\..*Spell$/, '+', '1',
+        /^features\.(Brew|Craft|Forge)/, '+', '1',
+        '', 'v', '0'
       );
       MN2E.defineRule('validationNotes.wizardSkills',
         'levels.Wizard', '=', '-2',
