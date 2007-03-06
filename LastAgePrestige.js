@@ -490,9 +490,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'baseAttack', '+', 'source >= 5 ? 1 : null'
       );
       MN2E.defineRule('validationNotes.elvenRaiderFeatures',
-        'levels.Elven Raider', '=', '-3',
-        'features.Point Blank Shot', '+', '1',
-        'features.Rapid Shot', '+', '1',
+        'levels.Elven Raider', '=', '-201',
+        'features.Point Blank Shot', '+', '100',
+        'features.Rapid Shot', '+', '100',
         'features.Weapon Focus (Composite Longbow)', '+', '1',
         'features.Weapon Focus (Longbow)', '+', '1',
         '', 'v', '0'
@@ -1029,11 +1029,10 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       MN2E.defineRule
         ('spellsKnownBonus', 'magicNotes.wizardSpellsKnown', '+', null);
       MN2E.defineRule('validationNotes.wizardFeatures',
-        'levels.Wizard', '=', '-4',
-        // NOTE: False positive w/multiple item creation/metamagic feats
-        'features.Magecraft (Hermetic)', '+', '1',
-        'subfeatCount.Spellcasting', '+', 'source >= 2 ? 1 : null',
-        // NOTE: Metamagic feat names all end in 'Spell''
+        'levels.Wizard', '=', '-202',
+        'features.Magecraft (Hermetic)', '+', '100',
+        'subfeatCount.Spellcasting', '+', 'source >= 2 ? 100 : null',
+        // NOTE: Metamagic feat names all end in 'Spell'
         /^features\..*Spell$/, '+', '1',
         /^features\.(Brew|Craft|Forge)/, '+', '1',
         '', 'v', '0'
