@@ -37,7 +37,7 @@ MN2EPrestige.prestigeClassRules = function(classes) {
 
     var baseAttack, feats, features, hitDie, notes, profArmor, profShield,
         profWeapon, saveFortitude, saveReflex, saveWill, selectableFeatures,
-        skillPoints, skills, spellsKnown, spellsPerDay, spellsPerDayAbility;
+        skillPoints, skills, spellAbility, spellsKnown, spellsPerDay;
     var klass = classes[i];
 
     if(klass == 'Ancestral Bladebearer') {
@@ -82,9 +82,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Climb', 'Handle Animal', 'Intimidate', 'Jump', 'Ride',
         'Speak Language', 'Swim'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule('combatNotes.advanceAncestralBladeFeature',
         'levels.Ancestral Bladebearer', '=', 'Math.floor((source + 2) / 4)'
       );
@@ -154,9 +154,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Sleight Of Hand', 'Speak Language', 'Spot', 'Survival', 'Swim',
         'Tumble', 'Use Rope'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule('featureNotes.alterEgoFeature',
         'levels.Aradil\'s Eye', '=',
         'source >= 7 ? "any" : source >= 3 ? "2 selected" : "1 selected"'
@@ -233,9 +233,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Open Lock', 'Search', 'Sense Motive', 'Speak Language', 'Spot',
         'Swim', 'Tumble', 'Use Rope'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule('combatNotes.deathAttackFeature',
         'levels.Avenging Knife', '+=', '10 + source',
         'intelligenceModifier', '+', null
@@ -312,9 +312,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Knowledge (Religion)', 'Knowledge (Shadow)', 'Knowledge (Spirits)',
         'Sense Motive', 'Spellcraft', 'Survival'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule('featCount.Spellcasting',
         'levels.Bane Of Legates', '+=', 'Math.floor((source - 1) / 4)'
       );
@@ -388,9 +388,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Knowledge (Geography)', 'Knowledge (Nature)', 'Knowledge (Spirits)',
         'Speak Language', 'Spellcraft', 'Survival'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule('druidTurningLevel',
         'levels.Druid', '+=', 'source / 2',
         'levels.Charismatic Channeler', '*', '2',
@@ -472,9 +472,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Move Silently', 'Ride', 'Search', 'Speak Language', 'Spot',
         'Survival', 'Swim', 'Use Rope'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule('combatNotes.improvedSneakAttackFeature',
         'levels.Elven Raider', '+=', '30 + Math.floor((source + 1) / 3) * 15'
       );
@@ -565,9 +565,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Climb', 'Diplomacy', 'Handle Animal', 'Jump', 'Ride',
         'Speak Language', 'Spot', 'Survival', 'Swim'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule('featCount.Freerider',
         'levels.Freerider', '=', 'Math.floor(source / 3)'
       );
@@ -644,9 +644,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Knowledge (Religion)', 'Knowledge (Shadow)', 'Knowledge (Spirits)',
         'Speak Language', 'Spellcraft'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule
         ('magicNotes.hauntedOneSpellEnergy', 'levels.Haunted One', '=', null);
       MN2E.defineRule
@@ -713,9 +713,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Sense Motive', 'Sleight Of Hand', 'Speak Language', 'Spot', 'Swim',
         'Tumble', 'Use Magic Device', 'Use Rope'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule('combatNotes.sneakAttackFeature',
         'levels.Insurgent Spy', '+=', 'Math.floor((source - 1) / 2)'
       );
@@ -783,9 +783,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Sense Motive', 'Sleight Of Hand', 'Spot', 'Swim', 'Tumble',
         'Use Magic Device', 'Use Rope'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       // TODO 1/day < level 7; 2/day >= 7
       MN2E.defineRule('magicNotes.mystifyingSpeechFeature',
         'levels.Smuggler', '=', '10 + source',
@@ -851,9 +851,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Concentration', 'Intimidate', 'Jump', 'Knowledge (Arcana)', 'Ride',
         'Speak Language', 'Spellcraft', 'Swim'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule('magicNotes.arcaneSpellFailure',
         'magicNotes.armoredCastingFeature', '+', '-source',
         null, '^', '0'
@@ -942,9 +942,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Knowledge (Planes)', 'Knowledge (Religion)', 'Knowledge (Shadow)',
         'Knowledge (Spirits)', 'Speak Language', 'Spellcraft', 'Survival'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule
         ('initiative', 'combatNotes.whisperInitiativeFeature', '+', '2');
       MN2E.defineRule('magicNotes.whisperAdeptSpellEnergy',
@@ -1009,9 +1009,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Knowledge (Religion)', 'Knowledge (Shadow)', 'Knowledge (Spirits)',
         'Speak Language', 'Spellcraft'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule('featCount.Spellcasting',
         'levels.Wizard', '+=', 'source<4 ? null : Math.floor((source - 1) / 3)'
       );
@@ -1097,9 +1097,9 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'Climb', 'Handle Animal', 'Heal', 'Hide', 'Jump', 'Listen',
         'Move Silently', 'Ride', 'Speak Language', 'Spot', 'Survival', 'Swim'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       MN2E.defineRule('combatNotes.improvedMountedCombatFeature',
         'dexterityModifier', '=', 'source > 0 ? source : 1'
       );
@@ -1128,10 +1128,10 @@ MN2EPrestige.prestigeClassRules = function(classes) {
     } else
       continue;
 
-    MN2E.defineClass
-      (klass, hitDie, skillPoints, baseAttack, saveFortitude, saveReflex,
-       saveWill, profArmor, profShield, profWeapon, skills, features,
-       spellsKnown, spellsPerDay, spellsPerDayAbility);
+    PH35.defineClass
+      (MN2E.rules, klass, hitDie, skillPoints, baseAttack, saveFortitude,
+       saveReflex, saveWill, profArmor, profShield, profWeapon, skills,
+       features, spellsKnown, spellsPerDay, spellAbility);
     if(feats != null) {
       for(var j = 0; j < feats.length; j++) {
         MN2E.defineChoice('feats', feats[j] + ':' + klass);
