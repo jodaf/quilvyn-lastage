@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.64 2007/03/04 00:25:21 Jim Exp $ */
+/* $Id: LastAge.js,v 1.65 2007/03/09 14:53:55 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -21,43 +21,43 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
  * This module loads the rules from the Midnight Second Edition core rule book.
  * The MN2E function contains methods that load rules for particular
  * parts/chapters of the rule book; raceRules for character races, magicRules
- * for spells, etc.  Any of these member methods can be called independently
- * in order to use a subset of the MN2E rules.  Similarly, the constant fields
- * of MN2E--FEATS, HEROIC_PATHS, etc.--can be manipulated in order to modify
- * the choices offered.
+ * for spells, etc.  These member methods can be called independently in order
+ * to use a subset of the MN2E rules.  Similarly, the constant fields of MN2E
+ * (FEATS, HEROIC_PATHS, etc.) can be manipulated to modify the choices.
  */
 function MN2E() {
 
   var rules = new ScribeRules('Midnight 2nd Edition');
-  PH35.deitiesFavoredWeapons = {'Izrador (NE)': 'Longsword'};
 
   MN2E.viewer = new ObjectViewer();
   PH35.createViewer(MN2E.viewer);
   rules.defineViewer("Standard", MN2E.viewer);
-
   PH35.abilityRules(rules);
   PH35.raceRules(rules, [], []);
   PH35.classRules(rules, MN2E.CLASSES);
+  PH35.helperRules(rules, ['Familiar']);
   PH35.skillRules(rules, PH35.SKILLS, PH35.SUBSKILLS);
   PH35.featRules(rules, PH35.FEATS, PH35.SUBFEATS);
+  PH35.featRules(rules, ['Weapon Focus'], {'Weapon Focus':'Longsword'});
   PH35.descriptionRules(rules, PH35.ALIGNMENTS, MN2E.DEITIES, PH35.GENDERS);
   PH35.equipmentRules
     (rules, PH35.ARMORS, PH35.GOODIES, PH35.SHIELDS, PH35.WEAPONS);
   PH35.combatRules(rules);
   PH35.adventuringRules(rules);
+  PH35.deitiesFavoredWeapons['Izrador (NE)'] = 'Longsword';
   PH35.magicRules(rules, PH35.DOMAINS, PH35.SCHOOLS, PH35.SPELLS);
 
   rules.defineChoice('random', MN2E.RANDOMIZABLE_ATTRIBUTES);
   MN2E.raceRules(rules, MN2E.LANGUAGES, MN2E.RACES);
   MN2E.heroicPathRules(rules, MN2E.HEROIC_PATHS);
   MN2E.classRules(rules, MN2E.CLASSES);
+  MN2E.helperRules(rules, MN2E.HELPERS);
   MN2E.skillRules(rules, MN2E.SKILLS, MN2E.SUBSKILLS);
   MN2E.featRules(rules, MN2E.FEATS, MN2E.SUBFEATS);
   MN2E.equipmentRules(rules, MN2E.WEAPONS);
   MN2E.magicRules(rules, MN2E.SPELLS);
 
-  // TODO Remove this null testing choice later
-  rules.defineChoice('races', 'None');
+  rules.defineChoice('races', 'None'); // TODO Remove this testing choice
   rules.defineSheetElement('Deity', null, null, null);
   rules.randomizeOneAttribute = MN2E.randomizeOneAttribute;
   Scribe.addRuleSet(rules);
@@ -70,7 +70,7 @@ MN2E.CLASSES = [
   'Barbarian', 'Charismatic Channeler', 'Defender', 'Fighter',
   'Hermetic Channeler', 'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
 ];
-MN2E.DEITIES = ['Izrador (NE):Death/Destruction/Evil/Magic/War'];
+MN2E.DEITIES = ['Izrador (NE):Death/Destruction/Evil/Magic/War', 'None:'];
 MN2E.FEATS = [
   'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
   'Craft Spell Talisman:Item Creation',
@@ -85,6 +85,7 @@ MN2E.FEATS = [
   'Spell Knowledge:', 'Thick Skull:', 'Warrior Of Shadow:',
   'Whispering Awareness:'
 ];
+MN2E.HELPERS = ['Animal Companion', 'Astirax'];
 MN2E.HEROIC_PATHS = [
   'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
   'Faithful', 'Fellhunter', 'Feyblooded', 'Giantblooded', 'Guardian', 'Healer',
@@ -232,7 +233,7 @@ MN2E.classRules = function(rules, classes) {
 
     var baseAttack, feats, features, hitDie, notes, profArmor, profShield,
         profWeapon, saveFortitude, saveReflex, saveWill, selectableFeatures,
-        skillPoints, skills, spellsKnown, spellsPerDay, spellsPerDayAbility;
+        skillPoints, skills, spellAbility, spellsKnown, spellsPerDay;
     var klass = classes[i];
 
     if(klass == 'Barbarian') {
@@ -245,9 +246,7 @@ MN2E.classRules = function(rules, classes) {
 
       baseAttack = PH35.ATTACK_BONUS_AVERAGE;
       feats = null;
-      features = [
-        '1:Art Of Magic', '2:Bonus Spellcasting', '2:Summon Familiar'
-      ];
+      features = ['1:Art Of Magic', '2:Summon Familiar'];
       hitDie = 6;
       notes = [
         'magicNotes.artOfMagicFeature:+1 character level for max spell level',
@@ -266,9 +265,9 @@ MN2E.classRules = function(rules, classes) {
         'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
         'Speak Language', 'Spellcraft'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       rules.defineRule('featCount.' + klass,
         'levels.' + klass, '=',
         'source >= 4 ? Math.floor((source - 1) / 3) : null'
@@ -340,6 +339,7 @@ MN2E.classRules = function(rules, classes) {
           'Bluff', 'Diplomacy', 'Gather Information', 'Intimidate',
           'Sense Motive'
         ]);
+        spellAbility = 'charisma';
         rules.defineRule
           ('channelerLevels', 'levels.Charismatic Channeler', '+=', null);
         rules.defineRule('magicNotes.forceOfPersonalityFeature',
@@ -416,6 +416,7 @@ MN2E.classRules = function(rules, classes) {
           'Knowledge (History)', 'Knowledge (Local)', 'Knowledge (Nature)',
           'Knowledge (Nobility)', 'Knowledge (Planes)', 'Knowledge (Religion)'
         ]);
+        spellAbility = 'intelligence';
         rules.defineRule
           ('channelerLevels', 'levels.Hermetic Channeler', '+=', null);
         rules.defineRule('selectableFeatureCount.Hermetic Channeler',
@@ -474,6 +475,7 @@ MN2E.classRules = function(rules, classes) {
         skills = skills.concat([
           'Diplomacy', 'Knowledge (Nature)', 'Sense Motive', 'Survival', 'Swim'
         ]);
+        spellAbility = 'wisdom';
         rules.defineRule
           ('channelerLevels', 'levels.Spiritual Channeler', '+=', null);
         rules.defineRule('combatNotes.masterOfTwoWorldsFeature',
@@ -603,9 +605,9 @@ MN2E.classRules = function(rules, classes) {
         'Jump', 'Knowledge (Local)', 'Knowledge (Shadow)', 'Listen',
         'Move Silently', 'Sense Motive', 'Speak Language', 'Swim', 'Tumble'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       rules.defineRule('abilityNotes.incredibleSpeedFeature',
         'selectableFeatures.Incredible Speed', '=', '10 * source'
       );
@@ -737,9 +739,9 @@ MN2E.classRules = function(rules, classes) {
       ];
       skillPoints = null;
       skills = null;
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       rules.defineChoice('feats',
         'Improvised Weapon:Improviser', 'Improved Grapple:Improviser',
         'Stunning Fist:Improviser', 'Unarmed Strike:Improviser',
@@ -800,6 +802,7 @@ MN2E.classRules = function(rules, classes) {
         'Knowledge (Arcana)', 'Knowledge (Shadow)', 'Knowledge (Spirits)',
         'Speak Language', 'Spellcraft'
       ];
+      spellAbility = 'wisdom';
       spellsKnown = [
         'C0:1:"all"', 'C1:1:"all"', 'C2:3:"all"', 'C3:5:"all"',
         'C4:7:"all"', 'C5:9:"all"', 'C6:11:"all"', 'C7:13:"all"',
@@ -820,15 +823,14 @@ MN2E.classRules = function(rules, classes) {
         'C8:15:1/16:2/18:3/20:4',
         'C9:17:1/18:2/19:3/20:4'
       ];
-      spellsPerDayAbility = 'wisdom';
       rules.defineRule
-        ('casterLevelDivine', 'spellsPerDayLevels.Legate', '^=', null);
+        ('astiraxLevel', 'levels.Legate', '+=', 'Math.floor(source / 3)');
+      rules.defineRule('astiraxMasterLevel', 'levels.Legate', '+=', null);
+      rules.defineRule('casterLevelDivine', 'levels.Legate', '+=', null);
       rules.defineRule('domainCount', 'levels.Legate', '+=', '2');
-      rules.defineRule
-        ('spellsPerDayLevels.Legate', 'levels.Legate', '=', null);
       for(var j = 1; j < 10; j++) {
         rules.defineRule('spellsPerDay.Dom' + j,
-          'spellsPerDayLevels.Legate', '=',
+          'levels.Legate', '=',
           'source >= ' + (j * 2 - 1) + ' ? 1 : null');
       }
       rules.defineRule('turningLevel', 'levels.Legate', '+=', null);
@@ -937,9 +939,9 @@ MN2E.classRules = function(rules, classes) {
         'Move Silently', 'Ride', 'Search', 'Speak Language', 'Spot',
         'Survival', 'Swim', 'Use Rope'
       ];
+      spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      spellsPerDayAbility = null;
       rules.defineRule('abilityNotes.quickStrideFeature',
         'selectableFeatures.Quick Stride', '=', '10 * source'
       );
@@ -1039,47 +1041,17 @@ MN2E.classRules = function(rules, classes) {
         'features.Hunted By The Shadow', '+', '1'
       );
       rules.defineRule
-        ('companionLevel', 'features.Animal Companion', '+=', null);
-      var companionFeatures = [
-        '1:Devotion', '2:Magical Beast', '3:Helper Evasion', '4:Improved Speed',
-        '5:Empathic Link'
-      ];
-      var companionNotes = [
-        'helperNotes.helperEvasionFeature:' +
-          'Reflex save yields no damage instead of 1/2',
-        'helperNotes.devotionFeature:+4 Will vs. enchantment',
-        'helperNotes.empathicLinkFeature:Share emotions up to 1 mile',
-        'helperNotes.improvedSpeedFeature:+10 speed',
-        'helperNotes.magicalBeastFeature:' +
-          'Treated as magical beast for type-based effects'
-      ];
-      for(var j = 0; j < companionFeatures.length; j++) {
-        var levelAndFeature = companionFeatures[j].split(/:/);
-        var feature = levelAndFeature[levelAndFeature.length == 1 ? 0 : 1];
-        var level = levelAndFeature.length == 1 ? 1 : levelAndFeature[0];
-        rules.defineRule('companionFeatures.' + feature,
-          'companionLevel', '=', 'source >= ' + level + ' ? 1 : null'
-        );
-        rules.defineRule
-          ('features.' + feature, 'companionFeatures.' + feature, '=', '1');
-      }
+        ('animalCompanionLevel', 'features.Animal Companion', '+=', null);
       rules.defineRule
-        ('companionArmorClass', 'companionLevel', '=', '(source-1) * 2');
-      rules.defineRule
-        ('companionDexterity', 'companionLevel', '=', 'source - 1');
-      rules.defineRule
-        ('companionHitDice', 'companionLevel', '=', '(source - 1) * 2');
-      rules.defineRule('companionStrength', 'companionLevel', '=', 'source*2');
-      rules.defineRule('companionTricks', 'companionLevel', '=', 'source + 1');
-      notes = notes.concat(companionNotes);
+        ('animalCompanionMasterLevel', 'levels.Wildlander', '+=', null);
 
     } else
       continue;
 
-    rules.defineClass
-      (klass, hitDie, skillPoints, baseAttack, saveFortitude, saveReflex,
+    PH35.defineClass
+      (rules, klass, hitDie, skillPoints, baseAttack, saveFortitude, saveReflex,
        saveWill, profArmor, profShield, profWeapon, skills, features,
-       spellsKnown, spellsPerDay, spellsPerDayAbility);
+       spellsKnown, spellsPerDay, spellAbility);
     if(notes != null)
       rules.defineNote(notes);
     if(feats != null) {
@@ -1405,6 +1377,100 @@ MN2E.featRules = function(rules, feats, subfeats) {
     if(notes != null) {
       rules.defineNote(notes);
     }
+  }
+
+};
+
+/* Defines the rules related to helper creatures. */
+MN2E.helperRules = function(rules, helpers) {
+
+  for(var i = 0; i < helpers.length; i++) {
+
+    var features, notes, prefix;
+    var helper = helpers[i];
+
+    if(helper == 'Animal Companion') {
+      features = [
+        '1:Devotion', '2:Magical Beast', '3:Helper Evasion', '4:Improved Speed',
+        '5:Empathic Link'
+      ];
+      notes = [
+        'animalCompanionStats.armorClass:+%V',
+        'animalCompanionStats.dexterity:+%V',
+        'animalCompanionStats.hitDice:+%Vd8',
+        'animalCompanionStats.strength:+%V',
+        'animalCompanionStats.tricks:+%V',
+        'helperNotes.devotionFeature:+4 Will vs. enchantment',
+        'helperNotes.empathicLinkFeature:Share emotions up to 1 mile',
+        'helperNotes.helperEvasionFeature:' +
+          'Reflex save yields no damage instead of 1/2',
+        'helperNotes.improvedSpeedFeature:+10 speed',
+        'helperNotes.magicalBeastFeature:' +
+          'Treated as magical beast for type-based effects'
+      ];
+      prefix = 'animalCompanion';
+      rules.defineRule('animalCompanionStats.armorClass',
+        'companionLevel', '=', '(source-1) * 2'
+      );
+      rules.defineRule('animalCompanionStats.dexterity',
+        'companionLevel', '=', 'source - 1'
+      );
+      rules.defineRule('animalCompanionStats.hitDice',
+        'companionLevel', '=', '(source - 1) * 2'
+      );
+      rules.defineRule
+        ('animalCompanionStats.strength', 'companionLevel', '=', 'source * 2');
+      rules.defineRule
+        ('animalCompanionStats.tricks', 'companionLevel', '=', 'source + 1');
+    } else if(helper == 'Astirax') {
+      features = [
+        '2:Telepathy', '3:Enhanced Sense', '4:Helper Evasion',
+        '6:Helper Empathy'
+      ];
+      notes = [
+        'astiraxStats.charisma:+%V',
+        'astiraxStats.hitDice:+%Vd8',
+        'astiraxStats.intelligence:+%V',
+        'helperNotes.enhancedSenseFeature:+%V mile channeled event detection',
+        'helperNotes.helperEmpathyFeature:' +
+          'Continuous emotional link w/no range limit',
+        'helperNotes.helperEvasionFeature:' +
+          'Reflex save yields no damage instead of 1/2',
+        'helperNotes.telepathyFeature:' +
+          'Helper-controlled telepathic communication up to 100 ft'
+      ];
+      prefix = 'astirax';
+      rules.defineRule
+        ('astiraxStats.charisma', 'astiraxLevel', '=', 'source - 1');
+      rules.defineRule
+        ('astiraxStats.hitDice', 'astiraxLevel', '=', '(source - 1) * 2');
+      rules.defineRule
+        ('astiraxStats.intelligence', 'astiraxLevel', '=', 'source - 1');
+      rules.defineRule('helperNotes.enhancedSenseFeature',
+        'astiraxLevel', '+=', 'source < 5 ? 5 : 10'
+      );
+    } else
+      continue;
+
+    for(var j = 0; j < features.length; j++) {
+      var levelAndFeature = features[j].split(/:/);
+      var feature = levelAndFeature[levelAndFeature.length == 1 ? 0 : 1];
+      var level = levelAndFeature.length == 1 ? 1 : levelAndFeature[0];
+      rules.defineRule(prefix + 'Features.' + feature,
+        prefix + 'Level', '=', 'source >= ' + level + ' ? 1 : null'
+      );
+      rules.defineRule
+        ('features.' + feature, prefix + 'Features.' + feature, '=', '1');
+    }
+
+    if(notes != null)
+      rules.defineNote(notes);
+
+    rules.defineSheetElement
+      (helper + ' Features', 'Helper Area', null, 'Helper Notes', ' * ');
+    rules.defineSheetElement
+      (helper + ' Stats', 'Helper Area', null, helper + ' Features', ' * ');
+
   }
 
 };
@@ -1795,7 +1861,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule
         ('weapons.Debris', 'combatNotes.rockThrowingFeature', '=', '1');
-      // Note: damage skewed to allow for Large adjustment starting level 10
+      // NOTE: damage skewed to allow for Large adjustment starting level 10
       rules.defineRule('weaponDamage.Debris',
         'pathLevels.Giantblooded', '=',
         'source>=16 ? "d10" : source>=10 ? "d8" : source>=9 ? "2d6" : "d10"'
@@ -2208,7 +2274,8 @@ MN2E.heroicPathRules = function(rules, paths) {
       notes = [
         'abilityNotes.fastMovementFeature:+%V speed',
         'combatNotes.burstOfSpeedFeature:' +
-          'Extra attack/move action for 3+ConMod rounds %V/day/fatigued afterward'
+          'Extra attack/move action for 3+ConMod rounds %V/day/fatigued ' +
+          'afterward'
       ];
       selectableFeatures = null;
       spellFeatures = null;
@@ -2629,6 +2696,16 @@ MN2E.magicRules = function(rules, spells) {
     }
   }
   rules.defineRule('casterLevelArcane', 'spellEnergy', '^=', '1');
+  rules.defineRule('maxSpellLevel',
+    'level', '=', 'source / 2',
+    'channelerLevels', '+', '1/2'
+  );
+  for(var i = 2; i < 10; i++) {
+    rules.defineRule('spellsKnown.W' + i,
+      'maxSpellLevel', '?', 'source >= ' + i,
+      'spellsKnownBonus', '+=', '0'
+    );
+  }
   rules.defineSheetElement
     ('Spell Energy', 'SpellStats', null, 'Spells Per Day');
   rules.defineSheetElement
@@ -2810,7 +2887,8 @@ MN2E.raceRules = function(rules, languages, races) {
           'skillNotes.naturalRiverfolkFeature:' +
             '+2 Perform/Profession (Sailor)/Swim/Use Rope',
           'skillNotes.skilledTraderFeature:' +
-            '+2 Appraise/Bluff/Diplomacy/Forgery/Gather Information/Profession when smuggling/trading'
+            '+2 Appraise/Bluff/Diplomacy/Forgery/Gather Information/' +
+            'Profession when smuggling/trading'
         ];
         rules.defineRule
           ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
@@ -2839,7 +2917,8 @@ MN2E.raceRules = function(rules, languages, races) {
       ];
       notes = [
         'combatNotes.dworgFavoredEnemyFeature:+2 attack vs. orc',
-        'combatNotes.minorLightSensitivityFeature:DC 15 Fortitude save in sunlight to avoid -1 attack',
+        'combatNotes.minorLightSensitivityFeature:' +
+          'DC 15 Fortitude save in sunlight to avoid -1 attack',
         'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
         'magicNotes.spellResistanceFeature:-2 spell energy',
         'saveNotes.ruggedFeature:+2 all saves',
@@ -3037,7 +3116,8 @@ MN2E.raceRules = function(rules, languages, races) {
            'Swim at half speed as move action/hold breath for %V rounds',
         'saveNotes.spellResistanceFeature:+2 vs. spells',
         'skillNotes.naturalTraderFeature:' +
-          '+4 Appraise/Bluff/Diplomacy/Forgery/Gather Information/Profession when smuggling/trading',
+          '+4 Appraise/Bluff/Diplomacy/Forgery/Gather Information/' +
+          'Profession when smuggling/trading',
         'skillNotes.smallFeature:+4 Hide'
       ];
       selectableFeatures = null;
@@ -3209,7 +3289,7 @@ MN2E.raceRules = function(rules, languages, races) {
     } else
       continue;
 
-    rules.defineRace(race, adjustment, features);
+    PH35.defineRace(rules, race, adjustment, features);
     if(notes != null)
       rules.defineNote(notes);
     if(selectableFeatures != null) {
@@ -3355,8 +3435,7 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
     var attrs = this.applyRules(attributes);
     var spellsKnownBonus = attrs.spellsKnownBonus;
     if(spellsKnownBonus != null) {
-      var maxSpellLevel =
-        Math.floor((attrs.level + (attrs.channelerLevels != null ? 1 : 0)) / 2);
+      var maxSpellLevel = attrs.maxSpellLevel;
       // Temporarily set prohibit.* attributes to keep PH35 from assigning
       // spells from schools where the character doesn't have Spellcasting
       for(var a in this.getChoices('schools')) {
@@ -3364,13 +3443,14 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
           attributes['prohibit.' + a] = 1;
       }
       // Allocate bonus spells round-robin among all possible spell levels
+      for(var spellLevel = 0; spellLevel <= maxSpellLevel; spellLevel++) {
+        attributes['spellsKnown.W' + spellLevel] = 0;
+      }
       for(var spellLevel = maxSpellLevel;
           spellsKnownBonus > 0;
-          spellLevel = (spellLevel == 0) ? maxSpellLevel : spellLevel - 1,
+          spellLevel = spellLevel > 0 ? spellLevel - 1 : maxSpellLevel,
           spellsKnownBonus--) {
-        var currentCount = attributes['spellsKnown.W' + spellLevel];
-        attributes['spellsKnown.W' + spellLevel] =
-          currentCount != null ? currentCount + 1 : 1;
+        attributes['spellsKnown.W' + spellLevel] += 1;
       }
       // Let PH35 pick spells
       PH35.randomizeOneAttribute.apply(this, [attributes, attribute]);
@@ -3392,20 +3472,12 @@ MN2E.defineChoice = function() {
   return MN2E.rules.defineChoice.apply(MN2E.rules, arguments);
 };
 
-MN2E.defineClass = function() {
-  return MN2E.rules.defineClass.apply(MN2E.rules, arguments);
-};
-
 MN2E.defineEditorElement = function() {
   return MN2E.rules.defineEditorElement.apply(MN2E.rules, arguments);
 };
 
 MN2E.defineNote = function() {
   return MN2E.rules.defineNote.apply(MN2E.rules, arguments);
-};
-
-MN2E.defineRace = function() {
-  return MN2E.rules.defineRace.apply(MN2E.rules, arguments);
 };
 
 MN2E.defineRule = function() {
