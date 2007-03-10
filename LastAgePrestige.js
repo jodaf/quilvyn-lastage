@@ -391,6 +391,11 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
+      rules.defineRule('animalCompanionLevel',
+        'featureNotes.animalCompanionFeature', '+=', null
+      );
+      rules.defineRule
+        ('animalCompanionMasterLevel', 'levels.Druid', '+=', null);
       MN2E.defineRule('druidTurningLevel',
         'levels.Druid', '+=', 'source / 2',
         'levels.Charismatic Channeler', '*', '2',
@@ -606,6 +611,7 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       ];
       hitDie = 6;
       notes = [
+        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
         'magicNotes.ghostSightFeature:<i>See Invisible</i> at will',
         'magicNotes.seanceFeature:' +
           '<i>Augury</i>/<i>Legend Lore</i> via spirits %V/day',
@@ -824,6 +830,7 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       hitDie = 8;
       notes = [
         'magicNotes.armoredCastingFeature:Reduce arcane casting penalty by %V%',
+        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
         'magicNotes.channeledArmorClassFeature:' +
           'Use 1 spell energy point to gain +%V AC for 1 round',
         'magicNotes.channeledAttackFeature:' +
@@ -913,6 +920,7 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'combatNotes.whisperInitiativeFeature:+2 Initiative',
         'combatNotes.whisperSurpriseFeature:Cannot be surprised',
         'featureNotes.whisperSenseFeature:No wisdom check to sense voices',
+        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
         'magicNotes.fellTouchFeature:Prevent fallen from becoming Fell/Lost',
         'magicNotes.strengthOfTheWoodFeature:' +
           'Recover 1 spell energy point/hour while inside tree',
@@ -985,6 +993,7 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       notes = [
         'featureNotes.efficientStudyFeature:' +
           'XP cost for learning spells/creating magic items reduced by %V%',
+        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
         'magicNotes.wizardcraftFeature:' +
           'Prepare spells ahead of time for half energy cost',
         'validationNotes.wizardFeatures:' +
