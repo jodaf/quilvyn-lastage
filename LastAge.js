@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.67 2007/03/15 05:03:06 Jim Exp $ */
+/* $Id: LastAge.js,v 1.68 2007/03/15 14:51:00 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -37,7 +37,7 @@ function MN2E() {
   // anyway to pick up any other rules it defines (e.g., languageCount)
   PH35.raceRules(rules, [], []);
   PH35.classRules(rules, ['Barbarian', 'Rogue']);
-  PH35.helperRules(rules, ['Familiar']);
+  PH35.companionRules(rules, ['Familiar']);
   PH35.skillRules(rules, PH35.SKILLS, PH35.SUBSKILLS);
   // Define subskills available to Leader Of Men Fighters
   PH35.skillRules(
@@ -62,7 +62,7 @@ function MN2E() {
   MN2E.raceRules(rules, MN2E.LANGUAGES, MN2E.RACES);
   MN2E.heroicPathRules(rules, MN2E.HEROIC_PATHS);
   MN2E.classRules(rules, MN2E.CLASSES);
-  MN2E.helperRules(rules, MN2E.HELPERS);
+  MN2E.companionRules(rules, MN2E.COMPANIONS);
   MN2E.skillRules(rules, MN2E.SKILLS, MN2E.SUBSKILLS);
   MN2E.featRules(rules, MN2E.FEATS, MN2E.SUBFEATS);
   MN2E.equipmentRules(rules, MN2E.WEAPONS);
@@ -81,6 +81,7 @@ MN2E.CLASSES = [
   'Barbarian', 'Charismatic Channeler', 'Defender', 'Fighter',
   'Hermetic Channeler', 'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
 ];
+MN2E.COMPANIONS = ['Animal Companion', 'Astirax'];
 MN2E.DEITIES = ['Izrador (NE):Death/Destruction/Evil/Magic/War', 'None:'];
 MN2E.FEATS = [
   'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
@@ -96,7 +97,6 @@ MN2E.FEATS = [
   'Spell Knowledge:', 'Thick Skull:', 'Warrior Of Shadow:',
   'Whispering Awareness:'
 ];
-MN2E.HELPERS = ['Animal Companion', 'Astirax'];
 MN2E.HEROIC_PATHS = [
   'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
   'Faithful', 'Fellhunter', 'Feyblooded', 'Giantblooded', 'Guardian', 'Healer',
@@ -1143,6 +1143,103 @@ MN2E.classRules = function(rules, classes) {
 
 };
 
+/* Defines the rules related to companion creatures. */
+MN2E.companionRules = function(rules, companions) {
+
+  for(var i = 0; i < companions.length; i++) {
+
+    var features, notes, prefix;
+    var companion = companions[i];
+
+    if(companion == 'Animal Companion') {
+      features = [
+        '1:Devotion', '2:Magical Beast', '3:Companion Evasion',
+        '4:Improved Speed', '5:Empathic Link'
+      ];
+      notes = [
+        'animalCompanionStats.armorClass:+%V',
+        'animalCompanionStats.dexterity:+%V',
+        'animalCompanionStats.hitDice:+%Vd8',
+        'animalCompanionStats.strength:+%V',
+        'animalCompanionStats.tricks:+%V',
+        'companionNotes.companionEvasionFeature:' +
+          'Reflex save yields no damage instead of 1/2',
+        'companionNotes.devotionFeature:+4 Will vs. enchantment',
+        'companionNotes.empathicLinkFeature:Share emotions up to 1 mile',
+        'companionNotes.improvedSpeedFeature:+10 speed',
+        'companionNotes.magicalBeastFeature:' +
+          'Treated as magical beast for type-based effects'
+      ];
+      prefix = 'animalCompanion';
+      rules.defineRule('animalCompanionStats.armorClass',
+        'companionLevel', '=', '(source-1) * 2'
+      );
+      rules.defineRule('animalCompanionStats.dexterity',
+        'companionLevel', '=', 'source - 1'
+      );
+      rules.defineRule('animalCompanionStats.hitDice',
+        'companionLevel', '=', '(source - 1) * 2'
+      );
+      rules.defineRule
+        ('animalCompanionStats.strength', 'companionLevel', '=', 'source * 2');
+      rules.defineRule
+        ('animalCompanionStats.tricks', 'companionLevel', '=', 'source + 1');
+    } else if(companion == 'Astirax') {
+      features = [
+        '2:Telepathy', '3:Enhanced Sense', '4:Companion Evasion',
+        '6:Companion Empathy'
+      ];
+      notes = [
+        'astiraxStats.charisma:+%V',
+        'astiraxStats.hitDice:+%Vd8',
+        'astiraxStats.intelligence:+%V',
+        'companionNotes.companionEmpathyFeature:' +
+          'Continuous emotional link w/no range limit',
+        'companionNotes.companionEvasionFeature:' +
+          'Reflex save yields no damage instead of 1/2',
+        'companionNotes.enhancedSenseFeature:' +
+          '+%V mile channeled event detection',
+        'companionNotes.telepathyFeature:' +
+          'Companion-controlled telepathic communication up to 100 ft'
+      ];
+      prefix = 'astirax';
+      rules.defineRule
+        ('astiraxStats.charisma', 'astiraxLevel', '=', 'source - 1');
+      rules.defineRule
+        ('astiraxStats.hitDice', 'astiraxLevel', '=', '(source - 1) * 2');
+      rules.defineRule
+        ('astiraxStats.intelligence', 'astiraxLevel', '=', 'source - 1');
+      rules.defineRule('companionNotes.enhancedSenseFeature',
+        'astiraxLevel', '+=', 'source < 5 ? 5 : 10'
+      );
+    } else
+      continue;
+
+    for(var j = 0; j < features.length; j++) {
+      var levelAndFeature = features[j].split(/:/);
+      var feature = levelAndFeature[levelAndFeature.length == 1 ? 0 : 1];
+      var level = levelAndFeature.length == 1 ? 1 : levelAndFeature[0];
+      rules.defineRule(prefix + 'Features.' + feature,
+        prefix + 'Level', '=', 'source >= ' + level + ' ? 1 : null'
+      );
+      rules.defineRule
+        ('features.' + feature, prefix + 'Features.' + feature, '=', '1');
+    }
+
+    if(notes != null)
+      rules.defineNote(notes);
+
+    rules.defineSheetElement
+      (companion + ' Features', 'Companion Area', null, 'Companion Notes',
+       ' * ');
+    rules.defineSheetElement
+      (companion + ' Stats', 'Companion Area', null, companion + ' Features',
+       ' * ');
+
+  }
+
+};
+
 /* Defines the rules related to MN2E Chapter 5, Player Options/Starting Equipment. */
 MN2E.equipmentRules = function(rules, weapons) {
   rules.defineChoice('weapons', weapons);
@@ -1447,100 +1544,6 @@ MN2E.featRules = function(rules, feats, subfeats) {
     if(notes != null) {
       rules.defineNote(notes);
     }
-  }
-
-};
-
-/* Defines the rules related to helper creatures. */
-MN2E.helperRules = function(rules, helpers) {
-
-  for(var i = 0; i < helpers.length; i++) {
-
-    var features, notes, prefix;
-    var helper = helpers[i];
-
-    if(helper == 'Animal Companion') {
-      features = [
-        '1:Devotion', '2:Magical Beast', '3:Helper Evasion', '4:Improved Speed',
-        '5:Empathic Link'
-      ];
-      notes = [
-        'animalCompanionStats.armorClass:+%V',
-        'animalCompanionStats.dexterity:+%V',
-        'animalCompanionStats.hitDice:+%Vd8',
-        'animalCompanionStats.strength:+%V',
-        'animalCompanionStats.tricks:+%V',
-        'helperNotes.devotionFeature:+4 Will vs. enchantment',
-        'helperNotes.empathicLinkFeature:Share emotions up to 1 mile',
-        'helperNotes.helperEvasionFeature:' +
-          'Reflex save yields no damage instead of 1/2',
-        'helperNotes.improvedSpeedFeature:+10 speed',
-        'helperNotes.magicalBeastFeature:' +
-          'Treated as magical beast for type-based effects'
-      ];
-      prefix = 'animalCompanion';
-      rules.defineRule('animalCompanionStats.armorClass',
-        'companionLevel', '=', '(source-1) * 2'
-      );
-      rules.defineRule('animalCompanionStats.dexterity',
-        'companionLevel', '=', 'source - 1'
-      );
-      rules.defineRule('animalCompanionStats.hitDice',
-        'companionLevel', '=', '(source - 1) * 2'
-      );
-      rules.defineRule
-        ('animalCompanionStats.strength', 'companionLevel', '=', 'source * 2');
-      rules.defineRule
-        ('animalCompanionStats.tricks', 'companionLevel', '=', 'source + 1');
-    } else if(helper == 'Astirax') {
-      features = [
-        '2:Telepathy', '3:Enhanced Sense', '4:Helper Evasion',
-        '6:Helper Empathy'
-      ];
-      notes = [
-        'astiraxStats.charisma:+%V',
-        'astiraxStats.hitDice:+%Vd8',
-        'astiraxStats.intelligence:+%V',
-        'helperNotes.enhancedSenseFeature:+%V mile channeled event detection',
-        'helperNotes.helperEmpathyFeature:' +
-          'Continuous emotional link w/no range limit',
-        'helperNotes.helperEvasionFeature:' +
-          'Reflex save yields no damage instead of 1/2',
-        'helperNotes.telepathyFeature:' +
-          'Helper-controlled telepathic communication up to 100 ft'
-      ];
-      prefix = 'astirax';
-      rules.defineRule
-        ('astiraxStats.charisma', 'astiraxLevel', '=', 'source - 1');
-      rules.defineRule
-        ('astiraxStats.hitDice', 'astiraxLevel', '=', '(source - 1) * 2');
-      rules.defineRule
-        ('astiraxStats.intelligence', 'astiraxLevel', '=', 'source - 1');
-      rules.defineRule('helperNotes.enhancedSenseFeature',
-        'astiraxLevel', '+=', 'source < 5 ? 5 : 10'
-      );
-    } else
-      continue;
-
-    for(var j = 0; j < features.length; j++) {
-      var levelAndFeature = features[j].split(/:/);
-      var feature = levelAndFeature[levelAndFeature.length == 1 ? 0 : 1];
-      var level = levelAndFeature.length == 1 ? 1 : levelAndFeature[0];
-      rules.defineRule(prefix + 'Features.' + feature,
-        prefix + 'Level', '=', 'source >= ' + level + ' ? 1 : null'
-      );
-      rules.defineRule
-        ('features.' + feature, prefix + 'Features.' + feature, '=', '1');
-    }
-
-    if(notes != null)
-      rules.defineNote(notes);
-
-    rules.defineSheetElement
-      (helper + ' Features', 'Helper Area', null, 'Helper Notes', ' * ');
-    rules.defineSheetElement
-      (helper + ' Stats', 'Helper Area', null, helper + ' Features', ' * ');
-
   }
 
 };
