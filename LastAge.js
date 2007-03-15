@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.66 2007/03/10 07:51:50 Jim Exp $ */
+/* $Id: LastAge.js,v 1.67 2007/03/15 05:03:06 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -57,6 +57,7 @@ function MN2E() {
   PH35.deitiesFavoredWeapons['Izrador (NE)'] = 'Longsword';
   PH35.magicRules(rules, PH35.DOMAINS, PH35.SCHOOLS, PH35.SPELLS);
 
+  rules.defineChoice('preset', 'race', 'heroicPath', 'levels');
   rules.defineChoice('random', MN2E.RANDOMIZABLE_ATTRIBUTES);
   MN2E.raceRules(rules, MN2E.LANGUAGES, MN2E.RACES);
   MN2E.heroicPathRules(rules, MN2E.HEROIC_PATHS);
