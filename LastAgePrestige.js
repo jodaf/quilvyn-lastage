@@ -21,7 +21,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
  * fields can be manipulated in order to trim the choices offered.
  */
 function MN2EPrestige() {
-  MN2EPrestige.prestigeClassRules(MN2EPrestige.PRESTIGE_CLASSES);
+  MN2EPrestige.prestigeClassRules(MN2E.rules, MN2EPrestige.PRESTIGE_CLASSES);
 }
 
 MN2EPrestige.PRESTIGE_CLASSES = [
@@ -31,7 +31,7 @@ MN2EPrestige.PRESTIGE_CLASSES = [
   'Wogren Rider'
 ];
 
-MN2EPrestige.prestigeClassRules = function(classes) {
+MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
   for(var i = 0; i < classes.length; i++) {
 
@@ -85,20 +85,20 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      MN2E.defineRule('combatNotes.advanceAncestralBladeFeature',
+      rules.defineRule('combatNotes.advanceAncestralBladeFeature',
         'levels.Ancestral Bladebearer', '=', 'Math.floor((source + 2) / 4)'
       );
-      MN2E.defineRule('featCount.Fighter Bonus',
+      rules.defineRule('featCount.Fighter Bonus',
         'levels.Ancestral Bladebearer', '=', 'Math.floor(source / 3)'
       );
-      MN2E.defineRule('magicNotes.ancestralAdvisorFeature',
+      rules.defineRule('magicNotes.ancestralAdvisorFeature',
         'charismaModifier', '=', 'source > 1 ? source : 1'
       );
-      MN2E.defineRule('validationNotes.ancestralBladebearerCombat',
+      rules.defineRule('validationNotes.ancestralBladebearerCombat',
         'levels.Ancestral Bladebearer', '=', '-1',
         'baseAttack', '+', 'source > 6 ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.ancestralBladebearerFeatures',
+      rules.defineRule('validationNotes.ancestralBladebearerFeatures',
         'levels.Ancestral Bladebearer', '=', '-2',
         'subfeatCount.Weapon Focus', '+', 'source >= 1 ? 1 : null',
         'subfeatCount.Weapon Specialization', '+', 'source >= 1 ? 1 : null'
@@ -157,24 +157,24 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      MN2E.defineRule('featureNotes.alterEgoFeature',
+      rules.defineRule('featureNotes.alterEgoFeature',
         'levels.Aradil\'s Eye', '=',
         'source >= 7 ? "any" : source >= 3 ? "2 selected" : "1 selected"'
       );
-      MN2E.defineRule
+      rules.defineRule
         ('featureNotes.spyFeature', 'levels.Aradil\'s Eye', '=', 'source * 10');
-      MN2E.defineRule('skillNotes.spyInitiateFeature',
+      rules.defineRule('skillNotes.spyInitiateFeature',
         'levels.Aradil\'s Eye', '=', 'source >= 10 ? 10 : source >= 5 ? 8 : 4'
       );
-      MN2E.defineRule('validationNotes.aradil\'sEyeFeatures',
+      rules.defineRule('validationNotes.aradil\'sEyeFeatures',
         'levels.Aradil\'s Eye', '=', '-1',
         'features.Inconspicuous', '+', '1'
       );
-      MN2E.defineRule('validationNotes.aradil\'sEyeRace',
+      rules.defineRule('validationNotes.aradil\'sEyeRace',
         'levels.Aradil\'s Eye', '=', '-1',
         'race', '+', 'source == "Wood Elf" ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.aradil\'sEyeSkills',
+      rules.defineRule('validationNotes.aradil\'sEyeSkills',
         'levels.Aradil\'s Eye', '=', '-7',
         'skills.Bluff', '+', 'source >= 8 ? 1 : null',
         'skills.Disguise', '+', 'source >= 5 ? 1 : null',
@@ -236,31 +236,31 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      MN2E.defineRule('combatNotes.deathAttackFeature',
+      rules.defineRule('combatNotes.deathAttackFeature',
         'levels.Avenging Knife', '+=', '10 + source',
         'intelligenceModifier', '+', null
       );
-      MN2E.defineRule('combatNotes.sneakAttackFeature',
+      rules.defineRule('combatNotes.sneakAttackFeature',
         'levels.Avenging Knife', '+=', 'Math.floor(source / 3)'
       );
-      MN2E.defineRule('combatNotes.stunningSneakAttackFeature',
+      rules.defineRule('combatNotes.stunningSneakAttackFeature',
         'levels.Avenging Knife', '=', '10 + source',
         'intelligenceModifier', '+', null
       );
-      MN2E.defineRule('combatNotes.theDropFeature',
+      rules.defineRule('combatNotes.theDropFeature',
         'levels.Avenging Knife', '=', 'Math.floor((source + 2) / 3)'
       );
-      MN2E.defineRule('validationNotes.avengingKnifeAlignment',
+      rules.defineRule('validationNotes.avengingKnifeAlignment',
         'levels.Avenging Knife', '=', '-1',
         'alignment', '+', '!source.match(/Evil/) ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.avengingKnifeFeatures',
+      rules.defineRule('validationNotes.avengingKnifeFeatures',
         'levels.Avenging Knife', '=', '-3',
         'features.Improved Initiative', '+', '1',
         'features.Inconspicuous', '+', '1',
         'features.Sneak Attack', '+', '1'
       );
-      MN2E.defineRule('validationNotes.avengingKnifeSkills',
+      rules.defineRule('validationNotes.avengingKnifeSkills',
         'levels.Avenging Knife', '=', '-4',
         'skills.Bluff', '+', 'source >= 5 ? 1 : null',
         'skills.Gather Information', '+', 'source >= 5 ? 1 : null',
@@ -315,34 +315,34 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      MN2E.defineRule('featCount.Spellcasting',
+      rules.defineRule('featCount.Spellcasting',
         'levels.Bane Of Legates', '+=', 'Math.floor((source - 1) / 4)'
       );
-      MN2E.defineRule('featCount.Wizard Bonus',
+      rules.defineRule('featCount.Wizard Bonus',
         'levels.Bane Of Legates', '=', 'Math.floor((source + 3) / 5)'
       );
-      MN2E.defineRule('magicNotes.baneOfLegatesSpellEnergy',
+      rules.defineRule('magicNotes.baneOfLegatesSpellEnergy',
         'levels.Bane Of Legates', '=', null
       );
-      MN2E.defineRule
+      rules.defineRule
         ('magicNotes.bindAstiraxFeature', 'levels.Bane Of Legates', '=', null);
-      MN2E.defineRule('magicNotes.baneOfLegatesSpellsKnown',
+      rules.defineRule('magicNotes.baneOfLegatesSpellsKnown',
         'levels.Bane Of Legates', '=', null
       );
-      MN2E.defineRule
+      rules.defineRule
         ('spellEnergy', 'magicNotes.baneOfLegatesSpellEnergy', '+', null);
-      MN2E.defineRule
+      rules.defineRule
         ('spellsKnownBonus', 'magicNotes.baneOfLegatesSpellsKnown', '+', null);
-      MN2E.defineRule('validationNotes.baneOfLegatesFeatures',
+      rules.defineRule('validationNotes.baneOfLegatesFeatures',
         'levels.Bane Of Legates', '=', '-2',
         'features.Iron Will', '+', '1',
         'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.baneOfLegatesMagic',
+      rules.defineRule('validationNotes.baneOfLegatesMagic',
         'levels.Bane Of Legates', '=', '-1',
         'spellEnergy', '+', 'source >= 10 ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.baneOfLegatesSkills',
+      rules.defineRule('validationNotes.baneOfLegatesSkills',
         'levels.Bane Of Legates', '=', '-3',
         'skills.Knowledge (Arcana)', '+', 'source >= 13 ? 1 : null',
         'skills.Knowledge (Shadow)', '+', 'source >= 8 ? 1 : null',
@@ -396,37 +396,39 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       );
       rules.defineRule
         ('animalCompanionMasterLevel', 'levels.Druid', '+=', null);
-      MN2E.defineRule('druidTurningLevel',
+      rules.defineRule('druidTurningLevel',
         'levels.Druid', '+=', 'source / 2',
         'levels.Charismatic Channeler', '*', '2',
         'levels.Hermetic Channeler', '*', '2',
         'levels.Spiritual Channeler', '*', '2'
       );
-      MN2E.defineRule('featureNotes.findTheWayFeature',
+      rules.defineRule('featureNotes.findTheWayFeature',
         '', '=', '"Normal movement through undergrowth"',
         'features.Woodland Stride', '=', '"Untrackable outdoors"',
         'features.Trackless Step', '=', '"Continuous <i>Pass Without Trace</i>"'
       );
-      MN2E.defineRule('featureNotes.animalCompanionFeature',
+      rules.defineRule('featureNotes.animalCompanionFeature',
         'levels.Druid', '+=', 'Math.floor((source + 2) / 3)'
       );
-      MN2E.defineRule('magicNotes.communeWithNatureFeature',
+      rules.defineRule('magicNotes.communeWithNatureFeature',
         'levels.Druid', '=', 'Math.floor(source / 3)'
       );
-      MN2E.defineRule('magicNotes.druidSpellEnergy', 'levels.Druid', '=', null);
-      MN2E.defineRule('magicNotes.druidSpellsKnown', 'levels.Druid', '=', null);
-      MN2E.defineRule('spellEnergy', 'magicNotes.druidSpellEnergy', '+', null);
-      MN2E.defineRule
+      rules.defineRule
+        ('magicNotes.druidSpellEnergy', 'levels.Druid', '=', null);
+      rules.defineRule
+        ('magicNotes.druidSpellsKnown', 'levels.Druid', '=', null);
+      rules.defineRule('spellEnergy', 'magicNotes.druidSpellEnergy', '+', null);
+      rules.defineRule
         ('spellsKnownBonus', 'magicNotes.druidSpellsKnown', '+', null);
-      MN2E.defineRule('turningLevel', 'druidTurningLevel', '+=', null);
-      MN2E.defineRule('validationNotes.druidFeatures',
+      rules.defineRule('turningLevel', 'druidTurningLevel', '+=', null);
+      rules.defineRule('validationNotes.druidFeatures',
         'levels.Druid', '=', '-4',
         'features.Magecraft (Spiritual)', '+', '1',
         'features.Mastery Of Nature', '+', '1',
         'features.Wild Empathy', '+', '1',
         'subfeatCount.Spellcasting', '+', 'source >= 1 ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.druidSkills',
+      rules.defineRule('validationNotes.druidSkills',
         'levels.Druid', '=', '-2',
         'skills.Knowledge (Nature)', '+', 'source >= 8 ? 1 : null',
         'skills.Survival', '+', 'source >= 8 ? 1 : null'
@@ -480,21 +482,21 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      MN2E.defineRule('combatNotes.improvedSneakAttackFeature',
+      rules.defineRule('combatNotes.improvedSneakAttackFeature',
         'levels.Elven Raider', '+=', '30 + Math.floor((source + 1) / 3) * 15'
       );
-      MN2E.defineRule('combatNotes.meticulousAimFeature',
+      rules.defineRule('combatNotes.meticulousAimFeature',
         'levels.Elven Raider', '+=', 'Math.floor(source / 2)'
       );
-      MN2E.defineRule('combatNotes.rangedSneakAttackFeature',
+      rules.defineRule('combatNotes.rangedSneakAttackFeature',
         'levels.Elven Raider', '+=', 'Math.floor((source + 2) / 3)',
         'combatNotes.sneakAttackFeature', '+', null
       );
-      MN2E.defineRule('validationNotes.elvenRaiderCombat',
+      rules.defineRule('validationNotes.elvenRaiderCombat',
         'levels.Elven Raider', '=', '-1',
         'baseAttack', '+', 'source >= 5 ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.elvenRaiderFeatures',
+      rules.defineRule('validationNotes.elvenRaiderFeatures',
         'levels.Elven Raider', '=', '-201',
         'features.Point Blank Shot', '+', '100',
         'features.Rapid Shot', '+', '100',
@@ -502,11 +504,11 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         'features.Weapon Focus (Longbow)', '+', '1',
         '', 'v', '0'
       );
-      MN2E.defineRule('validationNotes.elvenRaiderRace',
+      rules.defineRule('validationNotes.elvenRaiderRace',
         'levels.Elven Raider', '=', '-1',
         'race', '+', 'source.match(/Elf$/) ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.elvenRaiderSkills',
+      rules.defineRule('validationNotes.elvenRaiderSkills',
         'levels.Elven Raider', '=', '-3',
         'skills.Hide', '+', 'source >= 8 ? 1 : null',
         'skills.Move Silently', '+', 'source >= 8 ? 1 : null',
@@ -573,27 +575,27 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      MN2E.defineRule('featCount.Freerider',
+      rules.defineRule('featCount.Freerider',
         'levels.Freerider', '=', 'Math.floor(source / 3)'
       );
-      MN2E.defineRule('selectableFeatureCount.Freerider',
+      rules.defineRule('selectableFeatureCount.Freerider',
         'levels.Freerider', '=', 'Math.floor((source + 1) / 3)'
       );
-      MN2E.defineRule('validationNotes.freeriderCombat',
+      rules.defineRule('validationNotes.freeriderCombat',
         'levels.Freerider', '=', '-1',
         'baseAttack', '+', 'source >= 6 ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.freeriderFeatures',
+      rules.defineRule('validationNotes.freeriderFeatures',
         'levels.Freerider', '=', '-3',
         'features.Mounted Combat', '+', '1',
         'features.Ride By Attack', '+', '1',
         'features.Spirited Charge', '+', '1'
       );
-      MN2E.defineRule('validationNotes.freeriderRace',
+      rules.defineRule('validationNotes.freeriderRace',
         'levels.Freerider', '=', '-1',
         'race', '+', 'source.match(/Erenlander|Sarcosan/) ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.freeriderSkills',
+      rules.defineRule('validationNotes.freeriderSkills',
         'levels.Freerider', '=', '-3',
         'skills.Handle Animal', '+', 'source >= 4 ? 1 : null',
         'skills.Ride', '+', 'source >= 8 ? 1 : null',
@@ -653,27 +655,27 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      MN2E.defineRule
+      rules.defineRule
         ('magicNotes.hauntedOneSpellEnergy', 'levels.Haunted One', '=', null);
-      MN2E.defineRule
+      rules.defineRule
         ('magicNotes.hauntedOneSpellsKnown', 'levels.Haunted One', '=', null);
-      MN2E.defineRule('magicNotes.seanceFeature',
+      rules.defineRule('magicNotes.seanceFeature',
         'levels.Haunted One', '=', 'Math.floor((source + 2) / 3)'
       );
-      MN2E.defineRule('magicNotes.spiritManipulationFeature',
+      rules.defineRule('magicNotes.spiritManipulationFeature',
         'levels.Haunted One', '=', 'Math.floor(source / 2)'
       );
-      MN2E.defineRule
+      rules.defineRule
         ('spellEnergy', 'magicNotes.hauntedOneSpellEnergy', '+', null);
-      MN2E.defineRule
+      rules.defineRule
         ('spellsKnownBonus', 'magicNotes.hauntedOneSpellsKnown', '+', null);
-      MN2E.defineRule('validationNotes.hauntedOneFeatures',
+      rules.defineRule('validationNotes.hauntedOneFeatures',
         'levels.Haunted One', '=', '-3',
         'features.Spellcasting (Divination)', '+', '1',
         'features.Spellcasting (Necromancy)', '+', '1',
         'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.hauntedOneSkills',
+      rules.defineRule('validationNotes.hauntedOneSkills',
         'levels.Haunted One', '=', '-2',
         'skills.Knowledge (Arcana)', '+', 'source >= 8 ? 1 : null',
         'skills.Knowledge (Spirits)', '+', 'source >= 10 ? 1 : null'
@@ -722,23 +724,23 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      MN2E.defineRule('combatNotes.sneakAttackFeature',
+      rules.defineRule('combatNotes.sneakAttackFeature',
         'levels.Insurgent Spy', '+=', 'Math.floor((source - 1) / 2)'
       );
-      MN2E.defineRule
+      rules.defineRule
         ('featureNotes.concealAuraFeature', 'levels.Insurgent Spy', '=', null);
-      MN2E.defineRule('skillNotes.shadowContactsFeature',
+      rules.defineRule('skillNotes.shadowContactsFeature',
         'levels.Insurgent Spy', '=',
         'source >= 5 ? "incredible" : source >= 3 ? "major" : "minor"'
       );
-      MN2E.defineRule('skillNotes.shadowSpeakFeature',
+      rules.defineRule('skillNotes.shadowSpeakFeature',
         'levels.Insurgent Spy', '=', 'Math.floor(source / 2)'
       );
-      MN2E.defineRule('validationNotes.insurgentSpyFeatures',
+      rules.defineRule('validationNotes.insurgentSpyFeatures',
         'levels.Insurgent Spy', '=', '-1',
         'features.Inconspicuous', '+', '1'
       );
-      MN2E.defineRule('validationNotes.insurgentSpySkills',
+      rules.defineRule('validationNotes.insurgentSpySkills',
         'levels.Insurgent Spy', '=', '-4',
         'skills.Bluff', '+', 'source >= 8 ? 1 : null',
         'skills.Diplomacy', '+', 'source >= 5 ? 1 : null',
@@ -793,24 +795,24 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellsKnown = null;
       spellsPerDay = null;
       // TODO 1/day < level 7; 2/day >= 7
-      MN2E.defineRule('magicNotes.mystifyingSpeechFeature',
+      rules.defineRule('magicNotes.mystifyingSpeechFeature',
         'levels.Smuggler', '=', '10 + source',
         'charismaModifier', '+', null
       );
-      MN2E.defineRule('saveNotes.dominantWillFeature',
+      rules.defineRule('saveNotes.dominantWillFeature',
         'levels.Smuggler', '=', 'source >= 6 ? 4 : 2'
       );
-      MN2E.defineRule('skillNotes.informationNetworkFeature',
+      rules.defineRule('skillNotes.informationNetworkFeature',
         'levels.Smuggler', '=', 'source >= 7 ? 20 : 10'
       );
-      MN2E.defineRule('skillNotes.smuggler\'sTradeFeature',
+      rules.defineRule('skillNotes.smuggler\'sTradeFeature',
         'levels.Smuggler', '=', 'Math.floor((source + 1) / 2) * 2'
       );
-      MN2E.defineRule('validationNotes.smugglerFeatures',
+      rules.defineRule('validationNotes.smugglerFeatures',
         'levels.Smuggler', '=', '-1',
         'features.Friendly Agent', '+', '1'
       );
-      MN2E.defineRule('validationNotes.smugglerSkills',
+      rules.defineRule('validationNotes.smugglerSkills',
         'levels.Smuggler', '=', '-4',
         'skills.Bluff', '+', 'source >= 8 ? 1 : null',
         'skills.Forgery', '+', 'source >= 5 ? 1 : null',
@@ -861,46 +863,46 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      MN2E.defineRule('magicNotes.arcaneSpellFailure',
+      rules.defineRule('magicNotes.arcaneSpellFailure',
         'magicNotes.armoredCastingFeature', '+', '-source',
         null, '^', '0'
       );
-      MN2E.defineRule('magicNotes.armoredCastingFeature',
+      rules.defineRule('magicNotes.armoredCastingFeature',
         'levels.Warrior Arcanist', '=', 'Math.floor((source + 1) / 2) * 5'
       );
-      MN2E.defineRule('magicNotes.channeledArmorClassFeature',
+      rules.defineRule('magicNotes.channeledArmorClassFeature',
         'level', '=', 'Math.floor(source / 2)'
       );
-      MN2E.defineRule('magicNotes.channeledAttackFeature',
+      rules.defineRule('magicNotes.channeledAttackFeature',
         'level', '=', 'Math.floor(source / 2)'
       );
-      MN2E.defineRule('magicNotes.channeledDamageFeature',
+      rules.defineRule('magicNotes.channeledDamageFeature',
         'level', '=', 'Math.floor(source / 2)'
       );
-      MN2E.defineRule('magicNotes.warriorArcanistSpellEnergy',
+      rules.defineRule('magicNotes.warriorArcanistSpellEnergy',
         'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
       );
-      MN2E.defineRule('magicNotes.warriorArcanistSpellsKnown',
+      rules.defineRule('magicNotes.warriorArcanistSpellsKnown',
         'levels.Warrior Arcanist', '=', 'Math.floor(source / 2)'
       );
-      MN2E.defineRule
+      rules.defineRule
         ('spellEnergy', 'magicNotes.warriorArcanistSpellEnergy', '+', null);
-      MN2E.defineRule('spellsKnownBonus',
+      rules.defineRule('spellsKnownBonus',
         'magicNotes.warriorArcanistSpellsKnown', '+', null
       );
-      MN2E.defineRule('validationNotes.warriorArcanistCombat',
+      rules.defineRule('validationNotes.warriorArcanistCombat',
         'levels.Warrior Arcanist', '=', '-2',
         'baseAttack', '+', 'source >= 4 ? 1 : null',
         'weaponProficiencyLevel', '+',
           'source >= ' + PH35.PROFICIENCY_MEDIUM + ' ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.warriorArcanistFeatures',
+      rules.defineRule('validationNotes.warriorArcanistFeatures',
         'levels.Warrior Arcanist', '=', '-3',
         'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null',
         'subfeatCount.Spellcasting', '+', 'source >= 1 ? 1 : null',
         'subfeatCount.Weapon Focus', '+', 'source >= 1 ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.warriorArcanistSkills',
+      rules.defineRule('validationNotes.warriorArcanistSkills',
         'levels.Warrior Arcanist', '=', '-1',
         'skills.Spellcraft', '+', 'source >= 8 ? 1 : null'
       );
@@ -953,28 +955,28 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      MN2E.defineRule
+      rules.defineRule
         ('initiative', 'combatNotes.whisperInitiativeFeature', '+', '2');
-      MN2E.defineRule('magicNotes.whisperAdeptSpellEnergy',
+      rules.defineRule('magicNotes.whisperAdeptSpellEnergy',
         'levels.Whisper Adept', '=', null
       );
-      MN2E.defineRule('magicNotes.whisperAdeptSpellsKnown',
+      rules.defineRule('magicNotes.whisperAdeptSpellsKnown',
         'levels.Whisper Adept', '=', null
       );
-      MN2E.defineRule
+      rules.defineRule
         ('spellEnergy', 'magicNotes.whisperAdeptSpellEnergy', '+', null);
-      MN2E.defineRule
+      rules.defineRule
         ('spellsKnownBonus', 'magicNotes.whisperAdeptSpellsKnown', '+', null);
-      MN2E.defineRule('validationNotes.whisperAdeptFeatures',
+      rules.defineRule('validationNotes.whisperAdeptFeatures',
         'levels.Whisper Adept', '=', '-2',
         'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null',
         'subfeatCount.Spellcraft', '+', 'source >= 2 ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.whisperAdeptRace',
+      rules.defineRule('validationNotes.whisperAdeptRace',
         'levels.Whisper Adept', '=', '-1',
         'race', '+', 'source.match(/Elf$/) ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.whisperAdeptSkills',
+      rules.defineRule('validationNotes.whisperAdeptSkills',
         'levels.Whisper Adept', '=', '-3',
         'skills.Knowledge (Nature)', '+', 'source >= 8 ? 1 : null',
         'skills.Knowledge (Spirits)', '+', 'source >= 10 ? 1 : null',
@@ -1021,23 +1023,24 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      MN2E.defineRule('featCount.Spellcasting',
+      rules.defineRule('featCount.Spellcasting',
         'levels.Wizard', '+=', 'source<4 ? null : Math.floor((source - 1) / 3)'
       );
-      MN2E.defineRule('featCount.Wizard Bonus',
+      rules.defineRule('featCount.Wizard Bonus',
         'levels.Wizard', '+=', 'Math.floor(source / 3)'
       );
-      MN2E.defineRule('featureNotes.efficientStudyFeature',
+      rules.defineRule('featureNotes.efficientStudyFeature',
         'levels.Wizard', '=', 'Math.floor((source + 1) / 3) * 10'
       );
-      MN2E.defineRule
+      rules.defineRule
         ('magicNotes.wizardSpellEnergy', 'levels.Wizard', '=', null);
-      MN2E.defineRule
+      rules.defineRule
         ('magicNotes.wizardSpellsKnown', 'levels.Wizard', '=', null);
-      MN2E.defineRule('spellEnergy', 'magicNotes.wizardSpellEnergy', '+', null);
-      MN2E.defineRule
+      rules.defineRule
+        ('spellEnergy', 'magicNotes.wizardSpellEnergy', '+', null);
+      rules.defineRule
         ('spellsKnownBonus', 'magicNotes.wizardSpellsKnown', '+', null);
-      MN2E.defineRule('validationNotes.wizardFeatures',
+      rules.defineRule('validationNotes.wizardFeatures',
         'levels.Wizard', '=', '-202',
         'features.Magecraft (Hermetic)', '+', '100',
         'subfeatCount.Spellcasting', '+', 'source >= 2 ? 100 : null',
@@ -1046,7 +1049,7 @@ MN2EPrestige.prestigeClassRules = function(classes) {
         /^features\.(Brew|Craft|Forge)/, '+', '1',
         '', 'v', '0'
       );
-      MN2E.defineRule('validationNotes.wizardSkills',
+      rules.defineRule('validationNotes.wizardSkills',
         'levels.Wizard', '=', '-2',
         'skills.Knowledge (Arcana)', '+', 'source >= 10 ? 1 : null',
         'skills.Spellcraft', '+', 'source >= 10 ? 1 : null'
@@ -1109,26 +1112,26 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      MN2E.defineRule('combatNotes.improvedMountedCombatFeature',
+      rules.defineRule('combatNotes.improvedMountedCombatFeature',
         'dexterityModifier', '=', 'source > 0 ? source : 1'
       );
-      MN2E.defineRule
+      rules.defineRule
         ('features.Blindsense', 'features.Wogren\'s Sight', '=', '1');
-      MN2E.defineRule
+      rules.defineRule
         ('features.Rapid Shot', 'features.Improved Mounted Archery', '=', '1');
-      MN2E.defineRule('selectableFeatureCount.Wogren Rider',
+      rules.defineRule('selectableFeatureCount.Wogren Rider',
         'levels.Wogren Rider', '=', 'Math.floor(source / 2)'
       );
-      MN2E.defineRule('validationNotes.wogrenRiderFeatures',
+      rules.defineRule('validationNotes.wogrenRiderFeatures',
         'levels.Wogren Rider', '=', '-2',
         'features.Mounted Archery', '+', '1',
         'features.Mounted Combat', '+', '1'
       );
-      MN2E.defineRule('validationNotes.wogrenRiderRace',
+      rules.defineRule('validationNotes.wogrenRiderRace',
         'levels.Wogren Rider', '=', '-1',
         'race', '+', 'source.match(/Halfling/) ? 1 : null'
       );
-      MN2E.defineRule('validationNotes.wogrenRiderSkills',
+      rules.defineRule('validationNotes.wogrenRiderSkills',
         'levels.Wogren Rider', '=', '-2',
         'skills.Ride', '+', 'source >= 8 ? 1 : null',
         'skills.Survival', '+', 'source >= 4 ? 1 : null'
@@ -1138,21 +1141,21 @@ MN2EPrestige.prestigeClassRules = function(classes) {
       continue;
 
     PH35.defineClass
-      (MN2E.rules, klass, hitDie, skillPoints, baseAttack, saveFortitude,
+      (rules, klass, hitDie, skillPoints, baseAttack, saveFortitude,
        saveReflex, saveWill, profArmor, profShield, profWeapon, skills,
        features, spellsKnown, spellsPerDay, spellAbility);
     if(feats != null) {
       for(var j = 0; j < feats.length; j++) {
-        MN2E.defineChoice('feats', feats[j] + ':' + klass);
+        rules.defineChoice('feats', feats[j] + ':' + klass);
       }
     }
     if(notes != null)
-      MN2E.defineNote(notes);
+      rules.defineNote(notes);
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        MN2E.defineChoice('selectableFeatures', selectable + ':' + klass);
-        MN2E.defineRule('features.' + selectable,
+        rules.defineChoice('selectableFeatures', selectable + ':' + klass);
+        rules.defineRule('features.' + selectable,
           'selectableFeatures.' + selectable, '+=', null
         );
       }
