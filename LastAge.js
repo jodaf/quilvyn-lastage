@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.68 2007/03/15 14:51:00 Jim Exp $ */
+/* $Id: LastAge.js,v 1.69 2007/03/16 19:10:01 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -28,7 +28,6 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 function MN2E() {
 
   var rules = new ScribeRules('Midnight 2nd Edition');
-
   MN2E.viewer = new ObjectViewer();
   PH35.createViewer(MN2E.viewer);
   rules.defineViewer("Standard", MN2E.viewer);
@@ -39,14 +38,7 @@ function MN2E() {
   PH35.classRules(rules, ['Barbarian', 'Rogue']);
   PH35.companionRules(rules, ['Familiar']);
   PH35.skillRules(rules, PH35.SKILLS, PH35.SUBSKILLS);
-  // Define subskills available to Leader Of Men Fighters
-  PH35.skillRules(
-    rules, ['Profession', 'Skill Focus'],
-    {'Profession':'Soldier', 'Skill Focus':'Diplomacy/Profession (Soldier)'}
-  );
   PH35.featRules(rules, PH35.FEATS, PH35.SUBFEATS);
-  // Define Weapon Focus (Longsword); legates with the War domain receive it
-  PH35.featRules(rules, ['Weapon Focus'], {'Weapon Focus':'Longsword'});
   PH35.descriptionRules(rules, PH35.ALIGNMENTS, MN2E.DEITIES, PH35.GENDERS);
   PH35.equipmentRules
     (rules, PH35.ARMORS, PH35.GOODIES, PH35.SHIELDS, PH35.WEAPONS);
@@ -57,8 +49,6 @@ function MN2E() {
   PH35.deitiesFavoredWeapons['Izrador (NE)'] = 'Longsword';
   PH35.magicRules(rules, PH35.DOMAINS, PH35.SCHOOLS, PH35.SPELLS);
 
-  rules.defineChoice('preset', 'race', 'heroicPath', 'levels');
-  rules.defineChoice('random', MN2E.RANDOMIZABLE_ATTRIBUTES);
   MN2E.raceRules(rules, MN2E.LANGUAGES, MN2E.RACES);
   MN2E.heroicPathRules(rules, MN2E.HEROIC_PATHS);
   MN2E.classRules(rules, MN2E.CLASSES);
@@ -67,7 +57,8 @@ function MN2E() {
   MN2E.featRules(rules, MN2E.FEATS, MN2E.SUBFEATS);
   MN2E.equipmentRules(rules, MN2E.WEAPONS);
   MN2E.magicRules(rules, MN2E.SPELLS);
-
+  rules.defineChoice('preset', 'race', 'heroicPath', 'levels');
+  rules.defineChoice('random', MN2E.RANDOMIZABLE_ATTRIBUTES);
   rules.defineChoice('races', 'None'); // TODO Remove this testing choice
   rules.defineSheetElement('Deity', null, null, null); // Remove from sheet
   rules.randomizeOneAttribute = MN2E.randomizeOneAttribute;
@@ -94,8 +85,8 @@ MN2E.FEATS = [
   'Magic Hardened:', 'Natural Healer:', 'Orc Slayer:Fighter Bonus',
   'Quickened Donning:Fighter Bonus', 'Ritual Magic:Channeling',
   'Sarcosan Pureblood:', 'Sense Nexus:', 'Spellcasting:Channeling/Spellcasting',
-  'Spell Knowledge:', 'Thick Skull:', 'Warrior Of Shadow:',
-  'Whispering Awareness:'
+  'Skill Focus:', 'Spell Knowledge:', 'Thick Skull:', 'Warrior Of Shadow:',
+  'Weapon Focus:Fighter', 'Whispering Awareness:'
 ];
 MN2E.HEROIC_PATHS = [
   'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
@@ -121,7 +112,7 @@ MN2E.RACES = [
 MN2E.RANDOMIZABLE_ATTRIBUTES =
   PH35.RANDOMIZABLE_ATTRIBUTES.concat(['heroicPath']);
 MN2E.SKILLS = [
-  'Knowledge:int/trained'
+  'Knowledge:int/trained', 'Profession:wis/trained'
 ];
 MN2E.SPELLS = [
   'Charm Repair:W3/Transmutation', 'Detect Astirax:D1/W1/Divination',
@@ -135,10 +126,16 @@ MN2E.SPELLS = [
 MN2E.SUBFEATS = {
   'Greater Spellcasting':'Conjuration/Evocation',
   'Magecraft':'Charismatic/Hermetic/Spiritual',
-  'Spellcasting':PH35.SCHOOLS.join('/')
+  // Skill Focus (Profession (Soldier)) available to Leader Of Men Fighters
+  'Skill Focus':'Profession (Soldier)',
+  'Spellcasting':PH35.SCHOOLS.join('/'),
+  // Legates w/War domain receive Weapon Focus (Longsword)
+  'Weapon Focus':'Longsword'
 };
 MN2E.SUBSKILLS = {
-  'Knowledge':'Old Gods/Shadow/Spirits'
+  'Knowledge':'Old Gods/Shadow/Spirits',
+  // Profession (Soldier) available to Leader Of Men Fighters
+  'Profession':'Soldier'
 };
 MN2E.WEAPONS = [
   'Atharak:d6', 'Cedeku:d6@19', 'Crafted Vardatch:d10@19',
@@ -291,11 +288,11 @@ MN2E.classRules = function(rules, classes) {
         'channelerLevels', '+=',
         'source >= 2 ? Math.floor((source + 1) / 3) : null'
       );
+      rules.defineRule
+        ('magicNotes.channelerSpellEnergy', 'channelerLevels', '=', null);
       rules.defineRule('magicNotes.channelerSpellsKnown',
         'channelerLevels', '=', '(source - 1) * 2'
       );
-      rules.defineRule
-        ('magicNotes.channelerSpellEnergy', 'channelerLevels', '=', null);
       rules.defineRule
         ('spellEnergy', 'magicNotes.channelerSpellEnergy', '+', null);
       rules.defineRule
@@ -886,8 +883,9 @@ MN2E.classRules = function(rules, classes) {
         'C8:15:1/16:2/18:3/20:4',
         'C9:17:1/18:2/19:3/20:4'
       ];
-      rules.defineRule
-        ('astiraxLevel', 'levels.Legate', '+=', 'Math.floor(source / 3)');
+      rules.defineRule('astiraxLevel',
+        'levels.Legate', '+=', 'source < 3 ? null : Math.floor(source / 3)'
+      );
       rules.defineRule('astiraxMasterLevel', 'levels.Legate', '+=', null);
       rules.defineRule('casterLevelDivine', 'levels.Legate', '+=', null);
       rules.defineRule('domainCount', 'levels.Legate', '+=', '2');
@@ -1240,13 +1238,19 @@ MN2E.companionRules = function(rules, companions) {
 
 };
 
-/* Defines the rules related to MN2E Chapter 5, Player Options/Starting Equipment. */
+/*
+ * Defines the rules related to MN2E Chapter 5, Player Options/Starting
+ * Equipment.
+ */
 MN2E.equipmentRules = function(rules, weapons) {
   rules.defineChoice('weapons', weapons);
 };
 
 /* Defines the rules related to MN2E Chapter 5, Player Options/Feats. */
 MN2E.featRules = function(rules, feats, subfeats) {
+
+  // Let PH35 handle the basics, then add MN-specific notes and rules
+  PH35.featRules(rules, feats, subfeats);
 
   var allFeats = [];
   for(var i = 0; i < feats.length; i++) {
@@ -1255,16 +1259,11 @@ MN2E.featRules = function(rules, feats, subfeats) {
     var featSubfeats = subfeats[feat];
     if(featSubfeats == null) {
       allFeats[allFeats.length] = feat + ':' + pieces[1];
-    } else {
-      rules.defineRule('subfeatCount.' + feat,
-        new RegExp('^feats\\.' + feat + ' \\('), '+=', '1'
-      );
-      if(featSubfeats != '') {
-        featSubfeats = featSubfeats.split(/\//);
-        for(var j = 0; j < featSubfeats.length; j++) {
-          allFeats[allFeats.length] =
-            feat + ' (' + featSubfeats[j] + '):' + pieces[1];
-        }
+    } else if(featSubfeats != '') {
+      featSubfeats = featSubfeats.split(/\//);
+      for(var j = 0; j < featSubfeats.length; j++) {
+        allFeats[allFeats.length] =
+          feat + ' (' + featSubfeats[j] + '):' + pieces[1];
       }
     }
   }
@@ -1567,32 +1566,14 @@ MN2E.heroicPathRules = function(rules, paths) {
     ('abilityNotes.strengthBonusFeature', 'features.Strength Bonus', '=', null);
   rules.defineRule
     ('abilityNotes.wisdomBonusFeature', 'features.Wisdom Bonus', '=', null);
-  rules.defineRule('armorClass',
-    'combatNotes.armorClassBonusFeature', '+', null
-  );
   rules.defineRule
     ('charisma', 'abilityNotes.charismaBonusFeature', '+', null);
-  rules.defineRule('combatNotes.armorClassBonusFeature',
-    'features.Armor Class Bonus', '=', null
-  );
   rules.defineRule
     ('constitution', 'abilityNotes.constitutionBonusFeature', '+', null);
   rules.defineRule
     ('dexterity', 'abilityNotes.dexterityBonusFeature', '+', null);
   rules.defineRule
     ('intelligence', 'abilityNotes.intelligenceBonusFeature', '+', null);
-  rules.defineRule
-    ('save.Fortitude', 'saveNotes.fortitudeBonusFeature', '+', null);
-  rules.defineRule
-    ('save.Reflex', 'saveNotes.reflexBonusFeature', '+', null);
-  rules.defineRule('save.Will', 'saveNotes.willBonusFeature', '+', null);
-  rules.defineRule
-    ('saveNotes.fortitudeBonusFeature', 'features.Fortitude Bonus', '=', null);
-  rules.defineRule
-    ('saveNotes.reflexBonusFeature', 'features.Reflex Bonus', '=', null);
-  rules.defineRule
-    ('saveNotes.willBonusFeature', 'features.Will Bonus', '=', null);
-  rules.defineRule('speed', 'abilityNotes.fastMovementFeature', '+', null);
   rules.defineRule('strength', 'abilityNotes.strengthBonusFeature', '+', null);
   rules.defineRule('wisdom', 'abilityNotes.wisdomBonusFeature', '+', null);
 
@@ -1734,7 +1715,8 @@ MN2E.heroicPathRules = function(rules, paths) {
       notes = [
         'magicNotes.bolsterSpellFeature:Add 1 to DC of %V chosen spells',
         'magicNotes.frightfulPresenceFeature:' +
-          'Casting panics/shakes foes of lesser level 4d6 rounds failing DC %V Will save',
+          'Casting panics/shakes foes of lesser level 4d6 rounds failing ' +
+          'DC %V Will save',
         'magicNotes.improvedSpellcastingFeature:' +
           'Reduce energy cost of spells from %V chosen schools by 1',
         'magicNotes.quickenedCounterspellingFeature:' +
@@ -1798,9 +1780,8 @@ MN2E.heroicPathRules = function(rules, paths) {
         '13:Transmute Rock To Mud', '14:Stoneskin', '15:Move Earth',
         '17:Stone Tell', '19:Earthquake'
       ];
-      rules.defineRule('armorClass',
-        'combatNotes.naturalArmorFeature', '+', null
-      );
+      rules.defineRule
+        ('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
       rules.defineRule('combatNotes.naturalArmorFeature',
         'earthbondedFeatures.Natural Armor', '+=', null
       );
@@ -1891,6 +1872,24 @@ MN2E.heroicPathRules = function(rules, paths) {
         '11:Deep Slumber', '14:False Vision', '15:Rainbow Pattern',
         '17:Mislead', '18:Seeming'
       ];
+      rules.defineRule('armorClass',
+        'combatNotes.armorClassBonusFeature', '+', null
+      );
+      rules.defineRule('combatNotes.armorClassBonusFeature',
+        'features.Armor Class Bonus', '=', null
+      );
+      rules.defineRule
+        ('save.Fortitude', 'saveNotes.fortitudeBonusFeature', '+', null);
+      rules.defineRule
+        ('save.Reflex', 'saveNotes.reflexBonusFeature', '+', null);
+      rules.defineRule('save.Will', 'saveNotes.willBonusFeature', '+', null);
+      rules.defineRule('saveNotes.fortitudeBonusFeature',
+        'features.Fortitude Bonus', '=', null 
+      );
+      rules.defineRule
+        ('saveNotes.reflexBonusFeature', 'features.Reflex Bonus', '=', null);
+      rules.defineRule
+        ('saveNotes.willBonusFeature', 'features.Will Bonus', '=', null);
       rules.defineRule('selectableFeatureCount.Feyblooded',
         'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)',
         'charismaModifier', '*', null,
@@ -1938,6 +1937,7 @@ MN2E.heroicPathRules = function(rules, paths) {
         'pathLevels.Giantblooded', '+=',
         'source>=17 ? 10 : source>=14 ? 8 : (Math.floor((source + 1) / 4) * 2)'
       );
+      rules.defineRule('speed', 'abilityNotes.fastMovementFeature', '+', null);
       rules.defineRule
         ('weapons.Debris', 'combatNotes.rockThrowingFeature', '=', '1');
       // NOTE: damage skewed to allow for Large adjustment starting level 10
@@ -2032,9 +2032,8 @@ MN2E.heroicPathRules = function(rules, paths) {
       ];
       selectableFeatures = null;
       spellFeatures = null;
-      rules.defineRule('armorClass',
-        'combatNotes.naturalArmorFeature', '+', null
-      );
+      rules.defineRule
+        ('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
       rules.defineRule('combatNotes.damageReductionFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor(source / 5)'
       );
@@ -2059,8 +2058,13 @@ MN2E.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule
         ('resistance.Fire', 'saveNotes.elementalResistanceFeature', '+=', null);
+      rules.defineRule
+        ('save.Fortitude', 'saveNotes.fortitudeBonusFeature', '+', null);
       rules.defineRule('saveNotes.elementalResistanceFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor((source - 1) / 5) * 3'
+      );
+      rules.defineRule('saveNotes.fortitudeBonusFeature',
+        'features.Fortitude Bonus', '=', null 
       );
       rules.defineRule('saveNotes.indefatigableFeature',
         'pathLevels.Ironborn', '=',
@@ -2364,6 +2368,12 @@ MN2E.heroicPathRules = function(rules, paths) {
       rules.defineRule('abilityNotes.fastMovementFeature',
         'pathLevels.Quickened', '+=', 'Math.floor((source + 2) / 5) * 5'
       );
+      rules.defineRule('armorClass',
+        'combatNotes.armorClassBonusFeature', '+', null
+      );
+      rules.defineRule('combatNotes.armorClassBonusFeature',
+        'features.Armor Class Bonus', '=', null
+      );
       rules.defineRule('combatNotes.burstOfSpeedFeature',
         'pathLevels.Quickened', '+=', 'Math.floor((source + 1) / 5)'
       );
@@ -2378,6 +2388,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       rules.defineRule('quickenedFeatures.Dexterity Bonus',
         'level', '+', 'Math.floor((source - 5) / 5)'
       );
+      rules.defineRule('speed', 'abilityNotes.fastMovementFeature', '+', null);
 
     } else if(path == 'Seaborn') {
 
@@ -3425,57 +3436,8 @@ MN2E.raceRules = function(rules, languages, races) {
 /* Defines the rules related to MN2E Chapter 5, Player Options/Skills. */
 MN2E.skillRules = function(rules, skills, subskills) {
 
-  var abilityNames = {
-    'cha':'charisma', 'con':'constitution', 'dex':'dexterity',
-    'int':'intelligence', 'str':'strength', 'wis':'wisdom'
-  };
-  var synergies = {
-  };
-  var allSkills = [];
-  for(var i = 0; i < skills.length; i++) {
-    var pieces = skills[i].split(/:/);
-    var skill = pieces[0];
-    var skillsSubskills = subskills[skill];
-    if(skillsSubskills == null) {
-      allSkills[allSkills.length] = skill + ':' + pieces[1];
-    } else {
-      rules.defineRule('subskillCount.' + skill,
-        new RegExp('^skills\\.' + skill + ' \\('), '+=', '1'
-      );
-      rules.defineRule('subskillMax.' + skill,
-        new RegExp('^skills\\.' + skill + ' \\('), '^=', null
-      );
-      rules.defineRule('subskillTotal.' + skill,
-        new RegExp('^skills\\.' + skill + ' \\('), '+=', null
-      );
-      if(skillsSubskills != '') {
-        skillsSubskills = skillsSubskills.split(/\//);
-        for(var j = 0; j < skillsSubskills.length; j++) {
-          var subskill = skill + ' (' + skillsSubskills[j] + ')';
-          allSkills[allSkills.length] = subskill + ':' + pieces[1];
-          rules.defineRule
-            ('classSkills.' + subskill, 'classSkills.' + skill, '=', '1');
-        }
-      }
-    }
-  }
-  for(var i = 0; i < allSkills.length; i++) {
-    var pieces = allSkills[i].split(/:/);
-    var skill = pieces[0];
-    var ability = pieces[1].replace(/\/.*/, '');
-    var synergy = synergies[skill];
-    rules.defineChoice('skills', skill + ':' + pieces[1]);
-    if(abilityNames[ability] != null) {
-      var modifier = abilityNames[ability] + 'Modifier';
-      rules.defineRule('skills.' + skill, modifier, '+', null);
-    }
-    if(synergy != null) {
-      var prefix = skill.substring(0, 1).toLowerCase() +
-                   skill.substring(1).replace(/ /g, '');
-      rules.defineNote('skillNotes.' + prefix + 'Synergy:+2 ' + synergy);
-    }
-  }
-
+  // Let PH35 handle the basics, then add MN-specific notes and rules
+  PH35.skillRules(rules, skills, subskills);
   var notes = [
     'skillNotes.knowledge(Local)Synergy2:' +
        '+2 Knowledge (Shadow) (local bureaucracy)',
@@ -3483,8 +3445,8 @@ MN2E.skillRules = function(rules, skills, subskills) {
     'skillNotes.knowledge(Spirits)Synergy:+2 Knowledge (Nature)'
   ];
   rules.defineNote(notes);
-  rules.defineRule('skillNotes.knowledge(Locak)Synergy2',
-    'skills.Knowledge (Locak)', '=', 'source >= 5 ? 1 : null'
+  rules.defineRule('skillNotes.knowledge(Local)Synergy2',
+    'skills.Knowledge (Local)', '=', 'source >= 5 ? 1 : null'
   );
   rules.defineRule('skillNotes.knowledge(Nature)Synergy2',
     'skills.Knowledge (Nature)', '=', 'source >= 5 ? 1 : null'
@@ -3554,7 +3516,7 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
     var attrs = this.applyRules(attributes);
     var spellsKnownBonus = attrs.spellsKnownBonus;
     if(spellsKnownBonus != null) {
-      var maxSpellLevel = attrs.maxSpellLevel;
+      var maxSpellLevel = Math.floor(attrs.maxSpellLevel);
       // Temporarily set prohibit.* attributes to keep PH35 from assigning
       // spells from schools where the character doesn't have Spellcasting
       for(var a in this.getChoices('schools')) {
@@ -3615,6 +3577,7 @@ MN2E.isSource = function() {
   return MN2E.rules.isSource.apply(MN2E.rules, arguments);
 };
 
+// Language synergies:
 // Pidgin Colonial or Norther -> Pidgin Erenlander
 // Basic Colonial and Norther -> Basic Erenlander
 // Basic High Elven -> Pidgin Jungle Mouth
