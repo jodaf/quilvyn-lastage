@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.69 2007/03/16 19:10:01 Jim Exp $ */
+/* $Id: LastAge.js,v 1.70 2007/03/20 00:05:57 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -306,9 +306,9 @@ MN2E.classRules = function(rules, classes) {
           feats[feats.length] = 'Greater Spell Focus (' + school + ')';
           feats[feats.length] = 'Spell Focus (' + school + ')';
         }
-        features = features.concat(
-          ['1:Magecraft (Charismatic)', '3:Force Of Personality']
-        );
+        features = features.concat([
+          '1:Magecraft (Charismatic)', '3:Force Of Personality'
+        ]);
         notes = notes.concat([
           'magicNotes.forceOfPersonalityFeature:' +
             'Inspire Confidence/Fascination/Fury/Suggestion %V/day',
@@ -474,18 +474,17 @@ MN2E.classRules = function(rules, classes) {
             feats[feats.length] = pieces[0];
           }
         }
-        features = features.concat(
-          ['1:Magecraft (Spiritual)', '3:Master Of Two Worlds']
-        );
+        features = features.concat([
+          '1:Magecraft (Spiritual)', '3:Master Of Two Worlds'
+        ]);
         notes = notes.concat([
           'combatNotes.confidentEffectFeature:+4 Master of Two Worlds checks',
           'combatNotes.heightenedEffectFeature:' +
             '+2 level for Master of Two Worlds checks',
-          'combatNotes.masteryOfNatureFeature:Turn animals/plants as cleric',
-          'combatNotes.masteryOfSpiritsFeature:' +
-            'Successful turning exorcises spirits',
+          'combatNotes.masteryOfNatureFeature:Turn animals/plants',
+          'combatNotes.masteryOfSpiritsFeature:Turn to exorcise spirits',
           'combatNotes.masteryOfTheUnnaturalFeature:' +
-            'Turn constructs/outsiders (double hit die) as cleric',
+            'Turn constructs/outsiders (double hit die)',
           'combatNotes.masterOfTwoWorldsFeature:' +
             'Mastery of Nature/Spirits/The Unnatural %V/day',
           'combatNotes.powerfulEffectFeature:+1d6 mastery damage',
@@ -539,8 +538,9 @@ MN2E.classRules = function(rules, classes) {
         rules.defineRule('spellsKnown.W1',
           'magicNotes.magecraft(Charismatic)Feature', '+=', '1'
         );
-        rules.defineRule
-          ('turningLevel', 'levels.Spiritual Channeler', '+=', null);
+        rules.defineRule('turningLevel',
+          'levels.Spiritual Channeler', '+=', 'source >= 3 ? source : null'
+        );
         rules.defineRule('validationNotes.confidentEffectSelectableFeature',
           'selectableFeatures.Confident Effect', '=', '-1',
           /^features.Mastery Of (Nature|Spirits|The Unnatural)$/, '+', '1',
@@ -1633,7 +1633,7 @@ MN2E.heroicPathRules = function(rules, paths) {
         'mediumViciousAssault', '=', 'PH35.weaponsSmallDamage[source]'
       );
       rules.defineRule
-        ('turningLevel', 'pathLevels.Beast', '+=', 'source>=2 ? source : null');
+        ('turningLevel', 'pathLevels.Beast', '^=', 'source>=2 ? source : null');
 
     } else if(path == 'Chanceborn') {
 
@@ -1811,7 +1811,7 @@ MN2E.heroicPathRules = function(rules, paths) {
        'faithfulFeatures.Wisdom Bonus', '+=', null
       );
       rules.defineRule('turningLevel',
-        'pathLevels.Faithful', '+=', 'source >= 4 ? source : null'
+        'pathLevels.Faithful', '^=', 'source >= 4 ? source : null'
       );
       // TODO turningLevel-based computation overrides this
       rules.defineRule('turningFrequency',
