@@ -398,8 +398,6 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         ('animalCompanionMasterLevel', 'levels.Druid', '+=', null);
       rules.defineRule('druidTurningLevel',
         'levels.Druid', '+=', 'source / 2',
-        'levels.Charismatic Channeler', '*', '2',
-        'levels.Hermetic Channeler', '*', '2',
         'levels.Spiritual Channeler', '*', '2'
       );
       rules.defineRule('featureNotes.findTheWayFeature',
