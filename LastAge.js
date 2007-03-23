@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.70 2007/03/20 00:05:57 Jim Exp $ */
+/* $Id: LastAge.js,v 1.71 2007/03/23 12:08:20 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -269,9 +269,9 @@ MN2E.classRules = function(rules, classes) {
       selectableFeatures = null;
       skillPoints = 4;
       skills = [
-        'Concentration', 'Decipher Script', 'Handle Animal', 'Heal',
-        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Ride', 'Search',
-        'Speak Language', 'Spellcraft'
+        'Concentration', 'Craft', 'Decipher Script', 'Handle Animal', 'Heal',
+        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Profession', 'Ride',
+        'Search', 'Speak Language', 'Spellcraft'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -437,12 +437,7 @@ MN2E.classRules = function(rules, classes) {
           'Foe Specialty', 'Knowledge Specialty', 'Quick Reference',
           'Spell Specialty'
         ];
-        skills = skills.concat([
-          'Knowledge (Arcana)', 'Knowledge (Dungeoneering)',
-          'Knowledge (Engineering)', 'Knowledge (Geography)',
-          'Knowledge (History)', 'Knowledge (Local)', 'Knowledge (Nature)',
-          'Knowledge (Nobility)', 'Knowledge (Planes)', 'Knowledge (Religion)'
-        ]);
+        skills = skills.concat(['Knowledge']);
         spellAbility = 'intelligence';
         rules.defineRule
           ('channelerLevels', 'levels.Hermetic Channeler', '+=', null);
@@ -655,9 +650,10 @@ MN2E.classRules = function(rules, classes) {
       ];
       skillPoints = 4;
       skills = [
-        'Balance', 'Bluff', 'Climb', 'Escape Artist', 'Handle Animal', 'Hide',
-        'Jump', 'Knowledge (Local)', 'Knowledge (Shadow)', 'Listen',
-        'Move Silently', 'Sense Motive', 'Speak Language', 'Swim', 'Tumble'
+        'Balance', 'Bluff', 'Climb', 'Craft', 'Escape Artist', 'Handle Animal',
+        'Hide', 'Jump', 'Knowledge (Local)', 'Knowledge (Shadow)', 'Listen',
+        'Move Silently', 'Profession', 'Ride', 'Sense Motive',
+        'Speak Language', 'Swim', 'Tumble'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -794,14 +790,15 @@ MN2E.classRules = function(rules, classes) {
       ];
       skillPoints = 2;
       skills = [
-        'Climb', 'Craft', 'Handle Animal', 'Intimidate', 'Jump', 'Ride', 'Swim'
+        'Climb', 'Craft', 'Handle Animal', 'Intimidate', 'Jump',
+        'Knowledge (Shadow)', 'Profession', 'Ride', 'Speak Language', 'Swim'
       ];
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
       rules.defineChoice('feats',
-        'Improvised Weapon:Improviser', 'Improved Grapple:Improviser',
-        'Stunning Fist:Improviser', 'Unarmed Strike:Improviser',
+        'Improved Grapple:Improviser', 'Improved Unarmed Strike:Improviser',
+        'Improvised Weapon:Improviser', 'Stunning Fist:Improviser',
         'Iron Will:Leader Of Men', 'Leadership:Leader Of Men',
         'Skill Focus (Diplomacy):Leader Of Men',
         'Skill Focus (Profession (Soldier)):Leader Of Men',
@@ -825,11 +822,13 @@ MN2E.classRules = function(rules, classes) {
       rules.defineRule('selectableFeatureCount.Fighter',
        'levels.Fighter', '=', 'source >= 4 ? 1 : null'
       );
+      // TODO adapter may alternately make a cross-class skill a class one
       rules.defineRule('skillNotes.adapterFeature',
         'levels.Fighter', '=',
-        'source < 4 ? null : (source * Math.floor((source + 2) / 6))'
+        'source < 4 ? null : ' +
+        '(source - 3 + (source >= 10 ? source - 9 : 0) + ' +
+        '(source >= 16 ? source - 15 : 0))'
       );
-      // TODO adapter may alternately make a cross-class skill a class one
       rules.defineRule('skillPoints', 'skillNotes.adapterFeature', '+', null);
 
     } else if(klass == 'Legate') {
@@ -858,9 +857,9 @@ MN2E.classRules = function(rules, classes) {
       selectableFeatures = null;
       skillPoints = 4;
       skills = [
-        'Concentration', 'Diplomacy', 'Handle Animal', 'Heal', 'Intimidate',
-        'Knowledge (Arcana)', 'Knowledge (Shadow)', 'Knowledge (Spirits)',
-        'Speak Language', 'Spellcraft'
+        'Concentration', 'Craft', 'Diplomacy', 'Handle Animal', 'Heal',
+        'Intimidate', 'Knowledge (Arcana)', 'Knowledge (Shadow)',
+        'Knowledge (Spirits)', 'Profession', 'Speak Language', 'Spellcraft'
       ];
       spellAbility = 'wisdom';
       spellsKnown = [
@@ -999,10 +998,10 @@ MN2E.classRules = function(rules, classes) {
       ];
       skillPoints = 6;
       skills = [
-        'Balance', 'Climb', 'Handle Animal', 'Heal', 'Hide', 'Jump',
+        'Balance', 'Climb', 'Craft', 'Handle Animal', 'Heal', 'Hide', 'Jump',
         'Knowledge (Geography)', 'Knowledge (Nature)', 'Listen',
-        'Move Silently', 'Ride', 'Search', 'Speak Language', 'Spot',
-        'Survival', 'Swim', 'Use Rope'
+        'Move Silently', 'Profession', 'Ride', 'Search', 'Speak Language',
+        'Spot', 'Survival', 'Swim', 'Use Rope'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -1170,18 +1169,20 @@ MN2E.companionRules = function(rules, companions) {
       ];
       prefix = 'animalCompanion';
       rules.defineRule('animalCompanionStats.armorClass',
-        'companionLevel', '=', '(source-1) * 2'
+        'animalCompanionLevel', '=', '(source - 1) * 2'
       );
       rules.defineRule('animalCompanionStats.dexterity',
-        'companionLevel', '=', 'source - 1'
+        'animalCompanionLevel', '=', 'source - 1'
       );
       rules.defineRule('animalCompanionStats.hitDice',
-        'companionLevel', '=', '(source - 1) * 2'
+        'animalCompanionLevel', '=', '(source - 1) * 2'
       );
-      rules.defineRule
-        ('animalCompanionStats.strength', 'companionLevel', '=', 'source * 2');
-      rules.defineRule
-        ('animalCompanionStats.tricks', 'companionLevel', '=', 'source + 1');
+      rules.defineRule('animalCompanionStats.strength',
+        'animalCompanionLevel', '=', 'source * 2'
+      );
+      rules.defineRule('animalCompanionStats.tricks',
+       'animalCompanionLevel', '=', 'source + 1'
+      );
     } else if(companion == 'Astirax') {
       features = [
         '2:Telepathy', '3:Enhanced Sense', '4:Companion Evasion',
@@ -2323,7 +2324,8 @@ MN2E.heroicPathRules = function(rules, paths) {
         'skillNotes.masterAdventurerFeature:' +
           '+%V on three selected non-charisma skills',
         'skillNotes.skillFixationFeature:' +
-          'Take 10 despite distraction on %V designated skills'
+          'Take 10 despite distraction on %V designated skills',
+        'validationNotes.purebloodPath:Requires Erenlander'
       ];
       selectableFeatures = [
         'Charisma Bonus', 'Constitution Bonus', 'Dexterity Bonus',
@@ -2349,6 +2351,10 @@ MN2E.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule
         ('skillPoints', 'skillNotes.masterAdventurerFeature', '+', '3*source');
+      rules.defineRule('validationNotes.purebloodPath',
+        'pathLevels.Pureblood', '=', '-1',
+        'race', '+', 'source == "Erenlander" ? 1 : null'
+      );
 
     } else if(path == 'Quickened') {
 
@@ -2446,7 +2452,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       spellFeatures = [
         '1:Alarm', '2:Augury', '4:Clairaudience/Clairvoyance',
         '5:Locate Object', '7:Locate Creature', '8:Speak With Dead',
-        '10:Divination', '11:Scrying', '13:Arcane Eye', '14:Divination',
+        '10:Divination', '11:Scrying', '13:Arcane Eye', '14:Find The Path',
         '16:Prying Eyes', '17:Legend Lore', '19:Commune', '20:Vision'
       ];
       rules.defineRule('magicNotes.seerSightFeature',

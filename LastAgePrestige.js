@@ -79,8 +79,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       selectableFeatues = null;
       skillPoints = 2;
       skills = [
-        'Climb', 'Handle Animal', 'Intimidate', 'Jump', 'Ride',
-        'Speak Language', 'Swim'
+        'Climb', 'Craft', 'Handle Animal', 'Intimidate', 'Jump', 'Profession',
+        'Ride', 'Speak Language', 'Swim'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -147,10 +147,10 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       selectableFeatues = null;
       skillPoints = 8;
       skills = [
-        'Balance', 'Bluff', 'Climb', 'Decipher Script', 'Diplomacy',
+        'Balance', 'Bluff', 'Climb', 'Craft', 'Decipher Script', 'Diplomacy',
         'Disable Device', 'Disguise', 'Escape Artist', 'Forgery',
         'Gather Information', 'Hide', 'Intimidate', 'Jump', 'Listen',
-        'Move Silently', 'Open Lock', 'Search', 'Sense Motive',
+        'Move Silently', 'Open Lock', 'Profession', 'Search', 'Sense Motive',
         'Sleight Of Hand', 'Speak Language', 'Spot', 'Survival', 'Swim',
         'Tumble', 'Use Rope'
       ];
@@ -230,8 +230,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       skills = [
         'Balance', 'Bluff', 'Decipher Script', 'Disguise', 'Escape Artist',
         'Gather Information', 'Hide', 'Jump', 'Listen', 'Move Silently',
-        'Open Lock', 'Search', 'Sense Motive', 'Speak Language', 'Spot',
-        'Swim', 'Tumble', 'Use Rope'
+        'Open Lock', 'Profession', 'Search', 'Sense Motive', 'Speak Language',
+        'Spot', 'Swim', 'Tumble', 'Use Rope'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -304,12 +304,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       selectableFeatues = null;
       skillPoints = 4;
       skills = [
-        'Bluff', 'Concentration', 'Gather Information', 'Handle Animal',
-        'Intimidate', 'Knowledge (Arcana)', 'Knowledge (Dungeoneering)',
-        'Knowledge (Engineering)', 'Knowledge (Geography)',
-        'Knowledge (History)', 'Knowledge (Local)', 'Knowledge (Nature)',
-        'Knowledge (Nobility)', 'Knowledge (Old Gods)', 'Knowledge (Planes)',
-        'Knowledge (Religion)', 'Knowledge (Shadow)', 'Knowledge (Spirits)',
+        'Bluff', 'Concentration', 'Craft', 'Diplomacy',
+        'Handle Animal', 'Heal', 'Intimidate', 'Knowledge', 'Profession',
         'Sense Motive', 'Spellcraft', 'Survival'
       ];
       spellAbility = null;
@@ -384,9 +380,10 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       selectableFeatues = null;
       skillPoints = 4;
       skills = [
-        'Concentration', 'Handle Animal', 'Heal', 'Knowledge (Arcana)',
-        'Knowledge (Geography)', 'Knowledge (Nature)', 'Knowledge (Spirits)',
-        'Speak Language', 'Spellcraft', 'Survival'
+        'Concentration', 'Craft', 'Handle Animal', 'Heal',
+        'Knowledge (Arcana)', 'Knowledge (Geography)', 'Knowledge (Nature)',
+        'Knowledge (Spirits)', 'Profession', 'Speak Language', 'Spellcraft',
+        'Survival', 'Swim'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -473,9 +470,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       selectableFeatues = null;
       skillPoints = 4;
       skills = [
-        'Balance', 'Climb', 'Heal', 'Hide', 'Intimidate', 'Jump', 'Listen',
-        'Move Silently', 'Ride', 'Search', 'Speak Language', 'Spot',
-        'Survival', 'Swim', 'Use Rope'
+        'Balance', 'Climb', 'Craft', 'Heal', 'Hide', 'Intimidate', 'Jump',
+        'Listen', 'Move Silently', 'Profession', 'Ride', 'Search',
+        'Speak Language', 'Spot', 'Survival', 'Swim', 'Use Rope'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -567,8 +564,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       ]
       skillPoints = 2;
       skills = [
-        'Climb', 'Diplomacy', 'Handle Animal', 'Jump', 'Ride',
-        'Speak Language', 'Spot', 'Survival', 'Swim'
+        'Climb', 'Craft', 'Diplomacy', 'Handle Animal', 'Jump', 'Profession',
+        'Ride', 'Speak Language', 'Spot', 'Survival', 'Swim'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -643,12 +640,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       selectableFeatues = null;
       skillPoints = 2;
       skills = [
-        'Concentration', 'Knowledge (Arcana)', 'Knowledge (Dungeoneering)',
-        'Knowledge (Engineering)', 'Knowledge (Geography)',
-        'Knowledge (History)', 'Knowledge (Local)', 'Knowledge (Nature)',
-        'Knowledge (Nobility)', 'Knowledge (Old Gods)', 'Knowledge (Planes)',
-        'Knowledge (Religion)', 'Knowledge (Shadow)', 'Knowledge (Spirits)',
-        'Speak Language', 'Spellcraft'
+        'Concentration', 'Craft', 'Knowledge', 'Profession', 'Speak Language',
+        'Spellcraft'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -709,13 +702,11 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       selectableFeatues = null;
       skillPoints = 8;
       skills = [
-        'Appraise', 'Balance', 'Bluff', 'Climb', 'Decipher Script',
+        'Appraise', 'Balance', 'Bluff', 'Climb', 'Craft', 'Decipher Script',
         'Diplomacy', 'Disable Device', 'Disguise', 'Escape Artist', 'Forgery',
         'Gather Information', 'Hide', 'Intimidate', 'Jump',
         'Knowledge (Shadow)', 'Listen', 'Move Silently', 'Open Lock',
-        'Perform (Act)', 'Perform (Comedy)', 'Perform (Dance)',
-        'Perform (Keyboard)', 'Perform (Oratory)', 'Perform (Percussion)',
-        'Perform (Sing)', 'Perform (String)', 'Perform (Wind)', 'Search',
+        'Perform (Act)', 'Perform (Comedy)', 'Perform', 'Profession', 'Search',
         'Sense Motive', 'Sleight Of Hand', 'Speak Language', 'Spot', 'Swim',
         'Tumble', 'Use Magic Device', 'Use Rope'
       ];
@@ -780,14 +771,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       selectableFeatues = null;
       skillPoints = 8;
       skills = [
-        'Appraise', 'Balance', 'Bluff', 'Climb', 'Decipher Script',
+        'Appraise', 'Balance', 'Bluff', 'Climb', 'Craft', 'Decipher Script',
         'Diplomacy', 'Disable Device', 'Disguise', 'Escape Artist', 'Forgery',
         'Gather Information', 'Hide', 'Jump', 'Listen', 'Move Silently',
-        'Open Lock', 'Perform (Act)', 'Perform (Comedy)', 'Perform (Dance)',
-        'Perform (Keyboard)', 'Perform (Oratory)', 'Perform (Percussion)',
-        'Perform (Sing)', 'Perform (String)', 'Perform (Wind)', 'Search',
-        'Sense Motive', 'Sleight Of Hand', 'Spot', 'Swim', 'Tumble',
-        'Use Magic Device', 'Use Rope'
+        'Open Lock', 'Perform', 'Profession', 'Search', 'Sense Motive',
+        'Sleight Of Hand', 'Spot', 'Swim', 'Tumble', 'Use Magic Device',
+        'Use Rope'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -855,8 +844,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       selectableFeatues = null;
       skillPoints = 2;
       skills = [
-        'Concentration', 'Intimidate', 'Jump', 'Knowledge (Arcana)', 'Ride',
-        'Speak Language', 'Spellcraft', 'Swim'
+        'Climb', 'Concentration', 'Craft', 'Intimidate', 'Jump',
+        'Knowledge (Arcana)', 'Profession', 'Ride', 'Speak Language',
+        'Spellcraft', 'Swim'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -943,12 +933,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       selectableFeatues = null;
       skillPoints = 4;
       skills = [
-        'Concentration', 'Handle Animal', 'Heal', 'Knowledge (Arcana)',
-        'Knowledge (Dungeoneering)', 'Knowledge (Engineering)',
-        'Knowledge (Geography)', 'Knowledge (History)', 'Knowledge (Local)',
-        'Knowledge (Nature)', 'Knowledge (Nobility)', 'Knowledge (Old Gods)',
-        'Knowledge (Planes)', 'Knowledge (Religion)', 'Knowledge (Shadow)',
-        'Knowledge (Spirits)', 'Speak Language', 'Spellcraft', 'Survival'
+        'Concentration', 'Craft', 'Handle Animal', 'Heal', 'Knowledge',
+        'Profession', 'Speak Language', 'Spellcraft', 'Survival'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -1011,12 +997,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       selectableFeatues = null;
       skillPoints = 2;
       skills = [
-        'Concentration', 'Knowledge (Arcana)', 'Knowledge (Dungeoneering)',
-        'Knowledge (Engineering)', 'Knowledge (Geography)',
-        'Knowledge (History)', 'Knowledge (Local)', 'Knowledge (Nature)',
-        'Knowledge (Nobility)', 'Knowledge (Old Gods)', 'Knowledge (Planes)',
-        'Knowledge (Religion)', 'Knowledge (Shadow)', 'Knowledge (Spirits)',
-        'Speak Language', 'Spellcraft'
+        'Concentration', 'Craft', 'Knowledge', 'Profession', 'Speak Language',
+        'Spellcraft'
       ];
       spellAbility = null;
       spellsKnown = null;
@@ -1104,8 +1086,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       ];
       skillPoints = 4;
       skills = [
-        'Climb', 'Handle Animal', 'Heal', 'Hide', 'Jump', 'Listen',
-        'Move Silently', 'Ride', 'Speak Language', 'Spot', 'Survival', 'Swim'
+        'Climb', 'Craft', 'Handle Animal', 'Heal', 'Hide', 'Jump', 'Listen',
+        'Move Silently', 'Profession', 'Ride', 'Speak Language', 'Spot',
+        'Survival', 'Swim'
       ];
       spellAbility = null;
       spellsKnown = null;
