@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.71 2007/03/23 12:08:20 Jim Exp $ */
+/* $Id: LastAge.js,v 1.72 2007/03/23 23:38:47 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -533,9 +533,35 @@ MN2E.classRules = function(rules, classes) {
         rules.defineRule('spellsKnown.W1',
           'magicNotes.magecraft(Charismatic)Feature', '+=', '1'
         );
-        rules.defineRule('turningLevel',
-          'levels.Spiritual Channeler', '+=', 'source >= 3 ? source : null'
-        );
+        var turningTargets = {
+          'Nature':'Nature', 'Spirits':'Spirit', 'The Unnatural':'Unnatural'
+        };
+        for(var a in turningTargets) {
+          var prefix = 'turn' + turningTargets[a];
+          rules.defineRule(prefix + '.level',
+            'features.Mastery Of ' + a, '?', null,
+            'levels.Spiritual Channeler', '+=', null
+          );
+          rules.defineRule(prefix + '.damageModifier',
+            prefix + '.level', '=', null,
+            'wisdomModifier', '+', null
+          );
+          rules.defineRule(prefix + '.frequency',
+            prefix + '.level', '=', '3',
+            'wisdomModifier', '+', null
+          );
+          rules.defineRule(prefix + '.maxHitDice',
+            prefix + '.level', '=', 'source * 3 - 10',
+            'wisdomModifier', '+', null
+          );
+          rules.defineNote([
+            prefix + '.damageModifier:2d6 + %V',
+            prefix + '.frequency:%V/day',
+            prefix + '.maxHitDice:(d20 + %V) / 3'
+          ]);
+          rules.defineSheetElement
+            ('Turn ' + turningTargets[a], 'Combat', null, 'Turn Undead', ' * ');
+        }
         rules.defineRule('validationNotes.confidentEffectSelectableFeature',
           'selectableFeatures.Confident Effect', '=', '-1',
           /^features.Mastery Of (Nature|Spirits|The Unnatural)$/, '+', '1',
@@ -893,7 +919,7 @@ MN2E.classRules = function(rules, classes) {
           'levels.Legate', '=',
           'source >= ' + (j * 2 - 1) + ' ? 1 : null');
       }
-      rules.defineRule('turningLevel', 'levels.Legate', '+=', null);
+      rules.defineRule('turnUndead.level', 'levels.Legate', '+=', null);
 
     } else if(klass == 'Rogue') {
 
@@ -1591,7 +1617,7 @@ MN2E.heroicPathRules = function(rules, paths) {
         '12:Enhanced Beastial Aura'
       ];
       notes = [
-        'combatNotes.beastialAuraFeature:Turn animals as cleric %V/day',
+        'combatNotes.beastialAuraFeature:Turn animals',
         'combatNotes.rageFeature:' +
           '+4 strength/constitution/+2 Will save/-2 AC 5+ConMod rounds %V/day',
         'combatNotes.viciousAssaultFeature:Two claw attacks at %V each',
@@ -1612,9 +1638,6 @@ MN2E.heroicPathRules = function(rules, paths) {
         '9:Cat\'s Grace', '13:Magic Fang', '14:Bull\'s Strength',
         '17:Greater Magic Fang', '19:Freedom Of Movement'
       ];
-      rules.defineRule('combatNotes.beastialAuraFeature',
-        'pathLevels.Beast', '+=', 'source >= 12 ? 6 : 3'
-      );
       rules.defineRule('combatNotes.rageFeature',
         'pathLevels.Beast', '+=', 'source >= 17 ? 2 : 1'
       );
@@ -1633,8 +1656,25 @@ MN2E.heroicPathRules = function(rules, paths) {
         'features.Small', '?', null,
         'mediumViciousAssault', '=', 'PH35.weaponsSmallDamage[source]'
       );
-      rules.defineRule
-        ('turningLevel', 'pathLevels.Beast', '^=', 'source>=2 ? source : null');
+      rules.defineRule('turnAnimal.damageModifier',
+        'turnAnimal.level', '=', null,
+        'charismaModifier', '+', null
+      );
+      rules.defineRule('turnAnimal.frequency',
+        'pathLevels.Beast', '+=', 'source >= 12 ? 6 : 3'
+      );
+      rules.defineRule('turnAnimal.level',
+        'pathLevels.Beast', '^=', 'source >= 2 ? source : null'
+      );
+      rules.defineRule('turnAnimal.maxHitDice',
+        'turnAnimal.level', '=', 'source * 3 - 10',
+        'charismaModifier', '+', null
+      );
+      rules.defineNote([
+        'turnAnimal.damageModifier:2d6 + %V',
+        'turnAnimal.frequency:%V/day',
+        'turnAnimal.maxHitDice:(d20 + %V) / 3'
+      ]);
 
     } else if(path == 'Chanceborn') {
 
@@ -1811,12 +1851,16 @@ MN2E.heroicPathRules = function(rules, paths) {
       rules.defineRule('features.Wisdom Bonus',
        'faithfulFeatures.Wisdom Bonus', '+=', null
       );
-      rules.defineRule('turningLevel',
-        'pathLevels.Faithful', '^=', 'source >= 4 ? source : null'
-      );
-      // TODO turningLevel-based computation overrides this
-      rules.defineRule('turningFrequency',
-        'pathLevels.Faithful', '+=', 'Math.floor((source + 1) / 5)'
+      rules.defineRule
+        ('turnUndead.damageModifier', 'pathLevels.Faithful', '^=', null);
+      rules.defineRule
+        ('turnUndead.frequency', 'turnUndeadFaithfulFrequency', '+=', null);
+      rules.defineRule
+        ('turnUndead.maxHitDice', 'pathLevels.Faithful', '^=', 'source*3-10');
+      rules.defineRule('turnUndeadFaithfulFrequency',
+        'pathLevels.Faithful', '=',
+        'source >= 4 ? Math.floor((source + 1) / 5) : null',
+        'charismaModifier', '+', '-source'
       );
 
     } else if(path == 'Fellhunter') {
@@ -1892,15 +1936,23 @@ MN2E.heroicPathRules = function(rules, paths) {
       rules.defineRule
         ('saveNotes.willBonusFeature', 'features.Will Bonus', '=', null);
       rules.defineRule('selectableFeatureCount.Feyblooded',
-        'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)',
-        'charismaModifier', '*', null,
-        'level', 'v', 'source<8 ? 1 : source<12 ? 3 : source<16 ? 6 : ' +
-                      'source<20 ? 10 : 15'
+        'unearthlyMaxBonusCount', '=',
+          'source > 0 ? (source * (source + 1)) / 2 : null',
+        'unearthlyChaModTotalBonus', '+', 'source > 0 ? source : null'
       );
       rules.defineRule('magicNotes.feyVisionFeature',
         'pathLevels.Feyblooded', '=',
         'source >= 19 ? "all magic" : ' +
         'source >= 13 ? "enchantment/illusion" : "enchantment"'
+      );
+      rules.defineRule('unearthlyMaxBonusCount',
+        'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)',
+        'charismaModifier', 'v', null
+      );
+      rules.defineRule('unearthlyChaModTotalBonus',
+        'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)',
+        'unearthlyMaxBonusCount', '+', '-source',
+        'charismaModifier', '*', null
       );
 
     } else if(path == 'Giantblooded') {

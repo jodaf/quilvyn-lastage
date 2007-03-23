@@ -415,7 +415,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('spellEnergy', 'magicNotes.druidSpellEnergy', '+', null);
       rules.defineRule
         ('spellsKnownBonus', 'magicNotes.druidSpellsKnown', '+', null);
-      rules.defineRule('turningLevel', 'druidTurningLevel', '+=', null);
+      rules.defineRule('turnNature.level', 'druidTurningLevel', '+=', null);
       rules.defineRule('validationNotes.druidFeatures',
         'levels.Druid', '=', '-4',
         'features.Magecraft (Spiritual)', '+', '1',
