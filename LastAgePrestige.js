@@ -76,7 +76,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       saveFortitude = PH35.SAVE_BONUS_GOOD;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_POOR;
-      selectableFeatues = null;
+      selectableFeatures = null;
       skillPoints = 2;
       skills = [
         'Climb', 'Craft', 'Handle Animal', 'Intimidate', 'Jump', 'Profession',
@@ -144,7 +144,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
-      selectableFeatues = null;
+      selectableFeatures = null;
       skillPoints = 8;
       skills = [
         'Balance', 'Bluff', 'Climb', 'Craft', 'Decipher Script', 'Diplomacy',
@@ -178,7 +178,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'levels.Aradil\'s Eye', '=', '-7',
         'skills.Bluff', '+', 'source >= 8 ? 1 : null',
         'skills.Disguise', '+', 'source >= 5 ? 1 : null',
-        'skills.Gather Informaiton', '+', 'source >= 8 ? 1 : null',
+        'skills.Gather Information', '+', 'source >= 8 ? 1 : null',
         'skills.Hide', '+', 'source >= 8 ? 1 : null',
         'skills.Move Silently', '+', 'source >= 5 ? 1 : null',
         'skills.Sense Motive', '+', 'source >= 5 ? 1 : null',
@@ -225,7 +225,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_GOOD;
       saveWill = PH35.SAVE_BONUS_POOR;
-      selectableFeatues = null;
+      selectableFeatures = null;
       skillPoints = 6;
       skills = [
         'Balance', 'Bluff', 'Decipher Script', 'Disguise', 'Escape Artist',
@@ -301,7 +301,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
-      selectableFeatues = null;
+      selectableFeatures = null;
       skillPoints = 4;
       skills = [
         'Bluff', 'Concentration', 'Craft', 'Diplomacy',
@@ -377,7 +377,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       saveFortitude = PH35.SAVE_BONUS_GOOD;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
-      selectableFeatues = null;
+      selectableFeatures = null;
       skillPoints = 4;
       skills = [
         'Concentration', 'Craft', 'Handle Animal', 'Heal',
@@ -429,6 +429,23 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'skills.Survival', '+', 'source >= 8 ? 1 : null'
       );
 
+      // Add PH35 Druid spells to the spell selections
+      var schools = rules.getChoices('schools');
+      for(var j = 0; j < PH35.SPELLS.length; j++) {
+        var spell = PH35.SPELLS[j];
+        var matchInfo =
+          spell.match(/([^:]+):([^\/]+\/)*(D[0-9])\/([^\/]+\/)*([^/]+)$/);
+        if(matchInfo != null) {
+          var spell = matchInfo[1];
+          var druidLevel = matchInfo[3];
+          var school = matchInfo[5];
+          school =
+            schools[school] != null ? schools[school] : school.substring(0, 4);
+          rules.defineChoice
+            ('spells', spell + '(' + druidLevel + ' ' + school + ')');
+        }
+      }
+
     } else if(klass == 'Elven Raider') {
 
       baseAttack = PH35.ATTACK_BONUS_GOOD;
@@ -467,7 +484,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_GOOD;
       saveWill = PH35.SAVE_BONUS_POOR;
-      selectableFeatues = null;
+      selectableFeatures = null;
       skillPoints = 4;
       skills = [
         'Balance', 'Climb', 'Craft', 'Heal', 'Hide', 'Intimidate', 'Jump',
@@ -637,7 +654,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
-      selectableFeatues = null;
+      selectableFeatures = null;
       skillPoints = 2;
       skills = [
         'Concentration', 'Craft', 'Knowledge', 'Profession', 'Speak Language',
@@ -699,7 +716,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_GOOD;
       saveWill = PH35.SAVE_BONUS_POOR;
-      selectableFeatues = null;
+      selectableFeatures = null;
       skillPoints = 8;
       skills = [
         'Appraise', 'Balance', 'Bluff', 'Climb', 'Craft', 'Decipher Script',
@@ -768,7 +785,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_GOOD;
       saveWill = PH35.SAVE_BONUS_GOOD;
-      selectableFeatues = null;
+      selectableFeatures = null;
       skillPoints = 8;
       skills = [
         'Appraise', 'Balance', 'Bluff', 'Climb', 'Craft', 'Decipher Script',
@@ -841,7 +858,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       saveFortitude = PH35.SAVE_BONUS_GOOD;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_POOR;
-      selectableFeatues = null;
+      selectableFeatures = null;
       skillPoints = 2;
       skills = [
         'Climb', 'Concentration', 'Craft', 'Intimidate', 'Jump',
@@ -919,9 +936,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'magicNotes.whisperClairvoyanceFeature:<i>Clairvoyance</i> w/in wood',
         'magicNotes.whisperCommuneFeature:<i>Commune With Nature</i> w/in wood',
         'saveNotes.whisper\'sWardFeature:Immune to mind-affecting effects',
-        'validationNotes.whiperAdeptFeatures:Requires Magecraft/2 Spellcraft',
-        'validationNotes.whiperAdeptRace:Requires Elf',
-        'validationNotes.whiperAdeptSkills:' +
+        'validationNotes.whisperAdeptFeatures:Requires Magecraft/2 Spellcraft',
+        'validationNotes.whisperAdeptRace:Requires Elf',
+        'validationNotes.whisperAdeptSkills:' +
           'Requires Knowledge (Nature) 8/Knowledge (Spirits) 10/Survival 8'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
@@ -930,7 +947,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
-      selectableFeatues = null;
+      selectableFeatures = null;
       skillPoints = 4;
       skills = [
         'Concentration', 'Craft', 'Handle Animal', 'Heal', 'Knowledge',
@@ -994,7 +1011,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       saveFortitude = PH35.SAVE_BONUS_POOR;
       saveReflex = PH35.SAVE_BONUS_POOR;
       saveWill = PH35.SAVE_BONUS_GOOD;
-      selectableFeatues = null;
+      selectableFeatures = null;
       skillPoints = 2;
       skills = [
         'Concentration', 'Craft', 'Knowledge', 'Profession', 'Speak Language',
