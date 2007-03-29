@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.72 2007/03/23 23:38:47 Jim Exp $ */
+/* $Id: LastAge.js,v 1.73 2007/03/29 23:31:39 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -47,7 +47,7 @@ function MN2E() {
   // Hack: PH35.deitiesFavoredWeapons needs to have a setting for Izrador
   // when PH35.magicRules is called to get War domain feature rules correct
   PH35.deitiesFavoredWeapons['Izrador (NE)'] = 'Longsword';
-  PH35.magicRules(rules, PH35.DOMAINS, PH35.SCHOOLS, PH35.SPELLS);
+  PH35.magicRules(rules, MN2E.DOMAINS, MN2E.SCHOOLS, []);
 
   MN2E.raceRules(rules, MN2E.LANGUAGES, MN2E.RACES);
   MN2E.heroicPathRules(rules, MN2E.HEROIC_PATHS);
@@ -56,7 +56,7 @@ function MN2E() {
   MN2E.skillRules(rules, MN2E.SKILLS, MN2E.SUBSKILLS);
   MN2E.featRules(rules, MN2E.FEATS, MN2E.SUBFEATS);
   MN2E.equipmentRules(rules, MN2E.WEAPONS);
-  MN2E.magicRules(rules, MN2E.SPELLS);
+  MN2E.magicRules(rules, MN2E.DOMAINS, MN2E.SCHOOLS, MN2E.SPELLS, PH35.SPELLS);
   rules.defineChoice('preset', 'race', 'heroicPath', 'levels');
   rules.defineChoice('random', MN2E.RANDOMIZABLE_ATTRIBUTES);
   rules.defineChoice('races', 'None'); // TODO Remove this testing choice
@@ -73,20 +73,23 @@ MN2E.CLASSES = [
   'Hermetic Channeler', 'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
 ];
 MN2E.COMPANIONS = ['Animal Companion', 'Astirax'];
+MN2E.DOMAINS = [
+  'Death:De', 'Destruction:Dn', 'Evil:Ev', 'Magic:Ma', 'War:Wr'
+];
 MN2E.DEITIES = ['Izrador (NE):Death/Destruction/Evil/Magic/War', 'None:'];
 MN2E.FEATS = [
   'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
   'Craft Spell Talisman:Item Creation',
   'Devastating Mounted Assault:Fighter Bonus', 'Drive It Deep:Fighter Bonus',
   'Extra Gift:', 'Friendly Agent:', 'Giant Fighter:Fighter Bonus',
-  'Greater Spellcasting:Channeling/Spellcasting', 'Herbalist:Item Creation',
-  'Improvised Weapon:Fighter Bonus', 'Innate Magic:', 'Inconspicuous:',
-  'Knife Thrower:Fighter Bonus', 'Lucky:', 'Magecraft:Channeling',
-  'Magic Hardened:', 'Natural Healer:', 'Orc Slayer:Fighter Bonus',
-  'Quickened Donning:Fighter Bonus', 'Ritual Magic:Channeling',
-  'Sarcosan Pureblood:', 'Sense Nexus:', 'Spellcasting:Channeling/Spellcasting',
-  'Skill Focus:', 'Spell Knowledge:', 'Thick Skull:', 'Warrior Of Shadow:',
-  'Weapon Focus:Fighter', 'Whispering Awareness:'
+  'Herbalist:Item Creation', 'Improvised Weapon:Fighter Bonus',
+  'Innate Magic:', 'Inconspicuous:', 'Knife Thrower:Fighter Bonus', 'Lucky:',
+  'Magecraft:Channeling', 'Magic Hardened:', 'Natural Healer:',
+  'Orc Slayer:Fighter Bonus', 'Quickened Donning:Fighter Bonus',
+  'Ritual Magic:Channeling', 'Sarcosan Pureblood:', 'Sense Nexus:',
+  'Spellcasting:Channeling/Spellcasting', 'Skill Focus:', 'Spell Knowledge:',
+  'Thick Skull:', 'Warrior Of Shadow:', 'Weapon Focus:Fighter',
+  'Whispering Awareness:'
 ];
 MN2E.HEROIC_PATHS = [
   'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
@@ -111,24 +114,553 @@ MN2E.RACES = [
 ];
 MN2E.RANDOMIZABLE_ATTRIBUTES =
   PH35.RANDOMIZABLE_ATTRIBUTES.concat(['heroicPath']);
+MN2E.SCHOOLS = [
+  'Abjuration:Abju', 'Conjuration:Conj', 'Divination:Divi', 'Enchantment:Ench',
+  'Evocation:Evoc', 'Greater Conjuration:GrCo', 'Greater Evocation:GrEv',
+  'Illusion:Illu', 'Necromancy:Necr', 'Transmutation:Tran'
+];
 MN2E.SKILLS = [
   'Knowledge:int/trained', 'Profession:wis/trained'
 ];
 MN2E.SPELLS = [
-  'Charm Repair:W3/Transmutation', 'Detect Astirax:D1/W1/Divination',
-  'Disguise Ally:W2/Illusion', 'Disguise Weapon:W1/Illusion',
-  'Far Whisper:D1/W1/Divination', 'Greenshield:D2/W2/Illusion',
-  'Halfling Burrow:D3/W3/Transmutation', 'Lifetrap:D2/W2/Transmutation',
-  'Nature\'s Revelation:D2/W2/Transmutation', 'Nexus Fuel:C4/W5/Necromancy',
-  'Silver Blood:W2/Transmutation', 'Silver Storm:W4/Transmutation',
-  'Silver Wand:W3/Conjuration', 'Stone Soup:D1/W1/Transmutation'
+  'Acid Fog:C6/Conjuration',
+  'Air Walk:C4/Transmutation',
+  'Alarm:C1/Abjuration',
+  'Alter Self:C2/Transmutation',
+  'Analyze Dweomer:C6/Divination',
+  'Animal Growth:C5/Transmutation',
+  'Animal Messenger:C2/Enchantment',
+  'Animal Shapes:C8/Transmutation',
+  'Animal Trance:C2/Enchantment',
+  'Animate Dead:C4/Necromancy',
+  'Animate Objects:C6/Transmutation',
+  'Animate Plants:C7/Transmutation',
+  'Animate Rope:C1/Transmutation',
+  'Antilife Shell:C6/Abjuration',
+  'Antimagic Field:C6/Abjuration',
+  'Antipathy:C8/Enchantment',
+  'Antiplant Shell:C4/Abjuration',
+  'Arcane Eye:C4/Divination',
+  'Arcane Impotence:C3/Abjuration',
+  'Arcane Interference:C5/Abjuration',
+  'Arcane Lock:C2/Abjuration',
+  'Arcane Sight:C3/Divination',
+  'Assist:C1/Enchantment',
+  'Astral Projection:C9/Necromancy',
+  'Atonement:C5/Abjuration',
+  'Awaken:C5/Transmutation',
+  'Baleful Polymorph:C5/Transmutation',
+  'Banishment:C7/Abjuration',
+  'Barkskin:C2/Transmutation',
+  'Bear\'s Endurance:C2/Transmutation',
+  'Bestow Curse:C4/Necromancy',
+  'Bestow Curse:C4/Transmutation',
+  'Bestow Spell:C4/Evocation',
+  'Bigby\'s Clenched Fist:C8/Greater Evocation',
+  'Bigby\'s Crushing Hand:C9/Greater Evocation',
+  'Bigby\'s Forceful Hand:C6/Greater Evocation',
+  'Bigby\'s Grasping Hand:C7/Greater Evocation',
+  'Bigby\'s Interposing Hand:C5/Greater Evocation',
+  'Binding:C8/Enchantment',
+  'Bleed Power:C2/Greater Evocation',
+  'Blight:C4/Necromancy',
+  'Blindness/Deafness:C2/Necromancy',
+  'Blur:C2/Illusion',
+  'Break Enchantment:C5/Abjuration',
+  'Bull\'s Strength:C2/Transmutation',
+  'Burial:C1/Transmutation',
+  'Burning Hands:C1/Greater Evocation',
+  'Call Lightning Storm:C5/Greater Evocation',
+  'Call Lightning:C3/Greater Evocation',
+  'Calm Animals:C1/Enchantment',
+  'Cat\'s Grace:C2/Transmutation',
+  'Cause Fear:C1/Necromancy',
+  'Chain Lightning:C6/Greater Evocation',
+  'Changestaff:C7/Transmutation',
+  'Channel Might:C1/Evocation',
+  'Charm Animal:C1/Enchantment',
+  'Charm Monster:C4/Enchantment',
+  'Charm Person:C1/Enchantment',
+  'Charm Repair:C3/Transmutation',
+  'Chill Metal:C2/Transmutation',
+  'Chill Touch:C1/Necromancy',
+  'Circle Of Death:C6/Necromancy',
+  'Clairaudience/Clairvoyance:C3/Divination',
+  'Clone:C8/Necromancy',
+  'Cloudkill:C5/Conjuration',
+  'Color Spray:C1/Illusion',
+  'Command Plants:C4/Transmutation',
+  'Command Undead:C2/Necromancy',
+  'Commune With Nature:C5/Divination',
+  'Comprehend Languages:C1/Divination',
+  'Cone Of Cold:C5/Greater Evocation',
+  'Confer Power:C2/Transmutation',
+  'Confusion:C4/Enchantment',
+  'Contact Other Plane:C5/Divination',
+  'Contagion:C3/Necromancy',
+  'Contingency:C6/Evocation',
+  'Continual Flame:C2/Evocation',
+  'Control Plants:C8/Transmutation',
+  'Control Undead:C7/Necromancy',
+  'Control Water:C4/Transmutation',
+  'Control Weather:C7/Transmutation',
+  'Control Winds:C5/Transmutation',
+  'Create Greater Undead:C8/Necromancy',
+  'Create Undead:C6/Necromancy',
+  'Create Water:C0/Conjuration',
+  'Creeping Doom:C7/Greater Conjuration',
+  'Crushing Despair:C4/Enchantment',
+  'Cure Critical Wounds:C4/Conjuration',
+  'Cure Light Wounds:C1/Conjuration',
+  'Cure Minor Wounds:C0/Conjuration',
+  'Cure Moderate Wounds:C2/Conjuration',
+  'Cure Serious Wounds:C3/Conjuration',
+  'Dancing Lights:C0/Evocation',
+  'Darkness:C2/Evocation',
+  'Darkvision:C2/Transmutation',
+  'Daylight:C3/Evocation',
+  'Daze Monster:C2/Enchantment',
+  'Daze:C0/Enchantment',
+  'Death Ward:C5/Necromancy',
+  'Deep Slumber:C3/Enchantment',
+  'Delay Poison:C2/Conjuration',
+  'Delayed Blast Fireball:C7/Greater Evocation',
+  'Demand:C8/Enchantment',
+  'Detect Animals Or Plants:C1/Divination',
+  'Detect Astirax:C1/Divination',
+  'Detect Chaos:C2/Divination',
+  'Detect Evil:C2/Divination',
+  'Detect Good:C2/Divination',
+  'Detect Law:C2/Divination',
+  'Detect Magic:C0/Divination',
+  'Detect Poison:C0/Divination',
+  'Detect Scrying:C4/Divination',
+  'Detect Secret Doors:C1/Divination',
+  'Detect Snares And Pits:C1/Divination',
+  'Detect Thoughts:C2/Divination',
+  'Detect Undead:C1/Divination',
+  'Dimensional Anchor:C4/Abjuration',
+  'Diminish Plants:C3/Transmutation',
+  'Discern Location:C8/Divination',
+  'Disguise Ally:C2/Illusion',
+  'Disguise Self:C1/Illusion',
+  'Disguise Weapon:C1/Illusion',
+  'Disintegrate:C6/Transmutation',
+  'Dismissal:C5/Abjuration',
+  'Dispel Magic:C3/Abjuration',
+  'Displacement:C3/Illusion',
+  'Disrupt Undead:C0/Necromancy',
+  'Dominate Animal:C3/Enchantment',
+  'Dominate Monster:C9/Enchantment',
+  'Dominate Person:C5/Enchantment',
+  'Dream:C5/Illusion',
+  'Eagle\'s Splendor:C2/Transmutation',
+  'Earthquake:C8/Greater Evocation',
+  'Elemental Swarm:C9/Greater Conjuration',
+  'Endure Elements:C1/Abjuration',
+  'Energy Drain:C9/Necromancy',
+  'Enervation:C4/Necromancy',
+  'Enlarge Person:C1/Transmutation',
+  'Entangle:C1/Transmutation',
+  'Erase:C1/Transmutation',
+  'Evard\'s Black Tentacles:C4/Conjuration',
+  'Expeditious Retreat:C1/Transmutation',
+  'Explosive Runes:C3/Abjuration',
+  'Eyebite:C6/Necromancy',
+  'Fabricate:C5/Transmutation',
+  'Faerie Fire:C1/Evocation',
+  'False Life:C2/Necromancy',
+  'False Vision:C5/Illusion',
+  'Far Whisper:C1/Divination',
+  'Fear:C4/Necromancy',
+  'Feather Fall:C1/Transmutation',
+  'Feeblemind:C5/Enchantment',
+  'Fell Forbiddance:C2/Abjuration',
+  'Fey Fire:C2/Conjuration',
+  'Fey Hearth:C2/Abjuration',
+  'Find The Path:C6/Divination',
+  'Finger Of Death:C7/Necromancy',
+  'Fire Seeds:C6/Conjuration',
+  'Fire Shield:C4/Greater Evocation',
+  'Fire Storm:C7/Greater Evocation',
+  'Fire Trap:C4/Abjuration',
+  'Fireball:C3/Greater Evocation',
+  'Flame Arrow:C3/Transmutation',
+  'Flame Blade:C2/Greater Evocation',
+  'Flame Strike:C4/Greater Evocation',
+  'Flaming Sphere:C2/Greater Evocation',
+  'Flare:C0/Evocation',
+  'Flesh To Stone:C6/Transmutation',
+  'Fly:C3/Transmutation',
+  'Fog Cloud:C2/Conjuration',
+  'Forcecage:C7/Greater Evocation',
+  'Foresight:C9/Divination',
+  'Fox\'s Cunning:C2/Transmutation',
+  'Freedom Of Movement:C4/Abjuration',
+  'Freedom Of Movement:C4/Transmutation',
+  'Freedom:C9/Abjuration',
+  'Gaseous Form:C3/Transmutation',
+  'Gate:C9/Greater Conjuration',
+  'Geas/Quest:C6/Enchantment',
+  'Gentle Repose:C3/Necromancy',
+  'Ghost Sound:C0/Illusion',
+  'Ghoul Touch:C2/Necromancy',
+  'Giant Vermin:C4/Transmutation',
+  'Glibness:C3/Transmutation',
+  'Glitterdust:C2/Conjuration',
+  'Globe Of Invulnerability:C6/Abjuration',
+  'Good Hope:C3/Enchantment',
+  'Goodberry:C1/Transmutation',
+  'Grease:C1/Conjuration',
+  'Greater Arcane Sight:C7/Divination',
+  'Greater Dispel Magic:C6/Abjuration',
+  'Greater Heroism:C6/Enchantment',
+  'Greater Invisibility:C4/Illusion',
+  'Greater Magic Fang:C3/Transmutation',
+  'Greater Magic Weapon:C3/Transmutation',
+  'Greater Planar Binding:C8/Greater Conjuration',
+  'Greater Prying Eyes:C8/Divination',
+  'Greater Questing Bird:C6/Conjuration',
+  'Greater Restoration:C7/Conjuration',
+  'Greater Scrying:C7/Divination',
+  'Greater Shadow Conjuration:C7/Illusion',
+  'Greater Shadow Evocation:C8/Illusion',
+  'Greater Shout:C8/Evocation',
+  'Greenshield:C2/Illusion',
+  'Guards And Wards:C6/Abjuration',
+  'Guidance:C0/Divination',
+  'Gust Of Wind:C2/Greater Evocation',
+  'Gust Of Wind:C3/Greater Evocation',
+  'Halfling Burrow:C3/Transmutation',
+  'Hallow:C5/Greater Evocation',
+  'Hallucinatory Terrain:C4/Illusion',
+  'Halt Undead:C3/Necromancy',
+  'Haste:C3/Transmutation',
+  'Heal:C7/Conjuration',
+  'Heat Metal:C2/Transmutation',
+  'Heroes\' Feast:C6/Conjuration',
+  'Heroism:C3/Enchantment',
+  'Hide From Animals:C1/Abjuration',
+  'Hold Animal:C2/Enchantment',
+  'Hold Monster:C5/Enchantment',
+  'Hold Person:C3/Enchantment',
+  'Hold Portal:C1/Abjuration',
+  'Horrid Wilting:C8/Necromancy',
+  'Hypnotic Pattern:C2/Illusion',
+  'Hypnotism:C1/Enchantment',
+  'Ice Storm:C4/Greater Evocation',
+  'Identify:C1/Divination',
+  'Illusory Script:C3/Illusion',
+  'Illusory Wall:C4/Illusion',
+  'Imprisonment:C9/Abjuration',
+  'Incendiary Cloud:C8/Conjuration',
+  'Insanity:C7/Enchantment',
+  'Insect Plague:C5/Greater Conjuration',
+  'Inspiration:C1/Enchantment',
+  'Invisibility Sphere:C3/Illusion',
+  'Invisibility:C2/Illusion',
+  'Iron Body:C8/Transmutation',
+  'Ironwood:C6/Transmutation',
+  'Joyful Speech:C1/Enchantment',
+  'Jump:C1/Transmutation',
+  'Keen Edge:C3/Transmutation',
+  'Knock:C2/Transmutation',
+  'Know Direction:C0/Divination',
+  'Know The Name:C1/Divination',
+  'Legend Lore:C6/Divination',
+  'Leomund\'s Secret Chest:C5/Greater Conjuration',
+  'Leomund\'s Secure Shelter:C4/Conjuration',
+  'Leomund\'s Tiny Hut:C3/Greater Evocation',
+  'Leomund\'s Trap:C2/Illusion',
+  'Lesser Confusion:C1/Enchantment',
+  'Lesser Geas:C4/Enchantment',
+  'Lesser Globe Of Invulnerability:C4/Abjuration',
+  'Lesser Planar Binding:C5/Greater Conjuration',
+  'Lesser Restoration:C2/Conjuration',
+  'Levitate:C2/Transmutation',
+  'Lie:C1/Transmutation',
+  'Lifetrap:C2/Transmutation',
+  'Light:C0/Evocation',
+  'Lightning Bolt:C3/Greater Evocation',
+  'Liveoak:C6/Transmutation',
+  'Locate Creature:C4/Divination',
+  'Locate Object:C2/Divination',
+  'Lullaby:C0/Enchantment',
+  'Mage Armor:C1/Conjuration',
+  'Mage Hand:C0/Transmutation',
+  'Magic Circle Against Chaos:C3/Abjuration',
+  'Magic Circle Against Evil:C3/Abjuration',
+  'Magic Circle Against Good:C3/Abjuration',
+  'Magic Circle Against Law:C3/Abjuration',
+  'Magic Circle Against Shadow:C5/Abjuration',
+  'Magic Fang:C1/Transmutation',
+  'Magic Jar:C5/Necromancy',
+  'Magic Missile:C1/Greater Evocation',
+  'Magic Mouth:C1/Illusion',
+  'Magic Mouth:C2/Illusion',
+  'Magic Stone:C1/Transmutation',
+  'Magic Weapon:C1/Transmutation',
+  'Major Creation:C5/Conjuration',
+  'Major Image:C3/Illusion',
+  'Mass Bear\'s Endurance:C6/Transmutation',
+  'Mass Bull\'s Strength:C6/Transmutation',
+  'Mass Cat\'s Grace:C6/Transmutation',
+  'Mass Charm Monster:C8/Enchantment',
+  'Mass Cure Critical Wounds:C8/Conjuration',
+  'Mass Cure Light Wounds:C5/Conjuration',
+  'Mass Cure Moderate Wounds:C6/Conjuration',
+  'Mass Cure Serious Wounds:C7/Conjuration',
+  'Mass Eagle\'s Splendor:C6/Transmutation',
+  'Mass Enlarge Person:C4/Transmutation',
+  'Mass Fox\'s Cunning:C6/Transmutation',
+  'Mass Hold Monster:C9/Enchantment',
+  'Mass Hold Person:C7/Enchantment',
+  'Mass Invisibility:C7/Illusion',
+  'Mass Owl\'s Wisdom:C6/Transmutation',
+  'Mass Reduce Person:C4/Transmutation',
+  'Mass Suggestion:C6/Enchantment',
+  'Meld Into Stone:C3/Transmutation',
+  'Melf\'s Acid Arrow:C2/Conjuration',
+  'Memorial:C2/Divination',
+  'Mending:C0/Transmutation',
+  'Message:C0/Transmutation',
+  'Meteor Swarm:C9/Greater Evocation',
+  'Mind Blank:C8/Abjuration',
+  'Mind Fog:C5/Enchantment',
+  'Minor Creation:C4/Conjuration',
+  'Minor Image:C2/Illusion',
+  'Mirage Arcana:C5/Illusion',
+  'Mirror Image:C2/Illusion',
+  'Misdirection:C2/Illusion',
+  'Mislead:C6/Illusion',
+  'Modify Memory:C4/Enchantment',
+  'Moment Of Prescience:C8/Divination',
+  'Mordenkainen\'s Disjunction:C9/Abjuration',
+  'Mordenkainen\'s Faithful Hound:C5/Conjuration',
+  'Mordenkainen\'s Lucubration:C6/Transmutation',
+  'Mordenkainen\'s Private Sanctum:C5/Abjuration',
+  'Mordenkainen\'s Sword:C7/Greater Evocation',
+  'Mount:C1/Greater Conjuration',
+  'Move Earth:C6/Transmutation',
+  'Nature\'s Revelation:C2/Transmutation',
+  'Neutralize Poison:C3/Conjuration',
+  'Nexus Fuel:C5/Necromancy',
+  'Nightmare:C5/Illusion',
+  'Nondetection:C3/Abjuration',
+  'Nystul\'s Magic Aura:C1/Illusion',
+  'Obscure Object:C2/Abjuration',
+  'Obscuring Mist:C1/Conjuration',
+  'Open/Close:C0/Transmutation',
+  'Otiluke\'s Freezing Sphere:C6/Greater Evocation',
+  'Otiluke\'s Resilient Sphere:C4/Greater Evocation',
+  'Otiluke\'s Telekinetic Sphere:C8/Greater Evocation',
+  'Otto\'s Irresistible Dance:C8/Enchantment',
+  'Overland Flight:C5/Transmutation',
+  'Owl\'s Wisdom:C2/Transmutation',
+  'Pacify:C2/Abjuration',
+  'Pass Without Trace:C1/Transmutation',
+  'Passwall:C5/Transmutation',
+  'Peasant\'s Rest:C1/Conjuration',
+  'Permanent Image:C6/Illusion',
+  'Persistent Image:C5/Illusion',
+  'Phantasmal Killer:C4/Illusion',
+  'Phantom Edge:C1/Transmutation',
+  'Phantom Steed:C3/Conjuration',
+  'Planar Binding:C6/Greater Conjuration',
+  'Plant Growth:C3/Transmutation',
+  'Poison:C3/Necromancy',
+  'Polar Ray:C8/Greater Evocation',
+  'Polymorph Any Object:C8/Transmutation',
+  'Polymorph:C4/Transmutation',
+  'Power Word, Blind:C7/Enchantment',
+  'Power Word, Kill:C9/Enchantment',
+  'Power Word, Stun:C8/Enchantment',
+  'Prismatic Sphere:C9/Abjuration',
+  'Prismatic Spray:C7/Evocation',
+  'Prismatic Wall:C8/Abjuration',
+  'Produce Flame:C1/Greater Evocation',
+  'Programmed Image:C6/Illusion',
+  'Project Image:C7/Illusion',
+  'Protection From Arrows:C2/Abjuration',
+  'Protection From Chaos:C1/Abjuration',
+  'Protection From Energy:C3/Abjuration',
+  'Protection From Evil:C1/Abjuration',
+  'Protection From Good:C1/Abjuration',
+  'Protection From Law:C1/Abjuration',
+  'Protection From Spells:C8/Abjuration',
+  'Prying Eyes:C5/Divination',
+  'Pyrotechnics:C2/Transmutation',
+  'Questing Bird:C3/Conjuration',
+  'Rage:C3/Enchantment',
+  'Rainbow Pattern:C4/Illusion',
+  'Rary\'s Mnemonic Enhancer:C4/Transmutation',
+  'Rary\'s Telepathic Bond:C5/Divination',
+  'Ray Of Enfeeblement:C1/Necromancy',
+  'Ray Of Exhaustion:C3/Necromancy',
+  'Ray Of Frost:C0/Conjuration',
+  'Read Magic:C0/Divination',
+  'Reduce Animal:C2/Transmutation',
+  'Reduce Person:C1/Transmutation',
+  'Regenerate:C9/Conjuration',
+  'Regeneration:C7/Conjuration',
+  'Reincarnate:C4/Transmutation',
+  'Remove Curse:C4/Abjuration',
+  'Remove Disease:C3/Conjuration',
+  'Remove Fear:C1/Abjuration',
+  'Repel Metal Or Stone:C8/Abjuration',
+  'Repel Vermin:C4/Abjuration',
+  'Repel Wood:C6/Transmutation',
+  'Repulsion:C6/Abjuration',
+  'Resist Energy:C2/Abjuration',
+  'Resistance:C0/Abjuration',
+  'Restoration:C4/Conjuration',
+  'Reverse Gravity:C7/Transmutation',
+  'Reverse Gravity:C8/Transmutation',
+  'Rusting Grasp:C4/Transmutation',
+  'Scare:C2/Necromancy',
+  'Scintillating Pattern:C8/Illusion',
+  'Scorching Ray:C2/Greater Evocation',
+  'Screen:C8/Illusion',
+  'Scryer\'s Magic:C2/Divination',
+  'Scrying:C4/Divination',
+  'Sculpt Sound:C3/Transmutation',
+  'Secret Page:C3/Transmutation',
+  'See Invisibility:C2/Divination',
+  'Seeming:C5/Illusion',
+  'Sending:C5/Evocation',
+  'Sepia Snake Sigil:C3/Conjuration',
+  'Sequester:C7/Abjuration',
+  'Shades:C9/Illusion',
+  'Shadow Conjuration:C4/Illusion',
+  'Shadow Evocation:C5/Illusion',
+  'Shambler:C9/Conjuration',
+  'Shapechange:C9/Transmutation',
+  'Shatter:C2/Evocation',
+  'Shield:C1/Abjuration',
+  'Shillelagh:C1/Transmutation',
+  'Shocking Grasp:C1/Greater Evocation',
+  'Shout:C4/Evocation',
+  'Shrink Item:C3/Transmutation',
+  'Silence:C2/Illusion',
+  'Silent Image:C1/Illusion',
+  'Silver Blood:C2/Transmutation',
+  'Silver Storm:C4/Transmutation',
+  'Silver Wind:C3/Conjuration',
+  'Simulacrum:C7/Illusion',
+  'Sleep:C1/Enchantment',
+  'Sleet Storm:C3/Conjuration',
+  'Slow:C3/Transmutation',
+  'Snare:C3/Transmutation',
+  'Soften Earth And Stone:C2/Transmutation',
+  'Solid Fog:C4/Conjuration',
+  'Song Of Discord:C5/Enchantment',
+  'Soul Bind:C9/Necromancy',
+  'Sound Burst:C2/Evocation',
+  'Speak With Animals:C1/Divination',
+  'Speak With Plants:C3/Divination',
+  'Spectral Hand:C2/Necromancy',
+  'Spell Turning:C7/Abjuration',
+  'Spellstaff:C6/Transmutation',
+  'Spider Climb:C1/Transmutation',
+  'Spider Climb:C2/Transmutation',
+  'Spike Growth:C3/Transmutation',
+  'Spike Stones:C4/Transmutation',
+  'Statue:C7/Transmutation',
+  'Stinking Cloud:C3/Conjuration',
+  'Stone Shape:C4/Transmutation',
+  'Stone Soup:C1/Transmutation',
+  'Stone Tell:C6/Divination',
+  'Stone To Flesh:C6/Transmutation',
+  'Stoneskin:C4/Abjuration',
+  'Storm Of Vengeance:C9/Greater Conjuration',
+  'Suggestion:C3/Enchantment',
+  'Summon Instrument:C0/Greater Conjuration',
+  'Summon Monster I:C1/Greater Conjuration',
+  'Summon Monster II:C2/Greater Conjuration',
+  'Summon Monster III:C3/Greater Conjuration',
+  'Summon Monster IV:C4/Greater Conjuration',
+  'Summon Monster IX:C9/Greater Conjuration',
+  'Summon Monster V:C5/Greater Conjuration',
+  'Summon Monster VI:C6/Greater Conjuration',
+  'Summon Monster VII:C7/Greater Conjuration',
+  'Summon Monster VIII:C8/Greater Conjuration',
+  'Summon Nature\'s Ally I:C1/Greater Conjuration',
+  'Summon Nature\'s Ally II:C2/Greater Conjuration',
+  'Summon Nature\'s Ally III:C3/Greater Conjuration',
+  'Summon Nature\'s Ally IV:C4/Greater Conjuration',
+  'Summon Nature\'s Ally IX:C9/Greater Conjuration',
+  'Summon Nature\'s Ally V:C5/Greater Conjuration',
+  'Summon Nature\'s Ally VI:C6/Greater Conjuration',
+  'Summon Nature\'s Ally VII:C7/Greater Conjuration',
+  'Summon Nature\'s Ally VIII:C8/Greater Conjuration',
+  'Summon Swarm:C2/Greater Conjuration',
+  'Sunbeam:C7/Evocation',
+  'Sunburst:C8/Evocation',
+  'Symbol Of Death:C8/Necromancy',
+  'Symbol Of Fear:C6/Necromancy',
+  'Symbol Of Insanity:C8/Enchantment',
+  'Symbol Of Pain:C5/Necromancy',
+  'Symbol Of Persuasion:C6/Enchantment',
+  'Symbol Of Sleep:C5/Enchantment',
+  'Symbol Of Stunning:C7/Enchantment',
+  'Symbol Of Weakness:C7/Necromancy',
+  'Sympathetic Vibration:C6/Evocation',
+  'Sympathy:C8/Enchantment',
+  'Tasha\'s Hideous Laughter:C2/Enchantment',
+  'Telekinesis:C5/Transmutation',
+  'Temporal Stasis:C8/Transmutation',
+  'Tenser\'s Floating Disk:C1/Greater Evocation',
+  'Tenser\'s Transformation:C6/Transmutation',
+  'Time Stop:C9/Transmutation',
+  'Tongues:C3/Divination',
+  'Touch Of Fatigue:C0/Necromancy',
+  'Touch Of Idiocy:C2/Enchantment',
+  'Transmute Metal To Wood:C7/Transmutation',
+  'Transmute Mud To Rock:C5/Transmutation',
+  'Transmute Rock To Mud:C5/Transmutation',
+  'Trap The Soul:C8/Greater Conjuration',
+  'Tree Shape:C2/Transmutation',
+  'True Seeing:C6/Divination',
+  'True Strike:C1/Divination',
+  'Undeath To Death:C6/Necromancy',
+  'Undetectable Alignment:C1/Abjuration',
+  'Unhallow:C5/Greater Evocation',
+  'Unseen Servant:C1/Conjuration',
+  'Vampiric Touch:C3/Necromancy',
+  'Veil:C6/Illusion',
+  'Ventriloquism:C1/Illusion',
+  'Virtue:C0/Transmutation',
+  'Vision:C7/Divination',
+  'Wail Of The Banshee:C9/Necromancy',
+  'Wall Of Fire:C4/Greater Evocation',
+  'Wall Of Force:C5/Greater Evocation',
+  'Wall Of Ice:C4/Greater Evocation',
+  'Wall Of Iron:C6/Conjuration',
+  'Wall Of Stone:C5/Conjuration',
+  'Wall Of Thorns:C5/Conjuration',
+  'Warp Wood:C2/Transmutation',
+  'Water Breathing:C3/Transmutation',
+  'Water Walk:C3/Transmutation',
+  'Waves Of Exhaustion:C7/Necromancy',
+  'Waves Of Fatigue:C5/Necromancy',
+  'Weather:C2/Conjuration',
+  'Web:C2/Conjuration',
+  'Weird:C9/Illusion',
+  'Whirlwind:C8/Greater Evocation',
+  'Whispering Wind:C2/Transmutation',
+  'Willful Stand:C3/Abjuration',
+  'Wind Walk:C7/Transmutation',
+  'Wind Wall:C3/Greater Evocation',
+  'Withering Speech:C2/Enchantment',
+  'Woeful Speech:C1/Enchantment',
+  'Wood Shape:C2/Transmutation',
+  'Zone Of Silence:C4/Enchantment'
 ];
 MN2E.SUBFEATS = {
-  'Greater Spellcasting':'Conjuration/Evocation',
   'Magecraft':'Charismatic/Hermetic/Spiritual',
   // Skill Focus (Profession (Soldier)) available to Leader Of Men Fighters
   'Skill Focus':'Profession (Soldier)',
-  'Spellcasting':PH35.SCHOOLS.join('/'),
+  'Spellcasting':MN2E.SCHOOLS.join('/').replace(/:[^\/]+/g, ''),
   // Legates w/War domain receive Weapon Focus (Longsword)
   'Weapon Focus':'Longsword'
 };
@@ -381,10 +913,10 @@ MN2E.classRules = function(rules, classes) {
         rules.defineRule('spellEnergy',
           'magicNotes.magecraft(Charismatic)Feature', '+=', null
         );
-        rules.defineRule('spellsKnown.W0',
+        rules.defineRule('spellsKnown.B0',
           'magicNotes.magecraft(Charismatic)Feature', '+=', '3'
         );
-        rules.defineRule('spellsKnown.W1',
+        rules.defineRule('spellsKnown.B1',
           'magicNotes.magecraft(Charismatic)Feature', '+=', '1'
         );
         rules.defineRule('validationNotes.greaterConfidenceSelectableFeature',
@@ -455,10 +987,10 @@ MN2E.classRules = function(rules, classes) {
           'magicNotes.magecraft(Charismatic)Feature', '+=', null
         );
         rules.defineRule('spellsKnown.W0',
-          'magicNotes.magecraft(Charismatic)Feature', '+=', '3'
+          'magicNotes.magecraft(Hermetic)Feature', '+=', '3'
         );
         rules.defineRule('spellsKnown.W1',
-          'magicNotes.magecraft(Charismatic)Feature', '+=', '1'
+          'magicNotes.magecraft(Hermetic)Feature', '+=', '1'
         );
       } else if(klass == 'Spiritual Channeler') {
         feats = ['Extra Gift', 'Spell Knowledge'];
@@ -527,11 +1059,11 @@ MN2E.classRules = function(rules, classes) {
         rules.defineRule('spellEnergy',
           'magicNotes.magecraft(Charismatic)Feature', '+=', null
         );
-        rules.defineRule('spellsKnown.W0',
-          'magicNotes.magecraft(Charismatic)Feature', '+=', '3'
+        rules.defineRule('spellsKnown.D0',
+          'magicNotes.magecraft(Spiritual)Feature', '+=', '3'
         );
-        rules.defineRule('spellsKnown.W1',
-          'magicNotes.magecraft(Charismatic)Feature', '+=', '1'
+        rules.defineRule('spellsKnown.D1',
+          'magicNotes.magecraft(Spiritual)Feature', '+=', '1'
         );
         var turningTargets = {
           'Nature':'Nature', 'Spirits':'Spirit', 'The Unnatural':'Unnatural'
@@ -889,24 +1421,24 @@ MN2E.classRules = function(rules, classes) {
       ];
       spellAbility = 'wisdom';
       spellsKnown = [
-        'C0:1:"all"', 'C1:1:"all"', 'C2:3:"all"', 'C3:5:"all"',
-        'C4:7:"all"', 'C5:9:"all"', 'C6:11:"all"', 'C7:13:"all"',
-        'C8:15:"all"', 'C9:17:"all"',
+        'L0:1:"all"', 'L1:1:"all"', 'L2:3:"all"', 'L3:5:"all"',
+        'L4:7:"all"', 'L5:9:"all"', 'L6:11:"all"', 'L7:13:"all"',
+        'L8:15:"all"', 'L9:17:"all"',
         'Dom1:1:"all"', 'Dom2:3:"all"', 'Dom3:5:"all"', 'Dom4:7:"all"',
         'Dom5:9:"all"', 'Dom6:11:"all"', 'Dom7:13:"all"', 'Dom8:15:"all"',
         'Dom9:17:"all"'
       ];
       spellsPerDay = [
-        'C0:1:3/2:4/4:5/7:6',
-        'C1:1:1/2:2/4:3/7:4/11:5',
-        'C2:3:1/4:2/6:3/9:4/13:5',
-        'C3:5:1/6:2/8:3/11:4/15:5',
-        'C4:7:1/8:2/10:3/13:4/17:5',
-        'C5:9:1/10:2/12:3/15:4/19:5',
-        'C6:11:1/12:2/14:3/17:4',
-        'C7:13:1/14:2/16:3/19:4',
-        'C8:15:1/16:2/18:3/20:4',
-        'C9:17:1/18:2/19:3/20:4'
+        'L0:1:3/2:4/4:5/7:6',
+        'L1:1:1/2:2/4:3/7:4/11:5',
+        'L2:3:1/4:2/6:3/9:4/13:5',
+        'L3:5:1/6:2/8:3/11:4/15:5',
+        'L4:7:1/8:2/10:3/13:4/17:5',
+        'L5:9:1/10:2/12:3/15:4/19:5',
+        'L6:11:1/12:2/14:3/17:4',
+        'L7:13:1/14:2/16:3/19:4',
+        'L8:15:1/16:2/18:3/20:4',
+        'L9:17:1/18:2/19:3/20:4'
       ];
       rules.defineRule('astiraxLevel',
         'levels.Legate', '+=', 'source < 3 ? null : Math.floor(source / 3)'
@@ -1316,13 +1848,17 @@ MN2E.featRules = function(rules, feats, subfeats) {
         'magicNotes.craftGreaterSpellTalismanFeature:' +
           'Talisman reduces spell energy cost of selected school spells by 1',
         'validationNotes.craftGreaterSpellTalismanFeat:' +
-          'Requires Magecraft/3 Channeling feats/character level 12'
+          'Requires character level 12/Magecraft/3 Channeling feats'
       ];
       rules.defineRule('validationNotes.craftGreaterSpellTalismanFeat',
-        'feats.Craft Greater Spell Talisman', '=', '-2',
-        // TODO 3 Channeling feats
-        'level', '+', 'source >= 12 ? 1 : 0',
-        'subfeatCount.Magecraft', '+', '1'
+        'feats.Craft Greater Spell Talisman', '=', '-113',
+        'level', '+', 'source >= 12 ? 100 : null',
+        // NOTE: False valid w/multiple Magecraft feats; Magecraft counts as
+        // a Channeling feat as well
+        /^features\.Magecraft/, '+', '11',
+        // 3 Channeling feats
+        /^features\.(Ritual Magic|(Greater )?Spellcasting)/, '+', '1',
+        '', 'v', '0'
       );
     } else if(feat == 'Craft Spell Talisman') {
       notes = [
@@ -1401,19 +1937,6 @@ MN2E.featRules = function(rules, feats, subfeats) {
         'features.Dodge', '+', '1',
         'subfeatCount.Weapon Focus', '+', '1'
       );
-    } else if((matchInfo=feat.match(/^Greater Spellcasting \((.*)\)/))!=null) {
-      var school = matchInfo[1];
-      var note = 'magicNotes.greaterSpellcasting(' + school + ')Feature';
-      var validNote = 'validationNotes.greaterSpellcasting(' + school + ')Feat';
-      notes = [
-        note + ':May learn school spells/+1 school spell',
-        validNote + ':Requires Spellcasting (' + school + ')'
-      ];
-      rules.defineRule('spellsKnownBonus', note, '+=', '1');
-      rules.defineRule(validNote,
-        'feats.' + feat, '=', '-1',
-        'features.Spellcasting (' + school + ')', '+', '1'
-      );
     } else if(feat == 'Herbalist') {
       notes = [
         'magicNotes.herbalistFeature:Create herbal concoctions',
@@ -1467,11 +1990,13 @@ MN2E.featRules = function(rules, feats, subfeats) {
       var note = 'magicNotes.magecraft(' + tradition + ')Feature';
       var ability = tradition == 'Charismatic' ? 'charisma' :
                     tradition == 'Hermetic' ? 'intelligence' : 'wisdom';
+      var spellCode = tradition == 'Charismatic' ? 'B' :
+                      tradition == 'Hermetic' ? 'W' : 'D';
       notes = [note + ':4 spells/%V spell energy points'];
       rules.defineRule(note, ability + 'Modifier', '=', null);
       rules.defineRule('spellEnergy', note, '+=', null);
-      rules.defineRule('spellsKnown.W0', note, '+=', '3');
-      rules.defineRule('spellsKnown.W1', note, '+=', '1');
+      rules.defineRule('spellsKnown.' + spellCode + '0', note, '+=', '3');
+      rules.defineRule('spellsKnown.' + spellCode + '1', note, '+=', '1');
     } else if(feat == 'Magic Hardened') {
       notes = [
         'saveNotes.magicHardenedFeature:+2 spell resistance',
@@ -1523,6 +2048,17 @@ MN2E.featRules = function(rules, feats, subfeats) {
       var note = 'magicNotes.spellcasting(' + school + ')Feature';
       notes = [note + ':May learn school spells/+1 school spell'];
       rules.defineRule('spellsKnownBonus', note, '+=', '1');
+      if(school.indexOf('Greater ') == 0) {
+        var validNote = 'validationNotes.spellcasting(' + school + ')Feat';
+        school = school.replace(/Greater /, '');
+        notes = notes.concat([
+          validNote + ':Requires Spellcasting (' + school + ')'
+        ]);
+        rules.defineRule(validNote,
+          'feats.' + feat, '=', '-1',
+          'features.Spellcasting (' + school + ')', '+', '1'
+        );
+      }
     } else if(feat == 'Spell Knowledge') {
       notes = [
         'magicNotes.spellKnowledgeFeature:+2 spells',
@@ -1693,7 +2229,7 @@ MN2E.heroicPathRules = function(rules, paths) {
         'magicNotes.unfetteredFeature:<i>Freedom Of Movement</i> %V rounds/day'
       ];
       selectableFeatures = null;
-      spellFeatures = ['2:Persistance', '7:True Strike', '12:Aid', '17:Prayer'];
+      spellFeatures = ['2:Persistence', '7:True Strike', '12:Aid', '17:Prayer'];
       rules.defineRule('combatNotes.missChanceFeature',
         'pathLevels.Chanceborn', '+=', 'source >= 14 ? 10 : 5'
       );
@@ -2150,12 +2686,12 @@ MN2E.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule('magicNotes.spellChoiceFeature',
         'pathLevels.Jack-Of-All-Trades', '=',
-        'source>=16 ? "W0/W1/W2/W3" : source>=10 ? "W0/W1/W2" : ' +
-        'source>=6 ? "W0/W1" : "W0"'
+        'source>=16 ? "C0/C1/C2/C3" : source>=10 ? "C0/C1/C2" : ' +
+        'source>=6 ? "C0/C1" : "C0"'
       );
       rules.defineRule('magicNotes.spontaneousSpellFeature',
         'pathLevels.Jack-Of-All-Trades', '=',
-        'source >= 19 ? "W0/W1/W2" : source >= 13 ? "W0/W1" : "W0"'
+        'source >= 19 ? "C0/C1/C2" : source >= 13 ? "C0/C1" : "C0"'
       );
       rules.defineRule('selectableFeatureCount.Jack-Of-All-Trades',
         'pathLevels.Jack-Of-All-Trades', '=',
@@ -2854,13 +3390,42 @@ MN2E.heroicPathRules = function(rules, paths) {
 };
 
 /* Defines the rules related to MN2E Chapter 5, Player Options/Magic. */
-MN2E.magicRules = function(rules, spells) {
+MN2E.magicRules = function(rules, domains, schools, spells, coreSpells) {
 
+  schools = rules.getChoices('schools');
   for(var i = 0; i < spells.length; i++) {
     var pieces = spells[i].split(':');
     var codes = pieces[1].split('/');
-    var school = codes[codes.length - 1].substring(0, 4);
+    var school = codes[codes.length - 1];
+    school = schools[school] != null ? schools[school] : school.substring(0, 4);
     for(var j = 0; j < codes.length - 1; j++) {
+      var spell =
+        pieces[0] + '(' + codes[j] + ' ' + school + ')';
+      rules.defineChoice('spells', spell);
+    }
+  }
+  var domainCodes = {};
+  for(var i = 0; i < domains.length; i++) {
+    var domainInfo = domains[i].split(':');
+    if(domainInfo.length == 2) {
+      domainCodes[domainInfo[1]] = ''
+    }
+  }
+  for(var i = 0; i < coreSpells.length; i++) {
+    var pieces = coreSpells[i].split(':');
+    // Change Cleric spells to Legate
+    pieces[1] = pieces[1].replace(/C(\d)/, 'L$1');
+    var codes = pieces[1].split('/');
+    var school = codes[codes.length - 1];
+    school = schools[school] != null ? schools[school] : school.substring(0, 4);
+    for(var j = 0; j < codes.length - 1; j++) {
+      var code = codes[j];
+      // Ignore Bard/Druid/Wizard spells > level 1, all Paladin/Ranger spells
+      if(code.match(/(B|D|W)[2-9]|(P|R)\d/))
+        continue;
+      // Ignore domain spells for domains other than Izrador's
+      if(code.match(/..\d/) && domainCodes[code.substring(0, 2)] == null)
+        continue;
       var spell =
         pieces[0] + '(' + codes[j] + ' ' + school + ')';
       rules.defineChoice('spells', spell);
@@ -2871,8 +3436,8 @@ MN2E.magicRules = function(rules, spells) {
     'level', '=', 'source / 2',
     'features.Art Of Magic', '+', '1/2'
   );
-  for(var i = 2; i < 10; i++) {
-    rules.defineRule('spellsKnown.W' + i,
+  for(var i = 0; i < 10; i++) {
+    rules.defineRule('spellsKnown.C' + i,
       'maxSpellLevel', '?', 'source >= ' + i,
       'spellsKnownBonus', '+=', '0'
     );
@@ -2944,7 +3509,7 @@ MN2E.raceRules = function(rules, languages, races) {
       ];
       selectableFeatures = null;
       rules.defineRule('featCount.Fighter Bonus',
-        'featureNotes.dornFeatCounBonus', '+=', null
+        'featureNotes.dornFeatCountBonus', '+=', null
       );
       rules.defineRule('featureNotes.dornFeatCountBonus',
         'race', '=', 'source == "Dorn" ? 1 : null'
@@ -3231,8 +3796,7 @@ MN2E.raceRules = function(rules, languages, races) {
         ]);
         notes = notes.concat([
           'magicNotes.improvedInnateMagicFeature:+1 Innate Magic spell',
-          'magicNotes.improvedNaturalChannelerFeature:' +
-            '+1 spell energy/spells known'
+          'magicNotes.improvedNaturalChannelerFeature:+1 spell energy'
         ]);
         rules.defineRule('magicNotes.innateMagicFeature',
           'magicNotes.improvedInnateMagicFeature', '+', '1'
@@ -3244,9 +3808,6 @@ MN2E.raceRules = function(rules, languages, races) {
         rules.defineRule
           ('skillPoints', 'skillNotes.woodElfSkillPointsBonus', '+', null);
         rules.defineRule('spellEnergy',
-          'magicNotes.improvedNaturalChannelerFeature', '+', '1'
-        );
-        rules.defineRule('spellsKnown.W1',
           'magicNotes.improvedNaturalChannelerFeature', '+', '1'
         );
       }
@@ -3583,13 +4144,13 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
       }
       // Allocate bonus spells round-robin among all possible spell levels
       for(var spellLevel = 0; spellLevel <= maxSpellLevel; spellLevel++) {
-        attributes['spellsKnown.W' + spellLevel] = 0;
+        attributes['spellsKnown.C' + spellLevel] = 0;
       }
       for(var spellLevel = maxSpellLevel;
           spellsKnownBonus > 0;
           spellLevel = spellLevel > 0 ? spellLevel - 1 : maxSpellLevel,
           spellsKnownBonus--) {
-        attributes['spellsKnown.W' + spellLevel] += 1;
+        attributes['spellsKnown.C' + spellLevel] += 1;
       }
       // Let PH35 pick spells
       PH35.randomizeOneAttribute.apply(this, [attributes, attribute]);
@@ -3598,7 +4159,7 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
         delete attributes['prohibit.' + a];
       }
       for(var spellLevel = 0; spellLevel <= maxSpellLevel; spellLevel++) {
-        delete attributes['spellsKnown.W' + spellLevel];
+        delete attributes['spellsKnown.C' + spellLevel];
       }
     }
   } else {
