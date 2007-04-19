@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.74 2007/03/31 06:58:06 Jim Exp $ */
+/* $Id: LastAge.js,v 1.75 2007/04/19 05:09:56 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -1612,7 +1612,7 @@ MN2E.classRules = function(rules, classes) {
         'features.Rapid Response', '+', '1',
         'features.Sense Dark Magic', '+', '1'
       );
-      rules.defineRule('validationNotes.improvedEvasionSightSelectableFeature',
+      rules.defineRule('validationNotes.improvedEvasionSelectableFeature',
         'selectableFeatures.Improved Evasion', '=', '-1',
         'features.Evasion', '+', '1'
       );
