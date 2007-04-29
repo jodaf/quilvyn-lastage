@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.75 2007/04/19 05:09:56 Jim Exp $ */
+/* $Id: LastAge.js,v 1.76 2007/04/29 15:28:01 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -48,6 +48,9 @@ function MN2E() {
   // when PH35.magicRules is called to get War domain feature rules correct
   PH35.deitiesFavoredWeapons['Izrador (NE)'] = 'Longsword';
   PH35.magicRules(rules, MN2E.DOMAINS, MN2E.SCHOOLS, []);
+  if(window.DMG35 != null && DMG35.npcClassRules != null) {
+    DMG35.npcClassRules(rules, DMG35.NPC_CLASSES);
+  }
 
   MN2E.raceRules(rules, MN2E.LANGUAGES, MN2E.RACES);
   MN2E.heroicPathRules(rules, MN2E.HEROIC_PATHS);
@@ -60,7 +63,7 @@ function MN2E() {
   rules.defineChoice('preset', 'race', 'heroicPath', 'levels');
   rules.defineChoice('random', MN2E.RANDOMIZABLE_ATTRIBUTES);
   rules.defineChoice('races', 'None'); // TODO Remove this testing choice
-  rules.defineSheetElement('Deity', null, null, null); // Remove from sheet
+  rules.defineSheetElement('Deity'); // Remove from sheet
   rules.randomizeOneAttribute = MN2E.randomizeOneAttribute;
   Scribe.addRuleSet(rules);
   MN2E.rules = rules;
@@ -1074,7 +1077,7 @@ MN2E.classRules = function(rules, classes) {
             prefix + '.maxHitDice:(d20 + %V) / 3'
           ]);
           rules.defineSheetElement
-            ('Turn ' + turningTargets[a], 'Combat', null, 'Turn Undead', ' * ');
+            ('Turn ' + turningTargets[a], 'Turn Undead', null, null, ' * ');
         }
         rules.defineRule('validationNotes.confidentEffectSelectableFeature',
           'selectableFeatures.Confident Effect', '=', '-1',
@@ -1612,7 +1615,7 @@ MN2E.classRules = function(rules, classes) {
         'features.Rapid Response', '+', '1',
         'features.Sense Dark Magic', '+', '1'
       );
-      rules.defineRule('validationNotes.improvedEvasionSelectableFeature',
+      rules.defineRule('validationNotes.improvedEvasionSightSelectableFeature',
         'selectableFeatures.Improved Evasion', '=', '-1',
         'features.Evasion', '+', '1'
       );
@@ -1769,11 +1772,9 @@ MN2E.companionRules = function(rules, companions) {
       rules.defineNote(notes);
 
     rules.defineSheetElement
-      (companion + ' Features', 'Companion Area', null, 'Companion Notes',
-       ' * ');
+      (companion + ' Features', 'Companion Notes', null, null, ' * ');
     rules.defineSheetElement
-      (companion + ' Stats', 'Companion Area', null, companion + ' Features',
-       ' * ');
+      (companion + ' Stats', companion + ' Features', null, null, ' * ');
 
   }
 
@@ -3307,8 +3308,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       'heroicPath', '?', 'source == "' + path + '"',
       'level', '=', null
     );
-    rules.defineSheetElement
-      (path + ' Features', 'FeaturesAndSkills', null, 'Feats', ' * ');
+    rules.defineSheetElement(path + ' Features', 'Feats', null, null, ' * ');
     if(feats != null) {
       for(var j = 0; j < feats.length; j++) {
         rules.defineChoice('feats', feats[j] + ':' + path);
@@ -3360,14 +3360,13 @@ MN2E.heroicPathRules = function(rules, paths) {
         rules.defineRule
           (prefix + 'Spells.' + spell, 'pathLevels.' + path, '=', rule);
       }
-      rules.defineSheetElement
-        (path + ' Spells', 'Magic', null, 'Spells', ' * ');
+      rules.defineSheetElement(path + ' Spells', 'Spells', null, null, ' * ');
     }
 
   }
   rules.defineEditorElement
     ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
-  rules.defineSheetElement('Heroic Path', 'Description', null, 'Alignment');
+  rules.defineSheetElement('Heroic Path', 'Alignment');
 
 };
 
@@ -3424,10 +3423,8 @@ MN2E.magicRules = function(rules, domains, schools, spells, coreSpells) {
       'spellsKnownBonus', '+=', '0'
     );
   }
-  rules.defineSheetElement
-    ('Spell Energy', 'SpellStats', null, 'Spells Per Day');
-  rules.defineSheetElement
-    ('Spells Known Bonus', 'SpellStats', null, 'Spell Energy');
+  rules.defineSheetElement('Spell Energy', 'Spells Per Day');
+  rules.defineSheetElement('Spells Known Bonus', 'Spell Energy');
 
 };
 
