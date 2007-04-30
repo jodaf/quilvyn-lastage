@@ -176,13 +176,13 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.aradil\'sEyeSkills',
         'levels.Aradil\'s Eye', '=', '-7',
-        'skills.Bluff', '+', 'source >= 8 ? 1 : null',
-        'skills.Disguise', '+', 'source >= 5 ? 1 : null',
-        'skills.Gather Information', '+', 'source >= 8 ? 1 : null',
-        'skills.Hide', '+', 'source >= 8 ? 1 : null',
-        'skills.Move Silently', '+', 'source >= 5 ? 1 : null',
-        'skills.Sense Motive', '+', 'source >= 5 ? 1 : null',
-        'skills.Spot', '+', 'source >= 5 ? 1 : null'
+        'skillModifier.Bluff', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Disguise', '+', 'source >= 5 ? 1 : null',
+        'skillModifier.Gather Information', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Hide', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Move Silently', '+', 'source >= 5 ? 1 : null',
+        'skillModifier.Sense Motive', '+', 'source >= 5 ? 1 : null',
+        'skillModifier.Spot', '+', 'source >= 5 ? 1 : null'
       );
 
     } else if(klass == 'Avenging Knife') {
@@ -262,10 +262,10 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.avengingKnifeSkills',
         'levels.Avenging Knife', '=', '-4',
-        'skills.Bluff', '+', 'source >= 5 ? 1 : null',
-        'skills.Gather Information', '+', 'source >= 5 ? 1 : null',
-        'skills.Hide', '+', 'source >= 8 ? 1 : null',
-        'skills.Move Silently', '+', 'source >= 8 ? 1 : null'
+        'skillModifier.Bluff', '+', 'source >= 5 ? 1 : null',
+        'skillModifier.Gather Information', '+', 'source >= 5 ? 1 : null',
+        'skillModifier.Hide', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Move Silently', '+', 'source >= 8 ? 1 : null'
       );
 
     } else if(klass == 'Bane Of Legates') {
@@ -340,9 +340,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.baneOfLegatesSkills',
         'levels.Bane Of Legates', '=', '-3',
-        'skills.Knowledge (Arcana)', '+', 'source >= 13 ? 1 : null',
-        'skills.Knowledge (Shadow)', '+', 'source >= 8 ? 1 : null',
-        'skills.Spellcraft', '+', 'source >= 10 ? 1 : null'
+        'skillModifier.Knowledge (Arcana)', '+', 'source >= 13 ? 1 : null',
+        'skillModifier.Knowledge (Shadow)', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Spellcraft', '+', 'source >= 10 ? 1 : null'
       );
 
     } else if(klass == 'Druid') {
@@ -425,8 +425,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.druidSkills',
         'levels.Druid', '=', '-2',
-        'skills.Knowledge (Nature)', '+', 'source >= 8 ? 1 : null',
-        'skills.Survival', '+', 'source >= 8 ? 1 : null'
+        'skillModifier.Knowledge (Nature)', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Survival', '+', 'source >= 8 ? 1 : null'
       );
 
       // Add PH35 Druid spells to the spell selections
@@ -522,9 +522,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.elvenRaiderSkills',
         'levels.Elven Raider', '=', '-3',
-        'skills.Hide', '+', 'source >= 8 ? 1 : null',
-        'skills.Move Silently', '+', 'source >= 8 ? 1 : null',
-        'skills.Survival', '+', 'source >= 8 ? 1 : null'
+        'skillModifier.Hide', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Move Silently', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Survival', '+', 'source >= 8 ? 1 : null'
       );
 
     } else if(klass == 'Freerider') {
@@ -609,9 +609,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.freeriderSkills',
         'levels.Freerider', '=', '-3',
-        'skills.Handle Animal', '+', 'source >= 4 ? 1 : null',
-        'skills.Ride', '+', 'source >= 8 ? 1 : null',
-        'skills.Survival', '+', 'source >= 4 ? 1 : null'
+        'skillModifier.Handle Animal', '+', 'source >= 4 ? 1 : null',
+        'skillModifier.Ride', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Survival', '+', 'source >= 4 ? 1 : null'
       );
 
     } else if(klass == 'Haunted One') {
@@ -640,13 +640,6 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           'Spellcasting (Necromancy)',
         'validationNotes.hauntedOneSkills:' +
           'Requires Knowledge (Arcana) 8/Knowledge (Spirits) 10'
-      ];
-      prerequisites = [
-        '+/{^features.Magecraft} > 0',
-        '{features.Spellcasting (Divination)} != null',
-        '{features.Spellcasting (Necromancy)} != null',
-        '{skills.Knowledge (Arcana)} >= 8',
-        '{skills.Knowledge (Spirits)} >= 10'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
       profShield = PH35.PROFICIENCY_NONE;
@@ -685,8 +678,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.hauntedOneSkills',
         'levels.Haunted One', '=', '-2',
-        'skills.Knowledge (Arcana)', '+', 'source >= 8 ? 1 : null',
-        'skills.Knowledge (Spirits)', '+', 'source >= 10 ? 1 : null'
+        'skillModifier.Knowledge (Arcana)', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Knowledge (Spirits)', '+', 'source >= 10 ? 1 : null'
       );
 
     } else if(klass == 'Insurgent Spy') {
@@ -748,10 +741,10 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.insurgentSpySkills',
         'levels.Insurgent Spy', '=', '-4',
-        'skills.Bluff', '+', 'source >= 8 ? 1 : null',
-        'skills.Diplomacy', '+', 'source >= 5 ? 1 : null',
-        'skills.Gather Information', '+', 'source >= 8 ? 1 : null',
-        'skills.Sense Motive', '+', 'source >= 5 ? 1 : null'
+        'skillModifier.Bluff', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Diplomacy', '+', 'source >= 5 ? 1 : null',
+        'skillModifier.Gather Information', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Sense Motive', '+', 'source >= 5 ? 1 : null'
       );
 
     } else if(klass == 'Smuggler') {
@@ -818,10 +811,10 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.smugglerSkills',
         'levels.Smuggler', '=', '-4',
-        'skills.Bluff', '+', 'source >= 8 ? 1 : null',
-        'skills.Forgery', '+', 'source >= 5 ? 1 : null',
-        'skills.Gather Information', '+', 'source >= 8 ? 1 : null',
-        'skills.Hide', '+', 'source >= 5 ? 1 : null'
+        'skillModifier.Bluff', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Forgery', '+', 'source >= 5 ? 1 : null',
+        'skillModifier.Gather Information', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Hide', '+', 'source >= 5 ? 1 : null'
       );
 
     } else if(klass == 'Warrior Arcanist') {
@@ -909,7 +902,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.warriorArcanistSkills',
         'levels.Warrior Arcanist', '=', '-1',
-        'skills.Spellcraft', '+', 'source >= 8 ? 1 : null'
+        'skillModifier.Spellcraft', '+', 'source >= 8 ? 1 : null'
       );
 
     } else if(klass == 'Whisper Adept') {
@@ -979,9 +972,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.whisperAdeptSkills',
         'levels.Whisper Adept', '=', '-3',
-        'skills.Knowledge (Nature)', '+', 'source >= 8 ? 1 : null',
-        'skills.Knowledge (Spirits)', '+', 'source >= 10 ? 1 : null',
-        'skills.Survival', '+', 'source >= 8 ? 1 : null'
+        'skillModifier.Knowledge (Nature)', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Knowledge (Spirits)', '+', 'source >= 10 ? 1 : null',
+        'skillModifier.Survival', '+', 'source >= 8 ? 1 : null'
       );
 
     } else if(klass == 'Wizard') {
@@ -1048,8 +1041,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.wizardSkills',
         'levels.Wizard', '=', '-2',
-        'skills.Knowledge (Arcana)', '+', 'source >= 10 ? 1 : null',
-        'skills.Spellcraft', '+', 'source >= 10 ? 1 : null'
+        'skillModifier.Knowledge (Arcana)', '+', 'source >= 10 ? 1 : null',
+        'skillModifier.Spellcraft', '+', 'source >= 10 ? 1 : null'
       );
 
     } else if(klass == 'Wogren Rider') {
@@ -1131,8 +1124,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       );
       rules.defineRule('validationNotes.wogrenRiderSkills',
         'levels.Wogren Rider', '=', '-2',
-        'skills.Ride', '+', 'source >= 8 ? 1 : null',
-        'skills.Survival', '+', 'source >= 4 ? 1 : null'
+        'skillModifier.Ride', '+', 'source >= 8 ? 1 : null',
+        'skillModifier.Survival', '+', 'source >= 4 ? 1 : null'
       );
 
     } else

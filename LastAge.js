@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.76 2007/04/29 15:28:01 Jim Exp $ */
+/* $Id: LastAge.js,v 1.77 2007/04/30 23:43:29 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -1823,7 +1823,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
       ];
       rules.defineRule('validationNotes.craftCharmFeat',
         'feats.Craft Charm', '=', '-1',
-        /^skills.Craft/, '+', 'source >= 4 ? + 1 : null',
+        /^skillModifier.Craft/, '+', 'source >= 4 ? + 1 : null',
         '', 'v', '0'
       );
     } else if(feat == 'Craft Greater Spell Talisman') {
@@ -1866,7 +1866,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
       rules.defineRule('validationNotes.devastatingMountedAssaultFeat',
         'feats.Devastating Mounted Assault', '=', '-2',
         'feats.Mounted Combat', '+', '1',
-        'skills.Ride', '+', 'source >= 10 ? 1 : null'
+        'skillModifier.Ride', '+', 'source >= 10 ? 1 : null'
       );
     } else if(feat == 'Drive It Deep') {
       notes = [
@@ -1927,7 +1927,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
       ];
       rules.defineRule('validationNotes.herbalistFeat',
         'feats.Herbalist', '=', '-1',
-        'skills.Profession (Herbalist)', '+', 'source >= 4 ? 1 : null'
+        'skillModifier.Profession (Herbalist)', '+', 'source >= 4 ? 1 : null'
       );
     } else if(feat == 'Improvised Weapon') {
       notes = [
@@ -3448,7 +3448,7 @@ MN2E.raceRules = function(rules, languages, races) {
       'MN2E.racesLanguages[source] == null ? 0 : ' +
       'eval(MN2E.racesLanguages[source].replace(/\\D+/g, "+"))',
     'intelligenceModifier', '+', 'source > 0 ? source : null',
-    'skills.Speak Language', '+', '2 * source'
+    'skillModifier.Speak Language', '+', '2 * source'
   );
   rules.defineRule('validationNotes.totalLanguages',
     'languageCount', '+=', '-source',
@@ -3468,7 +3468,7 @@ MN2E.raceRules = function(rules, languages, races) {
   );
   rules.defineRule('features.Illiteracy', '', '=', '1');
   rules.defineRule
-    ('skills.Speak Language', 'skillNotes.illiteracyFeature', '+', '-2');
+    ('skillModifier.Speak Language', 'skillNotes.illiteracyFeature', '+', '-2');
 
   for(var i = 0; i < races.length; i++) {
 
@@ -4044,12 +4044,12 @@ MN2E.skillRules = function(rules, skills, subskills) {
   ];
   rules.defineNote(notes);
   rules.defineRule('skillNotes.knowledge(Local)Synergy2',
-    'skills.Knowledge (Local)', '=', 'source >= 5 ? 1 : null'
+    'skillModifier.Knowledge (Local)', '=', 'source >= 5 ? 1 : null'
   );
   rules.defineRule('skillNotes.knowledge(Nature)Synergy2',
-    'skills.Knowledge (Nature)', '=', 'source >= 5 ? 1 : null'
+    'skillModifier.Knowledge (Nature)', '=', 'source >= 5 ? 1 : null'
   );
-  rules.defineRule('skills.Knowledge (Spirits)',
+  rules.defineRule('skillModifier.Knowledge (Spirits)',
     'skillNotes.knowledge(Nature)Synergy2', '+', '2'
   );
 
