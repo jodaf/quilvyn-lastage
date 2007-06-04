@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.77 2007/04/30 23:43:29 Jim Exp $ */
+/* $Id: LastAge.js,v 1.78 2007/06/04 02:57:04 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -1077,7 +1077,7 @@ MN2E.classRules = function(rules, classes) {
             prefix + '.maxHitDice:(d20 + %V) / 3'
           ]);
           rules.defineSheetElement
-            ('Turn ' + turningTargets[a], 'Turn Undead', null, null, ' * ');
+            ('Turn ' + turningTargets[a], 'Turn Undead', null, ' * ');
         }
         rules.defineRule('validationNotes.confidentEffectSelectableFeature',
           'selectableFeatures.Confident Effect', '=', '-1',
@@ -1772,9 +1772,9 @@ MN2E.companionRules = function(rules, companions) {
       rules.defineNote(notes);
 
     rules.defineSheetElement
-      (companion + ' Features', 'Companion Notes', null, null, ' * ');
+      (companion + ' Features', 'Companion Notes', null, ' * ');
     rules.defineSheetElement
-      (companion + ' Stats', companion + ' Features', null, null, ' * ');
+      (companion + ' Stats', companion + ' Features', null, ' * ');
 
   }
 
@@ -3308,7 +3308,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       'heroicPath', '?', 'source == "' + path + '"',
       'level', '=', null
     );
-    rules.defineSheetElement(path + ' Features', 'Feats', null, null, ' * ');
+    rules.defineSheetElement(path + ' Features', 'Feats', null, ' * ');
     if(feats != null) {
       for(var j = 0; j < feats.length; j++) {
         rules.defineChoice('feats', feats[j] + ':' + path);
@@ -3360,7 +3360,7 @@ MN2E.heroicPathRules = function(rules, paths) {
         rules.defineRule
           (prefix + 'Spells.' + spell, 'pathLevels.' + path, '=', rule);
       }
-      rules.defineSheetElement(path + ' Spells', 'Spells', null, null, ' * ');
+      rules.defineSheetElement(path + ' Spells', 'Spells', null, ' * ');
     }
 
   }
