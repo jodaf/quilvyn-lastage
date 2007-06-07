@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.78 2007/06/04 02:57:04 Jim Exp $ */
+/* $Id: LastAge.js,v 1.79 2007/06/07 13:52:22 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -28,8 +28,13 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 function MN2E() {
 
   var rules = new ScribeRules('Midnight 2nd Edition');
+  rules.editorElements = PH35.initialEditorElements();
+  rules.defineEditorElement('deity'); // Remove from editor
+  rules.defineEditorElement('specialize');
+  rules.defineEditorElement('prohibit');
   MN2E.viewer = new ObjectViewer();
   PH35.createViewer(MN2E.viewer);
+  rules.defineSheetElement('Deity'); // Remove from sheet
   rules.defineViewer("Standard", MN2E.viewer);
   PH35.abilityRules(rules);
   // MN2E doesn't use the PH35 languages or races, but we call PH35.raceRules
@@ -61,9 +66,14 @@ function MN2E() {
   MN2E.equipmentRules(rules, MN2E.WEAPONS);
   MN2E.magicRules(rules, MN2E.DOMAINS, MN2E.SCHOOLS, MN2E.SPELLS, PH35.SPELLS);
   rules.defineChoice('preset', 'race', 'heroicPath', 'levels');
+  for(var i = 0; i < MN2E.RANDOMIZABLE_ATTRIBUTES.length; i++) {
+    if(MN2E.RANDOMIZABLE_ATTRIBUTES[i] == 'deity') {
+      MN2E.RANDOMIZABLE_ATTRIBUTES = MN2E.RANDOMIZABLE_ATTRIBUTES.slice(0, i).
+        concat(MN2E.RANDOMIZABLE_ATTRIBUTES.slice(i + 1));
+      break;
+    }
+  }
   rules.defineChoice('random', MN2E.RANDOMIZABLE_ATTRIBUTES);
-  rules.defineChoice('races', 'None'); // TODO Remove this testing choice
-  rules.defineSheetElement('Deity'); // Remove from sheet
   rules.randomizeOneAttribute = MN2E.randomizeOneAttribute;
   Scribe.addRuleSet(rules);
   MN2E.rules = rules;
@@ -2829,9 +2839,11 @@ MN2E.heroicPathRules = function(rules, paths) {
       features = [
         '1:Painless', '2:Nonlethal Damage Reduction', '3:Uncaring Mind',
         '4:Retributive Rage', '5:Ferocity', '9:Last Stand',
-        '10:Increased Damage Threshold', '14:Improved Retributive Rage'
+        '10:Increased Damage Threshold', '14:Improved Retributive Rage',
+        '19:Another Last Stand'
       ];
       notes = [
+        'combatNotes.anotherLastStand:Last stand 2/day',
         'combatNotes.ferocityFeature:Continue fighting below 0 HP',
         'combatNotes.improvedRetributiveRageFeature:' +
           '+%V damage next round after suffering double level damage',
@@ -2857,7 +2869,6 @@ MN2E.heroicPathRules = function(rules, paths) {
         'pathLevels.Painless', '+=',
         'source >= 20 ? 25 : source >= 15 ? 20 : 15'
       );
-      // TODO 1/day < level 19; 2/day >= 19
       rules.defineRule('combatNotes.lastStandFeature',
         'pathLevels.Painless', '+=', '10 + source'
       );
@@ -4057,10 +4068,7 @@ MN2E.skillRules = function(rules, skills, subskills) {
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
 MN2E.randomizeOneAttribute = function(attributes, attribute) {
-  if(attribute == 'deity') {
-    attributes[attribute] =
-      attributes['levels.Legate'] != null ? 'Izrador (NE)' : 'None';
-  } else if(attribute == 'languages') {
+  if(attribute == 'languages') {
     var attrs = this.applyRules(attributes);
     var choices;
     var howMany =
