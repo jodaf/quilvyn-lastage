@@ -753,12 +753,14 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       feats = null;
       features = [
         '1:Smuggler\'s Trade', '2:Dominant Will', '3:Mystifying Speech',
-        '4:Information Network', '5:Disguise Contraband', '10:Slippery Mind'
+        '4:Information Network', '5:Disguise Contraband',
+        '7:More Mystifying Speech', '10:Slippery Mind'
       ];
       hitDie = 6;
       notes = [
         'magicNotes.disguiseContrabandFeature:' +
           '<i>Misdirection</i> on 1 cu ft/level of contraband 1 hour/level',
+        'magicNotes.moreMystifyingSpeechFeature:Mystifying Speech 2/day',
         'magicNotes.mystifyingSpeechFeature:DC %V <i>Modify Memory</i>',
         'saveNotes.dominantWillFeature:' +
           '+%V Will vs. detection/compulsion spells to reveal activities',
@@ -791,7 +793,6 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      // TODO 1/day < level 7; 2/day >= 7
       rules.defineRule('magicNotes.mystifyingSpeechFeature',
         'levels.Smuggler', '=', '10 + source',
         'charismaModifier', '+', null
