@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.79 2007/06/07 13:52:22 Jim Exp $ */
+/* $Id: LastAge.js,v 1.80 2007/06/26 06:03:15 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -851,8 +851,8 @@ MN2E.classRules = function(rules, classes) {
           'magicNotes.inspireConfidenceFeature:' +
             'Allies w/in 60 ft +4 save vs. enchantment/fear for %V rounds',
           'magicNotes.inspireFascinationFeature:' +
-            '1 creature/level w/in 120 ft make %V DC Will save or enthralled ' +
-            '1 round/level',
+            '%V creatures w/in 120 ft make %1 DC Will save or enthralled ' +
+            '%2 rounds',
           'magicNotes.inspireFuryFeature:' +
             'Allies w/in 60 ft +1 initiative/attack/damage %V rounds',
           'magicNotes.magecraft(Charismatic)Feature:' +
@@ -889,8 +889,14 @@ MN2E.classRules = function(rules, classes) {
           'levels.Charismatic Channeler', '=', null
         );
         rules.defineRule('magicNotes.inspireFascinationFeature',
+          'levels.Charismatic Channeler', '=', null
+        );
+        rules.defineRule('magicNotes.inspireFascinationFeature.1',
           'levels.Charismatic Channeler', '=', '10 + Math.floor(source / 2)',
           'charismaModifier', '+', null
+        );
+        rules.defineRule('magicNotes.inspireFascinationFeature.2',
+          'levels.Charismatic Channeler', '=', null
         );
         rules.defineRule('magicNotes.inspireFuryFeature',
           'levels.Charismatic Channeler', '=', 'source + 5'
@@ -2070,11 +2076,13 @@ MN2E.featRules = function(rules, feats, subfeats) {
     } else if(feat == 'Warrior Of Shadow') {
       notes = [
         'combatNotes.warriorOfShadowFeature:' +
-          'Substitute ChaMod rounds of +%V damage for Turn Undead use',
+          'Substitute %V rounds of +%1 damage for Turn Undead use',
         'validationNotes.warriorOfShadowFeat:Requires Legate 5/charisma 12'
       ];
       rules.defineRule
         ('combatNotes.warriorOfShadowFeature', 'charismaModifier', '=', null);
+      rules.defineRule
+        ('combatNotes.warriorOfShadowFeature.1', 'charismaModifier', '=', null);
       rules.defineRule('validationNotes.warriorOfShadowFeat',
         'feats.Warrior Of Shadow', '=', '-2',
         'charisma', '+', 'source >= 12 ? 1 : null',
@@ -2148,7 +2156,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       notes = [
         'combatNotes.beastialAuraFeature:Turn animals',
         'combatNotes.rageFeature:' +
-          '+4 strength/constitution/+2 Will save/-2 AC 5+ConMod rounds %V/day',
+          '+4 strength/constitution/+2 Will save/-2 AC for %V rounds %1/day',
         'combatNotes.viciousAssaultFeature:Two claw attacks at %V each',
         'featureNotes.enhancedBeastialAuraFeature:' +
           'Animals w/in 15 ft act negatively/cannot ride',
@@ -2168,6 +2176,9 @@ MN2E.heroicPathRules = function(rules, paths) {
         '17:Greater Magic Fang', '19:Freedom Of Movement'
       ];
       rules.defineRule('combatNotes.rageFeature',
+        'constitutionModifier', '=', '5 + source'
+      );
+      rules.defineRule('combatNotes.rageFeature.1',
         'pathLevels.Beast', '+=', 'source >= 17 ? 2 : 1'
       );
       rules.defineRule('combatNotes.viciousAssaultFeature',
@@ -2401,7 +2412,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       ];
       notes = [
         'combatNotes.disruptingAttackFeature:' +
-           'Undead %V Will save or destroyed level/5/day',
+           'Undead %V Will save or destroyed %1/day',
         'combatNotes.touchOfTheLivingFeature:+%V damage vs. undead',
         'magicNotes.senseTheDeadFeature:Detect undead %V ft at will',
         'saveNotes.wardOfLifeFeature:Immune to undead %V'
@@ -2411,6 +2422,9 @@ MN2E.heroicPathRules = function(rules, paths) {
       rules.defineRule('combatNotes.disruptingAttackFeature',
         'pathLevels.Fellhunter', '+=', '10 + Math.floor(source / 2)',
         'charismaModifier', '+', null
+      );
+      rules.defineRule('combatNotes.disruptingAttackFeature.1',
+        'pathLevels.Fellhunter', '+=', 'Math.floor(source / 5)'
       );
       rules.defineRule('combatNotes.touchOfTheLivingFeature',
         'pathLevels.Fellhunter', '+=', 'Math.floor((source + 3) / 5) * 2'
@@ -2544,9 +2558,9 @@ MN2E.heroicPathRules = function(rules, paths) {
         'combatNotes.righteousFuryFeature:' +
           'Overcome %V points of evil foe melee damage reduction',
         'combatNotes.smiteEvilFeature:' +
-          '%V/day add ChaMod to attack, level to damage vs. evil foe',
+          '%V/day add %1 to attack, %2 to damage vs. evil foe',
         'featureNotes.inspireValorFeature:' +
-          'Allies w/in 30 ft extra attack/fear saves 1 round/level %V',
+          'Allies w/in 30 ft extra attack/+%V fear saves for %1 rounds %2/day',
         'magicNotes.detectEvilFeature:<i>Detect Evil</i> at will',
         'magicNotes.layOnHandsFeature:Harm undead or heal %V HP/day',
         'saveNotes.auraOfCourageFeature:' +
@@ -2567,10 +2581,18 @@ MN2E.heroicPathRules = function(rules, paths) {
         'pathLevels.Guardian', '+=',
         'source >= 18 ? 4 : source >= 14 ? 3 : source >= 8 ? 2 : 1'
       );
+      rules.defineRule
+        ('combatNotes.smiteEvilFeature.1', 'charismaModifier', '=', null);
+      rules.defineRule
+        ('combatNotes.smiteEvilFeature.2', 'pathLevels.Guardian', '=', null);
       rules.defineRule('featureNotes.inspireValorFeature',
-        'pathLevels.Guardian', '=',
-        'source >= 19 ? "+2 3/day" : source >= 13 ? "+2 2/day" : ' +
-        'source >= 9 ? "+1 2/day" : "+1 1/day"'
+        'pathLevels.Guardian', '=', 'source >= 13 ? 2 : 1'
+      );
+      rules.defineRule('featureNotes.inspireValorFeature.1',
+        'pathLevels.Guardian', '=', null
+      );
+      rules.defineRule('featureNotes.inspireValorFeature.2',
+        'pathLevels.Guardian', '=', 'source >= 19 ? 3 : source >= 9 ? 2 : 1'
       );
       rules.defineRule('magicNotes.layOnHandsFeature',
         'pathLevels.Guardian', '+=', null,
@@ -2793,9 +2815,9 @@ MN2E.heroicPathRules = function(rules, paths) {
         '18:Greater Frost Weapon'
       ];
       notes = [
-        'combatNotes.battleCryFeature:+Level hit points after cry %V/day',
+        'combatNotes.battleCryFeature:+%V hit points after cry %1/day',
         'combatNotes.frostWeaponFeature:' +
-           '+d6 cold damage on hit for level rounds %V/day',
+           '+d6 cold damage on hit for %V rounds %1/day',
         'combatNotes.greaterFrostWeaponFeature:' +
           '+d10 cold damage/extra critical hit die on critical hit',
         'combatNotes.improvedBattleCryFeature:+1 attack/damage after cry',
@@ -2812,11 +2834,16 @@ MN2E.heroicPathRules = function(rules, paths) {
       ];
       selectableFeatures = null;
       spellFeatures = null;
-      rules.defineRule('combatNotes.battleCryFeature',
+      rules.defineRule
+        ('combatNotes.battleCryFeature', 'pathLevels.Northblooded', '=', null);
+      rules.defineRule('combatNotes.battleCryFeature.1',
         'pathLevels.Northblooded', '=',
         'source >= 17 ? 4 : source >= 14 ? 3 : source >= 7 ? 2 : 1'
       );
       rules.defineRule('combatNotes.frostWeaponFeature',
+        'pathLevels.Northblooded', '=', null
+      );
+      rules.defineRule('combatNotes.frostWeaponFeature.1',
         'pathLevels.Northblooded', '=', 'source >= 19 ? 2 : 1'
       );
       rules.defineRule('northbloodedFeatures.Constitution Bonus',
@@ -2839,11 +2866,9 @@ MN2E.heroicPathRules = function(rules, paths) {
       features = [
         '1:Painless', '2:Nonlethal Damage Reduction', '3:Uncaring Mind',
         '4:Retributive Rage', '5:Ferocity', '9:Last Stand',
-        '10:Increased Damage Threshold', '14:Improved Retributive Rage',
-        '19:Another Last Stand'
+        '10:Increased Damage Threshold', '14:Improved Retributive Rage'
       ];
       notes = [
-        'combatNotes.anotherLastStand:Last stand 2/day',
         'combatNotes.ferocityFeature:Continue fighting below 0 HP',
         'combatNotes.improvedRetributiveRageFeature:' +
           '+%V damage next round after suffering double level damage',
@@ -2851,7 +2876,7 @@ MN2E.heroicPathRules = function(rules, paths) {
           'Continue fighting until -%V HP',
         'combatNotes.lastStandFeature:' +
            '1 minute of %V spell resistance/15 damage reduction/30 energy ' +
-           'resistance/near death afterward',
+           'resistance/near death afterward %1/day',
         'combatNotes.nonlethalDamageReductionFeature:' +
           'Ignore first %V points of non-lethal damage',
         'combatNotes.painlessFeature:+%V HP',
@@ -2871,6 +2896,9 @@ MN2E.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule('combatNotes.lastStandFeature',
         'pathLevels.Painless', '+=', '10 + source'
+      );
+      rules.defineRule('combatNotes.lastStandFeature.1',
+        'pathLevels.Painless', '+=', 'source >= 19 ? 2 : 1'
       );
       rules.defineRule('combatNotes.nonlethalDamageReductionFeature',
         'pathLevels.Painless', '+=', 'Math.floor((source + 3) / 5) * 3'
@@ -2948,8 +2976,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       notes = [
         'abilityNotes.fastMovementFeature:+%V speed',
         'combatNotes.burstOfSpeedFeature:' +
-          'Extra attack/move action for 3+ConMod rounds %V/day/fatigued ' +
-          'afterward'
+          'Extra attack/move action for %V rounds %1/day/fatigued afterward'
       ];
       selectableFeatures = null;
       spellFeatures = null;
@@ -2963,6 +2990,9 @@ MN2E.heroicPathRules = function(rules, paths) {
         'features.Armor Class Bonus', '=', null
       );
       rules.defineRule('combatNotes.burstOfSpeedFeature',
+        'constitutionModifier', '+=', 'source + 3'
+      );
+      rules.defineRule('combatNotes.burstOfSpeedFeature.1',
         'pathLevels.Quickened', '+=', 'Math.floor((source + 1) / 5)'
       );
       rules.defineRule('combatNotes.initiativeBonusFeature',
@@ -3075,7 +3105,7 @@ MN2E.heroicPathRules = function(rules, paths) {
         '14:Language Savant'
       ];
       notes = [
-        'magicNotes.powerWordsFeature:<i>Word of %V</i> 3+ChaMod/day',
+        'magicNotes.powerWordsFeature:<i>Word of %V</i> %1/day',
         'skillNotes.languageSavantFeature:' +
           'Fluent in any language after listening for 10 minutes',
         'skillNotes.persuasiveSpeakerFeature:+%V on verbal charisma skills'
@@ -3096,6 +3126,9 @@ MN2E.heroicPathRules = function(rules, paths) {
                     '(source >= 16 ? "/Charming" : "") + ' +
                     '(source >= 19 ? "/Holding" : "")'
       );
+      rules.defineRule('magicNotes.powerWordsFeature.1',
+        'constitutionModifier', '=', 'source + 3'
+      );
       rules.defineRule('skillNotes.persuasiveSpeakerFeature',
         'pathLevels.Speaker', '=',
         'source >= 17 ? 8 : source >= 11 ? 6 : source >= 7 ? 4 : 2'
@@ -3110,7 +3143,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       ];
       notes = [
         'magicNotes.metamagicAuraFeature:' +
-          '%V others\'spells up to 1/2 level w/in 30 ft',
+          '%V others\' spells of up to level %1 w/in 30 ft',
         'magicNotes.untappedPotentialFeature:' +
           'Contribute %V points to others\' spells w/in 30 ft',
         'saveNotes.improvedSpellResistanceFeature:+%V vs. spells'
@@ -3131,6 +3164,9 @@ MN2E.heroicPathRules = function(rules, paths) {
                    '.concat(source >= 14 ? ["empower"] : [])' +
                    '.concat(source >= 17 ? ["maximize"] : [])' +
                    '.concat(source >= 20 ? ["redirect"] : []).sort().join("/")'
+      );
+      rules.defineRule('magicNotes.metamagicAuraFeature',
+        'pathLevels.Spellsoul', '=', 'Math.floor(source / 2)'
       );
       rules.defineRule('magicNotes.untappedPotentialFeature',
         'highestMagicModifier', '=', 'source + 1',
@@ -3197,7 +3233,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       ];
       notes = [
         'combatNotes.planarFuryFeature:' +
-          '+2 strength/constitution/+1 Will save/-1 AC 5+ConMod rounds %V/day',
+          '+2 strength/constitution/+1 Will save/-1 AC for %V rounds %1/day',
         'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
         'featureNotes.magicalDarkvisionFeature:See perfectly in any darkness',
         'featureNotes.seeInvisibleFeature:See invisible creatures',
@@ -3211,6 +3247,9 @@ MN2E.heroicPathRules = function(rules, paths) {
         '12:Summon Monster IV', '15:Summon Monster V', '18:Summon Monster VI'
       ];
       rules.defineRule('combatNotes.planarFuryFeature',
+        'constitutionModifier', '+=', 'Math.floor((source + 2) / 6)'
+      );
+      rules.defineRule('combatNotes.planarFuryFeature.1',
         'pathLevels.Sunderborn', '+=', 'Math.floor((source + 2) / 6)'
       );
       rules.defineRule('skillNotes.bloodOfThePlanesFeature',
@@ -3277,7 +3316,7 @@ MN2E.heroicPathRules = function(rules, paths) {
           'Double normal distance in poor light',
         'featureNotes.scentFeature:' +
           'Detect creatures\' presence w/in 30 ft/track by smell',
-        'magicNotes.wildShapeFeature:Change into creature of size %V',
+        'magicNotes.wildShapeFeature:Change into creature of size %V %1/day',
         'skillNotes.wildEmpathyFeature:+%V Diplomacy check with animals'
       ];
       selectableFeatures = ['Low Light Vision', 'Scent'];
@@ -3298,11 +3337,12 @@ MN2E.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule('magicNotes.wildShapeFeature',
         'pathLevels.Warg', '=',
-        'source >= 19 ? "medium-huge 3/day" : ' +
-        'source >= 15 ? "medium-large 3/day" : ' +
-        'source >= 11 ? "medium-large 2/day" : ' +
-        'source >= 8 ? "medium 2/day" : ' +
-        'source >= 5 ? "medium 1/day" : null'
+        'source >= 19 ? "medium-huge" : ' +
+        'source >= 11 ? "medium-large" : ' +
+        'source >= 5 ? "medium" : null'
+      );
+      rules.defineRule('magicNotes.wildShapeFeature.1',
+        'pathLevels.Warg', '=', 'source >= 15 ? 3 : source >= 8 ? 2 : 1'
       );
       rules.defineRule('selectableFeatureCount.Warg',
         'pathLevels.Warg', '=', 'source >= 16 ? 3 : source >= 9 ? 2 : 1'
