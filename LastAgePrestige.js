@@ -65,9 +65,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'magicNotes.ancestralProtectorFeature:' +
           'Continuous <i>Protection From Arrows</i> via weapon',
         'magicNotes.ancestralWatcherFeature:Weapon has continuous <i>Alarm</i>',
-        'validationNotes.ancestralBladebearerCombat:' +
-          'Requires base attack 6/use weapon exclusively for prior level',
-        'validationNotes.ancestralBladebearerFeatures:' +
+        'validationNotes.ancestralBladebearerClassCombat:' +
+          'Requires Base Attack 6/use weapon exclusively for prior level',
+        'validationNotes.ancestralBladebearerClassFeature:' +
           'Requires Weapon Focus/Weapon Specialization'
       ];
       profArmor = PH35.PROFICIENCY_HEAVY;
@@ -88,17 +88,17 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('combatNotes.advanceAncestralBladeFeature',
         'levels.Ancestral Bladebearer', '=', 'Math.floor((source + 2) / 4)'
       );
-      rules.defineRule('featCount.Fighter Bonus',
+      rules.defineRule('featCount.Fighter',
         'levels.Ancestral Bladebearer', '=', 'Math.floor(source / 3)'
       );
       rules.defineRule('magicNotes.ancestralAdvisorFeature',
         'charismaModifier', '=', 'source > 1 ? source : 1'
       );
-      rules.defineRule('validationNotes.ancestralBladebearerCombat',
+      rules.defineRule('validationNotes.ancestralBladebearerClassCombat',
         'levels.Ancestral Bladebearer', '=', '-1',
         'baseAttack', '+', 'source > 6 ? 1 : null'
       );
-      rules.defineRule('validationNotes.ancestralBladebearerFeatures',
+      rules.defineRule('validationNotes.ancestralBladebearerClassFeature',
         'levels.Ancestral Bladebearer', '=', '-2',
         'subfeatCount.Weapon Focus', '+', 'source >= 1 ? 1 : null',
         'subfeatCount.Weapon Specialization', '+', 'source >= 1 ? 1 : null'
@@ -133,9 +133,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'saveNotes.slipperyMindFeature:Second save vs. enchantment',
         'skillNotes.hideInPlainSightFeature:Hide even when observed',
         'skillNotes.spyInitiateFeature:+%V Diplomacy (elves/allies)',
-        'validationNotes.aradil\'sEyeFeatures:Requires Inconspicuous',
-        'validationNotes.aradil\'sEyeRace:Requires Wood Elf',
-        'validationNotes.aradil\'sEyeSkills:Requires Bluff 8/Disguise 5/' +
+        'validationNotes.aradil\'sEyeClassFeature:Requires Inconspicuous',
+        'validationNotes.aradil\'sEyeClassRace:Requires Wood Elf',
+        'validationNotes.aradil\'sEyeClassSkill:Requires Bluff 8/Disguise 5/' +
           'Gather Information 8/Hide 8/Move Silently 5/Sense Motive 5/Spot 5'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
@@ -166,15 +166,15 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('skillNotes.spyInitiateFeature',
         'levels.Aradil\'s Eye', '=', 'source >= 10 ? 10 : source >= 5 ? 8 : 4'
       );
-      rules.defineRule('validationNotes.aradil\'sEyeFeatures',
+      rules.defineRule('validationNotes.aradil\'sEyeClassFeature',
         'levels.Aradil\'s Eye', '=', '-1',
         'features.Inconspicuous', '+', '1'
       );
-      rules.defineRule('validationNotes.aradil\'sEyeRace',
+      rules.defineRule('validationNotes.aradil\'sEyeClassRace',
         'levels.Aradil\'s Eye', '=', '-1',
         'race', '+', 'source == "Wood Elf" ? 1 : null'
       );
-      rules.defineRule('validationNotes.aradil\'sEyeSkills',
+      rules.defineRule('validationNotes.aradil\'sEyeClassSkill',
         'levels.Aradil\'s Eye', '=', '-7',
         'skillModifier.Bluff', '+', 'source >= 8 ? 1 : null',
         'skillModifier.Disguise', '+', 'source >= 5 ? 1 : null',
@@ -213,10 +213,10 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'skillNotes.stillAsStoneFeature:+10 Hide during infiltration',
         'skillNotes.targetStudyFeature:' +
           'Gather Information yields +2 attack/damage or +4 AC vs. chosen foe',
-        'validationNotes.avengingKnifeAlignment:Requires non-Evil',
-        'validationNotes.avengingKnifeFeatures:' +
+        'validationNotes.avengingKnifeClassAlignment:Requires non-Evil',
+        'validationNotes.avengingKnifeClassFeature:' +
           'Requires Improved Initiative/Inconspicuous/Sneak Attack',
-        'validationNotes.avengingKnifeSkills:' +
+        'validationNotes.avengingKnifeClassSkill:' +
           'Requires Bluff 5/Gather Information 5/Hide 8/Move Silently 8'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
@@ -250,17 +250,17 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('combatNotes.theDropFeature',
         'levels.Avenging Knife', '=', 'Math.floor((source + 2) / 3)'
       );
-      rules.defineRule('validationNotes.avengingKnifeAlignment',
+      rules.defineRule('validationNotes.avengingKnifeClassAlignment',
         'levels.Avenging Knife', '=', '-1',
         'alignment', '+', '!source.match(/Evil/) ? 1 : null'
       );
-      rules.defineRule('validationNotes.avengingKnifeFeatures',
+      rules.defineRule('validationNotes.avengingKnifeClassFeature',
         'levels.Avenging Knife', '=', '-3',
         'features.Improved Initiative', '+', '1',
         'features.Inconspicuous', '+', '1',
         'features.Sneak Attack', '+', '1'
       );
-      rules.defineRule('validationNotes.avengingKnifeSkills',
+      rules.defineRule('validationNotes.avengingKnifeClassSkill',
         'levels.Avenging Knife', '=', '-4',
         'skillModifier.Bluff', '+', 'source >= 5 ? 1 : null',
         'skillModifier.Gather Information', '+', 'source >= 5 ? 1 : null',
@@ -290,9 +290,10 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'magicNotes.counterIzrador\'sWillFeature:' +
           '<i>Dispel Magic</i> vs. legates',
         'saveNotes.resistIzrador\'sWillFeature:+10 vs. legate magic',
-        'validationNotes.baneOfLegatesFeatures:Requires Iron Will/Magecraft',
-        'validationNotes.baneOfLegatesMagic:Requires spell energy 10',
-        'validationNotes.baneOfLegatesSkills:' +
+        'validationNotes.baneOfLegatesClassFeature:' +
+          'Requires Iron Will/Magecraft',
+        'validationNotes.baneOfLegatesClassMagic:Requires spell energy 10',
+        'validationNotes.baneOfLegatesClassSkill:' +
           'Requires Knowledge (Arcana) 13/Knowledge (Shadow) 8/Spellcraft 10'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
@@ -314,7 +315,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('featCount.Spellcasting',
         'levels.Bane Of Legates', '+=', 'Math.floor((source - 1) / 4)'
       );
-      rules.defineRule('featCount.Wizard Bonus',
+      rules.defineRule('featCount.Wizard',
         'levels.Bane Of Legates', '=', 'Math.floor((source + 3) / 5)'
       );
       rules.defineRule('magicNotes.baneOfLegatesSpellEnergy',
@@ -329,16 +330,16 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         ('spellEnergy', 'magicNotes.baneOfLegatesSpellEnergy', '+', null);
       rules.defineRule
         ('spellsKnownBonus', 'magicNotes.baneOfLegatesSpellsKnown', '+', null);
-      rules.defineRule('validationNotes.baneOfLegatesFeatures',
+      rules.defineRule('validationNotes.baneOfLegatesClassFeature',
         'levels.Bane Of Legates', '=', '-2',
         'features.Iron Will', '+', '1',
         'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null'
       );
-      rules.defineRule('validationNotes.baneOfLegatesMagic',
+      rules.defineRule('validationNotes.baneOfLegatesClassMagic',
         'levels.Bane Of Legates', '=', '-1',
         'spellEnergy', '+', 'source >= 10 ? 1 : null'
       );
-      rules.defineRule('validationNotes.baneOfLegatesSkills',
+      rules.defineRule('validationNotes.baneOfLegatesClassSkill',
         'levels.Bane Of Legates', '=', '-3',
         'skillModifier.Knowledge (Arcana)', '+', 'source >= 13 ? 1 : null',
         'skillModifier.Knowledge (Shadow)', '+', 'source >= 8 ? 1 : null',
@@ -366,10 +367,11 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'saveNotes.venomImmunityFeature:Immune to organic poisons',
         'skillNotes.natureSenseFeature:' +
           'Identify animals/plants/unsafe food/drink',
-        'validationNotes.druidFeatures:' +
+        'validationNotes.druidClassFeature:' +
            'Requires Magecraft (Spiritual)/Mastery Of Nature/Spellcasting/' +
            'Wild Empathy',
-        'validationNotes.druidSkills:Requires Knowledge (Nature) 8/Survival 8'
+        'validationNotes.druidClassSkill:' +
+          'Requires Knowledge (Nature) 8/Survival 8'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
       profShield = PH35.PROFICIENCY_NONE;
@@ -416,14 +418,14 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule
         ('spellsKnownBonus', 'magicNotes.druidSpellsKnown', '+', null);
       rules.defineRule('turnNature.level', 'druidTurningLevel', '+=', null);
-      rules.defineRule('validationNotes.druidFeatures',
+      rules.defineRule('validationNotes.druidClassFeature',
         'levels.Druid', '=', '-4',
         'features.Magecraft (Spiritual)', '+', '1',
         'features.Mastery Of Nature', '+', '1',
         'features.Wild Empathy', '+', '1',
         'subfeatCount.Spellcasting', '+', 'source >= 1 ? 1 : null'
       );
-      rules.defineRule('validationNotes.druidSkills',
+      rules.defineRule('validationNotes.druidClassSkill',
         'levels.Druid', '=', '-2',
         'skillModifier.Knowledge (Nature)', '+', 'source >= 8 ? 1 : null',
         'skillModifier.Survival', '+', 'source >= 8 ? 1 : null'
@@ -471,11 +473,11 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           '+1 critical range for every 2 rounds aiming; +%V max',
         'combatNotes.rangedSneakAttackFeature:' +
           '%Vd6 extra damage when surprising or flanking w/in 30 ft',
-        'validationNotes.elvenRaiderCombat:Requires base attack 5',
-        'validationNotes.elvenRaiderFeatures:Requires Point Blank Shot/' +
-          'Rapid Shot/Weapon Focus (Composite Longbow/Longbow)',
-        'validationNotes.elvenRaiderElf:Requires Elf',
-        'validationNotes.elvenRaiderSkills:' +
+        'validationNotes.elvenRaiderClassClassCombat:Requires Base Attack 5',
+        'validationNotes.elvenRaiderClassFeature:Requires Point Blank Shot/' +
+          'Rapid Shot/Weapon Focus (Composite Longbow)|Weapon Focus (Longbow)',
+        'validationNotes.elvenRaiderClassRace:Requires Elf',
+        'validationNotes.elvenRaiderClassSkill:' +
           'Requires Hide 8/Move Silently 8/Survival 8'
       ];
       profArmor = PH35.PROFICIENCY_LIGHT;
@@ -504,11 +506,11 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'levels.Elven Raider', '+=', 'Math.floor((source + 2) / 3)',
         'combatNotes.sneakAttackFeature', '+', null
       );
-      rules.defineRule('validationNotes.elvenRaiderCombat',
+      rules.defineRule('validationNotes.elvenRaiderClassCombat',
         'levels.Elven Raider', '=', '-1',
         'baseAttack', '+', 'source >= 5 ? 1 : null'
       );
-      rules.defineRule('validationNotes.elvenRaiderFeatures',
+      rules.defineRule('validationNotes.elvenRaiderClassFeature',
         'levels.Elven Raider', '=', '-201',
         'features.Point Blank Shot', '+', '100',
         'features.Rapid Shot', '+', '100',
@@ -516,11 +518,11 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'features.Weapon Focus (Longbow)', '+', '1',
         '', 'v', '0'
       );
-      rules.defineRule('validationNotes.elvenRaiderRace',
+      rules.defineRule('validationNotes.elvenRaiderClassRace',
         'levels.Elven Raider', '=', '-1',
         'race', '+', 'source.match(/Elf$/) ? 1 : null'
       );
-      rules.defineRule('validationNotes.elvenRaiderSkills',
+      rules.defineRule('validationNotes.elvenRaiderClassSkill',
         'levels.Elven Raider', '=', '-3',
         'skillModifier.Hide', '+', 'source >= 8 ? 1 : null',
         'skillModifier.Move Silently', '+', 'source >= 8 ? 1 : null',
@@ -562,11 +564,11 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'featureNotes.spurOnFeature:' +
           'Double mount speed during charge/double move',
         'skillNotes.horseLordFeature:+1 Handle Animal (horse)/Ride (horseback)',
-        'validationNotes.freeriderCombat:Requires base attack 6',
-        'validationNotes.freeriderFeatures:' +
+        'validationNotes.freeriderClassCombat:Requires Base Attack 6',
+        'validationNotes.freeriderClassFeature:' +
           'Requires Mounted Combat/Ride By Attack/Spirited Charge',
-        'validationNotes.freeriderRace:Requires Erenlander or Sarcosan',
-        'validationNotes.freeriderSkills:' +
+        'validationNotes.freeriderClassRace:Requires Erenlander|Sarcosan',
+        'validationNotes.freeriderClassSkill:' +
           'Requires Handle Animal 4/Ride 8/Survival 4'
       ];
       profArmor = PH35.PROFICIENCY_HEAVY;
@@ -593,21 +595,21 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('selectableFeatureCount.Freerider',
         'levels.Freerider', '=', 'Math.floor((source + 1) / 3)'
       );
-      rules.defineRule('validationNotes.freeriderCombat',
+      rules.defineRule('validationNotes.freeriderClassCombat',
         'levels.Freerider', '=', '-1',
         'baseAttack', '+', 'source >= 6 ? 1 : null'
       );
-      rules.defineRule('validationNotes.freeriderFeatures',
+      rules.defineRule('validationNotes.freeriderClassFeature',
         'levels.Freerider', '=', '-3',
         'features.Mounted Combat', '+', '1',
         'features.Ride By Attack', '+', '1',
         'features.Spirited Charge', '+', '1'
       );
-      rules.defineRule('validationNotes.freeriderRace',
+      rules.defineRule('validationNotes.freeriderClassRace',
         'levels.Freerider', '=', '-1',
         'race', '+', 'source.match(/Erenlander|Sarcosan/) ? 1 : null'
       );
-      rules.defineRule('validationNotes.freeriderSkills',
+      rules.defineRule('validationNotes.freeriderClassSkill',
         'levels.Freerider', '=', '-3',
         'skillModifier.Handle Animal', '+', 'source >= 4 ? 1 : null',
         'skillModifier.Ride', '+', 'source >= 8 ? 1 : null',
@@ -635,10 +637,10 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           'Divination/Necromancy spell energy cost reduced by 1',
         'magicNotes.spiritManipulationFeature:' +
           '%V chosen Divination/Necromancy spells as spell-like ability 1/day',
-        'validationNotes.hauntedOneFeatures:' +
+        'validationNotes.hauntedOneClassFeature:' +
           'Requires Magecraft/Spellcasting (Divination)/' +
           'Spellcasting (Necromancy)',
-        'validationNotes.hauntedOneSkills:' +
+        'validationNotes.hauntedOneClassSkill:' +
           'Requires Knowledge (Arcana) 8/Knowledge (Spirits) 10'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
@@ -670,13 +672,13 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         ('spellEnergy', 'magicNotes.hauntedOneSpellEnergy', '+', null);
       rules.defineRule
         ('spellsKnownBonus', 'magicNotes.hauntedOneSpellsKnown', '+', null);
-      rules.defineRule('validationNotes.hauntedOneFeatures',
+      rules.defineRule('validationNotes.hauntedOneClassFeature',
         'levels.Haunted One', '=', '-3',
         'features.Spellcasting (Divination)', '+', '1',
         'features.Spellcasting (Necromancy)', '+', '1',
         'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null'
       );
-      rules.defineRule('validationNotes.hauntedOneSkills',
+      rules.defineRule('validationNotes.hauntedOneClassSkill',
         'levels.Haunted One', '=', '-2',
         'skillModifier.Knowledge (Arcana)', '+', 'source >= 8 ? 1 : null',
         'skillModifier.Knowledge (Spirits)', '+', 'source >= 10 ? 1 : null'
@@ -699,8 +701,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           'Gather Information to obtain %V favor from Shadow minion',
         'skillNotes.shadowSpeakFeature:' +
           '+%V Bluff/Diplomacy/Intimidate/Sense Motive w/Shadow minions',
-        'validationNotes.insurgentSpyFeatures:Requires Inconspicuous',
-        'validationNotes.insurgentSpySkills:' +
+        'validationNotes.insurgentSpyClassFeature:Requires Inconspicuous',
+        'validationNotes.insurgentSpyClassSkill:' +
           'Requires Bluff 8/Diplomacy 5/Gather Information 8/Sense Motive 5'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
@@ -735,11 +737,11 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('skillNotes.shadowSpeakFeature',
         'levels.Insurgent Spy', '=', 'Math.floor(source / 2)'
       );
-      rules.defineRule('validationNotes.insurgentSpyFeatures',
+      rules.defineRule('validationNotes.insurgentSpyClassFeature',
         'levels.Insurgent Spy', '=', '-1',
         'features.Inconspicuous', '+', '1'
       );
-      rules.defineRule('validationNotes.insurgentSpySkills',
+      rules.defineRule('validationNotes.insurgentSpyClassSkill',
         'levels.Insurgent Spy', '=', '-4',
         'skillModifier.Bluff', '+', 'source >= 8 ? 1 : null',
         'skillModifier.Diplomacy', '+', 'source >= 5 ? 1 : null',
@@ -770,8 +772,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'skillNotes.smuggler\'sTradeFeature:' +
           '+%V/take 10 on Bluff/Disguise/Forgery/Gather Information when ' +
           'smuggling',
-        'validationNotes.smugglerFeatures:Requires Friendly Agent',
-        'validationNotes.smugglerSkills:' +
+        'validationNotes.smugglerClassFeature:Requires Friendly Agent',
+        'validationNotes.smugglerClassSkill:' +
           'Requires Bluff 8/Forgery 5/Gather Information 8/Hide 5'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
@@ -806,11 +808,11 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('skillNotes.smuggler\'sTradeFeature',
         'levels.Smuggler', '=', 'Math.floor((source + 1) / 2) * 2'
       );
-      rules.defineRule('validationNotes.smugglerFeatures',
+      rules.defineRule('validationNotes.smugglerClassFeature',
         'levels.Smuggler', '=', '-1',
         'features.Friendly Agent', '+', '1'
       );
-      rules.defineRule('validationNotes.smugglerSkills',
+      rules.defineRule('validationNotes.smugglerClassSkill',
         'levels.Smuggler', '=', '-4',
         'skillModifier.Bluff', '+', 'source >= 8 ? 1 : null',
         'skillModifier.Forgery', '+', 'source >= 5 ? 1 : null',
@@ -840,11 +842,11 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'magicNotes.meleeCasterFeature:Deliver spell via weapon',
         'magicNotes.regenerativeStrikeFeature:' +
           'Recover spell energy equal to 2*weapon multiplier on critical hit',
-        'validationNotes.warriorArcanistCombat:' +
-          'Requires base attack 4/martial weapon proficiency',
-        'validationNotes.warriorArcanistFeatures:' +
+        'validationNotes.warriorArcanistClassCombat:' +
+          'Requires Base Attack 4/martial weapon proficiency',
+        'validationNotes.warriorArcanistClassFeature:' +
           'Requires Magecraft/Spellcasting/WeaponFocus',
-        'validationNotes.warriorArcanistSkills:Requires Spellcraft 8'
+        'validationNotes.warriorArcanistClassSkill:Requires Spellcraft 8'
       ];
       profArmor = PH35.PROFICIENCY_MEDIUM;
       profShield = PH35.PROFICIENCY_HEAVY;
@@ -889,19 +891,19 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('spellsKnownBonus',
         'magicNotes.warriorArcanistSpellsKnown', '+', null
       );
-      rules.defineRule('validationNotes.warriorArcanistCombat',
+      rules.defineRule('validationNotes.warriorArcanistClassCombat',
         'levels.Warrior Arcanist', '=', '-2',
         'baseAttack', '+', 'source >= 4 ? 1 : null',
         'weaponProficiencyLevel', '+',
           'source >= ' + PH35.PROFICIENCY_MEDIUM + ' ? 1 : null'
       );
-      rules.defineRule('validationNotes.warriorArcanistFeatures',
+      rules.defineRule('validationNotes.warriorArcanistClassFeature',
         'levels.Warrior Arcanist', '=', '-3',
         'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null',
         'subfeatCount.Spellcasting', '+', 'source >= 1 ? 1 : null',
         'subfeatCount.Weapon Focus', '+', 'source >= 1 ? 1 : null'
       );
-      rules.defineRule('validationNotes.warriorArcanistSkills',
+      rules.defineRule('validationNotes.warriorArcanistClassSkill',
         'levels.Warrior Arcanist', '=', '-1',
         'skillModifier.Spellcraft', '+', 'source >= 8 ? 1 : null'
       );
@@ -930,9 +932,10 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'magicNotes.whisperClairvoyanceFeature:<i>Clairvoyance</i> w/in wood',
         'magicNotes.whisperCommuneFeature:<i>Commune With Nature</i> w/in wood',
         'saveNotes.whisper\'sWardFeature:Immune to mind-affecting effects',
-        'validationNotes.whisperAdeptFeatures:Requires Magecraft/2 Spellcraft',
-        'validationNotes.whisperAdeptRace:Requires Elf',
-        'validationNotes.whisperAdeptSkills:' +
+        'validationNotes.whisperAdeptClassFeature:' +
+          'Requires Magecraft/2 Spellcraft',
+        'validationNotes.whisperAdeptClassRace:Requires Elf',
+        'validationNotes.whisperAdeptClassSkill:' +
           'Requires Knowledge (Nature) 8/Knowledge (Spirits) 10/Survival 8'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
@@ -962,16 +965,16 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         ('spellEnergy', 'magicNotes.whisperAdeptSpellEnergy', '+', null);
       rules.defineRule
         ('spellsKnownBonus', 'magicNotes.whisperAdeptSpellsKnown', '+', null);
-      rules.defineRule('validationNotes.whisperAdeptFeatures',
+      rules.defineRule('validationNotes.whisperAdeptClassFeature',
         'levels.Whisper Adept', '=', '-2',
         'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null',
         'subfeatCount.Spellcraft', '+', 'source >= 2 ? 1 : null'
       );
-      rules.defineRule('validationNotes.whisperAdeptRace',
+      rules.defineRule('validationNotes.whisperAdeptClassRace',
         'levels.Whisper Adept', '=', '-1',
         'race', '+', 'source.match(/Elf$/) ? 1 : null'
       );
-      rules.defineRule('validationNotes.whisperAdeptSkills',
+      rules.defineRule('validationNotes.whisperAdeptClassSkill',
         'levels.Whisper Adept', '=', '-3',
         'skillModifier.Knowledge (Nature)', '+', 'source >= 8 ? 1 : null',
         'skillModifier.Knowledge (Spirits)', '+', 'source >= 10 ? 1 : null',
@@ -993,10 +996,10 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'magicNotes.artOfMagicFeature:+1 character level for max spell level',
         'magicNotes.wizardcraftFeature:' +
           'Prepare spells ahead of time for half energy cost',
-        'validationNotes.wizardFeatures:' +
+        'validationNotes.wizardClassFeature:' +
           'Requires Magecraft (Hermetic)/2 Spellcasting/1 item creation/' +
           '1 metamagic',
-        'validationNotes.wizardSkills:' +
+        'validationNotes.wizardClassSkill:' +
           'Requires Knowledge (Arcana) 10/Spellcraft 10'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
@@ -1017,7 +1020,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('featCount.Spellcasting',
         'levels.Wizard', '+=', 'source<4 ? null : Math.floor((source - 1) / 3)'
       );
-      rules.defineRule('featCount.Wizard Bonus',
+      rules.defineRule('featCount.Wizard',
         'levels.Wizard', '+=', 'Math.floor(source / 3)'
       );
       rules.defineRule('featureNotes.efficientStudyFeature',
@@ -1031,7 +1034,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         ('spellEnergy', 'magicNotes.wizardSpellEnergy', '+', null);
       rules.defineRule
         ('spellsKnownBonus', 'magicNotes.wizardSpellsKnown', '+', null);
-      rules.defineRule('validationNotes.wizardFeatures',
+      rules.defineRule('validationNotes.wizardClassFeature',
         'levels.Wizard', '=', '-202',
         'features.Magecraft (Hermetic)', '+', '100',
         'subfeatCount.Spellcasting', '+', 'source >= 2 ? 100 : null',
@@ -1040,7 +1043,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         /^features\.(Brew|Craft|Forge)/, '+', '1',
         '', 'v', '0'
       );
-      rules.defineRule('validationNotes.wizardSkills',
+      rules.defineRule('validationNotes.wizardClassSkill',
         'levels.Wizard', '=', '-2',
         'skillModifier.Knowledge (Arcana)', '+', 'source >= 10 ? 1 : null',
         'skillModifier.Spellcraft', '+', 'source >= 10 ? 1 : null'
@@ -1079,10 +1082,10 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'featureNotes.specialMountFeature:Special bond/abilities',
         'featureNotes.wogren\'sSightFeature:Blindsense while mounted',
         'skillNotes.mountedHideFeature:Hide while mounted',
-        'validationNotes.wogrenRiderFeatures:' +
+        'validationNotes.wogrenRiderClassFeature:' +
           'Requires Mounted Archery/Mounted Combat',
-        'validationNotes.wogrenRiderRace:Requires Halfling',
-        'validationNotes.wogrenRiderSkills:Requires Ride 8/Survival 4'
+        'validationNotes.wogrenRiderClassRace:Requires Halfling',
+        'validationNotes.wogrenRiderClassSkill:Requires Ride 8/Survival 4'
       ];
       profArmor = PH35.PROFICIENCY_MEDIUM;
       profShield = PH35.PROFICIENCY_NONE;
@@ -1114,16 +1117,16 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('selectableFeatureCount.Wogren Rider',
         'levels.Wogren Rider', '=', 'Math.floor(source / 2)'
       );
-      rules.defineRule('validationNotes.wogrenRiderFeatures',
+      rules.defineRule('validationNotes.wogrenRiderClassFeature',
         'levels.Wogren Rider', '=', '-2',
         'features.Mounted Archery', '+', '1',
         'features.Mounted Combat', '+', '1'
       );
-      rules.defineRule('validationNotes.wogrenRiderRace',
+      rules.defineRule('validationNotes.wogrenRiderClassRace',
         'levels.Wogren Rider', '=', '-1',
         'race', '+', 'source.match(/Halfling/) ? 1 : null'
       );
-      rules.defineRule('validationNotes.wogrenRiderSkills',
+      rules.defineRule('validationNotes.wogrenRiderClassSkill',
         'levels.Wogren Rider', '=', '-2',
         'skillModifier.Ride', '+', 'source >= 8 ? 1 : null',
         'skillModifier.Survival', '+', 'source >= 4 ? 1 : null'
