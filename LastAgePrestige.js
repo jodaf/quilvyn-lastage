@@ -89,7 +89,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'levels.Ancestral Bladebearer', '=', 'Math.floor((source + 2) / 4)'
       );
       rules.defineRule('featCount.Fighter',
-        'levels.Ancestral Bladebearer', '=', 'Math.floor(source / 3)'
+        'levels.Ancestral Bladebearer', '+=', 'Math.floor(source / 3)'
       );
       rules.defineRule('magicNotes.ancestralAdvisorFeature',
         'charismaModifier', '=', 'source > 1 ? source : 1'
@@ -134,7 +134,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'skillNotes.hideInPlainSightFeature:Hide even when observed',
         'skillNotes.spyInitiateFeature:+%V Diplomacy (elves/allies)',
         'validationNotes.aradil\'sEyeClassFeats:Requires Inconspicuous',
-        'validationNotes.aradil\'sEyeClassRace:Requires Wood Elf',
+        'validationNotes.aradil\'sEyeClassRace:Requires Race == Wood Elf',
         'validationNotes.aradil\'sEyeClassSkills:' +
           'Requires Bluff >= 8/Disguise >= 5/Gather Information >= 8/' +
           'Hide >= 8/Move Silently >= 5/Sense Motive >= 5/Spot >= 5'
@@ -214,7 +214,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'skillNotes.stillAsStoneFeature:+10 Hide during infiltration',
         'skillNotes.targetStudyFeature:' +
           'Gather Information yields +2 attack/damage or +4 AC vs. chosen foe',
-        'validationNotes.avengingKnifeClassAlignment:Requires non-Evil',
+        'validationNotes.avengingKnifeClassAlignment:' +
+          'Requires Alignment != Evil',
         'validationNotes.avengingKnifeClassFeats:' +
           'Requires Improved Initiative/Inconspicuous/Sneak Attack',
         'validationNotes.avengingKnifeClassSkills:' +
@@ -370,8 +371,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'skillNotes.natureSenseFeature:' +
           'Identify animals/plants/unsafe food/drink',
         'validationNotes.druidClassFeats:' +
-           'Requires Magecraft (Spiritual)/Mastery Of Nature/Spellcasting/' +
-           'Wild Empathy',
+           'Requires Magecraft (Spiritual)/Spellcasting',
+        'validationNotes.druidClassFeatures:' +
+          'Requires Mastery Of Nature/Wild Empathy',
         'validationNotes.druidClassSkills:' +
           'Requires Knowledge (Nature) >= 8/Survival >= 8'
       ];
@@ -421,11 +423,14 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         ('spellsKnownBonus', 'magicNotes.druidSpellsKnown', '+', null);
       rules.defineRule('turnNature.level', 'druidTurningLevel', '+=', null);
       rules.defineRule('validationNotes.druidClassFeats',
-        'levels.Druid', '=', '-4',
+        'levels.Druid', '=', '-2',
         'features.Magecraft (Spiritual)', '+', '1',
-        'features.Mastery Of Nature', '+', '1',
-        'features.Wild Empathy', '+', '1',
         'subfeatCount.Spellcasting', '+', 'source >= 1 ? 1 : null'
+      );
+      rules.defineRule('validationNotes.druidClassFeatures',
+        'levels.Druid', '=', '-2',
+        'features.Mastery Of Nature', '+', '1',
+        'features.Wild Empathy', '+', '1'
       );
       rules.defineRule('validationNotes.druidClassSkills',
         'levels.Druid', '=', '-2',
@@ -478,7 +483,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.elvenRaiderClassClassCombat:Requires Base Attack >= 5',
         'validationNotes.elvenRaiderClassFeats:Requires Point Blank Shot/' +
           'Rapid Shot/Weapon Focus (Composite Longbow)|Weapon Focus (Longbow)',
-        'validationNotes.elvenRaiderClassRace:Requires Elf',
+        'validationNotes.elvenRaiderClassRace:Requires Race == Elf',
         'validationNotes.elvenRaiderClassSkills:' +
           'Requires Hide >= 8/Move Silently >= 8/Survival >= 8'
       ];
@@ -569,7 +574,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.freeriderClassCombat:Requires Base Attack >= 6',
         'validationNotes.freeriderClassFeats:' +
           'Requires Mounted Combat/Ride By Attack/Spirited Charge',
-        'validationNotes.freeriderClassRace:Requires Erenlander|Sarcosan',
+        'validationNotes.freeriderClassRace:' +
+          'Requires Race == Erenlander|Race == Sarcosan',
         'validationNotes.freeriderClassSkills:' +
           'Requires Handle Animal >= 4/Ride >= 8/Survival >= 4'
       ];
@@ -643,7 +649,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           'Requires Magecraft/Spellcasting (Divination)/' +
           'Spellcasting (Necromancy)',
         'validationNotes.hauntedOneClassSkills:' +
-          'Requires Knowledge (Arcana) 8/Knowledge (Spirits) 10'
+          'Requires Knowledge (Arcana) >= 8/Knowledge (Spirits) >= 10'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
       profShield = PH35.PROFICIENCY_NONE;
@@ -936,8 +942,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'magicNotes.whisperCommuneFeature:<i>Commune With Nature</i> w/in wood',
         'saveNotes.whisper\'sWardFeature:Immune to mind-affecting effects',
         'validationNotes.whisperAdeptClassFeats:' +
-          'Requires Magecraft/2 Spellcraft',
-        'validationNotes.whisperAdeptClassRace:Requires Elf',
+          'Requires Magecraft/Spellcasting/Spellcasting',
+        'validationNotes.whisperAdeptClassRace:Requires Race == Elf',
         'validationNotes.whisperAdeptClassSkills:' +
           'Requires Knowledge (Nature) >= 8/Knowledge (Spirits) >= 10/' +
           'Survival >= 8'
@@ -972,7 +978,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('validationNotes.whisperAdeptClassFeats',
         'levels.Whisper Adept', '=', '-2',
         'subfeatCount.Magecraft', '+', 'source >= 1 ? 1 : null',
-        'subfeatCount.Spellcraft', '+', 'source >= 2 ? 1 : null'
+        'subfeatCount.Spellcasting', '+', 'source >= 2 ? 1 : null'
       );
       rules.defineRule('validationNotes.whisperAdeptClassRace',
         'levels.Whisper Adept', '=', '-1',
@@ -1001,8 +1007,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'magicNotes.wizardcraftFeature:' +
           'Prepare spells ahead of time for half energy cost',
         'validationNotes.wizardClassFeats:' +
-          'Requires Magecraft (Hermetic)/2 Spellcasting/1 item creation/' +
-          '1 metamagic',
+          'Requires Magecraft (Hermetic)/Spellcasting/Spellcasting/' +
+          '1 item creation/1 metamagic',
         'validationNotes.wizardClassSkills:' +
           'Requires Knowledge (Arcana) >= 10/Spellcraft >= 10'
       ];
@@ -1088,7 +1094,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'skillNotes.mountedHideFeature:Hide while mounted',
         'validationNotes.wogrenRiderClassFeats:' +
           'Requires Mounted Archery/Mounted Combat',
-        'validationNotes.wogrenRiderClassRace:Requires Halfling',
+        'validationNotes.wogrenRiderClassRace:Requires Race == Halfling',
         'validationNotes.wogrenRiderClassSkills:' +
           'Requires Ride >= 8/Survival >= 4'
       ];
