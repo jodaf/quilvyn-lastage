@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.82 2007/07/19 05:14:08 Jim Exp $ */
+/* $Id: LastAge.js,v 1.83 2007/07/19 23:28:08 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -75,6 +75,7 @@ function MN2E() {
   }
   rules.defineChoice('random', MN2E.RANDOMIZABLE_ATTRIBUTES);
   rules.randomizeOneAttribute = MN2E.randomizeOneAttribute;
+  rules.makeValid = MN2E.makeValid;
   Scribe.addRuleSet(rules);
   MN2E.rules = rules;
 
@@ -1878,7 +1879,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
         'magicNotes.craftGreaterSpellTalismanFeature:' +
           'Talisman reduces spell energy cost of selected school spells by 1',
         'validationNotes.craftGreaterSpellTalismanFeatFeats:' +
-          'Requires Magecraft/3 Channeling feats',
+          'Requires Magecraft/Ritual Magic/Spellcasting/Spellcasting',
         'validationNotes.craftGreaterSpellTalismanFeatLevels:' +
           'Requires level >= 12'
       ];
@@ -1962,8 +1963,9 @@ MN2E.featRules = function(rules, feats, subfeats) {
         'skillNotes.friendlyAgentFeature:' +
           '+4 Diplomacy (convince allegiance)/Sense Motive (determine ' +
           'allegiance)',
-        'validationNotes.friendlyAgentFeatAlignment:Requires Good',
-        'validationNotes.friendlyAgentFeatRace:Requires Gnome|Human'
+        'validationNotes.friendlyAgentFeatAlignment:Requires Alignment == Good',
+        'validationNotes.friendlyAgentFeatRace:' +
+          'Requires Race==Gnome|Race==Dorn|Race==Erenander|Race==Sarcosan'
       ];
       rules.defineRule('validationNotes.friendlyAgentFeatAlignment',
         'feats.Friendly Agent', '=', '-1',
@@ -3547,7 +3549,7 @@ MN2E.raceRules = function(rules, languages, races) {
     'intelligenceModifier', '+', 'source > 0 ? source : null',
     'skillModifier.Speak Language', '+', '2 * source'
   );
-  rules.defineRule('validationNotes.languageTotal',
+  rules.defineRule('validationNotes.languagesTotal',
     'languageCount', '+=', '-source',
     /^languages\./, '+=', null
   );
@@ -4150,6 +4152,10 @@ MN2E.skillRules = function(rules, skills, subskills) {
     'skillNotes.knowledge(Nature)Synergy2', '+', '2'
   );
 
+};
+
+MN2E.makeValid = function(attributes) {
+  PH35.makeValid.apply(this, [attributes]);
 };
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
