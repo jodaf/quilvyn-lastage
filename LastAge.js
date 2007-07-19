@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.81 2007/07/14 00:27:20 Jim Exp $ */
+/* $Id: LastAge.js,v 1.82 2007/07/19 05:14:08 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -65,7 +65,7 @@ function MN2E() {
   MN2E.featRules(rules, MN2E.FEATS, MN2E.SUBFEATS);
   MN2E.equipmentRules(rules, MN2E.WEAPONS);
   MN2E.magicRules(rules, MN2E.DOMAINS, MN2E.SCHOOLS, MN2E.SPELLS, PH35.SPELLS);
-  rules.defineChoice('preset', 'race', 'heroicPath', 'class');
+  rules.defineChoice('preset', 'race', 'heroicPath', 'levels');
   for(var i = 0; i < MN2E.RANDOMIZABLE_ATTRIBUTES.length; i++) {
     if(MN2E.RANDOMIZABLE_ATTRIBUTES[i] == 'deity') {
       MN2E.RANDOMIZABLE_ATTRIBUTES = MN2E.RANDOMIZABLE_ATTRIBUTES.slice(0, i).
@@ -859,17 +859,17 @@ MN2E.classRules = function(rules, classes) {
           'magicNotes.massSuggestionFeature:' +
             'Make suggestion to %V fascinated creatures',
           'magicNotes.suggestionFeature:Make suggestion to fascinated creature',
-          'validationNotes.greaterConfidenceSelectableFeatureFeature:' +
+          'validationNotes.greaterConfidenceSelectableFeatureFeatures:' +
             'Requires Improved Confidence',
-          'validationNotes.greaterFurySelectableFeatureFeature:' +
+          'validationNotes.greaterFurySelectableFeatureFeatures:' +
             'Requires Improved Fury',
-          'validationNotes.improvedConfidenceSelectableFeatureFeature:' +
+          'validationNotes.improvedConfidenceSelectableFeatureFeatures:' +
             'Requires Inspire Confidence',
-          'validationNotes.improvedFurySelectableFeatureFeature:' +
+          'validationNotes.improvedFurySelectableFeatureFeatures:' +
             'Requires Inspire Fury',
-          'validationNotes.massSuggestionSelectableFeatureFeature:' +
+          'validationNotes.massSuggestionSelectableFeatureFeatures:' +
             'Requires Suggestion',
-          'validationNotes.suggestionSelectableFeatureFeature:' +
+          'validationNotes.suggestionSelectableFeatureFeatures:' +
             'Requires Inspire Fascination'
         ]);
         selectableFeatures = [
@@ -923,29 +923,30 @@ MN2E.classRules = function(rules, classes) {
           'magicNotes.magecraft(Charismatic)Feature', '+=', '1'
         );
         rules.defineRule(
-          'validationNotes.greaterConfidenceSelectableFeatureFeature',
+          'validationNotes.greaterConfidenceSelectableFeatureFeatures',
           'selectableFeatures.Greater Confidence', '=', '-1',
           'features.Improved Confidence', '+', '1'
         );
-        rules.defineRule('validationNotes.greaterFurySelectableFeatureFeature',
+        rules.defineRule('validationNotes.greaterFurySelectableFeatureFeatures',
           'selectableFeatures.Greater Fury', '=', '-1',
           'features.Improved Fury', '+', '1'
         );
         rules.defineRule(
-          'validationNotes.improvedConfidenceSelectableFeatureFeature',
+          'validationNotes.improvedConfidenceSelectableFeatureFeatures',
           'selectableFeatures.Improved Confidence', '=', '-1',
           'features.Inspire Confidence', '+', '1'
         );
-        rules.defineRule('validationNotes.improvedFurySelectableFeatureFeature',
+        rules.defineRule(
+          'validationNotes.improvedFurySelectableFeatureFeatures',
           'selectableFeatures.Improved Fury', '=', '-1',
           'features.Inspire Fury', '+', '1'
         );
         rules.defineRule(
-          'validationNotes.massSuggestionSelectableFeatureFeature',
+          'validationNotes.massSuggestionSelectableFeatureFeatures',
           'selectableFeatures.Mass Suggestion', '=', '-1',
           'features.Suggestion', '+', '1'
         );
-        rules.defineRule('validationNotes.suggestionSelectableFeatureFeature',
+        rules.defineRule('validationNotes.suggestionSelectableFeatureFeatures',
           'selectableFeatures.Suggestion', '=', '-1',
           'features.Inspire Fascination', '+', '1'
         );
@@ -1027,18 +1028,24 @@ MN2E.classRules = function(rules, classes) {
             'Use multiple mastery powers simultaneously',
           'magicNotes.magecraft(Spiritual)Feature:' +
             '4 spells/%V spell energy points',
-          'validationNotes.confidentEffectSelectableFeatureFeature:' +
-            'Requires Mastery Of Nature|Mastery Of Spirits|Mastery Of The Unnatural',
-          'validationNotes.heightenedEffectSelectableFeatureFeature:' +
-            'Requires Mastery Of Nature|Mastery Of Spirits|Mastery Of The Unnatural',
-          'validationNotes.powerfulEffectSelectableFeatureFeature:' +
-            'Requires Mastery Of Nature|Mastery Of Spirits|Mastery Of The Unnatural',
-          'validationNotes.preciseEffectSelectableFeatureFeature:' +
-            'Requires Mastery Of Nature|Mastery Of Spirits|Mastery Of The Unnatural',
-          'validationNotes.specificEffectSelectableFeatureFeature:' +
-            'Requires Mastery Of Nature|Mastery Of Spirits|Mastery Of The Unnatural',
-          'validationNotes.universalEffectSelectableFeatureFeature:' +
-            'Requires Mastery Of Nature|Mastery Of Spirits|Mastery Of The Unnatural'
+          'validationNotes.confidentEffectSelectableFeatureFeatures:' +
+            'Requires Mastery Of Nature|Mastery Of Spirits|' +
+            'Mastery Of The Unnatural',
+          'validationNotes.heightenedEffectSelectableFeatureFeatures:' +
+            'Requires Mastery Of Nature|Mastery Of Spirits|' +
+            'Mastery Of The Unnatural',
+          'validationNotes.powerfulEffectSelectableFeatureFeatures:' +
+            'Requires Mastery Of Nature|Mastery Of Spirits|' +
+            'Mastery Of The Unnatural',
+          'validationNotes.preciseEffectSelectableFeatureFeatures:' +
+            'Requires Mastery Of Nature|Mastery Of Spirits|' +
+            'Mastery Of The Unnatural',
+          'validationNotes.specificEffectSelectableFeatureFeatures:' +
+            'Requires Mastery Of Nature|Mastery Of Spirits|' +
+            'Mastery Of The Unnatural',
+          'validationNotes.universalEffectSelectableFeatureFeatures:' +
+            'Requires Mastery Of Nature|Mastery Of Spirits|' +
+            'Mastery Of The Unnatural'
         ]);
         selectableFeatures = [
           'Confident Effect', 'Heightened Effect', 'Mastery Of Nature',
@@ -1101,37 +1108,37 @@ MN2E.classRules = function(rules, classes) {
             ('Turn ' + turningTargets[a], 'Turn Undead', null, ' * ');
         }
         rules.defineRule(
-          'validationNotes.confidentEffectSelectableFeatureFeature',
+          'validationNotes.confidentEffectSelectableFeatureFeatures',
           'selectableFeatures.Confident Effect', '=', '-1',
           /^features.Mastery Of (Nature|Spirits|The Unnatural)$/, '+', '1',
           '', 'v', '0'
         );
         rules.defineRule(
-          'validationNotes.heightenedEffectSelectableFeatureFeature',
+          'validationNotes.heightenedEffectSelectableFeatureFeatures',
           'selectableFeatures.Heightened Effect', '=', '-1',
           /^features.Mastery Of (Nature|Spirits|The Unnatural)$/, '+', '1',
           '', 'v', '0'
         );
         rules.defineRule(
-          'validationNotes.powerfulEffectSelectableFeatureFeature',
+          'validationNotes.powerfulEffectSelectableFeatureFeatures',
           'selectableFeatures.Powerful Effect', '=', '-1',
           /^features.Mastery Of (Nature|Spirits|The Unnatural)$/, '+', '1',
           '', 'v', '0'
         );
         rules.defineRule(
-          'validationNotes.preciseEffectSelectableFeatureFeature',
+          'validationNotes.preciseEffectSelectableFeatureFeatures',
           'selectableFeatures.Precise Effect', '=', '-1',
           /^features.Mastery Of (Nature|Spirits|The Unnatural)$/, '+', '1',
           '', 'v', '0'
         );
         rules.defineRule(
-          'validationNotes.specificEffectSelectableFeatureFeature',
+          'validationNotes.specificEffectSelectableFeatureFeatures',
           'selectableFeatures.Specific Effect', '=', '-1',
           /^features.Mastery Of (Nature|Spirits|The Unnatural)$/, '+', '1',
           '', 'v', '0'
         );
         rules.defineRule(
-          'validationNotes.universalEffectSelectableFeatureFeature',
+          'validationNotes.universalEffectSelectableFeatureFeatures',
           'selectableFeatures.Universal Effect', '=', '-1',
           /^features.Mastery Of (Nature|Spirits|The Unnatural)$/, '+', '1',
           '', 'v', '0'
@@ -1186,23 +1193,23 @@ MN2E.classRules = function(rules, classes) {
         'combatNotes.weaponTrapFeature:' +
           'Attack to catch foe\'s weapon for disarm/damage/AOO 1/round',
         'saveNotes.defensiveMasteryFeature:+%V all saves',
-        'validationNotes.counterattackSelectableFeatureFeature:' +
+        'validationNotes.counterattackSelectableFeatureFeatures:' +
           'Requires Dodge Training/Offensive Training',
-        'validationNotes.coverAllySelectableFeatureFeature:' +
+        'validationNotes.coverAllySelectableFeatureFeatures:' +
           'Requires Dodge Training',
-        'validationNotes.devastatingStrikeSelectableFeatureFeature:' +
+        'validationNotes.devastatingStrikeSelectableFeatureFeatures:' +
           'Requires Grappling Training/Offensive Training',
-        'validationNotes.furiousGrappleSelectableFeatureFeature:' +
+        'validationNotes.furiousGrappleSelectableFeatureFeatures:' +
           'Requires Grappling Training/Speed Training',
-        'validationNotes.oneWithTheWeaponSelectableFeatureFeature:' +
+        'validationNotes.oneWithTheWeaponSelectableFeatureFeatures:' +
           'Requires Offensive Training',
-        'validationNotes.rapidStrikeSelectableFeatureFeature:' +
+        'validationNotes.rapidStrikeSelectableFeatureFeatures:' +
           'Requires Speed Training',
-        'validationNotes.retaliatoryStrikeSelectableFeatureFeature:' +
+        'validationNotes.retaliatoryStrikeSelectableFeatureFeatures:' +
           'Requires Dodge Training/Speed Training',
-        'validationNotes.strikeAndHoldSelectableFeatureFeature:' +
+        'validationNotes.strikeAndHoldSelectableFeatureFeatures:' +
           'Requires Grappling Training',
-        'validationNotes.weaponTrapSelectableFeatureFeature:' +
+        'validationNotes.weaponTrapSelectableFeatureFeatures:' +
           'Requires Dodge Training/Grappling Training'
       ];
       profArmor = PH35.PROFICIENCY_NONE;
@@ -1300,46 +1307,47 @@ MN2E.classRules = function(rules, classes) {
       rules.defineRule('weaponDamage.Unarmed',
         'combatNotes.masterfulStrikeFeature', '=', null
       );
-      rules.defineRule('validationNotes.counterattackSelectableFeatureFeature',
+      rules.defineRule('validationNotes.counterattackSelectableFeatureFeatures',
         'selectableFeatures.Counterattack', '=', '-2',
         'features.Dodge Training', '+', '1',
         'features.Offensive Training', '+', '1'
       );
-      rules.defineRule('validationNotes.coverAllySelectableFeatureFeature',
+      rules.defineRule('validationNotes.coverAllySelectableFeatureFeatures',
         'selectableFeatures.Cover Ally', '=', '-1',
         'features.Dodge Training', '+', '1'
       );
       rules.defineRule(
-        'validationNotes.devastatingStrikeSelectableFeatureFeature',
+        'validationNotes.devastatingStrikeSelectableFeatureFeatures',
         'selectableFeatures.Devastating Strike', '=', '-2',
         'features.Grappling Training', '+', '1',
         'features.Offensive Training', '+', '1'
       );
-      rules.defineRule('validationNotes.furiousGrappleSelectableFeatureFeature',
+      rules.defineRule(
+        'validationNotes.furiousGrappleSelectableFeatureFeatures',
         'selectableFeatures.Furious Grapple', '=', '-2',
         'features.Grappling Training', '+', '1',
         'features.Speed Training', '+', '1'
       );
       rules.defineRule(
-        'validationNotes.oneWithTheWeaponSelectableFeatureFeature',
+        'validationNotes.oneWithTheWeaponSelectableFeatureFeatures',
         'selectableFeatures.One With The Weapon', '=', '-1',
         'features.Offensive Training', '+', '1'
       );
-      rules.defineRule('validationNotes.rapidStrikeSelectableFeatureFeature',
+      rules.defineRule('validationNotes.rapidStrikeSelectableFeatureFeatures',
         'selectableFeatures.Rapid Strike', '=', '-1',
         'features.Speed Training', '+', '1'
       );
       rules.defineRule(
-        'validationNotes.retaliatoryStrikeSelectableFeatureFeature',
+        'validationNotes.retaliatoryStrikeSelectableFeatureFeatures',
         'selectableFeatures.Retaliatory Strike', '=', '-2',
         'features.Dodge Training', '+', '1',
         'features.Speed Training', '+', '1'
       );
-      rules.defineRule('validationNotes.strikeAndHoldSelectableFeatureFeature',
+      rules.defineRule('validationNotes.strikeAndHoldSelectableFeatureFeatures',
         'selectableFeatures.Strike And Hold', '=', '-1',
         'features.Grappling Training', '+', '1'
       );
-      rules.defineRule('validationNotes.weaponTrapSelectableFeatureFeature',
+      rules.defineRule('validationNotes.weaponTrapSelectableFeatureFeatures',
         'selectableFeatures.Weapon Trap', '=', '-2',
         'features.Dodge Training', '+', '1',
         'features.Grappling Training', '+', '1'
@@ -1525,35 +1533,35 @@ MN2E.classRules = function(rules, classes) {
         'skillNotes.wildEmpathyFeature:+%V Diplomacy check with animals',
         'skillNotes.wildernessTrapfindingFeature:' +
           'Search to find/Survival to remove DC 20+ traps',
-        'validationNotes.animalCompanionSelectableFeatureFeature:' +
+        'validationNotes.animalCompanionSelectableFeatureFeatures:' +
           'Requires Wild Empathy',
-        'validationNotes.camouflageSelectableFeatureFeature:' +
+        'validationNotes.camouflageSelectableFeatureFeatures:' +
           'Requires Skill Mastery/Trackless Step',
-        'validationNotes.evasionSelectableFeatureFeature:' +
+        'validationNotes.evasionSelectableFeatureFeatures:' +
           'Requires Quick Stride/Instinctive Response',
-        'validationNotes.hatedFoeSelectableFeatureFeature:' +
+        'validationNotes.hatedFoeSelectableFeatureFeatures:' +
           'Requires Master Hunter',
-        'validationNotes.hideInPlainSightSelectableFeatureFeature:' +
+        'validationNotes.hideInPlainSightSelectableFeatureFeatures:' +
           'Requires Camouflage',
-        'validationNotes.huntedByTheShadowSelectableFeatureFeature:' +
+        'validationNotes.huntedByTheShadowSelectableFeatureFeatures:' +
           'Requires Rapid Response/Sense Dark Magic',
-        'validationNotes.improvedEvasionSelectableFeatureFeature:' +
+        'validationNotes.improvedEvasionSelectableFeatureFeatures:' +
           'Requires Evasion',
-        'validationNotes.improvedWoodlandStrideSelectableFeatureFeature:' +
+        'validationNotes.improvedWoodlandStrideSelectableFeatureFeatures:' +
           'Requires Woodland Stride/Overland Stride',
-        'validationNotes.instinctiveResponseSelectableFeatureFeature:' +
+        'validationNotes.instinctiveResponseSelectableFeatureFeatures:' +
           'Requires Rapid Response',
-        'validationNotes.overlandStrideSelectableFeatureFeature:' +
+        'validationNotes.overlandStrideSelectableFeatureFeatures:' +
           'Requires Quick Stride',
-        'validationNotes.senseDarkMagicSelectableFeatureFeature:' +
+        'validationNotes.senseDarkMagicSelectableFeatureFeatures:' +
           'Requires Master Hunter',
-        'validationNotes.slipperyMindSelectableFeatureFeature:' +
+        'validationNotes.slipperyMindSelectableFeatureFeatures:' +
           'Requires Hunted By The Shadow',
-        'validationNotes.tracklessStepSelectableFeatureFeature:' +
+        'validationNotes.tracklessStepSelectableFeatureFeatures:' +
           'Requires Woodland Stride',
-        'validationNotes.trueAimSelectableFeatureFeature:' +
+        'validationNotes.trueAimSelectableFeatureFeatures:' +
           'Requires Skill Mastery/Hated Foe',
-        'validationNotes.woodsloreSelectableFeatureFeature:' +
+        'validationNotes.woodsloreSelectableFeatureFeatures:' +
           'Requires Wilderness Trapfinding'
       ];
       profArmor = PH35.PROFICIENCY_MEDIUM;
@@ -1621,73 +1629,75 @@ MN2E.classRules = function(rules, classes) {
       );
       rules.defineRule('speed', 'abilityNotes.quickStrideFeature', '+', null);
       rules.defineRule(
-        'validationNotes.animalCompanionSelectableFeatureFeature',
+        'validationNotes.animalCompanionSelectableFeatureFeatures',
         'selectableFeatures.Animal Companion', '=', '-1',
         'features.Wild Empathy', '+', '1'
       );
-      rules.defineRule('validationNotes.camouflageSelectableFeatureFeature',
+      rules.defineRule('validationNotes.camouflageSelectableFeatureFeatures',
         'selectableFeatures.Camouflage', '=', '-2',
         'features.Skill Mastery', '+', '1',
         'features.Trackless Step', '+', '1'
       );
-      rules.defineRule('validationNotes.evasionSelectableFeatureFeature',
+      rules.defineRule('validationNotes.evasionSelectableFeatureFeatures',
         'selectableFeatures.Evasion', '=', '-2',
         'features.Quick Stride', '+', '1',
         'features.Instinctive Response', '+', '1'
       );
-      rules.defineRule('validationNotes.hatedFoeSelectableFeatureFeature',
+      rules.defineRule('validationNotes.hatedFoeSelectableFeatureFeatures',
         'selectableFeatures.Hated Foe', '=', '-1',
         'features.Master Hunter', '+', '1'
       );
       rules.defineRule(
-        'validationNotes.hideInPlainSightSelectableFeatureFeature',
+        'validationNotes.hideInPlainSightSelectableFeatureFeatures',
         'selectableFeatures.Hide In Plain Sight', '=', '-1',
         'features.Camouflage', '+', '1'
       );
       rules.defineRule(
-        'validationNotes.huntedByTheShadowSelectableFeatureFeature',
+        'validationNotes.huntedByTheShadowSelectableFeatureFeatures',
         'selectableFeatures.Hunted By The Shadow', '=', '-2',
         'features.Rapid Response', '+', '1',
         'features.Sense Dark Magic', '+', '1'
       );
       rules.defineRule(
-        'validationNotes.improvedEvasionSightSelectableFeatureFeature',
+        'validationNotes.improvedEvasionSightSelectableFeatureFeatures',
         'selectableFeatures.Improved Evasion', '=', '-1',
         'features.Evasion', '+', '1'
       );
       rules.defineRule(
-        'validationNotes.improvedWoodlandStrideSelectableFeatureFeature',
+        'validationNotes.improvedWoodlandStrideSelectableFeatureFeatures',
         'selectableFeatures.Improved Woodland Stride', '=', '-2',
         'features.Woodland Stride', '+', '1',
         'features.Overland Stride', '+', '1'
       );
       rules.defineRule(
-        'validationNotes.instinctiveResponseSelectableFeatureFeature',
+        'validationNotes.instinctiveResponseSelectableFeatureFeatures',
         'selectableFeatures.Instinctive Response', '=', '-1',
         'features.Rapid Response', '+', '1'
       );
-      rules.defineRule('validationNotes.overlandStrideSelectableFeatureFeature',
+      rules.defineRule(
+        'validationNotes.overlandStrideSelectableFeatureFeatures',
         'selectableFeatures.Overland Stride', '=', '-1',
         'features.Quick Stride', '+', '1'
       );
-      rules.defineRule('validationNotes.senseDarkMagicSelectableFeatureFeature',
+      rules.defineRule(
+        'validationNotes.senseDarkMagicSelectableFeatureFeatures',
         'selectableFeatures.Sense Dark Magic', '=', '-1',
         'features.Master Hunter', '+', '1'
       );
-      rules.defineRule('validationNotes.slipperyMindSelectableFeatureFeature',
+      rules.defineRule('validationNotes.slipperyMindSelectableFeatureFeatures',
         'selectableFeatures.Slippery Mind', '=', '-1',
         'features.Hunted By The Shadow', '+', '1'
       );
-      rules.defineRule('validationNotes.tracklessStepSelectableFeatureFeature',
+      rules.defineRule('validationNotes.tracklessStepSelectableFeatureFeatures',
         'selectableFeatures.Trackless Step', '=', '-1',
         'features.Woodland Stride', '+', '1'
       );
-      rules.defineRule('validationNotes.trueAimSelectableFeatureFeature',
+      rules.defineRule('validationNotes.trueAimSelectableFeatureFeatures',
         'selectableFeatures.True Aim', '=', '-2',
         'features.Skill Mastery', '+', '1',
         'features.Hated Foe', '+', '1'
       );
-      rules.defineRule('validationNotes.woodsloreSelectableFeatureFeature',
+      rules.defineRule('validationNotes.woodsloreSelectableFeatureFeatures',
         'selectableFeatures.Woodslore', '=', '-1',
         'features.Wilderness Trapfinding', '+', '1'
       );
@@ -1856,9 +1866,9 @@ MN2E.featRules = function(rules, feats, subfeats) {
       notes = [
         'magicNotes.craftCharmFeature:' +
           'Use Craft to create single-use magic item',
-        'validationNotes.craftCharmFeatSkill:Requires Craft 4'
+        'validationNotes.craftCharmFeatSkills:Requires Craft >= 4'
       ];
-      rules.defineRule('validationNotes.craftCharmFeatSkill',
+      rules.defineRule('validationNotes.craftCharmFeatSkills',
         'feats.Craft Charm', '=', '-1',
         /^skillModifier.Craft/, '+', 'source >= 4 ? + 1 : null',
         '', 'v', '0'
@@ -1867,12 +1877,12 @@ MN2E.featRules = function(rules, feats, subfeats) {
       notes = [
         'magicNotes.craftGreaterSpellTalismanFeature:' +
           'Talisman reduces spell energy cost of selected school spells by 1',
-        'validationNotes.craftGreaterSpellTalismanFeatFeature:' +
+        'validationNotes.craftGreaterSpellTalismanFeatFeats:' +
           'Requires Magecraft/3 Channeling feats',
-        'validationNotes.craftGreaterSpellTalismanFeatLevel:' +
-          'Requires character level 12'
+        'validationNotes.craftGreaterSpellTalismanFeatLevels:' +
+          'Requires level >= 12'
       ];
-      rules.defineRule('validationNotes.craftGreaterSpellTalismanFeatFeature',
+      rules.defineRule('validationNotes.craftGreaterSpellTalismanFeatFeats',
         'feats.Craft Greater Spell Talisman', '=', '-13',
         // NOTE: False valid w/multiple Magecraft feats; Magecraft counts as
         // a Channeling feat as well
@@ -1881,7 +1891,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
         /^features\.(Ritual Magic|Spellcasting)/, '+', '1',
         '', 'v', '0'
       );
-      rules.defineRule('validationNotes.craftGreaterSpellTalismanFeatLevel',
+      rules.defineRule('validationNotes.craftGreaterSpellTalismanFeatLevels',
         'feats.Craft Greater Spell Talisman', '=', '-1',
         'level', '+', 'source >= 12 ? 100 : null'
       );
@@ -1889,17 +1899,17 @@ MN2E.featRules = function(rules, feats, subfeats) {
       notes = [
         'magicNotes.craftSpellTalismanFeature:' +
           'Talisman reduces spell energy cost of selected spell by 1',
-        'validationNotes.craftSpellTalismanFeatFeature:' +
+        'validationNotes.craftSpellTalismanFeatFeats:' +
           'Requires Magecraft/Spellcasting',
-        'validationNotes.craftSpellTalismanFeatLevel:Requires character level 3'
+        'validationNotes.craftSpellTalismanFeatLevels:Requires level >= 3'
       ];
-      rules.defineRule('validationNotes.craftSpellTalismanFeatFeature',
+      rules.defineRule('validationNotes.craftSpellTalismanFeatFeats',
         'feats.Craft Spell Talisman', '=', '-2',
         'subfeatCount.Magecraft', '+', '1',
         'subfeatCount.Spellcasting', '+', '1'
       );
       // JJH: character level or charismatic channeler level?
-      rules.defineRule('validationNotes.craftSpellTalismanFeatLevel',
+      rules.defineRule('validationNotes.craftSpellTalismanFeatLevels',
         'feats.Craft Spell Talisman', '=', '-1',
         'level', '+', 'source >= 3 ? 1 : null'
       );
@@ -1907,22 +1917,22 @@ MN2E.featRules = function(rules, feats, subfeats) {
       notes = [
        'combatNotes.devastatingMountedAssaultFeature:' +
          'Full attack after mount moves',
-       'validationNotes.devastatingMountedAssaultFeatFeature:' +
+       'validationNotes.devastatingMountedAssaultFeatFeats:' +
          'Requires Mounted Combat',
-       'validationNotes.devastatingMountedAssaultFeatSkill:Ride 10'
+       'validationNotes.devastatingMountedAssaultFeatSkills:Requires Ride >= 10'
       ];
-      rules.defineRule('validationNotes.devastatingMountedAssaultFeatFeature',
+      rules.defineRule('validationNotes.devastatingMountedAssaultFeatFeats',
         'feats.Devastating Mounted Assault', '=', '-1',
         'feats.Mounted Combat', '+', '1'
       );
-      rules.defineRule('validationNotes.devastatingMountedAssaultFeatSkill',
+      rules.defineRule('validationNotes.devastatingMountedAssaultFeatSkills',
         'feats.Devastating Mounted Assault', '=', '-2',
         'skillModifier.Ride', '+', 'source >= 10 ? 1 : null'
       );
     } else if(feat == 'Drive It Deep') {
       notes = [
         'combatNotes.driveItDeepFeature:Attack base -attack/+damage',
-        'validationNotes.driveItDeepFeatCombat:Requires Base Attack 1'
+        'validationNotes.driveItDeepFeatCombat:Requires Base Attack >= 1'
       ];
       rules.defineRule('validationNotes.driveItDeepFeatCombat',
         'feats.Drive It Deep', '=', '-1',
@@ -1932,8 +1942,8 @@ MN2E.featRules = function(rules, feats, subfeats) {
       notes = [
         'featureNotes.extraGiftFeature:' +
           'Use Master Of Two Worlds/Force Of Personality +4 times/day',
-        'validationNotes.extraGiftFeatClass:' +
-          'Requires Charismatic Channeler 4|Spiritual Channeler 4'
+        'validationNotes.extraGiftFeatLevels:' +
+          'Requires Charismatic Channeler >= 4|Spiritual Channeler >= 4'
       ];
       rules.defineRule('combatNotes.masterOfTwoWorldsFeature',
         'featureNotes.extraGiftFeature', '+', '4'
@@ -1941,7 +1951,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
       rules.defineRule('magicNotes.forceOfPersonalityFeature',
         'featureNotes.extraGiftFeature', '+', '4'
       );
-      rules.defineRule('validationNotes.extraGiftFeatClass',
+      rules.defineRule('validationNotes.extraGiftFeatLevels',
         'feats.Extra Gift', '=', '-1',
         'levels.Charismatic Channeler', '+', 'source >= 4 ? 1 : null',
         'levels.Spiritual Channeler', '+', 'source >= 4 ? 1 : null',
@@ -1967,9 +1977,9 @@ MN2E.featRules = function(rules, feats, subfeats) {
       notes = [
         'combatNotes.giantFighterFeature:' +
           '+4 AC/double critical range w/in 30 ft vs. giants',
-        'validationNotes.giantFighterFeatFeature:Requires Dodge/Weapon Focus'
+        'validationNotes.giantFighterFeatFeats:Requires Dodge/Weapon Focus'
       ];
-      rules.defineRule('validationNotes.giantFighterFeatFeature',
+      rules.defineRule('validationNotes.giantFighterFeatFeats',
         'feats.Giant Fighter', '=', '-2',
         'features.Dodge', '+', '1',
         'subfeatCount.Weapon Focus', '+', '1'
@@ -1977,9 +1987,10 @@ MN2E.featRules = function(rules, feats, subfeats) {
     } else if(feat == 'Herbalist') {
       notes = [
         'magicNotes.herbalistFeature:Create herbal concoctions',
-        'validationNotes.herbalistFeatSkill:Requires Profession (Herbalist) 4'
+        'validationNotes.herbalistFeatSkills:' +
+          'Requires Profession (Herbalist) >= 4'
       ];
-      rules.defineRule('validationNotes.herbalistFeatSkill',
+      rules.defineRule('validationNotes.herbalistFeatSkills',
         'feats.Herbalist', '=', '-1',
         'skillModifier.Profession (Herbalist)', '+', 'source >= 4 ? 1 : null'
       );
@@ -1997,7 +2008,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
       notes = [
         'magicNotes.innateMagicFeature:' +
           '%V level 0 spells as at-will innate ability',
-        'validationNotes.innateMagicFeatRaced:Requires Elf|Halfling'
+        'validationNotes.innateMagicFeatRace:Requires Elf|Halfling'
       ];
       rules.defineRule('highestMagicModifier',
         'charismaModifier', '^=', null,
@@ -2062,9 +2073,9 @@ MN2E.featRules = function(rules, feats, subfeats) {
     } else if(feat == 'Ritual Magic') {
       notes = [
         'magicNotes.ritualMagicFeature:Learn and lead magic rituals',
-        'validationNotes.ritualMagicFeatFeature:Requires Magecraft/Spellcasting'
+        'validationNotes.ritualMagicFeatFeats:Requires Magecraft/Spellcasting'
       ];
-      rules.defineRule('validationNotes.ritualMagicFeatFeature',
+      rules.defineRule('validationNotes.ritualMagicFeatFeats',
         'feats.Ritual Magic', '=', '-2',
         'subfeatCount.Magecraft', '+', '1',
         'subfeatCount.Spellcasting', '+', '1'
@@ -2088,9 +2099,9 @@ MN2E.featRules = function(rules, feats, subfeats) {
     } else if(feat == 'Spell Knowledge') {
       notes = [
         'magicNotes.spellKnowledgeFeature:+2 spells',
-        'validationNotes.spellKnowledgeFeatFeature:Requires Spellcasting'
+        'validationNotes.spellKnowledgeFeatFeats:Requires Spellcasting'
       ];
-      rules.defineRule('validationNotes.spellKnowledgeFeatFeature',
+      rules.defineRule('validationNotes.spellKnowledgeFeatFeats',
         'feats.Spell Knowledge', '=', '-1',
         'subfeatCount.Spellcasting', '+', '1'
       );
@@ -2104,18 +2115,18 @@ MN2E.featRules = function(rules, feats, subfeats) {
       notes = [
         'combatNotes.warriorOfShadowFeature:' +
           'Substitute %V rounds of +%1 damage for Turn Undead use',
-        'validationNotes.warriorOfShadowFeatAbility:Requires charisma 12',
-        'validationNotes.warriorOfShadowFeatClass:Requires Legate 5'
+        'validationNotes.warriorOfShadowFeatAbilities:Requires Charisma >= 12',
+        'validationNotes.warriorOfShadowFeatLevels:Requires Legate >= 5'
       ];
       rules.defineRule
         ('combatNotes.warriorOfShadowFeature', 'charismaModifier', '=', null);
       rules.defineRule
         ('combatNotes.warriorOfShadowFeature.1', 'charismaModifier', '=', null);
-      rules.defineRule('validationNotes.warriorOfShadowFeatAbility',
+      rules.defineRule('validationNotes.warriorOfShadowFeatAbilities',
         'feats.Warrior Of Shadow', '=', '-1',
         'charisma', '+', 'source >= 12 ? 1 : null'
       );
-      rules.defineRule('validationNotes.warriorOfShadowFeatClass',
+      rules.defineRule('validationNotes.warriorOfShadowFeatLevels',
         'feats.Warrior Of Shadow', '=', '-2',
         'levels.Legate', '+', 'source >= 5 ? 1 : null'
       );
@@ -2123,10 +2134,11 @@ MN2E.featRules = function(rules, feats, subfeats) {
       notes = [
         'featureNotes.whisperingAwarenessFeature:' +
           'DC 12 wisdom check to hear Whispering Wood',
-        'validationNotes.whisperingAwarenessFeatAbility:Requires Wisdom 15',
+        'validationNotes.whisperingAwarenessFeatAbilities:' +
+          'Requires Wisdom >= 15',
         'validationNotes.whisperingAwarenessFeatRace:Requires Elfling|Elf'
       ];
-      rules.defineRule('validationNotes.whisperingAwarenessFeatAbility',
+      rules.defineRule('validationNotes.whisperingAwarenessFeatAbilities',
         'feats.Whispering Awareness', '=', '-1',
         'wisdom', '+', 'source >= 15 ? 1 : null'
       );
@@ -3544,7 +3556,7 @@ MN2E.raceRules = function(rules, languages, races) {
     'skillNotes.favoredRegion:' +
       '%V; Knowledge (Local) is a class skill/+2 Survival/Knowledge (Nature)',
     'skillNotes.illiteracyFeature:Must spend 2 skill points to read/write',
-    'validationNotes.languageTotal:' +
+    'validationNotes.languagesTotal:' +
       'Allocated languages differ from language total by %V'
   ];
   rules.defineNote(notes);
