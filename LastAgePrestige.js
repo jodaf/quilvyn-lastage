@@ -437,22 +437,22 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'skillModifier.Knowledge (Nature)', '+', 'source >= 8 ? 1 : null',
         'skillModifier.Survival', '+', 'source >= 8 ? 1 : null'
       );
-
-      // Add PH35 Druid spells to the spell selections
+      // Pick up PH35 Druid level 2-9 spells.
+      var classRules = new ScribeRules('');
+      PH35.magicRules(classRules, ['Druid'], [], []);
       var schools = rules.getChoices('schools');
-      for(var j = 0; j < PH35.SPELLS.length; j++) {
-        var spell = PH35.SPELLS[j];
-        var matchInfo =
-          spell.match(/([^:]+):([^\/]+\/)*(D[0-9])\/([^\/]+\/)*([^/]+)$/);
-        if(matchInfo != null) {
-          var spell = matchInfo[1];
-          var druidLevel = matchInfo[3];
-          var school = matchInfo[5];
-          school =
-            schools[school] != null ? schools[school] : school.substring(0, 4);
-          rules.defineChoice
-            ('spells', spell + '(' + druidLevel + ' ' + school + ')');
+      for(var s in classRules.getChoices('spells')) {
+        var matchInfo = s.match(/^(.*)\((D[2-9])/);
+        if(matchInfo == null) {
+          continue;
         }
+        var spell = matchInfo[1];
+        var school = MN2E.spellsSchools[spell];
+        if(school == null && (school = PH35.spellsSchools[spell]) == null) {
+          continue;
+        }
+        rules.defineChoice
+          ('spells', spell + '(' + matchInfo[2] + ' ' + school + ')');
       }
 
     } else if(klass == 'Elven Raider') {
