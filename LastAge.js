@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.84 2007/07/28 00:43:22 Jim Exp $ */
+/* $Id: LastAge.js,v 1.85 2007/08/05 16:10:09 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -1649,8 +1649,9 @@ MN2E.featRules = function(rules, feats, subfeats) {
         if(school == null && (school = PH35.spellsSchools[spell]) == null) {
           continue;
         }
-        rules.defineChoice
-          ('spells', spell + '(' + matchInfo[2] + ' ' + school + ')');
+        spell += '(' + matchInfo[2] + ' ' +
+                 (school == 'Universal' ? 'None' : schools[school]) + ')';
+        rules.defineChoice('spells', spell);
       }
     } else if(feat == 'Magic Hardened') {
       notes = [
@@ -3245,8 +3246,8 @@ MN2E.magicRules = function(rules, classes) {
           if(school == null && (school = PH35.spellsSchools[spell]) == null) {
             continue;
           }
-          school = schools[school];
-          spell += '(' + pieces[0] + ' ' + school + ')';
+          spell += '(' + pieces[0] + ' ' +
+                    (school == 'Universal' ? 'None' : schools[school]) + ')';
           rules.defineChoice('spells', spell);
         }
       }

@@ -451,8 +451,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         if(school == null && (school = PH35.spellsSchools[spell]) == null) {
           continue;
         }
-        rules.defineChoice
-          ('spells', spell + '(' + matchInfo[2] + ' ' + school + ')');
+        spell += '(' + matchInfo[2] + ' ' + schools[school] + ')';
+        rules.defineChoice('spells', spell);
       }
 
     } else if(klass == 'Elven Raider') {
