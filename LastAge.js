@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.85 2007/08/05 16:10:09 Jim Exp $ */
+/* $Id: LastAge.js,v 1.86 2007/08/08 05:13:23 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -2275,7 +2275,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       feats = null;
       features = [
         '1:Ironborn Resilience', '2:Fortitude Bonus', '3:Natural Armor',
-        '4:Improved Healing', '5:Damage Reduction', '6:Elemental Resistance',
+        '4:Improved Healing', '5:Damage Reduction', '6:Resist Elements',
         '9:Indefatigable', '14:Ability Recovery'
       ];
       notes = [
@@ -2284,7 +2284,7 @@ MN2E.heroicPathRules = function(rules, paths) {
         'combatNotes.improvedHealingFeature:Regain %V HP/hour',
         'combatNotes.ironbornResilienceFeature:Improved hit die',
         'combatNotes.naturalArmorFeature:+%V AC',
-        'saveNotes.elementalResistanceFeature:' +
+        'saveNotes.resistElementsFeature:' +
           '%V resistance to acid/cold/electricity/fire',
         'saveNotes.indefatigableFeature:Immune %V effects'
       ];
@@ -2308,17 +2308,16 @@ MN2E.heroicPathRules = function(rules, paths) {
         'level', '+', 'Math.floor((source - 3) / 5)'
       );
       rules.defineRule
-        ('resistance.Acid', 'saveNotes.elementalResistanceFeature', '+=', null);
+        ('resistance.Acid', 'saveNotes.resistElementsFeature', '+=', null);
       rules.defineRule
-        ('resistance.Cold', 'saveNotes.elementalResistanceFeature', '+=', null);
-      rules.defineRule('resistance.Electricity',
-        'saveNotes.elementalResistanceFeature', '+=', null
-      );
+        ('resistance.Cold', 'saveNotes.resistElementsFeature', '+=', null);
       rules.defineRule
-        ('resistance.Fire', 'saveNotes.elementalResistanceFeature', '+=', null);
+        ('resistance.Electricity','saveNotes.resistElementsFeature','+=',null);
+      rules.defineRule
+        ('resistance.Fire', 'saveNotes.resistElementsFeature', '+=', null);
       rules.defineRule
         ('save.Fortitude', 'saveNotes.fortitudeBonusFeature', '+', null);
-      rules.defineRule('saveNotes.elementalResistanceFeature',
+      rules.defineRule('saveNotes.resistElementsFeature',
         'pathLevels.Ironborn', '+=', 'Math.floor((source - 1) / 5) * 3'
       );
       rules.defineRule('saveNotes.fortitudeBonusFeature',
@@ -2792,15 +2791,14 @@ MN2E.heroicPathRules = function(rules, paths) {
 
       feats = null;
       features = [
-        '1:Untapped Potential', '2:Metamagic Aura',
-        '3:Improved Spell Resistance'
+        '1:Untapped Potential', '2:Metamagic Aura', '3:Improved Resist Spells'
       ];
       notes = [
         'magicNotes.metamagicAuraFeature:' +
           '%V others\' spells of up to level %1 w/in 30 ft',
         'magicNotes.untappedPotentialFeature:' +
           'Contribute %V points to others\' spells w/in 30 ft',
-        'saveNotes.improvedSpellResistanceFeature:+%V vs. spells'
+        'saveNotes.improvedResistSpellsFeature:+%V vs. spells'
       ];
       selectableFeatures = null;
       spellFeatures = null;
@@ -2828,9 +2826,9 @@ MN2E.heroicPathRules = function(rules, paths) {
           'source>=18 ? 8 : source>=13 ? 6 : source>=9 ? 4 : source>=4 ? 2 : 0'
       );
       rules.defineRule('resistance.Spell',
-        'saveNotes.improvedSpellResistanceFeature', '+=', null
+        'saveNotes.improvedResistSpellsFeature', '+=', null
       );
-      rules.defineRule('saveNotes.improvedSpellResistanceFeature',
+      rules.defineRule('saveNotes.improvedResistSpellsFeature',
         'pathLevels.Spellsoul', '=',
         'source>=19 ? 5 : source>=16 ? 4 : source>=12 ? 3 : source>=7 ? 2 : ' +
         'source>=3 ? 1 : null'
@@ -3348,7 +3346,7 @@ MN2E.raceRules = function(rules, languages, races) {
       adjustment = '+2 constitution/-2 charisma';
       features = [
         'Darkvision', 'Dwarf Favored Enemy', 'Dwarf Favored Weapon',
-        'Poison Resistance', 'Resilient', 'Slow', 'Spell Resistance',
+        'Resist Poison', 'Resilient', 'Slow', 'Resist Spells',
         'Stone Knowledge'
       ];
       notes = [
@@ -3356,9 +3354,9 @@ MN2E.raceRules = function(rules, languages, races) {
         'combatNotes.dwarfFavoredWeaponFeature:+1 attack with axes/hammers',
         'combatNotes.resilientFeature:+2 AC',
         'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
-        'magicNotes.spellResistanceFeature:-2 spell energy',
-        'saveNotes.poisonResistanceFeature:+2 vs. poison',
-        'saveNotes.spellResistanceFeature:+2 vs. spells',
+        'magicNotes.resistSpellsFeature:-2 spell energy',
+        'saveNotes.resistPoisonFeature:+2 vs. poison',
+        'saveNotes.resistSpellsFeature:+2 vs. spells',
         'skillNotes.stoneKnowledgeFeature:' +
            '+2 Appraise/Craft involving stone or metal'
       ];
@@ -3369,12 +3367,12 @@ MN2E.raceRules = function(rules, languages, races) {
       rules.defineRule
         ('armorClass', 'combatNotes.resilientFeature', '+', '2');
       rules.defineRule
-        ('resistance.Poison', 'saveNotes.poisonResistanceFeature', '+=', '2');
+        ('resistance.Poison', 'saveNotes.resistPoisonFeature', '+=', '2');
       rules.defineRule
-        ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
+        ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
       rules.defineRule('speed', 'features.Slow', '+', '-10');
       rules.defineRule
-        ('spellEnergy', 'magicNotes.spellResistanceFeature', '+', '-2');
+        ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
       if(race == 'Clan Dwarf') {
         features = features.concat([
           'Dodge Orcs', 'Know Depth', 'Stability', 'Stonecunning'
@@ -3399,16 +3397,16 @@ MN2E.raceRules = function(rules, languages, races) {
 
       adjustment = '+2 charisma';
       features = [
-        'Darkvision', 'Poison Resistance', 'Small', 'Slow', 'Spell Resistance',
+        'Darkvision', 'Resist Poison', 'Small', 'Slow', 'Resist Spells',
         'Sturdy'
       ];
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
         'combatNotes.sturdyFeature:+1 AC',
         'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
-        'magicNotes.spellResistanceFeature:-2 spell energy',
-        'saveNotes.poisonResistanceFeature:+2 vs. poison',
-        'saveNotes.spellResistanceFeature:+2 vs. spells',
+        'magicNotes.resistSpellsFeature:-2 spell energy',
+        'saveNotes.resistPoisonFeature:+2 vs. poison',
+        'saveNotes.resistSpellsFeature:+2 vs. spells',
         'skillNotes.smallFeature:+4 Hide'
       ];
       selectableFeatures = null;
@@ -3419,12 +3417,12 @@ MN2E.raceRules = function(rules, languages, races) {
       rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
-        ('resistance.Poison', 'saveNotes.poisonResistanceFeature', '+=', '2');
+        ('resistance.Poison', 'saveNotes.resistPoisonFeature', '+=', '2');
       rules.defineRule
-        ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
+        ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
       rules.defineRule('speed', 'features.Slow', '+', '-10');
       rules.defineRule
-        ('spellEnergy', 'magicNotes.spellResistanceFeature', '+', '-2');
+        ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
       if(race == 'Clan Raised Dwarrow') {
         features = features.concat([
           'Dodge Orcs', 'Stonecunning', 'Stone Knowledge'
@@ -3474,25 +3472,25 @@ MN2E.raceRules = function(rules, languages, races) {
       adjustment = '+2 strength/+2 constitution/-2 intelligence/-2 charisma';
       features = [
         'Darkvision', 'Dworg Favored Enemy', 'Minor Light Sensitivity',
-        'Rugged', 'Spell Resistance'
+        'Rugged', 'Resist Spells'
       ];
       notes = [
         'combatNotes.dworgFavoredEnemyFeature:+2 attack vs. orc',
         'combatNotes.minorLightSensitivityFeature:' +
           'DC 15 Fortitude save in sunlight to avoid -1 attack',
         'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
-        'magicNotes.spellResistanceFeature:-2 spell energy',
+        'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.ruggedFeature:+2 all saves',
-        'saveNotes.spellResistanceFeature:+2 vs. spells'
+        'saveNotes.resistSpellsFeature:+2 vs. spells'
       ];
       selectableFeatures = null;
       rules.defineRule
-        ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
+        ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
       rules.defineRule('save.Fortitude', 'saveNotes.ruggedFeature', '+', '2');
       rules.defineRule('save.Reflex', 'saveNotes.ruggedFeature', '+', '2');
       rules.defineRule('save.Will', 'saveNotes.ruggedFeature', '+', '2');
       rules.defineRule
-        ('spellEnergy', 'magicNotes.spellResistanceFeature', '+', '-2');
+        ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
       if(race == 'Clan Raised Dworg') {
         features = features.concat(['Stonecunning']);
         notes = notes.concat([
@@ -3548,7 +3546,7 @@ MN2E.raceRules = function(rules, languages, races) {
 
       adjustment = '+2 dexterity/-2 constitution';
       features = [
-        'Enchantment Resistance', 'Innate Magic', 'Keen Senses',
+        'Resist Enchantment', 'Innate Magic', 'Keen Senses',
         'Low Light Vision', 'Natural Channeler', 'Tree Climber'
       ];
       notes = [
@@ -3557,13 +3555,13 @@ MN2E.raceRules = function(rules, languages, races) {
         'magicNotes.innateMagicFeature:' +
           '%V level 0 spells as at-will innate ability',
         'magicNotes.naturalChannelerFeature:+2 spell energy',
-        'saveNotes.enchantmentResistanceFeature:+2 vs. enchantments',
+        'saveNotes.resistEnchantmentFeature:+2 vs. enchantments',
         'skillNotes.keenSensesFeature:+2 Listen/Search/Spot',
         'skillNotes.treeClimberFeature:+4 Balance (trees)/Climb (trees)'
       ];
       selectableFeatures = null;
       rules.defineRule('resistance.Enchantment',
-        'saveNotes.enchantmentResistanceFeature', '+=', '2'
+        'saveNotes.resistEnchantmentFeature', '+=', '2'
       );
       rules.defineRule
         ('spellEnergy', 'magicNotes.naturalChannelerFeature', '+', '2');
@@ -3665,15 +3663,15 @@ MN2E.raceRules = function(rules, languages, races) {
       adjustment = '+4 charisma/-2 strength';
       features = [
         'Hardy', 'Low Light Vision', 'Natural Riverfolk', 'Natural Swimmer',
-        'Natural Trader', 'Slow', 'Small', 'Spell Resistance'
+        'Natural Trader', 'Slow', 'Small', 'Resist Spells'
       ];
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
         'featureNotes.lowLightVisionFeature:' +
           'Double normal distance in poor light',
-        'magicNotes.spellResistanceFeature:-2 spell energy',
+        'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.hardyFeature:+1 Fortitude',
-        'saveNotes.spellResistanceFeature:+2 vs. spells',
+        'saveNotes.resistSpellsFeature:+2 vs. spells',
         'skillNotes.naturalRiverfolkFeature:' +
           '+2 Perform/Profession (Sailor)/Swim/Use Rope',
         'skillNotes.naturalSwimmerFeature:' +
@@ -3688,7 +3686,7 @@ MN2E.raceRules = function(rules, languages, races) {
       rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
-        ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
+        ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
       rules.defineRule('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
       rules.defineRule
         ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
@@ -3698,14 +3696,14 @@ MN2E.raceRules = function(rules, languages, races) {
       );
       rules.defineRule('speed', 'features.Slow', '+', '-10');
       rules.defineRule
-        ('spellEnergy', 'magicNotes.spellResistanceFeature', '+', '-2');
+        ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
 
     } else if(race.indexOf(' Halfling') >= 0) {
 
       adjustment = '+2 dexterity/-2 strength';
       features = [
         'Alert Senses', 'Fortunate', 'Graceful', 'Innate Magic',
-        'Low Light Vision', 'Slow', 'Small', 'Unafraid'
+        'Low Light Vision', 'Slow', 'Small', 'Resist Fear'
       ];
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
@@ -3724,7 +3722,7 @@ MN2E.raceRules = function(rules, languages, races) {
       rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
-        ('resistance.Fear', 'saveNotes.unafraidFeature', '+=', '2');
+        ('resistance.Fear', 'saveNotes.resistFearFeature', '+=', '2');
       rules.defineRule
         ('save.Fortitude', 'saveNotes.fortunateFeature', '+', '1');
       rules.defineRule('save.Reflex', 'saveNotes.fortunateFeature', '+', '1');
@@ -3794,7 +3792,7 @@ MN2E.raceRules = function(rules, languages, races) {
       features = [
         'Darkvision', 'Improved Cold Hardy', 'Light Sensitivity',
         'Natural Predator', 'Night Fighter', 'Orc Favored Enemy',
-        'Orc Frenzy', 'Spell Resistance'
+        'Orc Frenzy', 'Resist Spells'
       ];
       notes = [
         'combatNotes.lightSensitivityFeature:-1 attack in daylight',
@@ -3802,18 +3800,18 @@ MN2E.raceRules = function(rules, languages, races) {
         'combatNotes.orcFrenzyFeature:+1 attack when fighting among 10+ Orcs',
         'combatNotes.orcFavoredEnemyFeature:+1 damage vs. dwarves',
         'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
-        'magicNotes.spellResistanceFeature:-2 spell energy',
+        'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.improvedColdHardyFeature:Immune non-lethal/half lethal',
-        'saveNotes.spellResistanceFeature:+2 vs. spells',
+        'saveNotes.resistSpellsFeature:+2 vs. spells',
         'skillNotes.naturalPredatorFeature:+%V Intimidate'
       ];
       selectableFeatures = null;
       rules.defineRule
-        ('resistance.Spell', 'saveNotes.spellResistanceFeature', '+=', '2');
+        ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
       rules.defineRule
         ('skillNotes.naturalPredatorFeature', 'strengthModifier', '=', null);
       rules.defineRule
-        ('spellEnergy', 'magicNotes.spellResistanceFeature', '+', '-2');
+        ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
 
     } else if(race.indexOf(' Sarcosan') >= 0) {
 
