@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.88 2007/09/04 05:46:13 Jim Exp $ */
+/* $Id: LastAge.js,v 1.89 2007/09/14 22:29:31 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -32,10 +32,8 @@ function MN2E() {
   rules.defineEditorElement('deity'); // Remove from editor
   rules.defineEditorElement('specialize');
   rules.defineEditorElement('prohibit');
-  MN2E.viewer = new ObjectViewer();
-  PH35.createViewer(MN2E.viewer);
+  PH35.createViewers(rules, PH35.VIEWERS);
   rules.defineSheetElement('Deity'); // Remove from sheet
-  rules.defineViewer("Standard", MN2E.viewer);
   PH35.abilityRules(rules);
   // MN2E doesn't use the PH35 languages or races, but we call PH35.raceRules
   // anyway to pick up any other rules it defines (e.g., languageCount)
