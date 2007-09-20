@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.89 2007/09/14 22:29:31 Jim Exp $ */
+/* $Id: LastAge.js,v 1.90 2007/09/20 05:07:24 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -63,7 +63,7 @@ function MN2E() {
   MN2E.featRules(rules, MN2E.FEATS, MN2E.SUBFEATS);
   MN2E.equipmentRules(rules, MN2E.WEAPONS);
   MN2E.magicRules(rules, MN2E.CLASSES);
-  rules.defineChoice('preset', 'race', 'heroicPath', 'levels');
+  rules.defineChoice('preset', 'race', 'heroicPath', 'experience', 'levels');
   for(var i = 0; i < MN2E.RANDOMIZABLE_ATTRIBUTES.length; i++) {
     if(MN2E.RANDOMIZABLE_ATTRIBUTES[i] == 'deity') {
       MN2E.RANDOMIZABLE_ATTRIBUTES = MN2E.RANDOMIZABLE_ATTRIBUTES.slice(0, i).
