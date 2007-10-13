@@ -412,7 +412,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           'Requires Base Attack >= 5',
         'validationNotes.elvenRaiderClassFeats:' +
           'Requires Point Blank Shot/Rapid Shot/' +
-          'Weapon Focus (Composite Longbow)|Weapon Focus (Longbow)',
+          'Weapon Focus (Composite Longbow)||Weapon Focus (Longbow)',
         'validationNotes.elvenRaiderClassRace:Requires Race =~ Elf',
         'validationNotes.elvenRaiderClassSkills:' +
           'Requires Hide >= 8/Move Silently >= 8/Survival >= 8'
@@ -484,7 +484,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.freeriderClassFeats:' +
           'Requires Mounted Combat/Ride By Attack/Spirited Charge',
         'validationNotes.freeriderClassRace:' +
-          'Requires Race == Erenlander|Race =~ Sarcosan',
+          'Requires Race =~ Erenlander|Sarcosan',
         'validationNotes.freeriderClassSkills:' +
           'Requires Handle Animal >= 4/Ride >= 8/Survival >= 4'
       ];

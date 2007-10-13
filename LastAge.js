@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.90 2007/09/20 05:07:24 Jim Exp $ */
+/* $Id: LastAge.js,v 1.91 2007/10/13 15:26:47 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -138,8 +138,9 @@ MN2E.SUBFEATS = {
   // Skill Focus (Profession (Soldier)) available to Leader Of Men Fighters
   'Skill Focus':'Profession (Soldier)',
   'Spellcasting':MN2E.SCHOOLS.join('/').replace(/:[^\/]+/g, ''),
-  // Legates w/War domain receive Weapon Focus (Longsword)
-  'Weapon Focus':'Longsword'
+  // Legates w/War domain receive Weapon Focus (Longsword); Elven Raiders
+  // have a prerequisite of Weapon Focus ([Composite] Longbow)
+  'Weapon Focus':'Composite Longbow/Longbow/Longsword'
 };
 MN2E.SUBSKILLS = {
   'Knowledge':'Old Gods/Shadow/Spirits',
@@ -587,22 +588,22 @@ MN2E.classRules = function(rules, classes) {
           'magicNotes.magecraft(Spiritual)Feature:' +
             '4 spells/%V spell energy points',
           'validationNotes.confidentEffectSelectableFeatureFeatures:' +
-            'Requires Mastery Of Nature|Mastery Of Spirits|' +
+            'Requires Mastery Of Nature||Mastery Of Spirits||' +
             'Mastery Of The Unnatural',
           'validationNotes.heightenedEffectSelectableFeatureFeatures:' +
-            'Requires Mastery Of Nature|Mastery Of Spirits|' +
+            'Requires Mastery Of Nature||Mastery Of Spirits||' +
             'Mastery Of The Unnatural',
           'validationNotes.powerfulEffectSelectableFeatureFeatures:' +
-            'Requires Mastery Of Nature|Mastery Of Spirits|' +
+            'Requires Mastery Of Nature||Mastery Of Spirits||' +
             'Mastery Of The Unnatural',
           'validationNotes.preciseEffectSelectableFeatureFeatures:' +
-            'Requires Mastery Of Nature|Mastery Of Spirits|' +
+            'Requires Mastery Of Nature||Mastery Of Spirits||' +
             'Mastery Of The Unnatural',
           'validationNotes.specificEffectSelectableFeatureFeatures:' +
-            'Requires Mastery Of Nature|Mastery Of Spirits|' +
+            'Requires Mastery Of Nature||Mastery Of Spirits||' +
             'Mastery Of The Unnatural',
           'validationNotes.universalEffectSelectableFeatureFeatures:' +
-            'Requires Mastery Of Nature|Mastery Of Spirits|' +
+            'Requires Mastery Of Nature||Mastery Of Spirits||' +
             'Mastery Of The Unnatural'
         ]);
         selectableFeatures = [
@@ -1316,7 +1317,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
         'featureNotes.extraGiftFeature:' +
           'Use Master Of Two Worlds/Force Of Personality +4 times/day',
         'validationNotes.extraGiftFeatLevels:' +
-          'Requires Charismatic Channeler >= 4|Spiritual Channeler >= 4'
+          'Requires Charismatic Channeler >= 4||Spiritual Channeler >= 4'
       ];
       rules.defineRule('combatNotes.masterOfTwoWorldsFeature',
         'featureNotes.extraGiftFeature', '+', '4'
@@ -1331,7 +1332,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
           'allegiance)',
         'validationNotes.friendlyAgentFeatAlignment:Requires Alignment =~ Good',
         'validationNotes.friendlyAgentFeatRace:' +
-          'Requires Race==Gnome|Race==Dorn|Race==Erenander|Race=~Sarcosan'
+          'Requires Race =~ Gnome|Dorn|Erenander|Sarcosan'
       ];
     } else if(feat == 'Giant Fighter') {
       notes = [
@@ -1361,7 +1362,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
         'magicNotes.innateMagicFeature:' +
           '%V level 0 spells as at-will innate ability',
         'validationNotes.innateMagicFeatRace:' +
-          'Requires Race =~ Elf|Race =~ Halfling'
+          'Requires Race =~ Elf|Halfling'
       ];
       rules.defineRule('highestMagicModifier',
         'charismaModifier', '^=', null,
@@ -1375,7 +1376,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
         'combatNotes.knifeThrowerFeature:' +
           '+1 ranged attack/Quickdraw w/racial knife',
         'validationNotes.knifeThrowerFeatRace:' +
-          'Requires Race == Jungle Elf|Race == Snow Elf'
+          'Requires Race =~ Jungle Elf|Snow Elf'
       ];
     } else if(feat == 'Lucky') {
       notes = ['saveNotes.luckyFeature:+1 from luck charms/spells'];
@@ -1413,8 +1414,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
     } else if(feat == 'Magic Hardened') {
       notes = [
         'saveNotes.magicHardenedFeature:+2 spell resistance',
-        'validationNotes.magicHardenedFeatRace:' +
-          'Requires Race =~ Dwarf|Race =~ Dworg|Race == Orc'
+        'validationNotes.magicHardenedFeatRace:Requires Race =~ Dwarf|Dworg|Orc'
       ];
       rules.defineRule
         ('resistance.Spells', 'saveNotes.magicHardenedFeature', '+=', '2');
@@ -1482,7 +1482,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
           'DC 12 wisdom check to hear Whispering Wood',
         'validationNotes.whisperingAwarenessFeatAbility:Requires Wisdom >= 15',
         'validationNotes.whisperingAwarenessFeatRace:' +
-          'Requires Race =~ Elfling|Race =~ Elf'
+          'Requires Race =~ Elfling|Elf'
       ];
     } else
       continue;
