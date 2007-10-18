@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.91 2007/10/13 15:26:47 Jim Exp $ */
+/* $Id: LastAge.js,v 1.92 2007/10/18 06:12:43 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -138,9 +138,8 @@ MN2E.SUBFEATS = {
   // Skill Focus (Profession (Soldier)) available to Leader Of Men Fighters
   'Skill Focus':'Profession (Soldier)',
   'Spellcasting':MN2E.SCHOOLS.join('/').replace(/:[^\/]+/g, ''),
-  // Legates w/War domain receive Weapon Focus (Longsword); Elven Raiders
-  // have a prerequisite of Weapon Focus ([Composite] Longbow)
-  'Weapon Focus':'Composite Longbow/Longbow/Longsword'
+  // Legates w/War domain receive Weapon Focus (Longsword)
+  'Weapon Focus':'Longsword'
 };
 MN2E.SUBSKILLS = {
   'Knowledge':'Old Gods/Shadow/Spirits',
@@ -413,9 +412,8 @@ MN2E.classRules = function(rules, classes) {
 
       if(klass == 'Charismatic Channeler') {
         feats = ['Extra Gift', 'Spell Knowledge'];
-        var allSchools = rules.getChoices('schools');
-        for(var j = 0; j < allSchools.length; j++) {
-          var school = allSchools[j];
+        for(var j = 0; j < MN2E.SCHOOLS.length; j++) {
+          var school = MN2E.SCHOOLS[j].split(':')[0];
           feats[feats.length] = 'Greater Spell Focus (' + school + ')';
           feats[feats.length] = 'Spell Focus (' + school + ')';
         }
@@ -563,7 +561,7 @@ MN2E.classRules = function(rules, classes) {
         var allFeats = PH35.FEATS.concat(MN2E.FEATS);
         for(var j = 0; j < allFeats.length; j++) {
           var pieces = allFeats[j].split(':');
-          if(pieces[1].indexOf('Item Creation') > 0) {
+          if(pieces[1].indexOf('Item Creation') >= 0) {
             feats[feats.length] = pieces[0];
           }
         }
@@ -1451,8 +1449,14 @@ MN2E.featRules = function(rules, feats, subfeats) {
       ];
     } else if((matchInfo = feat.match(/^Spellcasting \((.*)\)/)) != null) {
       var school = matchInfo[1];
-      var note = 'magicNotes.spellcasting(' + school + ')Feature';
+      var schoolNoSpace = school.replace(/ /g, '');
+      var note = 'magicNotes.spellcasting(' + schoolNoSpace + ')Feature';
       notes = [note + ':May learn school spells/+1 school spell'];
+      if(school.indexOf('Greater ') == 0) {
+        notes[notes.length] =
+          'validationNotes.spellcasting(' + schoolNoSpace + ')FeatFeats:' +
+            'Requires Spellcasting (' + school.substring(8) + ')';
+      }
       rules.defineRule('spellsKnownBonus', note, '+=', '1');
     } else if(feat == 'Spell Knowledge') {
       notes = [
@@ -2978,7 +2982,10 @@ MN2E.magicRules = function(rules, classes) {
     }
   }
 
-  rules.defineRule('casterLevelArcane', 'spellEnergy', '^=', '1');
+  rules.defineRule('casterLevelArcane',
+    'spellEnergy', '?', null,
+    'level', '=', null
+  );
   rules.defineRule('maxSpellLevel',
     'level', '=', 'source / 2',
     'features.Art Of Magic', '+', '1/2'
