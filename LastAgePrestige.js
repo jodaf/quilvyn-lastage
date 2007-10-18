@@ -433,6 +433,10 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
+      // Make sure Weapon Focus (Composite Longbow) and Weapon Focus (Longbow)
+      // are defined to meet prerequisite
+      var subfeats = {'Weapon Focus' : 'Composite Longbow/Longbow'};
+      PH35.featRules(rules, ['Weapon Focus:'], subfeats);
       rules.defineRule('combatNotes.improvedSneakAttackFeature',
         'levels.Elven Raider', '+=', '30 + Math.floor((source + 1) / 3) * 15'
       );
@@ -479,6 +483,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'featureNotes.spurOnFeature:' +
           'Double mount speed during charge/double move',
         'skillNotes.horseLordFeature:+1 Handle Animal (horse)/Ride (horseback)',
+        'sanityNotes.freeriderClassWeapons:' +
+          'Requires Composite Longbow||Sarcosan Lance||Scimitar',
         'validationNotes.freeriderClassBaseAttack:' +
           'Requires Base Attack >= 6',
         'validationNotes.freeriderClassFeats:' +
@@ -506,6 +512,23 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
+        'Mounted Archery', 'Sarcosan Pureblood', 'Skill Focus (Ride)',
+        'Trample', 'Weapon Focus (Composite Longbow)',
+        'Weapon Focus (Sarcosan Lance)', 'Weapon Focus (Scimitar)',
+        'Weapon Specialization (Composite Longbow)',
+        'Weapon Specialization (Sarcosan Lance)',
+        'Weapon Specialization (Scimitar)'
+      // Make sure class-associated subfeats are defined
+      var subfeats = {
+        'Skill Focus':'Ride',
+        'Weapon Focus':'Composite Longbow/Sarcosan Lance/Scimitar',
+        'Weapon Specialization':'Composite Longbow/Sarcosan Lance/Scimitar'
+      };
+      PH35.featRules(
+        rules,
+        ['Skill Focus:', 'Weapon Focus:', 'Weapon Specialization:'],
+        subfeats
+      );
       rules.defineRule('featCount.Freerider',
         'levels.Freerider', '=', 'Math.floor(source / 3)'
       );
