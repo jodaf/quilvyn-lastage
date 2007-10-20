@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.92 2007/10/18 06:12:43 Jim Exp $ */
+/* $Id: LastAge.js,v 1.93 2007/10/20 01:16:27 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -26,6 +26,11 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
  * (FEATS, HEROIC_PATHS, etc.) can be manipulated to modify the choices.
  */
 function MN2E() {
+
+  if(window.PH35 == null) {
+    alert('The MN2E module requires use of the PH35 module');
+    return;
+  }
 
   var rules = new ScribeRules('Midnight 2nd Edition');
   rules.editorElements = PH35.initialEditorElements();

@@ -21,6 +21,10 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
  * fields can be manipulated in order to trim the choices offered.
  */
 function MN2EPrestige() {
+  if(window.PH35 == null || window.MN2E == null) {
+    alert('The MN2EPrestige module requires use of the PH35 and MN2E modules');
+    return;
+  }
   MN2EPrestige.prestigeClassRules(MN2E.rules, MN2EPrestige.PRESTIGE_CLASSES);
 }
 
