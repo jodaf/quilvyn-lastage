@@ -21,8 +21,8 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
  * fields can be manipulated in order to trim the choices offered.
  */
 function MN2EPrestige() {
-  if(window.PH35 == null || window.MN2E == null) {
-    alert('The MN2EPrestige module requires use of the PH35 and MN2E modules');
+  if(window.SRD35 == null || window.MN2E == null) {
+    alert('The MN2EPrestige module requires use of the SRD35 and MN2E modules');
     return;
   }
   MN2EPrestige.prestigeClassRules(MN2E.rules, MN2EPrestige.PRESTIGE_CLASSES);
@@ -46,7 +46,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     if(klass == 'Ancestral Bladebearer') {
 
-      baseAttack = PH35.ATTACK_BONUS_GOOD;
+      baseAttack = SRD35.ATTACK_BONUS_GOOD;
       feats = null;
       features = [
         '1:Unbreakable Blade', '2:Advance Ancestral Blade',
@@ -74,12 +74,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.ancestralBladebearerClassFeats:' +
           'Requires Max Weapon Focus >= 1/Max Weapon Specialization >= 1'
       ];
-      profArmor = PH35.PROFICIENCY_HEAVY;
-      profShield = PH35.PROFICIENCY_TOWER;
-      profWeapon = PH35.PROFICIENCY_MEDIUM;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_POOR;
+      profArmor = SRD35.PROFICIENCY_HEAVY;
+      profShield = SRD35.PROFICIENCY_TOWER;
+      profWeapon = SRD35.PROFICIENCY_MEDIUM;
+      saveFortitude = SRD35.SAVE_BONUS_GOOD;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_POOR;
       selectableFeatures = null;
       skillPoints = 2;
       skills = [
@@ -101,7 +101,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Aradil\'s Eye') {
 
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = [
         '1:Alter Ego', '1:Mindbond', '2:Spy Initiate', '4:Closed Mind',
@@ -134,12 +134,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           'Requires Bluff >= 8/Disguise >= 5/Gather Information >= 8/' +
           'Hide >= 8/Move Silently >= 5/Sense Motive >= 5/Spot >= 5'
       ];
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
+      profArmor = SRD35.PROFICIENCY_NONE;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_NONE;
+      saveFortitude = SRD35.SAVE_BONUS_POOR;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_GOOD;
       selectableFeatures = null;
       skillPoints = 8;
       skills = [
@@ -165,7 +165,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Avenging Knife') {
 
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = [
         '1:The Drop', '2:Security Breach', '3:Sneak Attack', '4:Target Study',
@@ -199,12 +199,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           'Requires Bluff >= 5/Gather Information >= 5/Hide >= 8/' +
           'Move Silently >= 8'
       ];
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_GOOD;
-      saveWill = PH35.SAVE_BONUS_POOR;
+      profArmor = SRD35.PROFICIENCY_NONE;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_NONE;
+      saveFortitude = SRD35.SAVE_BONUS_POOR;
+      saveReflex = SRD35.SAVE_BONUS_GOOD;
+      saveWill = SRD35.SAVE_BONUS_POOR;
       selectableFeatures = null;
       skillPoints = 6;
       skills = [
@@ -233,7 +233,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Bane Of Legates') {
 
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = [
         '1:Art Of Magic', '1:Resist Izrador\'s Will', '3:See Astirax',
@@ -261,12 +261,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.baneOfLegatesClassSpellEnergy:' +
           'Requires Spell Energy >= 10'
       ];
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
+      profArmor = SRD35.PROFICIENCY_NONE;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_NONE;
+      saveFortitude = SRD35.SAVE_BONUS_POOR;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_GOOD;
       selectableFeatures = null;
       skillPoints = 4;
       skills = [
@@ -298,7 +298,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Druid') {
 
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = [
         '1:Art Of Magic', '1:Mastery Of Nature', '1:Animal Companion',
@@ -324,12 +324,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.druidClassSkills:' +
           'Requires Knowledge (Nature) >= 8/Survival >= 8'
       ];
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
+      profArmor = SRD35.PROFICIENCY_NONE;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_NONE;
+      saveFortitude = SRD35.SAVE_BONUS_GOOD;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_GOOD;
       selectableFeatures = null;
       skillPoints = 4;
       skills = [
@@ -369,9 +369,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule
         ('spellsKnownBonus', 'magicNotes.druidSpellsKnown', '+', null);
       rules.defineRule('turnNature.level', 'druidTurningLevel', '+=', null);
-      // Pick up PH35 Druid level 2-9 spells.
+      // Pick up SRD35 Druid level 2-9 spells.
       var classRules = new ScribeRules('');
-      PH35.magicRules(classRules, ['Druid'], [], []);
+      SRD35.magicRules(classRules, ['Druid'], [], []);
       var schools = rules.getChoices('schools');
       for(var s in classRules.getChoices('spells')) {
         var matchInfo = s.match(/^(.*)\((D[2-9])/);
@@ -380,7 +380,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         }
         var spell = matchInfo[1];
         var school = MN2E.spellsSchools[spell];
-        if(school == null && (school = PH35.spellsSchools[spell]) == null) {
+        if(school == null && (school = SRD35.spellsSchools[spell]) == null) {
           continue;
         }
         spell += '(' + matchInfo[2] + ' ' + schools[school] + ')';
@@ -389,7 +389,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Elven Raider') {
 
-      baseAttack = PH35.ATTACK_BONUS_GOOD;
+      baseAttack = SRD35.ATTACK_BONUS_GOOD;
       feats = null;
       features = [
         '1:Ranged Sneak Attack', '2:Improved Sneak Attack', '3:Meticulous Aim',
@@ -421,12 +421,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.elvenRaiderClassSkills:' +
           'Requires Hide >= 8/Move Silently >= 8/Survival >= 8'
       ];
-      profArmor = PH35.PROFICIENCY_LIGHT;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_MEDIUM;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_GOOD;
-      saveWill = PH35.SAVE_BONUS_POOR;
+      profArmor = SRD35.PROFICIENCY_LIGHT;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_MEDIUM;
+      saveFortitude = SRD35.SAVE_BONUS_POOR;
+      saveReflex = SRD35.SAVE_BONUS_GOOD;
+      saveWill = SRD35.SAVE_BONUS_POOR;
       selectableFeatures = null;
       skillPoints = 4;
       skills = [
@@ -440,7 +440,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       // Make sure Weapon Focus (Composite Longbow) and Weapon Focus (Longbow)
       // are defined to meet prerequisite
       var subfeats = {'Weapon Focus' : 'Composite Longbow/Longbow'};
-      PH35.featRules(rules, ['Weapon Focus:'], subfeats);
+      SRD35.featRules(rules, ['Weapon Focus:'], subfeats);
       rules.defineRule('combatNotes.improvedSneakAttackFeature',
         'levels.Elven Raider', '+=', '30 + Math.floor((source + 1) / 3) * 15'
       );
@@ -454,7 +454,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Freerider') {
 
-      baseAttack = PH35.ATTACK_BONUS_GOOD;
+      baseAttack = SRD35.ATTACK_BONUS_GOOD;
       feats = [
         'Mounted Archery', 'Sarcosan Pureblood', 'Skill Focus (Ride)',
         'Trample', 'Weapon Focus (Composite Longbow)',
@@ -498,12 +498,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.freeriderClassSkills:' +
           'Requires Handle Animal >= 4/Ride >= 8/Survival >= 4'
       ];
-      profArmor = PH35.PROFICIENCY_HEAVY;
-      profShield = PH35.PROFICIENCY_MEDIUM;
-      profWeapon = PH35.PROFICIENCY_MEDIUM;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_POOR;
+      profArmor = SRD35.PROFICIENCY_HEAVY;
+      profShield = SRD35.PROFICIENCY_MEDIUM;
+      profWeapon = SRD35.PROFICIENCY_MEDIUM;
+      saveFortitude = SRD35.SAVE_BONUS_GOOD;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_POOR;
       selectableFeatures = [
         'Deft Dodging', 'Dismounting Cut', 'Erratic Attack', 'Hit And Run',
         'Wheel About'
@@ -528,7 +528,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'Weapon Focus':'Composite Longbow/Sarcosan Lance/Scimitar',
         'Weapon Specialization':'Composite Longbow/Sarcosan Lance/Scimitar'
       };
-      PH35.featRules(
+      SRD35.featRules(
         rules,
         ['Skill Focus:', 'Weapon Focus:', 'Weapon Specialization:'],
         subfeats
@@ -542,7 +542,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Haunted One') {
 
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = [
         '1:Art Of Magic', '1:Seance', '2:Spiritcraft', '2:Spirit Manipulation',
@@ -567,12 +567,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.hauntedOneClassSkills:' +
           'Requires Knowledge (Arcana) >= 8/Knowledge (Spirits) >= 10'
       ];
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
+      profArmor = SRD35.PROFICIENCY_NONE;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_NONE;
+      saveFortitude = SRD35.SAVE_BONUS_POOR;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_GOOD;
       selectableFeatures = null;
       skillPoints = 2;
       skills = [
@@ -599,7 +599,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Insurgent Spy') {
 
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = [
         '1:Conceal Aura', '1:Shadow Contacts', '2:Shadow Speak',
@@ -619,12 +619,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           'Requires Bluff >= 8/Diplomacy >= 5/Gather Information >= 8/' +
           'Sense Motive >= 5'
       ];
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_GOOD;
-      saveWill = PH35.SAVE_BONUS_POOR;
+      profArmor = SRD35.PROFICIENCY_NONE;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_NONE;
+      saveFortitude = SRD35.SAVE_BONUS_POOR;
+      saveReflex = SRD35.SAVE_BONUS_GOOD;
+      saveWill = SRD35.SAVE_BONUS_POOR;
       selectableFeatures = null;
       skillPoints = 8;
       skills = [
@@ -654,7 +654,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Smuggler') {
 
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = [
         '1:Smuggler\'s Trade', '2:Dominant Will', '3:Mystifying Speech',
@@ -679,12 +679,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.smugglerClassSkills:' +
           'Requires Bluff >= 8/Forgery >= 5/Gather Information >= 8/Hide >= 5'
       ];
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_GOOD;
-      saveWill = PH35.SAVE_BONUS_GOOD;
+      profArmor = SRD35.PROFICIENCY_NONE;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_NONE;
+      saveFortitude = SRD35.SAVE_BONUS_POOR;
+      saveReflex = SRD35.SAVE_BONUS_GOOD;
+      saveWill = SRD35.SAVE_BONUS_GOOD;
       selectableFeatures = null;
       skillPoints = 8;
       skills = [
@@ -714,7 +714,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Warrior Arcanist') {
 
-      baseAttack = PH35.ATTACK_BONUS_GOOD;
+      baseAttack = SRD35.ATTACK_BONUS_GOOD;
       feats = null;
       features = [
         '1:Art Of Magic', '1:Armored Casting', '1:Channeled Attack',
@@ -740,15 +740,15 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           'Requires Max Magecraft >= 1/Max Spellcasting >= 1/' +
           'Max Weapon Focus >= 1',
         'validationNotes.warriorArcanistClassWeaponProficiencyLevel:' +
-          'Requires Weapon Proficiency >= ' + PH35.PROFICIENCY_MEDIUM,
+          'Requires Weapon Proficiency >= ' + SRD35.PROFICIENCY_MEDIUM,
         'validationNotes.warriorArcanistClassSkills:Requires Spellcraft >= 8'
       ];
-      profArmor = PH35.PROFICIENCY_MEDIUM;
-      profShield = PH35.PROFICIENCY_HEAVY;
-      profWeapon = PH35.PROFICIENCY_MEDIUM;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_POOR;
+      profArmor = SRD35.PROFICIENCY_MEDIUM;
+      profShield = SRD35.PROFICIENCY_HEAVY;
+      profWeapon = SRD35.PROFICIENCY_MEDIUM;
+      saveFortitude = SRD35.SAVE_BONUS_GOOD;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_POOR;
       selectableFeatures = null;
       skillPoints = 2;
       skills = [
@@ -789,7 +789,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Whisper Adept') {
 
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = [
         '1:Art Of Magic', '1:Whisper Sense', '2:Whisper Initiative',
@@ -818,12 +818,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           'Requires Knowledge (Nature) >= 8/Knowledge (Spirits) >= 10/' +
           'Survival >= 8'
       ];
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
+      profArmor = SRD35.PROFICIENCY_NONE;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_NONE;
+      saveFortitude = SRD35.SAVE_BONUS_POOR;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_GOOD;
       selectableFeatures = null;
       skillPoints = 4;
       skills = [
@@ -855,7 +855,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Wizard') {
 
-      baseAttack = PH35.ATTACK_BONUS_POOR;
+      baseAttack = SRD35.ATTACK_BONUS_POOR;
       feats = null;
       features = [
         '1:Art Of Magic', '1:Wizardcraft', '2:Efficient Study',
@@ -874,12 +874,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.wizardClassSkills:' +
           'Requires Knowledge (Arcana) >= 10/Spellcraft >= 10'
       ];
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
+      profArmor = SRD35.PROFICIENCY_NONE;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_NONE;
+      saveFortitude = SRD35.SAVE_BONUS_POOR;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_GOOD;
       selectableFeatures = null;
       skillPoints = 2;
       skills = [
@@ -919,7 +919,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
 
     } else if(klass == 'Wogren Rider') {
 
-      baseAttack = PH35.ATTACK_BONUS_GOOD;
+      baseAttack = SRD35.ATTACK_BONUS_GOOD;
       feats = null;
       features = [
         '1:Coordinated Attack', '1:Special Mount', '3:Speed Mount',
@@ -956,12 +956,12 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.wogrenRiderClassSkills:' +
           'Requires Ride >= 8/Survival >= 4'
       ];
-      profArmor = PH35.PROFICIENCY_MEDIUM;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_MEDIUM;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_GOOD;
-      saveWill = PH35.SAVE_BONUS_POOR;
+      profArmor = SRD35.PROFICIENCY_MEDIUM;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_MEDIUM;
+      saveFortitude = SRD35.SAVE_BONUS_POOR;
+      saveReflex = SRD35.SAVE_BONUS_GOOD;
+      saveWill = SRD35.SAVE_BONUS_POOR;
       selectableFeatures = [
         'Improved Mounted Archery', 'Improved Mounted Combat',
         'Improved Ride By Attack', 'Improved Spirited Charge',
@@ -990,7 +990,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
     } else
       continue;
 
-    PH35.defineClass
+    SRD35.defineClass
       (rules, klass, hitDie, skillPoints, baseAttack, saveFortitude,
        saveReflex, saveWill, profArmor, profShield, profWeapon, skills,
        features, spellsKnown, spellsPerDay, spellAbility);

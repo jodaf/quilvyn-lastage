@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.93 2007/10/20 01:16:27 Jim Exp $ */
+/* $Id: LastAge.js,v 1.94 2007/11/08 14:07:47 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -27,37 +27,37 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
  */
 function MN2E() {
 
-  if(window.PH35 == null) {
-    alert('The MN2E module requires use of the PH35 module');
+  if(window.SRD35 == null) {
+    alert('The MN2E module requires use of the SRD35 module');
     return;
   }
 
   var rules = new ScribeRules('Midnight 2nd Edition');
-  rules.editorElements = PH35.initialEditorElements();
+  rules.editorElements = SRD35.initialEditorElements();
   rules.defineEditorElement('deity'); // Remove from editor
   rules.defineEditorElement('specialize');
   rules.defineEditorElement('prohibit');
-  PH35.createViewers(rules, PH35.VIEWERS);
+  SRD35.createViewers(rules, SRD35.VIEWERS);
   rules.defineSheetElement('Deity'); // Remove from sheet
-  PH35.abilityRules(rules);
-  // MN2E doesn't use the PH35 languages or races, but we call PH35.raceRules
+  SRD35.abilityRules(rules);
+  // MN2E doesn't use the SRD35 languages or races, but we call SRD35.raceRules
   // anyway to pick up any other rules it defines (e.g., languageCount)
-  PH35.raceRules(rules, [], []);
-  PH35.classRules(rules, ['Barbarian', 'Rogue']);
-  PH35.companionRules(rules, ['Familiar']);
-  PH35.skillRules(rules, PH35.SKILLS, PH35.SUBSKILLS);
-  PH35.featRules(rules, PH35.FEATS, PH35.SUBFEATS);
-  PH35.descriptionRules(rules, PH35.ALIGNMENTS, MN2E.DEITIES, PH35.GENDERS);
-  PH35.equipmentRules
-    (rules, PH35.ARMORS, PH35.GOODIES, PH35.SHIELDS, PH35.WEAPONS);
-  PH35.combatRules(rules);
-  PH35.adventuringRules(rules);
-  // Hack: PH35.deitiesFavoredWeapons needs to have a setting for Izrador
-  // when PH35.magicRules is called to get War domain feature rules correct
-  PH35.deitiesFavoredWeapons['Izrador (NE)'] = 'Longsword';
-  PH35.magicRules(rules, [], MN2E.DOMAINS, MN2E.SCHOOLS);
-  if(window.DMG35 != null && DMG35.npcClassRules != null) {
-    DMG35.npcClassRules(rules, DMG35.NPC_CLASSES);
+  SRD35.raceRules(rules, [], []);
+  SRD35.classRules(rules, ['Barbarian', 'Rogue']);
+  SRD35.companionRules(rules, ['Familiar']);
+  SRD35.skillRules(rules, SRD35.SKILLS, SRD35.SUBSKILLS);
+  SRD35.featRules(rules, SRD35.FEATS, SRD35.SUBFEATS);
+  SRD35.descriptionRules(rules, SRD35.ALIGNMENTS, MN2E.DEITIES, SRD35.GENDERS);
+  SRD35.equipmentRules
+    (rules, SRD35.ARMORS, SRD35.GOODIES, SRD35.SHIELDS, SRD35.WEAPONS);
+  SRD35.combatRules(rules);
+  SRD35.adventuringRules(rules);
+  // Hack: SRD35.deitiesFavoredWeapons needs to have a setting for Izrador
+  // when SRD35.magicRules is called to get War domain feature rules correct
+  SRD35.deitiesFavoredWeapons['Izrador (NE)'] = 'Longsword';
+  SRD35.magicRules(rules, [], MN2E.DOMAINS, MN2E.SCHOOLS);
+  if(window.SRD35PrestigeNPC!=null && SRD35PrestigeNPC.npcClassRules!=null) {
+    SRD35PrestigeNPC.npcClassRules(rules, SRD35PrestigeNPC.NPC_CLASSES);
   }
 
   MN2E.raceRules(rules, MN2E.LANGUAGES, MN2E.RACES);
@@ -129,7 +129,7 @@ MN2E.RACES = [
   'Urban Sarcosan', 'Wood Elf'
 ];
 MN2E.RANDOMIZABLE_ATTRIBUTES =
-  PH35.RANDOMIZABLE_ATTRIBUTES.concat(['heroicPath']);
+  SRD35.RANDOMIZABLE_ATTRIBUTES.concat(['heroicPath']);
 MN2E.SCHOOLS = [
   'Abjuration:Abju', 'Conjuration:Conj', 'Divination:Divi', 'Enchantment:Ench',
   'Evocation:Evoc', 'Greater Conjuration:GrCo', 'Greater Evocation:GrEv',
@@ -163,8 +163,8 @@ MN2E.WEAPONS = [
 // Related information used internally by MN2E
 // Unexplained spells: Regeneration (assumed Regenerate), Scryer's Magic
 // (assumed Scryer's Mark)
-// Spells differing in school from PH35: Ray Of Frost (Evocation PH35,
-// Conjuration MN2E), Zone Of Silence (Illusion PH35, Enchantment MN2E)
+// Spells differing in school from SRD35: Ray Of Frost (Evocation SRD35,
+// Conjuration MN2E), Zone Of Silence (Illusion SRD35, Enchantment MN2E)
 MN2E.spellsSchools = {
   'Assist':'Enchantment',
   'Bestow Spell':'Evocation',
@@ -369,7 +369,7 @@ MN2E.classRules = function(rules, classes) {
 
     } else if(klass.indexOf(' Channeler') >= 0) {
 
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = ['1:Art Of Magic', '2:Summon Familiar'];
       hitDie = 6;
@@ -377,12 +377,12 @@ MN2E.classRules = function(rules, classes) {
         'magicNotes.artOfMagicFeature:+1 character level for max spell level',
         'magicNotes.summonFamiliarFeature:Special bond/abilities'
       ];
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_LIGHT;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
+      profArmor = SRD35.PROFICIENCY_NONE;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_LIGHT;
+      saveFortitude = SRD35.SAVE_BONUS_POOR;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_GOOD;
       selectableFeatures = null;
       skillPoints = 4;
       skills = [
@@ -514,7 +514,7 @@ MN2E.classRules = function(rules, classes) {
         );
       } else if(klass == 'Hermetic Channeler') {
         feats = ['Spell Knowledge'];
-        var allFeats = PH35.FEATS.concat(MN2E.FEATS);
+        var allFeats = SRD35.FEATS.concat(MN2E.FEATS);
         for(var j = 0; j < allFeats.length; j++) {
           var pieces = allFeats[j].split(':');
           if(pieces[1].match(/Item Creation|Metamagic/)) {
@@ -563,7 +563,7 @@ MN2E.classRules = function(rules, classes) {
         );
       } else if(klass == 'Spiritual Channeler') {
         feats = ['Extra Gift', 'Spell Knowledge'];
-        var allFeats = PH35.FEATS.concat(MN2E.FEATS);
+        var allFeats = SRD35.FEATS.concat(MN2E.FEATS);
         for(var j = 0; j < allFeats.length; j++) {
           var pieces = allFeats[j].split(':');
           if(pieces[1].indexOf('Item Creation') >= 0) {
@@ -673,7 +673,7 @@ MN2E.classRules = function(rules, classes) {
 
     } else if(klass == 'Defender') {
 
-      baseAttack = PH35.ATTACK_BONUS_GOOD;
+      baseAttack = SRD35.ATTACK_BONUS_GOOD;
       feats = null;
       features = [
         '1:Improved Unarmed Strike', '1:Masterful Strike',
@@ -738,12 +738,12 @@ MN2E.classRules = function(rules, classes) {
         'validationNotes.weaponTrapSelectableFeatureFeatures:' +
           'Requires Dodge Training/Grappling Training'
       ];
-      profArmor = PH35.PROFICIENCY_NONE;
-      profShield = PH35.PROFICIENCY_NONE;
-      profWeapon = PH35.PROFICIENCY_NONE;
-      saveFortitude = PH35.SAVE_BONUS_POOR;
-      saveReflex = PH35.SAVE_BONUS_GOOD;
-      saveWill = PH35.SAVE_BONUS_POOR;
+      profArmor = SRD35.PROFICIENCY_NONE;
+      profShield = SRD35.PROFICIENCY_NONE;
+      profWeapon = SRD35.PROFICIENCY_NONE;
+      saveFortitude = SRD35.SAVE_BONUS_POOR;
+      saveReflex = SRD35.SAVE_BONUS_GOOD;
+      saveWill = SRD35.SAVE_BONUS_POOR;
       selectableFeatures = [
        'Counterattack', 'Cover Ally', 'Defensive Mastery', 'Devastating Strike',
        'Dodge Training', 'Flurry Attack', 'Furious Grapple',
@@ -836,17 +836,17 @@ MN2E.classRules = function(rules, classes) {
 
     } else if(klass == 'Fighter') {
 
-      baseAttack = PH35.ATTACK_BONUS_GOOD;
+      baseAttack = SRD35.ATTACK_BONUS_GOOD;
       feats = null;
       features = null;
       hitDie = 10;
       notes = ['skillNotes.adapterFeature:+%V skill points'];
-      profArmor = PH35.PROFICIENCY_HEAVY;
-      profShield = PH35.PROFICIENCY_TOWER;
-      profWeapon = PH35.PROFICIENCY_MEDIUM;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_POOR;
+      profArmor = SRD35.PROFICIENCY_HEAVY;
+      profShield = SRD35.PROFICIENCY_TOWER;
+      profWeapon = SRD35.PROFICIENCY_MEDIUM;
+      saveFortitude = SRD35.SAVE_BONUS_GOOD;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_POOR;
       selectableFeatures = [
         'Adapter', 'Improviser', 'Leader Of Men', 'Survivor'
       ];
@@ -895,7 +895,7 @@ MN2E.classRules = function(rules, classes) {
 
     } else if(klass == 'Legate') {
 
-      baseAttack = PH35.ATTACK_BONUS_AVERAGE;
+      baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = [
         '1:Spontaneous Legate Spell', '1:Temple Dependency', '1:Turn Undead',
@@ -910,12 +910,12 @@ MN2E.classRules = function(rules, classes) {
         'magicNotes.templeDependencyFeature:' +
           'Must participate at temple to receive spells'
       ];
-      profArmor = PH35.PROFICIENCY_HEAVY;
-      profShield = PH35.PROFICIENCY_HEAVY;
-      profWeapon = PH35.PROFICIENCY_LIGHT;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_GOOD;
+      profArmor = SRD35.PROFICIENCY_HEAVY;
+      profShield = SRD35.PROFICIENCY_HEAVY;
+      profWeapon = SRD35.PROFICIENCY_LIGHT;
+      saveFortitude = SRD35.SAVE_BONUS_GOOD;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_GOOD;
       selectableFeatures = null;
       skillPoints = 4;
       skills = [
@@ -967,7 +967,7 @@ MN2E.classRules = function(rules, classes) {
 
     } else if(klass == 'Wildlander') {
 
-      baseAttack = PH35.ATTACK_BONUS_GOOD;
+      baseAttack = SRD35.ATTACK_BONUS_GOOD;
       feats = null;
       features = [
         '1:Track', '3:Danger Sense', '3:Initiative Bonus', '4:Hunter\'s Strike'
@@ -1045,12 +1045,12 @@ MN2E.classRules = function(rules, classes) {
         'validationNotes.woodsloreSelectableFeatureFeatures:' +
           'Requires Wilderness Trapfinding'
       ];
-      profArmor = PH35.PROFICIENCY_MEDIUM;
-      profShield = PH35.PROFICIENCY_HEAVY;
-      profWeapon = PH35.PROFICIENCY_MEDIUM;
-      saveFortitude = PH35.SAVE_BONUS_GOOD;
-      saveReflex = PH35.SAVE_BONUS_POOR;
-      saveWill = PH35.SAVE_BONUS_POOR;
+      profArmor = SRD35.PROFICIENCY_MEDIUM;
+      profShield = SRD35.PROFICIENCY_HEAVY;
+      profWeapon = SRD35.PROFICIENCY_MEDIUM;
+      saveFortitude = SRD35.SAVE_BONUS_GOOD;
+      saveReflex = SRD35.SAVE_BONUS_POOR;
+      saveWill = SRD35.SAVE_BONUS_POOR;
       selectableFeatures = [
         'Alertness', 'Animal Companion', 'Camouflage', 'Danger Sense',
         'Evasion', 'Hated Foe', 'Hide In Plain Sight', 'Hunted By The Shadow',
@@ -1113,7 +1113,7 @@ MN2E.classRules = function(rules, classes) {
     } else
       continue;
 
-    PH35.defineClass
+    SRD35.defineClass
       (rules, klass, hitDie, skillPoints, baseAttack, saveFortitude, saveReflex,
        saveWill, profArmor, profShield, profWeapon, skills, features,
        spellsKnown, spellsPerDay, spellAbility);
@@ -1246,8 +1246,8 @@ MN2E.equipmentRules = function(rules, weapons) {
 /* Defines the rules related to MN2E Chapter 5, Player Options/Feats. */
 MN2E.featRules = function(rules, feats, subfeats) {
 
-  // Let PH35 handle the basics, then add MN-specific notes and rules
-  PH35.featRules(rules, feats, subfeats);
+  // Let SRD35 handle the basics, then add MN-specific notes and rules
+  SRD35.featRules(rules, feats, subfeats);
 
   var allFeats = [];
   for(var i = 0; i < feats.length; i++) {
@@ -1396,9 +1396,9 @@ MN2E.featRules = function(rules, feats, subfeats) {
       rules.defineRule('spellEnergy', note, '+=', null);
       rules.defineRule('spellsKnown.' + spellCode + '0', note, '+=', '3');
       rules.defineRule('spellsKnown.' + spellCode + '1', note, '+=', '1');
-      // Pick up PH35 level 0/1 spells of the appropriate class.
+      // Pick up SRD35 level 0/1 spells of the appropriate class.
       var classRules = new ScribeRules('');
-      PH35.magicRules(classRules, [spellClass], [], []);
+      SRD35.magicRules(classRules, [spellClass], [], []);
       var schools = rules.getChoices('schools');
       for(var s in classRules.getChoices('spells')) {
         var matchInfo = s.match('^(.*)\\((' + spellCode + '[01])');
@@ -1407,7 +1407,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
         }
         var spell = matchInfo[1];
         var school = MN2E.spellsSchools[spell];
-        if(school == null && (school = PH35.spellsSchools[spell]) == null) {
+        if(school == null && (school = SRD35.spellsSchools[spell]) == null) {
           continue;
         }
         spell += '(' + matchInfo[2] + ' ' +
@@ -1553,15 +1553,14 @@ MN2E.heroicPathRules = function(rules, paths) {
         'combatNotes.viciousAssaultFeature:Two claw attacks at %V each',
         'featureNotes.enhancedBeastialAuraFeature:' +
           'Animals w/in 15 ft act negatively/cannot ride',
-        'featureNotes.lowLightVisionFeature:' +
-          'Double normal distance in poor light',
+        'featureNotes.lowLightVisionFeature:x%V normal distance in poor light',
         'featureNotes.scentFeature:' +
           'Detect creatures\' presence w/in 30 ft/track by smell',
         'skillNotes.beastialAuraFeature:-10 Handle Animal/no Wild Empathy'
       ];
       selectableFeatures = [
-        'Low Light Vision', 'Scent', 'Strength Bonus', 'Constitution Bonus',
-        'Dexterity Bonus', 'Wisdom Bonus'
+        'Constitution Bonus', 'Dexterity Bonus', 'Low Light Vision', 'Scent',
+        'Strength Bonus', 'Wisdom Bonus'
       ];
       spellFeatures = [
         '3:Magic Fang', '4:Bear\'s Endurance', '8:Greater Magic Fang',
@@ -1578,6 +1577,10 @@ MN2E.heroicPathRules = function(rules, paths) {
         'mediumViciousAssault', '=', null,
         'smallViciousAssault', '=', null
       );
+      rules.defineRule('featureNotes.lowLightVisionFeature',
+        '', '=', '1',
+        'selectableFeatures.Low Light Vision', '+', null
+      );
       rules.defineRule('mediumViciousAssault',
         'pathLevels.Beast', '=', 'source>=11 ? "d8" : source>=6 ? "d6" : "d4"'
       );
@@ -1587,7 +1590,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule('smallViciousAssault',
         'features.Small', '?', null,
-        'mediumViciousAssault', '=', 'PH35.weaponsSmallDamage[source]'
+        'mediumViciousAssault', '=', 'SRD35.weaponsSmallDamage[source]'
       );
       rules.defineRule('turnAnimal.damageModifier',
         'turnAnimal.level', '=', null,
@@ -1739,7 +1742,7 @@ MN2E.heroicPathRules = function(rules, paths) {
           'Other senses allow detection of unseen objects w/in 30 ft',
         'featureNotes.blindsightFeature:' +
           'Other senses compensate for loss of vision w/in 30 ft',
-        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
         'featureNotes.improvedStonecunningFeature:' +
           'Automatic Search w/in 5 ft of concealed stone door',
         'featureNotes.tremorsenseFeature:' +
@@ -1761,6 +1764,9 @@ MN2E.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule('earthbondedFeatures.Natural Armor',
         'level', '+', 'source >= 18 ? 2 : source >= 10 ? 1 : null'
+      );
+      rules.defineRule('featureNotes.darkvisionFeature',
+        'earthbondedFeatures.Darkvision', '+=', '30'
       );
 
     } else if(path == 'Faithful') {
@@ -1839,8 +1845,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       feats = null;
       features = ['1:Low Light Vision', '7:Fey Vision'];
       notes = [
-        'featureNotes.lowLightVisionFeature:' +
-          'Double normal distance in poor light',
+        'featureNotes.lowLightVisionFeature:x%V normal distance in poor light',
         'magicNotes.feyVisionFeature:Detect %V auras at will'
       ];
       selectableFeatures = [
@@ -1858,6 +1863,10 @@ MN2E.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule('combatNotes.armorClassBonusFeature',
         'features.Armor Class Bonus', '=', null
+      );
+      rules.defineRule('featureNotes.lowLightVisionFeature',
+        '', '=', '1',
+        'feybloodedFeatures.Low Light Vision', '+', null
       );
       rules.defineRule
         ('save.Fortitude', 'saveNotes.fortitudeBonusFeature', '+', null);
@@ -2467,7 +2476,7 @@ MN2E.heroicPathRules = function(rules, paths) {
         '11:Hide In Plain Sight'
       ];
       notes = [
-        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
         'featureNotes.shadowJumpFeature:Move %V ft between shadows',
         'skillNotes.hideInPlainSightFeature:Hide even when observed',
         'skillNotes.shadowVeilFeature:+%V Hide'
@@ -2478,6 +2487,9 @@ MN2E.heroicPathRules = function(rules, paths) {
         '9:Displacement', '13:Expeditious Retreat', '15:Blur',
         '17:Undetectable Alignment', '19:Displacement'
       ];
+      rules.defineRule('featureNotes.darkvisionFeature',
+        'shadowWalkerFeatures.Darkvision', '+=', '60'
+      );
       rules.defineRule('featureNotes.shadowJumpFeature',
         'pathLevels.Shadow Walker', '+=', 'Math.floor(source / 4) * 10'
       );
@@ -2621,7 +2633,7 @@ MN2E.heroicPathRules = function(rules, paths) {
       notes = [
         'combatNotes.planarFuryFeature:' +
           '+2 strength/constitution/+1 Will save/-1 AC for %V rounds %1/day',
-        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
         'featureNotes.magicalDarkvisionFeature:See perfectly in any darkness',
         'featureNotes.seeInvisibleFeature:See invisible creatures',
         'magicNotes.detectOutsiderFeature:Detect outsiders at will',
@@ -2638,6 +2650,9 @@ MN2E.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule('combatNotes.planarFuryFeature.1',
         'pathLevels.Sunderborn', '+=', 'Math.floor((source + 2) / 6)'
+      );
+      rules.defineRule('featureNotes.darkvisionFeature',
+        'sunderbornFeatures.Darkvision', '+=', '60'
       );
       rules.defineRule('skillNotes.bloodOfThePlanesFeature',
         'pathLevels.Sunderborn', '+=', 'Math.floor((source + 1) / 3) * 2'
@@ -2699,8 +2714,7 @@ MN2E.heroicPathRules = function(rules, paths) {
           'Special bond/abilities w/up to %V animals',
         'featureNotes.blindsenseFeature:' +
           'Other senses allow detection of unseen objects w/in 30 ft',
-        'featureNotes.lowLightVisionFeature:' +
-          'Double normal distance in poor light',
+        'featureNotes.lowLightVisionFeature:x%V normal distance in poor light',
         'featureNotes.scentFeature:' +
           'Detect creatures\' presence w/in 30 ft/track by smell',
         'magicNotes.wildShapeFeature:Change into creature of size %V %1/day',
@@ -2718,6 +2732,10 @@ MN2E.heroicPathRules = function(rules, paths) {
         ('animalCompanionMasterLevel', 'pathLevels.Warg', '+=', null);
       rules.defineRule('featureNotes.animalCompanionFeature',
         'wargFeatures.Animal Companion', '+=', null
+      );
+      rules.defineRule('featureNotes.lowLightVisionFeature',
+        '', '=', '1',
+        'selectableFeatures.Low Light Vision', '+', null
       );
       rules.defineRule('wargFeatures.Animal Companion',
         'level', '+', 'Math.floor((source - 2) / 4)'
@@ -2953,9 +2971,9 @@ MN2E.magicRules = function(rules, classes) {
       ];
       channelerDone = true;
     } else if(klass == 'Legate') {
-      // Change PH35 Cleric spells to Legate
+      // Change SRD35 Cleric spells to Legate
       var clericRules = new ScribeRules('');
-      PH35.magicRules(clericRules, ['Cleric'], [], []);
+      SRD35.magicRules(clericRules, ['Cleric'], [], []);
       spells = [];
       for(var j = 0; j < 10; j++) {
         spells[j] = 'L' + j;
@@ -2976,7 +2994,7 @@ MN2E.magicRules = function(rules, classes) {
         for(var k = 1; k < pieces.length; k++) {
           var spell = pieces[k];
           var school = MN2E.spellsSchools[spell];
-          if(school == null && (school = PH35.spellsSchools[spell]) == null) {
+          if(school == null && (school = SRD35.spellsSchools[spell]) == null) {
             continue;
           }
           spell += '(' + pieces[0] + ' ' +
@@ -3051,6 +3069,8 @@ MN2E.raceRules = function(rules, languages, races) {
   for(var i = 0; i < races.length; i++) {
 
     var race = races[i];
+    var raceNoSpace =
+      race.substring(0,1).toLowerCase() + race.substring(1).replace(/ /g, '');
     var adjustment, features, notes, selectableFeatures;
 
     if(race == 'Dorn') {
@@ -3091,7 +3111,7 @@ MN2E.raceRules = function(rules, languages, races) {
         'combatNotes.dwarfFavoredEnemyFeature:+1 attack vs. orc',
         'combatNotes.dwarfFavoredWeaponFeature:+1 attack with axes/hammers',
         'combatNotes.resilientFeature:+2 AC',
-        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
         'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.resistPoisonFeature:+2 vs. poison',
         'saveNotes.resistSpellsFeature:+2 vs. spells',
@@ -3104,6 +3124,9 @@ MN2E.raceRules = function(rules, languages, races) {
       );
       rules.defineRule
         ('armorClass', 'combatNotes.resilientFeature', '+', '2');
+      rules.defineRule('featureNotes.darkvisionFeature',
+        raceNoSpace + 'Features.Darkvision', '+=', '60'
+      );
       rules.defineRule
         ('resistance.Poison', 'saveNotes.resistPoisonFeature', '+=', '2');
       rules.defineRule
@@ -3141,7 +3164,7 @@ MN2E.raceRules = function(rules, languages, races) {
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
         'combatNotes.sturdyFeature:+1 AC',
-        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
         'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.resistPoisonFeature:+2 vs. poison',
         'saveNotes.resistSpellsFeature:+2 vs. spells',
@@ -3151,6 +3174,9 @@ MN2E.raceRules = function(rules, languages, races) {
       rules.defineRule('armorClass',
         'combatNotes.smallFeature', '+', '1',
         'combatNotes.sturdyFeature', '+', '1'
+      );
+      rules.defineRule('featureNotes.darkvisionFeature',
+        raceNoSpace + 'Features.Darkvision', '+=', '60'
       );
       rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
@@ -3216,12 +3242,15 @@ MN2E.raceRules = function(rules, languages, races) {
         'combatNotes.dworgFavoredEnemyFeature:+2 attack vs. orc',
         'combatNotes.minorLightSensitivityFeature:' +
           'DC 15 Fortitude save in sunlight to avoid -1 attack',
-        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
         'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.ruggedFeature:+2 all saves',
         'saveNotes.resistSpellsFeature:+2 vs. spells'
       ];
       selectableFeatures = null;
+      rules.defineRule('featureNotes.darkvisionFeature',
+        raceNoSpace + 'Features.Darkvision', '+=', '60'
+      );
       rules.defineRule
         ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
       rules.defineRule('save.Fortitude', 'saveNotes.ruggedFeature', '+', '2');
@@ -3288,8 +3317,7 @@ MN2E.raceRules = function(rules, languages, races) {
         'Low Light Vision', 'Natural Channeler', 'Tree Climber'
       ];
       notes = [
-        'featureNotes.lowLightVisionFeature:' +
-          'Double normal distance in poor light',
+        'featureNotes.lowLightVisionFeature:x%V normal distance in poor light',
         'magicNotes.innateMagicFeature:' +
           '%V level 0 spells as at-will innate ability',
         'magicNotes.naturalChannelerFeature:+2 spell energy',
@@ -3298,6 +3326,10 @@ MN2E.raceRules = function(rules, languages, races) {
         'skillNotes.treeClimberFeature:+4 Balance (trees)/Climb (trees)'
       ];
       selectableFeatures = null;
+      rules.defineRule('featureNotes.lowLightVisionFeature',
+        '', '=', '1',
+        raceNoSpace + 'Features.Low Light Vision', '+', null
+      );
       rules.defineRule('resistance.Enchantment',
         'saveNotes.resistEnchantmentFeature', '+=', '2'
       );
@@ -3405,8 +3437,7 @@ MN2E.raceRules = function(rules, languages, races) {
       ];
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
-        'featureNotes.lowLightVisionFeature:' +
-          'Double normal distance in poor light',
+        'featureNotes.lowLightVisionFeature:x%V normal distance in poor light',
         'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.hardyFeature:+1 Fortitude',
         'saveNotes.resistSpellsFeature:+2 vs. spells',
@@ -3421,6 +3452,10 @@ MN2E.raceRules = function(rules, languages, races) {
       ];
       selectableFeatures = null;
       rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('featureNotes.lowLightVisionFeature',
+        '', '=', '1',
+        raceNoSpace + 'Features.Low Light Vision', '+', null
+      );
       rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
@@ -3445,8 +3480,7 @@ MN2E.raceRules = function(rules, languages, races) {
       ];
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
-        'featureNotes.lowLightVisionFeature:' +
-          'Double normal distance in poor light',
+        'featureNotes.lowLightVisionFeature:x%V normal distance in poor light',
         'magicNotes.innateMagicFeature:' +
           '%V level 0 spells as at-will innate ability',
         'saveNotes.fortunateFeature:+1 all saves',
@@ -3457,6 +3491,10 @@ MN2E.raceRules = function(rules, languages, races) {
       ];
       selectableFeatures = null;
       rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('featureNotes.lowLightVisionFeature',
+        '', '=', '1',
+        raceNoSpace + 'Features.Low Light Vision', '+', null
+      );
       rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
@@ -3537,13 +3575,16 @@ MN2E.raceRules = function(rules, languages, races) {
         'combatNotes.nightFighterFeature:+1 attack in darkness',
         'combatNotes.orcFrenzyFeature:+1 attack when fighting among 10+ Orcs',
         'combatNotes.orcFavoredEnemyFeature:+1 damage vs. dwarves',
-        'featureNotes.darkvisionFeature:60 ft b/w vision in darkness',
+        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
         'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.improvedColdHardyFeature:Immune non-lethal/half lethal',
         'saveNotes.resistSpellsFeature:+2 vs. spells',
         'skillNotes.naturalPredatorFeature:+%V Intimidate'
       ];
       selectableFeatures = null;
+      rules.defineRule('featureNotes.darkvisionFeature',
+        raceNoSpace + 'Features.Darkvision', '+=', '60'
+      );
       rules.defineRule
         ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
       rules.defineRule
@@ -3592,7 +3633,7 @@ MN2E.raceRules = function(rules, languages, races) {
     } else
       continue;
 
-    PH35.defineRace(rules, race, adjustment, features);
+    SRD35.defineRace(rules, race, adjustment, features);
     if(notes != null)
       rules.defineNote(notes);
     if(selectableFeatures != null) {
@@ -3612,8 +3653,8 @@ MN2E.raceRules = function(rules, languages, races) {
 /* Defines the rules related to MN2E Chapter 5, Player Options/Skills. */
 MN2E.skillRules = function(rules, skills, subskills) {
 
-  // Let PH35 handle the basics, then add MN-specific notes and rules
-  PH35.skillRules(rules, skills, subskills);
+  // Let SRD35 handle the basics, then add MN-specific notes and rules
+  SRD35.skillRules(rules, skills, subskills);
   var notes = [
     'skillNotes.knowledge(Local)Synergy2:' +
        '+2 Knowledge (Shadow) (local bureaucracy)',
@@ -3634,7 +3675,7 @@ MN2E.skillRules = function(rules, skills, subskills) {
 };
 
 MN2E.makeValid = function(attributes) {
-  PH35.makeValid.apply(this, [attributes]);
+  SRD35.makeValid.apply(this, [attributes]);
 };
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
@@ -3688,13 +3729,13 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
     }
   } else if(attribute == 'spells') {
     // First, take care of fixed spells from, e.g., Magecraft
-    PH35.randomizeOneAttribute.apply(this, [attributes, attribute]);
+    SRD35.randomizeOneAttribute.apply(this, [attributes, attribute]);
     // Find out if the character has any bonus spells
     var attrs = this.applyRules(attributes);
     var spellsKnownBonus = attrs.spellsKnownBonus;
     if(spellsKnownBonus != null) {
       var maxSpellLevel = Math.floor(attrs.maxSpellLevel);
-      // Temporarily set prohibit.* attributes to keep PH35 from assigning
+      // Temporarily set prohibit.* attributes to keep SRD35 from assigning
       // spells from schools where the character doesn't have Spellcasting
       for(var a in this.getChoices('schools')) {
         if(attributes['feats.Spellcasting (' + a + ')'] == null)
@@ -3710,8 +3751,8 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
           spellsKnownBonus--) {
         attributes['spellsKnown.C' + spellLevel] += 1;
       }
-      // Let PH35 pick spells
-      PH35.randomizeOneAttribute.apply(this, [attributes, attribute]);
+      // Let SRD35 pick spells
+      SRD35.randomizeOneAttribute.apply(this, [attributes, attribute]);
       // Now get rid of the temporary attribute assignments
       for(var a in this.getChoices('schools')) {
         delete attributes['prohibit.' + a];
@@ -3721,7 +3762,7 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
       }
     }
   } else {
-    PH35.randomizeOneAttribute.apply(this, [attributes, attribute]);
+    SRD35.randomizeOneAttribute.apply(this, [attributes, attribute]);
   }
 }
 
