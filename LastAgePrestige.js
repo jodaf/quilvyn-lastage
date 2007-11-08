@@ -1,3 +1,5 @@
+/* $Id: LastAgePrestige.js,v 1.42 2007/11/08 14:22:32 Jim Exp $ */
+
 /*
 Copyright 2005, James J. Hayes
 
