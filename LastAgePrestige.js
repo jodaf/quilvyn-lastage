@@ -1,4 +1,4 @@
-/* $Id: LastAgePrestige.js,v 1.42 2007/11/08 14:22:32 Jim Exp $ */
+/* $Id: LastAgePrestige.js,v 1.43 2007/11/29 02:57:42 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -467,7 +467,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       ];
       features = [
         '1:Horse Lord', '1:Special Mount', '2:Mounted Maneuver', '4:Spur On',
-        '7:Devastating Mounted Assault', '10:Sweeping Strike'
+        '7:Devastating Mounted Assault', '7:Improved Mounted Assault',
+        '10:Sweeping Strike'
       ];
       hitDie = 10;
       notes = [
@@ -481,6 +482,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           '+2 self/mount AC when either attacks',
         'combatNotes.hitAndRunFeature:' +
           'Move away from foe after attack w/out foe AOO',
+        'combatNotes.improvedMountedAssaultFeature:' +
+          'No penalty for additional mounted attacks',
         'combatNotes.sweepingStrikeFeature:' +
           'Attack all threatened foes during mount\'s move',
         'combatNotes.wheelAboutFeature:' +
@@ -534,6 +537,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
         rules,
         ['Skill Focus:', 'Weapon Focus:', 'Weapon Specialization:'],
         subfeats
+      );
+      rules.defineRule('combatNotes.improvedMountedAssaultFeature',
+        'feats.Devastating Mounted Assault', '?', null
       );
       rules.defineRule('featCount.Freerider',
         'levels.Freerider', '=', 'Math.floor(source / 3)'

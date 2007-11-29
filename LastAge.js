@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.95 2007/11/14 01:03:30 Jim Exp $ */
+/* $Id: LastAge.js,v 1.96 2007/11/29 02:57:42 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -32,17 +32,22 @@ function MN2E() {
     return;
   }
 
+  // Define a new rule set w/the same editor and standard viewer as SRD35
   var rules = new ScribeRules('Midnight 2nd Edition');
   rules.editorElements = SRD35.initialEditorElements();
-  rules.defineEditorElement('deity'); // Remove from editor
+  SRD35.createViewers(rules, SRD35.VIEWERS);
+  // Remove some editor and character sheet elements that don't apply
+  rules.defineEditorElement('deity');
   rules.defineEditorElement('specialize');
   rules.defineEditorElement('prohibit');
-  SRD35.createViewers(rules, SRD35.VIEWERS);
-  rules.defineSheetElement('Deity'); // Remove from sheet
+  rules.defineSheetElement('Deity');
+  // Pick up applicable SRD35 rules
   SRD35.abilityRules(rules);
   // MN2E doesn't use the SRD35 languages or races, but we call SRD35.raceRules
   // anyway to pick up any other rules it defines (e.g., languageCount)
   SRD35.raceRules(rules, [], []);
+  // Fighter in MN2E is sufficiently changed from the SRD to be considered a
+  // different class
   SRD35.classRules(rules, ['Barbarian', 'Rogue']);
   SRD35.companionRules(rules, ['Familiar']);
   SRD35.skillRules(rules, SRD35.SKILLS, SRD35.SUBSKILLS);
@@ -52,14 +57,12 @@ function MN2E() {
     (rules, SRD35.ARMORS, SRD35.GOODIES, SRD35.SHIELDS, SRD35.WEAPONS);
   SRD35.combatRules(rules);
   SRD35.adventuringRules(rules);
-  // Hack: SRD35.deitiesFavoredWeapons needs to have a setting for Izrador
-  // when SRD35.magicRules is called to get War domain feature rules correct
-  SRD35.deitiesFavoredWeapons['Izrador (NE)'] = 'Longsword';
   SRD35.magicRules(rules, [], MN2E.DOMAINS, MN2E.SCHOOLS);
-  if(window.SRD35PrestigeNPC!=null && SRD35PrestigeNPC.npcClassRules!=null) {
+  // Pick up the NPC rules, if available
+  if(window.SRD35PrestigeNPC != null) {
     SRD35PrestigeNPC.npcClassRules(rules, SRD35PrestigeNPC.NPC_CLASSES);
   }
-
+  // Add MN2E-specific rules
   MN2E.raceRules(rules, MN2E.LANGUAGES, MN2E.RACES);
   MN2E.heroicPathRules(rules, MN2E.HEROIC_PATHS);
   MN2E.classRules(rules, MN2E.CLASSES);
@@ -68,17 +71,16 @@ function MN2E() {
   MN2E.featRules(rules, MN2E.FEATS, MN2E.SUBFEATS);
   MN2E.equipmentRules(rules, MN2E.WEAPONS);
   MN2E.magicRules(rules, MN2E.CLASSES);
-  rules.defineChoice('preset', 'race', 'heroicPath', 'experience', 'levels');
-  for(var i = 0; i < MN2E.RANDOMIZABLE_ATTRIBUTES.length; i++) {
-    if(MN2E.RANDOMIZABLE_ATTRIBUTES[i] == 'deity') {
-      MN2E.RANDOMIZABLE_ATTRIBUTES = MN2E.RANDOMIZABLE_ATTRIBUTES.slice(0, i).
-        concat(MN2E.RANDOMIZABLE_ATTRIBUTES.slice(i + 1));
-      break;
-    }
-  }
-  rules.defineChoice('random', MN2E.RANDOMIZABLE_ATTRIBUTES);
+  // Slight mods to SRD35 creation procedures
+  rules.defineChoice('preset', 'race', 'heroicPath', 'level', 'levels');
+  rules.defineChoice('random', SRD35.RANDOMIZABLE_ATTRIBUTES);
+  delete rules.getChoices('random').deity;
   rules.randomizeOneAttribute = MN2E.randomizeOneAttribute;
   rules.makeValid = MN2E.makeValid;
+  if(window.Experience != null) {
+    Experience.experienceRules(rules);
+  }
+  // Let Scribe know we're here
   Scribe.addRuleSet(rules);
   MN2E.rules = rules;
 
@@ -113,7 +115,7 @@ MN2E.HEROIC_PATHS = [
   'Ironborn', 'Jack-Of-All-Trades', 'Mountainborn', 'Naturefriend',
   'Northblooded', 'Painless', 'Pureblood', 'Quickened', 'Seaborn', 'Seer',
   'Speaker', 'Spellsoul', 'Shadow Walker', 'Steelblooded', 'Sunderborn',
-  'Tactician', 'Warg'
+  'Tactician', 'Warg', 'None'
 ];
 MN2E.LANGUAGES = [
   'Black Tongue', 'Clan Dwarven', 'Colonial', 'Courtier', 'Erenlander',
@@ -128,8 +130,6 @@ MN2E.RACES = [
   'Nomadic Halfling', 'Orc', 'Plains Sarcosan', 'Sea Elf', 'Snow Elf',
   'Urban Sarcosan', 'Wood Elf'
 ];
-MN2E.RANDOMIZABLE_ATTRIBUTES =
-  SRD35.RANDOMIZABLE_ATTRIBUTES.concat(['heroicPath']);
 MN2E.SCHOOLS = [
   'Abjuration:Abju', 'Conjuration:Conj', 'Divination:Divi', 'Enchantment:Ench',
   'Evocation:Evoc', 'Greater Conjuration:GrCo', 'Greater Evocation:GrEv',
@@ -1472,7 +1472,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
 /* Defines the rules related to MN2E Chapter 2, Heroic Paths. */
 MN2E.heroicPathRules = function(rules, paths) {
 
-  rules.defineChoice('heroicPaths', paths, 'None');
+  rules.defineChoice('heroicPaths', paths);
   rules.defineRule
     ('abilityNotes.charismaBonusFeature', 'features.Charisma Bonus', '=', null);
   rules.defineRule('abilityNotes.constitutionBonusFeature',
@@ -1713,7 +1713,7 @@ MN2E.heroicPathRules = function(rules, paths) {
         'featureNotes.tremorsenseFeature:' +
           'Detect creatures in contact w/ground w/in 30 ft',
         'skillNotes.stonecunningFeature:' +
-          '+2 Search involving stone or metal/automatic check w/in 10 ft'
+          '+%V Search involving stone or metal/automatic check w/in 10 ft'
       ];
       selectableFeatures = null;
       spellFeatures = [
@@ -1732,6 +1732,9 @@ MN2E.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule('featureNotes.darkvisionFeature',
         'earthbondedFeatures.Darkvision', '+=', '30'
+      );
+      rules.defineRule('skillNotes.stonecunningFeature',
+        'earthbondedFeatures.Stonecunning', '+=', '2'
       );
 
     } else if(path == 'Faithful') {
@@ -2374,9 +2377,9 @@ MN2E.heroicPathRules = function(rules, paths) {
 
       feats = null;
       features = [
-        '1:Dolphin\'s Grace', '2:Deep Lungs', '3:Aquatic Blindsight',
-        '4:Aquatic Ally', '10:Aquatic Adaptation', '14:Cold Resistance',
-        '17:Aquatic Emissary', '18:Assist Allies'
+        '1:Dolphin\'s Grace', '1:Natural Swimmer', '2:Deep Lungs',
+        '3:Aquatic Blindsight', '4:Aquatic Ally', '10:Aquatic Adaptation',
+        '14:Cold Resistance', '17:Aquatic Emissary', '18:Assist Allies'
       ];
       notes = [
         'magicNotes.aquaticAllyFeature:Cast <i>Aquatic Ally</i> spells %V/day',
@@ -2388,8 +2391,9 @@ MN2E.heroicPathRules = function(rules, paths) {
         'skillNotes.aquaticEmissaryFeature:Speak to all aquatic animals',
         'skillNotes.assistAlliesFeature:' +
           'Allies move through water at full speed/give oxygen to allies',
-        'skillNotes.dolphin\'sGraceFeature:%V Swim speed/+8 Swim hazards',
-        'skillNotes.deepLungsFeature:Hold breath for %V rounds'
+        'skillNotes.deepLungsFeature:Hold breath for %V rounds',
+        'skillNotes.dolphin\'sGraceFeature:+8 swim hazards',
+        'skillNotes.naturalSwimmerFeature:%V swim as move action'
       ];
       selectableFeatures = null;
       spellFeatures = [
@@ -2397,6 +2401,10 @@ MN2E.heroicPathRules = function(rules, paths) {
         '12:Aquatic Ally IV', '13:Displacement', '16:Aquatic Ally V',
         '20:Aquatic Ally VI'
       ];
+      rules.defineRule('deepLungsMultiplier',
+        'seabornFeatures.Deep Lungs', '^=', '2',
+        'pathLevels.Seaborn', '+', 'source >= 6 ? 2 : 1'
+      );
       rules.defineRule('magicNotes.aquaticAllyFeature',
         'pathLevels.Seaborn', '+=', 'Math.floor(source / 4)'
       );
@@ -2407,10 +2415,10 @@ MN2E.heroicPathRules = function(rules, paths) {
         'pathLevels.Seaborn', '+=', 'Math.floor((source + 5) / 8) * 30'
       );
       rules.defineRule('skillNotes.deepLungsFeature',
-        'pathLevels.Seaborn', '+=', 'source >= 6 ? 4 : 3',
+        'deepLungsMultiplier', '=', null,
         'constitution', '*', null
       );
-      rules.defineRule('skillNotes.dolphin\'sGraceFeature',
+      rules.defineRule('skillNotes.naturalSwimmerFeature',
         'pathLevels.Seaborn', '+=', 'source >= 15 ? 60 : source >= 7 ? 40 : 20'
       );
 
@@ -2785,8 +2793,9 @@ MN2E.heroicPathRules = function(rules, paths) {
     }
 
   }
+  rules.defineChoice('random', 'heroicPath');
   rules.defineEditorElement
-    ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
+    ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'levels');
   rules.defineSheetElement('Heroic Path', 'Alignment');
 
 };
@@ -3103,8 +3112,11 @@ MN2E.raceRules = function(rules, languages, races) {
           'featureNotes.knowDepthFeature:Intuit approximate depth underground',
           'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip',
           'skillNotes.stonecunningFeature:' +
-            '+2 Search involving stone or metal/automatic check w/in 10 ft'
+            '+%V Search involving stone or metal/automatic check w/in 10 ft'
         ]);
+        rules.defineRule('skillNotes.stonecunningFeature',
+          'clanDwarfFeatures.Stonecunning', '+=', '2'
+        );
       } else if(race == 'Kurgun Dwarf') {
         features = features.concat(['Natural Mountaineer']);
         notes = notes.concat([
@@ -3154,28 +3166,36 @@ MN2E.raceRules = function(rules, languages, races) {
         notes = notes.concat([
           'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
           'skillNotes.stonecunningFeature:' +
-            '+2 Search involving stone or metal/automatic check w/in 10 ft',
+            '+%V Search involving stone or metal/automatic check w/in 10 ft',
           'skillNotes.stoneKnowledgeFeature:' +
              '+2 Appraise/Craft involving stone or metal'
         ]);
+        rules.defineRule('skillNotes.stonecunningFeature',
+          'clanRaisedDwarrowFeatures.Stonecunning', '+=', '2'
+        );
       } else if(race == 'Gnome Raised Dwarrow') {
         features = features.concat([
-          'Natural Riverfolk', 'Natural Swimmer', 'Skilled Trader'
+          'Deep Lungs', 'Natural Riverfolk', 'Natural Swimmer',
+          'Skilled Trader'
         ]);
         notes = [
-          'skillNotes.naturalSwimmerFeature:' +
-             'Swim at half speed as move action/hold breath for %V rounds',
+          'skillNotes.deepLungsFeature:Hold breath for %V rounds',
           'skillNotes.naturalRiverfolkFeature:' +
             '+2 Perform/Profession (Sailor)/Swim/Use Rope',
+          'skillNotes.naturalSwimmerFeature:%V swim as move action',
           'skillNotes.skilledTraderFeature:' +
             '+2 Appraise/Bluff/Diplomacy/Forgery/Gather Information/' +
             'Profession when smuggling/trading'
         ];
-        rules.defineRule
-          ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
+        rules.defineRule('deepLungsMultiplier',
+          'gnomeRaisedDwarrowFeatures.Deep Lungs', '=', '3'
+        );
+        rules.defineRule('skillNotes.deepLungsFeature',
+          'deepLungsMultiplier', '=', null,
+          'constitution', '*', 'source'
+        );
         rules.defineRule('skillNotes.naturalSwimmerFeature',
-          'constitution', '=', 'source',
-          'holdBreathMultiplier', '*', null
+          'speed', '=', 'Math.floor(source / 2)'
         );
       } else if(race == 'Kurgun Raised Dwarrow') {
         features = features.concat([
@@ -3222,8 +3242,11 @@ MN2E.raceRules = function(rules, languages, races) {
         features = features.concat(['Stonecunning']);
         notes = notes.concat([
           'skillNotes.stonecunningFeature:' +
-            '+2 Search involving stone or metal/automatic check w/in 10 ft'
+            '+%V Search involving stone or metal/automatic check w/in 10 ft'
         ]);
+        rules.defineRule('skillNotes.stonecunningFeature',
+          'clanRaisedDworgFeatures.Stonecunning', '+=', '2'
+        );
       } else if(race == 'Kurgun Raised Dworg') {
         features = features.concat(['Natural Mountaineer']);
         notes = notes.concat([
@@ -3316,21 +3339,26 @@ MN2E.raceRules = function(rules, languages, races) {
           ('skillNotes.feralElfFeature2', 'features.Feral Elf', '=', '1');
       } else if(race == 'Sea Elf') {
         features = features.concat([
-          'Improved Natural Swimmer', 'Natural Sailor', 'Natural Swimmer'
+          'Deep Lungs', 'Improved Natural Swimmer', 'Natural Sailor',
+          'Natural Swimmer'
         ]);
         notes = notes.concat([
+          'skillNotes.deepLungsFeature:Hold breath for %V rounds',
           'skillNotes.improvedNaturalSwimmerFeature:' +
              '+8 special action or avoid hazard/always take 10/run',
           'skillNotes.naturalSailorFeature:' +
             '+2 Craft (ship/sea)/Profession (ship/sea)/Use Rope (ship/sea)',
-          'skillNotes.naturalSwimmerFeature:' +
-             'Swim at half speed as move action/hold breath for %V rounds'
+          'skillNotes.naturalSwimmerFeature:%V swim as move action'
         ]);
-        rules.defineRule
-          ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
+        rules.defineRule('deepLungsMultiplier',
+          'seaElfFeatures.Deep Lungs', '=', '6'
+        );
+        rules.defineRule('skillNotes.deepLungsFeature',
+          'deepLungsMultiplier', '=', null,
+          'constitution', '*', 'source'
+        );
         rules.defineRule('skillNotes.naturalSwimmerFeature',
-          'constitution', '=', 'source',
-          'holdBreathMultiplier', '*', null
+          'speed', '=', 'Math.floor(source / 2)'
         );
       } else if(race == 'Snow Elf') {
         features = features.concat(['Cold Hardy', 'Hardy']);
@@ -3392,8 +3420,8 @@ MN2E.raceRules = function(rules, languages, races) {
 
       adjustment = '+4 charisma/-2 strength';
       features = [
-        'Hardy', 'Low Light Vision', 'Natural Riverfolk', 'Natural Swimmer',
-        'Natural Trader', 'Slow', 'Small', 'Resist Spells'
+        'Deep Lungs', 'Hardy', 'Low Light Vision', 'Natural Riverfolk',
+        'Natural Swimmer', 'Natural Trader', 'Slow', 'Small', 'Resist Spells'
       ];
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
@@ -3401,10 +3429,10 @@ MN2E.raceRules = function(rules, languages, races) {
         'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.hardyFeature:+1 Fortitude',
         'saveNotes.resistSpellsFeature:+2 vs. spells',
+        'skillNotes.deepLungsFeature:Hold breath for %V rounds',
         'skillNotes.naturalRiverfolkFeature:' +
           '+2 Perform/Profession (Sailor)/Swim/Use Rope',
-        'skillNotes.naturalSwimmerFeature:' +
-           'Swim at half speed as move action/hold breath for %V rounds',
+        'skillNotes.naturalSwimmerFeature:%V swim as move action',
         'skillNotes.naturalTraderFeature:' +
           '+4 Appraise/Bluff/Diplomacy/Forgery/Gather Information/' +
           'Profession when smuggling/trading',
@@ -3412,6 +3440,8 @@ MN2E.raceRules = function(rules, languages, races) {
       ];
       selectableFeatures = null;
       rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule
+        ('deepLungsMultiplier', 'gnomeFeatures.Deep Lungs', '=', '3');
       rules.defineRule('featureNotes.lowLightVisionFeature',
         '', '=', '1',
         raceNoSpace + 'Features.Low Light Vision', '+', null
@@ -3421,11 +3451,12 @@ MN2E.raceRules = function(rules, languages, races) {
       rules.defineRule
         ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
       rules.defineRule('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
-      rules.defineRule
-        ('holdBreathMultiplier', 'race', '=', 'source == "Sea Elf" ? 6 : 3');
+      rules.defineRule('skillNotes.deepLungsFeature',
+        'deepLungsMultiplier', '=', null,
+        'constitution', '*', 'source'
+      );
       rules.defineRule('skillNotes.naturalSwimmerFeature',
-        'constitution', '=', 'source',
-        'holdBreathMultiplier', '*', null
+        'speed', '=', 'Math.floor(source / 2)'
       );
       rules.defineRule('speed', 'features.Slow', '+', '-10');
       rules.defineRule
@@ -3725,35 +3756,6 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
     SRD35.randomizeOneAttribute.apply(this, [attributes, attribute]);
   }
 }
-
-/* Convenience functions that invoke ScribeRules methods on the MN2E rules. */
-MN2E.defineChoice = function() {
-  return MN2E.rules.defineChoice.apply(MN2E.rules, arguments);
-};
-
-MN2E.defineEditorElement = function() {
-  return MN2E.rules.defineEditorElement.apply(MN2E.rules, arguments);
-};
-
-MN2E.defineNote = function() {
-  return MN2E.rules.defineNote.apply(MN2E.rules, arguments);
-};
-
-MN2E.defineRule = function() {
-  return MN2E.rules.defineRule.apply(MN2E.rules, arguments);
-};
-
-MN2E.defineSheetElement = function() {
-  return MN2E.rules.defineSheetElement.apply(MN2E.rules, arguments);
-};
-
-MN2E.getChoices = function() {
-  return MN2E.rules.getChoices.apply(MN2E.rules, arguments);
-};
-
-MN2E.isSource = function() {
-  return MN2E.rules.isSource.apply(MN2E.rules, arguments);
-};
 
 // Language synergies:
 // Pidgin Colonial or Norther -> Pidgin Erenlander
