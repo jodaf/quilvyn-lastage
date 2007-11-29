@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.96 2007/11/29 02:57:42 Jim Exp $ */
+/* $Id: LastAge.js,v 1.97 2007/11/29 03:15:07 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -339,8 +339,8 @@ MN2E.classRules = function(rules, classes) {
       features = ['1:Art Of Magic', '2:Summon Familiar'];
       hitDie = 6;
       notes = [
-        'magicNotes.artOfMagicFeature:+1 character level for max spell level',
-        'magicNotes.summonFamiliarFeature:Special bond/abilities'
+        'featureNotes.summonFamiliarFeature:Special bond/abilities',
+        'magicNotes.artOfMagicFeature:+1 character level for max spell level'
       ];
       profArmor = SRD35.PROFICIENCY_NONE;
       profShield = SRD35.PROFICIENCY_NONE;
