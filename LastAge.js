@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.97 2007/11/29 03:15:07 Jim Exp $ */
+/* $Id: LastAge.js,v 1.98 2007/12/01 07:27:51 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -59,8 +59,9 @@ function MN2E() {
   SRD35.adventuringRules(rules);
   SRD35.magicRules(rules, [], MN2E.DOMAINS, MN2E.SCHOOLS);
   // Pick up the NPC rules, if available
-  if(window.SRD35PrestigeNPC != null) {
-    SRD35PrestigeNPC.npcClassRules(rules, SRD35PrestigeNPC.NPC_CLASSES);
+  if(window.SRD35NPC != null) {
+    SRD35NPC.classRules(rules, SRD35NPC.CLASSES);
+    SRD35NPC.companionRules(rules, SRD35NPC.COMPANIONS);
   }
   // Add MN2E-specific rules
   MN2E.raceRules(rules, MN2E.LANGUAGES, MN2E.RACES);
