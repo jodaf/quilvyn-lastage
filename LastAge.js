@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.98 2007/12/01 07:27:51 Jim Exp $ */
+/* $Id: LastAge.js,v 1.99 2007/12/18 15:07:33 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -976,7 +976,7 @@ MN2E.classRules = function(rules, classes) {
           'creature types',
         'skillNotes.skillMasteryFeature:' +
           '+3 bonus/take 10 despite distraction on %V designated skills',
-        'skillNotes.trackFeature:Survival to follow creatures at 1/2 speed',
+        'skillNotes.trackFeature:Survival to follow creatures\' trail',
         'skillNotes.wildEmpathyFeature:+%V Diplomacy check with animals',
         'skillNotes.wildernessTrapfindingFeature:' +
           'Search to find/Survival to remove DC 20+ traps',
