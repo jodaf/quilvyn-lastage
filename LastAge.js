@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.99 2007/12/18 15:07:33 Jim Exp $ */
+/* $Id: LastAge.js,v 1.100 2008/01/04 03:59:54 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -56,7 +56,7 @@ function MN2E() {
   SRD35.equipmentRules
     (rules, SRD35.ARMORS, SRD35.GOODIES, SRD35.SHIELDS, SRD35.WEAPONS);
   SRD35.combatRules(rules);
-  SRD35.adventuringRules(rules);
+  SRD35.movementRules(rules);
   SRD35.magicRules(rules, [], MN2E.DOMAINS, MN2E.SCHOOLS);
   // Pick up the NPC rules, if available
   if(window.SRD35NPC != null) {
