@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.100 2008/01/04 03:59:54 Jim Exp $ */
+/* $Id: LastAge.js,v 1.101 2008/01/05 08:19:03 Jim Exp $ */
 
 /*
 Copyright 2005, James J. Hayes
@@ -2305,7 +2305,7 @@ MN2E.heroicPathRules = function(rules, paths) {
           '+%V on three selected non-charisma skills',
         'skillNotes.skillFixationFeature:' +
           'Take 10 despite distraction on %V designated skills',
-        'validationNotes.purebloodPathRace:Requires Race == Erenlander'
+        'validationNotes.purebloodHeroicPathRace:Requires Race =~ Erenlander'
       ];
       selectableFeatures = [
         'Charisma Bonus', 'Constitution Bonus', 'Dexterity Bonus',
@@ -2331,6 +2331,10 @@ MN2E.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule
         ('skillPoints', 'skillNotes.masterAdventurerFeature', '+', '3*source');
+      rules.defineRule('validationNotes.purebloodHeroicPathRace',
+        'pathLevels.Pureblood', '=', '-1',
+        'race', '+', 'source.match(/Erenlander/) ? 1 : null'
+      );
 
     } else if(path == 'Quickened') {
 
@@ -2479,7 +2483,8 @@ MN2E.heroicPathRules = function(rules, paths) {
         '14:Language Savant'
       ];
       notes = [
-        'magicNotes.powerWordsFeature:<i>Word of %V</i> %1/day',
+        'magicNotes.powerWordsFeature:' +
+          'DC %2+spell level <i>Word of %V</i> %1/day',
         'skillNotes.languageSavantFeature:' +
           'Fluent in any language after listening for 10 minutes',
         'skillNotes.persuasiveSpeakerFeature:+%V on verbal charisma skills'
@@ -2501,7 +2506,10 @@ MN2E.heroicPathRules = function(rules, paths) {
                     '(source >= 19 ? "/Holding" : "")'
       );
       rules.defineRule('magicNotes.powerWordsFeature.1',
-        'constitutionModifier', '=', 'source + 3'
+        'charismaModifier', '=', 'source + 3'
+      );
+      rules.defineRule('magicNotes.powerWordsFeature.2',
+        'charismaModifier', '=', 'source + 10'
       );
       rules.defineRule('skillNotes.persuasiveSpeakerFeature',
         'pathLevels.Speaker', '=',
