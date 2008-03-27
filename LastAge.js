@@ -1,7 +1,7 @@
-/* $Id: LastAge.js,v 1.101 2008/01/05 08:19:03 Jim Exp $ */
+/* $Id: LastAge.js,v 1.102 2008/03/27 05:12:22 Jim Exp $ */
 
 /*
-Copyright 2005, James J. Hayes
+Copyright 2008, James J. Hayes
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -96,7 +96,7 @@ MN2E.COMPANIONS = ['Animal Companion', 'Astirax'];
 MN2E.DOMAINS = [
   'Death', 'Destruction', 'Evil', 'Magic', 'War'
 ];
-MN2E.DEITIES = ['Izrador (NE):Death/Destruction/Evil/Magic/War', 'None:'];
+MN2E.DEITIES = ['The Dark God (NE):Death/Destruction/Evil/Magic/War', 'None:'];
 MN2E.FEATS = [
   'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
   'Craft Spell Talisman:Item Creation', 'Devastating Mounted Assault:Fighter',
@@ -317,7 +317,7 @@ MN2E.racesLanguages = {
     "Orcish:0/Sylvan:0/Trader's Tongue:0"
 };
 
-/* Defines the rules related to MN2E Chapter 3, Core Classes. */
+/* Defines the rules related to core classes. */
 MN2E.classRules = function(rules, classes) {
 
   for(var i = 0; i < classes.length; i++) {
@@ -1201,15 +1201,12 @@ MN2E.companionRules = function(rules, companions) {
 
 };
 
-/*
- * Defines the rules related to MN2E Chapter 5, Player Options/Starting
- * Equipment.
- */
+/* Defines the rules related to PC equipment. */
 MN2E.equipmentRules = function(rules, weapons) {
   rules.defineChoice('weapons', weapons);
 };
 
-/* Defines the rules related to MN2E Chapter 5, Player Options/Feats. */
+/* Defines the rules related to PC feats. */
 MN2E.featRules = function(rules, feats, subfeats) {
 
   // Let SRD35 handle the basics, then add MN-specific notes and rules
@@ -1470,7 +1467,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
 
 };
 
-/* Defines the rules related to MN2E Chapter 2, Heroic Paths. */
+/* Defines the rules related heroic paths. */
 MN2E.heroicPathRules = function(rules, paths) {
 
   rules.defineChoice('heroicPaths', paths);
@@ -2809,7 +2806,7 @@ MN2E.heroicPathRules = function(rules, paths) {
 
 };
 
-/* Defines the rules related to MN2E Chapter 5, Player Options/Magic. */
+/* Defines the rules related to PC spells and caster level. */
 MN2E.magicRules = function(rules, classes) {
 
   var channelerDone = false;
@@ -3002,7 +2999,7 @@ MN2E.magicRules = function(rules, classes) {
 
 };
 
-/* Defines the rules related to MN2E Chapter 1, Races of Midnight. */
+/* Defines the rules related to PC races. */
 MN2E.raceRules = function(rules, languages, races) {
 
   for(var i = 0; i < languages.length; i++) {
@@ -3650,7 +3647,8 @@ MN2E.raceRules = function(rules, languages, races) {
 
 };
 
-/* Defines the rules related to MN2E Chapter 5, Player Options/Skills. */
+/*
+ * Defines the rules related to PC skills. */
 MN2E.skillRules = function(rules, skills, subskills) {
 
   // Let SRD35 handle the basics, then add MN-specific notes and rules

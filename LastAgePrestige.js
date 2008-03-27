@@ -1,7 +1,7 @@
-/* $Id: LastAgePrestige.js,v 1.43 2007/11/29 02:57:42 Jim Exp $ */
+/* $Id: LastAgePrestige.js,v 1.44 2008/03/27 05:12:22 Jim Exp $ */
 
 /*
-Copyright 2005, James J. Hayes
+Copyright 2008, James J. Hayes
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -18,9 +18,9 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 */
 
 /*
- * This module loads the rules from the Midnight Second Edition core rule book,
- * Chapter 4, Prestige Classes.  The MN2EPrestige.PRESTIGE_CLASSES constant
- * fields can be manipulated in order to trim the choices offered.
+ * This module loads the rules from the core rule book, Chapter 4, Prestige
+ * Classes.  The MN2EPrestige.PRESTIGE_CLASSES constant fields can be
+ * manipulated in order to trim the choices offered.
  */
 function MN2EPrestige() {
   if(window.SRD35 == null || window.MN2E == null) {
@@ -238,8 +238,8 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
       baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = [
-        '1:Art Of Magic', '1:Resist Izrador\'s Will', '3:See Astirax',
-        '4:Counter Izrador\'s Will', '5:Bonus Spellcasting', '6:Bind Astirax',
+        '1:Art Of Magic', '1:Resist Legate\'s Will', '3:See Astirax',
+        '4:Counter Legate\'s Will', '5:Bonus Spellcasting', '6:Bind Astirax',
         '8:Conceal Magic', '10:Sundered Spirit'
       ];
       hitDie = 6;
@@ -252,9 +252,9 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           'Spells considered half level for purposes of astirax detection',
         'magicNotes.sunderedSpiritFeature:' +
           'Radiates <i>Antimagic Field</i> for divine magic',
-        'magicNotes.counterIzrador\'sWillFeature:' +
+        'magicNotes.counterLegate\'sWillFeature:' +
           '<i>Dispel Magic</i> vs. legates',
-        'saveNotes.resistIzrador\'sWillFeature:+10 vs. legate magic',
+        'saveNotes.resistLegate\'sWillFeature:+10 vs. legate magic',
         'validationNotes.baneOfLegatesClassFeats:' +
           'Requires Iron Will/Max Magecraft >= 1',
         'validationNotes.baneOfLegatesClassSkills:' +

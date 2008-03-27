@@ -1,4 +1,4 @@
-<!-- $Id: README.txt,v 1.1 2007/11/30 16:10:10 Jim Exp $ -->
+<!-- $Id: README.txt,v 1.2 2008/03/27 05:12:22 Jim Exp $ -->
 
 <html>
 
@@ -86,9 +86,9 @@
     Language synergy is not reported.
   </li><li>
     Scribe does not report a validation error for a character with pidgin
-    language competence in Courtier or High Elven.  Note that the Midnight rule
-    book violates this rule by specifying that Orcs have pidgin competence in
-    High Elven.
+    language competence in Courtier or High Elven.  Note that the rule book
+    violates this rule by specifying that Orcs have pidgin competence in High
+    Elven.
   </li>
 </ul>
 </p>
