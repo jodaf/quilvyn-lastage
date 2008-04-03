@@ -1,4 +1,4 @@
-/* $Id: LastAgePrestige.js,v 1.44 2008/03/27 05:12:22 Jim Exp $ */
+/* $Id: LastAgePrestige.js,v 1.45 2008/04/03 14:05:59 Jim Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -19,25 +19,26 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 /*
  * This module loads the rules from the core rule book, Chapter 4, Prestige
- * Classes.  The MN2EPrestige.PRESTIGE_CLASSES constant fields can be
+ * Classes.  The LastAgePrestige.PRESTIGE_CLASSES constant fields can be
  * manipulated in order to trim the choices offered.
  */
-function MN2EPrestige() {
-  if(window.SRD35 == null || window.MN2E == null) {
-    alert('The MN2EPrestige module requires use of the SRD35 and MN2E modules');
+function LastAgePrestige() {
+  if(window.SRD35 == null || window.LastAge == null) {
+    alert('The LastAgePrestige module requires the SRD35 and LastAge modules');
     return;
   }
-  MN2EPrestige.prestigeClassRules(MN2E.rules, MN2EPrestige.PRESTIGE_CLASSES);
+  LastAgePrestige.prestigeClassRules
+    (LastAge.rules, LastAgePrestige.PRESTIGE_CLASSES);
 }
 
-MN2EPrestige.PRESTIGE_CLASSES = [
+LastAgePrestige.PRESTIGE_CLASSES = [
   'Ancestral Bladebearer', 'Aradil\'s Eye', 'Avenging Knife',
   'Bane Of Legates', 'Druid', 'Elven Raider', 'Freerider', 'Haunted One',
   'Insurgent Spy', 'Smuggler', 'Warrior Arcanist', 'Whisper Adept', 'Wizard',
   'Wogren Rider'
 ];
 
-MN2EPrestige.prestigeClassRules = function(rules, classes) {
+LastAgePrestige.prestigeClassRules = function(rules, classes) {
 
   for(var i = 0; i < classes.length; i++) {
 
@@ -381,7 +382,7 @@ MN2EPrestige.prestigeClassRules = function(rules, classes) {
           continue;
         }
         var spell = matchInfo[1];
-        var school = MN2E.spellsSchools[spell];
+        var school = LastAge.spellsSchools[spell];
         if(school == null && (school = SRD35.spellsSchools[spell]) == null) {
           continue;
         }

@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.102 2008/03/27 05:12:22 Jim Exp $ */
+/* $Id: LastAge.js,v 1.103 2008/04/03 14:05:59 Jim Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -18,22 +18,22 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 */
 
 /*
- * This module loads the rules from the Midnight Second Edition core rule book.
- * The MN2E function contains methods that load rules for particular
+ * This module loads the rules from the Second Edition core rule book.
+ * The LastAge function contains methods that load rules for particular
  * parts/chapters of the rule book; raceRules for character races, magicRules
  * for spells, etc.  These member methods can be called independently in order
- * to use a subset of the MN2E rules.  Similarly, the constant fields of MN2E
- * (FEATS, HEROIC_PATHS, etc.) can be manipulated to modify the choices.
+ * to use a subset of the LastAge rules.  Similarly, the constant fields of
+ * LastAge (FEATS, HEROIC_PATHS, etc.) can be manipulated to modify the choices.
  */
-function MN2E() {
+function LastAge() {
 
   if(window.SRD35 == null) {
-    alert('The MN2E module requires use of the SRD35 module');
+    alert('The LastAge module requires use of the SRD35 module');
     return;
   }
 
   // Define a new rule set w/the same editor and standard viewer as SRD35
-  var rules = new ScribeRules('Midnight 2nd Edition');
+  var rules = new ScribeRules('Last Age');
   rules.editorElements = SRD35.initialEditorElements();
   SRD35.createViewers(rules, SRD35.VIEWERS);
   // Remove some editor and character sheet elements that don't apply
@@ -43,61 +43,63 @@ function MN2E() {
   rules.defineSheetElement('Deity');
   // Pick up applicable SRD35 rules
   SRD35.abilityRules(rules);
-  // MN2E doesn't use the SRD35 languages or races, but we call SRD35.raceRules
-  // anyway to pick up any other rules it defines (e.g., languageCount)
+  // LastAge doesn't use the SRD35 languages or races, but we call
+  // SRD35.raceRules to pick up any other rules it defines (e.g., languageCount)
   SRD35.raceRules(rules, [], []);
-  // Fighter in MN2E is sufficiently changed from the SRD to be considered a
+  // Fighter in LastAge is sufficiently changed from the SRD to be considered a
   // different class
   SRD35.classRules(rules, ['Barbarian', 'Rogue']);
   SRD35.companionRules(rules, ['Familiar']);
   SRD35.skillRules(rules, SRD35.SKILLS, SRD35.SUBSKILLS);
   SRD35.featRules(rules, SRD35.FEATS, SRD35.SUBFEATS);
-  SRD35.descriptionRules(rules, SRD35.ALIGNMENTS, MN2E.DEITIES, SRD35.GENDERS);
+  SRD35.descriptionRules
+    (rules, SRD35.ALIGNMENTS, LastAge.DEITIES, SRD35.GENDERS);
   SRD35.equipmentRules
     (rules, SRD35.ARMORS, SRD35.GOODIES, SRD35.SHIELDS, SRD35.WEAPONS);
   SRD35.combatRules(rules);
   SRD35.movementRules(rules);
-  SRD35.magicRules(rules, [], MN2E.DOMAINS, MN2E.SCHOOLS);
+  SRD35.magicRules(rules, [], LastAge.DOMAINS, LastAge.SCHOOLS);
   // Pick up the NPC rules, if available
   if(window.SRD35NPC != null) {
     SRD35NPC.classRules(rules, SRD35NPC.CLASSES);
     SRD35NPC.companionRules(rules, SRD35NPC.COMPANIONS);
   }
-  // Add MN2E-specific rules
-  MN2E.raceRules(rules, MN2E.LANGUAGES, MN2E.RACES);
-  MN2E.heroicPathRules(rules, MN2E.HEROIC_PATHS);
-  MN2E.classRules(rules, MN2E.CLASSES);
-  MN2E.companionRules(rules, MN2E.COMPANIONS);
-  MN2E.skillRules(rules, MN2E.SKILLS, MN2E.SUBSKILLS);
-  MN2E.featRules(rules, MN2E.FEATS, MN2E.SUBFEATS);
-  MN2E.equipmentRules(rules, MN2E.WEAPONS);
-  MN2E.magicRules(rules, MN2E.CLASSES);
+  // Add LastAge-specific rules
+  LastAge.raceRules(rules, LastAge.LANGUAGES, LastAge.RACES);
+  LastAge.heroicPathRules(rules, LastAge.HEROIC_PATHS);
+  LastAge.classRules(rules, LastAge.CLASSES);
+  LastAge.companionRules(rules, LastAge.COMPANIONS);
+  LastAge.skillRules(rules, LastAge.SKILLS, LastAge.SUBSKILLS);
+  LastAge.featRules(rules, LastAge.FEATS, LastAge.SUBFEATS);
+  LastAge.equipmentRules(rules, LastAge.WEAPONS);
+  LastAge.magicRules(rules, LastAge.CLASSES);
   // Slight mods to SRD35 creation procedures
   rules.defineChoice('preset', 'race', 'heroicPath', 'level', 'levels');
   rules.defineChoice('random', SRD35.RANDOMIZABLE_ATTRIBUTES);
   delete rules.getChoices('random').deity;
-  rules.randomizeOneAttribute = MN2E.randomizeOneAttribute;
-  rules.makeValid = MN2E.makeValid;
+  rules.randomizeOneAttribute = LastAge.randomizeOneAttribute;
+  rules.makeValid = LastAge.makeValid;
   if(window.Experience != null) {
     Experience.experienceRules(rules);
   }
   // Let Scribe know we're here
   Scribe.addRuleSet(rules);
-  MN2E.rules = rules;
+  LastAge.rules = rules;
 
 }
 
 // Arrays of choices passed to Scribe.
-MN2E.CLASSES = [
+LastAge.CLASSES = [
   'Barbarian', 'Charismatic Channeler', 'Defender', 'Fighter',
   'Hermetic Channeler', 'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
 ];
-MN2E.COMPANIONS = ['Animal Companion', 'Astirax'];
-MN2E.DOMAINS = [
+LastAge.COMPANIONS = ['Animal Companion', 'Astirax'];
+LastAge.DOMAINS = [
   'Death', 'Destruction', 'Evil', 'Magic', 'War'
 ];
-MN2E.DEITIES = ['The Dark God (NE):Death/Destruction/Evil/Magic/War', 'None:'];
-MN2E.FEATS = [
+LastAge.DEITIES =
+  ['The Dark God (NE):Death/Destruction/Evil/Magic/War', 'None:'];
+LastAge.FEATS = [
   'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
   'Craft Spell Talisman:Item Creation', 'Devastating Mounted Assault:Fighter',
   'Drive It Deep:Fighter', 'Extra Gift:', 'Friendly Agent:',
@@ -110,7 +112,7 @@ MN2E.FEATS = [
   'Thick Skull:', 'Warrior Of Shadow:', 'Weapon Focus:Fighter',
   'Whispering Awareness:'
 ];
-MN2E.HEROIC_PATHS = [
+LastAge.HEROIC_PATHS = [
   'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
   'Faithful', 'Fellhunter', 'Feyblooded', 'Giantblooded', 'Guardian', 'Healer',
   'Ironborn', 'Jack-Of-All-Trades', 'Mountainborn', 'Naturefriend',
@@ -118,12 +120,12 @@ MN2E.HEROIC_PATHS = [
   'Speaker', 'Spellsoul', 'Shadow Walker', 'Steelblooded', 'Sunderborn',
   'Tactician', 'Warg', 'None'
 ];
-MN2E.LANGUAGES = [
+LastAge.LANGUAGES = [
   'Black Tongue', 'Clan Dwarven', 'Colonial', 'Courtier', 'Erenlander',
   'Halfling', 'High Elven', 'Jungle Mouth', 'Norther', 'Old Dwarven', 'Orcish',
   'Patrol Sign', 'Sylvan', 'Trader\'s Tongue'
 ];
-MN2E.RACES = [
+LastAge.RACES = [
   'Agrarian Halfling', 'Clan Dwarf', 'Clan Raised Dwarrow', 'Clan Raised Dworg',
   'Danisil Raised Elfling', 'Dorn', 'Erenlander', 'Gnome',
   'Gnome Raised Dwarrow', 'Halfling Raised Elfling', 'Jungle Elf',
@@ -131,28 +133,28 @@ MN2E.RACES = [
   'Nomadic Halfling', 'Orc', 'Plains Sarcosan', 'Sea Elf', 'Snow Elf',
   'Urban Sarcosan', 'Wood Elf'
 ];
-MN2E.SCHOOLS = [
+LastAge.SCHOOLS = [
   'Abjuration:Abju', 'Conjuration:Conj', 'Divination:Divi', 'Enchantment:Ench',
   'Evocation:Evoc', 'Greater Conjuration:GrCo', 'Greater Evocation:GrEv',
   'Illusion:Illu', 'Necromancy:Necr', 'Transmutation:Tran'
 ];
-MN2E.SKILLS = [
+LastAge.SKILLS = [
   'Knowledge:int/trained', 'Profession:wis/trained'
 ];
-MN2E.SUBFEATS = {
+LastAge.SUBFEATS = {
   'Magecraft':'Charismatic/Hermetic/Spiritual',
   // Skill Focus (Profession (Soldier)) available to Leader Of Men Fighters
   'Skill Focus':'Profession (Soldier)',
-  'Spellcasting':MN2E.SCHOOLS.join('/').replace(/:[^\/]+/g, ''),
+  'Spellcasting':LastAge.SCHOOLS.join('/').replace(/:[^\/]+/g, ''),
   // Legates w/War domain receive Weapon Focus (Longsword)
   'Weapon Focus':'Longsword'
 };
-MN2E.SUBSKILLS = {
+LastAge.SUBSKILLS = {
   'Knowledge':'Old Gods/Shadow/Spirits',
   // Profession (Soldier) available to Leader Of Men Fighters
   'Profession':'Soldier'
 };
-MN2E.WEAPONS = [
+LastAge.WEAPONS = [
   'Atharak:d6', 'Cedeku:d6@19', 'Crafted Vardatch:d10@19',
   'Dornish Horse Spear:d10x3', 'Farmer\'s Rope:d2', 'Fighting Knife:d6@19x3',
   'Great Sling:d6r60', 'Greater Vardatch:2d8', 'Halfling Lance:d8x3',
@@ -161,8 +163,8 @@ MN2E.WEAPONS = [
   'Urutuk Hatchet:d8x3r20', 'Vardatch:d12'
 ];
 
-// Related information used internally by MN2E
-MN2E.spellsSchools = {
+// Related information used internally by LastAge
+LastAge.spellsSchools = {
   // New spells
   'Charm Repair':'Transmutation', 'Detect Astirax':'Divination',
   'Disguise Ally':'Illusion', 'Disguise Weapon':'Illusion',
@@ -230,7 +232,7 @@ MN2E.spellsSchools = {
   'Lie':'Transmutation', 'Magic Circle Against Shadow':'Abjuration',
   'Phantom Edge':'Transmutation', 'Scryer\'s Mark':'Divination'
 };
-MN2E.racesFavoredRegions = {
+LastAge.racesFavoredRegions = {
   'Agrarian Halfling':'Central Erenland',
   'Clan Dwarf':'Kaladrun Mountains/Subterranean',
   'Clan Raised Dwarrow':'Kaladrun Mountains',
@@ -247,7 +249,7 @@ MN2E.racesFavoredRegions = {
   'Snow Elf':'Erethor/Veradeen', 'Urban Sarcosan':null,
   'Wood Elf':'Erethor/Caraheen'
 };
-MN2E.racesLanguages = {
+LastAge.racesLanguages = {
   "Agrarian Halfling":
     "Colonial:3/Halfling:3/" +
     "Black Tongue:0/Courtier:0/Erenlander:0/Jungle Mouth:0/Orcish:0/" +
@@ -318,7 +320,7 @@ MN2E.racesLanguages = {
 };
 
 /* Defines the rules related to core classes. */
-MN2E.classRules = function(rules, classes) {
+LastAge.classRules = function(rules, classes) {
 
   for(var i = 0; i < classes.length; i++) {
 
@@ -383,8 +385,8 @@ MN2E.classRules = function(rules, classes) {
 
       if(klass == 'Charismatic Channeler') {
         feats = ['Extra Gift', 'Spell Knowledge'];
-        for(var j = 0; j < MN2E.SCHOOLS.length; j++) {
-          var school = MN2E.SCHOOLS[j].split(':')[0];
+        for(var j = 0; j < LastAge.SCHOOLS.length; j++) {
+          var school = LastAge.SCHOOLS[j].split(':')[0];
           feats[feats.length] = 'Greater Spell Focus (' + school + ')';
           feats[feats.length] = 'Spell Focus (' + school + ')';
         }
@@ -480,7 +482,7 @@ MN2E.classRules = function(rules, classes) {
         );
       } else if(klass == 'Hermetic Channeler') {
         feats = ['Spell Knowledge'];
-        var allFeats = SRD35.FEATS.concat(MN2E.FEATS);
+        var allFeats = SRD35.FEATS.concat(LastAge.FEATS);
         for(var j = 0; j < allFeats.length; j++) {
           var pieces = allFeats[j].split(':');
           if(pieces[1].match(/Item Creation|Metamagic/)) {
@@ -529,7 +531,7 @@ MN2E.classRules = function(rules, classes) {
         );
       } else if(klass == 'Spiritual Channeler') {
         feats = ['Extra Gift', 'Spell Knowledge'];
-        var allFeats = SRD35.FEATS.concat(MN2E.FEATS);
+        var allFeats = SRD35.FEATS.concat(LastAge.FEATS);
         for(var j = 0; j < allFeats.length; j++) {
           var pieces = allFeats[j].split(':');
           if(pieces[1].indexOf('Item Creation') >= 0) {
@@ -1105,7 +1107,7 @@ MN2E.classRules = function(rules, classes) {
 };
 
 /* Defines the rules related to companion creatures. */
-MN2E.companionRules = function(rules, companions) {
+LastAge.companionRules = function(rules, companions) {
 
   for(var i = 0; i < companions.length; i++) {
 
@@ -1202,12 +1204,12 @@ MN2E.companionRules = function(rules, companions) {
 };
 
 /* Defines the rules related to PC equipment. */
-MN2E.equipmentRules = function(rules, weapons) {
+LastAge.equipmentRules = function(rules, weapons) {
   rules.defineChoice('weapons', weapons);
 };
 
 /* Defines the rules related to PC feats. */
-MN2E.featRules = function(rules, feats, subfeats) {
+LastAge.featRules = function(rules, feats, subfeats) {
 
   // Let SRD35 handle the basics, then add MN-specific notes and rules
   SRD35.featRules(rules, feats, subfeats);
@@ -1369,7 +1371,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
           continue;
         }
         var spell = matchInfo[1];
-        var school = MN2E.spellsSchools[spell];
+        var school = LastAge.spellsSchools[spell];
         if(school == null && (school = SRD35.spellsSchools[spell]) == null) {
           continue;
         }
@@ -1468,7 +1470,7 @@ MN2E.featRules = function(rules, feats, subfeats) {
 };
 
 /* Defines the rules related heroic paths. */
-MN2E.heroicPathRules = function(rules, paths) {
+LastAge.heroicPathRules = function(rules, paths) {
 
   rules.defineChoice('heroicPaths', paths);
   rules.defineRule
@@ -2807,7 +2809,7 @@ MN2E.heroicPathRules = function(rules, paths) {
 };
 
 /* Defines the rules related to PC spells and caster level. */
-MN2E.magicRules = function(rules, classes) {
+LastAge.magicRules = function(rules, classes) {
 
   var channelerDone = false;
   var schools = rules.getChoices('schools');
@@ -2968,7 +2970,7 @@ MN2E.magicRules = function(rules, classes) {
         var pieces = spells[j].split(':');
         for(var k = 1; k < pieces.length; k++) {
           var spell = pieces[k];
-          var school = MN2E.spellsSchools[spell];
+          var school = LastAge.spellsSchools[spell];
           if(school == null && (school = SRD35.spellsSchools[spell]) == null) {
             continue;
           }
@@ -3000,24 +3002,24 @@ MN2E.magicRules = function(rules, classes) {
 };
 
 /* Defines the rules related to PC races. */
-MN2E.raceRules = function(rules, languages, races) {
+LastAge.raceRules = function(rules, languages, races) {
 
   for(var i = 0; i < languages.length; i++) {
     var language = languages[i];
     rules.defineRule('languages.' + language,
       'race', '+=',
-      'MN2E.racesLanguages[source] == null ? null : ' +
-      'MN2E.racesLanguages[source].indexOf("' + language + ':3") >= 0 ? 3 : ' +
-      'MN2E.racesLanguages[source].indexOf("' + language + ':2") >= 0 ? 2 : ' +
-      'MN2E.racesLanguages[source].indexOf("' + language + ':1") >= 0 ? 1 : ' +
+      'LastAge.racesLanguages[source] == null ? null : ' +
+      'LastAge.racesLanguages[source].indexOf("' + language + ':3")>=0 ? 3 : ' +
+      'LastAge.racesLanguages[source].indexOf("' + language + ':2")>=0 ? 2 : ' +
+      'LastAge.racesLanguages[source].indexOf("' + language + ':1")>=0 ? 1 : ' +
       'null'
     );
   }
   rules.defineChoice('languages', languages);
   rules.defineRule('languageCount',
     'race', '=',
-      'MN2E.racesLanguages[source] == null ? 0 : ' +
-      'eval(MN2E.racesLanguages[source].replace(/\\D+/g, "+"))',
+      'LastAge.racesLanguages[source] == null ? 0 : ' +
+      'eval(LastAge.racesLanguages[source].replace(/\\D+/g, "+"))',
     'intelligenceModifier', '+', 'source > 0 ? source : null',
     'skillModifier.Speak Language', '+', '2 * source'
   );
@@ -3035,7 +3037,7 @@ MN2E.raceRules = function(rules, languages, races) {
   ];
   rules.defineNote(notes);
   rules.defineRule('skillNotes.favoredRegion',
-    'race', '=', 'MN2E.racesFavoredRegions[source]'
+    'race', '=', 'LastAge.racesFavoredRegions[source]'
   );
   rules.defineRule('features.Illiteracy', '', '=', '1');
   rules.defineRule
@@ -3649,7 +3651,7 @@ MN2E.raceRules = function(rules, languages, races) {
 
 /*
  * Defines the rules related to PC skills. */
-MN2E.skillRules = function(rules, skills, subskills) {
+LastAge.skillRules = function(rules, skills, subskills) {
 
   // Let SRD35 handle the basics, then add MN-specific notes and rules
   SRD35.skillRules(rules, skills, subskills);
@@ -3672,18 +3674,18 @@ MN2E.skillRules = function(rules, skills, subskills) {
 
 };
 
-MN2E.makeValid = function(attributes) {
+LastAge.makeValid = function(attributes) {
   SRD35.makeValid.apply(this, [attributes]);
 };
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
-MN2E.randomizeOneAttribute = function(attributes, attribute) {
+LastAge.randomizeOneAttribute = function(attributes, attribute) {
   if(attribute == 'languages') {
     var attrs = this.applyRules(attributes);
     var choices;
     var howMany =
       attrs.languageCount - ScribeUtils.sumMatching(attrs, /^languages\./);
-    if(attrs.race == null || MN2E.racesLanguages[attrs.race] == null) {
+    if(attrs.race == null || LastAge.racesLanguages[attrs.race] == null) {
       // Allow any non-restricted language
       choices = ScribeUtils.getKeys(this.getChoices('languages'));
       for(var i = choices.length - 1; i >= 0; i--) {
@@ -3691,18 +3693,19 @@ MN2E.randomizeOneAttribute = function(attributes, attribute) {
           choices = choices.slice(0, i).concat(choices.slice(i + 1));
         }
       }
-    } else if(MN2E.racesLanguages[attrs.race].indexOf('Any') >= 0) {
+    } else if(LastAge.racesLanguages[attrs.race].indexOf('Any') >= 0) {
       // Allow (at least) any non-restricted language
       choices = ScribeUtils.getKeys(this.getChoices('languages'));
       for(var i = choices.length - 1; i >= 0; i--) {
         if(choices[i].match(/Patrol Sign|Sylvan/) &&
-           MN2E.racesLanguages[attrs.race].indexOf(choices[i]) < 0) {
+           LastAge.racesLanguages[attrs.race].indexOf(choices[i]) < 0) {
           choices = choices.slice(0, i).concat(choices.slice(i + 1));
         }
       }
     } else {
       // Allow only those listed for this race
-      choices = MN2E.racesLanguages[attrs.race].replace(/:\d*/g, '').split('/');
+      choices =
+        LastAge.racesLanguages[attrs.race].replace(/:\d*/g, '').split('/');
     }
     while(howMany > 0 && choices.length > 0) {
       var i = ScribeUtils.random(0, choices.length - 1);

@@ -1,24 +1,25 @@
-<!-- $Id: README.txt,v 1.3 2008/04/03 05:17:53 Jim Exp $ -->
+<!-- $Id: README.txt,v 1.4 2008/04/03 14:06:00 Jim Exp $ -->
 
 <html>
 
 <head>
-  <title>MN2E Scribe Module Notes</title>
+  <title>LastAge Scribe Module Notes</title>
 </head>
 
 <body bgcolor='wheat'>
 
-<h2>MN2E Scribe Module Notes</h2>
+<h2>LastAge Scribe Module Notes</h2>
 
 <h3>Installation</h3>
 This package contains a plug-in that allows the Scribe Character Editor to
-work with characters from the Midnight campaign setting from Fantasy Flight
-Games.  To install it, copy MN2E.js, MN2Edoc.html, and ogl.txt into your Scribe
-installation directory (the latter replaces the version of ogl.txt that comes
-with Scribe), then add 'MN2E.js' to the CUSTOMIZATION_URLS array in
-your installation's scribe.html.  If you also want to use the Midnight prestige
-classes, copy MN2EPrestige.js into your Scribe installation directory and
-add 'MN2EPrestige.js' to the CUSTOMIZATION_URLS array.
+work with characters from the second edition of the dark fantasy campaign
+setting from Fantasy Flight Games.  To install it, copy LastAge.js,
+LastAgedoc.html, and ogl.txt into your Scribe installation directory (the
+latter replaces the version of ogl.txt that comes with Scribe), then add
+'LastAge.js' to the CUSTOMIZATION_URLS array in your installation's
+scribe.html.  If you also want to use the LastAge prestige classes, copy
+LastAgePrestige.js into your Scribe installation directory and add
+'LastAgePrestige.js' to the CUSTOMIZATION_URLS array.
 
 <h3>Usage Notes</h3>
 <p>
