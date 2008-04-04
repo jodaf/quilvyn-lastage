@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.103 2008/04/03 14:05:59 Jim Exp $ */
+/* $Id: LastAge.js,v 1.104 2008/04/04 05:33:20 Jim Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -78,10 +78,8 @@ function LastAge() {
   rules.defineChoice('random', SRD35.RANDOMIZABLE_ATTRIBUTES);
   delete rules.getChoices('random').deity;
   rules.randomizeOneAttribute = LastAge.randomizeOneAttribute;
-  rules.makeValid = LastAge.makeValid;
-  if(window.Experience != null) {
-    Experience.experienceRules(rules);
-  }
+  rules.makeValid = SRD35.makeValid;
+  rules.ruleNotes = LastAge.ruleNotes;
   // Let Scribe know we're here
   Scribe.addRuleSet(rules);
   LastAge.rules = rules;
@@ -1211,7 +1209,7 @@ LastAge.equipmentRules = function(rules, weapons) {
 /* Defines the rules related to PC feats. */
 LastAge.featRules = function(rules, feats, subfeats) {
 
-  // Let SRD35 handle the basics, then add MN-specific notes and rules
+  // Let SRD35 handle the basics, then add setting-specific notes and rules
   SRD35.featRules(rules, feats, subfeats);
 
   var allFeats = [];
@@ -3653,7 +3651,7 @@ LastAge.raceRules = function(rules, languages, races) {
  * Defines the rules related to PC skills. */
 LastAge.skillRules = function(rules, skills, subskills) {
 
-  // Let SRD35 handle the basics, then add MN-specific notes and rules
+  // Let SRD35 handle the basics, then add setting-specific notes and rules
   SRD35.skillRules(rules, skills, subskills);
   var notes = [
     'skillNotes.knowledge(Local)Synergy2:' +
@@ -3672,10 +3670,6 @@ LastAge.skillRules = function(rules, skills, subskills) {
     'skillNotes.knowledge(Nature)Synergy2', '+', '2'
   );
 
-};
-
-LastAge.makeValid = function(attributes) {
-  SRD35.makeValid.apply(this, [attributes]);
 };
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
@@ -3765,7 +3759,103 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
   } else {
     SRD35.randomizeOneAttribute.apply(this, [attributes, attribute]);
   }
-}
+};
+
+/* Returns HTML body content for user notes associated with this rule set. */
+LastAge.ruleNotes = function() {
+  return '' +
+    '<h2>LastAge Scribe Module Notes</h2>\n' +
+    '\n' +
+    '<h3>Usage Notes</h3>\n' +
+    '<p>\n' +
+    '<ul>\n' +
+    '  <li>\n' +
+    '    Racial origin choices (e.g., Plains/Urban Sarcosan, Clan/Kurgun\n' +
+    '    Dwarf) are absorbed into the list of races.\n' +
+    '  </li><li>\n' +
+    '    Scribe lists Greater Conjuration and Greater Evocation as separate\n' +
+    '    schools and uses Conjuration and Evocation to represent the\n' +
+    '    lesser variety.  This simplfies the spell list and treats legate\n' +
+    '    and druid spells from these schools as the lesser variety.  It\n' +
+    '    also makes the Greater Spellcasting feat moot; use Spellcasting\n' +
+    '    (Greater Conjuration) or Spellcasting (Greater Evocation) instead.\n' +
+    '  </li><li>\n' +
+    '    The rule book uses several feature names multiple times with\n' +
+    '    different effects.  For example, the Orc "Cold Resistance" feature\n' +
+    '    grants immunity to non-lethal damage and half damage from lethal\n' +
+    '    cold, while the Northblooded and Seaborn feature of the same name\n' +
+    '    grants damage reduction.  In these cases Scribe uses a different\n' +
+    '    name for one of the features in order to remove the ambiguity.\n' +
+    '    The renamed features are: Orc "Cold Resistance" (renamed\n' +
+    '    "Improved Cold Hardy" to distinguish from the Northblooded and\n' +
+    '    Seaborn feature); Chanceborn "Survivor" (renamed "Persistence" to\n' +
+    '    distinguish from the Fighter feature); Insurgent Spy "Conceal\n' +
+    '    Magic" (renamed "Conceal Aura" to distinguish from the Bane Of\n' +
+    '    Legates feature); Pureblood "Skill Mastery" (renamed "Skill\n' +
+    '    Fixation" to distinguish from the Wildlander feature); Spellsoul\n' +
+    '    "Resistance" (renamed "Improved Spell Resistance" to distinguish\n' +
+    '    from other resistance features); Tactician "Coordinated Attack"\n' +
+    '    (renamed "Joint Attack" to distinguish from the Wogren Rider\n' +
+    '    feature); prestige class "Improved Spellcasting" (split into "Art\n' +
+    '    Of Magic" and bonus spells and points to distinguish from the\n' +
+    '    Dragonblooded feature).  Also, the Survival bonus granted by the\n' +
+    '    Mountainborn "Mountaineer" feature is treated as a separate\n' +
+    '    feature ("Mountain Survival") for consistency with the Dwarf\n' +
+    '    "Mountaineer" feature.\n' +
+    '  </li><li>\n' +
+    '    In situations where a feature has very different effects at\n' +
+    '    different character levels, Scribe uses a different feature name\n' +
+    '    for each effect.  For example, the Giantblooded "Size Features"\n' +
+    '    feature is replaced by "Obvious" at level 1, "Large" at level 10,\n' +
+    '    and "Extra Reach" at level 20.  Other instances: Ironborn level\n' +
+    '    14 "Improved Healing" becomes "Ability Recovery"; Mountaineer\n' +
+    '    "Ambush" becomes "Improved Ambush", "Quick Ambush", and "Sniping\n' +
+    '    Ambush" at levels 8, 13, and 18; Painless "Retributive Rage"\n' +
+    '    becomes "Improved Retributive Rage" at level 14; Steelborn\n' +
+    '    "Untouchable" becomes "Improved Untouchable" at level 19;\n' +
+    '    Sunderborn "Spirit Sight" becomes "Darkvision", "Magical\n' +
+    '    Darkvision", and "See Invisible" at levels 7, 13, and 19;\n' +
+    '    Tactician "Aid Another" becomes "Aided Combat Bonus" at level 5;\n' +
+    '    Aradil\'s Eye "Alter Ego" becomes "Quick Alteration" and\n' +
+    '    "Nonmagical Alteration" at levels 5 and 9; Whisper Adept "Whisper\n' +
+    '    Sense" becomes "Whisper Initiative", "Whisper Surprise", "Whisper\n' +
+    '    Clairaudience", "Whisper Clairvoyance", and "Whisper Commune" at\n' +
+    '    levels 2, 4, 6, 8, and 10.\n' +
+    '  </li><li>\n' +
+    '    The rule book incorrectly lists Bear\'s Endurance as a spell\n' +
+    '    acquired at the level 4 Beast heroic path.  Scribe corrects this\n' +
+    '    to Bull\'s Endurance".\n' +
+    '  </li><li>\n' +
+    '    The Wogren Rider selectable features "Improved Ride By Attack",\n' +
+    '    "Improved Spirited Charge", and "Improved Trample" only apply if\n' +
+    '    the character already has the corresponding unimproved feat.\n' +
+    '    Select the "Ride By Attack", "Spirited Charge", and "Trample"\n' +
+    '    selectable features otherwise.\n' +
+    '  </li><li>\n' +
+    '    The selectable feature list includes "Alertness" and "Improved\n' +
+    '    Initiative" directly, instead of the Wildlander "Rapid Response"\n' +
+    '    trait that allows a choice between these two feats.  Similarly,\n' +
+    '    the selectable feature list separates "Initiative Bonus" from\n' +
+    '    "Danger Sense", since "Danger Sense" requires choosing between\n' +
+    '    initiative and listen/spot bonuses after level 1.\n' +
+    '  </li>\n' +
+    '</ul>\n' +
+    '</p>\n' +
+    '\n' +
+    '<h3>Limitations</h3>\n' +
+    '<p>\n' +
+    '<ul>\n' +
+    '  <li>\n' +
+    '    Language synergy is not reported.\n' +
+    '  </li><li>\n' +
+    '    Scribe does not report a validation error for a character with\n' +
+    '    pidgin language competence in Courtier or High Elven.  Note that\n' +
+    '    the rule book violates this rule by specifying that Orcs have\n' +
+    '    pidgin competence in High Elven.\n' +
+    '  </li>\n' +
+    '</ul>\n' +
+    '</p>';
+};
 
 // Language synergies:
 // Pidgin Colonial or Norther -> Pidgin Erenlander

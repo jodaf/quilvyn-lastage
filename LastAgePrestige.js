@@ -1,4 +1,4 @@
-/* $Id: LastAgePrestige.js,v 1.45 2008/04/03 14:05:59 Jim Exp $ */
+/* $Id: LastAgePrestige.js,v 1.46 2008/04/04 05:33:20 Jim Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -18,9 +18,9 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 */
 
 /*
- * This module loads the rules from the core rule book, Chapter 4, Prestige
- * Classes.  The LastAgePrestige.PRESTIGE_CLASSES constant fields can be
- * manipulated in order to trim the choices offered.
+ * This module loads the rules for the rule book Prestige Classes.  The
+ * LastAgePrestige.PRESTIGE_CLASSES constant fields can be manipulated in order
+ * to trim the choices offered.
  */
 function LastAgePrestige() {
   if(window.SRD35 == null || window.LastAge == null) {
