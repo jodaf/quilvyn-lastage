@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.104 2008/04/04 05:33:20 Jim Exp $ */
+/* $Id: LastAge.js,v 1.105 2008/04/04 16:19:31 Jim Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -16,6 +16,8 @@ You should have received a copy of the GNU General Public License along with
 this program; if not, write to the Free Software Foundation, Inc., 59 Temple
 Place, Suite 330, Boston, MA 02111-1307 USA.
 */
+
+var LASTAGE_VERSION = '1.0beta-080404';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -973,7 +975,7 @@ LastAge.classRules = function(rules, classes) {
         'skillNotes.hideInPlainSightFeature:Hide even when observed',
         'skillNotes.masterHunterFeature:' +
           '+2 or more Bluff/Listen/Sense Motive/Spot/Survival vs. selected ' +
-          'creature types',
+          'creature type(s)',
         'skillNotes.skillMasteryFeature:' +
           '+3 bonus/take 10 despite distraction on %V designated skills',
         'skillNotes.trackFeature:Survival to follow creatures\' trail',
@@ -2484,7 +2486,7 @@ LastAge.heroicPathRules = function(rules, paths) {
           'DC %2+spell level <i>Word of %V</i> %1/day',
         'skillNotes.languageSavantFeature:' +
           'Fluent in any language after listening for 10 minutes',
-        'skillNotes.persuasiveSpeakerFeature:+%V on verbal charisma skills'
+        'skillNotes.persuasiveSpeakerFeature:+%V verbal charisma skills'
       ];
       selectableFeatures = null;
       spellFeatures = [
@@ -3765,6 +3767,7 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
 LastAge.ruleNotes = function() {
   return '' +
     '<h2>LastAge Scribe Module Notes</h2>\n' +
+    'LastAge Scribe Module Version ' + LASTAGE_VERSION + '\n' +
     '\n' +
     '<h3>Usage Notes</h3>\n' +
     '<p>\n' +
