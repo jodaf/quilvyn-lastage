@@ -1,4 +1,4 @@
-<!-- $Id: lastage.html,v 1.1 2008/04/26 06:15:02 Jim Exp $ -->
+<!-- $Id: lastage.html,v 1.2 2008/04/26 06:15:51 Jim Exp $ -->
 <!--
 The Scribe Character Editor is Copyright 2008, James J. Hayes
 
@@ -152,6 +152,10 @@ function CustomizeScribe() {
     CustomExamples.magicArmorRules(SRD35.rules, CustomExamples.MAGIC_ARMORS);
     CustomExamples.magicWeaponRules(SRD35.rules, CustomExamples.MAGIC_WEAPONS);
     CustomExamples.skillRules(SRD35.rules, CustomExamples.SKILLS);
+  }
+  if(window.LastAge != null) {
+    if(window.Experience != null)
+      Experience.experienceRules(LastAge.rules);
   }
 }
 
