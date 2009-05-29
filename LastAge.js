@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.105 2008/04/04 16:19:31 Jim Exp $ */
+/* $Id: LastAge.js,v 1.106 2009/05/29 03:52:33 Jim Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -35,7 +35,7 @@ function LastAge() {
   }
 
   // Define a new rule set w/the same editor and standard viewer as SRD35
-  var rules = new ScribeRules('Last Age');
+  var rules = new ScribeRules('Last Age', LASTAGE_VERSION);
   rules.editorElements = SRD35.initialEditorElements();
   SRD35.createViewers(rules, SRD35.VIEWERS);
   // Remove some editor and character sheet elements that don't apply
