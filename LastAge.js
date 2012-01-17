@@ -1,7 +1,7 @@
-/* $Id: LastAge.js,v 1.107 2011/03/24 23:04:21 jhayes Exp $ */
+/* $Id: LastAge.js,v 1.108 2012/01/17 06:25:53 jhayes Exp $ */
 
 /*
-Copyright 2011, James J. Hayes
+Copyright 2008, James J. Hayes
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -52,7 +52,7 @@ function LastAge() {
   // different class
   SRD35.classRules(rules, ['Barbarian', 'Rogue']);
   SRD35.companionRules(rules, ['Familiar']);
-  SRD35.skillRules(rules, SRD35.SKILLS, SRD35.SUBSKILLS);
+  SRD35.skillRules(rules, SRD35.SKILLS, SRD35.SUBSKILLS, SRD35.SYNERGIES);
   SRD35.featRules(rules, SRD35.FEATS, SRD35.SUBFEATS);
   SRD35.descriptionRules
     (rules, SRD35.ALIGNMENTS, LastAge.DEITIES, SRD35.GENDERS);
@@ -1210,9 +1210,6 @@ LastAge.equipmentRules = function(rules, weapons) {
 
 /* Defines the rules related to PC feats. */
 LastAge.featRules = function(rules, feats, subfeats) {
-
-  // Let SRD35 handle the basics, then add setting-specific notes and rules
-  SRD35.featRules(rules, feats, subfeats);
 
   var allFeats = [];
   for(var i = 0; i < feats.length; i++) {
@@ -3649,12 +3646,9 @@ LastAge.raceRules = function(rules, languages, races) {
 
 };
 
-/*
- * Defines the rules related to PC skills. */
+/* Defines the rules related to PC skills. */
 LastAge.skillRules = function(rules, skills, subskills) {
 
-  // Let SRD35 handle the basics, then add setting-specific notes and rules
-  SRD35.skillRules(rules, skills, subskills);
   var notes = [
     'skillNotes.knowledge(Local)Synergy2:' +
        '+2 Knowledge (Shadow) (local bureaucracy)',
