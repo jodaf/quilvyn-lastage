@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.108 2012/01/17 06:25:53 jhayes Exp $ */
+/* $Id: LastAge.js,v 1.109 2012/03/14 02:33:02 jhayes Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -3155,8 +3155,7 @@ LastAge.raceRules = function(rules, languages, races) {
       rules.defineRule('featureNotes.darkvisionFeature',
         raceNoSpace + 'Features.Darkvision', '+=', '60'
       );
-      rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('baseAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
         ('resistance.Poison', 'saveNotes.resistPoisonFeature', '+=', '2');
       rules.defineRule
@@ -3280,8 +3279,7 @@ LastAge.raceRules = function(rules, languages, races) {
       ];
       selectableFeatures = null;
       rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('baseAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
         ('save.Fortitude', 'saveNotes.fortunateFeature', '+', '1');
       rules.defineRule('save.Reflex', 'saveNotes.fortunateFeature', '+', '1');
@@ -3451,8 +3449,7 @@ LastAge.raceRules = function(rules, languages, races) {
         '', '=', '1',
         raceNoSpace + 'Features.Low Light Vision', '+', null
       );
-      rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('baseAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
         ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
       rules.defineRule('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
@@ -3491,8 +3488,7 @@ LastAge.raceRules = function(rules, languages, races) {
         '', '=', '1',
         raceNoSpace + 'Features.Low Light Vision', '+', null
       );
-      rules.defineRule('meleeAttack', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule('rangedAttack', 'combatNotes.smallFeature', '+', '1');
+      rules.defineRule('baseAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
         ('resistance.Fear', 'saveNotes.resistFearFeature', '+=', '2');
       rules.defineRule
