@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.109 2012/03/14 02:33:02 jhayes Exp $ */
+/* $Id: LastAge.js,v 1.110 2012/03/20 02:50:55 jhayes Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -979,7 +979,7 @@ LastAge.classRules = function(rules, classes) {
         'skillNotes.skillMasteryFeature:' +
           '+3 bonus/take 10 despite distraction on %V designated skills',
         'skillNotes.trackFeature:Survival to follow creatures\' trail',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy check with animals',
+        'skillNotes.wildEmpathyFeature:+%V Diplomacy w/animals',
         'skillNotes.wildernessTrapfindingFeature:' +
           'Search to find/Survival to remove DC 20+ traps',
         'validationNotes.animalCompanionSelectableFeatureFeatures:' +
@@ -1515,13 +1515,13 @@ LastAge.heroicPathRules = function(rules, paths) {
         'combatNotes.viciousAssaultFeature:Two claw attacks at %V each',
         'featureNotes.enhancedBeastialAuraFeature:' +
           'Animals w/in 15 ft act negatively/cannot ride',
-        'featureNotes.lowLightVisionFeature:x%V normal distance in poor light',
+        'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'featureNotes.scentFeature:' +
           'Detect creatures\' presence w/in 30 ft/track by smell',
         'skillNotes.beastialAuraFeature:-10 Handle Animal/no Wild Empathy'
       ];
       selectableFeatures = [
-        'Constitution Bonus', 'Dexterity Bonus', 'Low Light Vision', 'Scent',
+        'Constitution Bonus', 'Dexterity Bonus', 'Low-Light Vision', 'Scent',
         'Strength Bonus', 'Wisdom Bonus'
       ];
       spellFeatures = [
@@ -1539,9 +1539,9 @@ LastAge.heroicPathRules = function(rules, paths) {
         'mediumViciousAssault', '=', null,
         'smallViciousAssault', '=', null
       );
-      rules.defineRule('featureNotes.lowLightVisionFeature',
+      rules.defineRule('featureNotes.low-LightVisionFeature',
         '', '=', '1',
-        'selectableFeatures.Low Light Vision', '+', null
+        'selectableFeatures.Low-Light Vision', '+', null
       );
       rules.defineRule('mediumViciousAssault',
         'pathLevels.Beast', '=', 'source>=11 ? "d8" : source>=6 ? "d6" : "d4"'
@@ -1808,9 +1808,9 @@ LastAge.heroicPathRules = function(rules, paths) {
     } else if(path == 'Feyblooded') {
 
       feats = null;
-      features = ['1:Low Light Vision', '7:Fey Vision'];
+      features = ['1:Low-Light Vision', '7:Fey Vision'];
       notes = [
-        'featureNotes.lowLightVisionFeature:x%V normal distance in poor light',
+        'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'magicNotes.feyVisionFeature:Detect %V auras at will'
       ];
       selectableFeatures = [
@@ -1829,9 +1829,9 @@ LastAge.heroicPathRules = function(rules, paths) {
       rules.defineRule('combatNotes.armorClassBonusFeature',
         'features.Armor Class Bonus', '=', null
       );
-      rules.defineRule('featureNotes.lowLightVisionFeature',
+      rules.defineRule('featureNotes.low-LightVisionFeature',
         '', '=', '1',
-        'feybloodedFeatures.Low Light Vision', '+', null
+        'feybloodedFeatures.Low-Light Vision', '+', null
       );
       rules.defineRule
         ('save.Fortitude', 'saveNotes.fortitudeBonusFeature', '+', null);
@@ -2144,7 +2144,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         // TODO Only if otherwise class skill
         'skillNotes.naturalBondFeature:+2 Knowledge (Nature)/Survival',
         'skillNotes.plantFriendFeature:+4 Diplomacy (plants)',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy check with animals'
+        'skillNotes.wildEmpathyFeature:+%V Diplomacy w/animals'
       ];
       selectableFeatures = null;
       spellFeatures = [
@@ -2196,7 +2196,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         'saveNotes.northbornFeature:Immune to non-lethal cold/exposure',
         'skillNotes.northbornFeature:' +
           '+2 Survival (cold)/Wild Empathy (cold natives)',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy check with animals'
+        'skillNotes.wildEmpathyFeature:+%V Diplomacy w/animals'
       ];
       selectableFeatures = null;
       spellFeatures = null;
@@ -2692,13 +2692,13 @@ LastAge.heroicPathRules = function(rules, paths) {
           'Special bond/abilities w/up to %V animals',
         'featureNotes.blindsenseFeature:' +
           'Other senses allow detection of unseen objects w/in 30 ft',
-        'featureNotes.lowLightVisionFeature:x%V normal distance in poor light',
+        'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'featureNotes.scentFeature:' +
           'Detect creatures\' presence w/in 30 ft/track by smell',
         'magicNotes.wildShapeFeature:Change into creature of size %V %1/day',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy check with animals'
+        'skillNotes.wildEmpathyFeature:+%V Diplomacy w/animals'
       ];
-      selectableFeatures = ['Low Light Vision', 'Scent'];
+      selectableFeatures = ['Low-Light Vision', 'Scent'];
       spellFeatures = [
         '4:Charm Animal', '7:Speak With Animals', '12:Charm Animal',
         '17:Speak With Animals'
@@ -2711,9 +2711,9 @@ LastAge.heroicPathRules = function(rules, paths) {
       rules.defineRule('featureNotes.animalCompanionFeature',
         'wargFeatures.Animal Companion', '+=', null
       );
-      rules.defineRule('featureNotes.lowLightVisionFeature',
+      rules.defineRule('featureNotes.low-LightVisionFeature',
         '', '=', '1',
-        'selectableFeatures.Low Light Vision', '+', null
+        'selectableFeatures.Low-Light Vision', '+', null
       );
       rules.defineRule('wargFeatures.Animal Companion',
         'level', '+', 'Math.floor((source - 2) / 4)'
@@ -3265,7 +3265,7 @@ LastAge.raceRules = function(rules, languages, races) {
       adjustment = '+4 dexterity/-2 strength/-2 constitution';
       features = [
         'Fortunate', 'Gifted Healer', 'Innate Magic', 'Keen Senses',
-        'Low Light Vision', 'Nimble', 'Small'
+        'Low-Light Vision', 'Nimble', 'Small'
       ];
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
@@ -3300,10 +3300,10 @@ LastAge.raceRules = function(rules, languages, races) {
       adjustment = '+2 dexterity/-2 constitution';
       features = [
         'Resist Enchantment', 'Innate Magic', 'Keen Senses',
-        'Low Light Vision', 'Natural Channeler', 'Tree Climber'
+        'Low-Light Vision', 'Natural Channeler', 'Tree Climber'
       ];
       notes = [
-        'featureNotes.lowLightVisionFeature:x%V normal distance in poor light',
+        'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'magicNotes.innateMagicFeature:' +
           '%V level 0 spells as at-will innate ability',
         'magicNotes.naturalChannelerFeature:+2 spell energy',
@@ -3312,9 +3312,9 @@ LastAge.raceRules = function(rules, languages, races) {
         'skillNotes.treeClimberFeature:+4 Balance (trees)/Climb (trees)'
       ];
       selectableFeatures = null;
-      rules.defineRule('featureNotes.lowLightVisionFeature',
+      rules.defineRule('featureNotes.low-LightVisionFeature',
         '', '=', '1',
-        raceNoSpace + 'Features.Low Light Vision', '+', null
+        raceNoSpace + 'Features.Low-Light Vision', '+', null
       );
       rules.defineRule('resistance.Enchantment',
         'saveNotes.resistEnchantmentFeature', '+=', '2'
@@ -3423,12 +3423,12 @@ LastAge.raceRules = function(rules, languages, races) {
 
       adjustment = '+4 charisma/-2 strength';
       features = [
-        'Deep Lungs', 'Hardy', 'Low Light Vision', 'Natural Riverfolk',
+        'Deep Lungs', 'Hardy', 'Low-Light Vision', 'Natural Riverfolk',
         'Natural Swimmer', 'Natural Trader', 'Slow', 'Small', 'Resist Spells'
       ];
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
-        'featureNotes.lowLightVisionFeature:x%V normal distance in poor light',
+        'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.hardyFeature:+1 Fortitude',
         'saveNotes.resistSpellsFeature:+2 vs. spells',
@@ -3445,9 +3445,9 @@ LastAge.raceRules = function(rules, languages, races) {
       rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
         ('deepLungsMultiplier', 'gnomeFeatures.Deep Lungs', '=', '3');
-      rules.defineRule('featureNotes.lowLightVisionFeature',
+      rules.defineRule('featureNotes.low-LightVisionFeature',
         '', '=', '1',
-        raceNoSpace + 'Features.Low Light Vision', '+', null
+        raceNoSpace + 'Features.Low-Light Vision', '+', null
       );
       rules.defineRule('baseAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
@@ -3469,11 +3469,11 @@ LastAge.raceRules = function(rules, languages, races) {
       adjustment = '+2 dexterity/-2 strength';
       features = [
         'Alert Senses', 'Fortunate', 'Graceful', 'Innate Magic',
-        'Low Light Vision', 'Slow', 'Small', 'Resist Fear'
+        'Low-Light Vision', 'Slow', 'Small', 'Resist Fear'
       ];
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
-        'featureNotes.lowLightVisionFeature:x%V normal distance in poor light',
+        'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'magicNotes.innateMagicFeature:' +
           '%V level 0 spells as at-will innate ability',
         'saveNotes.fortunateFeature:+1 all saves',
@@ -3484,9 +3484,9 @@ LastAge.raceRules = function(rules, languages, races) {
       ];
       selectableFeatures = null;
       rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule('featureNotes.lowLightVisionFeature',
+      rules.defineRule('featureNotes.low-LightVisionFeature',
         '', '=', '1',
-        raceNoSpace + 'Features.Low Light Vision', '+', null
+        raceNoSpace + 'Features.Low-Light Vision', '+', null
       );
       rules.defineRule('baseAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
