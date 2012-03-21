@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.110 2012/03/20 02:50:55 jhayes Exp $ */
+/* $Id: LastAge.js,v 1.111 2012/03/21 05:52:03 jhayes Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -668,8 +668,9 @@ LastAge.classRules = function(rules, classes) {
           'Extra grapple attack at highest attack bonus 1/round',
         'combatNotes.grapplingTrainingFeature:' +
           'Disarm/sunder/trip attacks use grapple check',
-        'combatNotes.improvedGrappleFeature:Grapple w/out foe AOO; +4 grapple',
-        'combatNotes.improvedUnarmedStrikeFeature:Unarmed attack w/out foe AOO',
+        'combatNotes.improvedGrappleFeature:No AOO on Grapple, +4 Grapple',
+        'combatNotes.improvedUnarmedStrikeFeature:' +
+          'No AOO on unarmed attack, may deal lethal damage',
         'combatNotes.incredibleResilienceFeature:+%V HP',
         'combatNotes.masterfulStrikeFeature:%V unarmed damage',
         'combatNotes.offensiveTrainingFeature:' +
@@ -966,7 +967,7 @@ LastAge.classRules = function(rules, classes) {
           'Automatic Search vs. trap/concealed door w/in 5 ft',
         'magicNotes.senseDarkMagicFeature:' +
           '<i>Detect Magic</i> vs. legate/outsider at will',
-        'saveNotes.evasionFeature:Save yields no damage instead of 1/2',
+        'saveNotes.evasionFeature:Reflex save yields no damage instead of 1/2',
         'saveNotes.improvedEvasionFeature:Failed save yields 1/2 damage',
         'saveNotes.slipperyMindFeature:Second save vs. enchantment',
         'skillNotes.alertnessFeature:+2 Listen/Spot',
@@ -976,6 +977,7 @@ LastAge.classRules = function(rules, classes) {
         'skillNotes.masterHunterFeature:' +
           '+2 or more Bluff/Listen/Sense Motive/Spot/Survival vs. selected ' +
           'creature type(s)',
+        // NOTE: No +3 bonus in SRD35 Rogue feature
         'skillNotes.skillMasteryFeature:' +
           '+3 bonus/take 10 despite distraction on %V designated skills',
         'skillNotes.trackFeature:Survival to follow creatures\' trail',
@@ -1511,7 +1513,7 @@ LastAge.heroicPathRules = function(rules, paths) {
       notes = [
         'combatNotes.beastialAuraFeature:Turn animals',
         'combatNotes.rageFeature:' +
-          '+4 strength/constitution/+2 Will save/-2 AC for %V rounds %1/day',
+          '+4 strength/constitution, +2 Will, -2 AC for %V rounds %1/day',
         'combatNotes.viciousAssaultFeature:Two claw attacks at %V each',
         'featureNotes.enhancedBeastialAuraFeature:' +
           'Animals w/in 15 ft act negatively/cannot ride',
@@ -1648,7 +1650,7 @@ LastAge.heroicPathRules = function(rules, paths) {
       feats = null;
       features = [
         '1:Bolster Spell', '4:Quickened Counterspelling',
-        '6:Improved Spellcasting', '9:Spell Penetration',
+        '6:Improved Spellcasting', '9:Dragon Spell Penetration',
         '19:Frightful Presence'
       ];
       notes = [
@@ -1658,9 +1660,10 @@ LastAge.heroicPathRules = function(rules, paths) {
           'DC %V Will save',
         'magicNotes.improvedSpellcastingFeature:' +
           'Reduce energy cost of spells from %V chosen schools by 1',
+        'magicNotes.dragonSpellPenetrationFeature:' +
+          '+%V checks to overcome spell resistance',
         'magicNotes.quickenedCounterspellingFeature:' +
-          'Counterspell as move action 1/round',
-        'magicNotes.spellPenetrationFeature:Add %V to spell penetration checks'
+          'Counterspell as move action 1/round'
       ];
       selectableFeatures = null;
       spellFeatures = null;
@@ -1675,15 +1678,15 @@ LastAge.heroicPathRules = function(rules, paths) {
         'pathLevels.Dragonblooded', '=',
         'source>=14 ? 3 : source>=8 ? 2 : source>=2 ? 1 : null'
       );
+      rules.defineRule('magicNotes.dragonSpellPenetrationFeature',
+        'pathLevels.Dragonblooded', '+=', 'Math.floor((source - 5) / 4)'
+      );
       rules.defineRule('magicNotes.frightfulPresenceFeature',
         'pathLevels.Dragonblooded', '+=', '10 + Math.floor(source / 2)',
         'charismaModifier', '+', null
       );
       rules.defineRule('magicNotes.improvedSpellcastingFeature',
         'pathLevels.Dragonblooded', '+=', 'Math.floor(source / 6)'
-      );
-      rules.defineRule('magicNotes.spellPenetrationFeature',
-        'pathLevels.Dragonblooded', '+=', 'Math.floor((source - 5) / 4)'
       );
       rules.defineRule
         ('spellEnergy', 'magicNotes.dragonbloodedSpellEnergy', '+', null);
@@ -1710,7 +1713,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         'featureNotes.tremorsenseFeature:' +
           'Detect creatures in contact w/ground w/in 30 ft',
         'skillNotes.stonecunningFeature:' +
-          '+%V Search involving stone or metal/automatic check w/in 10 ft'
+          '+%V Search involving stone or metal, automatic check w/in 10 ft'
       ];
       selectableFeatures = null;
       spellFeatures = [
@@ -3117,7 +3120,7 @@ LastAge.raceRules = function(rules, languages, races) {
           'featureNotes.knowDepthFeature:Intuit approximate depth underground',
           'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip',
           'skillNotes.stonecunningFeature:' +
-            '+%V Search involving stone or metal/automatic check w/in 10 ft'
+            '+%V Search involving stone or metal, automatic check w/in 10 ft'
         ]);
         rules.defineRule('skillNotes.stonecunningFeature',
           'clanDwarfFeatures.Stonecunning', '+=', '2'
@@ -3170,7 +3173,7 @@ LastAge.raceRules = function(rules, languages, races) {
         notes = notes.concat([
           'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
           'skillNotes.stonecunningFeature:' +
-            '+%V Search involving stone or metal/automatic check w/in 10 ft',
+            '+%V Search involving stone or metal, automatic check w/in 10 ft',
           'skillNotes.stoneKnowledgeFeature:' +
              '+2 Appraise/Craft involving stone or metal'
         ]);
@@ -3246,7 +3249,7 @@ LastAge.raceRules = function(rules, languages, races) {
         features = features.concat(['Stonecunning']);
         notes = notes.concat([
           'skillNotes.stonecunningFeature:' +
-            '+%V Search involving stone or metal/automatic check w/in 10 ft'
+            '+%V Search involving stone or metal, automatic check w/in 10 ft'
         ]);
         rules.defineRule('skillNotes.stonecunningFeature',
           'clanRaisedDworgFeatures.Stonecunning', '+=', '2'

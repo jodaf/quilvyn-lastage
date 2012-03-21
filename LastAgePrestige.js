@@ -1,4 +1,4 @@
-/* $Id: LastAgePrestige.js,v 1.48 2012/01/17 06:25:54 jhayes Exp $ */
+/* $Id: LastAgePrestige.js,v 1.49 2012/03/21 05:52:03 jhayes Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -310,7 +310,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       ];
       hitDie = 8;
       notes = [
-        'combatNotes.masteryOfNatureFeature:Turn animals/plants as cleric',
+        'combatNotes.masteryOfNatureFeature:Turn animals/plants',
         'featureNotes.animalCompanionFeature:' +
           'Special bond/abilities w/up to %V animals',
         'featureNotes.findTheWayFeature:%V',
@@ -952,7 +952,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'combatNotes.spiritedChargeFeature:' +
           'x2 damage (x3 lance) from mounted charge',
         'combatNotes.trampleFeature:' +
-          'Mounted overrun unavoidable/bonus hoof attack',
+          'Mounted overrun unavoidable, bonus hoof attack',
         'combatNotes.wogrenDodgeFeature:+2 AC during mounted move',
         'featureNotes.blindsenseFeature:' +
           'Other senses allow detection of unseen objects w/in 30 ft',
