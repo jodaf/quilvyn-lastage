@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.112 2014/02/18 01:30:15 jhayes Exp $ */
+/* $Id: LastAge.js,v 1.113 2014/02/18 01:42:26 jhayes Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -17,7 +17,7 @@ this program; if not, write to the Free Software Foundation, Inc., 59 Temple
 Place, Suite 330, Boston, MA 02111-1307 USA.
 */
 
-var LASTAGE_VERSION = '1.0beta-080404';
+var LASTAGE_VERSION = '1.1beta-20140217';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
