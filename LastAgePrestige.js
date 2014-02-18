@@ -1,4 +1,4 @@
-/* $Id: LastAgePrestige.js,v 1.49 2012/03/21 05:52:03 jhayes Exp $ */
+/* $Id: LastAgePrestige.js,v 1.50 2014/02/18 01:30:15 jhayes Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -1013,9 +1013,13 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        rules.defineChoice('selectableFeatures', selectable + ':' + klass);
+        var choice = klass + ' - ' + selectable;
+        rules.defineChoice('selectableFeatures', choice + ':' + klass);
+        rules.defineRule(klass + 'Features.' + selectable,
+          'selectableFeatures.' + choice, '+=', null
+        );
         rules.defineRule('features.' + selectable,
-          'selectableFeatures.' + selectable, '+=', null
+          'selectableFeatures.' + choice, '+=', null
         );
       }
     }

@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.111 2012/03/21 05:52:03 jhayes Exp $ */
+/* $Id: LastAge.js,v 1.112 2014/02/18 01:30:15 jhayes Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -518,7 +518,7 @@ LastAge.classRules = function(rules, classes) {
           'source < 3 ? null : Math.floor(source / 3)'
         );
         rules.defineRule('skillNotes.quickReferenceFeature',
-          'selectableFeatures.Quick Reference', '=', '5 * source'
+          'hermeticChannelerFeatures.Quick Reference', '=', '5 * source'
         );
         rules.defineRule('spellEnergy',
           'magicNotes.magecraft(Charismatic)Feature', '+=', null
@@ -731,7 +731,7 @@ LastAge.classRules = function(rules, classes) {
       spellsKnown = null;
       spellsPerDay = null;
       rules.defineRule('abilityNotes.incredibleSpeedFeature',
-        'selectableFeatures.Incredible Speed', '=', '10 * source'
+        'defenderFeatures.Incredible Speed', '=', '10 * source'
       );
       rules.defineRule('armorClass',
         'combatNotes.defenderArmorClassAdjustment', '+', null,
@@ -749,13 +749,13 @@ LastAge.classRules = function(rules, classes) {
         'strengthModifier', '+', null
       );
       rules.defineRule('combatNotes.dodgeTrainingFeature',
-        'selectableFeatures.Dodge Training', '=', null
+        'defenderFeatures.Dodge Training', '=', null
       );
       rules.defineRule('combatNotes.flurryAttackFeature',
-        'selectableFeatures.Flurry Attack', '=', null
+        'defenderFeatures.Flurry Attack', '=', null
       );
       rules.defineRule('combatNotes.incredibleResilienceFeature',
-        'selectableFeatures.Incredible Resilience', '=', '3 * source'
+        'defenderFeatures.Incredible Resilience', '=', '3 * source'
       );
       rules.defineRule('combatNotes.masterfulStrikeFeature',
         'defenderUnarmedDamageLarge', '=', null,
@@ -790,7 +790,7 @@ LastAge.classRules = function(rules, classes) {
       rules.defineRule
         ('save.Will', 'saveNotes.defensiveMasteryFeature', '+', null);
       rules.defineRule('saveNotes.defensiveMasteryFeature',
-        'selectableFeatures.Defensive Mastery', '=', null
+        'defenderFeatures.Defensive Mastery', '=', null
       );
       rules.defineRule('selectableFeatureCount.Defender',
         'levels.Defender', '=',
@@ -1041,7 +1041,7 @@ LastAge.classRules = function(rules, classes) {
       spellsKnown = null;
       spellsPerDay = null;
       rules.defineRule('abilityNotes.quickStrideFeature',
-        'selectableFeatures.Quick Stride', '=', '10 * source'
+        'wildlanderFeatures.Quick Stride', '=', '10 * source'
       );
       rules.defineRule('animalCompanionLevel',
         'featureNotes.animalCompanionFeature', '+=', null
@@ -1053,10 +1053,10 @@ LastAge.classRules = function(rules, classes) {
       );
       rules.defineRule('combatNotes.initiativeBonusFeature',
         'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
-        'selectableFeatures.Initiative Bonus', '+', null
+        'wildlanderFeatures.Initiative Bonus', '+', null
       );
       rules.defineRule('featureNotes.animalCompanionFeature',
-        'selectableFeatures.Animal Companion', '+=', null
+        'wildlanderFeatures.Animal Companion', '+=', null
       );
       rules.defineRule('initiative',
         'combatNotes.improvedInitiativeFeature', '+', '4',
@@ -1069,10 +1069,10 @@ LastAge.classRules = function(rules, classes) {
       );
       rules.defineRule('skillNotes.dangerSenseFeature',
         'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
-        'selectableFeatures.Danger Sense', '+', null
+        'wildlanderFeatures.Danger Sense', '+', null
       );
       rules.defineRule('skillNotes.skillMasteryFeature',
-        'selectableFeatures.Skill Mastery', '+=', null
+        'wildlanderFeatures.Skill Mastery', '+=', null
       );
       rules.defineRule('skillNotes.wildEmpathyFeature',
         'levels.Wildlander', '+=', 'source',
@@ -1097,9 +1097,13 @@ LastAge.classRules = function(rules, classes) {
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        rules.defineChoice('selectableFeatures', selectable + ':' + klass);
+        var choice = klass + ' - ' + selectable;
+        rules.defineChoice('selectableFeatures', choice + ':' + klass);
+        rules.defineRule(klass + 'Features.' + selectable,
+          'selectableFeatures.' + choice, '+=', null
+        );
         rules.defineRule('features.' + selectable,
-          'selectableFeatures.' + selectable, '+=', null
+          'selectableFeatures.' + choice, '+=', null
         );
       }
     }
@@ -1543,7 +1547,7 @@ LastAge.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule('featureNotes.low-LightVisionFeature',
         '', '=', '1',
-        'selectableFeatures.Low-Light Vision', '+', null
+        'beastFeatures.Low-Light Vision', '+', null
       );
       rules.defineRule('mediumViciousAssault',
         'pathLevels.Beast', '=', 'source>=11 ? "d8" : source>=6 ? "d6" : "d4"'
@@ -2716,7 +2720,7 @@ LastAge.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule('featureNotes.low-LightVisionFeature',
         '', '=', '1',
-        'selectableFeatures.Low-Light Vision', '+', null
+        'wargFeatures.Low-Light Vision', '+', null
       );
       rules.defineRule('wargFeatures.Animal Companion',
         'level', '+', 'Math.floor((source - 2) / 4)'
@@ -2768,9 +2772,13 @@ LastAge.heroicPathRules = function(rules, paths) {
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        rules.defineChoice('selectableFeatures', selectable + ':' + path);
+        var choice = path + ' - ' + selectable;
+        rules.defineChoice('selectableFeatures', choice + ':' + path);
+        rules.defineRule(path + 'Features.' + selectable,
+          'selectableFeatures.' + choice, '+=', null
+        );
         rules.defineRule('features.' + selectable,
-          'selectableFeatures.' + selectable, '+=', null
+          'selectableFeatures.' + choice, '+=', null
         );
       }
     }
@@ -3634,9 +3642,13 @@ LastAge.raceRules = function(rules, languages, races) {
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        rules.defineChoice('selectableFeatures', selectable + ':' + race);
+        var choice = race + ' - ' + selectable;
+        rules.defineChoice('selectableFeatures', choice + ':' + race);
+        rules.defineRule(race + 'Features.' + selectable,
+          'selectableFeatures.' + choice, '+=', null
+        );
         rules.defineRule('features.' + selectable,
-          'selectableFeatures.' + selectable, '+=', null
+          'selectableFeatures.' + choice, '+=', null
         );
       }
     }
