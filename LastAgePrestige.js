@@ -1,4 +1,4 @@
-/* $Id: LastAgePrestige.js,v 1.50 2014/02/18 01:30:15 jhayes Exp $ */
+/* $Id: LastAgePrestige.js,v 1.51 2014/04/05 16:49:16 jhayes Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -305,6 +305,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       feats = null;
       features = [
         '1:Art Of Magic', '1:Mastery Of Nature', '1:Animal Companion',
+        '1:Weapon Proficiency (Club/Dagger/Longbow/Shortbow/Quarterstaff)',
         '2:Druidcraft', '2:Nature Sense', '3:Commune With Nature',
         '5:Find The Way', '8:Venom Immunity'
       ];

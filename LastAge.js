@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.113 2014/02/18 01:42:26 jhayes Exp $ */
+/* $Id: LastAge.js,v 1.114 2014/04/05 16:49:16 jhayes Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -645,6 +645,7 @@ LastAge.classRules = function(rules, classes) {
       feats = null;
       features = [
         '1:Improved Unarmed Strike', '1:Masterful Strike',
+        '1:Weapon Proficiency (Club/Dagger/Dart/Farmer\'s Rope/Handaxe/Inutek/Light Hammer/Light Pick/Quarterstaff/Sap/Sickle/Throwing Axe/Sling/Great Sling)',
         '2:Defender Abilities', '2:Defender Stunning Fist',
         '3:Improved Grapple', '4:Precise Strike'
       ];
@@ -3061,7 +3062,10 @@ LastAge.raceRules = function(rules, languages, races) {
     if(race == 'Dorn') {
 
       adjustment = '+2 strength/-2 intelligence';
-      features = ['Brotherhood', 'Cold Hardy', 'Fierce', 'Hardy'];
+      features = [
+        'Brotherhood', 'Cold Hardy', 'Fierce', 'Hardy',
+        'Weapon Familiarity (Bastard Sword/Dornish Horse Spear'
+      ];
       notes = [
         'combatNotes.brotherhoodFeature:' +
           '+1 attack when fighting alongside 4+ Dorns',
@@ -3090,7 +3094,7 @@ LastAge.raceRules = function(rules, languages, races) {
       features = [
         'Darkvision', 'Dwarf Favored Enemy', 'Dwarf Favored Weapon',
         'Resist Poison', 'Resilient', 'Slow', 'Resist Spells',
-        'Stone Knowledge'
+        'Stone Knowledge', 'Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe)'
       ];
       notes = [
         'combatNotes.dwarfFavoredEnemyFeature:+1 attack vs. orc',
@@ -3134,7 +3138,9 @@ LastAge.raceRules = function(rules, languages, races) {
           'clanDwarfFeatures.Stonecunning', '+=', '2'
         );
       } else if(race == 'Kurgun Dwarf') {
-        features = features.concat(['Natural Mountaineer']);
+        features = features.concat(
+          ['Natural Mountaineer', 'Weapon Familiarity (Urutuk Hatchet)']
+        );
         notes = notes.concat([
           'abilityNotes.naturalMountaineerFeature:' +
              'Unimpeded movement in mountainous terrain',
@@ -3176,7 +3182,8 @@ LastAge.raceRules = function(rules, languages, races) {
         ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
       if(race == 'Clan Raised Dwarrow') {
         features = features.concat([
-          'Dodge Orcs', 'Stonecunning', 'Stone Knowledge'
+          'Dodge Orcs', 'Stonecunning', 'Stone Knowledge',
+          'Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)'
         ]);
         notes = notes.concat([
           'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
@@ -3191,7 +3198,7 @@ LastAge.raceRules = function(rules, languages, races) {
       } else if(race == 'Gnome Raised Dwarrow') {
         features = features.concat([
           'Deep Lungs', 'Natural Riverfolk', 'Natural Swimmer',
-          'Skilled Trader'
+          'Skilled Trader', 'Weapon Familiarity (Hand Crossbow/Inutek)'
         ]);
         notes = [
           'skillNotes.deepLungsFeature:Hold breath for %V rounds',
@@ -3231,7 +3238,8 @@ LastAge.raceRules = function(rules, languages, races) {
       adjustment = '+2 strength/+2 constitution/-2 intelligence/-2 charisma';
       features = [
         'Darkvision', 'Dworg Favored Enemy', 'Minor Light Sensitivity',
-        'Rugged', 'Resist Spells'
+        'Rugged', 'Resist Spells',
+        'Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)'
       ];
       notes = [
         'combatNotes.dworgFavoredEnemyFeature:+2 attack vs. orc',
@@ -3296,8 +3304,11 @@ LastAge.raceRules = function(rules, languages, races) {
       rules.defineRule('save.Reflex', 'saveNotes.fortunateFeature', '+', '1');
       rules.defineRule('save.Will', 'saveNotes.fortunateFeature', '+', '1');
       if(race == 'Danisil Raised Elfling') {
+        features = features.concat(['Weapon Familiarity (Atharak/Sepi)']);
       } else if(race == 'Halfling Raised Elfling') {
-        features = features.concat(['Bound To The Beast']);
+        features = features.concat(
+          ['Bound To The Beast', 'Weapon Familiarity (Atharak/Halfling Lance)']
+        );
         notes = notes.concat([
           'featureNotes.boundToTheBeastFeature:Mounted Combat'
         ]);
@@ -3311,7 +3322,8 @@ LastAge.raceRules = function(rules, languages, races) {
       adjustment = '+2 dexterity/-2 constitution';
       features = [
         'Resist Enchantment', 'Innate Magic', 'Keen Senses',
-        'Low-Light Vision', 'Natural Channeler', 'Tree Climber'
+        'Low-Light Vision', 'Natural Channeler', 'Tree Climber',
+        'Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)'
       ];
       notes = [
         'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
@@ -3336,7 +3348,7 @@ LastAge.raceRules = function(rules, languages, races) {
       if(race == 'Jungle Elf') {
         features = features.concat([
           'Improved Innate Magic', 'Improved Keen Senses',
-          'Improved Tree Climber', 'Spirit Foe'
+          'Improved Tree Climber', 'Spirit Foe', 'Weapon Familiarity (Sepi)'
         ]);
         notes = notes.concat([
           'magicNotes.improvedInnateMagicFeature:+1 Innate Magic spell',
@@ -3354,7 +3366,8 @@ LastAge.raceRules = function(rules, languages, races) {
       } else if(race == 'Sea Elf') {
         features = features.concat([
           'Deep Lungs', 'Improved Natural Swimmer', 'Natural Sailor',
-          'Natural Swimmer'
+          'Natural Swimmer', 'Weapon Familiarity (Net)',
+          'Weapon Proficiency (Guisarme/Ranseur/Tident)'
         ]);
         notes = notes.concat([
           'skillNotes.deepLungsFeature:Hold breath for %V rounds',
@@ -3375,7 +3388,9 @@ LastAge.raceRules = function(rules, languages, races) {
           'speed', '=', 'Math.floor(source / 2)'
         );
       } else if(race == 'Snow Elf') {
-        features = features.concat(['Cold Hardy', 'Hardy']);
+        features = features.concat(
+          ['Cold Hardy', 'Hardy', 'Weapon Familiarity (Fighting Knife)']
+        );
         notes = notes.concat([
           'saveNotes.coldHardyFeature:+5 cold/half nonlethal damage',
           'saveNotes.hardyFeature:+1 Fortitude'
@@ -3383,7 +3398,8 @@ LastAge.raceRules = function(rules, languages, races) {
         rules.defineRule('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
       } else if(race == 'Wood Elf') {
         features = features.concat([
-          'Improved Innate Magic', 'Improved Natural Channeler'
+          'Improved Innate Magic', 'Improved Natural Channeler',
+          'Weapon Proficiency (Longsword/Short Sword)'
         ]);
         notes = notes.concat([
           'magicNotes.improvedInnateMagicFeature:+1 Innate Magic spell',
@@ -3406,7 +3422,9 @@ LastAge.raceRules = function(rules, languages, races) {
     } else if(race == 'Erenlander') {
 
       adjustment = null;
-      features = ['Heartlander'];
+      features = [
+        'Heartlander', 'Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)'
+      ];
       notes = [
         'abilityNotes.erenlanderAbilityAdjustment:+2 any/-2 any',
         'skillNotes.heartlanderFeature:+4 one Craft or Profession'
@@ -3435,7 +3453,8 @@ LastAge.raceRules = function(rules, languages, races) {
       adjustment = '+4 charisma/-2 strength';
       features = [
         'Deep Lungs', 'Hardy', 'Low-Light Vision', 'Natural Riverfolk',
-        'Natural Swimmer', 'Natural Trader', 'Slow', 'Small', 'Resist Spells'
+        'Natural Swimmer', 'Natural Trader', 'Slow', 'Small', 'Resist Spells',
+        'Weapon Familiarity (Hand Crossbow)'
       ];
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
@@ -3480,7 +3499,8 @@ LastAge.raceRules = function(rules, languages, races) {
       adjustment = '+2 dexterity/-2 strength';
       features = [
         'Alert Senses', 'Fortunate', 'Graceful', 'Innate Magic',
-        'Low-Light Vision', 'Slow', 'Small', 'Resist Fear'
+        'Low-Light Vision', 'Slow', 'Small', 'Resist Fear',
+        'Weapon Familiarity (Halfling Lance)'
       ];
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
@@ -3571,7 +3591,7 @@ LastAge.raceRules = function(rules, languages, races) {
       features = [
         'Darkvision', 'Improved Cold Hardy', 'Light Sensitivity',
         'Natural Predator', 'Night Fighter', 'Orc Favored Enemy',
-        'Orc Frenzy', 'Resist Spells'
+        'Orc Frenzy', 'Resist Spells', 'Weapon Familiarity (Vardatch)'
       ];
       notes = [
         'combatNotes.lightSensitivityFeature:-1 attack in daylight',
@@ -3598,7 +3618,7 @@ LastAge.raceRules = function(rules, languages, races) {
     } else if(race.indexOf(' Sarcosan') >= 0) {
 
       adjustment = '+2 charisma/+2 intelligence/-2 wisdom';
-      features = ['Quick'];
+      features = ['Quick', 'Weapon Familiarity (Cedeku/Sarcosan Lance)'];
       notes = [
         'combatNotes.quickFeature:+1 attack w/light weapons',
         'saveNotes.quickFeature:+1 Reflex'
@@ -3846,6 +3866,9 @@ LastAge.ruleNotes = function() {
     '    the selectable feature list separates "Initiative Bonus" from\n' +
     '    "Danger Sense", since "Danger Sense" requires choosing between\n' +
     '    initiative and listen/spot bonuses after level 1.\n' +
+    '  </li><li>\n' +
+    '    Scribe treats Eranlanders as familiar with all Dornish and\n' +
+    '    Sarcosan weapons, rather than with a single one.\n' +
     '  </li>\n' +
     '</ul>\n' +
     '</p>\n' +
