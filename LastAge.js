@@ -1,4 +1,4 @@
-/* $Id: LastAge.js,v 1.115 2014/04/06 17:19:18 jhayes Exp $ */
+/* $Id: LastAge.js,v 1.116 2014/08/03 04:47:09 jhayes Exp $ */
 
 /*
 Copyright 2008, James J. Hayes
@@ -16,6 +16,8 @@ You should have received a copy of the GNU General Public License along with
 this program; if not, write to the Free Software Foundation, Inc., 59 Temple
 Place, Suite 330, Boston, MA 02111-1307 USA.
 */
+
+"use strict";
 
 var LASTAGE_VERSION = '1.2beta-20140406';
 
