@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.2beta-20140406';
+var LASTAGE_VERSION = '1.0';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -82,6 +82,11 @@ function LastAge() {
   rules.randomizeOneAttribute = LastAge.randomizeOneAttribute;
   rules.makeValid = SRD35.makeValid;
   rules.ruleNotes = LastAge.ruleNotes;
+  var a;
+  for(a in SRD35SpellDescriptions.descriptions) {
+    LastAge.spellsDescriptions[a] = SRD35SpellDescriptions.descriptions[a];
+  }
+  SRD35SpellDescriptions.spellRules(rules, null, LastAge.spellsDescriptions);
   // Let Scribe know we're here
   Scribe.addRuleSet(rules);
   LastAge.rules = rules;
@@ -98,7 +103,7 @@ LastAge.DOMAINS = [
   'Death', 'Destruction', 'Evil', 'Magic', 'War'
 ];
 LastAge.DEITIES =
-  ['The Dark God (NE):Death/Destruction/Evil/Magic/War', 'None:'];
+  ['Izrador (NE):Death/Destruction/Evil/Magic/War', 'None:'];
 LastAge.FEATS = [
   'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
   'Craft Spell Talisman:Item Creation', 'Devastating Mounted Assault:Fighter',
@@ -164,8 +169,33 @@ LastAge.WEAPONS = [
 ];
 
 // Related information used internally by LastAge
+LastAge.spellsDescriptions = {
+  "Charm Repair":"Touched minor/lesser charm restored to use",
+  "Detect Astirax": "R$RL' quarter circle Info on astiraxes for $L10 min",
+  "Disguise Ally": "Change touched appearance/+10 disguise for $L10 min",
+  "Disguise Weapon":"$L touched weapons look benign for $L hours",
+  "Far Whisper":"+4 checks to hear Whispering Wood w/in $L10 miles for $L min",
+  "Greenshield":"Touched surrounded by 30' foliage sphere for $L hr",
+  "Halfling Burrow":"Hidden hole holds $L small creatures for $L hr",
+  "Lifetrap":"R$RM' Undead in 50' radius Ref save or tangled for $L rd, 3d6 HP",
+  "Nature's Revelation":"R$RS Plants/animals in 30' radius reveal creatures",
+  "Nexus Fuel":"Sacrifice boosts nexus recovery rate",
+  "Silver Blood":"Caster's blood damages astiraxes for 1 hr",
+  "Silver Storm":"R$RS' Targets in cone ${Lmin15}d4 HP silver needle (Ref half)",
+  "Silver Wind":"R$RM' Targets in 20' circle Will save or d6/rd for $L rd",
+  "Stone Soup":"Buried stone creates broth",
+  "Assist":"R$RS' Targets in 30' circle +2 skill checks for conc + 1 rd",
+  "Bestow Spell":"Touched convey spell",
+  "Burial":"R$RS' Earth swallows target non-living/unattended object",
+  "Channel Might":"Touched next successful attack does maximum+$L HP",
+  "Confer Power":"Transfer spell energy to nearby casters for $L rd", 
+  "Lie":"+10 Bluff on next lie",
+  "Magic Circle Against Shadow":"10' radius from touched +2 AC/+2 saves/extra save vs. mental control/no contact vs. Izrador agents for $L10 min",
+  "Phantom Edge":"Touched weapon different type for $L min",
+  "Scryer's Mark":"Touched -4 will vs. scrying"
+};
 LastAge.spellsSchools = {
-  // New spells
+  // Core rulebook
   'Charm Repair':'Transmutation', 'Detect Astirax':'Divination',
   'Disguise Ally':'Illusion', 'Disguise Weapon':'Illusion',
   'Far Whisper':'Divination', 'Greenshield':'Illusion',
@@ -173,6 +203,11 @@ LastAge.spellsSchools = {
   'Nature\'s Revelation':'Transmutation', 'Nexus Fuel':'Necromancy',
   'Silver Blood':'Transmutation', 'Silver Storm':'Transmutation',
   'Silver Wind':'Conjuration', 'Stone Soup':'Transmutation',
+  // Sorcery and Shadow
+  'Assist':'Enchantment', 'Bestow Spell':'Evocation', 'Burial':'Transmutation',
+  'Channel Might':'Evocation', 'Confer Power':'Transmutation', 
+  'Lie':'Transmutation', 'Magic Circle Against Shadow':'Abjuration',
+  'Phantom Edge':'Transmutation', 'Scryer\'s Mark':'Divination',
   // SRD spells placed in Greater Conjuration/Evocation
   'Burning Hands':'Greater Evocation', 'Call Lightning':'Greater Evocation',
   'Call Lightning Storm':'Greater Evocation',
@@ -225,12 +260,7 @@ LastAge.spellsSchools = {
   'Wall Of Ice':'Greater Evocation', 'Whirlwind':'Greater Evocation',
   'Wind Wall':'Greater Evocation',
   // Other SRD spells w/different school
-  'Ray Of Frost':'Conjuration', 'Zone Of Silence':'Enchantment',
-  // On the Channeler spell list--dunno where they came from
-  'Assist':'Enchantment', 'Bestow Spell':'Evocation', 'Burial':'Transmutation',
-  'Channel Might':'Evocation', 'Confer Power':'Transmutation', 
-  'Lie':'Transmutation', 'Magic Circle Against Shadow':'Abjuration',
-  'Phantom Edge':'Transmutation', 'Scryer\'s Mark':'Divination'
+  'Ray Of Frost':'Conjuration', 'Zone Of Silence':'Enchantment'
 };
 LastAge.racesFavoredRegions = {
   'Agrarian Halfling':'Central Erenland',
@@ -919,6 +949,7 @@ LastAge.classRules = function(rules, classes) {
       );
       rules.defineRule('astiraxMasterLevel', 'levels.Legate', '+=', null);
       rules.defineRule('casterLevelDivine', 'levels.Legate', '+=', null);
+      rules.defineRule('casterLevels.C', 'levels.Legate', '+=', null);
       rules.defineRule('domainCount', 'levels.Legate', '+=', '2');
       for(var j = 1; j < 10; j++) {
         rules.defineRule('spellsPerDay.Dom' + j,
@@ -1375,8 +1406,8 @@ LastAge.featRules = function(rules, feats, subfeats) {
           continue;
         }
         var spell = matchInfo[1];
-        var school = LastAge.spellsSchools[spell];
-        if(school == null && (school = SRD35.spellsSchools[spell]) == null) {
+        var school = LastAge.spellsSchools[spell] || SRD35.spellsSchools[spell];
+        if(school == null) {
           continue;
         }
         spell += '(' + matchInfo[2] + ' ' +
@@ -2075,12 +2106,12 @@ LastAge.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule('magicNotes.spellChoiceFeature',
         'pathLevels.Jack-Of-All-Trades', '=',
-        'source>=16 ? "C0/C1/C2/C3" : source>=10 ? "C0/C1/C2" : ' +
-        'source>=6 ? "C0/C1" : "C0"'
+        'source>=16 ? "CH0/CH1/CH2/CH3" : source>=10 ? "CH0/CH1/CH2" : ' +
+        'source>=6 ? "CH0/CH1" : "CH0"'
       );
       rules.defineRule('magicNotes.spontaneousSpellFeature',
         'pathLevels.Jack-Of-All-Trades', '=',
-        'source >= 19 ? "C0/C1/C2" : source >= 13 ? "C0/C1" : "C0"'
+        'source >= 19 ? "CH0/CH1/CH2" : source >= 13 ? "CH0/CH1" : "CH0"'
       );
       rules.defineRule('selectableFeatureCount.Jack-Of-All-Trades',
         'pathLevels.Jack-Of-All-Trades', '=',
@@ -2827,12 +2858,12 @@ LastAge.magicRules = function(rules, classes) {
     var spells;
     if(klass.indexOf("Channeler") >= 0 && !channelerDone) {
       spells = [
-        'C0:Create Water:Cure Minor Wounds:Dancing Lights:Daze:Detect Magic:' +
+        'CH0:Create Water:Cure Minor Wounds:Dancing Lights:Daze:Detect Magic:' +
         'Detect Poison:Disrupt Undead:Flare:Ghost Sound:Guidance:' +
         'Know Direction:Light:Lullaby:Mage Hand:Mending:Message:Open/Close:' +
         'Ray Of Frost:Read Magic:Resistance:Summon Instrument:' +
         'Touch Of Fatigue:Virtue',
-        'C1:Alarm:Animate Rope:Assist:Burial:Burning Hands:Calm Animals:' +
+        'CH1:Alarm:Animate Rope:Assist:Burial:Burning Hands:Calm Animals:' +
         'Cause Fear:Channel Might:Charm Animal:Charm Person:Chill Touch:' +
         'Color Spray:Comprehend Languages:Cure Light Wounds:' +
         'Detect Animals Or Plants:Detect Astirax:Detect Secret Doors:' +
@@ -2849,7 +2880,7 @@ LastAge.magicRules = function(rules, classes) {
         'Speak With Animals:Spider Climb:Stone Soup:Summon Monster I:' +
         'Summon Nature\'s Ally I:True Strike:Undetectable Alignment:' +
         'Unseen Servant:Ventriloquism',
-        'C2:Acid Arrow:Alter Self:Animal Messenger:Animal Trance:Arcane Lock:' +
+        'CH2:Acid Arrow:Alter Self:Animal Messenger:Animal Trance:Arcane Lock:'+
         'Barkskin:Bear\'s Endurance:Blindness/Deafness:Blur:Bull\'s Strength:' +
         'Cat\'s Grace:Chill Metal:Command Undead:Confer Power:' +
         'Continual Flame:Cure Moderate Wounds:Darkness:Darkvision:' +
@@ -2866,7 +2897,7 @@ LastAge.magicRules = function(rules, classes) {
         'Soften Earth And Stone:Sound Burst:Spectral Hand:Spider Climb:' +
         'Summon Monster II:Summon Nature\'s Ally II:Summon Swarm:' +
         'Touch Of Idiocy:Tree Shape:Warp Wood:Web:Whispering Wind:Wood Shape',
-        'C3:Arcane Sight:Call Lightning:Charm Repair:' +
+        'CH3:Arcane Sight:Call Lightning:Charm Repair:' +
         'Clairaudience/Clairvoyance:Contagion:Cure Serious Wounds:Daylight:' +
         'Deep Slumber:Diminish Plants:Dispel Magic:Displacement:' +
         'Dominate Animal:Explosive Runes:Fireball:Flame Arrow:Fly:' +
@@ -2883,7 +2914,7 @@ LastAge.magicRules = function(rules, classes) {
         'Stinking Cloud:Suggestion:Summon Monster III:' +
         'Summon Nature\'s Ally III:Tiny Hut:Tongues:Vampiric Touch:' +
         'Water Breathing:Water Walk:Wind Wall',
-        'C4:Air Walk:Animate Dead:Antiplant Shell:Arcane Eye:Bestow Curse:' +
+        'CH4:Air Walk:Animate Dead:Antiplant Shell:Arcane Eye:Bestow Curse:' +
         'Bestow Curse:Bestow Spell:Black Tentacles:Blight:Charm Monster:' +
         'Command Plants:Confusion:Control Water:Crushing Despair:' +
         'Cure Critical Wounds:Detect Scrying:Dimensional Anchor:Enervation:' +
@@ -2897,7 +2928,7 @@ LastAge.magicRules = function(rules, classes) {
         'Shadow Conjuration:Shout:Silver Storm:Solid Fog:Spike Stones:' +
         'Stone Shape:Stoneskin:Summon Monster IV:Summon Nature\'s Ally IV:' +
         'Wall Of Fire:Wall Of Ice:Zone Of Silence',
-        'C5:Animal Growth:Atonement:Awaken:Baleful Polymorph:' +
+        'CH5:Animal Growth:Atonement:Awaken:Baleful Polymorph:' +
         'Break Enchantment:Call Lightning Storm:Cloudkill:' +
         'Commune With Nature:Cone Of Cold:Contact Other Plane:' +
         'Control Winds:Death Ward:Dismissal:Dominate Person:Dream:Fabricate:' +
@@ -2911,7 +2942,7 @@ LastAge.magicRules = function(rules, classes) {
         'Symbol Of Pain:Symbol Of Sleep:Telekinesis:Telepathic Bond:' +
         'Transmute Mud To Rock:Transmute Rock To Mud:Unhallow:Wall Of Force:' +
         'Wall Of Stone:Wall Of Thorns:Waves Of Fatigue',
-        'C6:Acid Fog:Analyze Dweomer:Animate Objects:Antilife Shell:' +
+        'CH6:Acid Fog:Analyze Dweomer:Animate Objects:Antilife Shell:' +
         'Antimagic Field:Chain Lightning:Circle Of Death:Contingency:' +
         'Create Undead:Disintegrate:Eyebite:Find The Path:Fire Seeds:' +
         'Flesh To Stone:Forceful Hand:Freezing Sphere:Geas/Quest:' +
@@ -2925,7 +2956,7 @@ LastAge.magicRules = function(rules, classes) {
         'Summon Monster VI:Summon Nature\'s Ally VI:Symbol Of Fear:' +
         'Symbol Of Persuasion:Sympathetic Vibration:Transformation:' +
         'True Seeing:Undeath To Death:Veil:Wall Of Iron',
-        'C7:Animate Plants:Banishment:Changestaff:Control Undead:' +
+        'CH7:Animate Plants:Banishment:Changestaff:Control Undead:' +
         'Control Weather:Creeping Doom:Delayed Blast Fireball:' +
         'Finger Of Death:Fire Storm:Forcecage:Grasping Hand:' +
         'Greater Arcane Sight:Greater Restoration:Greater Scrying:' +
@@ -2936,7 +2967,7 @@ LastAge.magicRules = function(rules, classes) {
         'Summon Monster VII:Summon Nature\'s Ally VII:Sunbeam:' +
         'Symbol Of Stunning:Symbol Of Weakness:Transmute Metal To Wood:' +
         'Vision:Waves Of Exhaustion:Wind Walk',
-        'C8:Animal Shapes:Antipathy:Binding:Clenched Fist:Clone:' +
+        'CH8:Animal Shapes:Antipathy:Binding:Clenched Fist:Clone:' +
         'Control Plants:Create Greater Undead:Demand:Discern Location:' +
         'Earthquake:Greater Planar Binding:Greater Prying Eyes:' +
         'Greater Shadow Evocation:Greater Shout:Horrid Wilting:' +
@@ -2948,7 +2979,7 @@ LastAge.magicRules = function(rules, classes) {
         'Summon Nature\'s Ally VIII:Sunburst:Symbol Of Death:' +
         'Symbol Of Insanity:Sympathy:Telekinetic Sphere:Temporal Stasis:' +
         'Trap The Soul:Whirlwind',
-        'C9:Astral Projection:Crushing Hand:Dominate Monster:' +
+        'CH9:Astral Projection:Crushing Hand:Dominate Monster:' +
         'Elemental Swarm:Energy Drain:Foresight:Freedom:Gate:Imprisonment:' +
         'Mage\'s Disjunction:Mass Hold Monster:Meteor Swarm:Power Word Kill:' +
         'Prismatic Sphere:Regenerate:Shades:Shambler:Shapechange:Soul Bind:' +
@@ -2957,7 +2988,7 @@ LastAge.magicRules = function(rules, classes) {
       ];
       channelerDone = true;
     } else if(klass == 'Legate') {
-      // Change SRD35 Cleric spells to Legate
+      // Copy SRD35 Cleric spells
       var clericRules = new ScribeRules('');
       SRD35.magicRules(clericRules, ['Cleric'], [], []);
       spells = [];
@@ -2979,8 +3010,8 @@ LastAge.magicRules = function(rules, classes) {
         var pieces = spells[j].split(':');
         for(var k = 1; k < pieces.length; k++) {
           var spell = pieces[k];
-          var school = LastAge.spellsSchools[spell];
-          if(school == null && (school = SRD35.spellsSchools[spell]) == null) {
+          var school = LastAge.spellsSchools[spell] || SRD35.spellsSchools[spell];
+          if(school == null) {
             continue;
           }
           spell += '(' + pieces[0] + ' ' +
@@ -2995,12 +3026,29 @@ LastAge.magicRules = function(rules, classes) {
     'spellEnergy', '?', null,
     'level', '=', null
   );
+  rules.defineRule('casterLevels.B',
+    'spellEnergy', '?', null,
+    'level', '=', null
+  );
+  rules.defineRule('casterLevels.CH',
+    'levels.Charismatic Channeler', '+=', null,
+    'levels.Hermetic Channeler', '+=', null,
+    'levels.Spiritual Channeler', '+=', null
+  );
+  rules.defineRule('casterLevels.D',
+    'spellEnergy', '?', null,
+    'level', '=', null
+  );
+  rules.defineRule('casterLevels.W',
+    'spellEnergy', '?', null,
+    'level', '=', null
+  );
   rules.defineRule('maxSpellLevel',
     'level', '=', 'source / 2',
     'features.Art Of Magic', '+', '1/2'
   );
   for(var i = 0; i < 10; i++) {
-    rules.defineRule('spellsKnown.C' + i,
+    rules.defineRule('spellsKnown.CH' + i,
       'maxSpellLevel', '?', 'source >= ' + i,
       'spellsKnownBonus', '+=', '0'
     );
@@ -3765,13 +3813,13 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
       }
       // Allocate bonus spells round-robin among all possible spell levels
       for(var spellLevel = 0; spellLevel <= maxSpellLevel; spellLevel++) {
-        attributes['spellsKnown.C' + spellLevel] = 0;
+        attributes['spellsKnown.CH' + spellLevel] = 0;
       }
       for(var spellLevel = maxSpellLevel;
           spellsKnownBonus > 0;
           spellLevel = spellLevel > 0 ? spellLevel - 1 : maxSpellLevel,
           spellsKnownBonus--) {
-        attributes['spellsKnown.C' + spellLevel] += 1;
+        attributes['spellsKnown.CH' + spellLevel] += 1;
       }
       // Let SRD35 pick spells
       SRD35.randomizeOneAttribute.apply(this, [attributes, attribute]);
@@ -3780,7 +3828,7 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
         delete attributes['prohibit.' + a];
       }
       for(var spellLevel = 0; spellLevel <= maxSpellLevel; spellLevel++) {
-        delete attributes['spellsKnown.C' + spellLevel];
+        delete attributes['spellsKnown.CH' + spellLevel];
       }
     }
   } else {

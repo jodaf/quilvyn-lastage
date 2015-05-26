@@ -383,8 +383,8 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
           continue;
         }
         var spell = matchInfo[1];
-        var school = LastAge.spellsSchools[spell];
-        if(school == null && (school = SRD35.spellsSchools[spell]) == null) {
+        var school = LastAge.spellsSchools[spell] || SRD35.spellsSchools[spell];
+        if(school == null) {
           continue;
         }
         spell += '(' + matchInfo[2] + ' ' + schools[school] + ')';
