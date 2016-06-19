@@ -499,7 +499,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'validationNotes.freeriderClassBaseAttack:' +
           'Requires Base Attack >= 6',
         'validationNotes.freeriderClassFeats:' +
-          'Requires Mounted Combat/Ride By Attack/Spirited Charge',
+          'Requires Mounted Combat/Ride-By Attack/Spirited Charge',
         'validationNotes.freeriderClassRace:' +
           'Requires Race =~ Erenlander|Sarcosan',
         'validationNotes.freeriderClassSkills:' +
@@ -943,12 +943,12 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
           'No ranged attack penalty when mounted/mounted Rapid Shot',
         'combatNotes.improvedMountedCombatFeature:' +
           'Use Mounted Combat additional %V times/round',
-        'combatNotes.improvedRideByAttackFeature:Charge in any direction',
+        'combatNotes.improvedRide-ByAttackFeature:Charge in any direction',
         'combatNotes.improvedSpiritedChargeFeature:' +
           'Improved Critical w/charging weapon',
         'combatNotes.improvedTrampleFeature:No foe AOO during overrun',
         'combatNotes.rapidShotFeature:Normal and extra ranged -2 attacks',
-        'combatNotes.rideByAttackFeature:Move before and after mounted attack',
+        'combatNotes.ride-ByAttackFeature:Move before and after mounted attack',
         'combatNotes.speedMountFeature:Dis/mount as free action',
         'combatNotes.spiritedChargeFeature:' +
           'x2 damage (x3 lance) from mounted charge',
@@ -974,8 +974,8 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       saveWill = SRD35.SAVE_BONUS_POOR;
       selectableFeatures = [
         'Improved Mounted Archery', 'Improved Mounted Combat',
-        'Improved Ride By Attack', 'Improved Spirited Charge',
-        'Improved Trample', 'Ride By Attack', 'Spirited Charge', 'Trample'
+        'Improved Ride-By Attack', 'Improved Spirited Charge',
+        'Improved Trample', 'Ride-By Attack', 'Spirited Charge', 'Trample'
       ];
       skillPoints = 4;
       skills = [

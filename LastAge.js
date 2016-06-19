@@ -3902,10 +3902,10 @@ LastAge.ruleNotes = function() {
     '    acquired at the level 4 Beast heroic path.  Scribe corrects this\n' +
     '    to Bull\'s Endurance".\n' +
     '  </li><li>\n' +
-    '    The Wogren Rider selectable features "Improved Ride By Attack",\n' +
+    '    The Wogren Rider selectable features "Improved Ride-By Attack",\n' +
     '    "Improved Spirited Charge", and "Improved Trample" only apply if\n' +
     '    the character already has the corresponding unimproved feat.\n' +
-    '    Select the "Ride By Attack", "Spirited Charge", and "Trample"\n' +
+    '    Select the "Ride-By Attack", "Spirited Charge", and "Trample"\n' +
     '    selectable features otherwise.\n' +
     '  </li><li>\n' +
     '    The selectable feature list includes "Alertness" and "Improved\n' +
