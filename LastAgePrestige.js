@@ -495,7 +495,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
           'Double mount speed during charge/double move',
         'skillNotes.horseLordFeature:+1 Handle Animal (horse)/Ride (horseback)',
         'sanityNotes.freeriderClassWeapons:' +
-          'Requires Composite Longbow||Sarcosan Lance||Scimitar',
+          'Implies Composite Longbow||Sarcosan Lance||Scimitar',
         'validationNotes.freeriderClassBaseAttack:' +
           'Requires Base Attack >= 6',
         'validationNotes.freeriderClassFeats:' +
