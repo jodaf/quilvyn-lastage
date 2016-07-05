@@ -51,7 +51,6 @@ function LastAge() {
   // Fighter in LastAge is sufficiently changed from the SRD to be considered a
   // different class
   SRD35.classRules(rules, ['Barbarian', 'Rogue']);
-  SRD35.companionRules(rules, ['Familiar']);
   SRD35.skillRules(rules, SRD35.SKILLS, SRD35.SUBSKILLS, SRD35.SYNERGIES);
   SRD35.featRules(rules, SRD35.FEATS, SRD35.SUBFEATS);
   SRD35.descriptionRules
@@ -64,13 +63,12 @@ function LastAge() {
   // Pick up the NPC rules, if available
   if(window.SRD35NPC != null) {
     SRD35NPC.classRules(rules, SRD35NPC.CLASSES);
-    SRD35NPC.companionRules(rules, SRD35NPC.COMPANIONS);
   }
   // Add LastAge-specific rules
   LastAge.raceRules(rules, LastAge.LANGUAGES, LastAge.RACES);
   LastAge.heroicPathRules(rules, LastAge.HEROIC_PATHS);
   LastAge.classRules(rules, LastAge.CLASSES);
-  LastAge.companionRules(rules, LastAge.COMPANIONS);
+  LastAge.companionRules(rules, LastAge.ANIMAL_COMPANIONS, SRD35.familiars);
   LastAge.skillRules(rules, LastAge.SKILLS, LastAge.SUBSKILLS);
   LastAge.featRules(rules, LastAge.FEATS, LastAge.SUBFEATS);
   LastAge.equipmentRules(rules, LastAge.WEAPONS);
@@ -94,11 +92,19 @@ function LastAge() {
 }
 
 // Arrays of choices passed to Scribe.
+LastAge.ANIMAL_COMPANIONS = Object.assign({
+  'Grass Cat': 'HD=3 AC=11 Dam=2x1d2+1,1d6+3 Str=16 Dex=19 Con=15 Int=2 Wis=12 Cha=6 Level=4',
+  'Ort': 'HD=3 AC=13 Dam=1d6+3 Str=15 Dex=12 Con=14 Int=2 Wis=11 Cha=2 Level=4',
+  'Boro': 'HD=5 AC=13 Dam=1d8+6 Str=18 Dex=10 Con=16 Int=2 Wis=11 Cha=5 Level=7',
+  'Plains Leopard': 'HD=5 AC=12 Dam=2x1d4+5,1d8+2 Str=21 Dex=17 Con=15 Int=2 Wis=12 Cha=6 Level=7',
+  'River Eel': 'HD=7 AC=13 Dam=1d8+4 Str=17 Dex=15 Con=13 Int=2 Wis=12 Cha=2 Level=10',
+  'Sea Dragon': 'HD=12 AC=15 Dam=3d6+8,1d8+4 Str=26 Dex=13 Con=24 Int=2 Wis=14 Cha=6 Level=13',
+  'Wogren': 'HD=3 AC=12 Dam=2x1d4+1,1d6+3 Str=16 Dex=13 Con=14 Int=6 Wis=13 Cha=2'
+}, SRD35.ANIMAL_COMPANIONS);
 LastAge.CLASSES = [
   'Barbarian', 'Charismatic Channeler', 'Defender', 'Fighter',
   'Hermetic Channeler', 'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
 ];
-LastAge.COMPANIONS = ['Animal Companion', 'Astirax'];
 LastAge.DOMAINS = [
   'Death', 'Destruction', 'Evil', 'Magic', 'War'
 ];
@@ -358,6 +364,8 @@ LastAge.classRules = function(rules, classes) {
         profWeapon, saveFortitude, saveReflex, saveWill, selectableFeatures,
         skillPoints, skills, spellAbility, spellsKnown, spellsPerDay;
     var klass = classes[i];
+    var klassNoSpace =
+      klass.substring(0,1).toLowerCase() + klass.substring(1).replace(/ /g, '');
 
     if(klass == 'Barbarian') {
 
@@ -446,19 +454,7 @@ LastAge.classRules = function(rules, classes) {
             '4 spells/%V spell energy points',
           'magicNotes.massSuggestionFeature:' +
             'Make suggestion to %V fascinated creatures',
-          'magicNotes.suggestionFeature:Make suggestion to fascinated creature',
-          'validationNotes.greaterConfidenceSelectableFeatureFeatures:' +
-            'Requires Improved Confidence',
-          'validationNotes.greaterFurySelectableFeatureFeatures:' +
-            'Requires Improved Fury',
-          'validationNotes.improvedConfidenceSelectableFeatureFeatures:' +
-            'Requires Inspire Confidence',
-          'validationNotes.improvedFurySelectableFeatureFeatures:' +
-            'Requires Inspire Fury',
-          'validationNotes.massSuggestionSelectableFeatureFeatures:' +
-            'Requires Suggestion',
-          'validationNotes.suggestionSelectableFeatureFeatures:' +
-            'Requires Inspire Fascination'
+          'magicNotes.suggestionFeature:Make suggestion to fascinated creature'
         ]);
         selectableFeatures = [
           'Greater Confidence', 'Greater Fury', 'Improved Confidence',
@@ -587,25 +583,7 @@ LastAge.classRules = function(rules, classes) {
           'combatNotes.universalEffectFeature:' +
             'Use multiple mastery powers simultaneously',
           'magicNotes.magecraft(Spiritual)Feature:' +
-            '4 spells/%V spell energy points',
-          'validationNotes.confidentEffectSelectableFeatureFeatures:' +
-            'Requires Mastery Of Nature||Mastery Of Spirits||' +
-            'Mastery Of The Unnatural',
-          'validationNotes.heightenedEffectSelectableFeatureFeatures:' +
-            'Requires Mastery Of Nature||Mastery Of Spirits||' +
-            'Mastery Of The Unnatural',
-          'validationNotes.powerfulEffectSelectableFeatureFeatures:' +
-            'Requires Mastery Of Nature||Mastery Of Spirits||' +
-            'Mastery Of The Unnatural',
-          'validationNotes.preciseEffectSelectableFeatureFeatures:' +
-            'Requires Mastery Of Nature||Mastery Of Spirits||' +
-            'Mastery Of The Unnatural',
-          'validationNotes.specificEffectSelectableFeatureFeatures:' +
-            'Requires Mastery Of Nature||Mastery Of Spirits||' +
-            'Mastery Of The Unnatural',
-          'validationNotes.universalEffectSelectableFeatureFeatures:' +
-            'Requires Mastery Of Nature||Mastery Of Spirits||' +
-            'Mastery Of The Unnatural'
+            '4 spells/%V spell energy points'
         ]);
         selectableFeatures = [
           'Confident Effect', 'Heightened Effect', 'Mastery Of Nature',
@@ -718,25 +696,7 @@ LastAge.classRules = function(rules, classes) {
         'combatNotes.strikeAndHoldFeature:Extra unarmed attack to grab foe',
         'combatNotes.weaponTrapFeature:' +
           'Attack to catch foe\'s weapon for disarm/damage/AOO 1/round',
-        'saveNotes.defensiveMasteryFeature:+%V all saves',
-        'validationNotes.counterattackSelectableFeatureFeatures:' +
-          'Requires Dodge Training/Offensive Training',
-        'validationNotes.coverAllySelectableFeatureFeatures:' +
-          'Requires Dodge Training',
-        'validationNotes.devastatingStrikeSelectableFeatureFeatures:' +
-          'Requires Grappling Training/Offensive Training',
-        'validationNotes.furiousGrappleSelectableFeatureFeatures:' +
-          'Requires Grappling Training/Speed Training',
-        'validationNotes.oneWithTheWeaponSelectableFeatureFeatures:' +
-          'Requires Offensive Training',
-        'validationNotes.rapidStrikeSelectableFeatureFeatures:' +
-          'Requires Speed Training',
-        'validationNotes.retaliatoryStrikeSelectableFeatureFeatures:' +
-          'Requires Dodge Training/Speed Training',
-        'validationNotes.strikeAndHoldSelectableFeatureFeatures:' +
-          'Requires Grappling Training',
-        'validationNotes.weaponTrapSelectableFeatureFeatures:' +
-          'Requires Dodge Training/Grappling Training'
+        'saveNotes.defensiveMasteryFeature:+%V all saves'
       ];
       profArmor = SRD35.PROFICIENCY_NONE;
       profShield = SRD35.PROFICIENCY_NONE;
@@ -1015,37 +975,7 @@ LastAge.classRules = function(rules, classes) {
         'skillNotes.trackFeature:Survival to follow creatures\' trail',
         'skillNotes.wildEmpathyFeature:+%V Diplomacy w/animals',
         'skillNotes.wildernessTrapfindingFeature:' +
-          'Search to find/Survival to remove DC 20+ traps',
-        'validationNotes.animalCompanionSelectableFeatureFeatures:' +
-          'Requires Wild Empathy',
-        'validationNotes.camouflageSelectableFeatureFeatures:' +
-          'Requires Skill Mastery/Trackless Step',
-        'validationNotes.evasionSelectableFeatureFeatures:' +
-          'Requires Quick Stride/Instinctive Response',
-        'validationNotes.hatedFoeSelectableFeatureFeatures:' +
-          'Requires Master Hunter',
-        'validationNotes.hideInPlainSightSelectableFeatureFeatures:' +
-          'Requires Camouflage',
-        'validationNotes.huntedByTheShadowSelectableFeatureFeatures:' +
-          'Requires Rapid Response/Sense Dark Magic',
-        'validationNotes.improvedEvasionSelectableFeatureFeatures:' +
-          'Requires Evasion',
-        'validationNotes.improvedWoodlandStrideSelectableFeatureFeatures:' +
-          'Requires Woodland Stride/Overland Stride',
-        'validationNotes.instinctiveResponseSelectableFeatureFeatures:' +
-          'Requires Rapid Response',
-        'validationNotes.overlandStrideSelectableFeatureFeatures:' +
-          'Requires Quick Stride',
-        'validationNotes.senseDarkMagicSelectableFeatureFeatures:' +
-          'Requires Master Hunter',
-        'validationNotes.slipperyMindSelectableFeatureFeatures:' +
-          'Requires Hunted By The Shadow',
-        'validationNotes.tracklessStepSelectableFeatureFeatures:' +
-          'Requires Woodland Stride',
-        'validationNotes.trueAimSelectableFeatureFeatures:' +
-          'Requires Skill Mastery/Hated Foe',
-        'validationNotes.woodsloreSelectableFeatureFeatures:' +
-          'Requires Wilderness Trapfinding'
+          'Search to find/Survival to remove DC 20+ traps'
       ];
       profArmor = SRD35.PROFICIENCY_MEDIUM;
       profShield = SRD35.PROFICIENCY_HEAVY;
@@ -1074,9 +1004,6 @@ LastAge.classRules = function(rules, classes) {
       spellsPerDay = null;
       rules.defineRule('abilityNotes.quickStrideFeature',
         'wildlanderFeatures.Quick Stride', '=', '10 * source'
-      );
-      rules.defineRule('animalCompanionLevel',
-        'featureNotes.animalCompanionFeature', '+=', null
       );
       rules.defineRule
         ('animalCompanionMasterLevel', 'levels.Wildlander', '+=', null);
@@ -1131,7 +1058,7 @@ LastAge.classRules = function(rules, classes) {
         var selectable = selectableFeatures[j];
         var choice = klass + ' - ' + selectable;
         rules.defineChoice('selectableFeatures', choice + ':' + klass);
-        rules.defineRule(klass + 'Features.' + selectable,
+        rules.defineRule(klassNoSpace + 'Features.' + selectable,
           'selectableFeatures.' + choice, '+=', null
         );
         rules.defineRule('features.' + selectable,
@@ -1145,97 +1072,82 @@ LastAge.classRules = function(rules, classes) {
 };
 
 /* Defines the rules related to companion creatures. */
-LastAge.companionRules = function(rules, companions) {
+LastAge.companionRules = function(rules, companions, familiars) {
 
-  for(var i = 0; i < companions.length; i++) {
+  SRD35.companionRules(rules, companions, familiars);
 
-    var features, notes, prefix;
-    var companion = companions[i];
+  if(companions != null) {
 
-    if(companion == 'Animal Companion') {
-      features = [
-        '1:Devotion', '2:Magical Beast', '3:Companion Evasion',
-        '4:Improved Speed', '5:Empathic Link'
-      ];
-      notes = [
-        'animalCompanionStats.armorClass:+%V',
-        'animalCompanionStats.dexterity:+%V',
-        'animalCompanionStats.hitDice:+%Vd8',
-        'animalCompanionStats.strength:+%V',
-        'animalCompanionStats.tricks:+%V',
-        'companionNotes.companionEvasionFeature:' +
-          'Reflex save yields no damage instead of 1/2',
-        'companionNotes.devotionFeature:+4 Will vs. enchantment',
-        'companionNotes.empathicLinkFeature:Share emotions up to 1 mile',
-        'companionNotes.improvedSpeedFeature:+10 speed',
-        'companionNotes.magicalBeastFeature:' +
-          'Treated as magical beast for type-based effects'
-      ];
-      prefix = 'animalCompanion';
-      rules.defineRule('animalCompanionStats.armorClass',
-        'animalCompanionLevel', '=', '(source - 1) * 2'
-      );
-      rules.defineRule('animalCompanionStats.dexterity',
-        'animalCompanionLevel', '=', 'source - 1'
-      );
-      rules.defineRule('animalCompanionStats.hitDice',
-        'animalCompanionLevel', '=', '(source - 1) * 2'
-      );
-      rules.defineRule('animalCompanionStats.strength',
-        'animalCompanionLevel', '=', 'source * 2'
-      );
-      rules.defineRule('animalCompanionStats.tricks',
-       'animalCompanionLevel', '=', 'source + 1'
-      );
-    } else if(companion == 'Astirax') {
-      features = [
-        '2:Telepathy', '3:Enhanced Sense', '4:Companion Evasion',
-        '6:Companion Empathy'
-      ];
-      notes = [
-        'astiraxStats.charisma:+%V',
-        'astiraxStats.hitDice:+%Vd8',
-        'astiraxStats.intelligence:+%V',
-        'companionNotes.companionEmpathyFeature:' +
-          'Continuous emotional link w/no range limit',
-        'companionNotes.companionEvasionFeature:' +
-          'Reflex save yields no damage instead of 1/2',
-        'companionNotes.enhancedSenseFeature:' +
-          '+%V mile channeled event detection',
-        'companionNotes.telepathyFeature:' +
-          'Companion-controlled telepathic communication up to 100 ft'
-      ];
-      prefix = 'astirax';
-      rules.defineRule
-        ('astiraxStats.charisma', 'astiraxLevel', '=', 'source - 1');
-      rules.defineRule
-        ('astiraxStats.hitDice', 'astiraxLevel', '=', '(source - 1) * 2');
-      rules.defineRule
-        ('astiraxStats.intelligence', 'astiraxLevel', '=', 'source - 1');
-      rules.defineRule('companionNotes.enhancedSenseFeature',
-        'astiraxLevel', '+=', 'source < 5 ? 5 : 10'
-      );
-    } else
-      continue;
-
-    for(var j = 0; j < features.length; j++) {
-      var levelAndFeature = features[j].split(/:/);
-      var feature = levelAndFeature[levelAndFeature.length == 1 ? 0 : 1];
-      var level = levelAndFeature.length == 1 ? 1 : levelAndFeature[0];
-      rules.defineRule(prefix + 'Features.' + feature,
-        prefix + 'Level', '=', 'source >= ' + level + ' ? 1 : null'
-      );
-      rules.defineRule
-        ('features.' + feature, prefix + 'Features.' + feature, '=', '1');
+    // Override SRD3.5 feature list
+    var features = {
+      'Devotion': 1, 'Magical Beast': 2, 'Companion Evasion': 3,
+      'Improved Speed': 4, 'Empathic Link': 5,
+      'Link': 0, 'Share Spells': 0, 'Multiattack': 0,
+      'Companion Improved Evasion': 0
+    };
+    for(var feature in features) {
+      if(features[feature] > 0) {
+        rules.defineRule('companionFeatures.' + feature,
+          'animalCompanionLevel', '=',
+          'source >= ' + features[feature] + ' ? 1 : null'
+        );
+      } else {
+        // Disable N/A SRD3.5 companion features
+        rules.defineRule
+          ('companionFeatures.' + feature, 'animalCompanionLevel', '=', 'null');
+      }
     }
 
-    if(notes != null)
-      rules.defineNote(notes);
+    // Companion level based on feature count instead of class level
+    rules.defineRule('animalCompanionLevel',
+      'animalCompanionMasterLevel', '=', 'null',
+      'featureNotes.animalCompanionFeature', '=', null
+    );
 
-    rules.defineSheetElement
-      (companion + ' Features', 'Companion Notes', null, ' * ');
-    rules.defineSheetElement
-      (companion + ' Stats', companion + ' Features', null, ' * ');
+    // Overrides of a couple of SRD3.5 calculations
+    rules.defineRule
+      ('companionStats.Str', 'animalCompanionLevel', '+', 'source * 2');
+    rules.defineRule
+      ('companionStats.Tricks', 'animalCompanionLevel', '=', 'source+1');
+
+    // Adapt Legate astirax rules to make it a form of animal companion.
+    features = {
+      'Telepathy': 1, 'Enhanced Sense': 2, 'Companion Evasion': 3,
+      'Companion Empathy': 5
+    };
+    for(var feature in features) {
+      if(features[feature] > 0) {
+        rules.defineRule('companionFeatures.' + feature,
+          'astiraxLevel', '=', 'source >= ' + features[feature] + ' ? 1 : null'
+        );
+        rules.defineRule
+          ('features.' + feature, 'companionFeatures.' + feature, '=', '1');
+      } else {
+        // Disable N/A companion features
+        rules.defineRule
+          ('companionFeatures.' + feature, 'astiraxLevel', 'v', '0');
+      }
+    }
+
+    var notes = [
+      'companionNotes.companionEmpathyFeature:' +
+        'Continuous emotional link w/no range limit',
+      'companionNotes.enhancedSenseFeature:' +
+        '+%V mile channeled event detection',
+      'companionNotes.telepathyFeature:' +
+        'Companion-controlled telepathic communication up to 100 ft'
+    ];
+    rules.defineNote(notes);
+
+    rules.defineRule('astiraxMasterLevel',
+      'levels.Legate', '=', 'Math.floor((source - 3) / 3)'
+    );
+    rules.defineRule('companionNotes.enhancedSenseFeature',
+      'astiraxLevel', '=', 'source < 4 ? 5 : 10'
+    );
+    rules.defineRule('companionStats.Cha', 'astiraxLevel', '+', null);
+    rules.defineRule('companionStats.HD', 'astiraxLevel', '+', 'source * 2');
+    rules.defineRule('companionStats.Int', 'astiraxLevel', '+', null);
 
   }
 
@@ -1537,6 +1449,8 @@ LastAge.heroicPathRules = function(rules, paths) {
   for(var i = 0; i < paths.length; i++) {
 
     var path = paths[i];
+    var pathNoSpace =
+      path.substring(0,1).toLowerCase() + path.substring(1).replace(/ /g, '');
     var feats, features, notes, selectableFeatures, spellFeatures;
 
     if(path == 'Beast') {
@@ -2742,11 +2656,8 @@ LastAge.heroicPathRules = function(rules, paths) {
         '4:Charm Animal', '7:Speak With Animals', '12:Charm Animal',
         '17:Speak With Animals'
       ];
-      rules.defineRule('animalCompanionLevel',
-        'featureNotes.animalCompanionFeature', '+=', null
-      );
       rules.defineRule
-        ('animalCompanionMasterLevel', 'pathLevels.Warg', '+=', null);
+        ('animalCompanionMasterLevel', 'pathLevels.Warg', '=', null);
       rules.defineRule('featureNotes.animalCompanionFeature',
         'wargFeatures.Animal Companion', '+=', null
       );
@@ -2806,7 +2717,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         var selectable = selectableFeatures[j];
         var choice = path + ' - ' + selectable;
         rules.defineChoice('selectableFeatures', choice + ':' + path);
-        rules.defineRule(path + 'Features.' + selectable,
+        rules.defineRule(pathNoSpace + 'Features.' + selectable,
           'selectableFeatures.' + choice, '+=', null
         );
         rules.defineRule('features.' + selectable,
@@ -3712,7 +3623,7 @@ LastAge.raceRules = function(rules, languages, races) {
         var selectable = selectableFeatures[j];
         var choice = race + ' - ' + selectable;
         rules.defineChoice('selectableFeatures', choice + ':' + race);
-        rules.defineRule(race + 'Features.' + selectable,
+        rules.defineRule(raceNoSpace + 'Features.' + selectable,
           'selectableFeatures.' + choice, '+=', null
         );
         rules.defineRule('features.' + selectable,
