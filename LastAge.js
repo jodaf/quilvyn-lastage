@@ -904,9 +904,6 @@ LastAge.classRules = function(rules, classes) {
         'L8:15:1/16:2/18:3/20:4',
         'L9:17:1/18:2/19:3/20:4'
       ];
-      rules.defineRule('astiraxLevel',
-        'levels.Legate', '+=', 'source < 3 ? null : Math.floor(source / 3)'
-      );
       rules.defineRule('astiraxMasterLevel', 'levels.Legate', '+=', null);
       rules.defineRule('casterLevelDivine', 'levels.Legate', '+=', null);
       rules.defineRule('casterLevels.C', 'levels.Legate', '+=', null);
@@ -1112,21 +1109,15 @@ LastAge.companionRules = function(rules, companions, familiars) {
 
     // Adapt Legate astirax rules to make it a form of animal companion.
     features = {
-      'Telepathy': 1, 'Enhanced Sense': 2, 'Companion Evasion': 3,
-      'Companion Empathy': 5
+      'Telepathy': 2, 'Enhanced Sense': 3, 'Companion Evasion': 4,
+      'Companion Empathy': 6
     };
     for(var feature in features) {
-      if(features[feature] > 0) {
-        rules.defineRule('companionFeatures.' + feature,
-          'astiraxLevel', '=', 'source >= ' + features[feature] + ' ? 1 : null'
-        );
-        rules.defineRule
-          ('features.' + feature, 'companionFeatures.' + feature, '=', '1');
-      } else {
-        // Disable N/A companion features
-        rules.defineRule
-          ('companionFeatures.' + feature, 'astiraxLevel', 'v', '0');
-      }
+      rules.defineRule('companionFeatures.' + feature,
+        'astiraxLevel', '=', 'source >= ' + features[feature] + ' ? 1 : null'
+      );
+      rules.defineRule
+        ('features.' + feature, 'companionFeatures.' + feature, '=', '1');
     }
 
     var notes = [
@@ -1139,15 +1130,15 @@ LastAge.companionRules = function(rules, companions, familiars) {
     ];
     rules.defineNote(notes);
 
-    rules.defineRule('astiraxMasterLevel',
-      'levels.Legate', '=', 'Math.floor((source - 3) / 3)'
-    );
+    rules.defineRule
+      ('astiraxLevel', 'levels.Legate', '=', 'Math.floor(source / 3)');
     rules.defineRule('companionNotes.enhancedSenseFeature',
       'astiraxLevel', '=', 'source < 4 ? 5 : 10'
     );
-    rules.defineRule('companionStats.Cha', 'astiraxLevel', '+', null);
-    rules.defineRule('companionStats.HD', 'astiraxLevel', '+', 'source * 2');
-    rules.defineRule('companionStats.Int', 'astiraxLevel', '+', null);
+    rules.defineRule('companionStats.Cha', 'astiraxLevel', '+', 'source - 1');
+    rules.defineRule
+      ('companionStats.HD', 'astiraxLevel', '+', '(source - 1) * 2');
+    rules.defineRule('companionStats.Int', 'astiraxLevel', '+', 'source - 1');
 
   }
 
