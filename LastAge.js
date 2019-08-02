@@ -77,6 +77,7 @@ function LastAge() {
   rules.defineChoice('preset', 'race', 'heroicPath', 'level', 'levels');
   rules.defineChoice('random', SRD35.RANDOMIZABLE_ATTRIBUTES);
   delete rules.getChoices('random').deity;
+  rules.defineRule('deity', 'levels.Legate', '=', '"Izrador (NE)"');
   rules.randomizeOneAttribute = LastAge.randomizeOneAttribute;
   rules.makeValid = SRD35.makeValid;
   rules.ruleNotes = LastAge.ruleNotes;
@@ -88,6 +89,22 @@ function LastAge() {
   // Let Scribe know we're here
   Scribe.addRuleSet(rules);
   LastAge.rules = rules;
+  rules.defineRule('legateFeatures.Weapon Focus (Longsword)',
+    'domains.War', '?', null,
+    'levels.Legate', '=', '1'
+  );
+  rules.defineRule('legateFeatures.Weapon Proficiency (Longsword)',
+    // Unclear if 3.5 rules require War domain for proficiency;
+    // Pathfinder doesn't
+    // 'domains.War', '?', null,
+    'levels.Legate', '=', '1'
+  );
+  rules.defineRule('features.Weapon Focus (Longsword)',
+    'legateFeatures.Weapon Focus (Longsword)', '=', null
+  );
+  rules.defineRule('features.Weapon Proficiency (Longsword)',
+    'legateFeatures.Weapon Proficiency (Longsword)', '=', null
+  );
 
 }
 
@@ -3047,6 +3064,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'Stone Knowledge', 'Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe)'
       ];
       notes = [
+        'abilityNotes.slowFeature:-10 speed',
         'combatNotes.dwarfFavoredEnemyFeature:+1 attack vs. orc',
         'combatNotes.dwarfFavoredWeaponFeature:+1 attack with axes/hammers',
         'combatNotes.resilientFeature:+2 AC',
@@ -3070,7 +3088,7 @@ LastAge.raceRules = function(rules, languages, races) {
         ('resistance.Poison', 'saveNotes.resistPoisonFeature', '+=', '2');
       rules.defineRule
         ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
-      rules.defineRule('speed', 'features.Slow', '+', '-10');
+      rules.defineRule('speed', 'abilityNotes.slowFeature', '+', '-10');
       rules.defineRule
         ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
       if(race == 'Clan Dwarf') {
@@ -3106,6 +3124,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'Sturdy'
       ];
       notes = [
+        'abilityNotes.slowFeature:-10 speed',
         'combatNotes.smallFeature:+1 AC/attack',
         'combatNotes.sturdyFeature:+1 AC',
         'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
@@ -3127,7 +3146,7 @@ LastAge.raceRules = function(rules, languages, races) {
         ('resistance.Poison', 'saveNotes.resistPoisonFeature', '+=', '2');
       rules.defineRule
         ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
-      rules.defineRule('speed', 'features.Slow', '+', '-10');
+      rules.defineRule('speed', 'abilityNotes.slowFeature', '+', '-10');
       rules.defineRule
         ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
       if(race == 'Clan Raised Dwarrow') {
@@ -3384,7 +3403,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'race', '=', 'source == "Erenlander" ? 1 : null'
       );
       rules.defineRule('featCount.General',
-        'featureNotes.erenlanderFeatCountBonus', '+=', null
+        'featureNotes.erenlanderFeatCountBonus', '+', null
       );
       rules.defineRule('featureNotes.erenlanderFeatCountBonus',
         'race', '=', 'source == "Erenlander" ? 2 : null'
@@ -3407,6 +3426,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'Weapon Familiarity (Hand Crossbow)'
       ];
       notes = [
+        'abilityNotes.slowFeature:-10 speed',
         'combatNotes.smallFeature:+1 AC/attack',
         'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'magicNotes.resistSpellsFeature:-2 spell energy',
@@ -3440,7 +3460,7 @@ LastAge.raceRules = function(rules, languages, races) {
       rules.defineRule('skillNotes.naturalSwimmerFeature',
         'speed', '=', 'Math.floor(source / 2)'
       );
-      rules.defineRule('speed', 'features.Slow', '+', '-10');
+      rules.defineRule('speed', 'abilityNotes.slowFeature', '+', '-10');
       rules.defineRule
         ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
 
@@ -3453,6 +3473,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'Weapon Familiarity (Halfling Lance)'
       ];
       notes = [
+        'abilityNotes.slowFeature:-10 speed',
         'combatNotes.smallFeature:+1 AC/attack',
         'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'magicNotes.innateMagicFeature:' +
@@ -3476,7 +3497,7 @@ LastAge.raceRules = function(rules, languages, races) {
         ('save.Fortitude', 'saveNotes.fortunateFeature', '+', '1');
       rules.defineRule('save.Reflex', 'saveNotes.fortunateFeature', '+', '1');
       rules.defineRule('save.Will', 'saveNotes.fortunateFeature', '+', '1');
-      rules.defineRule('speed', 'features.Slow', '+', '-10');
+      rules.defineRule('speed', 'abilityNotes.slowFeature', '+', '-10');
 
       if(race == 'Agrarian Halfling') {
         selectableFeatures = ['Stout', 'Studious'];
