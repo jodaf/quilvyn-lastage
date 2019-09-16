@@ -77,7 +77,6 @@ function LastAge() {
   rules.defineChoice('preset', 'race', 'heroicPath', 'level', 'levels');
   rules.defineChoice('random', SRD35.RANDOMIZABLE_ATTRIBUTES);
   delete rules.getChoices('random').deity;
-  rules.defineRule('deity', 'levels.Legate', '=', '"Izrador (NE)"');
   rules.randomizeOneAttribute = LastAge.randomizeOneAttribute;
   rules.makeValid = SRD35.makeValid;
   rules.ruleNotes = LastAge.ruleNotes;
@@ -89,14 +88,13 @@ function LastAge() {
   // Let Scribe know we're here
   Scribe.addRuleSet(rules);
   LastAge.rules = rules;
+  rules.defineRule('deity', 'levels.Legate', '=', '"Izrador (NE)"');
   rules.defineRule('legateFeatures.Weapon Focus (Longsword)',
     'domains.War', '?', null,
     'levels.Legate', '=', '1'
   );
   rules.defineRule('legateFeatures.Weapon Proficiency (Longsword)',
-    // Unclear if 3.5 rules require War domain for proficiency;
-    // Pathfinder doesn't
-    // 'domains.War', '?', null,
+    'domains.War', '?', null,
     'levels.Legate', '=', '1'
   );
   rules.defineRule('features.Weapon Focus (Longsword)',
@@ -125,8 +123,10 @@ LastAge.CLASSES = [
 LastAge.DOMAINS = [
   'Death', 'Destruction', 'Evil', 'Magic', 'War'
 ];
-LastAge.DEITIES =
-  ['Izrador (NE):Death/Destruction/Evil/Magic/War', 'None:'];
+LastAge.DEITIES = [
+  'Izrador (NE):Longsword:Death/Destruction/Evil/Magic/War',
+  'None::'
+];
 LastAge.FEATS = [
   'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
   'Craft Spell Talisman:Item Creation', 'Devastating Mounted Assault:Fighter',
