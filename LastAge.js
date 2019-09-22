@@ -69,7 +69,8 @@ function LastAge() {
   LastAge.heroicPathRules(rules, LastAge.HEROIC_PATHS);
   LastAge.classRules(rules, LastAge.CLASSES);
   LastAge.companionRules(rules, LastAge.ANIMAL_COMPANIONS, SRD35.familiars);
-  LastAge.skillRules(rules, LastAge.SKILLS, LastAge.SUBSKILLS);
+  LastAge.skillRules
+    (rules, LastAge.SKILLS, LastAge.SUBSKILLS, LastAge.SYNERGIES);
   LastAge.featRules(rules, LastAge.FEATS, LastAge.SUBFEATS);
   LastAge.equipmentRules(rules, LastAge.WEAPONS);
   LastAge.magicRules(rules, LastAge.CLASSES);
@@ -178,9 +179,14 @@ LastAge.SUBFEATS = {
   'Weapon Focus':'Longsword'
 };
 LastAge.SUBSKILLS = {
-  'Knowledge':'Old Gods/Shadow/Spirits',
+  'Knowledge':'Local/Nature/Old Gods/Shadow/Spirits',
   // Profession (Soldier) available to Leader Of Men Fighters
   'Profession':'Soldier'
+};
+LastAge.SYNERGIES = {
+  'Knowledge (Local)':'Knowledge (Shadow) (bureaucracy)',
+  'Knowledge (Nature)':'Knowledge (Spirits)',
+  'Knowledge (Spirits)':'Knowledge (Nature)'
 };
 LastAge.WEAPONS = [
   'Atharak:d6', 'Cedeku:d6@19', 'Crafted Vardatch:d10@19',
@@ -3648,27 +3654,11 @@ LastAge.raceRules = function(rules, languages, races) {
 
 };
 
-/* Defines the rules related to PC skills. */
-LastAge.skillRules = function(rules, skills, subskills) {
-
-  var notes = [
-    'skillNotes.knowledge(Local)Synergy2:' +
-       '+2 Knowledge (Shadow) (local bureaucracy)',
-    'skillNotes.knowledge(Nature)Synergy2:+2 Knowledge (Spirits)',
-    'skillNotes.knowledge(Spirits)Synergy:+2 Knowledge (Nature)'
-  ];
-  rules.defineNote(notes);
-  rules.defineRule('skillNotes.knowledge(Local)Synergy2',
-    'skillModifier.Knowledge (Local)', '=', 'source >= 5 ? 1 : null'
-  );
-  rules.defineRule('skillNotes.knowledge(Nature)Synergy2',
-    'skillModifier.Knowledge (Nature)', '=', 'source >= 5 ? 1 : null'
-  );
-  rules.defineRule('skillModifier.Knowledge (Spirits)',
-    'skillNotes.knowledge(Nature)Synergy2', '+', '2'
-  );
-
-};
+/* Defines the rules related to character skills. */
+LastAge.skillRules = function(rules, skills, subskills, synergies) {
+  alert("Defining last age skills with synergies " + synergies);
+  SRD35.skillRules(rules, skills, subskills, synergies);
+}
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
 LastAge.randomizeOneAttribute = function(attributes, attribute) {
