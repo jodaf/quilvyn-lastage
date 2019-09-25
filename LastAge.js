@@ -3689,16 +3689,15 @@ LastAge.skillRules = function(rules, skills, subskills, synergies) {
 LastAge.SRD35ToPathfinder = function(arr) {
   if(arr == null)
     return null;
-  var modified = false;
   var pieces;
   var result = [];
   for(var i = 0; i < arr.length; i++) {
     var item = arr[i];
     var prefix = '';
-    pieces = item.split(':', 2);
-    if(pieces.length > 1) {
-      item = pieces[1];
-      prefix = pieces[0] + ':';
+    var matchInfo = item.match(/(.*:((\+|-)\S+\s+)?)(.*)/);
+    if(matchInfo) {
+      item = matchInfo[4];
+      prefix = matchInfo[1];
     }
     pieces = item.split('/');
     var newPieces = [];
@@ -3706,7 +3705,6 @@ LastAge.SRD35ToPathfinder = function(arr) {
       var piece = pieces[j];
       for(var skill in Pathfinder.SRD35_SKILL_MAP) {
         if(piece.indexOf(skill) >= 0) {
-          modified = true;
           if(Pathfinder.SRD35_SKILL_MAP[skill] == '') {
             piece = '';
           } else {
@@ -3720,15 +3718,10 @@ LastAge.SRD35ToPathfinder = function(arr) {
       }
     }
     if(newPieces.length > 0) {
-      result.push(prefix + newPieces.join('/'));
+      var newItem = prefix + newPieces.join('/');
+      if(result.indexOf(newItem) < 0)
+        result.push(newItem);
     }
-  }
-  if(modified) {
-    console.log("=== BEFORE");
-    console.log(arr);
-    console.log("=== AFTER");
-    console.log(result);
-    console.log("======");
   }
   return result;
 }
