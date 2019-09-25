@@ -1000,6 +1000,10 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
     } else
       continue;
 
+    if(LastAge.USE_PATHFINDER) {
+      notes = LastAge.SRD35ToPathfinder(notes);
+      skills = LastAge.SRD35ToPathfinder(skills);
+    }
     SRD35.defineClass
       (rules, klass, hitDie, skillPoints, baseAttack, saveFortitude,
        saveReflex, saveWill, profArmor, profShield, profWeapon, skills,

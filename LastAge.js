@@ -34,6 +34,10 @@ function LastAge() {
     return;
   }
 
+  if(window.Pathfinder == null || Pathfinder.SRD35_SKILL_MAP == null) {
+    LastAge.USE_PATHFINDER = false;
+  }
+
   // Define a new rule set w/the same editor and standard viewer as SRD35
   var rules = new ScribeRules('Last Age', LASTAGE_VERSION);
   rules.editorElements = SRD35.initialEditorElements();
@@ -50,9 +54,15 @@ function LastAge() {
   SRD35.raceRules(rules, [], []);
   // Fighter in LastAge is sufficiently changed from the SRD to be considered a
   // different class
-  SRD35.classRules(rules, ['Barbarian', 'Rogue']);
-  SRD35.skillRules(rules, SRD35.SKILLS, SRD35.SUBSKILLS, SRD35.SYNERGIES);
-  SRD35.featRules(rules, SRD35.FEATS, SRD35.SUBFEATS);
+  if(LastAge.USE_PATHFINDER) {
+    Pathfinder.classRules(rules, ['Barbarian', 'Rogue'], null);
+    Pathfinder.skillRules(rules, Pathfinder.SKILLS, Pathfinder.SUBSKILLS);
+    Pathfinder.featRules(rules, Pathfinder.FEATS, Pathfinder.SUBFEATS);
+  } else {
+    SRD35.classRules(rules, ['Barbarian', 'Rogue']);
+    SRD35.skillRules(rules, SRD35.SKILLS, SRD35.SUBSKILLS, SRD35.SYNERGIES);
+    SRD35.featRules(rules, SRD35.FEATS, SRD35.SUBFEATS);
+  }
   SRD35.descriptionRules
     (rules, SRD35.ALIGNMENTS, LastAge.DEITIES, SRD35.GENDERS);
   SRD35.equipmentRules
@@ -188,6 +198,7 @@ LastAge.SYNERGIES = {
   'Knowledge (Nature)':'Knowledge (Spirits)',
   'Knowledge (Spirits)':'Knowledge (Nature)'
 };
+LastAge.USE_PATHFINDER = false;
 LastAge.WEAPONS = [
   'Atharak:d6', 'Cedeku:d6@19', 'Crafted Vardatch:d10@19',
   'Dornish Horse Spear:d10x3', 'Farmer\'s Rope:d2', 'Fighting Knife:d6@19x3',
@@ -982,16 +993,15 @@ LastAge.classRules = function(rules, classes) {
         'saveNotes.evasionFeature:Reflex save yields no damage instead of 1/2',
         'saveNotes.improvedEvasionFeature:Failed save yields 1/2 damage',
         'saveNotes.slipperyMindFeature:Second save vs. enchantment',
-        'skillNotes.alertnessFeature:+2 Listen/Spot',
-        'skillNotes.camouflageFeature:Hide in any natural terrain',
         'skillNotes.dangerSenseFeature:+%V Listen/Spot',
         'skillNotes.hideInPlainSightFeature:Hide even when observed',
         'skillNotes.masterHunterFeature:' +
           '+2 or more Bluff/Listen/Sense Motive/Spot/Survival vs. selected ' +
           'creature type(s)',
-        // NOTE: No +3 bonus in SRD35 Rogue feature
+        // NOTE: No +3 bonus in SRD35 Rogue feature of same name
         'skillNotes.skillMasteryFeature:' +
-          '+3 bonus/take 10 despite distraction on %V designated skills',
+          'Take 10 despite distraction on %V designated skills',
+        'skillNotes.skillMasteryFeature2:+3 on %V designated skills',
         'skillNotes.trackFeature:Survival to follow creatures\' trail',
         'skillNotes.wildEmpathyFeature:+%V Diplomacy w/animals',
         'skillNotes.wildernessTrapfindingFeature:' +
@@ -1053,6 +1063,9 @@ LastAge.classRules = function(rules, classes) {
       rules.defineRule('skillNotes.skillMasteryFeature',
         'wildlanderFeatures.Skill Mastery', '+=', null
       );
+      rules.defineRule('skillNotes.skillMasteryFeature2',
+        'wildlanderFeatures.Skill Mastery', '+=', null
+      );
       rules.defineRule('skillNotes.wildEmpathyFeature',
         'levels.Wildlander', '+=', 'source',
         'charismaModifier', '+', null
@@ -1062,6 +1075,10 @@ LastAge.classRules = function(rules, classes) {
     } else
       continue;
 
+    if(LastAge.USE_PATHFINDER) {
+      notes = LastAge.SRD35ToPathfinder(notes);
+      skills = LastAge.SRD35ToPathfinder(skills);
+    }
     SRD35.defineClass
       (rules, klass, hitDie, skillPoints, baseAttack, saveFortitude, saveReflex,
        saveWill, profArmor, profShield, profWeapon, skills, features,
@@ -2700,6 +2717,9 @@ LastAge.heroicPathRules = function(rules, paths) {
     } else
       continue;
 
+    if(LastAge.USE_PATHFINDER) {
+      notes = LastAge.SRD35ToPathfinder(notes);
+    }
     var prefix =
       path.substring(0, 1).toLowerCase() + path.substring(1).replace(/ /g, '');
     rules.defineRule('pathLevels.' + path,
@@ -3349,7 +3369,7 @@ LastAge.raceRules = function(rules, languages, races) {
           'skillNotes.improvedNaturalSwimmerFeature:' +
              '+8 special action or avoid hazard/always take 10/run',
           'skillNotes.naturalSailorFeature:' +
-            '+2 Craft (ship/sea)/Profession (ship/sea)/Use Rope (ship/sea)',
+            '+2 Craft (ship)/Profession (ship)/Use Rope (ship)',
           'skillNotes.naturalSwimmerFeature:%V swim as move action'
         ]);
         rules.defineRule('deepLungsMultiplier',
@@ -3633,6 +3653,9 @@ LastAge.raceRules = function(rules, languages, races) {
     } else
       continue;
 
+    if(LastAge.USE_PATHFINDER) {
+      notes = LastAge.SRD35ToPathfinder(notes);
+    }
     SRD35.defineRace(rules, race, adjustment, features);
     if(notes != null)
       rules.defineNote(notes);
@@ -3657,6 +3680,57 @@ LastAge.raceRules = function(rules, languages, races) {
 /* Defines the rules related to character skills. */
 LastAge.skillRules = function(rules, skills, subskills, synergies) {
   SRD35.skillRules(rules, skills, subskills, synergies);
+}
+
+/*
+ * Replaces references to SRD35 skills in each element of #arr# with the
+ * appropriate Pathfinder skill.
+ */
+LastAge.SRD35ToPathfinder = function(arr) {
+  if(arr == null)
+    return null;
+  var modified = false;
+  var pieces;
+  var result = [];
+  for(var i = 0; i < arr.length; i++) {
+    var item = arr[i];
+    var prefix = '';
+    pieces = item.split(':', 2);
+    if(pieces.length > 1) {
+      item = pieces[1];
+      prefix = pieces[0] + ':';
+    }
+    pieces = item.split('/');
+    var newPieces = [];
+    for(var j = 0; j < pieces.length; j++) {
+      var piece = pieces[j];
+      for(var skill in Pathfinder.SRD35_SKILL_MAP) {
+        if(piece.indexOf(skill) >= 0) {
+          modified = true;
+          if(Pathfinder.SRD35_SKILL_MAP[skill] == '') {
+            piece = '';
+          } else {
+            piece = piece.replace(skill, Pathfinder.SRD35_SKILL_MAP[skill]);
+          }
+          break;
+        }
+      }
+      if(piece != '' && newPieces.indexOf(piece) < 0) {
+        newPieces.push(piece);
+      }
+    }
+    if(newPieces.length > 0) {
+      result.push(prefix + newPieces.join('/'));
+    }
+  }
+  if(modified) {
+    console.log("=== BEFORE");
+    console.log(arr);
+    console.log("=== AFTER");
+    console.log(result);
+    console.log("======");
+  }
+  return result;
 }
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
