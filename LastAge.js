@@ -3679,7 +3679,11 @@ LastAge.raceRules = function(rules, languages, races) {
 
 /* Defines the rules related to character skills. */
 LastAge.skillRules = function(rules, skills, subskills, synergies) {
-  SRD35.skillRules(rules, skills, subskills, synergies);
+  if(LastAge.USE_PATHFINDER) {
+    Pathfinder.skillRules(rules, skills, subskills);
+  } else {
+    SRD35.skillRules(rules, skills, subskills, synergies);
+  }
 }
 
 /*
