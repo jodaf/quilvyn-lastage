@@ -132,7 +132,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'skillNotes.hideInPlainSightFeature:Hide even when observed',
         'skillNotes.spyInitiateFeature:+%V Diplomacy (elves/allies)',
         'validationNotes.aradil\'sEyeClassFeats:Requires Inconspicuous',
-        'validationNotes.aradil\'sEyeClassRace:Requires Race == Wood Elf',
+        'validationNotes.aradil\'sEyeClassRace:Requires Race == "Wood Elf"',
         'validationNotes.aradil\'sEyeClassSkills:' +
           'Requires Bluff >= 8/Disguise >= 5/Gather Information >= 8/' +
           'Hide >= 8/Move Silently >= 5/Sense Motive >= 5/Spot >= 5'
