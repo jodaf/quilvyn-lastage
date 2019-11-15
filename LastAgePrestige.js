@@ -130,7 +130,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'saveNotes.closedMindFeature:Second +4 Will save to reveal spy network',
         'saveNotes.slipperyMindFeature:Second save vs. enchantment',
         'skillNotes.hideInPlainSightFeature:Hide even when observed',
-        'skillNotes.spyInitiateFeature:+%V Diplomacy (elves/allies)',
+        'skillNotes.spyInitiateFeature:+%V Diplomacy (elves, allies)',
         'validationNotes.aradil\'sEyeClassFeats:Requires Inconspicuous',
         'validationNotes.aradil\'sEyeClassRace:Requires Race == "Wood Elf"',
         'validationNotes.aradil\'sEyeClassSkills:' +
@@ -191,7 +191,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
           'DC 20 Bluff four consecutive days to establish alibi',
         'skillNotes.securityBreachFeature:' +
           'Gather Information to discover chinks in site security',
-        'skillNotes.stillAsStoneFeature:+10 Hide during infiltration',
+        'skillNotes.stillAsStoneFeature:+10 Hide (infiltration)',
         'skillNotes.targetStudyFeature:' +
           'Gather Information yields +2 attack/damage or +4 AC vs. chosen foe',
         'validationNotes.avengingKnifeClassAlignment:' +
@@ -623,7 +623,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'skillNotes.shadowContactsFeature:' +
           'Gather Information to obtain %V favor from Shadow minion',
         'skillNotes.shadowSpeakFeature:' +
-          '+%V Bluff/Diplomacy/Intimidate/Sense Motive w/Shadow minions',
+          '+%V Bluff, Diplomacy, Intimidate, Sense Motive w/Shadow minions',
         'validationNotes.insurgentSpyClassFeats:Requires Inconspicuous',
         'validationNotes.insurgentSpyClassSkills:' +
           'Requires Bluff >= 8/Diplomacy >= 5/Gather Information >= 8/' +
@@ -683,7 +683,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'skillNotes.informationNetworkFeature:' +
           'One hour to take %V on Gather Information in new locale',
         'skillNotes.smuggler\'sTradeFeature:' +
-          '+%V/take 10 on Bluff/Disguise/Forgery/Gather Information when ' +
+          '+%V/take 10 on Bluff, Disguise, Forgery, Gather Information when ' +
           'smuggling',
         'validationNotes.smugglerClassFeats:Requires Friendly Agent',
         'validationNotes.smugglerClassSkills:' +

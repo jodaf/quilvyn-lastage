@@ -65,8 +65,7 @@ function LastAge() {
   }
   SRD35.descriptionRules
     (rules, SRD35.ALIGNMENTS, LastAge.DEITIES, SRD35.GENDERS);
-  SRD35.equipmentRules
-    (rules, SRD35.ARMORS, SRD35.GOODIES, SRD35.SHIELDS, SRD35.WEAPONS);
+  SRD35.equipmentRules(rules, SRD35.ARMORS, SRD35.SHIELDS, SRD35.WEAPONS);
   SRD35.combatRules(rules);
   SRD35.movementRules(rules);
   SRD35.magicRules(rules, [], LastAge.DOMAINS, LastAge.SCHOOLS);
@@ -996,14 +995,14 @@ LastAge.classRules = function(rules, classes) {
         'skillNotes.dangerSenseFeature:+%V Listen/Spot',
         'skillNotes.hideInPlainSightFeature:Hide even when observed',
         'skillNotes.masterHunterFeature:' +
-          '+2 or more Bluff/Listen/Sense Motive/Spot/Survival vs. selected ' +
+          '+2 or more Bluff, Listen, Sense Motive, Spot, Survival vs. chosen ' +
           'creature type(s)',
         // NOTE: No +3 bonus in SRD35 Rogue feature of same name
         'skillNotes.skillMasteryFeature:' +
-          'Take 10 despite distraction on %V designated skills',
-        'skillNotes.skillMasteryFeature2:+3 on %V designated skills',
+          'Take 10 despite distraction on %V chosen skills',
+        'skillNotes.skillMasteryFeature2:+3 on %V chosen skills',
         'skillNotes.trackFeature:Survival to follow creatures\' trail',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy w/animals',
+        'skillNotes.wildEmpathyFeature:+%V Diplomacy (animals)',
         'skillNotes.wildernessTrapfindingFeature:' +
           'Search to find/Survival to remove DC 20+ traps'
       ];
@@ -1301,7 +1300,7 @@ LastAge.featRules = function(rules, feats, subfeats) {
     } else if(feat == 'Inconspicuous') {
       notes = [
         'skillNotes.inconspicuousFeature:' +
-          '+2 Bluff/Diplomacy/Hide/Sense Motive (shadow)'
+          '+2 Bluff (shadow)/Diplomacy (shadow)/Hide (shadow)/Sense Motive (shadow)'
       ];
     } else if(feat == 'Innate Magic') {
       notes = [
@@ -2128,7 +2127,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         // TODO Only if otherwise class skill
         'skillNotes.naturalBondFeature:+2 Knowledge (Nature)/Survival',
         'skillNotes.plantFriendFeature:+4 Diplomacy (plants)',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy w/animals'
+        'skillNotes.wildEmpathyFeature:+%V Diplomacy (animals)'
       ];
       selectableFeatures = null;
       spellFeatures = [
@@ -2180,7 +2179,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         'saveNotes.northbornFeature:Immune to non-lethal cold/exposure',
         'skillNotes.northbornFeature:' +
           '+2 Survival (cold)/Wild Empathy (cold natives)',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy w/animals'
+        'skillNotes.wildEmpathyFeature:+%V Diplomacy (animals)'
       ];
       selectableFeatures = null;
       spellFeatures = null;
@@ -2282,9 +2281,9 @@ LastAge.heroicPathRules = function(rules, paths) {
         'skillNotes.bloodOfKingsFeature:' +
           'Daily +%V on charisma skills in shadow or resistance interactions',
         'skillNotes.masterAdventurerFeature:' +
-          '+%V on three selected non-charisma skills',
+          '+%V on three chosen non-charisma skills',
         'skillNotes.skillFixationFeature:' +
-          'Take 10 despite distraction on %V designated skills',
+          'Take 10 despite distraction on %V chosen skills',
         'validationNotes.purebloodHeroicPathRace:Requires Race =~ Erenlander'
       ];
       selectableFeatures = [
@@ -2370,9 +2369,9 @@ LastAge.heroicPathRules = function(rules, paths) {
         'magicNotes.aquaticAllyFeature:Cast <i>Aquatic Ally</i> spells %V/day',
         'saveNotes.coldResistanceFeature:Ignore first %V points cold damage',
         'skillNotes.aquaticAdaptationFeature:' +
-           'Breathe through gills/no underwater pressure damage',
+          'Breathe through gills/no underwater pressure damage',
         'skillNotes.aquaticBlindsightFeature:' +
-           'Detect creatures in opaque water up to %V feet',
+          'Detect creatures in opaque water up to %V feet',
         'skillNotes.aquaticEmissaryFeature:Speak to all aquatic animals',
         'skillNotes.assistAlliesFeature:' +
           'Allies move through water at full speed/give oxygen to allies',
@@ -2680,7 +2679,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         'featureNotes.scentFeature:' +
           'Detect creatures\' presence w/in 30 ft/track by smell',
         'magicNotes.wildShapeFeature:Change into creature of size %V %1/day',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy w/animals'
+        'skillNotes.wildEmpathyFeature:+%V Diplomacy (animals)'
       ];
       selectableFeatures = ['Low-Light Vision', 'Scent'];
       spellFeatures = [
@@ -3098,8 +3097,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.resistPoisonFeature:+2 vs. poison',
         'saveNotes.resistSpellsFeature:+2 vs. spells',
-        'skillNotes.stoneKnowledgeFeature:' +
-           '+2 Appraise/Craft involving stone or metal'
+        'skillNotes.stoneKnowledgeFeature:+2 Appraise/Craft (stone, metal)'
       ];
       selectableFeatures = null;
       rules.defineRule('abilityNotes.armorSpeedAdjustment',
@@ -3126,7 +3124,7 @@ LastAge.raceRules = function(rules, languages, races) {
           'featureNotes.knowDepthFeature:Intuit approximate depth underground',
           'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip',
           'skillNotes.stonecunningFeature:' +
-            '+%V Search involving stone or metal, automatic check w/in 10 ft'
+            '+%V Search (stone, metal), automatic check w/in 10 ft'
         ]);
         rules.defineRule('skillNotes.stonecunningFeature',
           'clanDwarfFeatures.Stonecunning', '+=', '2'
@@ -3183,9 +3181,9 @@ LastAge.raceRules = function(rules, languages, races) {
         notes = notes.concat([
           'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
           'skillNotes.stonecunningFeature:' +
-            '+%V Search involving stone or metal, automatic check w/in 10 ft',
+            '+%V Search (stone, metal), automatic check w/in 10 ft',
           'skillNotes.stoneKnowledgeFeature:' +
-             '+2 Appraise/Craft involving stone or metal'
+             '+2 Appraise (stone, metal)/Craft (stone, metal)'
         ]);
         rules.defineRule('skillNotes.stonecunningFeature',
           'clanRaisedDwarrowFeatures.Stonecunning', '+=', '2'
@@ -3201,7 +3199,7 @@ LastAge.raceRules = function(rules, languages, races) {
             '+2 Perform/Profession (Sailor)/Swim/Use Rope',
           'skillNotes.naturalSwimmerFeature:%V swim as move action',
           'skillNotes.skilledTraderFeature:' +
-            '+2 Appraise/Bluff/Diplomacy/Forgery/Gather Information/' +
+            '+2 Appraise, Bluff, Diplomacy, Forgery, Gather Information, ' +
             'Profession when smuggling/trading'
         ];
         rules.defineRule('deepLungsMultiplier',
@@ -3224,7 +3222,7 @@ LastAge.raceRules = function(rules, languages, races) {
           'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
           'skillNotes.naturalMountaineerFeature:+2 Climb',
           'skillNotes.stoneKnowledgeFeature:' +
-             '+2 Appraise/Craft involving stone or metal'
+             '+2 Appraise (stone, metal)/Craft (stone, metal)'
         ]);
       }
 
@@ -3367,7 +3365,7 @@ LastAge.raceRules = function(rules, languages, races) {
         notes = notes.concat([
           'skillNotes.deepLungsFeature:Hold breath for %V rounds',
           'skillNotes.improvedNaturalSwimmerFeature:' +
-             '+8 special action or avoid hazard/always take 10/run',
+            '+8 special action or avoid hazard/always take 10/run',
           'skillNotes.naturalSailorFeature:' +
             '+2 Craft (ship)/Profession (ship)/Use Rope (ship)',
           'skillNotes.naturalSwimmerFeature:%V swim as move action'
@@ -3422,7 +3420,7 @@ LastAge.raceRules = function(rules, languages, races) {
       ];
       notes = [
         'abilityNotes.erenlanderAbilityAdjustment:+2 any/-2 any',
-        'skillNotes.heartlanderFeature:+4 one Craft or Profession'
+        'skillNotes.heartlanderFeature:+4 chosen Craft or Profession'
       ];
       selectableFeatures = null;
       rules.defineRule('abilityNotes.erenlanderAbilityAdjustment',
@@ -3463,7 +3461,7 @@ LastAge.raceRules = function(rules, languages, races) {
           '+2 Perform/Profession (Sailor)/Swim/Use Rope',
         'skillNotes.naturalSwimmerFeature:%V swim as move action',
         'skillNotes.naturalTraderFeature:' +
-          '+4 Appraise/Bluff/Diplomacy/Forgery/Gather Information/' +
+          '+4 Appraise, Bluff, Diplomacy, Forgery, Gather Information, ' +
           'Profession when smuggling/trading',
         'skillNotes.smallFeature:+4 Hide'
       ];
@@ -3531,7 +3529,7 @@ LastAge.raceRules = function(rules, languages, races) {
         notes = notes.concat([
           'featureNotes.stoutFeature:Endurance/Toughness',
           'featureNotes.studiousFeature:Magecraft (Hermetic)',
-          'skillNotes.dextrousHandsFeature:+2 Craft (non-metal/non-wood)',
+          'skillNotes.dextrousHandsFeature:+2 Craft (non-metal, -wood)',
           'skillNotes.giftedHealerFeature:+2 Heal'
         ]);
         rules.defineRule('agrarianHalflingFeatures.Endurance',
