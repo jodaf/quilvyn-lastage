@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.4.1.0';
+var LASTAGE_VERSION = '1.4.1.1';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -65,7 +65,8 @@ function LastAge() {
   }
   SRD35.descriptionRules
     (rules, SRD35.ALIGNMENTS, LastAge.DEITIES, SRD35.GENDERS);
-  SRD35.equipmentRules(rules, SRD35.ARMORS, SRD35.SHIELDS, SRD35.WEAPONS);
+  SRD35.equipmentRules
+    (rules, SRD35.ARMORS, SRD35.SHIELDS, SRD35.WEAPONS.concat(LastAge.WEAPONS));
   SRD35.combatRules(rules);
   SRD35.movementRules(rules);
   SRD35.magicRules(rules, [], LastAge.DOMAINS, LastAge.SCHOOLS);
@@ -81,7 +82,6 @@ function LastAge() {
   LastAge.skillRules
     (rules, LastAge.SKILLS, LastAge.SUBSKILLS, LastAge.SYNERGIES);
   LastAge.featRules(rules, LastAge.FEATS, LastAge.SUBFEATS);
-  LastAge.equipmentRules(rules, LastAge.WEAPONS);
   LastAge.magicRules(rules, LastAge.CLASSES);
   // Slight mods to SRD35 creation procedures
   rules.defineChoice('preset', 'race', 'heroicPath', 'level', 'levels');
@@ -199,12 +199,13 @@ LastAge.SYNERGIES = {
 };
 LastAge.USE_PATHFINDER = false;
 LastAge.WEAPONS = [
-  'Atharak:d6', 'Cedeku:d6@19', 'Crafted Vardatch:d10@19',
-  'Dornish Horse Spear:d10x3', 'Farmer\'s Rope:d2', 'Fighting Knife:d6@19x3',
-  'Great Sling:d6r60', 'Greater Vardatch:2d8', 'Halfling Lance:d8x3',
-  'Icewood Longbow:d8x3r120', 'Inutek:d3r20', 'Sarcosan Lance:d8x3',
-  'Sepi:d6@18', 'Shard Arrow:d6@16x1', 'Staghorn:d6', 'Tack Whip:d4',
-  'Urutuk Hatchet:d8x3r20', 'Vardatch:d12'
+  'Atharak:d6 2h Ex', 'Cedeku:d6@19 Li Ex', 'Crafted Vardatch:d10@19 1h Ex',
+  'Dornish Horse Spear:d10x3 2h Ex', "Farmer's Rope:d2 Li Si",
+  'Fighting Knife:d6@19x3 Li Ex', 'Great Sling:d6r60 Si',
+  'Greater Vardatch:2d8 2h Ex', 'Halfling Lance:d8x3 2h Ex',
+  'Icewood Longbow:d8x3r120 Ex', 'Inutek:d3r20 Ex', 'Sarcosan Lance:d8x3 2h Ex',
+  'Sepi:d6@18 Li Ex', 'Shard Arrow:d6@16x1 Si', 'Staghorn:d6 1h Ex',
+  'Tack Whip:d4 Li Si', 'Urutuk Hatchet:d8x3r20 1h Ex', 'Vardatch:d12 1h Ex'
 ];
 
 // Related information used internally by LastAge
@@ -1035,7 +1036,7 @@ LastAge.classRules = function(rules, classes) {
         'wildlanderFeatures.Quick Stride', '=', '10 * source'
       );
       rules.defineRule
-        ('animalCompanionMasterLevel', 'levels.Wildlander', '+=', null);
+        ('companionMasterLevel', 'levels.Wildlander', '+=', null);
       rules.defineRule('combatNotes.hunter\'sStrikeFeature',
         'levels.Wildlander', '=', 'Math.floor(source / 4)'
       );
@@ -1124,27 +1125,27 @@ LastAge.companionRules = function(rules, companions, familiars) {
     for(var feature in features) {
       if(features[feature] > 0) {
         rules.defineRule('companionFeatures.' + feature,
-          'animalCompanionLevel', '=',
+          'companionLevel', '=',
           'source >= ' + features[feature] + ' ? 1 : null'
         );
       } else {
         // Disable N/A SRD3.5 companion features
         rules.defineRule
-          ('companionFeatures.' + feature, 'animalCompanionLevel', '=', 'null');
+          ('companionFeatures.' + feature, 'companionLevel', '=', 'null');
       }
     }
 
     // Companion level based on feature count instead of class level
-    rules.defineRule('animalCompanionLevel',
-      'animalCompanionMasterLevel', '=', 'null',
+    rules.defineRule('companionLevel',
+      'companionMasterLevel', '=', 'null',
       'featureNotes.animalCompanionFeature', '=', null
     );
 
     // Overrides of a couple of SRD3.5 calculations
     rules.defineRule
-      ('companionStats.Str', 'animalCompanionLevel', '+', 'source * 2');
+      ('companionStats.Str', 'companionLevel', '+', 'source * 2');
     rules.defineRule
-      ('companionStats.Tricks', 'animalCompanionLevel', '=', 'source+1');
+      ('companionStats.Tricks', 'companionLevel', '=', 'source+1');
 
     // Adapt Legate astirax rules to make it a form of animal companion.
     features = {
@@ -1181,11 +1182,6 @@ LastAge.companionRules = function(rules, companions, familiars) {
 
   }
 
-};
-
-/* Defines the rules related to PC equipment. */
-LastAge.equipmentRules = function(rules, weapons) {
-  rules.defineChoice('weapons', weapons);
 };
 
 /* Defines the rules related to PC feats. */
@@ -2687,7 +2683,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         '17:Speak With Animals'
       ];
       rules.defineRule
-        ('animalCompanionMasterLevel', 'pathLevels.Warg', '=', null);
+        ('companionMasterLevel', 'pathLevels.Warg', '=', null);
       rules.defineRule('featureNotes.animalCompanionFeature',
         'wargFeatures.Animal Companion', '+=', null
       );
