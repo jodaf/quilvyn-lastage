@@ -183,7 +183,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'combatNotes.improvedCoupDeGraceFeature:' +
           'Max damage from standard action coup de grace',
         'combatNotes.sneakAttackFeature:' +
-          '%Vd6 extra damage when surprising or flanking',
+          '%Vd6 HP extra when surprising or flanking',
         'combatNotes.stunningSneakAttackFeature:' +
           'Foe DC %V on sneak attack or stunned one round 3/day',
         'combatNotes.theDropFeature:+%V attack/damage vs. flat-footed foe',
@@ -617,7 +617,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       hitDie = 6;
       notes = [
         'combatNotes.sneakAttackFeature:' +
-          '%Vd6 extra damage when surprising or flanking',
+          '%Vd6 HP extra when surprising or flanking',
         'featureNotes.concealAuraFeature:Conceal %V magical auras',
         'skillNotes.shadowContactsFeature:' +
           'Gather Information to obtain %V favor from Shadow minion',
