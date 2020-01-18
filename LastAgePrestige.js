@@ -345,11 +345,10 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
-      rules.defineRule('animalCompanionLevel',
+      rules.defineRule('companionLevel',
         'featureNotes.animalCompanionFeature', '+=', null
       );
-      rules.defineRule
-        ('animalCompanionMasterLevel', 'levels.Druid', '+=', null);
+      rules.defineRule('companionMasterLevel', 'levels.Druid', '+=', null);
       rules.defineRule('druidTurningLevel',
         'levels.Druid', '+=', 'source / 2',
         'levels.Spiritual Channeler', '*', '2'
