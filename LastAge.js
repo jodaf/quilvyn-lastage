@@ -90,11 +90,8 @@ function LastAge() {
   rules.randomizeOneAttribute = LastAge.randomizeOneAttribute;
   rules.makeValid = SRD35.makeValid;
   rules.ruleNotes = LastAge.ruleNotes;
-  var a;
-  for(a in SRD35SpellDescriptions.descriptions) {
-    LastAge.spellsDescriptions[a] = SRD35SpellDescriptions.descriptions[a];
-  }
-  SRD35SpellDescriptions.spellRules(rules, null, LastAge.spellsDescriptions);
+  SRD35.spellRules
+    (rules, null, Object.assign({}, SRD35.spellsDescriptions, LastAge.spellsDescriptions));
   // Let Scribe know we're here
   Scribe.addRuleSet(rules);
   LastAge.rules = rules;
