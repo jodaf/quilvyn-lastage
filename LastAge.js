@@ -1,5 +1,5 @@
 /*
-Copyright 2019, James J. Hayes
+Copyright 2020, James J. Hayes
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -2780,7 +2780,7 @@ LastAge.heroicPathRules = function(rules, paths) {
   }
   rules.defineChoice('random', 'heroicPath');
   rules.defineEditorElement
-    ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'levels');
+    ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
   rules.defineSheetElement('Heroic Path', 'Alignment');
 
 };
