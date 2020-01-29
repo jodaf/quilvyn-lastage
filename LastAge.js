@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.4.1.1';
+var LASTAGE_VERSION = '1.5.1.0alpha';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
