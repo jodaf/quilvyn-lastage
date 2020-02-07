@@ -373,7 +373,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         ('spellsKnownBonus', 'magicNotes.druidSpellsKnown', '+', null);
       rules.defineRule('turnNature.level', 'druidTurningLevel', '+=', null);
       // Pick up SRD35 Druid level 2-9 spells.
-      var classRules = new ScribeRules('');
+      var classRules = new QuilvynRules('');
       SRD35.magicRules(classRules, ['Druid'], [], []);
       var schools = rules.getChoices('schools');
       for(var s in classRules.getChoices('spells')) {

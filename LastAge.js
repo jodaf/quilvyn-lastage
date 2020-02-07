@@ -39,7 +39,7 @@ function LastAge() {
   }
 
   // Define a new rule set w/the same editor and standard viewer as SRD35
-  var rules = new ScribeRules('Last Age', LASTAGE_VERSION);
+  var rules = new QuilvynRules('Last Age', LASTAGE_VERSION);
   rules.editorElements = SRD35.initialEditorElements();
   SRD35.createViewers(rules, SRD35.VIEWERS);
   // Remove some editor and character sheet elements that don't apply
@@ -92,8 +92,8 @@ function LastAge() {
   rules.ruleNotes = LastAge.ruleNotes;
   SRD35.spellRules
     (rules, null, Object.assign({}, SRD35.spellsDescriptions, LastAge.spellsDescriptions));
-  // Let Scribe know we're here
-  Scribe.addRuleSet(rules);
+  // Let Quilvyn know we're here
+  Quilvyn.addRuleSet(rules);
   LastAge.rules = rules;
   rules.defineRule('deity', 'levels.Legate', '=', '"Izrador (NE)"');
   rules.defineRule('legateFeatures.Weapon Focus (Longsword)',
@@ -113,7 +113,7 @@ function LastAge() {
 
 }
 
-// Arrays of choices passed to Scribe.
+// Arrays of choices passed to Quilvyn.
 LastAge.ANIMAL_COMPANIONS = Object.assign({
   'Grass Cat': 'HD=3 AC=11 Dam=2x1d2+1,1d6+3 Str=16 Dex=19 Con=15 Int=2 Wis=12 Cha=6 Level=4',
   'Ort': 'HD=3 AC=13 Dam=1d6+3 Str=15 Dex=12 Con=14 Int=2 Wis=11 Cha=2 Level=4',
@@ -1332,7 +1332,7 @@ LastAge.featRules = function(rules, feats, subfeats) {
       rules.defineRule('spellsKnown.' + spellCode + '0', note, '+=', '3');
       rules.defineRule('spellsKnown.' + spellCode + '1', note, '+=', '1');
       // Pick up SRD35 level 0/1 spells of the appropriate class.
-      var classRules = new ScribeRules('');
+      var classRules = new QuilvynRules('');
       SRD35.magicRules(classRules, [spellClass], [], []);
       var schools = rules.getChoices('schools');
       for(var s in classRules.getChoices('spells')) {
@@ -2926,7 +2926,7 @@ LastAge.magicRules = function(rules, classes) {
       channelerDone = true;
     } else if(klass == 'Legate') {
       // Copy SRD35 Cleric spells
-      var clericRules = new ScribeRules('');
+      var clericRules = new QuilvynRules('');
       SRD35.magicRules(clericRules, ['Cleric'], [], []);
       spells = [];
       for(var j = 0; j < 10; j++) {
@@ -3727,10 +3727,10 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
     var attrs = this.applyRules(attributes);
     var choices;
     var howMany =
-      attrs.languageCount - ScribeUtils.sumMatching(attrs, /^languages\./);
+      attrs.languageCount - QuilvynUtils.sumMatching(attrs, /^languages\./);
     if(attrs.race == null || LastAge.racesLanguages[attrs.race] == null) {
       // Allow any non-restricted language
-      choices = ScribeUtils.getKeys(this.getChoices('languages'));
+      choices = QuilvynUtils.getKeys(this.getChoices('languages'));
       for(var i = choices.length - 1; i >= 0; i--) {
         if(choices[i].match(/Patrol Sign|Sylvan/)) {
           choices = choices.slice(0, i).concat(choices.slice(i + 1));
@@ -3738,7 +3738,7 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
       }
     } else if(LastAge.racesLanguages[attrs.race].indexOf('Any') >= 0) {
       // Allow (at least) any non-restricted language
-      choices = ScribeUtils.getKeys(this.getChoices('languages'));
+      choices = QuilvynUtils.getKeys(this.getChoices('languages'));
       for(var i = choices.length - 1; i >= 0; i--) {
         if(choices[i].match(/Patrol Sign|Sylvan/) &&
            LastAge.racesLanguages[attrs.race].indexOf(choices[i]) < 0) {
@@ -3751,16 +3751,16 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
         LastAge.racesLanguages[attrs.race].replace(/:\d*/g, '').split('/');
     }
     while(howMany > 0 && choices.length > 0) {
-      var i = ScribeUtils.random(0, choices.length - 1);
+      var i = QuilvynUtils.random(0, choices.length - 1);
       var language = choices[i];
       var attr = 'languages.' + language;
       var currentPoints = attrs[attr] == null ? 0 : attrs[attr];
       var maxPoints = 'Black Tongue/Patrol Sign'.indexOf(language) < 0 ? 3 : 1;
       if(currentPoints < maxPoints) {
         // Maximize half the time; otherwise, randomize
-        var addedPoints = ScribeUtils.random(0, 99) < 50 ?
+        var addedPoints = QuilvynUtils.random(0, 99) < 50 ?
                           maxPoints - currentPoints:
-                          ScribeUtils.random(1, maxPoints - currentPoints);
+                          QuilvynUtils.random(1, maxPoints - currentPoints);
         if(addedPoints > howMany)
           addedPoints = howMany;
         attrs[attr] = currentPoints + addedPoints;
@@ -3813,8 +3813,8 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
 /* Returns HTML body content for user notes associated with this rule set. */
 LastAge.ruleNotes = function() {
   return '' +
-    '<h2>LastAge Scribe Module Notes</h2>\n' +
-    'LastAge Scribe Module Version ' + LASTAGE_VERSION + '\n' +
+    '<h2>LastAge Quilvyn Module Notes</h2>\n' +
+    'LastAge Quilvyn Module Version ' + LASTAGE_VERSION + '\n' +
     '\n' +
     '<h3>Usage Notes</h3>\n' +
     '<p>\n' +
@@ -3823,7 +3823,7 @@ LastAge.ruleNotes = function() {
     '    Racial origin choices (e.g., Plains/Urban Sarcosan, Clan/Kurgun\n' +
     '    Dwarf) are absorbed into the list of races.\n' +
     '  </li><li>\n' +
-    '    Scribe lists Greater Conjuration and Greater Evocation as separate\n' +
+    '    Quilvyn lists Greater Conjuration and Greater Evocation as separate\n' +
     '    schools and uses Conjuration and Evocation to represent the\n' +
     '    lesser variety.  This simplfies the spell list and treats legate\n' +
     '    and druid spells from these schools as the lesser variety.  It\n' +
@@ -3834,7 +3834,7 @@ LastAge.ruleNotes = function() {
     '    different effects.  For example, the Orc "Cold Resistance" feature\n' +
     '    grants immunity to non-lethal damage and half damage from lethal\n' +
     '    cold, while the Northblooded and Seaborn feature of the same name\n' +
-    '    grants damage reduction.  In these cases Scribe uses a different\n' +
+    '    grants damage reduction.  In these cases Quilvyn uses a different\n' +
     '    name for one of the features in order to remove the ambiguity.\n' +
     '    The renamed features are: Orc "Cold Resistance" (renamed\n' +
     '    "Improved Cold Hardy" to distinguish from the Northblooded and\n' +
@@ -3854,7 +3854,7 @@ LastAge.ruleNotes = function() {
     '    "Mountaineer" feature.\n' +
     '  </li><li>\n' +
     '    In situations where a feature has very different effects at\n' +
-    '    different character levels, Scribe uses a different feature name\n' +
+    '    different character levels, Quilvyn uses a different feature name\n' +
     '    for each effect.  For example, the Giantblooded "Size Features"\n' +
     '    feature is replaced by "Obvious" at level 1, "Large" at level 10,\n' +
     '    and "Extra Reach" at level 20.  Other instances: Ironborn level\n' +
@@ -3873,7 +3873,7 @@ LastAge.ruleNotes = function() {
     '    levels 2, 4, 6, 8, and 10.\n' +
     '  </li><li>\n' +
     '    The rule book incorrectly lists Bear\'s Endurance as a spell\n' +
-    '    acquired at the level 4 Beast heroic path.  Scribe corrects this\n' +
+    '    acquired at the level 4 Beast heroic path.  Quilvyn corrects this\n' +
     '    to Bull\'s Endurance".\n' +
     '  </li><li>\n' +
     '    The Wogren Rider selectable features "Improved Ride-By Attack",\n' +
@@ -3889,7 +3889,7 @@ LastAge.ruleNotes = function() {
     '    "Danger Sense", since "Danger Sense" requires choosing between\n' +
     '    initiative and listen/spot bonuses after level 1.\n' +
     '  </li><li>\n' +
-    '    Scribe treats Eranlanders as familiar with all Dornish and\n' +
+    '    Quilvyn treats Eranlanders as familiar with all Dornish and\n' +
     '    Sarcosan weapons, rather than with a single one.\n' +
     '  </li>\n' +
     '</ul>\n' +
@@ -3901,7 +3901,7 @@ LastAge.ruleNotes = function() {
     '  <li>\n' +
     '    Language synergy is not reported.\n' +
     '  </li><li>\n' +
-    '    Scribe does not report a validation error for a character with\n' +
+    '    Quilvyn does not report a validation error for a character with\n' +
     '    pidgin language competence in Courtier or High Elven.  Note that\n' +
     '    the rule book violates this rule by specifying that Orcs have\n' +
     '    pidgin competence in High Elven.\n' +
