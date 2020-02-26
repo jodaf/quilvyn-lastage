@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.6.1.0';
+var LASTAGE_VERSION = '1.6.1.1';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -114,14 +114,16 @@ function LastAge() {
 }
 
 // Arrays of choices passed to Quilvyn.
+// Attack, Dam, AC include all modifiers
+// Some of the computed Attack and AC values differ from the M2E rulebook
 LastAge.ANIMAL_COMPANIONS = Object.assign({
-  'Grass Cat': 'HD=3 AC=11 Dam=2x1d2+1,1d6+3 Str=16 Dex=19 Con=15 Int=2 Wis=12 Cha=6 Level=4',
-  'Ort': 'HD=3 AC=13 Dam=1d6+3 Str=15 Dex=12 Con=14 Int=2 Wis=11 Cha=2 Level=4',
-  'Boro': 'HD=5 AC=13 Dam=1d8+6 Str=18 Dex=10 Con=16 Int=2 Wis=11 Cha=5 Level=7',
-  'Plains Leopard': 'HD=5 AC=12 Dam=2x1d4+5,1d8+2 Str=21 Dex=17 Con=15 Int=2 Wis=12 Cha=6 Level=7',
-  'River Eel': 'HD=7 AC=13 Dam=1d8+4 Str=17 Dex=15 Con=13 Int=2 Wis=12 Cha=2 Level=10',
-  'Sea Dragon': 'HD=12 AC=15 Dam=3d6+8,1d8+4 Str=26 Dex=13 Con=24 Int=2 Wis=14 Cha=6 Level=13',
-  'Wogren': 'HD=3 AC=12 Dam=2x1d4+1,1d6+3 Str=16 Dex=13 Con=14 Int=6 Wis=13 Cha=2'
+  'Boro': 'HD=5 Attack=7 AC=13 Dam=1d8+4 Str=18 Dex=10 Con=16 Int=2 Wis=11 Cha=5 Size=L Level=7',
+  'Grass Cat': 'HD=3 Attack=6 AC=15 Dam=2@1d2+1,1d6+3 Str=16 Dex=19 Con=15 Int=2 Wis=12 Cha=6 Size=M Level=4',
+  'Ort': 'HD=3 Attack=4 AC=14 Dam=1d6+2 Str=15 Dex=12 Con=14 Int=2 Wis=11 Cha=2 Size=M Level=4',
+  'Plains Leopard': 'HD=5 Attack=8 AC=15 Dam=2@1d4+5,1d8+2 Str=21 Dex=17 Con=15 Int=2 Wis=12 Cha=6 Size=L Level=7',
+  'River Eel': 'HD=7 Attack=6 AC=15 Dam=1d8+4 Str=17 Dex=15 Con=13 Int=2 Wis=12 Cha=2 Size=L Level=10',
+  'Sea Dragon': 'HD=12 Attack=13 AC=18 Dam=3d6+8,1d8+4 Str=26 Dex=13 Con=24 Int=2 Wis=14 Cha=6 Size=H Level=13',
+  'Wogren': 'HD=3 Attack=5 AC=16 Dam=2@1d4+1,1d6+3 Str=16 Dex=13 Con=14 Int=6 Wis=13 Cha=12 Size=M'
 }, SRD35.ANIMAL_COMPANIONS);
 LastAge.CLASSES = [
   'Barbarian', 'Charismatic Channeler', 'Defender', 'Fighter',
@@ -1108,7 +1110,11 @@ LastAge.classRules = function(rules, classes) {
 /* Defines the rules related to companion creatures. */
 LastAge.companionRules = function(rules, companions, familiars) {
 
-  SRD35.companionRules(rules, companions, familiars);
+  if(LastAge.USE_PATHFINDER) {
+    Pathfinder.companionRules(rules, companions, familiars);
+  } else {
+    SRD35.companionRules(rules, companions, familiars);
+  }
 
   if(companions != null) {
 
