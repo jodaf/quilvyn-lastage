@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.6.1.1';
+var LASTAGE_VERSION = '1.6.1.2';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -78,7 +78,7 @@ function LastAge() {
   LastAge.raceRules(rules, LastAge.LANGUAGES, LastAge.RACES);
   LastAge.heroicPathRules(rules, LastAge.HEROIC_PATHS);
   LastAge.classRules(rules, LastAge.CLASSES);
-  LastAge.companionRules(rules, LastAge.ANIMAL_COMPANIONS, SRD35.familiars);
+  LastAge.companionRules(rules, LastAge.ANIMAL_COMPANIONS, SRD35.FAMILIARS);
   LastAge.skillRules
     (rules, LastAge.SKILLS, LastAge.SUBSKILLS, LastAge.SYNERGIES);
   LastAge.featRules(rules, LastAge.FEATS, LastAge.SUBFEATS);
@@ -410,10 +410,10 @@ LastAge.classRules = function(rules, classes) {
 
       baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
-      features = ['1:Art Of Magic', '2:Summon Familiar'];
+      features = ['1:Art Of Magic', '2:Familiar'];
       hitDie = 6;
       notes = [
-        'featureNotes.summonFamiliarFeature:Special bond/abilities',
+        'featureNotes.familiarFeature:Special bond/abilities',
         'magicNotes.artOfMagicFeature:+1 character level for max spell level'
       ];
       profArmor = SRD35.PROFICIENCY_NONE;
