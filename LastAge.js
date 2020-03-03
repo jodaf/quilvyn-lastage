@@ -38,8 +38,11 @@ function LastAge() {
     LastAge.USE_PATHFINDER = false;
   }
 
+  LastAge.baseRules = LastAge.USE_PATHFINDER ? Pathfinder : SRD35;
+
   // Define a new rule set w/the same editor and standard viewer as SRD35
-  var rules = new QuilvynRules('Last Age', LASTAGE_VERSION);
+  var rules = new QuilvynRules
+    ('Last Age' + (LastAge.USE_PATHFINDER ? ' - PF' : ''), LASTAGE_VERSION);
   rules.editorElements = SRD35.initialEditorElements();
   SRD35.createViewers(rules, SRD35.VIEWERS);
   // Remove some editor and character sheet elements that don't apply
@@ -47,42 +50,44 @@ function LastAge() {
   rules.defineEditorElement('specialize');
   rules.defineEditorElement('prohibit');
   rules.defineSheetElement('Deity');
-  // Pick up applicable SRD35 rules
-  SRD35.abilityRules(rules);
-  // LastAge doesn't use the SRD35 languages or races, but we call
-  // SRD35.raceRules to pick up any other rules it defines (e.g., languageCount)
-  SRD35.raceRules(rules, [], []);
-  // Fighter in LastAge is sufficiently changed from the SRD to be considered a
-  // different class
-  if(LastAge.USE_PATHFINDER) {
-    Pathfinder.classRules(rules, ['Barbarian', 'Rogue'], null);
-    Pathfinder.skillRules(rules, Pathfinder.SKILLS, Pathfinder.SUBSKILLS);
-    Pathfinder.featRules(rules, Pathfinder.FEATS, Pathfinder.SUBFEATS);
-  } else {
-    SRD35.classRules(rules, ['Barbarian', 'Rogue']);
-    SRD35.skillRules(rules, SRD35.SKILLS, SRD35.SUBSKILLS, SRD35.SYNERGIES);
-    SRD35.featRules(rules, SRD35.FEATS, SRD35.SUBFEATS);
-  }
-  SRD35.descriptionRules
-    (rules, SRD35.ALIGNMENTS, LastAge.DEITIES, SRD35.GENDERS);
-  SRD35.equipmentRules
-    (rules, SRD35.ARMORS, SRD35.SHIELDS, SRD35.WEAPONS.concat(LastAge.WEAPONS));
-  SRD35.combatRules(rules);
-  SRD35.movementRules(rules);
-  SRD35.magicRules(rules, [], LastAge.DOMAINS, LastAge.SCHOOLS);
-  // Pick up the NPC rules, if available
-  if(window.SRD35NPC != null) {
-    SRD35NPC.classRules(rules, SRD35NPC.CLASSES);
-  }
-  // Add LastAge-specific rules
+  LastAge.abilityRules(rules);
   LastAge.raceRules(rules, LastAge.LANGUAGES, LastAge.RACES);
   LastAge.heroicPathRules(rules, LastAge.HEROIC_PATHS);
   LastAge.classRules(rules, LastAge.CLASSES);
-  LastAge.companionRules(rules, LastAge.ANIMAL_COMPANIONS, SRD35.FAMILIARS);
-  LastAge.skillRules
-    (rules, LastAge.SKILLS, LastAge.SUBSKILLS, LastAge.SYNERGIES);
-  LastAge.featRules(rules, LastAge.FEATS, LastAge.SUBFEATS);
-  LastAge.magicRules(rules, LastAge.CLASSES);
+  LastAge.skillRules(
+    rules, LastAge.baseRules.SKILLS.concat(LastAge.SKILLS),
+    Object.assign({}, LastAge.baseRules.SUBSKILLS, LastAge.SUBSKILLS),
+    Object.assign({}, LastAge.baseRules.SYNERGIES, SRD35.SYNERGIES)
+  );
+  LastAge.magicRules(rules, LastAge.CLASSES, LastAge.DOMAINS, LastAge.SCHOOLS);
+  LastAge.featRules(
+    rules, LastAge.baseRules.FEATS.concat(LastAge.FEATS),
+    Object.assign({}, LastAge.baseRules.SUBFEATS, LastAge.SUBFEATS)
+  );
+  LastAge.descriptionRules
+    (rules, SRD35.ALIGNMENTS, LastAge.DEITIES, SRD35.GENDERS);
+  if(LastAge.USE_PATHFINDER) {
+    LastAge.equipmentRules(
+      rules, SRD35.ARMORS, SRD35.SHIELDS,
+      SRD35.WEAPONS.filter(item => !item.startsWith('Sai:')).concat(Pathfinder.WEAPONS_ADDED).concat(LastAge.WEAPONS)
+    );
+  } else {
+    LastAge.equipmentRules(
+      rules, SRD35.ARMORS, SRD35.SHIELDS, SRD35.WEAPONS.concat(LastAge.WEAPONS)
+    );
+  }
+  LastAge.combatRules(rules);
+  LastAge.movementRules(rules);
+  if(window.SRD35NPC != null) {
+    SRD35NPC.classRules(rules, SRD35NPC.CLASSES);
+  }
+  LastAge.companionRules(
+    rules,
+    Object.assign({}, LastAge.baseRules.ANIMAL_COMPANIONS, LastAge.ANIMAL_COMPANIONS),
+    Object.assign({}, LastAge.baseRules.FAMILIARS, LastAge.FAMILIARS)
+  );
+  LastAge.spellRules
+    (rules, null, Object.assign({}, SRD35.spellsDescriptions, LastAge.baseRules.spellsDescriptions, LastAge.spellsDescriptions));
   // Slight mods to SRD35 creation procedures
   rules.defineChoice('preset', 'race', 'heroicPath', 'level', 'levels');
   rules.defineChoice('random', SRD35.RANDOMIZABLE_ATTRIBUTES);
@@ -90,33 +95,16 @@ function LastAge() {
   rules.randomizeOneAttribute = LastAge.randomizeOneAttribute;
   rules.makeValid = SRD35.makeValid;
   rules.ruleNotes = LastAge.ruleNotes;
-  LastAge.spellRules
-    (rules, null, Object.assign({}, SRD35.spellsDescriptions, LastAge.spellsDescriptions));
   // Let Quilvyn know we're here
   Quilvyn.addRuleSet(rules);
   LastAge.rules = rules;
-  rules.defineRule('deity', 'levels.Legate', '=', '"Izrador (NE)"');
-  rules.defineRule('legateFeatures.Weapon Focus (Longsword)',
-    'domains.War', '?', null,
-    'levels.Legate', '=', '1'
-  );
-  rules.defineRule('legateFeatures.Weapon Proficiency (Longsword)',
-    'domains.War', '?', null,
-    'levels.Legate', '=', '1'
-  );
-  rules.defineRule('features.Weapon Focus (Longsword)',
-    'legateFeatures.Weapon Focus (Longsword)', '=', null
-  );
-  rules.defineRule('features.Weapon Proficiency (Longsword)',
-    'legateFeatures.Weapon Proficiency (Longsword)', '=', null
-  );
 
 }
 
 // Arrays of choices passed to Quilvyn.
 // Attack, Dam, AC include all modifiers
 // Some of the computed Attack and AC values differ from the M2E rulebook
-LastAge.ANIMAL_COMPANIONS = Object.assign({
+LastAge.ANIMAL_COMPANIONS = {
   'Boro': 'HD=5 Attack=7 AC=13 Dam=1d8+4 Str=18 Dex=10 Con=16 Int=2 Wis=11 Cha=5 Size=L Level=7',
   'Grass Cat': 'HD=3 Attack=6 AC=15 Dam=2@1d2+1,1d6+3 Str=16 Dex=19 Con=15 Int=2 Wis=12 Cha=6 Size=M Level=4',
   'Ort': 'HD=3 Attack=4 AC=14 Dam=1d6+2 Str=15 Dex=12 Con=14 Int=2 Wis=11 Cha=2 Size=M Level=4',
@@ -124,7 +112,7 @@ LastAge.ANIMAL_COMPANIONS = Object.assign({
   'River Eel': 'HD=7 Attack=6 AC=15 Dam=1d8+4 Str=17 Dex=15 Con=13 Int=2 Wis=12 Cha=2 Size=L Level=10',
   'Sea Dragon': 'HD=12 Attack=13 AC=18 Dam=3d6+8,1d8+4 Str=26 Dex=13 Con=24 Int=2 Wis=14 Cha=6 Size=H Level=13',
   'Wogren': 'HD=3 Attack=5 AC=16 Dam=2@1d4+1,1d6+3 Str=16 Dex=13 Con=14 Int=6 Wis=13 Cha=12 Size=M'
-}, SRD35.ANIMAL_COMPANIONS);
+};
 LastAge.CLASSES = [
   'Barbarian', 'Charismatic Channeler', 'Defender', 'Fighter',
   'Hermetic Channeler', 'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
@@ -179,9 +167,11 @@ LastAge.SKILLS = [
   'Knowledge:int/trained', 'Profession:wis/trained'
 ];
 LastAge.SUBFEATS = {
+  'Greater Spell Focus':LastAge.SCHOOLS.join('/').replace(/:[^\/]+/g, ''),
   'Magecraft':'Charismatic/Hermetic/Spiritual',
   // Skill Focus (Profession (Soldier)) available to Leader Of Men Fighters
   'Skill Focus':'Profession (Soldier)',
+  'Spell Focus':LastAge.SCHOOLS.join('/').replace(/:[^\/]+/g, ''),
   'Spellcasting':LastAge.SCHOOLS.join('/').replace(/:[^\/]+/g, ''),
   // Legates w/War domain receive Weapon Focus (Longsword)
   'Weapon Focus':'Longsword'
@@ -270,15 +260,15 @@ LastAge.spellsSchools = {
   "Bleed Power":"Greater Evocation", "Boil Blood":"Transmutation",
   'Burial':'Transmutation', 'Channel Might':'Evocation',
   'Confer Power':'Transmutation', "Fell Forbiddance":"Abjuration",
-  "Fey Fire":"Lesser Conjuration", "Fey Hearth":"Abjuration",
-  "Greater Questing Bird":"Lesser Conjuration", "Inspiration":"Enchantment",
+  "Fey Fire":"Conjuration", "Fey Hearth":"Abjuration",
+  "Greater Questing Bird":"Conjuration", "Inspiration":"Enchantment",
   "Inspirational Might":"Enchantment", "Joyful Speech":"Enchantment",
   "Know The Name":"Divination", 'Lie':'Transmutation',
   'Magic Circle Against Shadow':'Abjuration', "Memorial":"Divination",
-  "Pacify":"Abjuration", "Peasant's Rest":"Lesser Conjuration",
-  'Phantom Edge':'Transmutation', "Questing Bird":"Lesser Conjuration",
+  "Pacify":"Abjuration", "Peasant's Rest":"Conjuration",
+  'Phantom Edge':'Transmutation', "Questing Bird":"Conjuration",
   "Scryer's Mark":'Divination', "Speak With Fell":"Necromancy",
-  "Weather":"Lesser Conjuration", "Willful Stand":"Abjuration",
+  "Weather":"Conjuration", "Willful Stand":"Abjuration",
   "Withering Speech":"Enchantment", "Woeful Speech":"Enchantment",
   // SRD spells placed in Greater Conjuration/Evocation
   'Burning Hands':'Greater Evocation', 'Call Lightning':'Greater Evocation',
@@ -421,6 +411,11 @@ LastAge.racesLanguages = {
     "Orcish:0/Sylvan:0/Trader's Tongue:0"
 };
 
+/* Defines the rules related to character abilities. */
+LastAge.abilityRules = function(rules) {
+  LastAge.baseRules.abilityRules(rules);
+}
+
 /* Defines the rules related to core classes. */
 LastAge.classRules = function(rules, classes) {
 
@@ -435,6 +430,7 @@ LastAge.classRules = function(rules, classes) {
 
     if(klass == 'Barbarian') {
 
+      LastAge.baseRules.classRules(rules, [klass]);
       rules.defineRule
         ('classSkills.Speak Language', 'levels.Barbarian', '=', '1');
       continue; // Not defining a new class
@@ -578,7 +574,7 @@ LastAge.classRules = function(rules, classes) {
         for(var j = 0; j < allFeats.length; j++) {
           var pieces = allFeats[j].split(':');
           if(pieces[1].match(/Item Creation|Metamagic/)) {
-            feats[feats.length] = pieces[0];
+            feats.push(pieces[0]);
           }
         }
         features = features.concat(['1:Magecraft (Hermetic)', '3:Lorebook']);
@@ -627,7 +623,7 @@ LastAge.classRules = function(rules, classes) {
         for(var j = 0; j < allFeats.length; j++) {
           var pieces = allFeats[j].split(':');
           if(pieces[1].indexOf('Item Creation') >= 0) {
-            feats[feats.length] = pieces[0];
+            feats.push(pieces[0]);
           }
         }
         features = features.concat([
@@ -974,7 +970,22 @@ LastAge.classRules = function(rules, classes) {
       rules.defineRule('casterLevelDivine', 'levels.Legate', '+=', null);
       rules.defineRule('casterLevels.C', 'levels.Legate', '+=', null);
       rules.defineRule('casterLevels.Dom', 'levels.Legate', '+=', null);
+      rules.defineRule('deity', 'levels.Legate', '=', '"Izrador (NE)"');
       rules.defineRule('domainCount', 'levels.Legate', '+=', '2');
+      rules.defineRule('features.Weapon Focus (Longsword)',
+        'legateFeatures.Weapon Focus (Longsword)', '=', null
+      );
+      rules.defineRule('features.Weapon Proficiency (Longsword)',
+        'legateFeatures.Weapon Proficiency (Longsword)', '=', null
+      );
+      rules.defineRule('legateFeatures.Weapon Focus (Longsword)',
+        'domains.War', '?', null,
+        'levels.Legate', '=', '1'
+      );
+      rules.defineRule('legateFeatures.Weapon Proficiency (Longsword)',
+        'domains.War', '?', null,
+        'levels.Legate', '=', '1'
+      );
       for(var j = 1; j < 10; j++) {
         rules.defineRule('spellsPerDay.Dom' + j,
           'levels.Legate', '=',
@@ -984,6 +995,7 @@ LastAge.classRules = function(rules, classes) {
 
     } else if(klass == 'Rogue') {
 
+      LastAge.baseRules.classRules(rules, [klass]);
       rules.defineRule
         ('classSkills.Knowledge (Shadow)', 'levels.Rogue', '=', '1');
       rules.defineRule
@@ -1141,14 +1153,15 @@ LastAge.classRules = function(rules, classes) {
 
 };
 
+/* Defines the rules related to combat. */
+LastAge.combatRules = function(rules) {
+  LastAge.baseRules.combatRules(rules);
+};
+
 /* Defines the rules related to companion creatures. */
 LastAge.companionRules = function(rules, companions, familiars) {
 
-  if(LastAge.USE_PATHFINDER) {
-    Pathfinder.companionRules(rules, companions, familiars);
-  } else {
-    SRD35.companionRules(rules, companions, familiars);
-  }
+  LastAge.baseRules.companionRules(rules, companions, familiars);
 
   if(companions != null) {
 
@@ -1221,8 +1234,20 @@ LastAge.companionRules = function(rules, companions, familiars) {
 
 };
 
+/* Defines the rules related to character description. */
+LastAge.descriptionRules = function(rules, alignments, deities, genders) {
+  LastAge.baseRules.descriptionRules(rules, alignments, deities, genders);
+};
+
+/* Defines the rules related to equipment. */
+LastAge.equipmentRules = function(rules, armors, shields, weapons) {
+  LastAge.baseRules.equipmentRules(rules, armors, shields, weapons);
+};
+
 /* Defines the rules related to PC feats. */
 LastAge.featRules = function(rules, feats, subfeats) {
+
+  LastAge.baseRules.featRules(rules, feats, subfeats);
 
   var allFeats = [];
   for(var i = 0; i < feats.length; i++) {
@@ -1438,6 +1463,14 @@ LastAge.featRules = function(rules, feats, subfeats) {
             'Requires Spellcasting (' + school.substring(8) + ')';
       }
       rules.defineRule('spellsKnownBonus', note, '+=', '1');
+    } else if((matchInfo = feat.match(/^Spell Focus \((.*)\)/)) != null) {
+      // Add validation note to what base rules already computed
+      var school = matchInfo[1];
+      var schoolNoSpace = school.replace(/ /g, '');
+      notes = [
+       'validationNotes.spellFocus(' + schoolNoSpace + ')FeatFeatures:' +
+         'Requires Spellcasting (' + school + ')'
+      ];
     } else if(feat == 'Spell Knowledge') {
       notes = [
         'magicNotes.spellKnowledgeFeature:+2 spells',
@@ -2399,7 +2432,8 @@ LastAge.heroicPathRules = function(rules, paths) {
         '14:Cold Resistance', '17:Aquatic Emissary', '18:Assist Allies'
       ];
       notes = [
-        'magicNotes.aquaticAllyFeature:Cast <i>Aquatic Ally</i> spells %V/day',
+        'magicNotes.aquaticAllyFeature:' +
+          "<i>Summon Nature's Ally</i> aquatic creatures %V/day",
         'saveNotes.coldResistanceFeature:Ignore first %V points cold damage',
         'skillNotes.aquaticAdaptationFeature:' +
           'Breathe through gills/no underwater pressure damage',
@@ -2414,9 +2448,9 @@ LastAge.heroicPathRules = function(rules, paths) {
       ];
       selectableFeatures = null;
       spellFeatures = [
-        '4:Aquatic Ally II', '5:Blur', '8:Aquatic Ally III', '9:Fog Cloud',
-        '12:Aquatic Ally IV', '13:Displacement', '16:Aquatic Ally V',
-        '20:Aquatic Ally VI'
+        "4:Summon Nature's Ally II", '5:Blur', "8:Summon Nature's Ally III",
+        '9:Fog Cloud', "12:Summon Nature's Ally IV", '13:Displacement',
+        "16:Summon Nature's Ally V", "20:Summon Nature's Ally VI"
       ];
       rules.defineRule('deepLungsMultiplier',
         'seabornFeatures.Deep Lungs', '^=', '2',
@@ -2825,8 +2859,12 @@ LastAge.heroicPathRules = function(rules, paths) {
 
 };
 
-/* Defines the rules related to PC spells and caster level. */
-LastAge.magicRules = function(rules, classes) {
+/* Defines the rules related to spells and domains. */
+LastAge.magicRules = function(rules, classes, domains, schools) {
+
+  if(!rules.choices.spells)
+    rules.choices.spells = {};
+  LastAge.baseRules.magicRules(rules, [], domains, schools);
 
   var channelerDone = false;
   var schools = rules.getChoices('schools');
@@ -2966,16 +3004,13 @@ LastAge.magicRules = function(rules, classes) {
         'Time Stop:Wail Of The Banshee:Weird'
       ];
       channelerDone = true;
-    } else if(klass == 'Druid') {
-      // Copy SRD35 Druid spells
-      SRD35.magicRules(rules, ['Druid'], [], []);
-      spells = [
-        "D1:Peasant's Rest",
-        'D2:Fey Fire'
-      ];
     } else if(klass == 'Legate') {
-      // Copy SRD35 Cleric spells
-      SRD35.magicRules(rules, ['Cleric'], [], []);
+      // Copy Cleric spells
+      if(LastAge.USE_PATHFINDER) {
+        Pathfinder.magicRules(rules, ['Cleric'], [], []);
+      } else {
+        SRD35.magicRules(rules, ['Cleric'], [], []);
+      }
       spells = [
         'C3:Boil Blood:Speak With Fell'
       ];
@@ -3028,15 +3063,24 @@ LastAge.magicRules = function(rules, classes) {
   for(var i = 0; i < 10; i++) {
     rules.defineRule('spellsKnown.Ch' + i,
       'maxSpellLevel', '?', 'Math.floor(source) == ' + i,
-      'spellsKnownBonus', '+=', null
+      'spellsKnownBonus', '=', null
     );
   }
   rules.defineSheetElement('Spell Energy', 'Spells Per Day');
 
 };
 
+/* Defines the rules related to character movement. */
+LastAge.movementRules = function(rules) {
+  LastAge.baseRules.movementRules(rules);
+};
+
 /* Defines the rules related to PC races. */
 LastAge.raceRules = function(rules, languages, races) {
+
+  // Call baseRules function only to pick up any rules unrelated to specific
+  // languages and races (e.g., languageCount).
+  LastAge.baseRules.raceRules(rules, [], []);
 
   for(var i = 0; i < languages.length; i++) {
     var language = languages[i];
@@ -3057,17 +3101,11 @@ LastAge.raceRules = function(rules, languages, races) {
     'intelligenceModifier', '+', 'source > 0 ? source : null',
     'skillModifier.Speak Language', '+', '2 * source'
   );
-  rules.defineRule('validationNotes.languagesTotal',
-    'languageCount', '+=', '-source',
-    /^languages\./, '+=', null
-  );
 
   var notes = [
     'skillNotes.favoredRegion:' +
       '%V; Knowledge (Local) is a class skill/+2 Survival/Knowledge (Nature)',
-    'skillNotes.illiteracyFeature:Must spend 2 skill points to read/write',
-    'validationNotes.languagesTotal:' +
-      'Allocated languages differ from language total by %V'
+    'skillNotes.illiteracyFeature:Must spend 2 skill points to read/write'
   ];
   rules.defineNote(notes);
   rules.defineRule('skillNotes.favoredRegion',
@@ -3732,11 +3770,7 @@ LastAge.spellRules = function(rules, spells, descriptions) {
 
 /* Defines the rules related to character skills. */
 LastAge.skillRules = function(rules, skills, subskills, synergies) {
-  if(LastAge.USE_PATHFINDER) {
-    Pathfinder.skillRules(rules, skills, subskills);
-  } else {
-    SRD35.skillRules(rules, skills, subskills, synergies);
-  }
+  LastAge.baseRules.skillRules(rules, skills, subskills, synergies);
 }
 
 /*
@@ -3856,6 +3890,8 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
         choices.splice(index, 1);
       }
     }
+  } else if(LastAge.USE_PATHFINDER) {
+    Pathfinder.randomizeOneAttribute.apply(this, [attributes, attribute]);
   } else {
     SRD35.randomizeOneAttribute.apply(this, [attributes, attribute]);
   }

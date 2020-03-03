@@ -372,6 +372,8 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule
         ('spellsKnownBonus', 'magicNotes.druidSpellsKnown', '+', null);
       rules.defineRule('turnNature.level', 'druidTurningLevel', '+=', null);
+      rules.defineChoice('spells', "Peasant's Rest(D1 Conj)");
+      rules.defineChoice('spells', 'Fey Fire(D2 Conj)');
 
     } else if(klass == 'Elven Raider') {
 
