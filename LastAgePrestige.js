@@ -372,23 +372,6 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule
         ('spellsKnownBonus', 'magicNotes.druidSpellsKnown', '+', null);
       rules.defineRule('turnNature.level', 'druidTurningLevel', '+=', null);
-      // Pick up SRD35 Druid level 2-9 spells.
-      var classRules = new QuilvynRules('');
-      SRD35.magicRules(classRules, ['Druid'], [], []);
-      var schools = rules.getChoices('schools');
-      for(var s in classRules.getChoices('spells')) {
-        var matchInfo = s.match(/^(.*)\((D[2-9])/);
-        if(matchInfo == null) {
-          continue;
-        }
-        var spell = matchInfo[1];
-        var school = LastAge.spellsSchools[spell] || SRD35.spellsSchools[spell];
-        if(school == null) {
-          continue;
-        }
-        spell += '(' + matchInfo[2] + ' ' + schools[school] + ')';
-        rules.defineChoice('spells', spell);
-      }
 
     } else if(klass == 'Elven Raider') {
 

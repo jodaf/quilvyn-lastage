@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.6.1.2';
+var LASTAGE_VERSION = '1.6.1.3';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -90,7 +90,7 @@ function LastAge() {
   rules.randomizeOneAttribute = LastAge.randomizeOneAttribute;
   rules.makeValid = SRD35.makeValid;
   rules.ruleNotes = LastAge.ruleNotes;
-  SRD35.spellRules
+  LastAge.spellRules
     (rules, null, Object.assign({}, SRD35.spellsDescriptions, LastAge.spellsDescriptions));
   // Let Quilvyn know we're here
   Quilvyn.addRuleSet(rules);
@@ -160,7 +160,7 @@ LastAge.HEROIC_PATHS = [
 LastAge.LANGUAGES = [
   'Black Tongue', 'Clan Dwarven', 'Colonial', 'Courtier', 'Erenlander',
   'Halfling', 'High Elven', 'Jungle Mouth', 'Norther', 'Old Dwarven', 'Orcish',
-  'Patrol Sign', 'Sylvan', 'Trader\'s Tongue'
+  'Patrol Sign', 'Sylvan', "Trader's Tongue"
 ];
 LastAge.RACES = [
   'Agrarian Halfling', 'Clan Dwarf', 'Clan Raised Dwarrow', 'Clan Raised Dworg',
@@ -223,15 +223,37 @@ LastAge.spellsDescriptions = {
   "Silver Storm":"R$RS' Targets in cone ${Lmin15}d4 HP silver needle (Ref half)",
   "Silver Wind":"R$RM' Targets in 20' circle Will save or d6/rd for $L rd",
   "Stone Soup":"Buried stone creates broth",
-  "Assist":"R$RS' Targets in 30' circle +2 skill checks for conc + 1 rd",
+  // Sorcery and Shadow
+  "Arcane Impotence":"R$RM' Target Channeler must use $Ldiv2 spell energy to cast w/in $L rd (Will $Ldiv2 rd)",
+  "Arcane Interference":"Spells require added $Ldiv2 energy to affect 10' radius of touched for $L min",
+  "Assist":"R$RS' Targets in 30' radius +2 skill checks for conc + 1 rd",
   "Bestow Spell":"Touched convey spell",
-  "Burial":"R$RS' Earth swallows target non-living/unattended object",
-  "Channel Might":"Touched next successful attack does maximum+$L HP",
+  "Bleed Power":"Successful foe attack on self causes 1d6 HP to attacker for $L10 min",
+  "Boil Blood":"R$RS' Target 1d8 HP for conc + 1 rd",
+  "Burial":"R$RS' Earth swallows target non-living, unattended object",
+  "Channel Might":"Touched next hit does maximum+$L HP w/in $L rd",
   "Confer Power":"Transfer spell energy to nearby casters for $L rd", 
+  "Fell Forbiddance":"R$RS' Target $L25' sq area impassible to undead for $L min (Wis neg for intelligent)",
+  "Fey Fire":"Touched point invisible 5' radius fire that warms and heals 1 HP for $L hr",
+  "Fey Hearth":"R$RS' Creatures in 30' radius of target fire +2 Will saves, heal 1.5xlevel HP for as long as fire lasts",
+  "Greater Questing Bird":"Self temporarily learn spell le level 6",
+  "Inspiration":"Touched +10 one Craft check",
+  "Inspirational Might":"R$RS' 4 allies in 30' radius +2d10 HP, +2 attack, +1 Fortitude save for $Ldiv2 rd",
+  "Joyful Speech":"R$RM' Listeners in 30' radius improve reaction, unshaken, +4 vs. fear for $L rd",
+  "Know The Name":"Discover name(s) of touched",
   "Lie":"+10 Bluff on next lie",
   "Magic Circle Against Shadow":"10' radius from touched +2 AC/+2 saves/extra save vs. mental control/no contact vs. Izrador agents for $L10 min",
+  "Memorial":"Touched $L10' radius replays previous/next $L min to next passerby",
+  "Pacify":"R$RS' ${Math.floor(lvl/3) + 1} targets cannot attack for $Ldiv2 rd (Will neg)",
+  "Peasant's Rest":"Touched gets 8 hrs rest from 4 hrs sleep",
   "Phantom Edge":"Touched weapon different type for $L min",
-  "Scryer's Mark":"Touched -4 will vs. scrying"
+  "Questing Bird":"Self temporarily learn spell le level 3",
+  "Scryer's Mark":"Touched -4 Will vs. scrying",
+  "Speak With Fell":"R$RS' Compel 3 correct answers from target fell w/in $L min",
+  "Weather":"R$RM' 60' radius, 30' high cylinder of rain or snow",
+  "Willful Stand":"R$RM' Target cannot attack self or enter threat space for conc (Will neg)",
+  "Withering Speech":"R$RS' Target 1 Wis, 1 Cha damage/min for conc",
+  "Woeful Speech":"R$RM' Listeners in 30' radius shaken, -4 vs. fear for $L rd (Will neg)",
 };
 LastAge.spellsSchools = {
   // Core rulebook
@@ -239,14 +261,25 @@ LastAge.spellsSchools = {
   'Disguise Ally':'Illusion', 'Disguise Weapon':'Illusion',
   'Far Whisper':'Divination', 'Greenshield':'Illusion',
   'Halfling Burrow':'Transmutation', 'Lifetrap':'Transmutation',
-  'Nature\'s Revelation':'Transmutation', 'Nexus Fuel':'Necromancy',
+  "Nature's Revelation":'Transmutation', 'Nexus Fuel':'Necromancy',
   'Silver Blood':'Transmutation', 'Silver Storm':'Transmutation',
   'Silver Wind':'Conjuration', 'Stone Soup':'Transmutation',
   // Sorcery and Shadow
-  'Assist':'Enchantment', 'Bestow Spell':'Evocation', 'Burial':'Transmutation',
-  'Channel Might':'Evocation', 'Confer Power':'Transmutation', 
-  'Lie':'Transmutation', 'Magic Circle Against Shadow':'Abjuration',
-  'Phantom Edge':'Transmutation', 'Scryer\'s Mark':'Divination',
+  "Arcane Impotence":"Abjuration", "Arcane Interference":"Abjuration",
+  'Assist':'Enchantment', 'Bestow Spell':'Evocation',
+  "Bleed Power":"Greater Evocation", "Boil Blood":"Transmutation",
+  'Burial':'Transmutation', 'Channel Might':'Evocation',
+  'Confer Power':'Transmutation', "Fell Forbiddance":"Abjuration",
+  "Fey Fire":"Lesser Conjuration", "Fey Hearth":"Abjuration",
+  "Greater Questing Bird":"Lesser Conjuration", "Inspiration":"Enchantment",
+  "Inspirational Might":"Enchantment", "Joyful Speech":"Enchantment",
+  "Know The Name":"Divination", 'Lie':'Transmutation',
+  'Magic Circle Against Shadow':'Abjuration', "Memorial":"Divination",
+  "Pacify":"Abjuration", "Peasant's Rest":"Lesser Conjuration",
+  'Phantom Edge':'Transmutation', "Questing Bird":"Lesser Conjuration",
+  "Scryer's Mark":'Divination', "Speak With Fell":"Necromancy",
+  "Weather":"Lesser Conjuration", "Willful Stand":"Abjuration",
+  "Withering Speech":"Enchantment", "Woeful Speech":"Enchantment",
   // SRD spells placed in Greater Conjuration/Evocation
   'Burning Hands':'Greater Evocation', 'Call Lightning':'Greater Evocation',
   'Call Lightning Storm':'Greater Evocation',
@@ -266,7 +299,7 @@ LastAge.spellsSchools = {
   'Ice Storm':'Greater Evocation', 'Insect Plague':'Greater Conjuration',
   'Interposing Hand':'Greater Evocation',
   'Lesser Planar Binding':'Greater Conjuration',
-  'Lightning Bolt':'Greater Evocation', 'Mage\'s Sword':'Greater Evocation',
+  'Lightning Bolt':'Greater Evocation', "Mage's Sword":'Greater Evocation',
   'Magic Missile':'Greater Evocation', 'Meteor Swarm':'Greater Evocation',
   'Mount':'Greater Conjuration', 'Planar Binding':'Greater Conjuration',
   'Polar Ray':'Greater Evocation', 'Produce Flame':'Greater Evocation',
@@ -283,15 +316,15 @@ LastAge.spellsSchools = {
   'Summon Monster VI':'Greater Conjuration',
   'Summon Monster VII':'Greater Conjuration',
   'Summon Monster VIII':'Greater Conjuration',
-  'Summon Nature\'s Ally I':'Greater Conjuration',
-  'Summon Nature\'s Ally II':'Greater Conjuration',
-  'Summon Nature\'s Ally III':'Greater Conjuration',
-  'Summon Nature\'s Ally IV':'Greater Conjuration',
-  'Summon Nature\'s Ally IX':'Greater Conjuration',
-  'Summon Nature\'s Ally V':'Greater Conjuration',
-  'Summon Nature\'s Ally VI':'Greater Conjuration',
-  'Summon Nature\'s Ally VII':'Greater Conjuration',
-  'Summon Nature\'s Ally VIII':'Greater Conjuration',
+  "Summon Nature's Ally I":'Greater Conjuration',
+  "Summon Nature's Ally II":'Greater Conjuration',
+  "Summon Nature's Ally III":'Greater Conjuration',
+  "Summon Nature's Ally IV":'Greater Conjuration',
+  "Summon Nature's Ally IX":'Greater Conjuration',
+  "Summon Nature's Ally V":'Greater Conjuration',
+  "Summon Nature's Ally VI":'Greater Conjuration',
+  "Summon Nature's Ally VII":'Greater Conjuration',
+  "Summon Nature's Ally VIII":'Greater Conjuration',
   'Summon Swarm':'Greater Conjuration',
   'Telekinetic Sphere':'Greater Evocation', 'Tiny Hut':'Greater Evocation',
   'Trap The Soul':'Greater Conjuration', 'Unhallow':'Greater Evocation',
@@ -686,7 +719,7 @@ LastAge.classRules = function(rules, classes) {
       feats = null;
       features = [
         '1:Improved Unarmed Strike', '1:Masterful Strike',
-        '1:Weapon Proficiency (Club/Dagger/Dart/Farmer\'s Rope/Handaxe/Inutek/Light Hammer/Light Pick/Quarterstaff/Sap/Sickle/Throwing Axe/Sling/Great Sling)',
+        "1:Weapon Proficiency (Club/Dagger/Dart/Farmer's Rope/Handaxe/Inutek/Light Hammer/Light Pick/Quarterstaff/Sap/Sickle/Throwing Axe/Sling/Great Sling)",
         '2:Defender Abilities', '2:Defender Stunning Fist',
         '3:Improved Grapple', '4:Precise Strike'
       ];
@@ -728,7 +761,7 @@ LastAge.classRules = function(rules, classes) {
         'combatNotes.speedTrainingFeature:Extra move action each round',
         'combatNotes.strikeAndHoldFeature:Extra unarmed attack to grab foe',
         'combatNotes.weaponTrapFeature:' +
-          'Attack to catch foe\'s weapon for disarm/damage/AOO 1/round',
+          'Attack to catch foe weapon for disarm/damage/AOO 1/round',
         'saveNotes.defensiveMasteryFeature:+%V all saves'
       ];
       profArmor = SRD35.PROFICIENCY_NONE;
@@ -918,28 +951,29 @@ LastAge.classRules = function(rules, classes) {
       ];
       spellAbility = 'wisdom';
       spellsKnown = [
-        'L0:1:"all"', 'L1:1:"all"', 'L2:3:"all"', 'L3:5:"all"',
-        'L4:7:"all"', 'L5:9:"all"', 'L6:11:"all"', 'L7:13:"all"',
-        'L8:15:"all"', 'L9:17:"all"',
+        'C0:1:"all"', 'C1:1:"all"', 'C2:3:"all"', 'C3:5:"all"',
+        'C4:7:"all"', 'C5:9:"all"', 'C6:11:"all"', 'C7:13:"all"',
+        'C8:15:"all"', 'C9:17:"all"',
         'Dom1:1:"all"', 'Dom2:3:"all"', 'Dom3:5:"all"', 'Dom4:7:"all"',
         'Dom5:9:"all"', 'Dom6:11:"all"', 'Dom7:13:"all"', 'Dom8:15:"all"',
         'Dom9:17:"all"'
       ];
       spellsPerDay = [
-        'L0:1:3/2:4/4:5/7:6',
-        'L1:1:1/2:2/4:3/7:4/11:5',
-        'L2:3:1/4:2/6:3/9:4/13:5',
-        'L3:5:1/6:2/8:3/11:4/15:5',
-        'L4:7:1/8:2/10:3/13:4/17:5',
-        'L5:9:1/10:2/12:3/15:4/19:5',
-        'L6:11:1/12:2/14:3/17:4',
-        'L7:13:1/14:2/16:3/19:4',
-        'L8:15:1/16:2/18:3/20:4',
-        'L9:17:1/18:2/19:3/20:4'
+        'C0:1:3/2:4/4:5/7:6',
+        'C1:1:1/2:2/4:3/7:4/11:5',
+        'C2:3:1/4:2/6:3/9:4/13:5',
+        'C3:5:1/6:2/8:3/11:4/15:5',
+        'C4:7:1/8:2/10:3/13:4/17:5',
+        'C5:9:1/10:2/12:3/15:4/19:5',
+        'C6:11:1/12:2/14:3/17:4',
+        'C7:13:1/14:2/16:3/19:4',
+        'C8:15:1/16:2/18:3/20:4',
+        'C9:17:1/18:2/19:3/20:4'
       ];
       rules.defineRule('astiraxMasterLevel', 'levels.Legate', '+=', null);
       rules.defineRule('casterLevelDivine', 'levels.Legate', '+=', null);
       rules.defineRule('casterLevels.C', 'levels.Legate', '+=', null);
+      rules.defineRule('casterLevels.Dom', 'levels.Legate', '+=', null);
       rules.defineRule('domainCount', 'levels.Legate', '+=', '2');
       for(var j = 1; j < 10; j++) {
         rules.defineRule('spellsPerDay.Dom' + j,
@@ -961,20 +995,20 @@ LastAge.classRules = function(rules, classes) {
       baseAttack = SRD35.ATTACK_BONUS_GOOD;
       feats = null;
       features = [
-        '1:Track', '3:Danger Sense', '3:Initiative Bonus', '4:Hunter\'s Strike'
+        '1:Track', '3:Danger Sense', '3:Initiative Bonus', "4:Hunter's Strike"
       ];
       hitDie = 8;
       notes = [
         'abilityNotes.quickStrideFeature:+%V speed',
         'combatNotes.huntedByTheShadowFeature:No surprise by servant of shadow',
-        'combatNotes.hunter\'sStrikeFeature:x2 damage %V/day',
+        "combatNotes.hunter'sStrikeFeature:x2 damage %V/day",
         'combatNotes.hatedFoeFeature:' +
-          'Additional Hunter\'s Strike vs. Master Hunter creature',
+          "Additional Hunter's Strike vs. Master Hunter creature",
         'combatNotes.improvedInitiativeFeature:+4 initiative',
         'combatNotes.instinctiveResponseFeature:Re-roll initiative check',
         'combatNotes.masterHunterFeature:' +
           '+2 or more damage vs. selected creature type(s)',
-        'combatNotes.trueAimFeature:x3 damage on Hunter\'s Strike',
+        "combatNotes.trueAimFeature:x3 damage on Hunter's Strike",
         'featureNotes.animalCompanionFeature:' +
           'Special bond/abilities w/up to %V animals',
         'featureNotes.improvedWoodlandStrideFeature:' +
@@ -1001,7 +1035,7 @@ LastAge.classRules = function(rules, classes) {
         'skillNotes.skillMasteryFeature:' +
           'Take 10 despite distraction on %V chosen skills',
         'skillNotes.skillMasteryFeature2:+3 on %V chosen skills',
-        'skillNotes.trackFeature:Survival to follow creatures\' trail',
+        "skillNotes.trackFeature:Survival to follow creatures' trail",
         'skillNotes.wildEmpathyFeature:+%V Diplomacy (animals)',
         'skillNotes.wildernessTrapfindingFeature:' +
           'Search to find/Survival to remove DC 20+ traps'
@@ -1036,7 +1070,7 @@ LastAge.classRules = function(rules, classes) {
       );
       rules.defineRule
         ('companionMasterLevel', 'levels.Wildlander', '+=', null);
-      rules.defineRule('combatNotes.hunter\'sStrikeFeature',
+      rules.defineRule("combatNotes.hunter'sStrikeFeature",
         'levels.Wildlander', '=', 'Math.floor(source / 4)'
       );
       rules.defineRule('combatNotes.initiativeBonusFeature',
@@ -1498,7 +1532,7 @@ LastAge.heroicPathRules = function(rules, paths) {
           'Animals w/in 15 ft act negatively/cannot ride',
         'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'featureNotes.scentFeature:' +
-          'Detect creatures\' presence w/in 30 ft/track by smell',
+          "Detect creatures' presence w/in 30 ft/track by smell",
         'skillNotes.beastialAuraFeature:-10 Handle Animal/no Wild Empathy'
       ];
       selectableFeatures = [
@@ -1506,8 +1540,8 @@ LastAge.heroicPathRules = function(rules, paths) {
         'Strength Bonus', 'Wisdom Bonus'
       ];
       spellFeatures = [
-        '3:Magic Fang', '4:Bear\'s Endurance', '8:Greater Magic Fang',
-        '9:Cat\'s Grace', '13:Magic Fang', '14:Bull\'s Strength',
+        '3:Magic Fang', "4:Bear's Endurance", '8:Greater Magic Fang',
+        "9:Cat's Grace", '13:Magic Fang', "14:Bull's Strength",
         '17:Greater Magic Fang', '19:Freedom Of Movement'
       ];
       rules.defineRule('combatNotes.rageFeature',
@@ -2049,12 +2083,12 @@ LastAge.heroicPathRules = function(rules, paths) {
       );
       rules.defineRule('magicNotes.spellChoiceFeature',
         'pathLevels.Jack-Of-All-Trades', '=',
-        'source>=16 ? "CH0/CH1/CH2/CH3" : source>=10 ? "CH0/CH1/CH2" : ' +
-        'source>=6 ? "CH0/CH1" : "CH0"'
+        'source>=16 ? "Ch0/Ch1/Ch2/Ch3" : source>=10 ? "Ch0/Ch1/Ch2" : ' +
+        'source>=6 ? "Ch0/Ch1" : "Ch0"'
       );
       rules.defineRule('magicNotes.spontaneousSpellFeature',
         'pathLevels.Jack-Of-All-Trades', '=',
-        'source >= 19 ? "CH0/CH1/CH2" : source >= 13 ? "CH0/CH1" : "CH0"'
+        'source >= 19 ? "Ch0/Ch1/Ch2" : source >= 13 ? "Ch0/Ch1" : "Ch0"'
       );
       rules.defineRule('selectableFeatureCount.Jack-Of-All-Trades',
         'pathLevels.Jack-Of-All-Trades', '=',
@@ -2083,7 +2117,7 @@ LastAge.heroicPathRules = function(rules, paths) {
           'Allies not flat-footed/+4 vs. surprise %V/day',
         'combatNotes.snipingAmbushFeature:' +
           'Reduced Hide penalty for using ranged weapons',
-        'skillNotes.ambushFeature:Allies use character\'s Hide for ambush',
+        "skillNotes.ambushFeature:Allies use character's Hide for ambush",
         'skillNotes.quickAmbushFeature:Hide allies for ambush in half time',
         'skillNotes.mountaineerFeature:+%V Balance/Climb/Jump',
         'skillNotes.mountainSurvivalFeature:+%V Survival (mountains)'
@@ -2134,7 +2168,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         '6:Animal Messenger', '7:Wood Shape', '8:Gust Of Wind',
         '9:Speak With Animals', '11:Speak With Plants', '12:Call Lightning',
         '13:Dominate Animal', '14:Spike Growth', '16:Sleet Storm',
-        '17:Summon Nature\'s Ally IV', '18:Command Plants', '19:Ice Storm'
+        "17:Summon Nature's Ally IV", '18:Command Plants', '19:Ice Storm'
       ];
       rules.defineRule('combatNotes.animalFriendFeature',
         'charismaModifier', '=', '10 + source'
@@ -2360,7 +2394,7 @@ LastAge.heroicPathRules = function(rules, paths) {
 
       feats = null;
       features = [
-        '1:Dolphin\'s Grace', '1:Natural Swimmer', '2:Deep Lungs',
+        "1:Dolphin's Grace", '1:Natural Swimmer', '2:Deep Lungs',
         '3:Aquatic Blindsight', '4:Aquatic Ally', '10:Aquatic Adaptation',
         '14:Cold Resistance', '17:Aquatic Emissary', '18:Assist Allies'
       ];
@@ -2375,7 +2409,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         'skillNotes.assistAlliesFeature:' +
           'Allies move through water at full speed/give oxygen to allies',
         'skillNotes.deepLungsFeature:Hold breath for %V rounds',
-        'skillNotes.dolphin\'sGraceFeature:+8 swim hazards',
+        "skillNotes.dolphin'sGraceFeature:+8 swim hazards",
         'skillNotes.naturalSwimmerFeature:%V swim as move action'
       ];
       selectableFeatures = null;
@@ -2502,9 +2536,9 @@ LastAge.heroicPathRules = function(rules, paths) {
       ];
       notes = [
         'magicNotes.metamagicAuraFeature:' +
-          '%V others\' spells of up to level %1 w/in 30 ft',
+          "%V others' spells of up to level %1 w/in 30 ft",
         'magicNotes.untappedPotentialFeature:' +
-          'Contribute %V points to others\' spells w/in 30 ft',
+          "Contribute %V points to others' spells w/in 30 ft",
         'saveNotes.improvedResistSpellsFeature:+%V vs. spells'
       ];
       selectableFeatures = null;
@@ -2632,9 +2666,9 @@ LastAge.heroicPathRules = function(rules, paths) {
         'combatNotes.combatOverviewFeature:' +
           'Ally w/in 60 ft avoid AOO/avoid flat-footed/foe flat-footed %V/day',
         'combatNotes.coordinatedInitiativeFeature:' +
-          'Allies w/in 30 ft use character\'s initiative %V/day',
+          "Allies w/in 30 ft use character's initiative %V/day",
         'combatNotes.directedAttackFeature:' +
-          'Ally w/in 30 ft add 1/2 character\'s base attack 1/day',
+          "Ally w/in 30 ft add 1/2 character's base attack 1/day",
         'combatNotes.jointAttackFeature:' +
           'Allies w/in 30 ft attack single foe at +1/participant (+5 max) ' +
           '%V/day',
@@ -2676,7 +2710,7 @@ LastAge.heroicPathRules = function(rules, paths) {
           'Other senses allow detection of unseen objects w/in 30 ft',
         'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'featureNotes.scentFeature:' +
-          'Detect creatures\' presence w/in 30 ft/track by smell',
+          "Detect creatures' presence w/in 30 ft/track by smell",
         'magicNotes.wildShapeFeature:Change into creature of size %V %1/day',
         'skillNotes.wildEmpathyFeature:+%V Diplomacy (animals)'
       ];
@@ -2801,116 +2835,118 @@ LastAge.magicRules = function(rules, classes) {
     var spells;
     if(klass.indexOf("Channeler") >= 0 && !channelerDone) {
       spells = [
-        'CH0:Create Water:Cure Minor Wounds:Dancing Lights:Daze:Detect Magic:' +
+        'Ch0:Create Water:Cure Minor Wounds:Dancing Lights:Daze:Detect Magic:' +
         'Detect Poison:Disrupt Undead:Flare:Ghost Sound:Guidance:' +
         'Know Direction:Light:Lullaby:Mage Hand:Mending:Message:Open/Close:' +
         'Ray Of Frost:Read Magic:Resistance:Summon Instrument:' +
         'Touch Of Fatigue:Virtue',
-        'CH1:Alarm:Animate Rope:Assist:Burial:Burning Hands:Calm Animals:' +
+        'Ch1:Alarm:Animate Rope:Assist:Burial:Burning Hands:Calm Animals:' +
         'Cause Fear:Channel Might:Charm Animal:Charm Person:Chill Touch:' +
         'Color Spray:Comprehend Languages:Cure Light Wounds:' +
         'Detect Animals Or Plants:Detect Astirax:Detect Secret Doors:' +
         'Detect Snares And Pits:Detect Undead:Disguise Self:Disguise Weapon:' +
         'Endure Elements:Enlarge Person:Entangle:Erase:Expeditious Retreat:' +
         'Faerie Fire:Far Whisper:Feather Fall:Floating Disk:Goodberry:Grease:' +
-        'Hide From Animals:Hold Portal:Hypnotism:Identify:Jump:' +
-        'Lesser Confusion:Lie:Mage Armor:Magic Aura:Magic Fang:Magic Missile:' +
-        'Magic Mouth:Magic Stone:Magic Weapon:Mount:Obscuring Mist:' +
-        'Pass Without Trace:Phantom Edge:Produce Flame:' +
-        'Protection From Chaos:Protection From Evil:Protection From Good:' +
-        'Protection From Law:Ray Of Enfeeblement:Reduce Person:Remove Fear:' +
-        'Shield:Shillelagh:Shocking Grasp:Silent Image:Sleep:' +
-        'Speak With Animals:Spider Climb:Stone Soup:Summon Monster I:' +
-        'Summon Nature\'s Ally I:True Strike:Undetectable Alignment:' +
-        'Unseen Servant:Ventriloquism',
-        'CH2:Acid Arrow:Alter Self:Animal Messenger:Animal Trance:Arcane Lock:'+
-        'Barkskin:Bear\'s Endurance:Blindness/Deafness:Blur:Bull\'s Strength:' +
-        'Cat\'s Grace:Chill Metal:Command Undead:Confer Power:' +
+        'Hide From Animals:Hold Portal:Hypnotism:Identify:Inspiration:' +
+        'Joyful Speech:Jump:Know The Name:Lesser Confusion:Lie:Mage Armor:' +
+        'Magic Aura:Magic Fang:Magic Missile:Magic Mouth:Magic Stone:' +
+        "Magic Weapon:Mount:Obscuring Mist:Pass Without Trace:Peasant's Rest:" +
+        'Phantom Edge:Produce Flame:Protection From Chaos:' +
+        'Protection From Evil:Protection From Good:Protection From Law:' +
+        'Ray Of Enfeeblement:Reduce Person:Remove Fear:Shield:Shillelagh:' +
+        'Shocking Grasp:Silent Image:Sleep:Speak With Animals:Spider Climb:' +
+        "Stone Soup:Summon Monster I:Summon Nature's Ally I:True Strike:" +
+        'Undetectable Alignment:Unseen Servant:Ventriloquism:Woeful Speech',
+        'Ch2:Acid Arrow:Alter Self:Animal Messenger:Animal Trance:Arcane Lock:'+
+        "Barkskin:Bear's Endurance:Bleed Power:Blindness/Deafness:Blur:" +
+        "Bull's Strength:Cat's Grace:Chill Metal:Command Undead:Confer Power:" +
         'Continual Flame:Cure Moderate Wounds:Darkness:Darkvision:' +
         'Daze Monster:Delay Poison:Detect Chaos:Detect Evil:Detect Good:' +
-        'Detect Law:Detect Thoughts:Disguise Ally:Eagle\'s Splendor:' +
-        'False Life:Flame Blade:Flaming Sphere:Fog Cloud:Fox\'s Cunning:' +
-        'Ghoul Touch:Glitterdust:Greenshield:Gust Of Wind:Heat Metal:' +
-        'Hideous Laughter:Hold Animal:Hypnotic Pattern:Invisibility:Knock:' +
-        'Lesser Restoration:Levitate:Lifetrap:Locate Object:Magic Mouth:' +
-        'Minor Image:Mirror Image:Misdirection:Nature\'s Revelation:' +
-        'Obscure Object:Owl\'s Wisdom:Phantom Trap:Protection From Arrows:' +
+        "Detect Law:Detect Thoughts:Disguise Ally:Eagle's Splendor:" +
+        'False Life:Fell Forbiddance:Fey Fire:Fey Hearth:Flame Blade:' +
+        "Flaming Sphere:Fog Cloud:Fox's Cunning:Ghoul Touch:Glitterdust:" +
+        'Greenshield:Gust Of Wind:Heat Metal:Hideous Laughter:Hold Animal:' +
+        'Hypnotic Pattern:Invisibility:Knock:Lesser Restoration:Levitate:' +
+        'Lifetrap:Locate Object:Magic Mouth:Memorial:Minor Image:' +
+        "Mirror Image:Misdirection:Nature's Revelation:Obscure Object:" +
+        "Owl's Wisdom:Pacify:Phantom Trap:Protection From Arrows:" +
         'Pyrotechnics:Reduce Animal:Resist Energy:Scare:Scorching Ray:' +
-        'Scryer\'s Mark:See Invisibility:Shatter:Silence:Silver Blood:' +
+        "Scryer's Mark:See Invisibility:Shatter:Silence:Silver Blood:" +
         'Soften Earth And Stone:Sound Burst:Spectral Hand:Spider Climb:' +
-        'Summon Monster II:Summon Nature\'s Ally II:Summon Swarm:' +
-        'Touch Of Idiocy:Tree Shape:Warp Wood:Web:Whispering Wind:Wood Shape',
-        'CH3:Arcane Sight:Call Lightning:Charm Repair:' +
+        "Summon Monster II:Summon Nature's Ally II:Summon Swarm:" +
+        'Touch Of Idiocy:Tree Shape:Warp Wood:Weather:Web:Whispering Wind:' +
+        'Withering Speech:Wood Shape',
+        'Ch3:Arcane Impotence:Arcane Sight:Call Lightning:Charm Repair:' +
         'Clairaudience/Clairvoyance:Contagion:Cure Serious Wounds:Daylight:' +
         'Deep Slumber:Diminish Plants:Dispel Magic:Displacement:' +
         'Dominate Animal:Explosive Runes:Fireball:Flame Arrow:Fly:' +
         'Gaseous Form:Gentle Repose:Glibness:Good Hope:Greater Magic Fang:' +
-        'Greater Magic Weapon:Gust Of Wind:Halfling Burrow:Halt Undead:Haste:' +
-        'Heroism:Hold Person:Illusory Script:Invisibility Sphere:Keen Edge:' +
-        'Lightning Bolt:Magic Circle Against Chaos:' +
-        'Magic Circle Against Evil:Magic Circle Against Good:' +
-        'Magic Circle Against Law:Major Image:Meld Into Stone:' +
-        'Neutralize Poison:Nondetection:Phantom Steed:Plant Growth:Poison:' +
-        'Protection From Energy:Rage:Ray Of Exhaustion:Remove Disease:' +
-        'Sculpt Sound:Secret Page:Sepia Snake Sigil:Shrink Item:Silver Wind:' +
-        'Sleet Storm:Slow:Snare:Speak With Plants:Spike Growth:' +
-        'Stinking Cloud:Suggestion:Summon Monster III:' +
-        'Summon Nature\'s Ally III:Tiny Hut:Tongues:Vampiric Touch:' +
-        'Water Breathing:Water Walk:Wind Wall',
-        'CH4:Air Walk:Animate Dead:Antiplant Shell:Arcane Eye:Bestow Curse:' +
-        'Bestow Curse:Bestow Spell:Black Tentacles:Blight:Charm Monster:' +
-        'Command Plants:Confusion:Control Water:Crushing Despair:' +
-        'Cure Critical Wounds:Detect Scrying:Dimensional Anchor:Enervation:' +
-        'Fear:Fire Shield:Fire Trap:Flame Strike:Freedom Of Movement:' +
-        'Giant Vermin:Greater Invisibility:Hallucinatory Terrain:Ice Storm:' +
-        'Illusory Wall:Lesser Geas:Lesser Globe Of Invulnerability:' +
-        'Locate Creature:Mass Enlarge Person:Mass Reduce Person:' +
-        'Minor Creation:Mnemonic Enhancer:Modify Memory:Phantasmal Killer:' +
-        'Polymorph:Rainbow Pattern:Reincarnate:Remove Curse:Repel Vermin:' +
-        'Resilient Sphere:Restoration:Scrying:Secure Shelter:' +
+        'Greater Magic Weapon:Greater Questing Bird:Gust Of Wind:' +
+        'Halfling Burrow:Halt Undead:Haste:Heroism:Hold Person:' +
+        'Illusory Script:Invisibility Sphere:Keen Edge:Lightning Bolt:' +
+        'Magic Circle Against Chaos:Magic Circle Against Evil:' +
+        'Magic Circle Against Good:Magic Circle Against Law:Major Image:' +
+        'Meld Into Stone:Neutralize Poison:Nondetection:Phantom Steed:' +
+        'Plant Growth:Poison:Protection From Energy:Questing Bird:Rage:' +
+        'Ray Of Exhaustion:Remove Disease:Sculpt Sound:Secret Page:' +
+        'Sepia Snake Sigil:Shrink Item:Silver Wind:Sleet Storm:Slow:Snare:' +
+        'Speak With Plants:Spike Growth:Stinking Cloud:Suggestion:' +
+        "Summon Monster III:Summon Nature's Ally III:Tiny Hut:Tongues:" +
+        'Vampiric Touch:Water Breathing:Water Walk:Willful Stand:Wind Wall',
+        'Ch4:Air Walk:Animate Dead:Antiplant Shell:Arcane Eye:Bestow Curse:' +
+        'Bestow Spell:Black Tentacles:Blight:Charm Monster:Command Plants:' +
+        'Confusion:Control Water:Crushing Despair:Cure Critical Wounds:' +
+        'Detect Scrying:Dimensional Anchor:Enervation:Fear:Fire Shield:' +
+        'Fire Trap:Flame Strike:Freedom Of Movement:Giant Vermin:' +
+        'Greater Invisibility:Hallucinatory Terrain:Ice Storm:Illusory Wall:' +
+        'Lesser Geas:Lesser Globe Of Invulnerability:Locate Creature:' +
+        'Mass Enlarge Person:Mass Reduce Person:Minor Creation:' +
+        'Mnemonic Enhancer:Modify Memory:Phantasmal Killer:Polymorph:' +
+        'Rainbow Pattern:Reincarnate:Remove Curse:Repel Vermin:' +
+        'Resilient Sphere:Restoration:Rusting Grasp:Scrying:Secure Shelter:' +
         'Shadow Conjuration:Shout:Silver Storm:Solid Fog:Spike Stones:' +
-        'Stone Shape:Stoneskin:Summon Monster IV:Summon Nature\'s Ally IV:' +
+        "Stone Shape:Stoneskin:Summon Monster IV:Summon Nature's Ally IV:" +
         'Wall Of Fire:Wall Of Ice:Zone Of Silence',
-        'CH5:Animal Growth:Atonement:Awaken:Baleful Polymorph:' +
-        'Break Enchantment:Call Lightning Storm:Cloudkill:' +
+        'Ch5:Animal Growth:Arcane Interference:Atonement:Awaken:' +
+        'Baleful Polymorph:Break Enchantment:Call Lightning Storm:Cloudkill:' +
         'Commune With Nature:Cone Of Cold:Contact Other Plane:' +
         'Control Winds:Death Ward:Dismissal:Dominate Person:Dream:Fabricate:' +
         'False Vision:Feeblemind:Hallow:Hold Monster:Insect Plague:' +
-        'Interposing Hand:Lesser Planar Binding:Mage\'s Faithful Hound:' +
-        'Mage\'s Private Sanctum:Magic Circle Against Shadow:Magic Jar:' +
+        "Interposing Hand:Lesser Planar Binding:Mage's Faithful Hound:" +
+        "Mage's Private Sanctum:Magic Circle Against Shadow:Magic Jar:" +
         'Major Creation:Mass Cure Light Wounds:Mind Fog:Mirage Arcana:' +
         'Nexus Fuel:Nightmare:Overland Flight:Passwall:Persistent Image:' +
         'Prying Eyes:Secret Chest:Seeming:Sending:Shadow Evocation:' +
-        'Song Of Discord:Summon Monster V:Summon Nature\'s Ally V:' +
+        "Song Of Discord:Summon Monster V:Summon Nature's Ally V:" +
         'Symbol Of Pain:Symbol Of Sleep:Telekinesis:Telepathic Bond:' +
         'Transmute Mud To Rock:Transmute Rock To Mud:Unhallow:Wall Of Force:' +
         'Wall Of Stone:Wall Of Thorns:Waves Of Fatigue',
-        'CH6:Acid Fog:Analyze Dweomer:Animate Objects:Antilife Shell:' +
+        'Ch6:Acid Fog:Analyze Dweomer:Animate Objects:Antilife Shell:' +
         'Antimagic Field:Chain Lightning:Circle Of Death:Contingency:' +
         'Create Undead:Disintegrate:Eyebite:Find The Path:Fire Seeds:' +
         'Flesh To Stone:Forceful Hand:Freezing Sphere:Geas/Quest:' +
         'Globe Of Invulnerability:Greater Dispel Magic:Greater Heroism:' +
-        'Guards And Wards:Heroes\' Feast:Ironwood:Legend Lore:Liveoak:' +
-        'Mage\'s Lucubration:Mass Bear\'s Endurance:Mass Bull\'s Strength:' +
-        'Mass Cat\'s Grace:Mass Cure Moderate Wounds:Mass Eagle\'s Splendor:' +
-        'Mass Fox\'s Cunning:Mass Owl\'s Wisdom:Mass Suggestion:Mislead:' +
-        'Move Earth:Permanent Image:Planar Binding:Programmed Image:' +
-        'Repel Wood:Repulsion:Spellstaff:Stone Tell:Stone To Flesh:' +
-        'Summon Monster VI:Summon Nature\'s Ally VI:Symbol Of Fear:' +
-        'Symbol Of Persuasion:Sympathetic Vibration:Transformation:' +
-        'True Seeing:Undeath To Death:Veil:Wall Of Iron',
-        'CH7:Animate Plants:Banishment:Changestaff:Control Undead:' +
+        "Greater Questing Bird:Guards And Wards:Heroes' Feast:Ironwood:" +
+        "Legend Lore:Liveoak:Mage's Lucubration:Mass Bear's Endurance:" +
+        "Mass Bull's Strength:Mass Cat's Grace:Mass Cure Moderate Wounds:" +
+        "Mass Eagle's Splendor:Mass Fox's Cunning:Mass Owl's Wisdom:" +
+        'Mass Suggestion:Mislead:Move Earth:Permanent Image:Planar Binding:' +
+        'Programmed Image:Repel Wood:Repulsion:Spellstaff:Stone Tell:' +
+        "Stone To Flesh:Summon Monster VI:Summon Nature's Ally VI:" +
+        'Symbol Of Fear:Symbol Of Persuasion:Sympathetic Vibration:' +
+        'Transformation:True Seeing:Undeath To Death:Veil:Wall Of Iron',
+        'Ch7:Animate Plants:Banishment:Changestaff:Control Undead:' +
         'Control Weather:Creeping Doom:Delayed Blast Fireball:' +
         'Finger Of Death:Fire Storm:Forcecage:Grasping Hand:' +
         'Greater Arcane Sight:Greater Restoration:Greater Scrying:' +
-        'Greater Shadow Conjuration:Heal:Insanity:Mage\'s Sword:' +
+        "Greater Shadow Conjuration:Heal:Insanity:Mage's Sword:" +
         'Mass Cure Serious Wounds:Mass Hold Person:Mass Invisibility:' +
-        'Power Word Blind:Prismatic Spray:Project Image:Regeneration:' +
-        'Reverse Gravity:Sequester:Simulacrum:Spell Turning:Statue:' +
-        'Summon Monster VII:Summon Nature\'s Ally VII:Sunbeam:' +
-        'Symbol Of Stunning:Symbol Of Weakness:Transmute Metal To Wood:' +
-        'Vision:Waves Of Exhaustion:Wind Walk',
-        'CH8:Animal Shapes:Antipathy:Binding:Clenched Fist:Clone:' +
+        'Power Word Blind:Prismatic Spray:Project Image:Reverse Gravity:' +
+        'Sequester:Simulacrum:Spell Turning:Statue:Summon Monster VII:' +
+        "Summon Nature's Ally VII:Sunbeam:Symbol Of Stunning:" +
+        'Symbol Of Weakness:Transmute Metal To Wood:Vision:' +
+        'Waves Of Exhaustion:Wind Walk',
+        'Ch8:Animal Shapes:Antipathy:Binding:Clenched Fist:Clone:' +
         'Control Plants:Create Greater Undead:Demand:Discern Location:' +
         'Earthquake:Greater Planar Binding:Greater Prying Eyes:' +
         'Greater Shadow Evocation:Greater Shout:Horrid Wilting:' +
@@ -2919,32 +2955,30 @@ LastAge.magicRules = function(rules, classes) {
         'Polar Ray:Polymorph Any Object:Power Word Stun:Prismatic Wall:' +
         'Protection From Spells:Repel Metal Or Stone:Reverse Gravity:' +
         'Scintillating Pattern:Screen:Summon Monster VIII:' +
-        'Summon Nature\'s Ally VIII:Sunburst:Symbol Of Death:' +
+        "Summon Nature's Ally VIII:Sunburst:Symbol Of Death:" +
         'Symbol Of Insanity:Sympathy:Telekinetic Sphere:Temporal Stasis:' +
         'Trap The Soul:Whirlwind',
-        'CH9:Astral Projection:Crushing Hand:Dominate Monster:' +
+        'Ch9:Astral Projection:Crushing Hand:Dominate Monster:' +
         'Elemental Swarm:Energy Drain:Foresight:Freedom:Gate:Imprisonment:' +
-        'Mage\'s Disjunction:Mass Hold Monster:Meteor Swarm:Power Word Kill:' +
+        "Mage's Disjunction:Mass Hold Monster:Meteor Swarm:Power Word Kill:" +
         'Prismatic Sphere:Regenerate:Shades:Shambler:Shapechange:Soul Bind:' +
-        'Storm Of Vengeance:Summon Monster IX:Summon Nature\'s Ally IX:' +
+        "Storm Of Vengeance:Summon Monster IX:Summon Nature's Ally IX:" +
         'Time Stop:Wail Of The Banshee:Weird'
       ];
       channelerDone = true;
+    } else if(klass == 'Druid') {
+      // Copy SRD35 Druid spells
+      SRD35.magicRules(rules, ['Druid'], [], []);
+      spells = [
+        "D1:Peasant's Rest",
+        'D2:Fey Fire'
+      ];
     } else if(klass == 'Legate') {
       // Copy SRD35 Cleric spells
-      var clericRules = new QuilvynRules('');
-      SRD35.magicRules(clericRules, ['Cleric'], [], []);
-      spells = [];
-      for(var j = 0; j < 10; j++) {
-        spells[j] = 'L' + j;
-      }
-      for(var s in clericRules.getChoices('spells')) {
-        var matchInfo = s.match(/^(.*)\(C([0-9])/);
-        if(matchInfo == null) {
-          continue;
-        }
-        spells[matchInfo[2]] += ':' + matchInfo[1];
-      }
+      SRD35.magicRules(rules, ['Cleric'], [], []);
+      spells = [
+        'C3:Boil Blood:Speak With Fell'
+      ];
     } else
       continue;
 
@@ -2955,6 +2989,7 @@ LastAge.magicRules = function(rules, classes) {
           var spell = pieces[k];
           var school = LastAge.spellsSchools[spell] || SRD35.spellsSchools[spell];
           if(school == null) {
+            console.log("Ignoring school-less spell " + spell);
             continue;
           }
           spell += '(' + pieces[0] + ' ' +
@@ -2973,7 +3008,7 @@ LastAge.magicRules = function(rules, classes) {
     'spellEnergy', '?', null,
     'level', '=', null
   );
-  rules.defineRule('casterLevels.CH',
+  rules.defineRule('casterLevels.Ch',
     'levels.Charismatic Channeler', '+=', null,
     'levels.Hermetic Channeler', '+=', null,
     'levels.Spiritual Channeler', '+=', null
@@ -2991,13 +3026,12 @@ LastAge.magicRules = function(rules, classes) {
     'features.Art Of Magic', '+', '1/2'
   );
   for(var i = 0; i < 10; i++) {
-    rules.defineRule('spellsKnown.CH' + i,
-      'maxSpellLevel', '?', 'source >= ' + i,
-      'spellsKnownBonus', '+=', '0'
+    rules.defineRule('spellsKnown.Ch' + i,
+      'maxSpellLevel', '?', 'Math.floor(source) == ' + i,
+      'spellsKnownBonus', '+=', null
     );
   }
   rules.defineSheetElement('Spell Energy', 'Spells Per Day');
-  rules.defineSheetElement('Spells Known Bonus', 'Spell Energy');
 
 };
 
@@ -3674,6 +3708,28 @@ LastAge.raceRules = function(rules, languages, races) {
 
 };
 
+/* Replaces spell names with longer descriptions on the character sheet. */
+LastAge.spellRules = function(rules, spells, descriptions) {
+  SRD35.spellRules(rules, spells, descriptions);
+  var notes = rules.getChoices('notes');
+  // SRD35 doesn't compute the saving throw DC for Channeler spells correctly,
+  // since it doesn't know which ability to apply.
+  for(var note in notes) {
+    var matchInfo = note.match(/^spells.*\(Ch([\d+])/);
+    if(!matchInfo)
+      continue;
+    var level = matchInfo[1];
+    matchInfo = notes[note].match(/\(DC %(\d+)/);
+    if(!matchInfo)
+      continue;
+    rules.defineRule(note + '.' + matchInfo[1],
+      'spellDifficultyClass.Charismatic Channeler', '=', 'source + ' + level,
+      'spellDifficultyClass.Hermetic Channeler', '=', 'source + ' + level,
+      'spellDifficultyClass.Spiritual Channeler', '=', 'source + ' + level
+    );
+  }
+};
+
 /* Defines the rules related to character skills. */
 LastAge.skillRules = function(rules, skills, subskills, synergies) {
   if(LastAge.USE_PATHFINDER) {
@@ -3778,37 +3834,26 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
       }
     }
   } else if(attribute == 'spells') {
-    // First, take care of fixed spells from, e.g., Magecraft
-    SRD35.randomizeOneAttribute.apply(this, [attributes, attribute]);
-    // Find out if the character has any bonus spells
     var attrs = this.applyRules(attributes);
-    var spellsKnownBonus = attrs.spellsKnownBonus;
-    if(spellsKnownBonus != null) {
-      var maxSpellLevel = Math.floor(attrs.maxSpellLevel);
-      // Temporarily set prohibit.* attributes to keep SRD35 from assigning
-      // spells from schools where the character doesn't have Spellcasting
-      for(var a in this.getChoices('schools')) {
-        if(attributes['feats.Spellcasting (' + a + ')'] == null)
-          attributes['prohibit.' + a] = 1;
-      }
-      // Allocate bonus spells round-robin among all possible spell levels
-      for(var spellLevel = 0; spellLevel <= maxSpellLevel; spellLevel++) {
-        attributes['spellsKnown.CH' + spellLevel] = 0;
-      }
-      for(var spellLevel = maxSpellLevel;
-          spellsKnownBonus > 0;
-          spellLevel = spellLevel > 0 ? spellLevel - 1 : maxSpellLevel,
-          spellsKnownBonus--) {
-        attributes['spellsKnown.CH' + spellLevel] += 1;
-      }
-      // Let SRD35 pick spells
-      SRD35.randomizeOneAttribute.apply(this, [attributes, attribute]);
-      // Now get rid of the temporary attribute assignments
-      for(var a in this.getChoices('schools')) {
-        delete attributes['prohibit.' + a];
-      }
-      for(var spellLevel = 0; spellLevel <= maxSpellLevel; spellLevel++) {
-        delete attributes['spellsKnown.CH' + spellLevel];
+    var spells = LastAge.rules.getChoices('spells');
+    for(var attr in attrs) {
+      var matchInfo = attr.match(/^spellsKnown\.([A-Z][A-Za-z]*)([0-9])$/);
+      if(!matchInfo)
+        continue;
+      var abbr = matchInfo[1];
+      var level = matchInfo[2];
+      var magecraftSchools = QuilvynUtils.getKeys(attrs, /^features.Spellcasting/).map(x =>  x.replace(/.*\(|\).*/g, '').substring(0, 4)); 
+      var spellPat = new RegExp
+        ('\\(' + abbr + (abbr == 'Ch' ? '[0-' + level + '] (' + magecraftSchools.join('|') + ')' : level));
+      var knownAlready = new Set(QuilvynUtils.getKeys(attrs, spellPat));
+      var choices =
+        QuilvynUtils.getKeys(spells, spellPat).filter(x=>!knownAlready.has(x));
+      for(var leftToPick = attrs[attr] - knownAlready.size;
+          leftToPick > 0 && choices.length > 0;
+          leftToPick--) {
+        var index = QuilvynUtils.random(0, choices.length - 1);
+        attributes['spells.' + choices[index]] = 1;
+        choices.splice(index, 1);
       }
     }
   } else {
