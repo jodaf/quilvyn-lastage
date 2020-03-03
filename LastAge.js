@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.6.1.3';
+var LASTAGE_VERSION = '1.6.1.4';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -1128,6 +1128,11 @@ LastAge.classRules = function(rules, classes) {
       (rules, klass, hitDie, skillPoints, baseAttack, saveFortitude, saveReflex,
        saveWill, profArmor, profShield, profWeapon, skills, features,
        spellsKnown, spellsPerDay, spellAbility);
+    if(LastAge.USE_PATHFINDER) {
+      // Override SRD35 skillPoints rule
+      rules.defineRule
+        ('skillPoints', 'levels.' + klass, '+', 'source * ' + skillPoints);
+    }
     if(notes != null)
       rules.defineNote(notes);
     if(feats != null) {
