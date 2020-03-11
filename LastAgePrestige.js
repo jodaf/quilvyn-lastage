@@ -32,7 +32,7 @@ function LastAgePrestige() {
 }
 
 LastAgePrestige.PRESTIGE_CLASSES = [
-  'Ancestral Bladebearer', 'Aradil\'s Eye', 'Avenging Knife',
+  'Ancestral Bladebearer', "Aradil's Eye", 'Avenging Knife',
   'Bane Of Legates', 'Druid', 'Elven Raider', 'Freerider', 'Haunted One',
   'Insurgent Spy', 'Smuggler', 'Warrior Arcanist', 'Whisper Adept', 'Wizard',
   'Wogren Rider'
@@ -92,6 +92,12 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
+      rules.defineRule('casterLevels.Ancesral Bladebearer',
+        'levels.Ancestral Bladebearer', '?', 'source >= 3',
+        'level', '=', null
+      );
+      rules.defineRule
+        ('casterLevels.Ch', 'casterLevels.Ancestral Bladebearer', '=', null);
       rules.defineRule('combatNotes.advanceAncestralBladeFeature',
         'levels.Ancestral Bladebearer', '=', 'Math.floor((source + 2) / 4)'
       );
@@ -102,7 +108,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'charismaModifier', '=', 'source > 1 ? source : 1'
       );
 
-    } else if(klass == 'Aradil\'s Eye') {
+    } else if(klass == "Aradil's Eye") {
 
       baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
@@ -123,7 +129,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'featureNotes.quickAlterationFeature:' +
           'Change to alter ego as a full round action',
         'featureNotes.spyFeature:' +
-          '%V% chance of help from d3 Aradil\'s Eyes in dire need',
+          "%V% chance of help from d3 Aradil's Eyes in dire need",
         'featureNotes.spyInitiateFeature:Services from elven contacts',
         'magicNotes.undetectableAlignmentFeature:' +
           'Continuous <i>Undetectable Alignment</i>',
@@ -131,9 +137,9 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'saveNotes.slipperyMindFeature:Second save vs. enchantment',
         'skillNotes.hideInPlainSightFeature:Hide even when observed',
         'skillNotes.spyInitiateFeature:+%V Diplomacy (elves, allies)',
-        'validationNotes.aradil\'sEyeClassFeats:Requires Inconspicuous',
-        'validationNotes.aradil\'sEyeClassRace:Requires Race == "Wood Elf"',
-        'validationNotes.aradil\'sEyeClassSkills:' +
+        "validationNotes.aradil'sEyeClassFeats:Requires Inconspicuous",
+        "validationNotes.aradil'sEyeClassRace:Requires Race == \"Wood Elf\"",
+        "validationNotes.aradil'sEyeClassSkills:" +
           'Requires Bluff >= 8/Disguise >= 5/Gather Information >= 8/' +
           'Hide >= 8/Move Silently >= 5/Sense Motive >= 5/Spot >= 5'
       ];
@@ -156,14 +162,20 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
+      rules.defineRule("casterLevels.Aradil's Eye",
+        "levels.Aradil's Eye", '?', 'source >= 8',
+        'level', '=', null
+      );
+      rules.defineRule
+        ('casterLevels.Ch', "casterLevels.Aradil's Eye", '=', null);
       rules.defineRule('featureNotes.alterEgoFeature',
-        'levels.Aradil\'s Eye', '=',
+        "levels.Aradil's Eye", '=',
         'source >= 7 ? "any" : source >= 3 ? "2 selected" : "1 selected"'
       );
       rules.defineRule
-        ('featureNotes.spyFeature', 'levels.Aradil\'s Eye', '=', 'source * 10');
+        ('featureNotes.spyFeature', "levels.Aradil's Eye", '=', 'source * 10');
       rules.defineRule('skillNotes.spyInitiateFeature',
-        'levels.Aradil\'s Eye', '=', 'source >= 10 ? 10 : source >= 5 ? 8 : 4'
+        "levels.Aradil's Eye", '=', 'source >= 10 ? 10 : source >= 5 ? 8 : 4'
       );
 
     } else if(klass == 'Avenging Knife') {
@@ -239,8 +251,8 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = [
-        '1:Art Of Magic', '1:Resist Legate\'s Will', '3:See Astirax',
-        '4:Counter Legate\'s Will', '5:Bonus Spellcasting', '6:Bind Astirax',
+        '1:Art Of Magic', "1:Resist Legate's Will", '3:See Astirax',
+        "4:Counter Legate's Will", '5:Bonus Spellcasting', '6:Bind Astirax',
         '8:Conceal Magic', '10:Sundered Spirit'
       ];
       hitDie = 6;
@@ -253,9 +265,8 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
           'Spells considered half level for purposes of astirax detection',
         'magicNotes.sunderedSpiritFeature:' +
           'Radiates <i>Antimagic Field</i> for divine magic',
-        'magicNotes.counterLegate\'sWillFeature:' +
-          '<i>Dispel Magic</i> vs. legates',
-        'saveNotes.resistLegate\'sWillFeature:+10 vs. legate magic',
+        "magicNotes.counterLegate'sWillFeature:<i>Dispel Magic</i> vs. legates",
+        "saveNotes.resistLegate'sWillFeature:+10 vs. legate magic",
         'validationNotes.baneOfLegatesClassFeats:' +
           'Requires Iron Will/Max Magecraft >= 1',
         'validationNotes.baneOfLegatesClassSkills:' +
@@ -471,7 +482,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'combatNotes.improvedMountedAssaultFeature:' +
           'No penalty for additional mounted attacks',
         'combatNotes.sweepingStrikeFeature:' +
-          'Attack all threatened foes during mount\'s move',
+          'Attack all threatened foes during mount move',
         'combatNotes.wheelAboutFeature:' +
           'May make 90 degree turn during mounted charge',
         'featureNotes.specialMountFeature:Special bond/abilities',
@@ -651,7 +662,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
       feats = null;
       features = [
-        '1:Smuggler\'s Trade', '2:Dominant Will', '3:Mystifying Speech',
+        "1:Smuggler's Trade", '2:Dominant Will', '3:Mystifying Speech',
         '4:Information Network', '5:Disguise Contraband',
         '7:More Mystifying Speech', '10:Slippery Mind'
       ];
@@ -666,7 +677,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'saveNotes.slipperyMindFeature:Second save vs. enchantment',
         'skillNotes.informationNetworkFeature:' +
           'One hour to take %V on Gather Information in new locale',
-        'skillNotes.smuggler\'sTradeFeature:' +
+        "skillNotes.smuggler'sTradeFeature:" +
           '+%V/take 10 on Bluff, Disguise, Forgery, Gather Information when ' +
           'smuggling',
         'validationNotes.smugglerClassFeats:Requires Friendly Agent',
@@ -692,6 +703,11 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       spellAbility = null;
       spellsKnown = null;
       spellsPerDay = null;
+      rules.defineRule('casterLevels.Smuggler',
+        'levels.Smuggler', '?', 'source >= 5',
+        'level', '=', null
+      );
+      rules.defineRule('casterLevels.Ch', 'casterLevels.Smuggler', '=', null);
       rules.defineRule('magicNotes.mystifyingSpeechFeature',
         'levels.Smuggler', '=', '10 + source',
         'charismaModifier', '+', null
@@ -702,7 +718,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       rules.defineRule('skillNotes.informationNetworkFeature',
         'levels.Smuggler', '=', 'source >= 7 ? 20 : 10'
       );
-      rules.defineRule('skillNotes.smuggler\'sTradeFeature',
+      rules.defineRule("skillNotes.smuggler'sTradeFeature",
         'levels.Smuggler', '=', 'Math.floor((source + 1) / 2) * 2'
       );
 
@@ -789,7 +805,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         '1:Art Of Magic', '1:Whisper Sense', '2:Whisper Initiative',
         '3:Fell Touch', '4:Whisper Surprise', '5:Tree Meld',
         '6:Whisper Clairaudience', '7:Strength Of The Wood',
-        '8:Whisper Clairvoyance', '9:Whisper\'s Ward', '10:Whisper Commune'
+        '8:Whisper Clairvoyance', "9:Whisper's Ward", '10:Whisper Commune'
       ];
       hitDie = 8;
       notes = [
@@ -804,7 +820,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'magicNotes.whisperClairaudienceFeature:<i>Clairaudience</i> w/in wood',
         'magicNotes.whisperClairvoyanceFeature:<i>Clairvoyance</i> w/in wood',
         'magicNotes.whisperCommuneFeature:<i>Commune With Nature</i> w/in wood',
-        'saveNotes.whisper\'sWardFeature:Immune to mind-affecting effects',
+        "saveNotes.whisper'sWardFeature:Immune to mind-affecting effects",
         'validationNotes.whisperAdeptClassFeats:' +
           'Requires Max Magecraft >= 1/any 2 Spellcasting',
         'validationNotes.whisperAdeptClassRace:Requires Race =~ Elf',
@@ -917,7 +933,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       feats = null;
       features = [
         '1:Coordinated Attack', '1:Special Mount', '3:Speed Mount',
-        '5:Mounted Hide', '7:Wogren Dodge', '9:Wogren\'s Sight'
+        '5:Mounted Hide', '7:Wogren Dodge', "9:Wogren's Sight"
       ];
       hitDie = 8;
       notes = [
@@ -942,7 +958,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'featureNotes.blindsenseFeature:' +
           'Other senses allow detection of unseen objects w/in 30 ft',
         'featureNotes.specialMountFeature:Special bond/abilities',
-        'featureNotes.wogren\'sSightFeature:Blindsense while mounted',
+        "featureNotes.wogren'sSightFeature:Blindsense while mounted",
         'skillNotes.mountedHideFeature:Hide while mounted',
         'validationNotes.wogrenRiderClassFeats:' +
           'Requires Mounted Archery/Mounted Combat',
@@ -974,7 +990,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'dexterityModifier', '=', 'source > 0 ? source : 1'
       );
       rules.defineRule
-        ('features.Blindsense', 'features.Wogren\'s Sight', '=', '1');
+        ('features.Blindsense', "features.Wogren's Sight", '=', '1');
       rules.defineRule
         ('features.Rapid Shot', 'features.Improved Mounted Archery', '=', '1');
       rules.defineRule('selectableFeatureCount.Wogren Rider',

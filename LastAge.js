@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.6.1.4';
+var LASTAGE_VERSION = '1.6.1.5';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -201,45 +201,46 @@ LastAge.WEAPONS = [
 LastAge.spellsDescriptions = {
   "Charm Repair":"Touched minor/lesser charm restored to use",
   "Detect Astirax": "R$RL' quarter circle Info on astiraxes for $L10 min",
-  "Disguise Ally": "Change touched appearance/+10 disguise for $L10 min",
+  "Disguise Ally":
+    "Change touched appearance/+10 disguise for $L10 min (Will disbelieve)",
   "Disguise Weapon":"$L touched weapons look benign for $L hours",
   "Far Whisper":"+4 checks to hear Whispering Wood w/in $L10 miles for $L min",
   "Greenshield":"Touched surrounded by 30' foliage sphere for $L hr",
   "Halfling Burrow":"Hidden hole holds $L small creatures for $L hr",
-  "Lifetrap":"R$RM' Undead in 50' radius Ref save or tangled for $L rd, 3d6 HP",
+  "Lifetrap":"R$RM' Undead in 50' radius tangled for $L rd, 3d6 HP (Ref neg)",
   "Nature's Revelation":"R$RS Plants/animals in 30' radius reveal creatures",
   "Nexus Fuel":"Sacrifice boosts nexus recovery rate",
   "Silver Blood":"Caster's blood damages astiraxes for 1 hr",
   "Silver Storm":"R$RS' Targets in cone ${Lmin15}d4 HP silver needle (Ref half)",
-  "Silver Wind":"R$RM' Targets in 20' circle Will save or d6/rd for $L rd",
+  "Silver Wind":"R$RM' Targets in 20' circle d6/rd for $L rd (Will neg)",
   "Stone Soup":"Buried stone creates broth",
   // Sorcery and Shadow
   "Arcane Impotence":"R$RM' Target Channeler must use $Ldiv2 spell energy to cast w/in $L rd (Will $Ldiv2 rd)",
-  "Arcane Interference":"Spells require added $Ldiv2 energy to affect 10' radius of touched for $L min",
+  "Arcane Interference":"Spells require added $Ldiv2 energy to affect 10' radius of touched for $L min (Will neg)",
   "Assist":"R$RS' Targets in 30' radius +2 skill checks for conc + 1 rd",
-  "Bestow Spell":"Touched convey spell",
+  "Bestow Spell":"Touched convey spell (Will neg)",
   "Bleed Power":"Successful foe attack on self causes 1d6 HP to attacker for $L10 min",
-  "Boil Blood":"R$RS' Target 1d8 HP for conc + 1 rd",
+  "Boil Blood":"R$RS' Target 1d8 HP for conc + 1 rd (Fort half)",
   "Burial":"R$RS' Earth swallows target non-living, unattended object",
-  "Channel Might":"Touched next hit does maximum+$L HP w/in $L rd",
+  "Channel Might":"Touched next hit does maximum+$L HP w/in $L rd (Will neg)",
   "Confer Power":"Transfer spell energy to nearby casters for $L rd", 
-  "Fell Forbiddance":"R$RS' Target $L25' sq area impassible to undead for $L min (Wis neg for intelligent)",
+  "Fell Forbiddance":"R$RS' Target ${lvl*25}' sq area impassible to undead for $L min (Will neg for intelligent)",
   "Fey Fire":"Touched point invisible 5' radius fire that warms and heals 1 HP for $L hr",
   "Fey Hearth":"R$RS' Creatures in 30' radius of target fire +2 Will saves, heal 1.5xlevel HP for as long as fire lasts",
   "Greater Questing Bird":"Self temporarily learn spell le level 6",
   "Inspiration":"Touched +10 one Craft check",
   "Inspirational Might":"R$RS' 4 allies in 30' radius +2d10 HP, +2 attack, +1 Fortitude save for $Ldiv2 rd",
-  "Joyful Speech":"R$RM' Listeners in 30' radius improve reaction, unshaken, +4 vs. fear for $L rd",
-  "Know The Name":"Discover name(s) of touched",
+  "Joyful Speech":"R$RM' Listeners in 30' radius improve reaction, unshaken, +4 vs. fear for $L rd (Will neg)",
+  "Know The Name":"Discover name(s) of touched (Will neg)",
   "Lie":"+10 Bluff on next lie",
-  "Magic Circle Against Shadow":"10' radius from touched +2 AC/+2 saves/extra save vs. mental control/no contact vs. Izrador agents for $L10 min",
+  "Magic Circle Against Shadow":"10' radius from touched +2 AC/+2 saves/extra save vs. mental control/no contact vs. Izrador agents for $L10 min (Will neg)",
   "Memorial":"Touched $L10' radius replays previous/next $L min to next passerby",
   "Pacify":"R$RS' ${Math.floor(lvl/3) + 1} targets cannot attack for $Ldiv2 rd (Will neg)",
   "Peasant's Rest":"Touched gets 8 hrs rest from 4 hrs sleep",
-  "Phantom Edge":"Touched weapon different type for $L min",
+  "Phantom Edge":"Touched weapon different type for $L min (Will neg)",
   "Questing Bird":"Self temporarily learn spell le level 3",
-  "Scryer's Mark":"Touched -4 Will vs. scrying",
-  "Speak With Fell":"R$RS' Compel 3 correct answers from target fell w/in $L min",
+  "Scryer's Mark":"Touched -4 Will vs. scrying (Will neg)",
+  "Speak With Fell":"R$RS' Compel 3 correct answers from target fell w/in $L min (Will neg)",
   "Weather":"R$RM' 60' radius, 30' high cylinder of rain or snow",
   "Willful Stand":"R$RM' Target cannot attack self or enter threat space for conc (Will neg)",
   "Withering Speech":"R$RS' Target 1 Wis, 1 Cha damage/min for conc",
@@ -515,8 +516,9 @@ LastAge.classRules = function(rules, classes) {
           'magicNotes.magecraft(Charismatic)Feature:' +
             '4 spells/%V spell energy points',
           'magicNotes.massSuggestionFeature:' +
-            'Make suggestion to %V fascinated creatures',
-          'magicNotes.suggestionFeature:Make suggestion to fascinated creature'
+            '<i>Suggestion</i> to %V fascinated creatures',
+          'magicNotes.suggestionFeature:' +
+            '<i>Suggestion</i> to 1 fascinated creature'
         ]);
         selectableFeatures = [
           'Greater Confidence', 'Greater Fury', 'Improved Confidence',
@@ -609,7 +611,7 @@ LastAge.classRules = function(rules, classes) {
           'hermeticChannelerFeatures.Quick Reference', '=', '5 * source'
         );
         rules.defineRule('spellEnergy',
-          'magicNotes.magecraft(Charismatic)Feature', '+=', null
+          'magicNotes.magecraft(Hermetic)Feature', '+=', null
         );
         rules.defineRule('spellsKnown.W0',
           'magicNotes.magecraft(Hermetic)Feature', '+=', '3'
@@ -670,7 +672,7 @@ LastAge.classRules = function(rules, classes) {
           'source < 3 ? null : Math.floor(source / 3)'
         );
         rules.defineRule('spellEnergy',
-          'magicNotes.magecraft(Charismatic)Feature', '+=', null
+          'magicNotes.magecraft(Spiritual)Feature', '+=', null
         );
         rules.defineRule('spellsKnown.D0',
           'magicNotes.magecraft(Spiritual)Feature', '+=', '3'
@@ -928,7 +930,7 @@ LastAge.classRules = function(rules, classes) {
         'combatNotes.turnUndeadFeature:' +
           'Turn (good) or rebuke (evil) undead creatures',
         'featureNotes.astiraxCompanionFeature:Special bond/abilities',
-        'magicNotes.spontaneousLegateSpellFeature:Inflict',
+        'magicNotes.spontaneousLegateSpellFeature:<i>Inflict</i>',
         'magicNotes.templeDependencyFeature:' +
           'Must participate at temple to receive spells'
       ];
@@ -967,9 +969,9 @@ LastAge.classRules = function(rules, classes) {
         'C9:17:1/18:2/19:3/20:4'
       ];
       rules.defineRule('astiraxMasterLevel', 'levels.Legate', '+=', null);
-      rules.defineRule('casterLevelDivine', 'levels.Legate', '+=', null);
-      rules.defineRule('casterLevels.C', 'levels.Legate', '+=', null);
-      rules.defineRule('casterLevels.Dom', 'levels.Legate', '+=', null);
+      rules.defineRule('casterLevels.C', 'levels.Legate', '=', null);
+      rules.defineRule('casterLevels.Dom', 'casterLevels.C', '+=', null);
+      rules.defineRule('casterLevelDivine', 'casterLevels.C', '+=', null);
       rules.defineRule('deity', 'levels.Legate', '=', '"Izrador (NE)"');
       rules.defineRule('domainCount', 'levels.Legate', '+=', '2');
       rules.defineRule('features.Weapon Focus (Longsword)',
@@ -1080,6 +1082,13 @@ LastAge.classRules = function(rules, classes) {
       rules.defineRule('abilityNotes.quickStrideFeature',
         'wildlanderFeatures.Quick Stride', '=', '10 * source'
       );
+      rules.defineRule('casterLevels.Wildlander',
+        'wilderlanderFeatures.Sense Dark Magic', '?', null,
+        'level', '=', null
+      );
+      rules.defineRule
+        ('casterLevels.Detect Magic', 'casterLevels.Wildlander', '^=', null);
+      rules.defineRule('casterLevels.W', 'casterLevels.Wildlander', '^=', null);
       rules.defineRule
         ('companionMasterLevel', 'levels.Wildlander', '+=', null);
       rules.defineRule("combatNotes.hunter'sStrikeFeature",
@@ -1295,7 +1304,7 @@ LastAge.featRules = function(rules, feats, subfeats) {
         // NOTE: False valid w/multiple Magecraft
         /^features\.Magecraft/, '+', '100',
         'features.Ritual Magic', '+', '10',
-        /^features\.Spellcasting/, '+', '1',
+        'spellcastingFeatureCount', '+', null,
         '', 'v', '0'
       );
     } else if(feat == 'Craft Spell Talisman') {
@@ -1367,18 +1376,42 @@ LastAge.featRules = function(rules, feats, subfeats) {
       ];
     } else if(feat == 'Innate Magic') {
       notes = [
-        'magicNotes.innateMagicFeature:' +
-          '%V level 0 spells as at-will innate ability',
+        'magicNotes.innateMagicFeature:%V %1 spells as at-will innate ability',
         'validationNotes.innateMagicFeatRace:' +
           'Requires Race =~ Elf|Halfling'
       ];
-      rules.defineRule('highestMagicModifier',
-        'charismaModifier', '^=', null,
-        'intelligenceModifier', '^=', null,
-        'wisdomModifier', '^=', null
+      rules.defineRule('magicNotes.innateMagicFeature',
+        'charismaModifier', '=', null,
+        'intelligenceModifier', '^', null,
+        'wisdomModifier', '^', null
       );
-      rules.defineRule
-        ('magicNotes.innateMagicFeature', 'highestMagicModifier', '=', null);
+      rules.defineRule('magicNotes.innateMagicFeature.2',
+        'features.Innate Magic', '?', null,
+        'charismaModifier', '=', '(source + 5) * 10000',
+        'intelligenceModifier', '+', '(source + 5) * 100',
+        'wisdomModifier', '+', 'source + 5'
+      );
+      rules.defineRule('magicNotes.innateMagicFeature.1',
+        'magicNotes.innateMagicFeature.2', '=',
+          'Math.floor(source/10000) >= Math.floor((source%10000)/100) && ' +
+          'Math.floor(source/10000) >= source%100 ? "B0" : ' +
+          'Math.floor((source%10000)/100) >= source%100 ? "W0" : "D0"'
+      );
+      rules.defineRule('casterLevels.innateB',
+        'magicNotes.innateMagicFeature.1', '?', 'source == "B0"',
+        'level', '=', null
+      );
+      rules.defineRule('casterLevels.innateD',
+        'magicNotes.innateMagicFeature.1', '?', 'source == "D0"',
+        'level', '=', null
+      );
+      rules.defineRule('casterLevels.innateW',
+        'magicNotes.innateMagicFeature.1', '?', 'source == "W0"',
+        'level', '=', null
+      );
+      rules.defineRule('casterLevels.B', 'casterLevels.innateB', '=', null);
+      rules.defineRule('casterLevels.D', 'casterLevels.innateD', '=', null);
+      rules.defineRule('casterLevels.W', 'casterLevels.innateW', '=', null);
     } else if(feat == 'Knife Thrower') {
       notes = [
         'combatNotes.knifeThrowerFeature:' +
@@ -1419,6 +1452,12 @@ LastAge.featRules = function(rules, feats, subfeats) {
                  (school == 'Universal' ? 'None' : schools[school]) + ')';
         rules.defineChoice('spells', spell);
       }
+      rules.defineRule('casterLevels.' + feat,
+        'features.' + feat, '?', null,
+        'level', '=', null
+      );
+      rules.defineRule
+        ('casterLevels.' + spellCode, 'casterLevels.' + feat, '=', null);
     } else if(feat == 'Magic Hardened') {
       notes = [
         'saveNotes.magicHardenedFeature:+2 spell resistance',
@@ -1468,6 +1507,15 @@ LastAge.featRules = function(rules, feats, subfeats) {
             'Requires Spellcasting (' + school.substring(8) + ')';
       }
       rules.defineRule('spellsKnownBonus', note, '+=', '1');
+      rules.defineRule('spellcastingFeatureCount',
+        /features.Spellcasting/, '+=', '1'
+      );
+      rules.defineRule(
+        'casterLevels.Spellcasting', 'spellcastingFeatureCount', '?', null,
+        'level', '=', null
+      );
+      rules.defineRule
+        ('casterLevels.Ch', 'casterLevels.Spellcasting', '=', null);
     } else if((matchInfo = feat.match(/^Spell Focus \((.*)\)/)) != null) {
       // Add validation note to what base rules already computed
       var school = matchInfo[1];
@@ -2583,9 +2631,9 @@ LastAge.heroicPathRules = function(rules, paths) {
       selectableFeatures = null;
       spellFeatures = null;
       rules.defineRule('highestMagicModifier',
-        'charismaModifier', '^=', null,
-        'intelligenceModifier', '^=', null,
-        'wisdomModifier', '^=', null
+        'charismaModifier', '=', null,
+        'intelligenceModifier', '^', null,
+        'wisdomModifier', '^', null
       );
       rules.defineRule('magicNotes.metamagicAuraFeature',
         'pathLevels.Spellsoul', '=',
@@ -2831,6 +2879,11 @@ LastAge.heroicPathRules = function(rules, paths) {
       }
     }
     if(spellFeatures != null) {
+      rules.defineRule('casterLevels.' + path,
+        'heroicPath', '?', 'source == "' + path + '"',
+        'level', '=', null
+      );
+      rules.defineRule('casterLevels.Ch', 'casterLevels.' + path, '^=', null);
       var spellLevels = {};
       for(var j = 0; j < spellFeatures.length; j++) {
         var levelAndSpell = spellFeatures[j].split(/:/);
@@ -3011,11 +3064,7 @@ LastAge.magicRules = function(rules, classes, domains, schools) {
       channelerDone = true;
     } else if(klass == 'Legate') {
       // Copy Cleric spells
-      if(LastAge.USE_PATHFINDER) {
-        Pathfinder.magicRules(rules, ['Cleric'], [], []);
-      } else {
-        SRD35.magicRules(rules, ['Cleric'], [], []);
-      }
+      LastAge.baseRules.magicRules(rules, ['Cleric'], [], []);
       spells = [
         'C3:Boil Blood:Speak With Fell'
       ];
@@ -3040,28 +3089,27 @@ LastAge.magicRules = function(rules, classes, domains, schools) {
     }
   }
 
-  rules.defineRule('casterLevelArcane',
-    'spellEnergy', '?', null,
-    'level', '=', null
+  rules.defineRule('casterLevelArcane', 'casterLevels.Ch', '+=', null);
+  rules.defineRule('spellDifficultyClass.B',
+    'casterLevels.B', '?', null,
+    'charismaModifier', '=', '10 + source'
   );
-  rules.defineRule('casterLevels.B',
-    'spellEnergy', '?', null,
-    'level', '=', null
+  rules.defineRule('spellDifficultyClass.Ch',
+    'casterLevels.Ch', '?', null,
+    'charismaModifier', '=', '10 + source',
+    'intelligenceModifier', '^', '10 + source',
+    'wisdomModifier', '^', '10 + source'
   );
-  rules.defineRule('casterLevels.Ch',
-    'levels.Charismatic Channeler', '+=', null,
-    'levels.Hermetic Channeler', '+=', null,
-    'levels.Spiritual Channeler', '+=', null
+  rules.defineRule('spellDifficultyClass.D',
+    'casterLevels.D', '?', null,
+    'wisdomModifier', '=', '10 + source'
   );
-  rules.defineRule('casterLevels.D',
-    'spellEnergy', '?', null,
-    'level', '=', null
-  );
-  rules.defineRule('casterLevels.W',
-    'spellEnergy', '?', null,
-    'level', '=', null
+  rules.defineRule('spellDifficultyClass.W',
+    'casterLevels.W', '?', null,
+    'intelligenceModifier', '=', '10 + source'
   );
   rules.defineRule('maxSpellLevel',
+    'casterLevels.Ch', '?', null,
     'level', '=', 'source / 2',
     'features.Art Of Magic', '+', '1/2'
   );
@@ -3357,8 +3405,6 @@ LastAge.raceRules = function(rules, languages, races) {
       ];
       notes = [
         'combatNotes.smallFeature:+1 AC/attack',
-        'magicNotes.innateMagicFeature:' +
-          '%V level 0 spells as at-will innate ability',
         'saveNotes.fortunateFeature:+1 all saves',
         'skillNotes.giftedHealerFeature:+2 Heal',
         'skillNotes.keenSensesFeature:+2 Listen/Search/Spot',
@@ -3396,8 +3442,6 @@ LastAge.raceRules = function(rules, languages, races) {
       ];
       notes = [
         'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
-        'magicNotes.innateMagicFeature:' +
-          '%V level 0 spells as at-will innate ability',
         'magicNotes.naturalChannelerFeature:+2 spell energy',
         'saveNotes.resistEnchantmentFeature:+2 vs. enchantments',
         'skillNotes.keenSensesFeature:+2 Listen/Search/Spot',
@@ -3576,8 +3620,6 @@ LastAge.raceRules = function(rules, languages, races) {
         'abilityNotes.slowFeature:-10 speed',
         'combatNotes.smallFeature:+1 AC/attack',
         'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
-        'magicNotes.innateMagicFeature:' +
-          '%V level 0 spells as at-will innate ability',
         'saveNotes.fortunateFeature:+1 all saves',
         'saveNotes.unafraidFeature:+2 vs. fear',
         'skillNotes.alertSensesFeature:+2 Listen/Spot',
@@ -3754,23 +3796,6 @@ LastAge.raceRules = function(rules, languages, races) {
 /* Replaces spell names with longer descriptions on the character sheet. */
 LastAge.spellRules = function(rules, spells, descriptions) {
   SRD35.spellRules(rules, spells, descriptions);
-  var notes = rules.getChoices('notes');
-  // SRD35 doesn't compute the saving throw DC for Channeler spells correctly,
-  // since it doesn't know which ability to apply.
-  for(var note in notes) {
-    var matchInfo = note.match(/^spells.*\(Ch([\d+])/);
-    if(!matchInfo)
-      continue;
-    var level = matchInfo[1];
-    matchInfo = notes[note].match(/\(DC %(\d+)/);
-    if(!matchInfo)
-      continue;
-    rules.defineRule(note + '.' + matchInfo[1],
-      'spellDifficultyClass.Charismatic Channeler', '=', 'source + ' + level,
-      'spellDifficultyClass.Hermetic Channeler', '=', 'source + ' + level,
-      'spellDifficultyClass.Spiritual Channeler', '=', 'source + ' + level
-    );
-  }
 };
 
 /* Defines the rules related to character skills. */
@@ -3958,15 +3983,15 @@ LastAge.ruleNotes = function() {
     '    Sunderborn "Spirit Sight" becomes "Darkvision", "Magical\n' +
     '    Darkvision", and "See Invisible" at levels 7, 13, and 19;\n' +
     '    Tactician "Aid Another" becomes "Aided Combat Bonus" at level 5;\n' +
-    '    Aradil\'s Eye "Alter Ego" becomes "Quick Alteration" and\n' +
+    "    Aradil's Eye \"Alter Ego\" becomes \"Quick Alteration\" and\n" +
     '    "Nonmagical Alteration" at levels 5 and 9; Whisper Adept "Whisper\n' +
     '    Sense" becomes "Whisper Initiative", "Whisper Surprise", "Whisper\n' +
     '    Clairaudience", "Whisper Clairvoyance", and "Whisper Commune" at\n' +
     '    levels 2, 4, 6, 8, and 10.\n' +
     '  </li><li>\n' +
-    '    The rule book incorrectly lists Bear\'s Endurance as a spell\n' +
+    "    The rule book incorrectly lists Bear's Endurance as a spell\n" +
     '    acquired at the level 4 Beast heroic path.  Quilvyn corrects this\n' +
-    '    to Bull\'s Endurance".\n' +
+    "    to Bull's Endurance.\n" +
     '  </li><li>\n' +
     '    The Wogren Rider selectable features "Improved Ride-By Attack",\n' +
     '    "Improved Spirited Charge", and "Improved Trample" only apply if\n' +
