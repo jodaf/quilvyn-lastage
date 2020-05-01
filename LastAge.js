@@ -144,13 +144,17 @@ LastAge.FEATS = [
   'Dwarvencraft:', 'Powerful Throw:Fighter', 'Shield Mate:Fighter',
   'Touched By Magic:', 'Trapsmith:', 'Tunnel Fighting:Fighter',
   // TODO Dwarvencraft Techniques -- probably selectable features
+  // Honor & Shadow
+  'Born Of Duty:', 'Born Of The Grave:',
   // Sorcery & Shadow
   'Blood-Channeler:', 'Craft Rune Of Power:Item Creation', 'Flexible Recovery:',
   'Improved Flexible Recovery:', 'Knack For Charms:Item Creation',
   'Living Talisman:', 'Power Reservoir:', 'Sense Power:', 'Subtle Caster:',
   // Star & Shadow
   'Canny Strike:Fighter', 'Caste Status:', 'Clever Fighting:Fighter',
-  'Plains Warfare:Fighter', 'Urban Intrigue:', 'Well-Aimed Strike:Fighter'
+  'Plains Warfare:Fighter', 'Urban Intrigue:', 'Well-Aimed Strike:Fighter',
+  // Steel & Shadow
+  'Resigned To Death:', 'Whirlwind Charge:'
 ];
 LastAge.HEROIC_PATHS = [
   'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
@@ -189,10 +193,10 @@ LastAge.SUBFEATS = {
   'Spell Focus':LastAge.SCHOOLS.join('/').replace(/:[^\/]+/g, ''),
   'Spellcasting':LastAge.SCHOOLS.join('/').replace(/:[^\/]+/g, ''),
   // Legates w/War domain receive Weapon Focus (Longsword)
-  'Weapon Focus':'Longsword/Light Hammer/Throwing Axe/Urutuk Hatchet'
+  'Weapon Focus':'Longsword'
 };
 LastAge.SUBSKILLS = {
-  'Knowledge':'Local/Nature/Old Gods/Shadow/Spirits',
+  'Knowledge':'Arcana/Local/Nature/Old Gods/Shadow/Spirits',
   // Profession (Soldier) available to Leader Of Men Fighters
   'Profession':'Soldier'
 };
@@ -1676,42 +1680,106 @@ LastAge.featRules = function(rules, feats, subfeats) {
       notes = [
         'combatNotes.tunnelFightingFeature:No AC, attack penalty when squeezing'
       ];
+    } else if(feat == 'Born Of Duty') {
+      notes = [
+        'magicNotes.bornOfDutyFeature:' +
+          "R100' Cry shakes undead (DC %V Will neg), Dorn +2 vs fear, enchant 1/day",
+        'validationNotes.bornOfDutyFeatAlignment:Requires Alignment =~ Lawful',
+        'validationNotes.bornOfDutyFeatRace:Requires Race == "Dorn"'
+      ]
+      rules.defineRule('magicNotes.bornOfDutyFeature',
+        'level', '=', '10 + Math.floor(source / 2)',
+        'charismaModifier', '+', null
+      );
+    } else if(feat == 'Born Of The Grave') {
+      notes = [
+        "magicNotes.bornOfTheGraveFeature:R15' <i>Deathwatch</i> at will",
+        'validationNotes.bornOfTheGraveFeatAlignment:' +
+          'Requires Alignment !~ Good',
+        'validationNotes.bornOfTheGraveFeatRace:Requires Race == "Dorn"'
+      ]
     } else if(feat == 'Blood-Channeler') {
       notes = [
+        'magicNotes.blood-ChannelerFeature:' +
+          'Dbl spell energy for first two Con points lost',
+        'validationNotes.blood-ChannelerFeatAbility:' +
+          'Requires Constitution >= 15',
+        'validationNotes.blood-ChannelerFeatFeatures:' +
+          'Requires Max Magecraft >= 1'
       ];
-      // TODO
     } else if(feat == 'Craft Rune Of Power') {
       notes = [
+        'magicNotes.craftRuneOfPowerFeature:Imbue rune w/any known spell',
+        'validationNotes.craftRuneOfPowerFeatFeatures:' +
+          'Requires Max Magecraft >= 1/Max Spellcasting >= 1',
+        'validationNotes.craftRuneOfPowerFeatLevel:Requires Level >= 3'
       ];
-      // TODO
     } else if(feat == 'Flexible Recovery') {
       notes = [
+        'magicNotes.flexibleRecoveryFeature:' +
+          "Recover 1 spell energy per hour's rest",
+        'validationNotes.flexibleRecoveryFeatAbility:' +
+          'Requires Constitution >= 13',
+        'validationNotes.flexibleRecoveryFeatFeatures:' +
+          'Requires Max Magecraft >= 1'
       ];
-      // TODO
     } else if(feat == 'Improved Flexible Recovery') {
       notes = [
+        'magicNotes.improvedFlexibleRecoveryFeature:' +
+          "DC 30 Concentration to recover %V spell energy per hour's meditation",
+        'validationNotes.improvedFlexibleRecoveryFeatAbility:' +
+          'Requires Constitution >= 15',
+        'validationNotes.improvedFlexibleRecoveryFeatFeatures:' +
+          'Requires Flexible Recovery/Max Magecraft >= 1'
       ];
-      // TODO
+      rules.defineRule('magicNotes.improvedFlexibleRecoveryFeature',
+        'charismaModifier', '=', null,
+        'intelligenceModifier', '^', null,
+        'wisdomModifier', '^', null
+      );
     } else if(feat == 'Knack For Charms') {
       notes = [
+        'skillNotes.knackForCharmsFeature:+4 Craft for charm-making',
+        'validationNotes.knackForCharmsFeatSkills:' +
+          'Requires Knowledge (Arcana) >= 4/Knowledge (Nature) >= 4'
       ];
-      // TODO
     } else if(feat == 'Living Talisman') {
       notes = [
+        'magicNotes.livingTalismanFeature:' +
+           'Chosen spell costs 1 fewer spell energy to cast',
+        'validationNotes.livingTalismanFeatFeatures:' +
+          'Requires Max Magecraft >= 1/Max Spellcasting >= 1',
+        'validationNotes.livingTalismanFeatLevel:Requires Level >= 5',
+        'validationNotes.livingTalismanFeatSkills:' +
+          'Requires Knowledge (Arcana) >= 6'
       ];
-      // TODO
     } else if(feat == 'Power Reservoir') {
       notes = [
+        'magicNotes.powerReservoirFeature:' +
+          'Store +%V siphoned spell energy points',
+        'validationNotes.powerReservoirFeatFeatures:' +
+          'Requires Max Magecraft >= 1',
       ];
-      // TODO
+      rules.defineRule('magicNotes.powerReservoirFeature',
+        'charismaModifier', '=', null,
+        'intelligenceModifier', '^', null,
+        'wisdomModifier', '^', null
+      );
     } else if(feat == 'Sense Power') {
       notes = [
+        'magicNotes.sensePowerFeature:' +
+          "<i>Detect Magic</i> %V/day, DC 13 Wis check w/in 20'",
+        'validationNotes.sensePowerFeatAbility:Requires Wisdom >= 15'
       ];
-      // TODO
+      rules.defineRule
+        ('magicNotes.sensePowerFeature', 'wisdomModifier', '=', null);
     } else if(feat == 'Subtle Caster') {
       notes = [
+        'skillNotes.subtleCasterFeature:' +
+          '+2 Bluff or Sleight Of Hand to disguise spell casting',
+        'validationNotes.subtleCasterFeatFeatures:' +
+          'Requires Max Magecraft >= 1',
       ];
-      // TODO
     } else if(feat == 'Canny Strike') {
       notes = [
         'combatNotes.cannyStrikeFeature:+%Vd4 finesse weapon damage',
@@ -1766,6 +1834,22 @@ LastAge.featRules = function(rules, feats, subfeats) {
           'Requires Base Attack >= 9',
         'validationNotes.well-AimedStrikeFeatFeatures:' +
            'Requires Canny Strike/Clever Fighting/Weapon Finesse'
+      ];
+    } else if(feat == 'Resigned To Death') {
+      notes = [
+        'saveNotes.resignedToDeathFeature:' +
+          '+4 vs. fear, fail 1 step less intense',
+        'validationNotes.resignedToDeathFeatAbility:Requires Wisdom >= 13'
+      ];
+    } else if(feat == 'Whirlwind Charge') {
+      notes = [
+        'combatNotes.whirlwindChargeFeature:' +
+           'Attack all adjacent foes after charge',
+        'validationNotes.whirlwindChargeFeatAbility:Requires Strength >= 15',
+        'validationNotes.whirlwindChargeFeatBaseAttack:' +
+          'Requires Base Attack >= 6',
+        'validationNotes.whirlwindChargeFeatFeatures:' +
+          'Requires Cleave/Power Attack'
       ];
     } else
       continue;
