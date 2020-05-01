@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.7.1.0';
+var LASTAGE_VERSION = '1.7.1.1';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -125,6 +125,7 @@ LastAge.DEITIES = [
   'None::'
 ];
 LastAge.FEATS = [
+  // MN2E
   'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
   'Craft Spell Talisman:Item Creation', 'Devastating Mounted Assault:Fighter',
   'Drive It Deep:Fighter', 'Extra Gift:', 'Friendly Agent:',
@@ -135,7 +136,25 @@ LastAge.FEATS = [
   'Ritual Magic:', 'Sarcosan Pureblood:', 'Sense Nexus:',
   'Spellcasting:Spellcasting', 'Skill Focus:', 'Spell Knowledge:',
   'Thick Skull:', 'Warrior Of Shadow:', 'Weapon Focus:Fighter',
-  'Whispering Awareness:'
+  'Whispering Awareness:',
+  // Destiny & Shadow
+  'Clear-Eyed:', 'Defiant:', 'Fanatic:', 'Hardy:', 'Huntsman:',
+  'Pikeman:Fighter', 'Slow Learner:', 'Stalwart:', 'Stealthy Rider:',
+  // Hammer & Shadow
+  'Dwarvencraft:', 'Powerful Throw:Fighter', 'Shield Mate:Fighter',
+  'Touched By Magic:', 'Trapsmith:', 'Tunnel Fighting:Fighter',
+  // TODO Dwarvencraft Techniques -- probably selectable features
+  // Honor & Shadow
+  'Born Of Duty:', 'Born Of The Grave:',
+  // Sorcery & Shadow
+  'Blood-Channeler:', 'Craft Rune Of Power:Item Creation', 'Flexible Recovery:',
+  'Improved Flexible Recovery:', 'Knack For Charms:Item Creation',
+  'Living Talisman:', 'Power Reservoir:', 'Sense Power:', 'Subtle Caster:',
+  // Star & Shadow
+  'Canny Strike:Fighter', 'Caste Status:', 'Clever Fighting:Fighter',
+  'Plains Warfare:Fighter', 'Urban Intrigue:', 'Well-Aimed Strike:Fighter',
+  // Steel & Shadow
+  'Resigned To Death:', 'Whirlwind Charge:'
 ];
 LastAge.HEROIC_PATHS = [
   'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
@@ -177,7 +196,7 @@ LastAge.SUBFEATS = {
   'Weapon Focus':'Longsword'
 };
 LastAge.SUBSKILLS = {
-  'Knowledge':'Local/Nature/Old Gods/Shadow/Spirits',
+  'Knowledge':'Arcana/Local/Nature/Old Gods/Shadow/Spirits',
   // Profession (Soldier) available to Leader Of Men Fighters
   'Profession':'Soldier'
 };
@@ -1152,7 +1171,7 @@ LastAge.classRules = function(rules, classes) {
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        var choice = klass + ' - ' + selectable;
+        var choice = klass + ' ' + selectable;
         rules.defineChoice('selectableFeatures', choice + ':' + klass);
         rules.defineRule(klassNoSpace + 'Features.' + selectable,
           'selectableFeatures.' + choice, '+=', null
@@ -1489,7 +1508,8 @@ LastAge.featRules = function(rules, feats, subfeats) {
       notes = [
         'combatNotes.sarcosanPurebloodFeature:+2 AC (horsed)',
         'skillNotes.sarcosanPurebloodFeature:' +
-         'Diplomacy w/horses/+2 charisma skills (horses/Sarcosans)'
+         'Diplomacy w/horses/+2 charisma skills (horses/Sarcosans)',
+        'validationNotes.sarcosanPurebloodFeatRace:Requires Race =~ Sarcosan'
       ];
     } else if(feat == 'Sense Nexus') {
       notes = [
@@ -1553,6 +1573,283 @@ LastAge.featRules = function(rules, feats, subfeats) {
         'validationNotes.whisperingAwarenessFeatAbility:Requires Wisdom >= 15',
         'validationNotes.whisperingAwarenessFeatRace:' +
           'Requires Race =~ Elfling|Elf'
+      ];
+    } else if(feat == 'Clear-Eyed') {
+      var skill = LastAge.USE_PATHFINDER ? 'Perception' : 'Spot';
+      notes = [
+        'featureNotes.clear-EyedFeature:' +
+           'Half penalty for distance sight, x2 normal vision in dim light on plains',
+        'skillNotes.clear-EyedFeature:' + skill + ' is a class skill',
+        'validationNotes.clear-EyedFeatRace:Requires Race == "Erenlander"'
+      ];
+      rules.defineRule
+        ('classSkills.' + skill, 'skillNotes.clear-EyedFeature', '=', '1');
+    } else if(feat == 'Defiant') {
+      notes = [
+        'saveNotes.defiantFeature:' +
+          'Delay effect of failed Fort, Will save for 1 rd, dbl fail effect',
+        'validationNotes.defiantFeatRace:Requires Race == "Erenlander"'
+      ];
+    } else if(feat == 'Fanatic') {
+      notes = [
+        'combatNotes.fanaticFeature:' +
+          "+1 attack, divine spell benefit within 60' of Izrador servant",
+        'validationNotes.fanaticFeatRace:Requires Race == "Erenlander"'
+      ];
+    } else if(feat == 'Hardy') {
+      notes = [
+        'featureNotes.hardyFeature:Functional on half food, sleep',
+        'validationNotes.hardyFeatAbility:Requires Constitution >= 13',
+        'validationNotes.hardyFeatFeatures:Requires Endurance'
+      ];
+    } else if(feat == 'Huntsman') {
+      notes = [
+        'combatNotes.huntsmanFeature:' +
+          '+1 attack/damage for ea 5 above track DC vs. prey tracked for 5 mi',
+        'validationNotes.huntsmanFeatSkills:Requires Survival >= 5',
+        'validationNotes.huntsmanFeatFeatures:Requires Track'
+      ];
+    } else if(feat == 'Pikeman') {
+      notes = [
+        'combatNotes.pikemanFeature:Receive charge as move action'
+      ];
+    } else if(feat == 'Slow Learner') {
+      notes = [
+        'featureNotes.slowLearnerFeature:Replace later with another feat',
+        'validationNotes.slowLearnerFeatRace:Requires Race == "Erenlander"'
+      ];
+    } else if(feat == 'Stalwart') {
+      notes = [
+        'saveNotes.stalwartFeature:' +
+          'Delay negative HP for 1 rd, dbl heal required',
+        'validationNotes.stalwartFeatFeatures:Requires Defiant',
+        'validationNotes.stalwartFeatRace:Requires Race == "Erenlander"'
+      ];
+    } else if(feat == 'Stealthy Rider') {
+      var skills = LastAge.USE_PATHFINDER ? 'Stealth' : 'Hide, Move Silently';
+      notes = [
+        'companionNotes.stealthyRiderFeature:Mount use rider ' + skills,
+        'validationNotes.stealthyRiderFeatSkills:Requires Ride'
+      ];
+    } else if(feat == 'Dwarvencraft') {
+      notes = [
+        'featureNotes.dwarvencraftFeature:Know %V Dwarvencraft techniques',
+        'validationNotes.dwarvencraftFeatSkills:' +
+          'Requires Craft (Armor) >= 4 || Craft (Blacksmith) >= 4 || Craft (Weapons) >= 4'
+      ];
+      rules.defineRule('featureNotes.dwarvencraftFeature',
+        'skills.Craft (Armor)', '+=', 'Math.floor(source / 4)',
+        'skills.Craft (Blacksmith)', '+=', 'Math.floor(source / 4)',
+        'skills.Craft (Weapons)', '+=', 'Math.floor(source / 4)'
+      );
+    } else if(feat == 'Powerful Throw') {
+      notes = [
+        'combatNotes.powerfulThrowFeature:+10 range, use Str bonus for attack',
+        'validationNotes.powerfulThrowFeatAbility:Requires Strength >= 13',
+        'validationNotes.powerfulThrowFeatFeatures:' +
+          'Requires Power Attack/Weapon Focus (Light Hammer)||Weapon Focus (Throwing Axe)||Weapon Focus (Urutuk Hatchet)'
+      ];
+    } else if(feat == 'Shield Mate') {
+      notes = [
+        'combatNotes.shieldMateFeature:' +
+          'Allies +2 AC when self fighting defensively or -2 Combat Expertise',
+        'validationNotes.shieldMateFeatAbility:Requires Dexterity >= 13',
+        'validationNotes.shieldMateFeatProficiency:Requires Shield Proficiency'
+      ];
+      rules.defineRule('validationNotes.shieldMateFeatProficiency',
+        'feats.Shield Mate', '=', '-1',
+        'shieldProficiencyLevel', '+',
+          'source == ' + SRD35.PROFICIENCY_NONE + ' ? null : 1'
+      );
+    } else if(feat == 'Touched By Magic') {
+      notes = [
+        'magicNotes.touchedByMagicFeature:+2 spell energy',
+        'saveNotes.touchedByMagicFeature:-2 vs. spells',
+        'validationNotes.touchedByMagicFeatRace:Requires Race =~ Dwarf|Orc'
+      ];
+      rules.defineRule
+        ('spellEnergy', 'magicNotes.touchedByMagicFeature', '+', '2');
+      rules.defineRule
+        ('resistance.Spell', 'saveNotes.touchedByMagicFeature', '+', '-2');
+    } else if(feat == 'Trapsmith') {
+      notes = [
+        'skillNotes.trapsmithFeat:' +
+          '+2 Craft (Traps)/Disable Device/Search (find traps)'
+      ];
+    } else if(feat == 'Tunnel Fighting') {
+      notes = [
+        'combatNotes.tunnelFightingFeature:No AC, attack penalty when squeezing'
+      ];
+    } else if(feat == 'Born Of Duty') {
+      notes = [
+        'magicNotes.bornOfDutyFeature:' +
+          "R100' Cry shakes undead (DC %V Will neg), Dorn +2 vs fear, enchant 1/day",
+        'validationNotes.bornOfDutyFeatAlignment:Requires Alignment =~ Lawful',
+        'validationNotes.bornOfDutyFeatRace:Requires Race == "Dorn"'
+      ]
+      rules.defineRule('magicNotes.bornOfDutyFeature',
+        'level', '=', '10 + Math.floor(source / 2)',
+        'charismaModifier', '+', null
+      );
+    } else if(feat == 'Born Of The Grave') {
+      notes = [
+        "magicNotes.bornOfTheGraveFeature:R15' <i>Deathwatch</i> at will",
+        'validationNotes.bornOfTheGraveFeatAlignment:' +
+          'Requires Alignment !~ Good',
+        'validationNotes.bornOfTheGraveFeatRace:Requires Race == "Dorn"'
+      ]
+    } else if(feat == 'Blood-Channeler') {
+      notes = [
+        'magicNotes.blood-ChannelerFeature:' +
+          'Dbl spell energy for first two Con points lost',
+        'validationNotes.blood-ChannelerFeatAbility:' +
+          'Requires Constitution >= 15',
+        'validationNotes.blood-ChannelerFeatFeatures:' +
+          'Requires Max Magecraft >= 1'
+      ];
+    } else if(feat == 'Craft Rune Of Power') {
+      notes = [
+        'magicNotes.craftRuneOfPowerFeature:Imbue rune w/any known spell',
+        'validationNotes.craftRuneOfPowerFeatFeatures:' +
+          'Requires Max Magecraft >= 1/Max Spellcasting >= 1',
+        'validationNotes.craftRuneOfPowerFeatLevel:Requires Level >= 3'
+      ];
+    } else if(feat == 'Flexible Recovery') {
+      notes = [
+        'magicNotes.flexibleRecoveryFeature:' +
+          "Recover 1 spell energy per hour's rest",
+        'validationNotes.flexibleRecoveryFeatAbility:' +
+          'Requires Constitution >= 13',
+        'validationNotes.flexibleRecoveryFeatFeatures:' +
+          'Requires Max Magecraft >= 1'
+      ];
+    } else if(feat == 'Improved Flexible Recovery') {
+      notes = [
+        'magicNotes.improvedFlexibleRecoveryFeature:' +
+          "DC 30 Concentration to recover %V spell energy per hour's meditation",
+        'validationNotes.improvedFlexibleRecoveryFeatAbility:' +
+          'Requires Constitution >= 15',
+        'validationNotes.improvedFlexibleRecoveryFeatFeatures:' +
+          'Requires Flexible Recovery/Max Magecraft >= 1'
+      ];
+      rules.defineRule('magicNotes.improvedFlexibleRecoveryFeature',
+        'charismaModifier', '=', null,
+        'intelligenceModifier', '^', null,
+        'wisdomModifier', '^', null
+      );
+    } else if(feat == 'Knack For Charms') {
+      notes = [
+        'skillNotes.knackForCharmsFeature:+4 Craft for charm-making',
+        'validationNotes.knackForCharmsFeatSkills:' +
+          'Requires Knowledge (Arcana) >= 4/Knowledge (Nature) >= 4'
+      ];
+    } else if(feat == 'Living Talisman') {
+      notes = [
+        'magicNotes.livingTalismanFeature:' +
+           'Chosen spell costs 1 fewer spell energy to cast',
+        'validationNotes.livingTalismanFeatFeatures:' +
+          'Requires Max Magecraft >= 1/Max Spellcasting >= 1',
+        'validationNotes.livingTalismanFeatLevel:Requires Level >= 5',
+        'validationNotes.livingTalismanFeatSkills:' +
+          'Requires Knowledge (Arcana) >= 6'
+      ];
+    } else if(feat == 'Power Reservoir') {
+      notes = [
+        'magicNotes.powerReservoirFeature:' +
+          'Store +%V siphoned spell energy points',
+        'validationNotes.powerReservoirFeatFeatures:' +
+          'Requires Max Magecraft >= 1',
+      ];
+      rules.defineRule('magicNotes.powerReservoirFeature',
+        'charismaModifier', '=', null,
+        'intelligenceModifier', '^', null,
+        'wisdomModifier', '^', null
+      );
+    } else if(feat == 'Sense Power') {
+      notes = [
+        'magicNotes.sensePowerFeature:' +
+          "<i>Detect Magic</i> %V/day, DC 13 Wis check w/in 20'",
+        'validationNotes.sensePowerFeatAbility:Requires Wisdom >= 15'
+      ];
+      rules.defineRule
+        ('magicNotes.sensePowerFeature', 'wisdomModifier', '=', null);
+    } else if(feat == 'Subtle Caster') {
+      notes = [
+        'skillNotes.subtleCasterFeature:' +
+          '+2 Bluff or Sleight Of Hand to disguise spell casting',
+        'validationNotes.subtleCasterFeatFeatures:' +
+          'Requires Max Magecraft >= 1',
+      ];
+    } else if(feat == 'Canny Strike') {
+      notes = [
+        'combatNotes.cannyStrikeFeature:+%Vd4 finesse weapon damage',
+        'validationNotes.cannyStrikeFeatAbility:' +
+          'Requires Intelligence >= 13',
+        'validationNotes.cannyStrikeFeatBaseAttack:' +
+          'Requires Base Attack >= 6',
+        'validationNotes.cannyStrikeFeatFeatures:' +
+          'Requires Clever Fighting/Weapon Finesse'
+      ];
+      rules.defineRule
+        ('combatNotes.cannyStrikeFeature', 'intelligenceModifier', '=', null);
+    } else if(feat == 'Caste Status') {
+      notes = [
+        'featureNotes.casteStatusFeature:Benefits of caste level'
+      ];
+    } else if(feat == 'Clever Fighting') {
+      notes = [
+        'combatNotes.cleverFightingFeature:+%V finesse weapon damage',
+        'validationNotes.cleverFightingFeatAbility:Requires Dexterity >= 13',
+        'validationNotes.cleverFightingFeatBaseAttack:' +
+          'Requires Base Attack >= 2',
+        'validationNotes.cleverFightingFeatFeatures:Requires Weapon Finesse'
+      ];
+      rules.defineRule('combatNotes.cleverFightingFeature',
+        'dexterityModifier', '=', null,
+        'strengthModifier', '+', '-source'
+      );
+    } else if(feat == 'Plains Warfare') {
+      var skills = LastAge.USE_PATHFINDER ? 'Perception' : 'Listen, Spot';
+      notes = [
+        'combatNotes.plainsWarfareFeature:+1 AC when mounted on plains',
+        'skillNotes.plainsWarfareFeature:' +
+          '+2 ' + skills + ' vs. surprise when mounted on plains',
+        'saveNotes.plainsWarfareFeature:+1 Reflex when mounted on plains',
+        'validationNotes.plainsWarfareFeatFeatures:Requires Mounted Combat'
+      ];
+    } else if(feat == 'Urban Intrigue') {
+      notes = [
+        'skillNotes.urbanIntrigueFeature:' +
+          'Use Gather Information to counter investigation of self, allies',
+        'sanityNotes.urbanIntrigueFeatSkills:Implies Gather Information',
+        'validationNotes.urbanIntrigueFeatRace:' +
+          'Requires Race == "Urban Sarcosan"',
+        'validationNotes.urbanIntrigueFeatSkills:Requires Bluff >= 1'
+      ];
+    } else if(feat == 'Well-Aimed Strike') {
+      notes = [
+        'combatNotes.well-AimedStrikeFeature:' +
+          'Canny Strike and Clever Fighting apply to all foes',
+        'validationNotes.well-AimedStrikeFeatBaseAttack:' +
+          'Requires Base Attack >= 9',
+        'validationNotes.well-AimedStrikeFeatFeatures:' +
+           'Requires Canny Strike/Clever Fighting/Weapon Finesse'
+      ];
+    } else if(feat == 'Resigned To Death') {
+      notes = [
+        'saveNotes.resignedToDeathFeature:' +
+          '+4 vs. fear, fail 1 step less intense',
+        'validationNotes.resignedToDeathFeatAbility:Requires Wisdom >= 13'
+      ];
+    } else if(feat == 'Whirlwind Charge') {
+      notes = [
+        'combatNotes.whirlwindChargeFeature:' +
+           'Attack all adjacent foes after charge',
+        'validationNotes.whirlwindChargeFeatAbility:Requires Strength >= 15',
+        'validationNotes.whirlwindChargeFeatBaseAttack:' +
+          'Requires Base Attack >= 6',
+        'validationNotes.whirlwindChargeFeatFeatures:' +
+          'Requires Cleave/Power Attack'
       ];
     } else
       continue;
@@ -2868,7 +3165,7 @@ LastAge.heroicPathRules = function(rules, paths) {
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        var choice = path + ' - ' + selectable;
+        var choice = path + ' ' + selectable;
         rules.defineChoice('selectableFeatures', choice + ':' + path);
         rules.defineRule(pathNoSpace + 'Features.' + selectable,
           'selectableFeatures.' + choice, '+=', null
@@ -3179,15 +3476,15 @@ LastAge.raceRules = function(rules, languages, races) {
 
       adjustment = '+2 strength/-2 intelligence';
       features = [
-        'Brotherhood', 'Cold Hardy', 'Fierce', 'Hardy',
+        'Brotherhood', 'Cold Fortitude', 'Fierce', 'Robust',
         'Weapon Familiarity (Bastard Sword/Dornish Horse Spear'
       ];
       notes = [
         'combatNotes.brotherhoodFeature:' +
           '+1 attack when fighting alongside 4+ Dorns',
         'combatNotes.fierceFeature:+1 attack w/two-handed weapons',
-        'saveNotes.coldHardyFeature:+5 cold/half nonlethal damage',
-        'saveNotes.hardyFeature:+1 Fortitude'
+        'saveNotes.coldFortitudeFeature:+5 cold/half nonlethal damage',
+        'saveNotes.robustFeature:+1 Fortitude'
       ];
       selectableFeatures = null;
       rules.defineRule('featCount.Fighter',
@@ -3196,7 +3493,7 @@ LastAge.raceRules = function(rules, languages, races) {
       rules.defineRule('featureNotes.dornFeatCountBonus',
         'race', '=', 'source == "Dorn" ? 1 : null'
       );
-      rules.defineRule('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
+      rules.defineRule('save.Fortitude', 'saveNotes.robustFeature', '+', '1');
       rules.defineRule('skillNotes.dornSkillPointsBonus',
         'race', '?', 'source == "Dorn"',
         'level', '=', 'source + 3'
@@ -3502,13 +3799,13 @@ LastAge.raceRules = function(rules, languages, races) {
         );
       } else if(race == 'Snow Elf') {
         features = features.concat(
-          ['Cold Hardy', 'Hardy', 'Weapon Familiarity (Fighting Knife)']
+          ['Cold Fortitude', 'Robust', 'Weapon Familiarity (Fighting Knife)']
         );
         notes = notes.concat([
-          'saveNotes.coldHardyFeature:+5 cold/half nonlethal damage',
-          'saveNotes.hardyFeature:+1 Fortitude'
+          'saveNotes.coldFortitudeFeature:+5 cold/half nonlethal damage',
+          'saveNotes.robustFeature:+1 Fortitude'
         ]);
-        rules.defineRule('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
+        rules.defineRule('save.Fortitude', 'saveNotes.robustFeature', '+', '1');
       } else if(race == 'Wood Elf') {
         features = features.concat([
           'Improved Innate Magic', 'Improved Natural Channeler',
@@ -3565,7 +3862,7 @@ LastAge.raceRules = function(rules, languages, races) {
 
       adjustment = '+4 charisma/-2 strength';
       features = [
-        'Deep Lungs', 'Hardy', 'Low-Light Vision', 'Natural Riverfolk',
+        'Deep Lungs', 'Robust', 'Low-Light Vision', 'Natural Riverfolk',
         'Natural Swimmer', 'Natural Trader', 'Slow', 'Small', 'Resist Spells',
         'Weapon Familiarity (Hand Crossbow)'
       ];
@@ -3574,7 +3871,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'combatNotes.smallFeature:+1 AC/attack',
         'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'magicNotes.resistSpellsFeature:-2 spell energy',
-        'saveNotes.hardyFeature:+1 Fortitude',
+        'saveNotes.robustFeature:+1 Fortitude',
         'saveNotes.resistSpellsFeature:+2 vs. spells',
         'skillNotes.deepLungsFeature:Hold breath for %V rounds',
         'skillNotes.naturalRiverfolkFeature:' +
@@ -3596,7 +3893,7 @@ LastAge.raceRules = function(rules, languages, races) {
       rules.defineRule('baseAttack', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
         ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
-      rules.defineRule('save.Fortitude', 'saveNotes.hardyFeature', '+', '1');
+      rules.defineRule('save.Fortitude', 'saveNotes.robustFeature', '+', '1');
       rules.defineRule('skillNotes.deepLungsFeature',
         'deepLungsMultiplier', '=', null,
         'constitution', '*', 'source'
@@ -3702,7 +3999,7 @@ LastAge.raceRules = function(rules, languages, races) {
 
       adjustment = '+4 strength/-2 intelligence/-2 charisma';
       features = [
-        'Darkvision', 'Improved Cold Hardy', 'Light Sensitivity',
+        'Darkvision', 'Improved Cold Fortitude', 'Light Sensitivity',
         'Natural Predator', 'Night Fighter', 'Orc Favored Enemy',
         'Orc Frenzy', 'Resist Spells', 'Weapon Familiarity (Vardatch)'
       ];
@@ -3713,7 +4010,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'combatNotes.orcFavoredEnemyFeature:+1 damage vs. dwarves',
         'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
         'magicNotes.resistSpellsFeature:-2 spell energy',
-        'saveNotes.improvedColdHardyFeature:Immune non-lethal/half lethal',
+        'saveNotes.improvedColdFortitudeFeature:Immune non-lethal/half lethal',
         'saveNotes.resistSpellsFeature:+2 vs. spells',
         'skillNotes.naturalPredatorFeature:+%V Intimidate'
       ];
@@ -3778,7 +4075,7 @@ LastAge.raceRules = function(rules, languages, races) {
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        var choice = race + ' - ' + selectable;
+        var choice = race + ' ' + selectable;
         rules.defineChoice('selectableFeatures', choice + ':' + race);
         rules.defineRule(raceNoSpace + 'Features.' + selectable,
           'selectableFeatures.' + choice, '+=', null
@@ -3954,7 +4251,7 @@ LastAge.ruleNotes = function() {
     '    grants damage reduction.  In these cases Quilvyn uses a different\n' +
     '    name for one of the features in order to remove the ambiguity.\n' +
     '    The renamed features are: Orc "Cold Resistance" (renamed\n' +
-    '    "Improved Cold Hardy" to distinguish from the Northblooded and\n' +
+    '    "Improved Cold Fortitude" to distinguish from the Northblooded and\n' +
     '    Seaborn feature); Chanceborn "Survivor" (renamed "Persistence" to\n' +
     '    distinguish from the Fighter feature); Insurgent Spy "Conceal\n' +
     '    Magic" (renamed "Conceal Aura" to distinguish from the Bane Of\n' +
