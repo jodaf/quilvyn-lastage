@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.7.1.1';
+var LASTAGE_VERSION = '1.7.1.2';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -89,6 +89,7 @@ function LastAge() {
   LastAge.spellRules
     (rules, null, Object.assign({}, SRD35.spellsDescriptions, LastAge.baseRules.spellsDescriptions, LastAge.spellsDescriptions));
   // Slight mods to SRD35 creation procedures
+  rules.defineChoice('extras', 'feats', 'featCount', 'selectableFeatureCount');
   rules.defineChoice('preset', 'race', 'heroicPath', 'level', 'levels');
   rules.defineChoice('random', SRD35.RANDOMIZABLE_ATTRIBUTES);
   delete rules.getChoices('random').deity;
@@ -3143,6 +3144,7 @@ LastAge.heroicPathRules = function(rules, paths) {
       'level', '=', null
     );
     rules.defineSheetElement(path + ' Features', 'Feats', null, ' * ');
+    rules.defineChoice('extras', pathNoSpace + 'Features');
     if(feats != null) {
       for(var j = 0; j < feats.length; j++) {
         rules.defineChoice('feats', feats[j] + ':' + path);
