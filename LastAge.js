@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.7.1.2';
+var LASTAGE_VERSION = '1.7.1.3';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -527,12 +527,12 @@ LastAge.classRules = function(rules, classes) {
           'magicNotes.improvedFuryFeature:' +
             'Additional +1 initiative/attack/damage',
           'magicNotes.inspireConfidenceFeature:' +
-            'Allies w/in 60 ft +4 save vs. enchantment/fear for %V rounds',
+            "Allies w/in 60' +4 save vs. enchantment/fear for %V rounds",
           'magicNotes.inspireFascinationFeature:' +
-            '%V creatures w/in 120 ft make %1 DC Will save or enthralled ' +
+            "%V creatures w/in 120' make %1 DC Will save or enthralled " +
             '%2 rounds',
           'magicNotes.inspireFuryFeature:' +
-            'Allies w/in 60 ft +1 initiative/attack/damage %V rounds',
+            "Allies w/in 60' +1 initiative/attack/damage %V rounds",
           'magicNotes.magecraft(Charismatic)Feature:' +
             '4 spells/%V spell energy points',
           'magicNotes.massSuggestionFeature:' +
@@ -745,7 +745,7 @@ LastAge.classRules = function(rules, classes) {
       notes = [
         'abilityNotes.incredibleSpeedFeature:+%V speed',
         'combatNotes.counterattackFeature:AOO on foe miss 1/round',
-        'combatNotes.coverAllyFeature:Take hit for ally w/in 5 ft 1/round',
+        "combatNotes.coverAllyFeature:Take hit for ally w/in 5' 1/round",
         'combatNotes.defenderAbilitiesFeature:' +
           'Counterattack/Cover Ally/Defender Stunning Fist/Devastating ' +
           'Strike/Rapid Strike/Retaliatory Strike/Strike And Hold/Weapon ' +
@@ -1054,7 +1054,7 @@ LastAge.classRules = function(rules, classes) {
         'featureNotes.woodlandStrideFeature:' +
           'Normal movement through undergrowth',
         'featureNotes.woodsloreFeature:' +
-          'Automatic Search vs. trap/concealed door w/in 5 ft',
+          "Automatic Search vs. trap/concealed door w/in 5'",
         'magicNotes.senseDarkMagicFeature:' +
           '<i>Detect Magic</i> vs. legate/outsider at will',
         'saveNotes.evasionFeature:Reflex save yields no damage instead of 1/2',
@@ -1250,7 +1250,7 @@ LastAge.companionRules = function(rules, companions, familiars) {
       'companionNotes.enhancedSenseFeature:' +
         '+%V mile channeled event detection',
       'companionNotes.telepathyFeature:' +
-        'Companion-controlled telepathic communication up to 100 ft'
+        "Companion-controlled telepathic communication up to 100'"
     ];
     rules.defineNote(notes);
 
@@ -1374,7 +1374,7 @@ LastAge.featRules = function(rules, feats, subfeats) {
     } else if(feat == 'Giant Fighter') {
       notes = [
         'combatNotes.giantFighterFeature:' +
-          '+4 AC/double critical range w/in 30 ft vs. giants',
+          "+4 AC/double critical range w/in 30' vs. giants",
         'validationNotes.giantFighterFeatFeats:' +
           'Requires Dodge/Max Weapon Focus >= 1'
       ];
@@ -1913,10 +1913,10 @@ LastAge.heroicPathRules = function(rules, paths) {
           '+4 strength/constitution, +2 Will, -2 AC for %V rounds %1/day',
         'combatNotes.viciousAssaultFeature:Two claw attacks at %V each',
         'featureNotes.enhancedBeastialAuraFeature:' +
-          'Animals w/in 15 ft act negatively/cannot ride',
+          "Animals w/in 15' act negatively/cannot ride",
         'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'featureNotes.scentFeature:' +
-          "Detect creatures' presence w/in 30 ft/track by smell",
+          "Detect creatures' presence w/in 30', track by smell",
         'skillNotes.beastialAuraFeature:-10 Handle Animal/no Wild Empathy'
       ];
       selectableFeatures = [
@@ -2024,7 +2024,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         'featureNotes.leadershipFeature:Attract followers',
         'featureNotes.naturalLeaderFeature: +%V Leadership score',
         'magicNotes.inspiringOrationFeature:' +
-          'Give speech to apply spell-like ability to allies w/in 60 ft %V/day'
+          "Give speech to apply spell-like ability to allies w/in 60' %V/day"
       ];
       selectableFeatures = null;
       spellFeatures = [
@@ -2101,16 +2101,16 @@ LastAge.heroicPathRules = function(rules, paths) {
       notes = [
         'combatNotes.naturalArmorFeature:+%V AC',
         'featureNotes.blindsenseFeature:' +
-          'Other senses allow detection of unseen objects w/in 30 ft',
+          "Other senses allow detection of unseen objects w/in 30'",
         'featureNotes.blindsightFeature:' +
-          'Other senses compensate for loss of vision w/in 30 ft',
-        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
+          "Other senses compensate for loss of vision w/in 30'",
+        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
         'featureNotes.improvedStonecunningFeature:' +
-          'Automatic Search w/in 5 ft of concealed stone door',
+          "Automatic Search w/in 5' of concealed stone door",
         'featureNotes.tremorsenseFeature:' +
-          'Detect creatures in contact w/ground w/in 30 ft',
+          "Detect creatures in contact w/ground w/in 30'",
         'skillNotes.stonecunningFeature:' +
-          '+%V Search involving stone or metal, automatic check w/in 10 ft'
+          "+%V Search involving stone or metal, automatic check w/in 10'"
       ];
       selectableFeatures = null;
       spellFeatures = [
@@ -2178,7 +2178,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         'combatNotes.disruptingAttackFeature:' +
            'Undead %V Will save or destroyed %1/day',
         'combatNotes.touchOfTheLivingFeature:+%V damage vs. undead',
-        'magicNotes.senseTheDeadFeature:Detect undead %V ft at will',
+        "magicNotes.senseTheDeadFeature:Detect undead %V' at will",
         'saveNotes.wardOfLifeFeature:Immune to undead %V'
       ];
       selectableFeatures = null;
@@ -2275,9 +2275,9 @@ LastAge.heroicPathRules = function(rules, paths) {
       ];
       notes = [
         'abilityNotes.fastMovementFeature:+%V speed',
-        'combatNotes.extraReachFeature:15 ft reach',
+        "combatNotes.extraReachFeature:15' reach",
         'combatNotes.fearsomeChargeFeature:' +
-           '+%V damage/-1 AC for every 10 ft in charge',
+           "+%V damage/-1 AC for every 10' in charge",
         'combatNotes.largeFeature:+4 bull rush/disarm/grapple/-1 AC/attack',
         'combatNotes.rockThrowingFeature:Use debris as ranged weapon',
         'skillNotes.intimidatingSizeFeature:+%V Intimidate',
@@ -2327,11 +2327,10 @@ LastAge.heroicPathRules = function(rules, paths) {
         'combatNotes.smiteEvilFeature:' +
           '%V/day add %1 to attack, %2 to damage vs. evil foe',
         'featureNotes.inspireValorFeature:' +
-          'Allies w/in 30 ft extra attack/+%V fear saves for %1 rounds %2/day',
+          "Allies w/in 30' extra attack/+%V fear saves for %1 rounds %2/day",
         'magicNotes.detectEvilFeature:<i>Detect Evil</i> at will',
         'magicNotes.layOnHandsFeature:Harm undead or heal %V HP/day',
-        'saveNotes.auraOfCourageFeature:' +
-          'Immune fear; +4 to allies w/in 30 ft',
+        "saveNotes.auraOfCourageFeature:Immune fear; +4 to allies w/in 30'",
         'saveNotes.deathWardFeature:Immune to negative energy/death effects'
       ];
       selectableFeatures = null;
@@ -2587,7 +2586,7 @@ LastAge.heroicPathRules = function(rules, paths) {
         'combatNotes.greaterFrostWeaponFeature:' +
           '+d10 cold damage/extra critical hit die on critical hit',
         'combatNotes.improvedBattleCryFeature:+1 attack/damage after cry',
-        'magicNotes.auraOfWarmthFeature:Allies w/in 10 ft +4 Fortitude vs cold',
+        "magicNotes.auraOfWarmthFeature:Allies w/in 10' +4 Fortitude vs cold",
         'magicNotes.howlingWindsFeature:' +
           '<i>Commune With Nature</i> (winds) %V/day',
         'saveNotes.coldImmunityFeature:' +
@@ -2851,8 +2850,8 @@ LastAge.heroicPathRules = function(rules, paths) {
         '11:Hide In Plain Sight'
       ];
       notes = [
-        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
-        'featureNotes.shadowJumpFeature:Move %V ft between shadows',
+        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
+        "featureNotes.shadowJumpFeature:Move %V' between shadows",
         'skillNotes.hideInPlainSightFeature:Hide even when observed',
         'skillNotes.shadowVeilFeature:+%V Hide'
       ];
@@ -2921,9 +2920,9 @@ LastAge.heroicPathRules = function(rules, paths) {
       ];
       notes = [
         'magicNotes.metamagicAuraFeature:' +
-          "%V others' spells of up to level %1 w/in 30 ft",
+          "%V others' spells of up to level %1 w/in 30'",
         'magicNotes.untappedPotentialFeature:' +
-          "Contribute %V points to others' spells w/in 30 ft",
+          "Contribute %V points to others' spells w/in 30'",
         'saveNotes.improvedResistSpellsFeature:+%V vs. spells'
       ];
       selectableFeatures = null;
@@ -3012,7 +3011,7 @@ LastAge.heroicPathRules = function(rules, paths) {
       notes = [
         'combatNotes.planarFuryFeature:' +
           '+2 strength/constitution/+1 Will save/-1 AC for %V rounds %1/day',
-        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
+        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
         'featureNotes.magicalDarkvisionFeature:See perfectly in any darkness',
         'featureNotes.seeInvisibleFeature:See invisible creatures',
         'magicNotes.detectOutsiderFeature:Detect outsiders at will',
@@ -3049,17 +3048,17 @@ LastAge.heroicPathRules = function(rules, paths) {
         'combatNotes.aidAnotherFeature:Aid another as a move action',
         'combatNotes.aidedCombatBonusFeature:Aided ally +%V to attack or AC',
         'combatNotes.combatOverviewFeature:' +
-          'Ally w/in 60 ft avoid AOO/avoid flat-footed/foe flat-footed %V/day',
+          "Ally w/in 60' avoid AOO/avoid flat-footed/foe flat-footed %V/day",
         'combatNotes.coordinatedInitiativeFeature:' +
-          "Allies w/in 30 ft use character's initiative %V/day",
+          "Allies w/in 30' use character's initiative %V/day",
         'combatNotes.directedAttackFeature:' +
-          "Ally w/in 30 ft add 1/2 character's base attack 1/day",
+          "Ally w/in 30' add 1/2 character's base attack 1/day",
         'combatNotes.jointAttackFeature:' +
-          'Allies w/in 30 ft attack single foe at +1/participant (+5 max) ' +
+          "Allies w/in 30' attack single foe at +1/participant (+5 max) " +
           '%V/day',
         'combatNotes.perfectAssaultFeature:' +
-          'Allies w/in 30 ft threaten critical on any hit 1/day',
-        'combatNotes.tellingBlowFeature:Allies w/in 30 ft re-roll damage 1/day'
+          "Allies w/in 30' threaten critical on any hit 1/day",
+        "combatNotes.tellingBlowFeature:Allies w/in 30' re-roll damage 1/day"
       ];
       selectableFeatures = null;
       spellFeatures = null;
@@ -3092,10 +3091,10 @@ LastAge.heroicPathRules = function(rules, paths) {
         'featureNotes.animalCompanionFeature:' +
           'Special bond/abilities w/up to %V animals',
         'featureNotes.blindsenseFeature:' +
-          'Other senses allow detection of unseen objects w/in 30 ft',
+          "Other senses allow detection of unseen objects w/in 30'",
         'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
         'featureNotes.scentFeature:' +
-          "Detect creatures' presence w/in 30 ft/track by smell",
+          "Detect creatures' presence w/in 30', track by smell",
         'magicNotes.wildShapeFeature:Change into creature of size %V %1/day',
         'skillNotes.wildEmpathyFeature:+%V Diplomacy (animals)'
       ];
@@ -3516,7 +3515,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'combatNotes.dwarfFavoredEnemyFeature:+1 attack vs. orc',
         'combatNotes.dwarfFavoredWeaponFeature:+1 attack with axes/hammers',
         'combatNotes.resilientFeature:+2 AC',
-        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
+        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
         'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.resistPoisonFeature:+2 vs. poison',
         'saveNotes.resistSpellsFeature:+2 vs. spells',
@@ -3547,7 +3546,7 @@ LastAge.raceRules = function(rules, languages, races) {
           'featureNotes.knowDepthFeature:Intuit approximate depth underground',
           'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip',
           'skillNotes.stonecunningFeature:' +
-            '+%V Search (stone, metal), automatic check w/in 10 ft'
+            "+%V Search (stone, metal), automatic check w/in 10'"
         ]);
         rules.defineRule('skillNotes.stonecunningFeature',
           'clanDwarfFeatures.Stonecunning', '+=', '2'
@@ -3574,7 +3573,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'abilityNotes.slowFeature:-10 speed',
         'combatNotes.smallFeature:+1 AC/attack',
         'combatNotes.sturdyFeature:+1 AC',
-        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
+        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
         'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.resistPoisonFeature:+2 vs. poison',
         'saveNotes.resistSpellsFeature:+2 vs. spells',
@@ -3604,7 +3603,7 @@ LastAge.raceRules = function(rules, languages, races) {
         notes = notes.concat([
           'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
           'skillNotes.stonecunningFeature:' +
-            '+%V Search (stone, metal), automatic check w/in 10 ft',
+            "+%V Search (stone, metal), automatic check w/in 10'",
           'skillNotes.stoneKnowledgeFeature:' +
              '+2 Appraise (stone, metal)/Craft (stone, metal)'
         ]);
@@ -3661,7 +3660,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'combatNotes.dworgFavoredEnemyFeature:+2 attack vs. orc',
         'combatNotes.minorLightSensitivityFeature:' +
           'DC 15 Fortitude save in sunlight to avoid -1 attack',
-        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
+        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
         'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.ruggedFeature:+2 all saves',
         'saveNotes.resistSpellsFeature:+2 vs. spells'
@@ -3681,7 +3680,7 @@ LastAge.raceRules = function(rules, languages, races) {
         features = features.concat(['Stonecunning']);
         notes = notes.concat([
           'skillNotes.stonecunningFeature:' +
-            '+%V Search involving stone or metal, automatic check w/in 10 ft'
+            "+%V Search involving stone or metal, automatic check w/in 10'"
         ]);
         rules.defineRule('skillNotes.stonecunningFeature',
           'clanRaisedDworgFeatures.Stonecunning', '+=', '2'
@@ -4010,7 +4009,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'combatNotes.nightFighterFeature:+1 attack in darkness',
         'combatNotes.orcFrenzyFeature:+1 attack when fighting among 10+ Orcs',
         'combatNotes.orcFavoredEnemyFeature:+1 damage vs. dwarves',
-        'featureNotes.darkvisionFeature:%V ft b/w vision in darkness',
+        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
         'magicNotes.resistSpellsFeature:-2 spell energy',
         'saveNotes.improvedColdFortitudeFeature:Immune non-lethal/half lethal',
         'saveNotes.resistSpellsFeature:+2 vs. spells',

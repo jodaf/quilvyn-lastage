@@ -68,7 +68,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
           'Detect weapon if separated; if unconscious, weapon fights',
         'magicNotes.ancestralAdvisorFeature:<i>Augury</i> via weapon %V/day',
         'magicNotes.ancestralGuideFeature:' +
-          '<i>Detect Secret Doors</i> w/in 10 ft via weapon at will',
+          "<i>Detect Secret Doors</i> w/in 10' via weapon at will",
         'magicNotes.ancestralProtectorFeature:' +
           'Continuous <i>Protection From Arrows</i> via weapon',
         'magicNotes.ancestralWatcherFeature:Weapon has continuous <i>Alarm</i>',
@@ -260,7 +260,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'featureNotes.seeAstiraxFeature:See astirax as shadowy form',
         'magicNotes.artOfMagicFeature:+1 character level for max spell level',
         'magicNotes.bindAstiraxFeature:' +
-          'Astirax w/in 60 ft Will save or bound to current form for %V hours',
+          "Astirax w/in 60' Will save or bound to current form for %V hours",
         'magicNotes.concealMagicFeature:' +
           'Spells considered half level for purposes of astirax detection',
         'magicNotes.sunderedSpiritFeature:' +
@@ -402,7 +402,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'combatNotes.disarmingShotFeature:' +
           'Ranged touch attack to attempt disarm',
         'combatNotes.improvedSneakAttackFeature:' +
-          'Ranged sneak attack up to %V ft',
+          "Ranged sneak attack up to %V'",
         'combatNotes.intimidatingShotFeature:' +
           'Intimidate check after attack w/bonus of 1/2 damage',
         'combatNotes.leafReaderFeature:' +
@@ -410,7 +410,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'combatNotes.meticulousAimFeature:' +
           '+1 critical range for every 2 rounds aiming; +%V max',
         'combatNotes.rangedSneakAttackFeature:' +
-          '%Vd6 extra damage when surprising or flanking w/in 30 ft',
+          "%Vd6 extra damage when surprising or flanking w/in 30'",
         'validationNotes.elvenRaiderClassClassBaseAttack:' +
           'Requires Base Attack >= 5',
         'validationNotes.elvenRaiderClassFeats:' +
@@ -669,7 +669,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
       hitDie = 6;
       notes = [
         'magicNotes.disguiseContrabandFeature:' +
-          '<i>Misdirection</i> on 1 cu ft/level of contraband 1 hour/level',
+          "<i>Misdirection</i> on 1' cu/level of contraband 1 hour/level",
         'magicNotes.moreMystifyingSpeechFeature:Mystifying Speech 2/day',
         'magicNotes.mystifyingSpeechFeature:DC %V <i>Modify Memory</i>',
         'saveNotes.dominantWillFeature:' +
@@ -956,7 +956,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
           'Mounted overrun unavoidable, bonus hoof attack',
         'combatNotes.wogrenDodgeFeature:+2 AC during mounted move',
         'featureNotes.blindsenseFeature:' +
-          'Other senses allow detection of unseen objects w/in 30 ft',
+          "Other senses allow detection of unseen objects w/in 30'",
         'featureNotes.specialMountFeature:Special bond/abilities',
         "featureNotes.wogren'sSightFeature:Blindsense while mounted",
         'skillNotes.mountedHideFeature:Hide while mounted',
@@ -1018,7 +1018,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        var choice = klass + ' - ' + selectable;
+        var choice = klass + ' ' + selectable;
         rules.defineChoice('selectableFeatures', choice + ':' + klass);
         rules.defineRule(klass + 'Features.' + selectable,
           'selectableFeatures.' + choice, '+=', null
