@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.7.1.3';
+var LASTAGE_VERSION = '1.7.1.4';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -884,7 +884,9 @@ LastAge.classRules = function(rules, classes) {
       feats = null;
       features = null;
       hitDie = 10;
-      notes = ['skillNotes.adapterFeature:+%V skill points'];
+      notes = [
+        'skillNotes.adapterFeature:+%V skill points or %1 additional class skills'
+      ];
       profArmor = SRD35.PROFICIENCY_HEAVY;
       profShield = SRD35.PROFICIENCY_TOWER;
       profWeapon = SRD35.PROFICIENCY_MEDIUM;
@@ -928,14 +930,15 @@ LastAge.classRules = function(rules, classes) {
       rules.defineRule('selectableFeatureCount.Fighter',
        'levels.Fighter', '=', 'source >= 4 ? 1 : null'
       );
-      // TODO adapter may alternately make a cross-class skill a class one
       rules.defineRule('skillNotes.adapterFeature',
         'levels.Fighter', '=',
-        'source < 4 ? null : ' +
-        '(source - 3 + (source >= 10 ? source - 9 : 0) + ' +
-        '(source >= 16 ? source - 15 : 0))'
+        'source - 3 + (source >= 10 ? source - 9 : 0) + ' +
+        '(source >= 16 ? source - 15 : 0)'
       );
-      rules.defineRule('skillPoints', 'skillNotes.adapterFeature', '+', null);
+      rules.defineRule('skillNotes.adapterFeature.1',
+        'fighterFeatures.Adapter', '?', null,
+        'levels.Fighter', '=', 'source < 10 ? 1 : source < 16 ? 2 : 3'
+      );
 
     } else if(klass == 'Legate') {
 
@@ -2540,7 +2543,6 @@ LastAge.heroicPathRules = function(rules, paths) {
         'magicNotes.oneWithNatureFeature:<i>Commune With Nature</i> at will',
         'skillNotes.animalFriendFeature:+4 Handle Animal',
         'skillNotes.elementalFriendFeature:+4 Diplomacy (elementals)',
-        // TODO Only if otherwise class skill
         'skillNotes.naturalBondFeature:+2 Knowledge (Nature)/Survival',
         'skillNotes.plantFriendFeature:+4 Diplomacy (plants)',
         'skillNotes.wildEmpathyFeature:+%V Diplomacy (animals)'
@@ -4320,6 +4322,11 @@ LastAge.ruleNotes = function() {
     '    pidgin language competence in Courtier or High Elven.  Note that\n' +
     '    the rule book violates this rule by specifying that Orcs have\n' +
     '    pidgin competence in High Elven.\n' +
+    '  </li><li>\n' +
+    '    For characters with the Naturefriend heroic path, Quilvyn makes\n' +
+    '    Knowledge (Nature) and Survival class skills and gives a +2 bonus\n' +
+    '    in those skills, rather than applying the bonus only if the\n' +
+    '    character already has those as class skills.\n' +
     '  </li>\n' +
     '</ul>\n' +
     '</p>';
