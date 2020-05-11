@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.7.1.4';
+var LASTAGE_VERSION = '1.7.1.5';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -1175,7 +1175,7 @@ LastAge.classRules = function(rules, classes) {
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        var choice = klass + ' ' + selectable;
+        var choice = klass + ' - ' + selectable;
         rules.defineChoice('selectableFeatures', choice + ':' + klass);
         rules.defineRule(klassNoSpace + 'Features.' + selectable,
           'selectableFeatures.' + choice, '+=', null
@@ -3168,7 +3168,7 @@ LastAge.heroicPathRules = function(rules, paths) {
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        var choice = path + ' ' + selectable;
+        var choice = path + ' - ' + selectable;
         rules.defineChoice('selectableFeatures', choice + ':' + path);
         rules.defineRule(pathNoSpace + 'Features.' + selectable,
           'selectableFeatures.' + choice, '+=', null
@@ -4078,7 +4078,7 @@ LastAge.raceRules = function(rules, languages, races) {
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        var choice = race + ' ' + selectable;
+        var choice = race + ' - ' + selectable;
         rules.defineChoice('selectableFeatures', choice + ':' + race);
         rules.defineRule(raceNoSpace + 'Features.' + selectable,
           'selectableFeatures.' + choice, '+=', null

@@ -1018,7 +1018,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
     if(selectableFeatures != null) {
       for(var j = 0; j < selectableFeatures.length; j++) {
         var selectable = selectableFeatures[j];
-        var choice = klass + ' ' + selectable;
+        var choice = klass + ' - ' + selectable;
         rules.defineChoice('selectableFeatures', choice + ':' + klass);
         rules.defineRule(klass + 'Features.' + selectable,
           'selectableFeatures.' + choice, '+=', null
