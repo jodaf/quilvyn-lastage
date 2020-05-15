@@ -1211,14 +1211,14 @@ LastAge.companionRules = function(rules, companions, familiars) {
     };
     for(var feature in features) {
       if(features[feature] > 0) {
-        rules.defineRule('companionFeatures.' + feature,
+        rules.defineRule('animalCompanionFeatures.' + feature,
           'companionLevel', '=',
           'source >= ' + features[feature] + ' ? 1 : null'
         );
       } else {
         // Disable N/A SRD3.5 companion features
         rules.defineRule
-          ('companionFeatures.' + feature, 'companionLevel', '=', 'null');
+          ('animalCompanionFeatures.' + feature, 'companionLevel', '=', 'null');
       }
     }
 
@@ -1230,9 +1230,9 @@ LastAge.companionRules = function(rules, companions, familiars) {
 
     // Overrides of a couple of SRD3.5 calculations
     rules.defineRule
-      ('companionStats.Str', 'companionLevel', '+', 'source * 2');
+      ('animalCompanionStats.Str', 'companionLevel', '+', 'source * 2');
     rules.defineRule
-      ('companionStats.Tricks', 'companionLevel', '=', 'source+1');
+      ('animalCompanionStats.Tricks', 'companionLevel', '=', 'source+1');
 
     // Adapt Legate astirax rules to make it a form of animal companion.
     features = {
@@ -1240,11 +1240,11 @@ LastAge.companionRules = function(rules, companions, familiars) {
       'Companion Empathy': 6
     };
     for(var feature in features) {
-      rules.defineRule('companionFeatures.' + feature,
+      rules.defineRule('animalCompanionFeatures.' + feature,
         'astiraxLevel', '=', 'source >= ' + features[feature] + ' ? 1 : null'
       );
       rules.defineRule
-        ('features.' + feature, 'companionFeatures.' + feature, '=', '1');
+        ('features.' + feature, 'animalCompanionFeatures.' + feature, '=', '1');
     }
 
     var notes = [
@@ -1262,10 +1262,12 @@ LastAge.companionRules = function(rules, companions, familiars) {
     rules.defineRule('companionNotes.enhancedSenseFeature',
       'astiraxLevel', '=', 'source < 4 ? 5 : 10'
     );
-    rules.defineRule('companionStats.Cha', 'astiraxLevel', '+', 'source - 1');
     rules.defineRule
-      ('companionStats.HD', 'astiraxLevel', '+', '(source - 1) * 2');
-    rules.defineRule('companionStats.Int', 'astiraxLevel', '+', 'source - 1');
+      ('animalCompanionStats.Cha', 'astiraxLevel', '+', 'source - 1');
+    rules.defineRule
+      ('animalCompanionStats.HD', 'astiraxLevel', '+', '(source - 1) * 2');
+    rules.defineRule
+      ('animalCompanionStats.Int', 'astiraxLevel', '+', 'source - 1');
 
   }
 
