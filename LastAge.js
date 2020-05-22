@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.8.1.1';
+var LASTAGE_VERSION = '1.8.1.2';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -1068,7 +1068,7 @@ LastAge.classRules = function(rules, classes) {
         'skillNotes.masterHunterFeature:' +
           '+2 or more Bluff, Listen, Sense Motive, Spot, Survival vs. chosen ' +
           'creature type(s)',
-        // NOTE: No +3 bonus in SRD35 Rogue feature of same name
+        // Split comment since no +3 bonus in SRD35 Rogue feature of same name
         'skillNotes.skillMasteryFeature:' +
           'Take 10 despite distraction on %V chosen skills',
         'skillNotes.skillMasteryFeature2:+3 on %V chosen skills',
@@ -1320,16 +1320,16 @@ LastAge.featRules = function(rules, feats, subfeats) {
         'magicNotes.craftGreaterSpellTalismanFeature:' +
           'Talisman reduces spell energy cost of selected school spells by 1',
         'validationNotes.craftGreaterSpellTalismanFeatFeats:' +
-          'Requires Max Magecraft >= 1/Ritual Magic/any 2 Spellcasting',
+          'Requires any Magecraft/any 3 Spellcasting',
         'validationNotes.craftGreaterSpellTalismanFeatLevel:' +
           'Requires Level >= 12'
       ];
+      rules.defineRule
+        ('magecraftFeatureCount', /^features.Magecraft \(.*\)$/, '+=', '1');
       rules.defineRule('validationNotes.craftGreaterSpellTalismanFeatFeats',
-        'feats.Craft Greater Spell Talisman', '=', '-112',
-        // NOTE: False valid w/multiple Magecraft
-        /^features\.Magecraft/, '+', '100',
-        'features.Ritual Magic', '+', '10',
-        'spellcastingFeatureCount', '+', null,
+        'feats.Craft Greater Spell Talisman', '=', '-11',
+        'magecraftFeatureCount', '+', '10',
+        'spellcastingFeatureCount', '+', 'source >= 3 ? 1 : null',
         '', 'v', '0'
       );
     } else if(feat == 'Craft Spell Talisman') {
@@ -1338,7 +1338,6 @@ LastAge.featRules = function(rules, feats, subfeats) {
           'Talisman reduces spell energy cost of selected spell by 1',
         'validationNotes.craftSpellTalismanFeatFeats:' +
           'Requires Max Magecraft >= 1/Max Spellcasting >= 1',
-         // JJH: character level or charismatic channeler level?
         'validationNotes.craftSpellTalismanFeatLevel:Requires Level >= 3'
       ];
     } else if(feat == 'Devastating Mounted Assault') {
@@ -1534,7 +1533,7 @@ LastAge.featRules = function(rules, feats, subfeats) {
       }
       rules.defineRule('spellsKnownBonus', note, '+=', '1');
       rules.defineRule('spellcastingFeatureCount',
-        /features.Spellcasting/, '+=', '1'
+        /features.Spellcasting \(.*\)$/, '+=', '1'
       );
       rules.defineRule(
         'casterLevels.Spellcasting', 'spellcastingFeatureCount', '?', null,
@@ -2308,7 +2307,7 @@ LastAge.heroicPathRules = function(rules, paths) {
       rules.defineRule('speed', 'abilityNotes.fastMovementFeature', '+', null);
       rules.defineRule
         ('weapons.Debris', 'combatNotes.rockThrowingFeature', '=', '1');
-      // NOTE: damage skewed to allow for Large adjustment starting level 10
+      // Damage modified to account for Large adjustment starting level 10
       rules.defineRule('weaponDamage.Debris',
         'pathLevels.Giantblooded', '=',
         'source>=16 ? "d10" : source>=10 ? "d8" : source>=9 ? "2d6" : "d10"'
