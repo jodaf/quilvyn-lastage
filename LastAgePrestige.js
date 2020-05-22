@@ -822,7 +822,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'magicNotes.whisperCommuneFeature:<i>Commune With Nature</i> w/in wood',
         "saveNotes.whisper'sWardFeature:Immune to mind-affecting effects",
         'validationNotes.whisperAdeptClassFeats:' +
-          'Requires Max Magecraft >= 1/any 2 Spellcasting',
+          'Requires Max Magecraft >= 1/Sum Spellcasting >= 2',
         'validationNotes.whisperAdeptClassRace:Requires Race =~ Elf',
         'validationNotes.whisperAdeptClassSkills:' +
           'Requires Knowledge (Nature) >= 8/Knowledge (Spirits) >= 10/' +
@@ -855,13 +855,6 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         ('spellEnergy', 'magicNotes.whisperAdeptSpellEnergy', '+', null);
       rules.defineRule
         ('spellsKnownBonus', 'magicNotes.whisperAdeptSpellsKnown', '+', null);
-      rules.defineRule('validationNotes.whisperAdeptClassFeats',
-        'levels.Whisper Adept', '=', '-12',
-        // NOTE: False valid w/multiple Magecraft
-        /^features\.Magecraft/, '+', '10',
-        /^features\.Spellcasting/, '+', '1',
-        '', 'v', '0'
-      );
 
     } else if(klass == 'Wizard') {
 
@@ -879,8 +872,9 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         'magicNotes.wizardcraftFeature:' +
           'Prepare spells ahead of time for half energy cost',
         'validationNotes.wizardClassFeats:' +
-          'Requires Magecraft (Hermetic)/any 2 Spellcasting/' +
-          'any Item Creation/any Metamagic',
+          'Requires Magecraft (Hermetic)/Sum Spellcasting >= 2',
+        'validationNotes.wizardClassFeats2:Requires any Item Creation',
+        'validationNotes.wizardClassFeats3:Requires any Metamagic',
         'validationNotes.wizardClassSkills:' +
           'Requires Knowledge (Arcana) >= 10/Spellcraft >= 10'
       ];
@@ -916,16 +910,24 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         ('spellEnergy', 'magicNotes.wizardSpellEnergy', '+', null);
       rules.defineRule
         ('spellsKnownBonus', 'magicNotes.wizardSpellsKnown', '+', null);
-      rules.defineRule('validationNotes.wizardClassFeats',
-        'levels.Wizard', '=', '-302',
-        'features.Magecraft (Hermetic)', '+', '100',
-        // NOTE: False valid w/3 Spellcasting feats
-        /^features\.Spellcasting/, '+', '100',
-        // NOTE: Metamagic feat names all end in 'Spell'
-        /^features\..*Spell$/, '+', '1',
-        /^features\.(Brew|Craft|Forge)/, '+', '1',
+      rules.defineRule('validationNotes.wizardClassFeats2',
+        'levels.Wizard', '=', '-1',
         '', 'v', '0'
       );
+      rules.defineRule('validationNotes.wizardClassFeats3',
+        'levels.Wizard', '=', '-1',
+        '', 'v', '0'
+      );
+      var feats = rules.getChoices('feats');
+      for(var feat in feats) {
+        if(feats[feat].indexOf('Item Creation') >= 0) {
+          rules.defineRule
+            ('validationNotes.wizardClassFeats2', 'features.' + feat, '+', '1');
+        } else if(feats[feat].indexOf('Metamagic') >= 0) {
+          rules.defineRule
+            ('validationNotes.wizardClassFeats3', 'features.' + feat, '+', '1');
+        }
+      }
 
     } else if(klass == 'Wogren Rider') {
 
