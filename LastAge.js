@@ -132,10 +132,10 @@ LastAge.FEATS = [
   'Drive It Deep:Fighter', 'Extra Gift:', 'Friendly Agent:',
   'Giant Fighter:Fighter', 'Herbalist:Item Creation',
   'Improvised Weapon:Fighter', 'Innate Magic:', 'Inconspicuous:',
-  'Knife Thrower:Fighter', 'Lucky:', 'Magecraft:', 'Magic Hardened:',
+  'Knife Thrower:Fighter', 'Lucky:', 'Magecraft:Channeling', 'Magic Hardened:',
   'Natural Healer:', 'Orc Slayer:Fighter', 'Quickened Donning:Fighter',
-  'Ritual Magic:', 'Sarcosan Pureblood:', 'Sense Nexus:',
-  'Spellcasting:Spellcasting', 'Skill Focus:', 'Spell Knowledge:',
+  'Ritual Magic:Channeling', 'Sarcosan Pureblood:', 'Sense Nexus:',
+  'Spellcasting:Channeling', 'Skill Focus:', 'Spell Knowledge:',
   'Thick Skull:', 'Warrior Of Shadow:', 'Weapon Focus:Fighter',
   'Whispering Awareness:',
   // Destiny & Shadow
@@ -1320,16 +1320,23 @@ LastAge.featRules = function(rules, feats, subfeats) {
         'magicNotes.craftGreaterSpellTalismanFeature:' +
           'Talisman reduces spell energy cost of selected school spells by 1',
         'validationNotes.craftGreaterSpellTalismanFeatFeats:' +
-          'Requires any Magecraft/any 3 Spellcasting',
+          'Requires any Magecraft/any 3 Channeling',
         'validationNotes.craftGreaterSpellTalismanFeatLevel:' +
           'Requires Level >= 12'
       ];
       rules.defineRule
         ('magecraftFeatureCount', /^features.Magecraft \(.*\)$/, '+=', '1');
+      for(var j = 0; j < allFeats.length; j++) {
+        var halves = allFeats[j].split(':');
+        if(halves[1].indexOf('Channeling') >= 0) {
+          rules.defineRule
+            ('channelingFeatCount', 'feats.' + halves[0], '+=', '1');
+        }
+      }
       rules.defineRule('validationNotes.craftGreaterSpellTalismanFeatFeats',
         'feats.Craft Greater Spell Talisman', '=', '-11',
         'magecraftFeatureCount', '+', '10',
-        'spellcastingFeatureCount', '+', 'source >= 3 ? 1 : null',
+        'channelingFeatCount', '+', 'source >= 3 ? 1 : null',
         '', 'v', '0'
       );
     } else if(feat == 'Craft Spell Talisman') {
