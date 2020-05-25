@@ -46,6 +46,8 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         profWeapon, saveFortitude, saveReflex, saveWill, selectableFeatures,
         skillPoints, skills, spellAbility, spellsKnown, spellsPerDay;
     var klass = classes[i];
+    var klassNoSpace =
+      klass.substring(0,1).toLowerCase() + klass.substring(1).replace(/ /g, '');
 
     if(klass == 'Ancestral Bladebearer') {
 
@@ -1022,7 +1024,7 @@ LastAgePrestige.prestigeClassRules = function(rules, classes) {
         var selectable = selectableFeatures[j];
         var choice = klass + ' - ' + selectable;
         rules.defineChoice('selectableFeatures', choice + ':' + klass);
-        rules.defineRule(klass + 'Features.' + selectable,
+        rules.defineRule(klassNoSpace + 'Features.' + selectable,
           'selectableFeatures.' + choice, '+=', null
         );
         rules.defineRule('features.' + selectable,
