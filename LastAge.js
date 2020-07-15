@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '1.8.1.3';
+var LASTAGE_VERSION = '2.0-alpha';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -37,155 +37,793 @@ function LastAge() {
   if(window.Pathfinder == null || Pathfinder.SRD35_SKILL_MAP == null) {
     LastAge.USE_PATHFINDER = false;
   }
-
   LastAge.baseRules = LastAge.USE_PATHFINDER ? Pathfinder : SRD35;
 
-  // Define a new rule set w/the same editor and standard viewer as SRD35
   var rules = new QuilvynRules
     ('Last Age' + (LastAge.USE_PATHFINDER ? ' - PF' : ''), LASTAGE_VERSION);
+  LastAge.rules = rules;
+
+  LastAge.CHOICES = LastAge.baseRules.CHOICES.concat(LastAge.CHOICES_ADDED);
+  rules.defineChoice('choices', LastAge.CHOICES);
+  rules.choiceEditorElements = LastAge.choiceEditorElements;
+  rules.choiceRules = LastAge.choiceRules;
   rules.editorElements = SRD35.initialEditorElements();
+  rules.getFormats = SRD35.getFormats;
+  rules.makeValid = SRD35.makeValid;
+  rules.randomizeOneAttribute = LastAge.randomizeOneAttribute;
+  LastAge.RANDOMIZABLE_ATTRIBUTES =
+    LastAge.baseRules.RANDOMIZABLE_ATTRIBTES.concat
+    (LastAge.RANDOMIZABLE_ATTRIBUTES_ADDED);
+  rules.defineChoice('random', SRD35.RANDOMIZABLE_ATTRIBUTES);
+  delete rules.getChoices('random').deity;
+  rules.ruleNotes = LastAge.ruleNotes;
+
   SRD35.createViewers(rules, SRD35.VIEWERS);
-  // Remove some editor and character sheet elements that don't apply
-  rules.defineEditorElement('deity');
-  rules.defineEditorElement('specialize');
-  rules.defineEditorElement('prohibit');
-  rules.defineSheetElement('Deity');
-  LastAge.abilityRules(rules);
-  LastAge.raceRules(rules, LastAge.LANGUAGES, LastAge.RACES);
-  LastAge.heroicPathRules(rules, LastAge.HEROIC_PATHS);
-  LastAge.classRules(rules, LastAge.CLASSES);
-  LastAge.skillRules(
-    rules, LastAge.baseRules.SKILLS.concat(LastAge.SKILLS),
-    Object.assign({}, LastAge.baseRules.SUBSKILLS, LastAge.SUBSKILLS),
-    Object.assign({}, LastAge.baseRules.SYNERGIES, SRD35.SYNERGIES)
-  );
-  LastAge.magicRules(rules, LastAge.CLASSES, LastAge.DOMAINS, LastAge.SCHOOLS);
-  LastAge.featRules(
-    rules, LastAge.baseRules.FEATS.concat(LastAge.FEATS),
-    Object.assign({}, LastAge.baseRules.SUBFEATS, LastAge.SUBFEATS)
-  );
-  LastAge.descriptionRules
-    (rules, SRD35.ALIGNMENTS, LastAge.DEITIES, SRD35.GENDERS);
-  if(LastAge.USE_PATHFINDER) {
-    LastAge.equipmentRules(
-      rules, SRD35.ARMORS, SRD35.SHIELDS,
-      SRD35.WEAPONS.filter(item => !item.startsWith('Sai:')).concat(Pathfinder.WEAPONS_ADDED).concat(LastAge.WEAPONS)
-    );
-  } else {
-    LastAge.equipmentRules(
-      rules, SRD35.ARMORS, SRD35.SHIELDS, SRD35.WEAPONS.concat(LastAge.WEAPONS)
-    );
+  rules.defineChoice('extras', 'feats', 'featCount', 'selectableFeatureCount');
+  rules.defineChoice('preset', 'race', 'heroicPath', 'level', 'levels');
+
+  LastAge.ALIGNMENTS = Object.assign({}, LastAge.baseRules.ALIGNMENTS);
+  LastAge.ANIMAL_COMPANIONS =
+    Object.assign({}, LastAge.baseRules.ANIMAL_COMPANIONS, LastAge.ANIMAL_COMPANIONS_ADDED);
+  LastAge.ARMORS = Object.assign({}, LastAge.baseRules.ARMORS);
+  for(var domain in LastAge.DOMAINS) {
+    LastAge.DOMAINS[domain] = LastAge.baseRules.DOMAINS[domain];
   }
-  LastAge.combatRules(rules);
-  LastAge.movementRules(rules);
+  LastAge.FAMILIARS = Object.assign({}, LastAge.baseRules.FAMILIARS);
+  LastAge.FEATS =
+    Object.assign({}. LastAge.baseRules.FEATS, LastAge.FEATS_ADDED);
+  LastAge.FEATURES =
+    Object.assign({}. LastAge.baseRules.FEATURES, LastAge.FEATURES_ADDED);
+  LastAge.GENDERS = Object.assign({}, LastAge.baseRules.GENDERS);
+  LastAge.SCHOOLS =
+    Object.assign({}, LastAge.baseRules.SCHOOLS, LastAge.SCHOOLS_ADDED);
+  LastAge.SHIELDS = Object.assign({}, LastAge.baseRules.SHIELDS);
+  LastAge.SKILLS =
+    Object.assign({}, LastAge.baseRules.SKILLS, LastAge.SKILLS_ADDED);
+  for(var skill in LastAge.SKILLS) {
+    LastAge.SKILLS[skill] = LastAge.SKILLS[skills].replace(/Class=\S+/i, '');
+  }
+  LastAge.SPELLS =
+    Object.assign({}, LastAge.baseRules.SPELLS, LastAge.SPELLS_ADDED);
+  for(var spell in LastAge.SPELL_SCHOOL_CHANGES) {
+    LastAge.SPELLS[spell] +=
+      ' School="' + LastAge.SPELL_SCHOOL_CHANGES[spell] + '"';
+  }
+  LastAge.WEAPONS =
+    Object.assign({}, LastAge.baseRules.WEAPONS, LastAge.WEAPONS_ADDED);
+
+  // For spells, schools have to be defined before classes and domains
+  // Spell definition is handed by individual classes
+  LastAge.magicRules(rules, LastAge.SCHOOLS, []);
+  LastAge.abilityRules(rules);
+  LastAge.aideRules(rules, LastAge.ANIMAL_COMPANIONS, LastAge.FAMILIARS);
+  LastAge.combatRules(rules, LastAge.ARMORS, LastAge.SHIELDS, LastAge.WEAPONS);
+  LastAge.identityRules(
+    rules, LastAge.ALIGNMENTS, LastAge.CLASSES, LastAge.DEITIES,
+    LastAge.DOMAINS, LastAge.GENDERS, LastAge.RACES, LastAge.HEROIC_PATHS
+  );
+  LastAge.talentRules
+    (rules, LastAge.FEATS, LastAge.FEATURES, LastAge.LANGUAGES, LastAge.SKILLS);
+  SRD35.goodiesRules(rules);
+
+/* TODO
   if(window.SRD35NPC != null) {
     SRD35NPC.classRules(rules, SRD35NPC.CLASSES);
   }
-  LastAge.companionRules(
-    rules,
-    Object.assign({}, LastAge.baseRules.ANIMAL_COMPANIONS, LastAge.ANIMAL_COMPANIONS),
-    Object.assign({}, LastAge.baseRules.FAMILIARS, LastAge.FAMILIARS)
-  );
-  LastAge.spellRules
-    (rules, null, Object.assign({}, SRD35.spellsDescriptions, LastAge.baseRules.spellsDescriptions, LastAge.spellsDescriptions));
-  // Slight mods to SRD35 creation procedures
-  rules.defineChoice('extras', 'feats', 'featCount', 'selectableFeatureCount');
-  rules.defineChoice('preset', 'race', 'heroicPath', 'level', 'levels');
-  rules.defineChoice('random', SRD35.RANDOMIZABLE_ATTRIBUTES);
-  delete rules.getChoices('random').deity;
-  rules.randomizeOneAttribute = LastAge.randomizeOneAttribute;
-  rules.makeValid = SRD35.makeValid;
-  rules.ruleNotes = LastAge.ruleNotes;
-  // Let Quilvyn know we're here
+*/
+
   Quilvyn.addRuleSet(rules);
-  LastAge.rules = rules;
 
 }
 
-// Arrays of choices passed to Quilvyn.
-// Attack, Dam, AC include all modifiers
-// Some of the computed Attack and AC values differ from the M2E rulebook
-LastAge.ANIMAL_COMPANIONS = {
-  'Boro': 'HD=5 Attack=7 AC=13 Dam=1d8+4 Str=18 Dex=10 Con=16 Int=2 Wis=11 Cha=5 Size=L Level=7',
-  'Grass Cat': 'HD=3 Attack=6 AC=15 Dam=2@1d2+1,1d6+3 Str=16 Dex=19 Con=15 Int=2 Wis=12 Cha=6 Size=M Level=4',
-  'Ort': 'HD=3 Attack=4 AC=14 Dam=1d6+2 Str=15 Dex=12 Con=14 Int=2 Wis=11 Cha=2 Size=M Level=4',
-  'Plains Leopard': 'HD=5 Attack=8 AC=15 Dam=2@1d4+5,1d8+2 Str=21 Dex=17 Con=15 Int=2 Wis=12 Cha=6 Size=L Level=7',
-  'River Eel': 'HD=7 Attack=6 AC=15 Dam=1d8+4 Str=17 Dex=15 Con=13 Int=2 Wis=12 Cha=2 Size=L Level=10',
-  'Sea Dragon': 'HD=12 Attack=13 AC=18 Dam=3d6+8,1d8+4 Str=26 Dex=13 Con=24 Int=2 Wis=14 Cha=6 Size=H Level=13',
-  'Wogren': 'HD=3 Attack=5 AC=16 Dam=2@1d4+1,1d6+3 Str=16 Dex=13 Con=14 Int=6 Wis=13 Cha=12 Size=M'
+LastAge.CHOICES_ADDED = ['Heroic Path'];
+LastAge.CHOICES = SRD35.CHOICES.concat(LastAge.CHOICES_ADDED);
+LastAge.RANDOMIZABLE_ATTRIBUTES_ADDED = ['heroicPath'];
+LastAge.RANDOMIZABLE_ATTRIBUTES =
+  SRD35.RANDOMIZABLE_ATTRIBUTES.concat(LastAge.RANDOMIZABLE_ATTRIBUTES_ADDED);
+
+LastAge.ALIGNMENTS = Object.assign({}, SRD35.ALIGNMENTS);
+LastAge.ANIMAL_COMPANIONS_ADDED = {
+  // Attack, Dam, AC include all modifiers
+  // Some of the computed Attack and AC values differ from the M2E rulebook
+  'Boro':
+    'Str=18 Dex=10 Con=16 Int=2 Wis=11 Cha=5 HD=5 AC=13 Attack=7 Dam=1d8+4 ' +
+    'Size=L Level=7',
+  'Grass Cat':
+    'Str=16 Dex=19 Con=15 Int=2 Wis=12 Cha=6 HD=3 AC=15 Attack=6 ' +
+    'Dam=2@1d2+1,1d6+3 Size=M Level=4',
+  'Ort':
+    'Str=15 Dex=12 Con=14 Int=2 Wis=11 Cha=2 HD=3 AC=14 Attack=4 Dam=1d6+2 ' +
+    'Size=M Level=4',
+  'Plains Leopard':
+    'Str=21 Dex=17 Con=15 Int=2 Wis=12 Cha=6 HD=5 AC=15 Attack=8 ' +
+    'Dam=2@1d4+5,1d8+2 Size=L Level=7',
+  'River Eel':
+    'Str=17 Dex=15 Con=13 Int=2 Wis=12 Cha=2 HD=7 AC=15 Attack=6 Dam=1d8+4 ' +
+    'Size=L Level=10',
+  'Sea Dragon':
+    'Str=26 Dex=13 Con=24 Int=2 Wis=14 Cha=6 HD=12 AC=18 Attack=13 ' +
+    'Dam=3d6+8,1d8+4 Size=H Level=13',
+  'Wogren':
+    'Str=16 Dex=13 Con=14 Int=6 Wis=13 Cha=12 HD=3 AC=16 Attack=5 ' +
+    'Dam=2@1d4+1,1d6+3 Size=M'
 };
-LastAge.CLASSES = [
-  'Barbarian', 'Charismatic Channeler', 'Defender', 'Fighter',
-  'Hermetic Channeler', 'Legate', 'Rogue', 'Spiritual Channeler', 'Wildlander'
-];
-LastAge.DOMAINS = [
-  'Death', 'Destruction', 'Evil', 'Magic', 'War'
-];
-LastAge.DEITIES = [
-  'Izrador (NE):Longsword:Death/Destruction/Evil/Magic/War',
-  'None::'
-];
-LastAge.FEATS = [
+LastAge.ANIMAL_COMPANIONS =
+  Object.assign({}, SRD35.ANIMAL_COMPANIONS, LastAge.ANIMAL_COMPANIONS_ADDED);
+LastAge.CLASSES = {
+  'Barbarian':SRD35.CLASSES['Barbarian'],
+  'Charismatic Channeler':
+    'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
+    'Features=' +
+      '"1:Weapon Proficiency (Simple)",' +
+      '"1:Art Of Magic","2:Familiar","1:Magecraft (Charismatic)",' +
+      '"3:Force Of Personality" ' +
+    'Skills=' +
+      'Concentration,Craft,"Decipher Script","Handle Animal",Heal,' +
+      '"Knowledge (Arcana)","Knowledge (Spirits)",Profession,Ride,Search,' +
+      '"Speak Language",Spellcraft,' +
+      'Bluff,Diplomacy,"Gather Information",Intimidate,"Sense Motive"'
+    'Selectables=' +
+      '"3:Greater Confidence","3:Greater Fury","3:Improved Confidence",' +
+      '"3:Improved Fury","3:Inspire Confidence","3:Inspire Fascination",' +
+      '"3:Inspire Fury","3:Mass Suggestion",3"Suggestion ' +
+    'SpellAbility=charisma',
+    'Spells=' +
+      '"Ch0:Create Water;Cure Minor Wounds;Dancing Lights;Daze;Detect Magic;' +
+      'Detect Poison;Disrupt Undead;Flare;Ghost Sound;Guidance;' +
+      'Know Direction;Light;Lullaby;Mage Hand;Mending;Message;Open/Close;' +
+      'Ray Of Frost;Read Magic;Resistance;Summon Instrument;' +
+      'Touch Of Fatigue;Virtue",' +
+      '"Ch1:Alarm;Animate Rope;Assist;Burial;Burning Hands;Calm Animals;' +
+      'Cause Fear;Channel Might;Charm Animal;Charm Person;Chill Touch;' +
+      'Color Spray;Comprehend Languages;Cure Light Wounds;' +
+      'Detect Animals Or Plants;Detect Astirax;Detect Secret Doors;' +
+      'Detect Snares And Pits;Detect Undead;Disguise Self;Disguise Weapon;' +
+      'Endure Elements;Enlarge Person;Entangle;Erase;Expeditious Retreat;' +
+      'Faerie Fire;Far Whisper;Feather Fall;Floating Disk;Goodberry;Grease;' +
+      'Hide From Animals;Hold Portal;Hypnotism;Identify;Inspiration;' +
+      'Joyful Speech;Jump;Know The Name;Lesser Confusion;Lie;Mage Armor;' +
+      'Magic Aura;Magic Fang;Magic Missile;Magic Mouth;Magic Stone;' +
+      "Magic Weapon;Mount;Obscuring Mist;Pass Without Trace;Peasant's Rest;" +
+      'Phantom Edge;Produce Flame;Protection From Chaos;' +
+      'Protection From Evil;Protection From Good;Protection From Law;' +
+      'Ray Of Enfeeblement;Reduce Person;Remove Fear;Shield;Shillelagh;' +
+      'Shocking Grasp;Silent Image;Sleep;Speak With Animals;Spider Climb;' +
+      "Stone Soup;Summon Monster I;Summon Nature's Ally I;True Strike;" +
+      'Undetectable Alignment;Unseen Servant;Ventriloquism;Woeful Speech",' +
+      '"Ch2:Acid Arrow;Alter Self;Animal Messenger;Animal Trance;Arcane Lock;' +
+      "Barkskin;Bear's Endurance;Bleed Power;Blindness/Deafness;Blur;" +
+      "Bull's Strength;Cat's Grace;Chill Metal;Command Undead;Confer Power;" +
+      'Continual Flame;Cure Moderate Wounds;Darkness;Darkvision;' +
+      'Daze Monster;Delay Poison;Detect Chaos;Detect Evil;Detect Good;' +
+      "Detect Law;Detect Thoughts;Disguise Ally;Eagle's Splendor;" +
+      'False Life;Fell Forbiddance;Fey Fire;Fey Hearth;Flame Blade;' +
+      "Flaming Sphere;Fog Cloud;Fox's Cunning;Ghoul Touch;Glitterdust;" +
+      'Greenshield;Gust Of Wind;Heat Metal;Hideous Laughter;Hold Animal;' +
+      'Hypnotic Pattern;Invisibility;Knock;Lesser Restoration;Levitate;' +
+      'Lifetrap;Locate Object;Magic Mouth;Memorial;Minor Image;' +
+      "Mirror Image;Misdirection;Nature's Revelation;Obscure Object;" +
+      "Owl's Wisdom;Pacify;Phantom Trap;Protection From Arrows;" +
+      'Pyrotechnics;Reduce Animal;Resist Energy;Scare;Scorching Ray;' +
+      "Scryer's Mark;See Invisibility;Shatter;Silence;Silver Blood;" +
+      'Soften Earth And Stone;Sound Burst;Spectral Hand;Spider Climb;' +
+      "Summon Monster II;Summon Nature's Ally II;Summon Swarm;" +
+      'Touch Of Idiocy;Tree Shape;Warp Wood;Weather;Web;Whispering Wind;' +
+      'Withering Speech;Wood Shape",' +
+      '"Ch3:Arcane Impotence;Arcane Sight;Call Lightning;Charm Repair;' +
+      'Clairaudience/Clairvoyance;Contagion;Cure Serious Wounds;Daylight;' +
+      'Deep Slumber;Diminish Plants;Dispel Magic;Displacement;' +
+      'Dominate Animal;Explosive Runes;Fireball;Flame Arrow;Fly;' +
+      'Gaseous Form;Gentle Repose;Glibness;Good Hope;Greater Magic Fang;' +
+      'Greater Magic Weapon;Greater Questing Bird;Gust Of Wind;' +
+      'Halfling Burrow;Halt Undead;Haste;Heroism;Hold Person;' +
+      'Illusory Script;Invisibility Sphere;Keen Edge;Lightning Bolt;' +
+      'Magic Circle Against Chaos;Magic Circle Against Evil;' +
+      'Magic Circle Against Good;Magic Circle Against Law;Major Image;' +
+      'Meld Into Stone;Neutralize Poison;Nondetection;Phantom Steed;' +
+      'Plant Growth;Poison;Protection From Energy;Questing Bird;Rage;' +
+      'Ray Of Exhaustion;Remove Disease;Sculpt Sound;Secret Page;' +
+      'Sepia Snake Sigil;Shrink Item;Silver Wind;Sleet Storm;Slow;Snare;' +
+      'Speak With Plants;Spike Growth;Stinking Cloud;Suggestion;' +
+      "Summon Monster III;Summon Nature's Ally III;Tiny Hut;Tongues;" +
+      'Vampiric Touch;Water Breathing;Water Walk;Willful Stand;Wind Wall",' +
+      '"Ch4:Air Walk;Animate Dead;Antiplant Shell;Arcane Eye;Bestow Curse;' +
+      'Bestow Spell;Black Tentacles;Blight;Charm Monster;Command Plants;' +
+      'Confusion;Control Water;Crushing Despair;Cure Critical Wounds;' +
+      'Detect Scrying;Dimensional Anchor;Enervation;Fear;Fire Shield;' +
+      'Fire Trap;Flame Strike;Freedom Of Movement;Giant Vermin;' +
+      'Greater Invisibility;Hallucinatory Terrain;Ice Storm;Illusory Wall;' +
+      'Lesser Geas;Lesser Globe Of Invulnerability;Locate Creature;' +
+      'Mass Enlarge Person;Mass Reduce Person;Minor Creation;' +
+      'Mnemonic Enhancer;Modify Memory;Phantasmal Killer;Polymorph;' +
+      'Rainbow Pattern;Reincarnate;Remove Curse;Repel Vermin;' +
+      'Resilient Sphere;Restoration;Rusting Grasp;Scrying;Secure Shelter;' +
+      'Shadow Conjuration;Shout;Silver Storm;Solid Fog;Spike Stones;' +
+      "Stone Shape;Stoneskin;Summon Monster IV;Summon Nature's Ally IV;" +
+      'Wall Of Fire;Wall Of Ice;Zone Of Silence",' +
+      '"Ch5:Animal Growth;Arcane Interference;Atonement;Awaken;' +
+      'Baleful Polymorph;Break Enchantment;Call Lightning Storm;Cloudkill;' +
+      'Commune With Nature;Cone Of Cold;Contact Other Plane;' +
+      'Control Winds;Death Ward;Dismissal;Dominate Person;Dream;Fabricate;' +
+      'False Vision;Feeblemind;Hallow;Hold Monster;Insect Plague;' +
+      "Interposing Hand;Lesser Planar Binding;Mage's Faithful Hound;" +
+      "Mage's Private Sanctum;Magic Circle Against Shadow;Magic Jar;" +
+      'Major Creation;Mass Cure Light Wounds;Mind Fog;Mirage Arcana;' +
+      'Nexus Fuel;Nightmare;Overland Flight;Passwall;Persistent Image;' +
+      'Prying Eyes;Secret Chest;Seeming;Sending;Shadow Evocation;' +
+      "Song Of Discord;Summon Monster V;Summon Nature's Ally V;" +
+      'Symbol Of Pain;Symbol Of Sleep;Telekinesis;Telepathic Bond;' +
+      'Transmute Mud To Rock;Transmute Rock To Mud;Unhallow;Wall Of Force;' +
+      'Wall Of Stone;Wall Of Thorns;Waves Of Fatigue",' +
+      '"Ch6:Acid Fog;Analyze Dweomer;Animate Objects;Antilife Shell;' +
+      'Antimagic Field;Chain Lightning;Circle Of Death;Contingency;' +
+      'Create Undead;Disintegrate;Eyebite;Find The Path;Fire Seeds;' +
+      'Flesh To Stone;Forceful Hand;Freezing Sphere;Geas/Quest;' +
+      'Globe Of Invulnerability;Greater Dispel Magic;Greater Heroism;' +
+      "Greater Questing Bird;Guards And Wards;Heroes' Feast;Ironwood;" +
+      "Legend Lore;Liveoak;Mage's Lucubration;Mass Bear's Endurance;" +
+      "Mass Bull's Strength;Mass Cat's Grace;Mass Cure Moderate Wounds;" +
+      "Mass Eagle's Splendor;Mass Fox's Cunning;Mass Owl's Wisdom;" +
+      'Mass Suggestion;Mislead;Move Earth;Permanent Image;Planar Binding;' +
+      'Programmed Image;Repel Wood;Repulsion;Spellstaff;Stone Tell;' +
+      "Stone To Flesh;Summon Monster VI;Summon Nature's Ally VI;" +
+      'Symbol Of Fear;Symbol Of Persuasion;Sympathetic Vibration;' +
+      'Transformation;True Seeing;Undeath To Death;Veil;Wall Of Iron",' +
+      '"Ch7:Animate Plants;Banishment;Changestaff;Control Undead;' +
+      'Control Weather;Creeping Doom;Delayed Blast Fireball;' +
+      'Finger Of Death;Fire Storm;Forcecage;Grasping Hand;' +
+      'Greater Arcane Sight;Greater Restoration;Greater Scrying;' +
+      "Greater Shadow Conjuration;Heal;Insanity;Mage's Sword;" +
+      'Mass Cure Serious Wounds;Mass Hold Person;Mass Invisibility;' +
+      'Power Word Blind;Prismatic Spray;Project Image;Reverse Gravity;' +
+      'Sequester;Simulacrum;Spell Turning;Statue;Summon Monster VII;' +
+      "Summon Nature's Ally VII;Sunbeam;Symbol Of Stunning;" +
+      'Symbol Of Weakness;Transmute Metal To Wood;Vision;' +
+      'Waves Of Exhaustion;Wind Walk",' +
+      '"Ch8:Animal Shapes;Antipathy;Binding;Clenched Fist;Clone;' +
+      'Control Plants;Create Greater Undead;Demand;Discern Location;' +
+      'Earthquake;Greater Planar Binding;Greater Prying Eyes;' +
+      'Greater Shadow Evocation;Greater Shout;Horrid Wilting;' +
+      'Incendiary Cloud;Iron Body;Irresistible Dance;Mass Charm Monster;' +
+      'Mass Cure Critical Wounds;Mind Blank;Moment Of Prescience;' +
+      'Polar Ray;Polymorph Any Object;Power Word Stun;Prismatic Wall;' +
+      'Protection From Spells;Repel Metal Or Stone;Reverse Gravity;' +
+      'Scintillating Pattern;Screen;Summon Monster VIII;' +
+      "Summon Nature's Ally VIII;Sunburst;Symbol Of Death;" +
+      'Symbol Of Insanity;Sympathy;Telekinetic Sphere;Temporal Stasis;' +
+      'Trap The Soul;Whirlwind",' +
+      '"Ch9:Astral Projection;Crushing Hand;Dominate Monster;' +
+      'Elemental Swarm;Energy Drain;Foresight;Freedom;Gate;Imprisonment;' +
+      "Mage's Disjunction;Mass Hold Monster;Meteor Swarm;Power Word Kill;" +
+      'Prismatic Sphere;Regenerate;Shades;Shambler;Shapechange;Soul Bind;' +
+      "Storm Of Vengeance;Summon Monster IX;Summon Nature's Ally IX;" +
+      'Time Stop;Wail Of The Banshee;Weird"',
+  'Defender':
+    'HitDie=d8 Attack=1 SkillPoints=4 Fortitude=1/3 Reflex=1/2 Will=1/3 ',
+    'Skills=' +
+      'Balance,Bluff,Climb,Craft,"Escape Artist","Handle Animal",Hide,Jump,' +
+      '"Knowledge (Local)","Knowledge (Shadow)",Listen,"Move Silently",' +
+      'Profession,Ride,"Sense Motive","Speak Language",Swim,Tumble ' +
+    'Features=' +
+      '"1:Weapon Proficiency (Club/Dagger/Dart/Farmer\'s Rope/Handaxe/Inutek/Light Hammer/Light Pick/Quarterstaff/Sap/Sickle/Throwing Axe/Sling/Great Sling)",'+
+      '"1:Improved Unarmed Strike","1:Masterful Strike",' +
+      '"2:Defender Abilities","2:Defender Stunning Fist",' +
+      '"3:Improved Grapple","4:Precise Strike" ' +
+    'Selectables=' +
+       '2:Counterattack,"2:Cover Ally","2:Defensive Mastery",' +
+       '"2:Devastating Strike","2:Dodge Training","2:Flurry Attack",' +
+       '"2:Furious Grapple","2:Grappling Training","2:Incredible Resilience",' +
+       '"2:Incredible Speed","2:Offensive Training","2:One With The Weapon",' +
+       '"2:Rapid Strike","2:Retaliatory Strike","2:Speed Training",' +
+       '"2:Strike And Hold","2:Weapon Trap"',
+  'Fighter':
+    'HitDie=d10 Attack=1 SkillPoints=2 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
+    'Skills =' +
+      'Climb,Craft,"Handle Animal",Intimidate,Jump,"Knowledge (Shadow)",' +
+      'Profession,Ride,"Speak Language",Swim ' +
+    'Features=' +
+      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency (Tower)",' +
+      '"1:Weapon Proficiency (Martial)" ' +
+    'Selectables=' +
+      '4:Adapter,4:Improviser,"4:Leader Of Men",4:Survivor,"4:Improved Grapple",' +
+      '"4:Improved Unarmed Strike","4:Improvised Weapon","4:Stunning Fist",' +
+      '"4:Iron Will",4:Leadership","4:Skill Focus (Diplomacy)",' +
+      '"4:Skill Focus (Profession (Soldier))","4:Combat Expertise",4:Dodge,4:Endurance',
+  'Hermetic Channeler':
+    'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Concentration,Craft,"Decipher Script","Handle Animal",Heal,' +
+      '"Knowledge (Arcana)","Knowledge (Spirits)",Profession,Ride,Search,' +
+      'Knowledge ' +
+    'Features=' +
+      '"1:Weapon Proficiency (Simple)",' +
+      '"1:Art Of Magic","2:Familiar","1:Magecraft (Hermetic)",3:Lorebook ' +
+    'Selectables=' +
+      '"3:Foe Specialty","3:Knowledge Specialty","3:Quick Reference",' +
+      '"3:Spell Specialty" ' +
+    'SpellAbility=intelligence',
+  'Legate':
+    'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ',
+    'Skills =' +
+      'Concentration,Craft,Diplomacy,"Handle Animal",Heal,Intimidate,' +
+      '"Knowledge (Arcana)","Knowledge (Shadow)","Knowledge (Spirits)",' +
+      'Profession,"Speak Language,Spellcraft ' +
+    'Features=' +
+      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency (Heavy)",' +
+      '"1:Weapon Proficiency (Simple)"',
+      '"1:Spontaneous Legate Spell","1:Temple Dependency","1:Turn Undead",' +
+      '"3:Astirax Companion" ' +
+    'SpellAbility=charisma',
+    'SpellsPerDay=' +
+      'C0=1=3;2=4;4=5;7=6,' +
+      'C1=1=1;2=2;4=3;7=4;11=5,' +
+      'C2=3=1;4=2;6=3;9=4;13=5,' +
+      'C3=5=1;6=2;8=3;11=4;15=5,' +
+      'C4=7=1;8=2;10=3;13=4;17=5,' +
+      'C5=9=1;10=2;12=3;15=4;19=5,' +
+      'C6=11=1;12=2;14=3;17=4,' +
+      'C7=13=1;14=2;16=3;19=4,' +
+      'C8=15=1;16=2;18=3;20=4,' +
+      'C9=17=1;18=2;19=3;20=4,' +
+      'Dom1:1=1,' +
+      'Dom2:3=1,' +
+      'Dom3:5=1,' +
+      'Dom4:7=1,' +
+      'Dom5:9=1,' +
+      'Dom6:11=1,' +
+      'Dom7:13=1,' +
+      'Dom8:15=1,' +
+      'Dom9:17=1 ' +
+    'Spells=' +
+  'Rogue':SRD35.CLASSES['Rogue'],
+  'Spiritual Channeler':
+    'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Concentration,Craft,"Decipher Script","Handle Animal",Heal,' +
+      '"Knowledge (Arcana)","Knowledge (Spirits)",Profession,Ride,Search,' +
+      'Diplomacy,"Knowledge (Nature)","Sense Motive",Survival,Swim ' +
+    'Features=' +
+      '"1:Weapon Proficiency (Simple)",' +
+      '"1:Art Of Magic","2:Familiar","1:Magecraft (Spiritual)",' +
+      '"3:Master Of Two Worlds" ' +
+    'Selectables=' +
+      '"3:Confident Effect","3:Heightened Effect","3:Mastery Of Nature",' +
+      '"3:Mastery Of Spirits","3:Mastery Of The Unnatural",' +
+      '"3:Powerful Effect","3:Precise Effect","3:Specific Effect",' +
+      '"3:Universal Effect" ' +
+    'SpellAbility=wisdom',
+  'Wildlander':
+    'HitDie=d8 Attack=1 SkillPoints=6 Fortitude=1/2 Reflex=1/3 Will=1/3 '
+    'Skills =' +
+      'Balance,Climb,Craft,"Handle Animal",Heal,Hide,Jump,' +
+      '"Knowledge (Geography)","Knowledge (Nature)",Listen,"Move Silently",' +
+      'Profession,Ride,Search,"Speak Language",Spot,Survival,Swim,Use Rope ' +
+    'Features=' +
+      '"1:Armor Proficiency (Medium)","1:Shield Proficiency (Heavy)",' +
+      '"1:Weapon Proficiency (Martial)"',
+      '1:Track,"3:Danger Sense","3:Initiative Bonus","4:Hunter\'s Strike" ' +
+    'Selectable=' +
+      '1:Alertness,"1:Animal Companion",1:Camouflage,1:"Danger Sense",' +
+      '1:Evasion,"1:Hated Foe","1:Hide In Plain Sight",' +
+      '"1:Hunted By The Shadow","1:Improved Evasion","1:Improved Initiative",' +
+      '"1:Improved Woodland Stride","1:Initiative Bonus",' +
+      '"1:Instinctive Response","1:Master Hunter","1:Overland Stride",' +
+      '"1:Quick Stride","1:Sense Dark Magic","1:Skill Mastery",' +
+      '"1:Slippery Mind","1:Trackless Step","1:True Aim","1:Wild Empathy",' +
+      '"1:Wilderness Trapfinding","1:Woodland Stride",1:Woodslore'
+};
+LastAge.ARMORS = Object.assign({}, SRD35.ARMORS);
+LastAge.DEITIES = {
+  'None':'',
+  'Izrador (NE)':
+    'Weapon=Longsword Domain=Death,Destruction,Evil,Magic,War'
+};
+LastAge.DOMAINS = {
+  'Death':SRD35.DOMAINS['Death'],
+  'Destruction':SRD35.DOMAINS['Destruction'],
+  'Evil':SRD35.DOMAINS['Evil'],
+  'Magic':SRD35.DOMAINS['Magic'],
+  'War':SRD35.DOMAINS['War']
+};
+LastAge.FAMILIARS = Object.assign({}, SRD35.FAMILIARS);
+LastAge.FEATS_ADDED = {
   // MN2E
-  'Craft Charm:Item Creation', 'Craft Greater Spell Talisman:Item Creation',
-  'Craft Spell Talisman:Item Creation', 'Devastating Mounted Assault:Fighter',
-  'Drive It Deep:Fighter', 'Extra Gift:', 'Friendly Agent:',
-  'Giant Fighter:Fighter', 'Herbalist:Item Creation',
-  'Improvised Weapon:Fighter', 'Innate Magic:', 'Inconspicuous:',
-  'Knife Thrower:Fighter', 'Lucky:', 'Magecraft:Channeling', 'Magic Hardened:',
-  'Natural Healer:', 'Orc Slayer:Fighter', 'Quickened Donning:Fighter',
-  'Ritual Magic:Channeling', 'Sarcosan Pureblood:', 'Sense Nexus:',
-  'Spellcasting:Channeling', 'Skill Focus:', 'Spell Knowledge:',
-  'Thick Skull:', 'Warrior Of Shadow:', 'Weapon Focus:Fighter',
-  'Whispering Awareness:',
+  'Craft Charm':'Type=Item Creation Require="Sum skills.Craft >= 4"',
+    // TODO actually max instead of sum
+  'Craft Greater Spell Talisman':
+    'Type=Item Creation Require="Sum features.Magecraft >= 1","level >= 12"',
+    // TODO any 3 channeling
+  'Craft Spell Talisman':
+    'Type=Item Creation Require="Sum features.Magecraft >= 1","Sum features.Spellcasting >= 1","level >= 3"',
+  'Devastating Mounted Assault':
+    'Type=Fighter Require="features.Mounted Combat >= 1","skills.Ride >= 10"',
+  'Drive It Deep':'Type=Fighter Require="baseAttack >= 1"',
+  'Extra Gift':
+    'Type=General Require="levels.Charismatic Channeler >= 4 || levels.Spiritual Channeler >= 4"',
+  'Friendly Agent':
+    'Type=General Require="alignment =~ /Good/","race =~ /Gnome|Dorn|Erenlander|Sarcosan/"',
+  'Giant Fighter':'Type=Fighter Require="Sum features.Weapon Focus >= 1"',
+  'Herbalist':'Type=Item Creation Require="skills.Profession (Herbalist) >= 4"',
+  'Improvised Weapon':'Type=Fighter',
+  'Innate Magic':'Type=General Require="race =~ /Elf|Halfling/"',
+  'Inconspicuous':'Type=General',
+  'Knife Thrower':'Type=Fighter Require="race =~ /Jungle Elf|Snow Elf/"',
+  'Lucky':'Type=General',
+  'Magecraft':'Type=Channeling',
+  'Magic Hardened':'Type=General Require="race =~ /Dwarf|Dworg|Orc/"',
+  'Natural Healer':'Type=General',
+  'Orc Slayer':'Type=FighterGeneral',
+  'Quickened Donning':'Type=Fighter',
+  'Ritual Magic':
+    'Type=Channeling Require="Sum features.Magecraft >= 1","Sum features.Spellcasting >= 1"',
+  'Sarcosan Pureblood':'Type=General Require="race =~ /Sarcosan/"',
+  'Sense Nexus':'Type=General',
+  'Spellcasting':'Type=Channeling',
+  'Skill Focus':'Type=General',
+  'Spell Knowledge':'Type=General Require="Sum features.Spellcasting >= 1"',
+  'Thick Skull':'Type=General',
+  'Warrior Of Shadow':'Type=General Require="charisma >= 12","levels.Legate >= 5"',
+  'Weapon Focus':'Type=Fighter',
+  'Whispering Awareness':'Type=General Require="wisdom >= 15","race =~ /Elf/"',
   // Destiny & Shadow
-  'Clear-Eyed:', 'Defiant:', 'Fanatic:', 'Hardy:', 'Huntsman:',
-  'Pikeman:Fighter', 'Slow Learner:', 'Stalwart:', 'Stealthy Rider:',
+  'Clear-Eyed':'Type=General Require="race == \'Erenlander\'"',
+  'Defiant':'Type=General Require="race == \'Erenlander\'"',
+  'Fanatic':'Type=General Require="race == \'Erenlander\'"',
+  'Hardy':'Type=General Require="constitution >= 13",features.Endurance',
+  'Huntsman':'Type=General Require="skills.Survival >= 5",features.Track',
+  'Pikeman':'Type=Fighter',
+  'Slow Learner':'Type=General Require="race == \'Erenlander\'"',
+  'Stalwart':'Type=General Require="race == \'Erenlander\'",features.Defiant',
+  'Stealthy Rider':'Type=General Require="skills.Ride >= 1"',
   // Hammer & Shadow
-  'Dwarvencraft:', 'Powerful Throw:Fighter', 'Shield Mate:Fighter',
-  'Touched By Magic:', 'Trapsmith:', 'Tunnel Fighting:Fighter',
+  'Dwarvencraft':
+    'Type=General Require="skills.Craft (Armor) >= 4 || skills.Craft (Blacksmith) >= 4 || skills.Craft (Weapons) >= 4"',
+  'Powerful Throw':
+    'Type=Fighter Require="strength >= 13","features.Power Attack","features.Weapon Focus (Light Hammer) || features.Weapon Focus (Thowing Axe) || features.Weapon Focus (Urutuk Hatchet)"',
+  'Shield Mate':
+    'Type=Fighter Require="dexterity >= 13","features.Shield Proficiency (Heavy)"',
+  'Touched By Magic':'Type=General Require="race =~ /Dwarf|Orc/"',
+  'Trapsmith':'Type=General',
+  'Tunnel Fighting':'Type=Fighter',
   // TODO Dwarvencraft Techniques -- probably selectable features
   // Honor & Shadow
-  'Born Of Duty:', 'Born Of The Grave:',
+  'Born Of Duty':'Type=General Require="alignment =~ /Lawful/","race == \'Dorn\'"',
+  'Born Of The Grave':'Type=General Require="alignment !~ /Good/",race == \'Dorn\'"',
   // Sorcery & Shadow
-  'Blood-Channeler:', 'Craft Rune Of Power:Item Creation', 'Flexible Recovery:',
-  'Improved Flexible Recovery:', 'Knack For Charms:Item Creation',
-  'Living Talisman:', 'Power Reservoir:', 'Sense Power:', 'Subtle Caster:',
+  'Blood-Channeler':
+    'Type=General Require="constitution >= 15","Sum features.Magecraft >= 1"',
+  'Craft Rune Of Power':
+    'Type=Item Creation Require="Sum features.Magecraft >= 1","Sum features.Spellcasting >= 1","level >= 3"',
+  'Flexible Recovery':
+    'Type=General Require="constitution >= 13","Sum features.Magecraft >= 1"',
+  'Improved Flexible Recovery':
+    'Type=General Require="constitution >= 15","features.Flexible Recovery","Sum features.Magecraft >= 1"',
+  'Knack For Charms':
+    'Type=Item Creation Require="skills.Knowledge (Arcana) >= 4","skills.Knowledge (Nature) >= 4"',
+  'Living Talisman':
+    'Type=General Require="Sum features.Magecraft >= 1","Sum features.Spellcasting >= 1","level >= 5","skills.Knowledge (Arcana) >= 6"',
+  'Power Reservoir':'Type=General Require="Sum features.Magecraft >= 1"',
+  'Sense Power':'Type=General Require="wisdom >= 15"',
+  'Subtle Caster':'Type=General Require="Sum features.Magecraft >= 1"',
   // Star & Shadow
-  'Canny Strike:Fighter', 'Caste Status:', 'Clever Fighting:Fighter',
-  'Plains Warfare:Fighter', 'Urban Intrigue:', 'Well-Aimed Strike:Fighter',
+  'Canny Strike':
+    'Type=Fighter Require="intelligence >= 13","baseAttack >= 6","features.Clever Fighting","features.Weapon Finesse"',
+  'Caste Status':'Type=General',
+  'Clever Fighting':'Type=Fighter Require="dexterity >= 13","baseAttack >= 2","features.Weapon Finesse"',
+  'Plains Warfare':'Type=Fighter Require="features.Mounted Combat"',
+  'Urban Intrigue':
+    'Type=General Imply="skills.Gather Information >= 1" Require="race == \'Urban Sarcosan\'","skills.Bluff >= 1"',
+  'Well-Aimed Strike':
+    'Type=Fighter Require="baseAttack >= 9","features.Canny Strike","features.Clever Fighting","features.Weapon Finesse"',
   // Steel & Shadow
-  'Resigned To Death:', 'Whirlwind Charge:'
-];
-LastAge.HEROIC_PATHS = [
-  'Beast', 'Chanceborn', 'Charismatic', 'Dragonblooded', 'Earthbonded',
-  'Faithful', 'Fellhunter', 'Feyblooded', 'Giantblooded', 'Guardian', 'Healer',
-  'Ironborn', 'Jack-Of-All-Trades', 'Mountainborn', 'Naturefriend',
-  'Northblooded', 'Painless', 'Pureblood', 'Quickened', 'Seaborn', 'Seer',
-  'Speaker', 'Spellsoul', 'Shadow Walker', 'Steelblooded', 'Sunderborn',
-  'Tactician', 'Warg', 'None'
-];
-LastAge.LANGUAGES = [
-  'Black Tongue', 'Clan Dwarven', 'Colonial', 'Courtier', 'Erenlander',
-  'Halfling', 'High Elven', 'Jungle Mouth', 'Norther', 'Old Dwarven', 'Orcish',
-  'Patrol Sign', 'Sylvan', "Trader's Tongue"
-];
-LastAge.RACES = [
-  'Agrarian Halfling', 'Clan Dwarf', 'Clan Raised Dwarrow', 'Clan Raised Dworg',
-  'Danisil Raised Elfling', 'Dorn', 'Erenlander', 'Gnome',
-  'Gnome Raised Dwarrow', 'Halfling Raised Elfling', 'Jungle Elf',
-  'Kurgun Dwarf', 'Kurgun Raised Dwarrow', 'Kurgun Raised Dworg',
-  'Nomadic Halfling', 'Orc', 'Plains Sarcosan', 'Sea Elf', 'Snow Elf',
-  'Urban Sarcosan', 'Wood Elf'
-];
-LastAge.SCHOOLS = [
-  'Abjuration:Abju', 'Conjuration:Conj', 'Divination:Divi', 'Enchantment:Ench',
-  'Evocation:Evoc', 'Greater Conjuration:GrCo', 'Greater Evocation:GrEv',
-  'Illusion:Illu', 'Necromancy:Necr', 'Transmutation:Tran'
-];
-LastAge.SKILLS = [
-  'Knowledge:int/trained', 'Profession:wis/trained'
-];
+  'Resigned To Death':'Type=General Require="wisdom >= 13"',
+  'Whirlwind Charge':'Type=General Require="strength >= 15","baseAttack >= 6","features.Cleave","features.Power Attack"'
+};
+LastAge.FEATS = Object.assign({}. SRD35.FEATS, LastAge.FEATS_ADDED);
+LastAge.FEATURES_ADDED = {
+  // Feats
+  'Blood-Channeler':'magic:Dbl spell energy for first two Con points lost',
+  'Born Of Duty':
+    "magic:R100' Cry shakes undead (DC %V Will neg), Dorn +2 vs fear, enchant 1/day",
+  'Born Of The Grave':"magic:R15' <i>Deathwatch</i> at will",
+  'Canny Strike':'combat:+%Vd4 finesse weapon damage',
+  'Caste Status':'feature:Benefits of caste level',
+  'Clear-Eyed':[
+    'feature:Half penalty for distance sight, x2 normal vision in dim light on plains',
+    'skill:Spot is a class skill'
+  ],
+  'Clever Fighting':'combat:+%V finesse weapon damage',
+  'Craft Charm':'magic:Use Craft to create single-use magic item',
+  'Craft Greater Spell Talisman':
+    'magic:Talisman reduces spell energy cost of chosen school spells by 1',
+  'Craft Rune Of Power':'magic:Imbue rune w/any known spell',
+  'Craft Spell Talisman':'magic:Reduces spell energy cost of chosen spell by 1',
+  'Defiant':'save:Delay effect of failed Fort, Will save for 1 rd, dbl fail effect',
+  'Devastating Mounted Assault':'combat:Full attack after mount moves',
+  'Drive It Deep':'combat:Trade up to -%V attack for equal damage bonus',
+  'Dwarvencraft':'feature:Know %V Dwarvencraft techniques',
+  'Extra Gift':'feature:Use Master Of Two Worlds/Force Of Personality +4 times/day',
+  'Fanatic':"combat:+1 attack, divine spell benefit within 60' of Izrador servant",
+  'Flexible Recovery':"magic:Recover 1 spell energy per hour's rest",
+  'Friendly Agent':
+    'skill:+4 Diplomacy (convince allegiance)/+4 Sense Motive (determine allegiance)',
+  'Giant Fighter':"combat:+4 AC, double critical range w/in 30' vs. giants",
+  'Hardy':'feature:Functional on half food, sleep',
+  'Herbalist':'magic:Create herbal concoctions',
+  'Huntsman':
+    'combat:+1 attack and damage for ea 5 above track DC vs. prey tracked for 5 mi',
+  'Improved Flexible Recovery':
+    "magic:DC 30 Concentration to recover %V spell energy per hour's meditation",
+  'Improvised Weapon':
+    'combat:No penalty for improvised weapon/-2 for non-proficient weapon'
+  'Inconspicuous':
+    'skill:+2 Bluff (shadow)/+2 Diplomacy (shadow)/+2 Hide (shadow)/+2 Sense Motive (shadow)',
+  'Innate Magic':'magic:%V %1 spells as at-will innate ability',
+  'Knack For Charms':'skill:+4 Craft for charm-making',
+  'Knife Thrower':'combat:+1 ranged attack/Quickdraw w/racial knife',
+  'Living Talisman':'magic:Chosen spell costs 1 fewer spell energy to cast',
+  'Lucky':'save:+1 from luck charms and spells',
+  'Magic Hardened':'save:+2 vs. spells',
+  'Natural Healer':
+    'skill:Successful Heal raises patient to 1 HP/triple normal healing rate',
+  'Orc Slayer':[
+    'combat:+1 AC and damage vs. orcs and dworgs',
+    'skill:-4 Cha skills vs. orcs and dworgs'
+  ],
+  'Pikeman':'combat:Receive charge as move action',
+  'Plains Warfare':[
+    'combat:+1 AC when mounted on plains',
+    'save:+1 Reflex when mounted on plains',
+    'skill:+2 Listen, Spot vs. surprise when mounted on plains'
+  ],
+  'Power Reservoir':'magic:Store +%V siphoned spell energy points',
+  'Powerful Throw':'combat:+10 range, use Str bonus for attack',
+  'Quickened Donning':'feature:No penalty for hastened donning',
+  'Resigned To Death':'save:+4 vs. fear, fail 1 step less intense',
+  'Ritual Magic':'magic:Learn and lead magic rituals',
+  'Sarcosan Pureblood':[
+    'combat:+2 AC (horsed)',
+    'skill:Use Diplomacy w/horses, +2 Cha skills (horses/Sarcosans)'
+  ],
+  'Sense Nexus':'magic:DC 15 Wis to sense nexus w/in 5 miles',
+  'Sense Power':"magic:<i>Detect Magic</i> %V/day, DC 13 Wis check w/in 20'",
+  'Shield Mate':
+    'combat:Allies +2 AC when self fighting defensively or -2 Combat Expertise',
+  'Slow Learner':'feature:Replace later with another feat',
+  'Spell Knowledge':'magic:+2 spells',
+  'Stalwart':'save:Delay negative HP for 1 rd, dbl heal required',
+  'Stealthy Rider':'companion:Mount use rider Hide, Move Silently',
+  'Subtle Caster':'skill:+2 Bluff or Sleight Of Hand to disguise spell casting',
+  'Thick Skull':'save:DC 10 + damage save to stay at 1 HP'
+  'Touched By Magic':[
+    'magic:+2 spell energy',
+    'save:-2 vs. spells'
+  ],
+  'Trapsmith':'skill:+2 Craft (Traps)/+2 Disable Device/+2 Search (find traps)'
+  'Tunnel Fighting':'combat:No AC or attack penalty when squeezing'
+  'Urban Intrigue':
+    'skill:Use Gather Information to counter investigation of self, allies',
+  'Warrior Of Shadow':'combat:Substitute %V rounds of +%1 damage for Turn Undead use',
+  'Well-Aimed Strike':'combat:Canny Strike and Clever Fighting apply to all foes',
+  'Whirlwind Charge':'combat:Attack all adjacent foes after charge',
+  'Whispering Awareness':'feature:DC 12 Wis to hear Whispering Wood',
+  // Classes
+  'Adapter':'skill:+%V skill points or %1 additional class skills',
+  'Art Of Magic':'magic:+1 character level for max spell level',
+  'Astirax Companion':'feature:Special bond/abilities',
+  'Confident Effect':'combat:+4 Master of Two Worlds checks',
+  'Counterattack':'combat:AOO on foe miss 1/round',
+  'Cover Ally':"combat:Take hit for ally w/in 5' 1/round",
+  'Defender Abilities':'combat:Counterattack/Cover Ally/Defender Stunning Fist/Devastating Strike/Rapid Strike/Retaliatory Strike/Strike And Hold/Weapon Trap %V/day',
+  'Defender Stunning Fist':'combat:Foe %V Fortitude save or stunned',
+  'Defensive Mastery':'save:+%V Fortitude/+%V Reflex/+%V Will',
+  'Devastating Strike':'combat:Bull Rush stunned opponent as free action w/out foe AOO',
+  'Flurry Attack':'combat:Two-weapon off hand penalty reduced by %V',
+  'Foe Specialty':'skill:Each day choose a creature type to take 10 on Knowledge checks',
+  'Force Of Personality':'magic:Inspire Confidence/Fascination/Fury/Suggestion %V/day',
+  'Furious Grapple':'combat:Extra grapple attack at highest attack bonus 1/round',
+  'Grappling Training':'combat:Disarm/sunder/trip attacks use grapple check',
+  'Greater Confidence':'magic:<i>Break Enchantment</i> 1/5 rounds during Inspire Confidence',
+  'Greater Fury':'magic:Ally gains 2d10 hit points/+2 attack/+1 Fortitude save',
+  'Hated Foe':"combat:Additional Hunter's Strike vs. Master Hunter creature",
+  'Heightened Effect':'combat:+2 level for Master of Two Worlds checks',
+  'Hunted By The Shadow':'combat:No surprise by servant of shadow',
+  "Hunter's Strike":'combat:x2 damage %V/day',
+  'Improved Confidence':'magic:Allies failing enchantment saves affected for half duration; fear reduced',
+  'Improved Fury':'magic:+1 Initiative/attack/damage',
+  'Improved Woodland Stride':'feature:Normal movement through enchanted terrain',
+  'Incredible Resilience':'combat:+%V HP',
+  'Incredible Speed':'ability:+%V speed',
+  'Insire Confidence':"magic:Allies w/in 60' +4 save vs. enchantment/fear for %V rounds",
+  'Inspire Fascination':"magic:%V creatures w/in 120' make %1 DC Will save or enthralled %2 rounds",
+  'Inspire Fury':"magic:Allies w/in 60' +1 initiative/attack/damage %V rounds",
+  'Instinctive Response':'combat:Re-roll Initiative',
+  'Knowledge Specialty':'skill:Each day Choose a Knowledge Skill Focus',
+  'Lorebook':'skill:Study 1 minute for knowledge of situation; scan at -10',
+  'Magecraft (Charismatic)':'magic:4 spells/%V spell energy points',
+  'Magecraft (Hermetic)':'magic:4 spells/%V spell energy points',
+  'Magecraft (Spiritual)':'magic:4 spells/%V spell energy points',
+  'Mass Suggestion':'magic:<i>Suggestion</i> to %V fascinated creatures',
+  'Master Hunter':[
+    'combat:+2 or more damage vs. selected creature type(s)',
+    'skill:+2 or more Bluff, Listen, Sense Motive, Spot, Survival vs. chosen creature type(s)'
+  ],
+  'Master Of Two Worlds':'combat:Mastery of Nature/Spirits/The Unnatural %V/day',
+  'Masterful Strike':'combat:%V unarmed damage',
+  'Mastery Of Nature':'combat:Turn animals/plants',
+  'Mastery Of Spirits':'combat:Turn to exorcise spirits',
+  'Mastery Of The Unnatural':'combat:Turn constructs/outsiders (double hit die)',
+  'Offensive Training':'combat:Stunned foe %V DC save to avoid blinding/deafening',
+  'One With The Weapon':'combat:Masterful Strike/Precise Strike/Stunning Fist w/chosen weapon',
+  'Overland Stride':'feature:Normal movement while using Survival',
+  'Powerful Effect':'combat:+1d6 mastery damage',
+  'Precise Effect':'combat:Choose type of creature to affect',
+  'Precise Strike':'combat:Overcome %V points of foe damage reduction',
+  'Quick Reference':'skill:Reduce Lorebook scan penalty by %V',
+  'Quick Stride':'ability:+%V Speed',
+  'Rapid Strike':'combat:Extra attack at highest attack bonus 1/round',
+  'Retaliatory Strike':'combat:AOO vs. foe that strikes ally 1/round',
+  'Sense Dark Magic':[
+    'feature:Scent vs. legate/outsider',
+    'magic:<i>Detect Magic</i> vs. legate/outsider at will'
+  ],
+  'Skill Mastery':'skill:+3 on %V chosen skills',
+  'Specific Effect':'combat:Choose individuals to affect',
+  'Speed Training':'combat:Extra move action each round',
+  'Spell Specialty':'skill:Each day choose a spell for +1 DC',
+  'Spontaneous Legate Spell':'magic:Cast <i>Inflict</i> in place of known spell',
+  'Strike And Hold':'combat:Extra unarmed attack to grab foe',
+  'Suggestion':'magic:<i>Suggestion</i> to 1 fascinated creature',
+  'Temple Dependency':'magic:Must participate at temple to receive spells',
+  'True Aim':"combat:x3 damage on Hunter's Strike",
+  'Universal Effect':'combat:Use multiple mastery powers simultaneously',
+  'Weapon Trap':'combat:Attack to catch foe weapon for disarm/damage/AOO 1/round',
+  'Wilderness Trapfinding':'skill:Search to find/Survival to remove DC 20+ traps',
+  'Woodslore':"feature:Automatic Search vs. trap/concealed door w/in 5'"
+};
+LastAge.FEATURES = Object.assign({}, SRD35.FEATURES, LastAge.FEATURES_ADDED);
+LastAge.GENDERS = Objects.assign({}, SRD35.GENDERS);
+LastAge.HEROIC_PATHS = {
+  'None':'',
+  'Beast':
+    '',
+  'Chanceborn':
+    '',
+  'Charismatic':
+    '',
+  'Dragonblooded':
+    '',
+  'Earthbonded':
+    '',
+  'Faithful':
+    '',
+  'Fellhunter':
+    '',
+  'Feyblooded':
+    '',
+  'Giantblooded':
+    '',
+  'Guardian':
+    '',
+  'Healer':
+    '',
+  'Ironborn':
+    '',
+  'Jack-Of-All-Trades':
+    '',
+  'Mountainborn':
+    '',
+  'Naturefriend':
+    '',
+  'Northblooded':
+    '',
+  'Painless':
+    '',
+  'Pureblood':
+    '',
+  'Quickened':
+    '',
+  'Seaborn':
+    '',
+  'Seer':
+    '',
+  'Speaker':
+    '',
+  'Spellsoul':
+    '',
+  'Shadow Walker':
+    '',
+  'Steelblooded':
+    '',
+  'Sunderborn':
+    '',
+  'Tactician':
+    '',
+  'Warg':
+    ''
+};
+LastAge.LANGUAGES = {
+  'Black Tongue':
+    '',
+  'Clan Dwarven':
+    '',
+  'Colonial':
+    '',
+  'Courtier':
+    '',
+  'Erenlander':
+    '',
+  'Halfling':
+    '',
+  'High Elven':
+    '',
+  'Jungle Mouth':
+    '',
+  'Norther':
+    '',
+  'Old Dwarven':
+    '',
+  'Orcish':
+    '',
+  'Patrol Sign':
+    '',
+  'Sylvan':
+    '',
+  "Trader's Tongue":
+    ''
+};
+LastAge.RACES = {
+  'Agrarian Halfling':
+    '',
+  'Clan Dwarf':
+    '',
+  'Clan Raised Dwarrow':
+    '',
+  'Clan Raised Dworg':
+    '',
+  'Danisil Raised Elfling':
+    '',
+  'Dorn':
+    '',
+  'Erenlander':
+    '',
+  'Gnome':
+    '',
+  'Gnome Raised Dwarrow':
+    '',
+  'Halfling Raised Elfling':
+    '',
+  'Jungle Elf':
+    '',
+  'Kurgun Dwarf':
+    '',
+  'Kurgun Raised Dwarrow':
+    '',
+  'Kurgun Raised Dworg':
+    '',
+  'Nomadic Halfling':
+    '',
+  'Orc':
+    '',
+  'Plains Sarcosan':
+    '',
+  'Sea Elf':
+    '',
+  'Snow Elf':
+    '',
+  'Urban Sarcosan':
+    '',
+  'Wood Elf':
+    ''
+};
+LastAge.SCHOOLS_ADDED = {
+  'Greater Conjuration':
+    '',
+  'Greater Evocation':
+    ''
+};
+LastAge.SCHOOLS = Object.assign({}, SRD35.SCHOOLS, LastAge.SCHOOLS_ADDED);
+LastAge.SHIELDS = Object.assign({}, SRD35.SHIELDS);
 LastAge.SUBFEATS = {
   'Greater Spell Focus':LastAge.SCHOOLS.join('/').replace(/:[^\/]+/g, ''),
   'Magecraft':'Charismatic/Hermetic/Spiritual',
@@ -196,126 +834,202 @@ LastAge.SUBFEATS = {
   // Legates w/War domain receive Weapon Focus (Longsword)
   'Weapon Focus':'Longsword'
 };
-LastAge.SUBSKILLS = {
-  'Knowledge':'Arcana/Local/Nature/Old Gods/Shadow/Spirits',
+LastAge.SKILLS_ADDED = {
+  'Knowledge (Local)':
+    'Ability=intelligence Untrained=n Synergy="Knowledge (Shadow) (bureaucracy)"',
+  'Knowledge (Nature)':
+    'Ability=intelligence Untrained=n Synergy="Knowledge (Spirits)"',
+  'Knowledge (Old Gods)':'Ability=intelligence Untrained=n',
+  'Knowledge (Shadow)':'Ability=intelligence Untrained=n',
+  'Knowledge (Spirits)':
+    'Ability=intelligence Untrained=n Synergy="Knowledge (Nature)"',
   // Profession (Soldier) available to Leader Of Men Fighters
-  'Profession':'Soldier'
+  'Profession (Soldier)':'Ability=wisdom Untrained=n'
 };
-LastAge.SYNERGIES = {
-  'Knowledge (Local)':'Knowledge (Shadow) (bureaucracy)',
-  'Knowledge (Nature)':'Knowledge (Spirits)',
-  'Knowledge (Spirits)':'Knowledge (Nature)'
-};
-LastAge.USE_PATHFINDER = false;
-LastAge.WEAPONS = [
-  'Atharak:d6 2h Ex', 'Cedeku:d6@19 Li Ex', 'Crafted Vardatch:d10@19 1h Ex',
-  'Dornish Horse Spear:d10x3 2h Ex', "Farmer's Rope:d2 Li Si",
-  'Fighting Knife:d6@19x3 Li Ex', 'Great Sling:d6r60 Si',
-  'Greater Vardatch:2d8 2h Ex', 'Halfling Lance:d8x3 2h Ex',
-  'Icewood Longbow:d8x3r120 Ex', 'Inutek:d3r20 Ex', 'Sarcosan Lance:d8x3 2h Ex',
-  'Sepi:d6@18 Li Ex', 'Shard Arrow:d6@16x1 Si', 'Staghorn:d6 1h Ex',
-  'Tack Whip:d4 Li Si', 'Urutuk Hatchet:d8x3r20 1h Ex', 'Vardatch:d12 1h Ex'
-];
-
-// Related information used internally by LastAge
-LastAge.spellsDescriptions = {
-  "Charm Repair":"Touched minor/lesser charm restored to use",
-  "Detect Astirax": "R$RL' quarter circle Info on astiraxes for $L10 min",
-  "Disguise Ally":
-    "Change touched appearance/+10 disguise for $L10 min (Will disbelieve)",
-  "Disguise Weapon":"$L touched weapons look benign for $L hours",
-  "Far Whisper":"+4 checks to hear Whispering Wood w/in $L10 miles for $L min",
-  "Greenshield":"Touched surrounded by 30' foliage sphere for $L hr",
-  "Halfling Burrow":"Hidden hole holds $L small creatures for $L hr",
-  "Lifetrap":"R$RM' Undead in 50' radius tangled for $L rd, 3d6 HP (Ref neg)",
-  "Nature's Revelation":"R$RS Plants/animals in 30' radius reveal creatures",
-  "Nexus Fuel":"Sacrifice boosts nexus recovery rate",
-  "Silver Blood":"Caster's blood damages astiraxes for 1 hr",
-  "Silver Storm":"R$RS' Targets in cone ${Lmin15}d4 HP silver needle (Ref half)",
-  "Silver Wind":"R$RM' Targets in 20' circle d6/rd for $L rd (Will neg)",
-  "Stone Soup":"Buried stone creates broth",
+LastAge.SKILLS = Object.assign({}, SRD35.SKILLS, LastAge.SKILLS_ADDED);
+for(var skill in LastAge.SKILLS) {
+  LastAge.SKILLS[skill] = LastAge.SKILLS[skills].replace(/Class=\S+/i, '');
+}
+LastAge.SPELLS_ADDED = {
+  'Charm Repair':
+    'School=Transmutation ' +
+    'Description="Touched minor/lesser charm restored to use"',
+  'Detect Astirax':
+    'School=Divination ' +
+    'Description="R$RL' quarter circle Info on astiraxes for $L10 min"',
+  'Disguise Ally':
+    'School=Illusion ' +
+    'Description="Change touched appearance/+10 disguise for $L10 min (Will disbelieve)"',
+  'Disguise Weapon':
+    'School=Illusion ' +
+    'Description="$L touched weapons look benign for $L hours"',
+  'Far Whisper':
+    'School=Divination ' +
+    'Description="+4 checks to hear Whispering Wood w/in $L10 miles for $L min"',
+  'Greenshield':
+    'School=Illusion ' +
+    'Description="Touched surrounded by 30' foliage sphere for $L hr"',
+  'Halfling Burrow':
+    'School=Transmutation ' +
+    'Description="Hidden hole holds $L small creatures for $L hr"',
+  'Lifetrap':
+    'School=Transmutation ' +
+    'Description="R$RM' Undead in 50' radius tangled for $L rd, 3d6 HP (Ref neg)"',
+  "Nature's Revelation":
+    'School=Transmutation ' +
+    'Description="R$RS Plants/animals in 30' radius reveal creatures"',
+  'Nexus Fuel':
+    'School=Necromancy ' +
+    'Description="Sacrifice boosts nexus recovery rate"',
+  'Silver Blood':
+    'School=Transmutation ' +
+    'Description="Caster's blood damages astiraxes for 1 hr"',
+  'Silver Storm':
+    'School=Transmutation ' +
+    'Description="R$RS' Targets in cone ${Lmin15}d4 HP silver needle (Ref half)"',
+  'Silver Wind':
+    'School=Conjuration ' +
+    'Description="R$RM' Targets in 20' circle d6/rd for $L rd (Will neg)"',
+  'Stone Soup':
+    'School=Transmutation ' +
+    'Description="Buried stone creates broth"',
   // Sorcery and Shadow
-  "Arcane Impotence":"R$RM' Target Channeler must use $Ldiv2 spell energy to cast w/in $L rd (Will $Ldiv2 rd)",
-  "Arcane Interference":"Spells require added $Ldiv2 energy to affect 10' radius of touched for $L min (Will neg)",
-  "Assist":"R$RS' Targets in 30' radius +2 skill checks for conc + 1 rd",
-  "Bestow Spell":"Touched convey spell (Will neg)",
-  "Bleed Power":"Successful foe attack on self causes 1d6 HP to attacker for $L10 min",
-  "Boil Blood":"R$RS' Target 1d8 HP for conc + 1 rd (Fort half)",
-  "Burial":"R$RS' Earth swallows target non-living, unattended object",
-  "Channel Might":"Touched next hit does maximum+$L HP w/in $L rd (Will neg)",
-  "Confer Power":"Transfer spell energy to nearby casters for $L rd", 
-  "Fell Forbiddance":"R$RS' Target ${lvl*25}' sq area impassible to undead for $L min (Will neg for intelligent)",
-  "Fey Fire":"Touched point invisible 5' radius fire that warms and heals 1 HP for $L hr",
-  "Fey Hearth":"R$RS' Creatures in 30' radius of target fire +2 Will saves, heal 1.5xlevel HP for as long as fire lasts",
-  "Greater Questing Bird":"Self temporarily learn spell le level 6",
-  "Inspiration":"Touched +10 one Craft check",
-  "Inspirational Might":"R$RS' 4 allies in 30' radius +2d10 HP, +2 attack, +1 Fortitude save for $Ldiv2 rd",
-  "Joyful Speech":"R$RM' Listeners in 30' radius improve reaction, unshaken, +4 vs. fear for $L rd (Will neg)",
-  "Know The Name":"Discover name(s) of touched (Will neg)",
-  "Lie":"+10 Bluff on next lie",
-  "Magic Circle Against Shadow":"10' radius from touched +2 AC/+2 saves/extra save vs. mental control/no contact vs. Izrador agents for $L10 min (Will neg)",
-  "Memorial":"Touched $L10' radius replays previous/next $L min to next passerby",
-  "Pacify":"R$RS' ${Math.floor(lvl/3) + 1} targets cannot attack for $Ldiv2 rd (Will neg)",
-  "Peasant's Rest":"Touched gets 8 hrs rest from 4 hrs sleep",
-  "Phantom Edge":"Touched weapon different type for $L min (Will neg)",
-  "Questing Bird":"Self temporarily learn spell le level 3",
-  "Scryer's Mark":"Touched -4 Will vs. scrying (Will neg)",
-  "Speak With Fell":"R$RS' Compel 3 correct answers from target fell w/in $L min (Will neg)",
-  "Weather":"R$RM' 60' radius, 30' high cylinder of rain or snow",
-  "Willful Stand":"R$RM' Target cannot attack self or enter threat space for conc (Will neg)",
-  "Withering Speech":"R$RS' Target 1 Wis, 1 Cha damage/min for conc",
-  "Woeful Speech":"R$RM' Listeners in 30' radius shaken, -4 vs. fear for $L rd (Will neg)",
+  'Arcane Impotence':
+    'School=Abjuration ' +
+    'Description="R$RM' Target Channeler must use $Ldiv2 spell energy to cast w/in $L rd (Will $Ldiv2 rd)"',
+  'Arcane Interference':
+    'School=Abjuration ' +
+    'Description="Spells require added $Ldiv2 energy to affect 10' radius of touched for $L min (Will neg)"',
+  'Assist':
+    'School=Enchantment ' +
+    'Description="R$RS' Targets in 30' radius +2 skill checks for conc + 1 rd"',
+  'Bestow Spell':
+    'School=Evocation ' +
+    'Description="Touched convey spell (Will neg)"',
+  'Bleed Power':
+    'School="Greater Evocation" ' +
+    'Description="Successful foe attack on self causes 1d6 HP to attacker for $L10 min"',
+  'Boil Blood':
+    'School=Transmutation ' +
+    'Description="R$RS' Target 1d8 HP for conc + 1 rd (Fort half)"',
+  'Burial':
+    'School=Transmutation ' +
+    'Description="R$RS' Earth swallows target non-living, unattended object"',
+  'Channel Might':
+    'School=Evocation ' +
+    'Description="Touched next hit does maximum+$L HP w/in $L rd (Will neg)"',
+  'Confer Power':
+    'School=Transmutation ' +
+    'Description="Transfer spell energy to nearby casters for $L rd", 
+  'Fell Forbiddance':
+    'School=Abjuration ' +
+    'Description="R$RS' Target ${lvl*25}' sq area impassible to undead for $L min (Will neg for intelligent)"',
+  'Fey Fire':
+    'School=Conjuration ' +
+    'Description="Touched point invisible 5' radius fire that warms and heals 1 HP for $L hr"',
+  'Fey Hearth':
+    'School=Abjuration ' +
+    'Description="R$RS' Creatures in 30' radius of target fire +2 Will saves, heal 1.5xlevel HP for as long as fire lasts"',
+  'Greater Questing Bird':
+    'School=Conjuration ' +
+    'Description="Self temporarily learn spell le level 6"',
+  'Inspiration':
+    'School=Enchantment ' +
+    'Description="Touched +10 one Craft check"',
+  'Inspirational Might':
+    'School=Enchantment ' +
+    'Description="R$RS' 4 allies in 30' radius +2d10 HP, +2 attack, +1 Fortitude save for $Ldiv2 rd"',
+  'Joyful Speech':
+    'School=Enchantment ' +
+    'Description="R$RM' Listeners in 30' radius improve reaction, unshaken, +4 vs. fear for $L rd (Will neg)"',
+  'Know The Name':
+    'School=Divination ' +
+    'Description="Discover name(s) of touched (Will neg)"',
+  'Lie':
+    'School=Transmutation ' +
+    'Description="+10 Bluff on next lie"',
+  'Magic Circle Against Shadow':
+    'School=Abjuration ' +
+    'Description="10' radius from touched +2 AC/+2 saves/extra save vs. mental control/no contact vs. Izrador agents for $L10 min (Will neg)"',
+  'Memorial':
+    'School=Divination ' +
+    'Description="Touched $L10' radius replays previous/next $L min to next passerby"',
+  'Pacify':
+    'School=Abjuration ' +
+    'Description="R$RS' ${Math.floor(lvl/3) + 1} targets cannot attack for $Ldiv2 rd (Will neg)"',
+  "Peasant's Rest":
+    'School=Conjuration ' +
+    'Description="Touched gets 8 hrs rest from 4 hrs sleep"',
+  'Phantom Edge':
+    'School=Transmutation ' +
+    'Description="Touched weapon different type for $L min (Will neg)"',
+  'Questing Bird':
+    'School=Conjuration ' +
+    'Description="Self temporarily learn spell le level 3"',
+  "Scryer's Mark":
+    'School=Divination ' +
+    'Description="Touched -4 Will vs. scrying (Will neg)"',
+  'Speak With Fell':
+    'School=Necromancy ' +
+    'Description="R$RS' Compel 3 correct answers from target fell w/in $L min (Will neg)"',
+  'Weather':
+    'School=Conjuration ' +
+    'Description="R$RM' 60' radius, 30' high cylinder of rain or snow"',
+  'Willful Stand':
+    'School=Abjuration ' +
+    'Description="R$RM' Target cannot attack self or enter threat space for conc (Will neg)"',
+  'Withering Speech':
+    'School=Enchantment ' +
+    'Description="R$RS' Target 1 Wis, 1 Cha damage/min for conc"',
+  'Woeful Speech':
+    'School=Enchantment ' +
+    'Description="R$RM' Listeners in 30' radius shaken, -4 vs. fear for $L rd (Will neg)"',
 };
-LastAge.spellsSchools = {
-  // Core rulebook
-  'Charm Repair':'Transmutation', 'Detect Astirax':'Divination',
-  'Disguise Ally':'Illusion', 'Disguise Weapon':'Illusion',
-  'Far Whisper':'Divination', 'Greenshield':'Illusion',
-  'Halfling Burrow':'Transmutation', 'Lifetrap':'Transmutation',
-  "Nature's Revelation":'Transmutation', 'Nexus Fuel':'Necromancy',
-  'Silver Blood':'Transmutation', 'Silver Storm':'Transmutation',
-  'Silver Wind':'Conjuration', 'Stone Soup':'Transmutation',
-  // Sorcery and Shadow
-  "Arcane Impotence":"Abjuration", "Arcane Interference":"Abjuration",
-  'Assist':'Enchantment', 'Bestow Spell':'Evocation',
-  "Bleed Power":"Greater Evocation", "Boil Blood":"Transmutation",
-  'Burial':'Transmutation', 'Channel Might':'Evocation',
-  'Confer Power':'Transmutation', "Fell Forbiddance":"Abjuration",
-  "Fey Fire":"Conjuration", "Fey Hearth":"Abjuration",
-  "Greater Questing Bird":"Conjuration", "Inspiration":"Enchantment",
-  "Inspirational Might":"Enchantment", "Joyful Speech":"Enchantment",
-  "Know The Name":"Divination", 'Lie':'Transmutation',
-  'Magic Circle Against Shadow':'Abjuration', "Memorial":"Divination",
-  "Pacify":"Abjuration", "Peasant's Rest":"Conjuration",
-  'Phantom Edge':'Transmutation', "Questing Bird":"Conjuration",
-  "Scryer's Mark":'Divination', "Speak With Fell":"Necromancy",
-  "Weather":"Conjuration", "Willful Stand":"Abjuration",
-  "Withering Speech":"Enchantment", "Woeful Speech":"Enchantment",
+LastAge.SPELLS = Object.assign({}, SRD35.SPELLS, LastAge.SPELLS_ADDED);
+LastAge.SPELL_SCHOOL_CHANGES = {
   // SRD spells placed in Greater Conjuration/Evocation
-  'Burning Hands':'Greater Evocation', 'Call Lightning':'Greater Evocation',
+  'Burning Hands':'Greater Evocation',
+  'Call Lightning':'Greater Evocation',
   'Call Lightning Storm':'Greater Evocation',
-  'Chain Lightning':'Greater Evocation', 'Clenched Fist':'Greater Evocation',
-  'Cone Of Cold':'Greater Evocation', 'Creeping Doom':'Greater Conjuration',
+  'Chain Lightning':'Greater Evocation',
+  'Clenched Fist':'Greater Evocation',
+  'Cone Of Cold':'Greater Evocation',
+  'Creeping Doom':'Greater Conjuration',
   'Crushing Hand':'Greater Evocation',
   'Delayed Blast Fireball':'Greater Evocation',
-  'Earthquake':'Greater Evocation', 'Elemental Swarm':'Greater Conjuration',
-  'Fire Shield':'Greater Evocation', 'Fire Storm':'Greater Evocation',
-  'Fireball':'Greater Evocation', 'Flame Blade':'Greater Evocation',
-  'Flame Strike':'Greater Evocation', 'Flaming Sphere':'Greater Evocation',
-  'Floating Disk':'Greater Evocation', 'Forcecage':'Greater Evocation',
-  'Forceful Hand':'Greater Evocation', 'Freezing Sphere':'Greater Evocation',
-  'Gate':'Greater Conjuration', 'Grasping Hand':'Greater Evocation',
+  'Earthquake':'Greater Evocation',
+  'Elemental Swarm':'Greater Conjuration',
+  'Fire Shield':'Greater Evocation',
+  'Fire Storm':'Greater Evocation',
+  'Fireball':'Greater Evocation',
+  'Flame Blade':'Greater Evocation',
+  'Flame Strike':'Greater Evocation',
+  'Flaming Sphere':'Greater Evocation',
+  'Floating Disk':'Greater Evocation',
+  'Forcecage':'Greater Evocation',
+  'Forceful Hand':'Greater Evocation',
+  'Freezing Sphere':'Greater Evocation',
+  'Gate':'Greater Conjuration',
+  'Grasping Hand':'Greater Evocation',
   'Greater Planar Binding':'Greater Conjuration',
-  'Gust Of Wind':'Greater Evocation', 'Hallow':'Greater Evocation',
-  'Ice Storm':'Greater Evocation', 'Insect Plague':'Greater Conjuration',
+  'Gust Of Wind':'Greater Evocation',
+  'Hallow':'Greater Evocation',
+  'Ice Storm':'Greater Evocation',
+  'Insect Plague':'Greater Conjuration',
   'Interposing Hand':'Greater Evocation',
   'Lesser Planar Binding':'Greater Conjuration',
-  'Lightning Bolt':'Greater Evocation', "Mage's Sword":'Greater Evocation',
-  'Magic Missile':'Greater Evocation', 'Meteor Swarm':'Greater Evocation',
-  'Mount':'Greater Conjuration', 'Planar Binding':'Greater Conjuration',
-  'Polar Ray':'Greater Evocation', 'Produce Flame':'Greater Evocation',
-  'Resilient Sphere':'Greater Evocation', 'Scorching Ray':'Greater Evocation',
-  'Secret Chest':'Greater Conjuration', 'Shocking Grasp':'Greater Evocation',
+  'Lightning Bolt':'Greater Evocation',
+  "Mage's Sword":'Greater Evocation',
+  'Magic Missile':'Greater Evocation',
+  'Meteor Swarm':'Greater Evocation',
+  'Mount':'Greater Conjuration',
+  'Planar Binding':'Greater Conjuration',
+  'Polar Ray':'Greater Evocation',
+  'Produce Flame':'Greater Evocation',
+  'Resilient Sphere':'Greater Evocation',
+  'Scorching Ray':'Greater Evocation',
+  'Secret Chest':'Greater Conjuration',
+  'Shocking Grasp':'Greater Evocation',
   'Storm Of Vengeance':'Greater Conjuration',
   'Summon Instrument':'Greater Conjuration',
   'Summon Monster I':'Greater Conjuration',
@@ -337,14 +1051,46 @@ LastAge.spellsSchools = {
   "Summon Nature's Ally VII":'Greater Conjuration',
   "Summon Nature's Ally VIII":'Greater Conjuration',
   'Summon Swarm':'Greater Conjuration',
-  'Telekinetic Sphere':'Greater Evocation', 'Tiny Hut':'Greater Evocation',
-  'Trap The Soul':'Greater Conjuration', 'Unhallow':'Greater Evocation',
-  'Wall Of Fire':'Greater Evocation', 'Wall Of Force':'Greater Evocation',
-  'Wall Of Ice':'Greater Evocation', 'Whirlwind':'Greater Evocation',
+  'Telekinetic Sphere':'Greater Evocation',
+  'Tiny Hut':'Greater Evocation',
+  'Trap The Soul':'Greater Conjuration',
+  'Unhallow':'Greater Evocation',
+  'Wall Of Fire':'Greater Evocation',
+  'Wall Of Force':'Greater Evocation',
+  'Wall Of Ice':'Greater Evocation',
+  'Whirlwind':'Greater Evocation',
   'Wind Wall':'Greater Evocation',
   // Other SRD spells w/different school
-  'Ray Of Frost':'Conjuration', 'Zone Of Silence':'Enchantment'
+  'Ray Of Frost':'Conjuration',
+  'Zone Of Silence':'Enchantment'
 };
+for(var spell in LastAge.SPELL_SCHOOL_CHANGES) {
+  LastAge.SPELLS[spell] +=
+    ' School="' + LastAge.SPELL_SCHOOL_CHANGES[spell] + '"';
+}
+LastAge.USE_PATHFINDER = false;
+LastAge.WEAPONS_ADDED = {
+  'Atharak':'Level=3 Category=2h Damage=d6',
+  'Cedeku':'Level=3 Category=Li Damage=d6 Threat=19',
+  'Crafted Vardatch':'Level=3 Category=1h Damage=d10 Threat=19',
+  'Dornish Horse Spear':'Level=3 Category=2h Damage=d10 Crit=3',
+  "Farmer's Rope":'Level=1 Category=Li Damage=d2",
+  'Fighting Knife':'Level=3 Category=Li Damage=d6 Threat=19 Crit=3',
+  'Great Sling':'Level=1 Category=R Damage=d6 Range=60',
+  'Greater Vardatch':'Level=3 Category=2h Damage=2d8',
+  'Halfling Lance':'Level=3 Category=2h Damage=d8 Crit=3',
+  'Icewood Longbow':'Level=3 Category=R Damage=d8 Crit=3 Range=120',
+  'Inutek':'Level=3 Category=R Damage=d3 Range=20',
+  'Sarcosan Lance':'Level=3 Category=2h Damage=d8 Crit=3',
+  'Sepi':'Level=3 Category=Li Damage=d6 Threat=18',
+  // TODO 'Shard Arrow':'Level=1 d6@16x1',
+  'Staghorn':'Level=3 Category=1h Damage=d6',
+  'Tack Whip':'Level=1 Category=Li Damage=d4',
+  'Urutuk Hatchet':'Level=3 Category=1h Damage=d8 Crit=3 Range=20',
+  'Vardatch':'Level=3 Category=1h Damage=d12'
+};
+LastAge.WEAPONS = Object.assign({}, SRD35.WEAPONS, LastAge.WEAPONS_ADDED);
+
 LastAge.racesFavoredRegions = {
   'Agrarian Halfling':'Central Erenland',
   'Clan Dwarf':'Kaladrun Mountains/Subterranean',
@@ -435,764 +1181,633 @@ LastAge.racesLanguages = {
 /* Defines the rules related to character abilities. */
 LastAge.abilityRules = function(rules) {
   LastAge.baseRules.abilityRules(rules);
-}
+  // No changes needed to the rules defined by base method
+};
 
-/* Defines the rules related to core classes. */
-LastAge.classRules = function(rules, classes) {
+/* Defines rules related to animal companions and familiars. */
+Pathfinder.aideRules = function(rules, companions, familiars) {
+  LastAge.baseRules.aideRules(rules, companions, familiars);
+  // No changes needed to the rules defined by base method
+};
 
-  for(var i = 0; i < classes.length; i++) {
+/* Defines rules related to combat. */
+Pathfinder.combatRules = function(rules, armors, shields, weapons) {
+  LastAge.baseRules.combatRules(rules, armors, shields, weapons);
+  // No changes needed to the rules defined by base method
+};
 
-    var baseAttack, feats, features, hitDie, notes, profArmor, profShield,
-        profWeapon, saveFortitude, saveReflex, saveWill, selectableFeatures,
-        skillPoints, skills, spellAbility, spellsKnown, spellsPerDay;
-    var klass = classes[i];
-    var klassNoSpace =
-      klass.substring(0,1).toLowerCase() + klass.substring(1).replace(/ /g, '');
+/* Defines the rules related to goodies included in character notes. */
+Pathfinder.goodiesRules = function(rules) {
+  LastAge.baseRules.goodiesRules(rules);
+  // No changes needed to the rules defined by base method
+};
 
-    if(klass == 'Barbarian') {
+/* Defines rules related to basic character identity. */
+Pathfinder.identityRules = function(
+  rules, alignments, classes, deities, domains, genders, heroicPaths, races
+) {
+  if(LastAge.baseRules == SRD35)
+    SRD35.identityRules
+      (rules, alignments, classes, deities, domains, genders, races);
+  else
+    Pathfinder.identityRules
+      (rules, alignments, [], classes, deities, domains, [], genders, races, []);
+  for(var path in heroicPaths) {
+    rules.choiceRules(rules, 'Heroic Path', path, heroicPaths[path]);
+  }
+  rules.defineEditorElement('deity');
+  rules.defineSheetElement('Deity');
+  rules.defineEditorElement
+    ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
+  rules.defineSheetElement('Heroic Path', 'Alignment');
+};
 
-      LastAge.baseRules.classRules(rules, [klass]);
-      rules.defineRule
-        ('classSkills.Speak Language', 'levels.Barbarian', '=', '1');
-      continue; // Not defining a new class
+/* Defines rules related to magic use. */
+LastAge.magicRules = function(rules, schools, spells) {
+  LastAge.baseRules.magicRules(rules, schools, spells);
+  // No changes needed to the rules defined by base method
+};
 
-    } else if(klass.indexOf(' Channeler') >= 0) {
+/* Defines rules related to character feats, languages, and skills. */
+LastAge.talentRules = function(rules, feats, features, languages, skills) {
+  LastAge.baseRules.talentRules(rules, feats, features, languages, skills);
+  // No changes needed to the rules defined by base method
+};
 
-      baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
-      feats = null;
-      features = ['1:Art Of Magic', '2:Familiar'];
-      hitDie = 6;
-      notes = [
-        'featureNotes.familiarFeature:Special bond/abilities',
-        'magicNotes.artOfMagicFeature:+1 character level for max spell level'
-      ];
-      profArmor = SRD35.PROFICIENCY_NONE;
-      profShield = SRD35.PROFICIENCY_NONE;
-      profWeapon = SRD35.PROFICIENCY_LIGHT;
-      saveFortitude = SRD35.SAVE_BONUS_POOR;
-      saveReflex = SRD35.SAVE_BONUS_POOR;
-      saveWill = SRD35.SAVE_BONUS_GOOD;
-      selectableFeatures = null;
-      skillPoints = 4;
-      skills = [
-        'Concentration', 'Craft', 'Decipher Script', 'Handle Animal', 'Heal',
-        'Knowledge (Arcana)', 'Knowledge (Spirits)', 'Profession', 'Ride',
-        'Search', 'Speak Language', 'Spellcraft'
-      ];
-      spellAbility = null;
-      spellsKnown = null;
-      spellsPerDay = null;
-      rules.defineRule('familiarLevel',
-        'channelerLevels', '+=', 'source >= 2 ? Math.floor(source / 2) : null'
-      );
-      rules.defineRule('familiarMasterLevel', 'channelerLevels', '+=', null);
-      rules.defineRule('featCount.' + klass,
-        'levels.' + klass, '=',
-        'source >= 4 ? Math.floor((source - 1) / 3) : null'
-      );
-      rules.defineRule('featCount.Spellcasting',
-        'channelerLevels', '+=',
-        'source >= 2 ? Math.floor((source + 1) / 3) : null'
-      );
-      rules.defineRule
-        ('magicNotes.channelerSpellEnergy', 'channelerLevels', '=', null);
-      rules.defineRule('magicNotes.channelerSpellsKnown',
-        'channelerLevels', '=', '(source - 1) * 2'
-      );
-      rules.defineRule
-        ('spellEnergy', 'magicNotes.channelerSpellEnergy', '+', null);
-      rules.defineRule
-        ('spellsKnownBonus', 'magicNotes.channelerSpellsKnown', '+', null);
+/*
+ * Adds #name# as a possible user #type# choice and parses #attrs# to add rules
+ * related to selecting that choice.
+ */
+LastAge.choiceRules = function(rules, type, name, attrs) {
+  if(type == 'Alignment')
+    LastAge.alignmentRules(rules, name);
+  else if(type == 'Animal Companion')
+    LastAge.companionRules(rules, name,
+      QuilvynUtils.getAttrValue(attrs, 'Str'),
+      QuilvynUtils.getAttrValue(attrs, 'Int'),
+      QuilvynUtils.getAttrValue(attrs, 'Wis'),
+      QuilvynUtils.getAttrValue(attrs, 'Dex'),
+      QuilvynUtils.getAttrValue(attrs, 'Con'),
+      QuilvynUtils.getAttrValue(attrs, 'Cha'),
+      QuilvynUtils.getAttrValue(attrs, 'HD'),
+      QuilvynUtils.getAttrValue(attrs, 'AC'),
+      QuilvynUtils.getAttrValue(attrs, 'Attack'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Dam'),
+      QuilvynUtils.getAttrValue(attrs, 'Level'),
+      QuilvynUtils.getAttrValue(attrs, 'Size')
+    );
+  else if(type == 'Armor')
+    LastAge.armorRules(rules, name,
+      QuilvynUtils.getAttrValue(attrs, 'AC'),
+      QuilvynUtils.getAttrValue(attrs, 'Weight'),
+      QuilvynUtils.getAttrValue(attrs, 'Dex'),
+      QuilvynUtils.getAttrValue(attrs, 'Skill'),
+      QuilvynUtils.getAttrValue(attrs, 'Spell')
+    );
+  } else if(type == 'Class') {
+    LastAge.classRules(rules, name,
+      QuilvynUtils.getAttrValueArray(attrs, 'Require'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Imply'),
+      QuilvynUtils.getAttrValue(attrs, 'HitDie'),
+      QuilvynUtils.getAttrValue(attrs, 'Attack'),
+      QuilvynUtils.getAttrValue(attrs, 'SkillPoints'),
+      QuilvynUtils.getAttrValue(attrs, 'Fortitude'),
+      QuilvynUtils.getAttrValue(attrs, 'Reflex'),
+      QuilvynUtils.getAttrValue(attrs, 'Will'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Skills'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Features'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Selectables'),
+      QuilvynUtils.getAttrValue(attrs, 'CasterLevelArcane'),
+      QuilvynUtils.getAttrValue(attrs, 'CasterLevelDivine'),
+      QuilvynUtils.getAttrValue(attrs, 'SpellAbility'),
+      QuilvynUtils.getAttrValueArray(attrs, 'SpellsPerDay'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
+      Pathfinder.SPELLS
+    );
+    LastAge.classRulesExtra(rules, name);
+  else if(type == 'Domain') {
+    LastAge.domainRules(rules, name,
+      QuilvynUtils.getAttrValueArray(attrs, 'Features'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
+      Pathfinder.SPELLS
+    );
+    LastAge.domainRulesExtras(rules, name);
+  } else if(type == 'Familiar')
+    LastAge.familiarRules(rules, name,
+      QuilvynUtils.getAttrValue(attrs, 'Str'),
+      QuilvynUtils.getAttrValue(attrs, 'Int'),
+      QuilvynUtils.getAttrValue(attrs, 'Wis'),
+      QuilvynUtils.getAttrValue(attrs, 'Dex'),
+      QuilvynUtils.getAttrValue(attrs, 'Con'),
+      QuilvynUtils.getAttrValue(attrs, 'Cha'),
+      QuilvynUtils.getAttrValue(attrs, 'HD'),
+      QuilvynUtils.getAttrValue(attrs, 'AC'),
+      QuilvynUtils.getAttrValue(attrs, 'Attack'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Dam'),
+      QuilvynUtils.getAttrValue(attrs, 'Level'),
+      QuilvynUtils.getAttrValue(attrs, 'Size')
+    );
+  else if(type == 'Feat') {
+    LastAge.featRules(rules, name,
+      QuilvynUtils.getAttrValueArray(attrs, 'Type'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Require'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Imply')
+    );
+    LastAge.featRulesExtra(rules, name);
+  } else if(type == 'Feature')
+    LastAge.featureRules(rules, name, attrs);
+  else if(type == 'Gender')
+    LastAge.genderRules(rules, name);
+  else if(type == 'Language')
+    LastAge.languageRules(rules, name);
+  else if(type == 'Race') {
+    LastAge.raceRules(rules, name,
+      QuilvynUtils.getAttrValueArray(attrs, 'Features'),
+      QuilvynUtils.getAttrValue(attrs, 'SpellAbility'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
+      Pathfinder.SPELLS
+    );
+    LastAge.raceRulesExtra(rules, name);
+  } else if(type == 'School') {
+    LastAge.schoolRules(rules, name,
+      QuilvynUtils.getAttrValueArray(attrs, 'Features')
+    );
+    LastAge.schoolRulesExtra(rules, name);
+  } else if(type == 'Shield')
+    LastAge.shieldRules(rules, name,
+      QuilvynUtils.getAttrValue(attrs, 'AC'),
+      QuilvynUtils.getAttrValue(attrs, 'Weight'),
+      QuilvynUtils.getAttrValue(attrs, 'Skill'),
+      QuilvynUtils.getAttrValue(attrs, 'Spell')
+    );
+  else if(type == 'Skill') {
+    var untrained = QuilvynUtils.getAttrValue(attrs, 'Untrained');
+    LastAge.skillRules(rules, name,
+      QuilvynUtils.getAttrValue(attrs, 'Ability'),
+      untrained != 'n' && untrained != 'N',
+      QuilvynUtils.getAttrValueArray(attrs, 'Class')
+    );
+    LastAge.skillRulesExtra(rules, name);
+  } else if(type == 'Spell')
+    LastAge.spellRules(rules, name,
+      QuilvynUtils.getAttrValue(attrs, 'School'),
+      QuilvynUtils.getAttrValue(attrs, 'Group'),
+      QuilvynUtils.getAttrValue(attrs, 'Level'),
+      QuilvynUtils.getAttrValue(attrs, 'Description')
+    );
+  } else if(type == 'Weapon')
+    LastAge.weaponRules(rules, name,
+      QuilvynUtils.getAttrValue(attrs, 'Level'),
+      QuilvynUtils.getAttrValue(attrs, 'Category'),
+      QuilvynUtils.getAttrValue(attrs, 'Damage'),
+      QuilvynUtils.getAttrValue(attrs, 'Threat'),
+      QuilvynUtils.getAttrValue(attrs, 'Crit'),
+      QuilvynUtils.getAttrValue(attrs, 'Range')
+    );
+  else {
+    console.log('Unknown choice type "' + type + '"');
+    return;
+  }
+  if(type != 'Feature') {
+    type = type == 'Class' ? 'levels' :
+    (type.substring(0,1).toLowerCase() + type.substring(1).replace(/ /g, '') + 's');
+    rules.addChoice(type, name, attrs);
+  }
+};
 
-      if(klass == 'Charismatic Channeler') {
-        feats = ['Extra Gift', 'Spell Knowledge'];
-        for(var j = 0; j < LastAge.SCHOOLS.length; j++) {
-          var school = LastAge.SCHOOLS[j].split(':')[0];
-          feats[feats.length] = 'Greater Spell Focus (' + school + ')';
-          feats[feats.length] = 'Spell Focus (' + school + ')';
-        }
-        features = features.concat([
-          '1:Magecraft (Charismatic)', '3:Force Of Personality'
-        ]);
-        notes = notes.concat([
-          'magicNotes.forceOfPersonalityFeature:' +
-            'Inspire Confidence/Fascination/Fury/Suggestion %V/day',
-          'magicNotes.greaterConfidenceFeature:' +
-            '<i>Break Enchantment</i> 1/5 rounds during Inspire Confidence',
-          'magicNotes.greaterFuryFeature:' +
-            'Ally gains 2d10 hit points/+2 attack/+1 Fortitude save',
-          'magicNotes.improvedConfidenceFeature:' +
-            'Allies failing enchantment saves affected for half duration; ' +
-            'fear reduced',
-          'magicNotes.improvedFuryFeature:' +
-            'Additional +1 initiative/attack/damage',
-          'magicNotes.inspireConfidenceFeature:' +
-            "Allies w/in 60' +4 save vs. enchantment/fear for %V rounds",
-          'magicNotes.inspireFascinationFeature:' +
-            "%V creatures w/in 120' make %1 DC Will save or enthralled " +
-            '%2 rounds',
-          'magicNotes.inspireFuryFeature:' +
-            "Allies w/in 60' +1 initiative/attack/damage %V rounds",
-          'magicNotes.magecraft(Charismatic)Feature:' +
-            '4 spells/%V spell energy points',
-          'magicNotes.massSuggestionFeature:' +
-            '<i>Suggestion</i> to %V fascinated creatures',
-          'magicNotes.suggestionFeature:' +
-            '<i>Suggestion</i> to 1 fascinated creature'
-        ]);
-        selectableFeatures = [
-          'Greater Confidence', 'Greater Fury', 'Improved Confidence',
-          'Improved Fury', 'Inspire Confidence', 'Inspire Fascination',
-          'Inspire Fury', 'Mass Suggestion', 'Suggestion'
-        ];
-        skills = skills.concat([
-          'Bluff', 'Diplomacy', 'Gather Information', 'Intimidate',
-          'Sense Motive'
-        ]);
-        spellAbility = 'charisma';
-        rules.defineRule
-          ('channelerLevels', 'levels.Charismatic Channeler', '+=', null);
-        rules.defineRule('magicNotes.forceOfPersonalityFeature',
-          'charismaModifier', '=', '3 + source'
-        );
-        rules.defineRule('magicNotes.inspireConfidenceFeature',
-          'levels.Charismatic Channeler', '=', null
-        );
-        rules.defineRule('magicNotes.inspireFascinationFeature',
-          'levels.Charismatic Channeler', '=', null
-        );
-        rules.defineRule('magicNotes.inspireFascinationFeature.1',
-          'levels.Charismatic Channeler', '=', '10 + Math.floor(source / 2)',
-          'charismaModifier', '+', null
-        );
-        rules.defineRule('magicNotes.inspireFascinationFeature.2',
-          'levels.Charismatic Channeler', '=', null
-        );
-        rules.defineRule('magicNotes.inspireFuryFeature',
-          'levels.Charismatic Channeler', '=', 'source + 5'
-        );
-        rules.defineRule('magicNotes.magecraft(Charismatic)Feature',
-          'charismaModifier', '=', null
-        );
-        rules.defineRule('magicNotes.massSuggestionFeature',
-          'levels.Charismatic Channeler', '=', 'Math.floor(source / 3)'
-        );
-        rules.defineRule('selectableFeatureCount.Charismatic Channeler',
-          'levels.Charismatic Channeler', '=',
-          'source < 3 ? null : Math.floor(source / 3)'
-        );
-        rules.defineRule('spellEnergy',
-          'magicNotes.magecraft(Charismatic)Feature', '+=', null
-        );
-        rules.defineRule('spellsKnown.B0',
-          'magicNotes.magecraft(Charismatic)Feature', '+=', '3'
-        );
-        rules.defineRule('spellsKnown.B1',
-          'magicNotes.magecraft(Charismatic)Feature', '+=', '1'
-        );
-      } else if(klass == 'Hermetic Channeler') {
-        feats = ['Spell Knowledge'];
-        var allFeats = SRD35.FEATS.concat(LastAge.FEATS);
-        for(var j = 0; j < allFeats.length; j++) {
-          var pieces = allFeats[j].split(':');
-          if(pieces[1].match(/Item Creation|Metamagic/)) {
-            feats.push(pieces[0]);
-          }
-        }
-        features = features.concat(['1:Magecraft (Hermetic)', '3:Lorebook']);
-        notes = notes.concat([
-          'magicNotes.magecraft(Hermetic)Feature:' +
-            '4 spells/%V spell energy points',
-          'skillNotes.foeSpecialtyFeature:' +
-            'Each day choose a creature type to take 10 on Knowledge checks',
-          'skillNotes.knowledgeSpecialtyFeature:' +
-            'Each day Choose a Knowledge Skill Focus',
-          'skillNotes.lorebookFeature:' +
-            'Study 1 minute for knowledge of situation; scan at -10',
-          'skillNotes.quickReferenceFeature:Reduce Lorebook scan penalty by %V',
-          'skillNotes.spellSpecialtyFeature:Each day choose a spell for +1 DC'
-        ]);
-        selectableFeatures = [
-          'Foe Specialty', 'Knowledge Specialty', 'Quick Reference',
-          'Spell Specialty'
-        ];
-        skills = skills.concat(['Knowledge']);
-        spellAbility = 'intelligence';
-        rules.defineRule
-          ('channelerLevels', 'levels.Hermetic Channeler', '+=', null);
-        rules.defineRule('magicNotes.magecraft(Hermetic)Feature',
-          'intelligenceModifier', '=', null
-        );
-        rules.defineRule('selectableFeatureCount.Hermetic Channeler',
-          'levels.Hermetic Channeler', '=',
-          'source < 3 ? null : Math.floor(source / 3)'
-        );
-        rules.defineRule('skillNotes.quickReferenceFeature',
-          'hermeticChannelerFeatures.Quick Reference', '=', '5 * source'
-        );
-        rules.defineRule('spellEnergy',
-          'magicNotes.magecraft(Hermetic)Feature', '+=', null
-        );
-        rules.defineRule('spellsKnown.W0',
-          'magicNotes.magecraft(Hermetic)Feature', '+=', '3'
-        );
-        rules.defineRule('spellsKnown.W1',
-          'magicNotes.magecraft(Hermetic)Feature', '+=', '1'
-        );
-      } else if(klass == 'Spiritual Channeler') {
-        feats = ['Extra Gift', 'Spell Knowledge'];
-        var allFeats = SRD35.FEATS.concat(LastAge.FEATS);
-        for(var j = 0; j < allFeats.length; j++) {
-          var pieces = allFeats[j].split(':');
-          if(pieces[1].indexOf('Item Creation') >= 0) {
-            feats.push(pieces[0]);
-          }
-        }
-        features = features.concat([
-          '1:Magecraft (Spiritual)', '3:Master Of Two Worlds'
-        ]);
-        notes = notes.concat([
-          'combatNotes.confidentEffectFeature:+4 Master of Two Worlds checks',
-          'combatNotes.heightenedEffectFeature:' +
-            '+2 level for Master of Two Worlds checks',
-          'combatNotes.masteryOfNatureFeature:Turn animals/plants',
-          'combatNotes.masteryOfSpiritsFeature:Turn to exorcise spirits',
-          'combatNotes.masteryOfTheUnnaturalFeature:' +
-            'Turn constructs/outsiders (double hit die)',
-          'combatNotes.masterOfTwoWorldsFeature:' +
-            'Mastery of Nature/Spirits/The Unnatural %V/day',
-          'combatNotes.powerfulEffectFeature:+1d6 mastery damage',
-          'combatNotes.preciseEffectFeature:Choose type of creature to affect',
-          'combatNotes.specificEffectFeature:Choose individuals to affect',
-          'combatNotes.universalEffectFeature:' +
-            'Use multiple mastery powers simultaneously',
-          'magicNotes.magecraft(Spiritual)Feature:' +
-            '4 spells/%V spell energy points'
-        ]);
-        selectableFeatures = [
-          'Confident Effect', 'Heightened Effect', 'Mastery Of Nature',
-          'Mastery Of Spirits', 'Mastery Of The Unnatural', 'Powerful Effect',
-          'Precise Effect', 'Specific Effect', 'Universal Effect'
-        ];
-        skills = skills.concat([
-          'Diplomacy', 'Knowledge (Nature)', 'Sense Motive', 'Survival', 'Swim'
-        ]);
-        spellAbility = 'wisdom';
-        rules.defineRule
-          ('channelerLevels', 'levels.Spiritual Channeler', '+=', null);
-        rules.defineRule('combatNotes.masterOfTwoWorldsFeature',
-          'levels.Spiritual Channeler', '?', 'source >= 3',
-          'wisdomModifier', '=', '3 + source'
-        );
-        rules.defineRule('magicNotes.magecraft(Spiritual)Feature',
-          'wisdomModifier', '=', null
-        );
-        rules.defineRule('selectableFeatureCount.Spiritual Channeler',
-          'levels.Spiritual Channeler', '=',
-          'source < 3 ? null : Math.floor(source / 3)'
-        );
-        rules.defineRule('spellEnergy',
-          'magicNotes.magecraft(Spiritual)Feature', '+=', null
-        );
-        rules.defineRule('spellsKnown.D0',
-          'magicNotes.magecraft(Spiritual)Feature', '+=', '3'
-        );
-        rules.defineRule('spellsKnown.D1',
-          'magicNotes.magecraft(Spiritual)Feature', '+=', '1'
-        );
-        var turningTargets = {
-          'Nature':'Nature', 'Spirits':'Spirit', 'The Unnatural':'Unnatural'
-        };
-        for(var a in turningTargets) {
-          var prefix = 'turn' + turningTargets[a];
-          rules.defineRule(prefix + '.level',
-            'features.Mastery Of ' + a, '?', null,
-            'levels.Spiritual Channeler', '+=', null
-          );
-          rules.defineRule(prefix + '.damageModifier',
-            prefix + '.level', '=', null,
-            'wisdomModifier', '+', null
-          );
-          rules.defineRule(prefix + '.frequency',
-            prefix + '.level', '=', '3',
-            'wisdomModifier', '+', null
-          );
-          rules.defineRule(prefix + '.maxHitDice',
-            prefix + '.level', '=', 'source * 3 - 10',
-            'wisdomModifier', '+', null
-          );
-          rules.defineNote([
-            prefix + '.damageModifier:2d6 + %V',
-            prefix + '.frequency:%V/day',
-            prefix + '.maxHitDice:(d20 + %V) / 3'
-          ]);
-          rules.defineSheetElement
-            ('Turn ' + turningTargets[a], 'Turn Undead', null, ' * ');
-        }
+/* Defines in #rules# the rules associated with alignment #name#. */
+LastAge.alignmentRules = function(rules, name) {
+  LastAge.baseRules.alignmentRules(rules, name);
+  // No changes needed to the rules defined by base method
+};
+
+/*
+ * Defines in #rules# the rules associated with armor #name#, which adds #ac#
+ * to the character's armor class, requires a #weight# proficiency level to
+ * use effectively, allows a maximum dex bonus to ac of #maxDex#, imposes
+ * #skillPenalty# on specific skills and yields a #spellFail# percent chance of
+ * arcane spell failure.
+ */
+LastAge.armorRules = function(
+  rules, name, ac, weight, maxDex, skillPenalty, spellFail
+) {
+  LastAge.baseRules.armorRules
+    (rules, name, ac, weight, maxDex, skillPenalty, spellFail);
+  // No changes needed to the rules defined by base method
+};
+
+/*
+ * Defines in #rules# the rules associated with animal companion #name#, which
+ * has abilities #str#, #intel#, #wis#, #dex#, #con#, and #cha#, hit dice #hd#,
+ * and armor class #ac#. The companion has attack bonus #attack# and does
+ * #damage# damage. If specified, #level# indicates the minimum master level
+ * the character needs to have this animal as a companion.
+ */
+LastAge.companionRules = function(
+  rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, level, size
+) {
+  LastAge.baseRules.companionRules
+    (rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage,
+     level, size);
+  // No changes needed to the rules defined by base method
+};
+
+/*
+ * Defines in #rules# the rules associated with deity #name#. #domains# and
+ * #favoredWeapons# list the associated domains and favored weapons.
+ */
+LastAge.deityRules = function(rules, name, domains, favoredWeapons) {
+  LastAge.baseRules.deityRules(rules, name, domains, favoredWeapons);
+  // No changes needed to the rules defined by base method
+};
+
+/*
+ * Defines in #rules# the rules associated with domain #name#. #features# and
+ * #spells# list the associated features and domain spells.
+ */
+LastAge.domainRules = function(rules, name, features, spells, spellDict) {
+  LastAge.baseRules.domainRules(rules, name, features, spells, spellDict);
+  // No changes needed to the rules defined by base method
+};
+
+/*
+ * Defines in #rules# the rules associated with class #name#, which has the list
+ * of hard prerequisites #requires# and soft prerequisites #implies#. The class
+ * grants #hitDie# (format [n]'d'n) additional hit points and #skillPoint#
+ * additional skill points with each level advance. #attack# is one of '1',
+ * '1/2', or '3/4', indicating the base attack progression for the class;
+ * similarly, #saveFort#, #saveRef#, and #saveWill# are each one of '1/2' or
+ * '1/3', indicating the saving through progressions. #skills# indicate class
+ * skills for the class (but see also skillRules for an alternate way these can
+ * be defined). #features# and #selectables# list the features and selectable
+ * features acquired as the character advances in class level.
+ * #casterLevelArcane# and #casterLevelDivine#, if specified, give the
+ * expression for determining the caster level for the class; within these
+ * expressions the text "Level" indicates class level. #spellAbility#, if
+ * specified, contains the base ability for computing spell difficulty class
+ * for cast spells. #spellsPerDay# lists the number of spells per day that the
+ * class can cast, and #spells# lists spells defined by the class.
+ */
+LastAge.classRules = function(
+  rules, name, requires, implies, hitDie, attack, skillPoints, saveFort,
+  saveRef, saveWill, skills, features, selectables, casterLevelArcane,
+  casterLevelDivine, spellAbility, spellsPerDay, spells, spellDict
+) {
+  LastAge.baseRules.classRules(
+    rules, name, requires, implies, hitDie, attack, skillPoints, saveFort,
+    saveRef, saveWill, skills, features, selectables, casterLevelArcane,
+    casterLevelDivine, spellAbility, spellsPerDay, spells, spellDict
+  );
+};
+
+LastAge.classRulesExtra = function(rules, name) {
+
+  if(name.indexOf(' Channeler') >= 0) {
+
+    rules.defineRule('familiarLevel',
+      'channelerLevels', '+=', 'source >= 2 ? Math.floor(source / 2) : null'
+    );
+    rules.defineRule('familiarMasterLevel', 'channelerLevels', '+=', null);
+    rules.defineRule('featCount.' + name,
+      'levels.' + name, '=',
+      'source >= 4 ? Math.floor((source - 1) / 3) : null'
+    );
+    rules.defineRule('featCount.Spellcasting',
+      'channelerLevels', '+=',
+      'source >= 2 ? Math.floor((source + 1) / 3) : null'
+    );
+    rules.defineRule
+      ('magicNotes.channelerSpellEnergy', 'channelerLevels', '=', null);
+    rules.defineRule('magicNotes.channelerSpellsKnown',
+      'channelerLevels', '=', '(source - 1) * 2'
+    );
+    rules.defineRule
+      ('spellEnergy', 'magicNotes.channelerSpellEnergy', '+', null);
+    rules.defineRule
+      ('spellsKnownBonus', 'magicNotes.channelerSpellsKnown', '+', null);
+
+    if(name == 'Charismatic Channeler') {
+      feats = ['Extra Gift', 'Spell Knowledge'];
+      for(var j = 0; j < LastAge.SCHOOLS.length; j++) {
+        var school = LastAge.SCHOOLS[j].split(':')[0];
+        feats[feats.length] = 'Greater Spell Focus (' + school + ')';
+        feats[feats.length] = 'Spell Focus (' + school + ')';
       }
-
-    } else if(klass == 'Defender') {
-
-      baseAttack = SRD35.ATTACK_BONUS_GOOD;
-      feats = null;
-      features = [
-        '1:Improved Unarmed Strike', '1:Masterful Strike',
-        "1:Weapon Proficiency (Club/Dagger/Dart/Farmer's Rope/Handaxe/Inutek/Light Hammer/Light Pick/Quarterstaff/Sap/Sickle/Throwing Axe/Sling/Great Sling)",
-        '2:Defender Abilities', '2:Defender Stunning Fist',
-        '3:Improved Grapple', '4:Precise Strike'
-      ];
-      hitDie = 8;
-      notes = [
-        'abilityNotes.incredibleSpeedFeature:+%V speed',
-        'combatNotes.counterattackFeature:AOO on foe miss 1/round',
-        "combatNotes.coverAllyFeature:Take hit for ally w/in 5' 1/round",
-        'combatNotes.defenderAbilitiesFeature:' +
-          'Counterattack/Cover Ally/Defender Stunning Fist/Devastating ' +
-          'Strike/Rapid Strike/Retaliatory Strike/Strike And Hold/Weapon ' +
-          'Trap %V/day',
-        'combatNotes.defenderStunningFistFeature:' +
-          'Foe %V Fortitude save or stunned',
-        'combatNotes.devastatingStrikeFeature:' +
-          'Bull Rush stunned opponent as free action w/out foe AOO',
-        'combatNotes.dodgeTrainingFeature:+%V AC',
-        'combatNotes.flurryAttackFeature:' +
-          'Two-weapon off hand penalty reduced by %V',
-        'combatNotes.furiousGrappleFeature:' +
-          'Extra grapple attack at highest attack bonus 1/round',
-        'combatNotes.grapplingTrainingFeature:' +
-          'Disarm/sunder/trip attacks use grapple check',
-        'combatNotes.improvedGrappleFeature:No AOO on Grapple, +4 Grapple',
-        'combatNotes.improvedUnarmedStrikeFeature:' +
-          'No AOO on unarmed attack, may deal lethal damage',
-        'combatNotes.incredibleResilienceFeature:+%V HP',
-        'combatNotes.masterfulStrikeFeature:%V unarmed damage',
-        'combatNotes.offensiveTrainingFeature:' +
-           'Stunned foe %V DC save to avoid blinding/deafening',
-        'combatNotes.oneWithTheWeaponFeature:' +
-          'Masterful Strike/Precise Strike/Stunning Fist w/chosen weapon',
-        'combatNotes.preciseStrikeFeature:' +
-          'Overcome %V points of foe damage reduction',
-        'combatNotes.rapidStrikeFeature:' +
-          'Extra attack at highest attack bonus 1/round',
-        'combatNotes.retaliatoryStrikeFeature:' +
-          'AOO vs. foe that strikes ally 1/round',
-        'combatNotes.speedTrainingFeature:Extra move action each round',
-        'combatNotes.strikeAndHoldFeature:Extra unarmed attack to grab foe',
-        'combatNotes.weaponTrapFeature:' +
-          'Attack to catch foe weapon for disarm/damage/AOO 1/round',
-        'saveNotes.defensiveMasteryFeature:+%V all saves'
-      ];
-      profArmor = SRD35.PROFICIENCY_NONE;
-      profShield = SRD35.PROFICIENCY_NONE;
-      profWeapon = SRD35.PROFICIENCY_NONE;
-      saveFortitude = SRD35.SAVE_BONUS_POOR;
-      saveReflex = SRD35.SAVE_BONUS_GOOD;
-      saveWill = SRD35.SAVE_BONUS_POOR;
-      selectableFeatures = [
-       'Counterattack', 'Cover Ally', 'Defensive Mastery', 'Devastating Strike',
-       'Dodge Training', 'Flurry Attack', 'Furious Grapple',
-       'Grappling Training', 'Incredible Resilience', 'Incredible Speed',
-       'Offensive Training', 'One With The Weapon', 'Rapid Strike',
-       'Retaliatory Strike', 'Speed Training', 'Strike And Hold', 'Weapon Trap'
-      ];
-      skillPoints = 4;
-      skills = [
-        'Balance', 'Bluff', 'Climb', 'Craft', 'Escape Artist', 'Handle Animal',
-        'Hide', 'Jump', 'Knowledge (Local)', 'Knowledge (Shadow)', 'Listen',
-        'Move Silently', 'Profession', 'Ride', 'Sense Motive',
-        'Speak Language', 'Swim', 'Tumble'
-      ];
-      spellAbility = null;
-      spellsKnown = null;
-      spellsPerDay = null;
-      rules.defineRule('abilityNotes.incredibleSpeedFeature',
-        'defenderFeatures.Incredible Speed', '=', '10 * source'
-      );
-      rules.defineRule('armorClass',
-        'combatNotes.defenderArmorClassAdjustment', '+', null,
-        'combatNotes.dodgeTrainingFeature', '+', null
-      );
-      rules.defineRule('combatNotes.defenderAbilitiesFeature',
-        'levels.Defender', '=', '3 + source * 3 / 4',
-        'level', '+', 'source / 4'
-      );
-      rules.defineRule('combatNotes.defenderArmorClassAdjustment',
-        'levels.Defender', '=', 'Math.floor((source + 1) / 2)'
-      );
-      rules.defineRule('combatNotes.defenderStunningFistFeature',
-        'levels.Defender', '=', '10 + Math.floor(source / 2)',
-        'strengthModifier', '+', null
-      );
-      rules.defineRule('combatNotes.dodgeTrainingFeature',
-        'defenderFeatures.Dodge Training', '=', null
-      );
-      rules.defineRule('combatNotes.flurryAttackFeature',
-        'defenderFeatures.Flurry Attack', '=', null
-      );
-      rules.defineRule('combatNotes.incredibleResilienceFeature',
-        'defenderFeatures.Incredible Resilience', '=', '3 * source'
-      );
-      rules.defineRule('combatNotes.masterfulStrikeFeature',
-        'defenderUnarmedDamageLarge', '=', null,
-        'defenderUnarmedDamageMedium', '=', null,
-        'defenderUnarmedDamageSmall', '=', null
-      );
-      rules.defineRule('combatNotes.offensiveTrainingFeature',
-        'levels.Defender', '=', '14 + Math.floor(source / 2)',
-        'strengthModifier', '+', null
-      );
-      rules.defineRule('combatNotes.preciseStrikeFeature',
-        'levels.Defender', '=', '3 * Math.floor((source + 2) / 6)'
-      );
-      rules.defineRule('defenderUnarmedDamageLarge',
-        'features.Large', '?', null,
-        'defenderUnarmedDamageMedium', '=', 'source.replace(/6/, "8")'
-      );
-      rules.defineRule('defenderUnarmedDamageMedium',
-        'levels.Defender', '=',
-        '"1d6" + (source < 7 ? "" : ("+" + Math.floor((source-1) / 6) + "d6"))'
-      );
-      rules.defineRule('defenderUnarmedDamageSmall',
-        'features.Small', '?', null,
-        'defenderUnarmedDamageMedium', '=', 'source.replace(/6/, "4")'
-      );
       rules.defineRule
-        ('hitPoints', 'combatNotes.incredibleResilienceFeature', '+', null);
-      rules.defineRule
-        ('save.Fortitude', 'saveNotes.defensiveMasteryFeature', '+', null);
-      rules.defineRule
-        ('save.Reflex', 'saveNotes.defensiveMasteryFeature', '+', null);
-      rules.defineRule
-        ('save.Will', 'saveNotes.defensiveMasteryFeature', '+', null);
-      rules.defineRule('saveNotes.defensiveMasteryFeature',
-        'defenderFeatures.Defensive Mastery', '=', null
+        ('channelerLevels', 'levels.Charismatic Channeler', '+=', null);
+      rules.defineRule('magicNotes.forceOfPersonalityFeature',
+        'charismaModifier', '=', '3 + source'
       );
-      rules.defineRule('selectableFeatureCount.Defender',
-        'levels.Defender', '=',
-        'source < 2 ? null : (Math.floor((source + 1) / 3) + ' +
-                             '(source < 6 ? 0 : Math.floor((source - 3) / 3)))'
+      rules.defineRule('magicNotes.inspireConfidenceFeature',
+        'levels.Charismatic Channeler', '=', null
       );
-      rules.defineRule
-        ('speed', 'abilityNotes.incredibleSpeedFeature', '+', null);
-      rules.defineRule('weaponDamage.Unarmed',
-        'combatNotes.masterfulStrikeFeature', '=', null
+      rules.defineRule('magicNotes.inspireFascinationFeature',
+        'levels.Charismatic Channeler', '=', null
       );
-
-    } else if(klass == 'Fighter') {
-
-      baseAttack = SRD35.ATTACK_BONUS_GOOD;
-      feats = null;
-      features = null;
-      hitDie = 10;
-      notes = [
-        'skillNotes.adapterFeature:+%V skill points or %1 additional class skills'
-      ];
-      profArmor = SRD35.PROFICIENCY_HEAVY;
-      profShield = SRD35.PROFICIENCY_TOWER;
-      profWeapon = SRD35.PROFICIENCY_MEDIUM;
-      saveFortitude = SRD35.SAVE_BONUS_GOOD;
-      saveReflex = SRD35.SAVE_BONUS_POOR;
-      saveWill = SRD35.SAVE_BONUS_POOR;
-      selectableFeatures = [
-        'Adapter', 'Improviser', 'Leader Of Men', 'Survivor'
-      ];
-      skillPoints = 2;
-      skills = [
-        'Climb', 'Craft', 'Handle Animal', 'Intimidate', 'Jump',
-        'Knowledge (Shadow)', 'Profession', 'Ride', 'Speak Language', 'Swim'
-      ];
-      spellAbility = null;
-      spellsKnown = null;
-      spellsPerDay = null;
-      rules.defineChoice('feats',
-        'Improved Grapple:Improviser', 'Improved Unarmed Strike:Improviser',
-        'Improvised Weapon:Improviser', 'Stunning Fist:Improviser',
-        'Iron Will:Leader Of Men', 'Leadership:Leader Of Men',
-        'Skill Focus (Diplomacy):Leader Of Men',
-        'Skill Focus (Profession (Soldier)):Leader Of Men',
-        'Combat Expertise:Survivor', 'Dodge:Survivor', 'Endurance:Survivor'
-      );
-      rules.defineRule('featCount.Fighter',
-        'levels.Fighter', '=', '1 + Math.floor(source / 2)'
-      );
-      rules.defineRule('featCount.Improviser',
-        'features.Improviser', '?', null,
-        'levels.Fighter', '=', 'Math.floor((source + 2) / 6)'
-      );
-      rules.defineRule('featCount.Leader Of Men',
-        'features.Leader Of Men', '?', null,
-        'levels.Fighter', '=', 'Math.floor((source + 2) / 6)'
-      );
-      rules.defineRule('featCount.Survivor',
-        'features.Survivor', '?', null,
-        'levels.Fighter', '=', 'Math.floor((source + 2) / 6)'
-      );
-      rules.defineRule('selectableFeatureCount.Fighter',
-       'levels.Fighter', '=', 'source >= 4 ? 1 : null'
-      );
-      rules.defineRule('skillNotes.adapterFeature',
-        'levels.Fighter', '=',
-        'source - 3 + (source >= 10 ? source - 9 : 0) + ' +
-        '(source >= 16 ? source - 15 : 0)'
-      );
-      rules.defineRule('skillNotes.adapterFeature.1',
-        'fighterFeatures.Adapter', '?', null,
-        'levels.Fighter', '=', 'source < 10 ? 1 : source < 16 ? 2 : 3'
-      );
-
-    } else if(klass == 'Legate') {
-
-      baseAttack = SRD35.ATTACK_BONUS_AVERAGE;
-      feats = null;
-      features = [
-        '1:Spontaneous Legate Spell', '1:Temple Dependency', '1:Turn Undead',
-        '3:Astirax Companion'
-      ];
-      hitDie = 8;
-      notes = [
-        'combatNotes.turnUndeadFeature:' +
-          'Turn (good) or rebuke (evil) undead creatures',
-        'featureNotes.astiraxCompanionFeature:Special bond/abilities',
-        'magicNotes.spontaneousLegateSpellFeature:<i>Inflict</i>',
-        'magicNotes.templeDependencyFeature:' +
-          'Must participate at temple to receive spells'
-      ];
-      profArmor = SRD35.PROFICIENCY_HEAVY;
-      profShield = SRD35.PROFICIENCY_HEAVY;
-      profWeapon = SRD35.PROFICIENCY_LIGHT;
-      saveFortitude = SRD35.SAVE_BONUS_GOOD;
-      saveReflex = SRD35.SAVE_BONUS_POOR;
-      saveWill = SRD35.SAVE_BONUS_GOOD;
-      selectableFeatures = null;
-      skillPoints = 4;
-      skills = [
-        'Concentration', 'Craft', 'Diplomacy', 'Handle Animal', 'Heal',
-        'Intimidate', 'Knowledge (Arcana)', 'Knowledge (Shadow)',
-        'Knowledge (Spirits)', 'Profession', 'Speak Language', 'Spellcraft'
-      ];
-      spellAbility = 'wisdom';
-      spellsKnown = [
-        'C0:1:"all"', 'C1:1:"all"', 'C2:3:"all"', 'C3:5:"all"',
-        'C4:7:"all"', 'C5:9:"all"', 'C6:11:"all"', 'C7:13:"all"',
-        'C8:15:"all"', 'C9:17:"all"',
-        'Dom1:1:"all"', 'Dom2:3:"all"', 'Dom3:5:"all"', 'Dom4:7:"all"',
-        'Dom5:9:"all"', 'Dom6:11:"all"', 'Dom7:13:"all"', 'Dom8:15:"all"',
-        'Dom9:17:"all"'
-      ];
-      spellsPerDay = [
-        'C0:1:3/2:4/4:5/7:6',
-        'C1:1:1/2:2/4:3/7:4/11:5',
-        'C2:3:1/4:2/6:3/9:4/13:5',
-        'C3:5:1/6:2/8:3/11:4/15:5',
-        'C4:7:1/8:2/10:3/13:4/17:5',
-        'C5:9:1/10:2/12:3/15:4/19:5',
-        'C6:11:1/12:2/14:3/17:4',
-        'C7:13:1/14:2/16:3/19:4',
-        'C8:15:1/16:2/18:3/20:4',
-        'C9:17:1/18:2/19:3/20:4'
-      ];
-      rules.defineRule('astiraxMasterLevel', 'levels.Legate', '+=', null);
-      rules.defineRule('casterLevels.C', 'levels.Legate', '=', null);
-      rules.defineRule('casterLevels.Dom', 'casterLevels.C', '+=', null);
-      rules.defineRule('casterLevelDivine', 'casterLevels.C', '+=', null);
-      rules.defineRule('deity', 'levels.Legate', '=', '"Izrador (NE)"');
-      rules.defineRule('domainCount', 'levels.Legate', '+=', '2');
-      rules.defineRule('features.Weapon Focus (Longsword)',
-        'legateFeatures.Weapon Focus (Longsword)', '=', null
-      );
-      rules.defineRule('features.Weapon Proficiency (Longsword)',
-        'legateFeatures.Weapon Proficiency (Longsword)', '=', null
-      );
-      rules.defineRule('legateFeatures.Weapon Focus (Longsword)',
-        'domains.War', '?', null,
-        'levels.Legate', '=', '1'
-      );
-      rules.defineRule('legateFeatures.Weapon Proficiency (Longsword)',
-        'domains.War', '?', null,
-        'levels.Legate', '=', '1'
-      );
-      for(var j = 1; j < 10; j++) {
-        rules.defineRule('spellsPerDay.Dom' + j,
-          'levels.Legate', '=',
-          'source >= ' + (j * 2 - 1) + ' ? 1 : null');
-      }
-      rules.defineRule('turnUndead.level', 'levels.Legate', '+=', null);
-
-    } else if(klass == 'Rogue') {
-
-      LastAge.baseRules.classRules(rules, [klass]);
-      rules.defineRule
-        ('classSkills.Knowledge (Shadow)', 'levels.Rogue', '=', '1');
-      rules.defineRule
-        ('classSkills.Speak Language', 'levels.Rogue', '=', '1');
-      continue; // Not defining a new class
-
-    } else if(klass == 'Wildlander') {
-
-      baseAttack = SRD35.ATTACK_BONUS_GOOD;
-      feats = null;
-      features = [
-        '1:Track', '3:Danger Sense', '3:Initiative Bonus', "4:Hunter's Strike"
-      ];
-      hitDie = 8;
-      notes = [
-        'abilityNotes.quickStrideFeature:+%V speed',
-        'combatNotes.huntedByTheShadowFeature:No surprise by servant of shadow',
-        "combatNotes.hunter'sStrikeFeature:x2 damage %V/day",
-        'combatNotes.hatedFoeFeature:' +
-          "Additional Hunter's Strike vs. Master Hunter creature",
-        'combatNotes.improvedInitiativeFeature:+4 initiative',
-        'combatNotes.instinctiveResponseFeature:Re-roll initiative check',
-        'combatNotes.masterHunterFeature:' +
-          '+2 or more damage vs. selected creature type(s)',
-        "combatNotes.trueAimFeature:x3 damage on Hunter's Strike",
-        'featureNotes.animalCompanionFeature:' +
-          'Special bond/abilities w/up to %V animals',
-        'featureNotes.improvedWoodlandStrideFeature:' +
-          'Normal movement through enchanted terrain',
-        'featureNotes.overlandStrideFeature:' +
-          'Normal movement while using Survival',
-        'featureNotes.senseDarkMagicFeature:Scent vs. legate/outsider',
-        'featureNotes.tracklessStepFeature:Untrackable outdoors',
-        'featureNotes.woodlandStrideFeature:' +
-          'Normal movement through undergrowth',
-        'featureNotes.woodsloreFeature:' +
-          "Automatic Search vs. trap/concealed door w/in 5'",
-        'magicNotes.senseDarkMagicFeature:' +
-          '<i>Detect Magic</i> vs. legate/outsider at will',
-        'saveNotes.evasionFeature:Reflex save yields no damage instead of 1/2',
-        'saveNotes.improvedEvasionFeature:Failed save yields 1/2 damage',
-        'saveNotes.slipperyMindFeature:Second save vs. enchantment',
-        'skillNotes.dangerSenseFeature:+%V Listen/Spot',
-        'skillNotes.hideInPlainSightFeature:Hide even when observed',
-        'skillNotes.masterHunterFeature:' +
-          '+2 or more Bluff, Listen, Sense Motive, Spot, Survival vs. chosen ' +
-          'creature type(s)',
-        // Split comment since no +3 bonus in SRD35 Rogue feature of same name
-        'skillNotes.skillMasteryFeature:' +
-          'Take 10 despite distraction on %V chosen skills',
-        'skillNotes.skillMasteryFeature2:+3 on %V chosen skills',
-        "skillNotes.trackFeature:Survival to follow creatures' trail",
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy (animals)',
-        'skillNotes.wildernessTrapfindingFeature:' +
-          'Search to find/Survival to remove DC 20+ traps'
-      ];
-      profArmor = SRD35.PROFICIENCY_MEDIUM;
-      profShield = SRD35.PROFICIENCY_HEAVY;
-      profWeapon = SRD35.PROFICIENCY_MEDIUM;
-      saveFortitude = SRD35.SAVE_BONUS_GOOD;
-      saveReflex = SRD35.SAVE_BONUS_POOR;
-      saveWill = SRD35.SAVE_BONUS_POOR;
-      selectableFeatures = [
-        'Alertness', 'Animal Companion', 'Camouflage', 'Danger Sense',
-        'Evasion', 'Hated Foe', 'Hide In Plain Sight', 'Hunted By The Shadow',
-        'Improved Evasion', 'Improved Initiative', 'Improved Woodland Stride',
-        'Initiative Bonus', 'Instinctive Response', 'Master Hunter',
-        'Overland Stride', 'Quick Stride', 'Sense Dark Magic', 'Skill Mastery',
-        'Slippery Mind', 'Trackless Step', 'True Aim', 'Wild Empathy',
-        'Wilderness Trapfinding', 'Woodland Stride', 'Woodslore'
-      ];
-      skillPoints = 6;
-      skills = [
-        'Balance', 'Climb', 'Craft', 'Handle Animal', 'Heal', 'Hide', 'Jump',
-        'Knowledge (Geography)', 'Knowledge (Nature)', 'Listen',
-        'Move Silently', 'Profession', 'Ride', 'Search', 'Speak Language',
-        'Spot', 'Survival', 'Swim', 'Use Rope'
-      ];
-      spellAbility = null;
-      spellsKnown = null;
-      spellsPerDay = null;
-      rules.defineRule('abilityNotes.quickStrideFeature',
-        'wildlanderFeatures.Quick Stride', '=', '10 * source'
-      );
-      rules.defineRule('casterLevels.Wildlander',
-        'wilderlanderFeatures.Sense Dark Magic', '?', null,
-        'level', '=', null
-      );
-      rules.defineRule
-        ('casterLevels.Detect Magic', 'casterLevels.Wildlander', '^=', null);
-      rules.defineRule('casterLevels.W', 'casterLevels.Wildlander', '^=', null);
-      rules.defineRule
-        ('companionMasterLevel', 'levels.Wildlander', '+=', null);
-      rules.defineRule("combatNotes.hunter'sStrikeFeature",
-        'levels.Wildlander', '=', 'Math.floor(source / 4)'
-      );
-      rules.defineRule('combatNotes.initiativeBonusFeature',
-        'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
-        'wildlanderFeatures.Initiative Bonus', '+', null
-      );
-      rules.defineRule('featureNotes.animalCompanionFeature',
-        'wildlanderFeatures.Animal Companion', '+=', null
-      );
-      rules.defineRule('initiative',
-        'combatNotes.improvedInitiativeFeature', '+', '4',
-        'combatNotes.initiativeBonusFeature', '+', null
-      );
-      rules.defineRule('selectableFeatureCount.Wildlander',
-        'levels.Wildlander', '=',
-        '1 + Math.floor((source + 1) / 3) + ' +
-        '(source < 6 ? 0 : Math.floor((source - 3) / 3))'
-      );
-      rules.defineRule('skillNotes.dangerSenseFeature',
-        'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
-        'wildlanderFeatures.Danger Sense', '+', null
-      );
-      rules.defineRule('skillNotes.skillMasteryFeature',
-        'wildlanderFeatures.Skill Mastery', '+=', null
-      );
-      rules.defineRule('skillNotes.skillMasteryFeature2',
-        'wildlanderFeatures.Skill Mastery', '+=', null
-      );
-      rules.defineRule('skillNotes.wildEmpathyFeature',
-        'levels.Wildlander', '+=', 'source',
+      rules.defineRule('magicNotes.inspireFascinationFeature.1',
+        'levels.Charismatic Channeler', '=', '10 + Math.floor(source / 2)',
         'charismaModifier', '+', null
       );
-      rules.defineRule('speed', 'abilityNotes.quickStrideFeature', '+', null);
-
-    } else
-      continue;
-
-    if(LastAge.USE_PATHFINDER) {
-      notes = LastAge.SRD35ToPathfinder(notes);
-      skills = LastAge.SRD35ToPathfinder(skills);
-    }
-    SRD35.defineClass
-      (rules, klass, hitDie, skillPoints, baseAttack, saveFortitude, saveReflex,
-       saveWill, profArmor, profShield, profWeapon, skills, features,
-       spellsKnown, spellsPerDay, spellAbility);
-    if(LastAge.USE_PATHFINDER) {
-      // Override SRD35 skillPoints rule
+      rules.defineRule('magicNotes.inspireFascinationFeature.2',
+        'levels.Charismatic Channeler', '=', null
+      );
+      rules.defineRule('magicNotes.inspireFuryFeature',
+        'levels.Charismatic Channeler', '=', 'source + 5'
+      );
+      rules.defineRule('magicNotes.magecraft(Charismatic)Feature',
+        'charismaModifier', '=', null
+      );
+      rules.defineRule('magicNotes.massSuggestionFeature',
+        'levels.Charismatic Channeler', '=', 'Math.floor(source / 3)'
+      );
+      rules.defineRule('selectableFeatureCount.Charismatic Channeler',
+        'levels.Charismatic Channeler', '=',
+        'source < 3 ? null : Math.floor(source / 3)'
+      );
+      rules.defineRule('spellEnergy',
+        'magicNotes.magecraft(Charismatic)Feature', '+=', null
+      );
+      rules.defineRule('spellsKnown.B0',
+        'magicNotes.magecraft(Charismatic)Feature', '+=', '3'
+      );
+      rules.defineRule('spellsKnown.B1',
+        'magicNotes.magecraft(Charismatic)Feature', '+=', '1'
+      );
+    } else if(name == 'Hermetic Channeler') {
+      feats = ['Spell Knowledge'];
+      var allFeats = SRD35.FEATS.concat(LastAge.FEATS);
+      for(var j = 0; j < allFeats.length; j++) {
+        var pieces = allFeats[j].split(':');
+        if(pieces[1].match(/Item Creation|Metamagic/)) {
+          feats.push(pieces[0]);
+        }
+      }
       rules.defineRule
-        ('skillPoints', 'levels.' + klass, '+', 'source * ' + skillPoints);
-    }
-    if(notes != null)
-      rules.defineNote(notes);
-    if(feats != null) {
-      for(var j = 0; j < feats.length; j++) {
-        rules.defineChoice('feats', feats[j] + ':' + klass);
+        ('channelerLevels', 'levels.Hermetic Channeler', '+=', null);
+      rules.defineRule('magicNotes.magecraft(Hermetic)Feature',
+        'intelligenceModifier', '=', null
+      );
+      rules.defineRule('selectableFeatureCount.Hermetic Channeler',
+        'levels.Hermetic Channeler', '=',
+        'source < 3 ? null : Math.floor(source / 3)'
+      );
+      rules.defineRule('skillNotes.quickReferenceFeature',
+        'hermeticChannelerFeatures.Quick Reference', '=', '5 * source'
+      );
+      rules.defineRule('spellEnergy',
+        'magicNotes.magecraft(Hermetic)Feature', '+=', null
+      );
+      rules.defineRule('spellsKnown.W0',
+        'magicNotes.magecraft(Hermetic)Feature', '+=', '3'
+      );
+      rules.defineRule('spellsKnown.W1',
+        'magicNotes.magecraft(Hermetic)Feature', '+=', '1'
+      );
+    } else if(name == 'Spiritual Channeler') {
+      feats = ['Extra Gift', 'Spell Knowledge'];
+      var allFeats = SRD35.FEATS.concat(LastAge.FEATS);
+      for(var j = 0; j < allFeats.length; j++) {
+        var pieces = allFeats[j].split(':');
+        if(pieces[1].indexOf('Item Creation') >= 0) {
+          feats.push(pieces[0]);
+        }
+      }
+      rules.defineRule
+        ('channelerLevels', 'levels.Spiritual Channeler', '+=', null);
+      rules.defineRule('combatNotes.masterOfTwoWorldsFeature',
+        'levels.Spiritual Channeler', '?', 'source >= 3',
+        'wisdomModifier', '=', '3 + source'
+      );
+      rules.defineRule('magicNotes.magecraft(Spiritual)Feature',
+        'wisdomModifier', '=', null
+      );
+      rules.defineRule('selectableFeatureCount.Spiritual Channeler',
+        'levels.Spiritual Channeler', '=',
+        'source < 3 ? null : Math.floor(source / 3)'
+      );
+      rules.defineRule('spellEnergy',
+        'magicNotes.magecraft(Spiritual)Feature', '+=', null
+      );
+      rules.defineRule('spellsKnown.D0',
+        'magicNotes.magecraft(Spiritual)Feature', '+=', '3'
+      );
+      rules.defineRule('spellsKnown.D1',
+        'magicNotes.magecraft(Spiritual)Feature', '+=', '1'
+      );
+      var turningTargets = {
+        'Nature':'Nature', 'Spirits':'Spirit', 'The Unnatural':'Unnatural'
+      };
+      for(var a in turningTargets) {
+        var prefix = 'turn' + turningTargets[a];
+        rules.defineRule(prefix + '.level',
+          'features.Mastery Of ' + a, '?', null,
+          'levels.Spiritual Channeler', '+=', null
+        );
+        rules.defineRule(prefix + '.damageModifier',
+          prefix + '.level', '=', null,
+          'wisdomModifier', '+', null
+        );
+        rules.defineRule(prefix + '.frequency',
+          prefix + '.level', '=', '3',
+          'wisdomModifier', '+', null
+        );
+        rules.defineRule(prefix + '.maxHitDice',
+          prefix + '.level', '=', 'source * 3 - 10',
+          'wisdomModifier', '+', null
+        );
+        rules.defineNote([
+          prefix + '.damageModifier:2d6 + %V',
+          prefix + '.frequency:%V/day',
+          prefix + '.maxHitDice:(d20 + %V) / 3'
+        ]);
+        rules.defineSheetElement
+          ('Turn ' + turningTargets[a], 'Turn Undead', null, ' * ');
       }
     }
-    if(selectableFeatures != null) {
-      for(var j = 0; j < selectableFeatures.length; j++) {
-        var selectable = selectableFeatures[j];
-        var choice = klass + ' - ' + selectable;
-        rules.defineChoice('selectableFeatures', choice + ':' + klass);
-        rules.defineRule(klassNoSpace + 'Features.' + selectable,
-          'selectableFeatures.' + choice, '+=', null
-        );
-        rules.defineRule('features.' + selectable,
-          'selectableFeatures.' + choice, '+=', null
-        );
-      }
+
+  } else if(name == 'Defender') {
+
+    rules.defineRule('abilityNotes.incredibleSpeedFeature',
+      'defenderFeatures.Incredible Speed', '=', '10 * source'
+    );
+    rules.defineRule('armorClass',
+      'combatNotes.defenderArmorClassAdjustment', '+', null,
+      'combatNotes.dodgeTrainingFeature', '+', null
+    );
+    rules.defineRule('combatNotes.defenderAbilitiesFeature',
+      'levels.Defender', '=', '3 + source * 3 / 4',
+      'level', '+', 'source / 4'
+    );
+    rules.defineRule('combatNotes.defenderArmorClassAdjustment',
+      'levels.Defender', '=', 'Math.floor((source + 1) / 2)'
+    );
+    rules.defineRule('combatNotes.defenderStunningFistFeature',
+      'levels.Defender', '=', '10 + Math.floor(source / 2)',
+      'strengthModifier', '+', null
+    );
+    rules.defineRule('combatNotes.dodgeTrainingFeature',
+      'defenderFeatures.Dodge Training', '=', null
+    );
+    rules.defineRule('combatNotes.flurryAttackFeature',
+      'defenderFeatures.Flurry Attack', '=', null
+    );
+    rules.defineRule('combatNotes.incredibleResilienceFeature',
+      'defenderFeatures.Incredible Resilience', '=', '3 * source'
+    );
+    rules.defineRule('combatNotes.masterfulStrikeFeature',
+      'defenderUnarmedDamageLarge', '=', null,
+      'defenderUnarmedDamageMedium', '=', null,
+      'defenderUnarmedDamageSmall', '=', null
+    );
+    rules.defineRule('combatNotes.offensiveTrainingFeature',
+      'levels.Defender', '=', '14 + Math.floor(source / 2)',
+      'strengthModifier', '+', null
+    );
+    rules.defineRule('combatNotes.preciseStrikeFeature',
+      'levels.Defender', '=', '3 * Math.floor((source + 2) / 6)'
+    );
+    rules.defineRule('defenderUnarmedDamageLarge',
+      'features.Large', '?', null,
+      'defenderUnarmedDamageMedium', '=', 'source.replace(/6/, "8")'
+    );
+    rules.defineRule('defenderUnarmedDamageMedium',
+      'levels.Defender', '=',
+      '"1d6" + (source < 7 ? "" : ("+" + Math.floor((source-1) / 6) + "d6"))'
+    );
+    rules.defineRule('defenderUnarmedDamageSmall',
+      'features.Small', '?', null,
+      'defenderUnarmedDamageMedium', '=', 'source.replace(/6/, "4")'
+    );
+    rules.defineRule
+      ('hitPoints', 'combatNotes.incredibleResilienceFeature', '+', null);
+    rules.defineRule
+      ('save.Fortitude', 'saveNotes.defensiveMasteryFeature', '+', null);
+    rules.defineRule
+      ('save.Reflex', 'saveNotes.defensiveMasteryFeature', '+', null);
+    rules.defineRule
+      ('save.Will', 'saveNotes.defensiveMasteryFeature', '+', null);
+    rules.defineRule('saveNotes.defensiveMasteryFeature',
+      'defenderFeatures.Defensive Mastery', '=', null
+    );
+    rules.defineRule('selectableFeatureCount.Defender',
+      'levels.Defender', '=',
+      'source < 2 ? null : (Math.floor((source + 1) / 3) + ' +
+                           '(source < 6 ? 0 : Math.floor((source - 3) / 3)))'
+    );
+    rules.defineRule
+      ('speed', 'abilityNotes.incredibleSpeedFeature', '+', null);
+    rules.defineRule('weaponDamage.Unarmed',
+      'combatNotes.masterfulStrikeFeature', '=', null
+    );
+
+  } else if(name == 'Fighter') {
+
+    rules.defineRule('featCount.Fighter',
+      'levels.Fighter', '=', '1 + Math.floor(source / 2)'
+    );
+    rules.defineRule('selectableFeatureCount.Fighter',
+      'levels.Fighter', '=', 'source < 4 ? null : (1 + Math.floor((source + 2) / 6))'
+    );
+    rules.defineRule('skillNotes.adapterFeature',
+      'levels.Fighter', '=',
+      'source - 3 + (source >= 10 ? source - 9 : 0) + ' +
+      '(source >= 16 ? source - 15 : 0)'
+    );
+    rules.defineRule('skillNotes.adapterFeature.1',
+      'fighterFeatures.Adapter', '?', null,
+      'levels.Fighter', '=', 'source < 10 ? 1 : source < 16 ? 2 : 3'
+    );
+
+  } else if(name == 'Legate') {
+
+    rules.defineRule('astiraxMasterLevel', 'levels.Legate', '+=', null);
+    rules.defineRule('casterLevels.C', 'levels.Legate', '=', null);
+    rules.defineRule('casterLevels.Dom', 'casterLevels.C', '+=', null);
+    rules.defineRule('casterLevelDivine', 'casterLevels.C', '+=', null);
+    rules.defineRule('deity', 'levels.Legate', '=', '"Izrador (NE)"');
+    rules.defineRule('domainCount', 'levels.Legate', '+=', '2');
+    rules.defineRule('features.Weapon Focus (Longsword)',
+      'legateFeatures.Weapon Focus (Longsword)', '=', null
+    );
+    rules.defineRule('features.Weapon Proficiency (Longsword)',
+      'legateFeatures.Weapon Proficiency (Longsword)', '=', null
+    );
+    rules.defineRule('legateFeatures.Weapon Focus (Longsword)',
+      'domains.War', '?', null,
+      'levels.Legate', '=', '1'
+    );
+    rules.defineRule('legateFeatures.Weapon Proficiency (Longsword)',
+      'domains.War', '?', null,
+      'levels.Legate', '=', '1'
+    );
+    for(var j = 1; j < 10; j++) {
+      rules.defineRule('spellsPerDay.Dom' + j,
+        'levels.Legate', '=',
+        'source >= ' + (j * 2 - 1) + ' ? 1 : null');
     }
+    rules.defineRule('turnUndead.level', 'levels.Legate', '+=', null);
+
+  } else if(name == 'Wildlander') {
+
+    rules.defineRule('abilityNotes.quickStrideFeature',
+      'wildlanderFeatures.Quick Stride', '=', '10 * source'
+    );
+    rules.defineRule('casterLevels.Wildlander',
+      'wilderlanderFeatures.Sense Dark Magic', '?', null,
+      'level', '=', null
+    );
+    rules.defineRule
+      ('casterLevels.Detect Magic', 'casterLevels.Wildlander', '^=', null);
+    rules.defineRule('casterLevels.W', 'casterLevels.Wildlander', '^=', null);
+    rules.defineRule
+      ('companionMasterLevel', 'levels.Wildlander', '+=', null);
+    rules.defineRule("combatNotes.hunter'sStrikeFeature",
+      'levels.Wildlander', '=', 'Math.floor(source / 4)'
+    );
+    rules.defineRule('combatNotes.initiativeBonusFeature',
+      'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
+      'wildlanderFeatures.Initiative Bonus', '+', null
+    );
+    rules.defineRule('featureNotes.animalCompanionFeature',
+      'wildlanderFeatures.Animal Companion', '+=', null
+    );
+    rules.defineRule('initiative',
+      'combatNotes.improvedInitiativeFeature', '+', '4',
+      'combatNotes.initiativeBonusFeature', '+', null
+    );
+    rules.defineRule('selectableFeatureCount.Wildlander',
+      'levels.Wildlander', '=',
+      '1 + Math.floor((source + 1) / 3) + ' +
+      '(source < 6 ? 0 : Math.floor((source - 3) / 3))'
+    );
+    rules.defineRule('skillNotes.dangerSenseFeature',
+      'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
+      'wildlanderFeatures.Danger Sense', '+', null
+    );
+    rules.defineRule('skillNotes.skillMasteryFeature',
+      'wildlanderFeatures.Skill Mastery', '+=', null
+    );
+    rules.defineRule('skillNotes.skillMasteryFeature2',
+      'wildlanderFeatures.Skill Mastery', '+=', null
+    );
+    rules.defineRule('skillNotes.wildEmpathyFeature',
+      'levels.Wildlander', '+=', 'source',
+      'charismaModifier', '+', null
+    );
+    rules.defineRule('speed', 'abilityNotes.quickStrideFeature', '+', null);
 
   }
 
-};
+  if(LastAge.USE_PATHFINDER) {
+    notes = LastAge.SRD35ToPathfinder(notes);
+    skills = LastAge.SRD35ToPathfinder(skills);
+  }
+  if(LastAge.USE_PATHFINDER) {
+    // Override SRD35 skillPoints rule
+    rules.defineRule
+      ('skillPoints', 'levels.' + klass, '+', 'source * ' + skillPoints);
+  }
 
-/* Defines the rules related to combat. */
-LastAge.combatRules = function(rules) {
-  LastAge.baseRules.combatRules(rules);
 };
 
 /* Defines the rules related to companion creatures. */
@@ -1273,603 +1888,160 @@ LastAge.companionRules = function(rules, companions, familiars) {
 
 };
 
-/* Defines the rules related to character description. */
-LastAge.descriptionRules = function(rules, alignments, deities, genders) {
-  LastAge.baseRules.descriptionRules(rules, alignments, deities, genders);
-};
+LastAge.featRulesExtra = function(rules, name) {
 
-/* Defines the rules related to equipment. */
-LastAge.equipmentRules = function(rules, armors, shields, weapons) {
-  LastAge.baseRules.equipmentRules(rules, armors, shields, weapons);
-};
-
-/* Defines the rules related to PC feats. */
-LastAge.featRules = function(rules, feats, subfeats) {
-
-  LastAge.baseRules.featRules(rules, feats, subfeats);
-
-  var allFeats = [];
-  for(var i = 0; i < feats.length; i++) {
-    var pieces = feats[i].split(/:/);
-    var feat = pieces[0];
-    var featSubfeats = subfeats[feat];
-    if(featSubfeats == null) {
-      allFeats[allFeats.length] = feat + ':' + pieces[1];
-    } else if(featSubfeats != '') {
-      featSubfeats = featSubfeats.split(/\//);
-      for(var j = 0; j < featSubfeats.length; j++) {
-        allFeats[allFeats.length] =
-          feat + ' (' + featSubfeats[j] + '):' + pieces[1];
+  if(feat == 'Drive It Deep') {
+    rules.defineRule('combatNotes.driveItDeep', 'baseAttack', '=', null);
+  } if(feat == 'Extra Gift') {
+    rules.defineRule('combatNotes.masterOfTwoWorldsFeature',
+      'featureNotes.extraGiftFeature', '+', '4'
+    );
+    rules.defineRule('magicNotes.forceOfPersonalityFeature',
+      'featureNotes.extraGiftFeature', '+', '4'
+    );
+  } else if(feat == 'Innate Magic') {
+    rules.defineRule('magicNotes.innateMagicFeature',
+      'charismaModifier', '=', null,
+      'intelligenceModifier', '^', null,
+      'wisdomModifier', '^', null
+    );
+    rules.defineRule('magicNotes.innateMagicFeature.2',
+      'features.Innate Magic', '?', null,
+      'charismaModifier', '=', '(source + 5) * 10000',
+      'intelligenceModifier', '+', '(source + 5) * 100',
+      'wisdomModifier', '+', 'source + 5'
+    );
+    rules.defineRule('magicNotes.innateMagicFeature.1',
+      'magicNotes.innateMagicFeature.2', '=',
+        'Math.floor(source/10000) >= Math.floor((source%10000)/100) && ' +
+        'Math.floor(source/10000) >= source%100 ? "B0" : ' +
+        'Math.floor((source%10000)/100) >= source%100 ? "W0" : "D0"'
+    );
+    rules.defineRule('casterLevels.innateB',
+      'magicNotes.innateMagicFeature.1', '?', 'source == "B0"',
+      'level', '=', null
+    );
+    rules.defineRule('casterLevels.innateD',
+      'magicNotes.innateMagicFeature.1', '?', 'source == "D0"',
+      'level', '=', null
+    );
+    rules.defineRule('casterLevels.innateW',
+      'magicNotes.innateMagicFeature.1', '?', 'source == "W0"',
+      'level', '=', null
+    );
+    rules.defineRule('casterLevels.B', 'casterLevels.innateB', '=', null);
+    rules.defineRule('casterLevels.D', 'casterLevels.innateD', '=', null);
+    rules.defineRule('casterLevels.W', 'casterLevels.innateW', '=', null);
+  } else if((matchInfo = feat.match(/^Magecraft \((.*)\)/)) != null) {
+    var tradition = matchInfo[1];
+    var note = 'magicNotes.magecraft(' + tradition + ')Feature';
+    var ability = tradition == 'Charismatic' ? 'charisma' :
+                  tradition == 'Hermetic' ? 'intelligence' : 'wisdom';
+    var spellClass = tradition == 'Charismatic' ? 'Bard' :
+                     tradition == 'Hermetic' ? 'Wizard' : 'Druid';
+    var spellCode = spellClass.substring(0, 1);
+    notes = [note + ':4 spells/%V spell energy points'];
+    rules.defineRule(note, ability + 'Modifier', '=', null);
+    rules.defineRule('spellEnergy', note, '+=', null);
+    rules.defineRule('spellsKnown.' + spellCode + '0', note, '+=', '3');
+    rules.defineRule('spellsKnown.' + spellCode + '1', note, '+=', '1');
+    // Pick up SRD35 level 0/1 spells of the appropriate class.
+    var classRules = new QuilvynRules('');
+    SRD35.magicRules(classRules, [spellClass], [], []);
+    var schools = rules.getChoices('schools');
+    for(var s in classRules.getChoices('spells')) {
+      var matchInfo = s.match('^(.*)\\((' + spellCode + '[01])');
+      if(matchInfo == null) {
+        continue;
       }
+      var spell = matchInfo[1];
+      var school = LastAge.spellsSchools[spell] || SRD35.spellsSchools[spell];
+      if(school == null) {
+        continue;
+      }
+      spell += '(' + matchInfo[2] + ' ' +
+               (school == 'Universal' ? 'None' : schools[school]) + ')';
+      rules.defineChoice('spells', spell);
     }
-  }
-
-  for(var i = 0; i < allFeats.length; i++) {
-    var pieces = allFeats[i].split(/:/);
-    var feat = pieces[0];
-    var matchInfo;
-    var notes;
-    if(feat == 'Craft Charm') {
-      notes = [
-        'magicNotes.craftCharmFeature:' +
-          'Use Craft to create single-use magic item',
-        'validationNotes.craftCharmFeatSkills:Requires Max Craft >= 4'
-      ];
-    } else if(feat == 'Craft Greater Spell Talisman') {
-      notes = [
-        'magicNotes.craftGreaterSpellTalismanFeature:' +
-          'Talisman reduces spell energy cost of selected school spells by 1',
-        'validationNotes.craftGreaterSpellTalismanFeatFeats:' +
-          'Requires any Magecraft/any 3 Channeling',
-        'validationNotes.craftGreaterSpellTalismanFeatLevel:' +
-          'Requires Level >= 12'
-      ];
-      rules.defineRule
-        ('magecraftFeatureCount', /^features.Magecraft \(.*\)$/, '+=', '1');
-      for(var j = 0; j < allFeats.length; j++) {
-        var halves = allFeats[j].split(':');
-        if(halves[1].indexOf('Channeling') >= 0) {
-          rules.defineRule
-            ('channelingFeatCount', 'feats.' + halves[0], '+=', '1');
-        }
-      }
-      rules.defineRule('validationNotes.craftGreaterSpellTalismanFeatFeats',
-        'feats.Craft Greater Spell Talisman', '=', '-11',
-        'magecraftFeatureCount', '+', '10',
-        'channelingFeatCount', '+', 'source >= 3 ? 1 : null',
-        '', 'v', '0'
-      );
-    } else if(feat == 'Craft Spell Talisman') {
-      notes = [
-        'magicNotes.craftSpellTalismanFeature:' +
-          'Talisman reduces spell energy cost of selected spell by 1',
-        'validationNotes.craftSpellTalismanFeatFeats:' +
-          'Requires Max Magecraft >= 1/Max Spellcasting >= 1',
-        'validationNotes.craftSpellTalismanFeatLevel:Requires Level >= 3'
-      ];
-    } else if(feat == 'Devastating Mounted Assault') {
-      notes = [
-       'combatNotes.devastatingMountedAssaultFeature:' +
-         'Full attack after mount moves',
-       'validationNotes.devastatingMountedAssaultFeatFeats:' +
-          'Requires Mounted Combat',
-       'validationNotes.devastatingMountedAssaultFeatSkills:Requires Ride >= 10'
-      ];
-    } else if(feat == 'Drive It Deep') {
-      notes = [
-        'combatNotes.driveItDeepFeature:Attack base -attack/+damage',
-        'validationNotes.driveItDeepFeatBaseAttack:Requires Base Attack >= 1'
-      ];
-    } else if(feat == 'Extra Gift') {
-      notes = [
-        'featureNotes.extraGiftFeature:' +
-          'Use Master Of Two Worlds/Force Of Personality +4 times/day',
-        'validationNotes.extraGiftFeatLevels:' +
-          'Requires Charismatic Channeler >= 4||Spiritual Channeler >= 4'
-      ];
-      rules.defineRule('combatNotes.masterOfTwoWorldsFeature',
-        'featureNotes.extraGiftFeature', '+', '4'
-      );
-      rules.defineRule('magicNotes.forceOfPersonalityFeature',
-        'featureNotes.extraGiftFeature', '+', '4'
-      );
-    } else if(feat == 'Friendly Agent') {
-      notes = [
-        'skillNotes.friendlyAgentFeature:' +
-          '+4 Diplomacy (convince allegiance)/Sense Motive (determine ' +
-          'allegiance)',
-        'validationNotes.friendlyAgentFeatAlignment:Requires Alignment =~ Good',
-        'validationNotes.friendlyAgentFeatRace:' +
-          'Requires Race =~ Gnome|Dorn|Erenander|Sarcosan'
-      ];
-    } else if(feat == 'Giant Fighter') {
-      notes = [
-        'combatNotes.giantFighterFeature:' +
-          "+4 AC/double critical range w/in 30' vs. giants",
-        'validationNotes.giantFighterFeatFeats:' +
-          'Requires Dodge/Max Weapon Focus >= 1'
-      ];
-    } else if(feat == 'Herbalist') {
-      notes = [
-        'magicNotes.herbalistFeature:Create herbal concoctions',
-        'validationNotes.herbalistFeatSkills:' +
-          'Requires Profession (Herbalist) >= 4'
-      ];
-    } else if(feat == 'Improvised Weapon') {
-      notes = [
-        'combatNotes.improvisedWeaponFeature:' +
-          'No penalty for improvised weapon/-2 for non-proficient weapon'
-      ];
-    } else if(feat == 'Inconspicuous') {
-      notes = [
-        'skillNotes.inconspicuousFeature:' +
-          '+2 Bluff (shadow)/Diplomacy (shadow)/Hide (shadow)/Sense Motive (shadow)'
-      ];
-    } else if(feat == 'Innate Magic') {
-      notes = [
-        'magicNotes.innateMagicFeature:%V %1 spells as at-will innate ability',
-        'validationNotes.innateMagicFeatRace:' +
-          'Requires Race =~ Elf|Halfling'
-      ];
-      rules.defineRule('magicNotes.innateMagicFeature',
-        'charismaModifier', '=', null,
-        'intelligenceModifier', '^', null,
-        'wisdomModifier', '^', null
-      );
-      rules.defineRule('magicNotes.innateMagicFeature.2',
-        'features.Innate Magic', '?', null,
-        'charismaModifier', '=', '(source + 5) * 10000',
-        'intelligenceModifier', '+', '(source + 5) * 100',
-        'wisdomModifier', '+', 'source + 5'
-      );
-      rules.defineRule('magicNotes.innateMagicFeature.1',
-        'magicNotes.innateMagicFeature.2', '=',
-          'Math.floor(source/10000) >= Math.floor((source%10000)/100) && ' +
-          'Math.floor(source/10000) >= source%100 ? "B0" : ' +
-          'Math.floor((source%10000)/100) >= source%100 ? "W0" : "D0"'
-      );
-      rules.defineRule('casterLevels.innateB',
-        'magicNotes.innateMagicFeature.1', '?', 'source == "B0"',
-        'level', '=', null
-      );
-      rules.defineRule('casterLevels.innateD',
-        'magicNotes.innateMagicFeature.1', '?', 'source == "D0"',
-        'level', '=', null
-      );
-      rules.defineRule('casterLevels.innateW',
-        'magicNotes.innateMagicFeature.1', '?', 'source == "W0"',
-        'level', '=', null
-      );
-      rules.defineRule('casterLevels.B', 'casterLevels.innateB', '=', null);
-      rules.defineRule('casterLevels.D', 'casterLevels.innateD', '=', null);
-      rules.defineRule('casterLevels.W', 'casterLevels.innateW', '=', null);
-    } else if(feat == 'Knife Thrower') {
-      notes = [
-        'combatNotes.knifeThrowerFeature:' +
-          '+1 ranged attack/Quickdraw w/racial knife',
-        'validationNotes.knifeThrowerFeatRace:' +
-          'Requires Race =~ Jungle Elf|Snow Elf'
-      ];
-    } else if(feat == 'Lucky') {
-      notes = ['saveNotes.luckyFeature:+1 from luck charms/spells'];
-    } else if((matchInfo = feat.match(/^Magecraft \((.*)\)/)) != null) {
-      var tradition = matchInfo[1];
-      var note = 'magicNotes.magecraft(' + tradition + ')Feature';
-      var ability = tradition == 'Charismatic' ? 'charisma' :
-                    tradition == 'Hermetic' ? 'intelligence' : 'wisdom';
-      var spellClass = tradition == 'Charismatic' ? 'Bard' :
-                       tradition == 'Hermetic' ? 'Wizard' : 'Druid';
-      var spellCode = spellClass.substring(0, 1);
-      notes = [note + ':4 spells/%V spell energy points'];
-      rules.defineRule(note, ability + 'Modifier', '=', null);
-      rules.defineRule('spellEnergy', note, '+=', null);
-      rules.defineRule('spellsKnown.' + spellCode + '0', note, '+=', '3');
-      rules.defineRule('spellsKnown.' + spellCode + '1', note, '+=', '1');
-      // Pick up SRD35 level 0/1 spells of the appropriate class.
-      var classRules = new QuilvynRules('');
-      SRD35.magicRules(classRules, [spellClass], [], []);
-      var schools = rules.getChoices('schools');
-      for(var s in classRules.getChoices('spells')) {
-        var matchInfo = s.match('^(.*)\\((' + spellCode + '[01])');
-        if(matchInfo == null) {
-          continue;
-        }
-        var spell = matchInfo[1];
-        var school = LastAge.spellsSchools[spell] || SRD35.spellsSchools[spell];
-        if(school == null) {
-          continue;
-        }
-        spell += '(' + matchInfo[2] + ' ' +
-                 (school == 'Universal' ? 'None' : schools[school]) + ')';
-        rules.defineChoice('spells', spell);
-      }
-      rules.defineRule('casterLevels.' + feat,
-        'features.' + feat, '?', null,
-        'level', '=', null
-      );
-      rules.defineRule
-        ('casterLevels.' + spellCode, 'casterLevels.' + feat, '=', null);
-    } else if(feat == 'Magic Hardened') {
-      notes = [
-        'saveNotes.magicHardenedFeature:+2 spell resistance',
-        'validationNotes.magicHardenedFeatRace:Requires Race =~ Dwarf|Dworg|Orc'
-      ];
-      rules.defineRule
-        ('resistance.Spells', 'saveNotes.magicHardenedFeature', '+=', '2');
-    } else if(feat == 'Natural Healer') {
-      notes = [
-        'skillNotes.naturalHealerFeature:' +
-          'Successful Heal raises patient to 1 HP/triple normal healing rate'
-      ];
-    } else if(feat == 'Orc Slayer') {
-      notes = [
-        'combatNotes.orcSlayerFeature:+1 AC/damage vs. orcs/dworgs',
-        'skillNotes.orcSlayerFeature:-4 charisma skills vs. orcs/dworgs'
-      ];
-    } else if(feat == 'Quickened Donning') {
-      notes = [
-        'featureNotes.quickenedDonningFeature:No penalty for hastened donning'
-      ];
-    } else if(feat == 'Ritual Magic') {
-      notes = [
-        'magicNotes.ritualMagicFeature:Learn and lead magic rituals',
-        'validationNotes.ritualMagicFeatFeats:' +
-          'Requires Max Magecraft >= 1/Max Spellcasting >= 1'
-      ];
-    } else if(feat == 'Sarcosan Pureblood') {
-      notes = [
-        'combatNotes.sarcosanPurebloodFeature:+2 AC (horsed)',
-        'skillNotes.sarcosanPurebloodFeature:' +
-         'Diplomacy w/horses/+2 charisma skills (horses/Sarcosans)',
-        'validationNotes.sarcosanPurebloodFeatRace:Requires Race =~ Sarcosan'
-      ];
-    } else if(feat == 'Sense Nexus') {
-      notes = [
-        'magicNotes.senseNexusFeature:' +
-          'DC 15 wisdom check to sense nexus w/in 5 miles'
-      ];
-    } else if((matchInfo = feat.match(/^Spellcasting \((.*)\)/)) != null) {
-      var school = matchInfo[1];
-      var schoolNoSpace = school.replace(/ /g, '');
-      var note = 'magicNotes.spellcasting(' + schoolNoSpace + ')Feature';
-      notes = [note + ':May learn school spells/+1 school spell'];
-      if(school.indexOf('Greater ') == 0) {
-        notes[notes.length] =
-          'validationNotes.spellcasting(' + schoolNoSpace + ')FeatFeats:' +
-            'Requires Spellcasting (' + school.substring(8) + ')';
-      }
-      rules.defineRule('spellsKnownBonus', note, '+=', '1');
-      rules.defineRule('spellcastingFeatureCount',
-        /features.Spellcasting \(.*\)$/, '+=', '1'
-      );
-      rules.defineRule(
-        'casterLevels.Spellcasting', 'spellcastingFeatureCount', '?', null,
-        'level', '=', null
-      );
-      rules.defineRule
-        ('casterLevels.Ch', 'casterLevels.Spellcasting', '=', null);
-    } else if((matchInfo = feat.match(/^Spell Focus \((.*)\)/)) != null) {
-      // Add validation note to what base rules already computed
-      var school = matchInfo[1];
-      var schoolNoSpace = school.replace(/ /g, '');
-      notes = [
-       'validationNotes.spellFocus(' + schoolNoSpace + ')FeatFeatures:' +
-         'Requires Spellcasting (' + school + ')'
-      ];
-    } else if(feat == 'Spell Knowledge') {
-      notes = [
-        'magicNotes.spellKnowledgeFeature:+2 spells',
-        'validationNotes.spellKnowledgeFeatFeats:Requires Max Spellcasting >= 1'
-      ];
-      rules.defineRule
-        ('spellsKnownBonus', 'magicNotes.spellKnowledgeFeature', '+', '2');
-    } else if(feat == 'Thick Skull') {
-      notes = [
-        'saveNotes.thickSkullFeature:DC 10 + damage save to stay at 1 hit point'
-      ];
-    } else if(feat == 'Warrior Of Shadow') {
-      notes = [
-        'combatNotes.warriorOfShadowFeature:' +
-          'Substitute %V rounds of +%1 damage for Turn Undead use',
-        'validationNotes.warriorOfShadowFeatAbility:Requires Charisma >= 12',
-        'validationNotes.warriorOfShadowFeatLevels:Requires Legate >= 5'
-      ];
-      rules.defineRule
-        ('combatNotes.warriorOfShadowFeature', 'charismaModifier', '=', null);
-      rules.defineRule
-        ('combatNotes.warriorOfShadowFeature.1', 'charismaModifier', '=', null);
-    } else if(feat == 'Whispering Awareness') {
-      notes = [
-        'featureNotes.whisperingAwarenessFeature:' +
-          'DC 12 wisdom check to hear Whispering Wood',
-        'validationNotes.whisperingAwarenessFeatAbility:Requires Wisdom >= 15',
-        'validationNotes.whisperingAwarenessFeatRace:' +
-          'Requires Race =~ Elfling|Elf'
-      ];
-    } else if(feat == 'Clear-Eyed') {
-      var skill = LastAge.USE_PATHFINDER ? 'Perception' : 'Spot';
-      notes = [
-        'featureNotes.clear-EyedFeature:' +
-           'Half penalty for distance sight, x2 normal vision in dim light on plains',
-        'skillNotes.clear-EyedFeature:' + skill + ' is a class skill',
-        'validationNotes.clear-EyedFeatRace:Requires Race == "Erenlander"'
-      ];
-      rules.defineRule
-        ('classSkills.' + skill, 'skillNotes.clear-EyedFeature', '=', '1');
-    } else if(feat == 'Defiant') {
-      notes = [
-        'saveNotes.defiantFeature:' +
-          'Delay effect of failed Fort, Will save for 1 rd, dbl fail effect',
-        'validationNotes.defiantFeatRace:Requires Race == "Erenlander"'
-      ];
-    } else if(feat == 'Fanatic') {
-      notes = [
-        'combatNotes.fanaticFeature:' +
-          "+1 attack, divine spell benefit within 60' of Izrador servant",
-        'validationNotes.fanaticFeatRace:Requires Race == "Erenlander"'
-      ];
-    } else if(feat == 'Hardy') {
-      notes = [
-        'featureNotes.hardyFeature:Functional on half food, sleep',
-        'validationNotes.hardyFeatAbility:Requires Constitution >= 13',
-        'validationNotes.hardyFeatFeatures:Requires Endurance'
-      ];
-    } else if(feat == 'Huntsman') {
-      notes = [
-        'combatNotes.huntsmanFeature:' +
-          '+1 attack/damage for ea 5 above track DC vs. prey tracked for 5 mi',
-        'validationNotes.huntsmanFeatSkills:Requires Survival >= 5',
-        'validationNotes.huntsmanFeatFeatures:Requires Track'
-      ];
-    } else if(feat == 'Pikeman') {
-      notes = [
-        'combatNotes.pikemanFeature:Receive charge as move action'
-      ];
-    } else if(feat == 'Slow Learner') {
-      notes = [
-        'featureNotes.slowLearnerFeature:Replace later with another feat',
-        'validationNotes.slowLearnerFeatRace:Requires Race == "Erenlander"'
-      ];
-    } else if(feat == 'Stalwart') {
-      notes = [
-        'saveNotes.stalwartFeature:' +
-          'Delay negative HP for 1 rd, dbl heal required',
-        'validationNotes.stalwartFeatFeatures:Requires Defiant',
-        'validationNotes.stalwartFeatRace:Requires Race == "Erenlander"'
-      ];
-    } else if(feat == 'Stealthy Rider') {
-      var skills = LastAge.USE_PATHFINDER ? 'Stealth' : 'Hide, Move Silently';
-      notes = [
-        'companionNotes.stealthyRiderFeature:Mount use rider ' + skills,
-        'validationNotes.stealthyRiderFeatSkills:Requires Ride'
-      ];
-    } else if(feat == 'Dwarvencraft') {
-      notes = [
-        'featureNotes.dwarvencraftFeature:Know %V Dwarvencraft techniques',
-        'validationNotes.dwarvencraftFeatSkills:' +
-          'Requires Craft (Armor) >= 4 || Craft (Blacksmith) >= 4 || Craft (Weapons) >= 4'
-      ];
-      rules.defineRule('featureNotes.dwarvencraftFeature',
-        'skills.Craft (Armor)', '+=', 'Math.floor(source / 4)',
-        'skills.Craft (Blacksmith)', '+=', 'Math.floor(source / 4)',
-        'skills.Craft (Weapons)', '+=', 'Math.floor(source / 4)'
-      );
-    } else if(feat == 'Powerful Throw') {
-      notes = [
-        'combatNotes.powerfulThrowFeature:+10 range, use Str bonus for attack',
-        'validationNotes.powerfulThrowFeatAbility:Requires Strength >= 13',
-        'validationNotes.powerfulThrowFeatFeatures:' +
-          'Requires Power Attack/Weapon Focus (Light Hammer)||Weapon Focus (Throwing Axe)||Weapon Focus (Urutuk Hatchet)'
-      ];
-    } else if(feat == 'Shield Mate') {
-      notes = [
-        'combatNotes.shieldMateFeature:' +
-          'Allies +2 AC when self fighting defensively or -2 Combat Expertise',
-        'validationNotes.shieldMateFeatAbility:Requires Dexterity >= 13',
-        'validationNotes.shieldMateFeatProficiency:Requires Shield Proficiency'
-      ];
-      rules.defineRule('validationNotes.shieldMateFeatProficiency',
-        'feats.Shield Mate', '=', '-1',
-        'shieldProficiencyLevel', '+',
-          'source == ' + SRD35.PROFICIENCY_NONE + ' ? null : 1'
-      );
-    } else if(feat == 'Touched By Magic') {
-      notes = [
-        'magicNotes.touchedByMagicFeature:+2 spell energy',
-        'saveNotes.touchedByMagicFeature:-2 vs. spells',
-        'validationNotes.touchedByMagicFeatRace:Requires Race =~ Dwarf|Orc'
-      ];
-      rules.defineRule
-        ('spellEnergy', 'magicNotes.touchedByMagicFeature', '+', '2');
-      rules.defineRule
-        ('resistance.Spell', 'saveNotes.touchedByMagicFeature', '+', '-2');
-    } else if(feat == 'Trapsmith') {
-      notes = [
-        'skillNotes.trapsmithFeat:' +
-          '+2 Craft (Traps)/Disable Device/Search (find traps)'
-      ];
-    } else if(feat == 'Tunnel Fighting') {
-      notes = [
-        'combatNotes.tunnelFightingFeature:No AC, attack penalty when squeezing'
-      ];
-    } else if(feat == 'Born Of Duty') {
-      notes = [
-        'magicNotes.bornOfDutyFeature:' +
-          "R100' Cry shakes undead (DC %V Will neg), Dorn +2 vs fear, enchant 1/day",
-        'validationNotes.bornOfDutyFeatAlignment:Requires Alignment =~ Lawful',
-        'validationNotes.bornOfDutyFeatRace:Requires Race == "Dorn"'
-      ]
-      rules.defineRule('magicNotes.bornOfDutyFeature',
-        'level', '=', '10 + Math.floor(source / 2)',
-        'charismaModifier', '+', null
-      );
-    } else if(feat == 'Born Of The Grave') {
-      notes = [
-        "magicNotes.bornOfTheGraveFeature:R15' <i>Deathwatch</i> at will",
-        'validationNotes.bornOfTheGraveFeatAlignment:' +
-          'Requires Alignment !~ Good',
-        'validationNotes.bornOfTheGraveFeatRace:Requires Race == "Dorn"'
-      ]
-    } else if(feat == 'Blood-Channeler') {
-      notes = [
-        'magicNotes.blood-ChannelerFeature:' +
-          'Dbl spell energy for first two Con points lost',
-        'validationNotes.blood-ChannelerFeatAbility:' +
-          'Requires Constitution >= 15',
-        'validationNotes.blood-ChannelerFeatFeatures:' +
-          'Requires Max Magecraft >= 1'
-      ];
-    } else if(feat == 'Craft Rune Of Power') {
-      notes = [
-        'magicNotes.craftRuneOfPowerFeature:Imbue rune w/any known spell',
-        'validationNotes.craftRuneOfPowerFeatFeatures:' +
-          'Requires Max Magecraft >= 1/Max Spellcasting >= 1',
-        'validationNotes.craftRuneOfPowerFeatLevel:Requires Level >= 3'
-      ];
-    } else if(feat == 'Flexible Recovery') {
-      notes = [
-        'magicNotes.flexibleRecoveryFeature:' +
-          "Recover 1 spell energy per hour's rest",
-        'validationNotes.flexibleRecoveryFeatAbility:' +
-          'Requires Constitution >= 13',
-        'validationNotes.flexibleRecoveryFeatFeatures:' +
-          'Requires Max Magecraft >= 1'
-      ];
-    } else if(feat == 'Improved Flexible Recovery') {
-      notes = [
-        'magicNotes.improvedFlexibleRecoveryFeature:' +
-          "DC 30 Concentration to recover %V spell energy per hour's meditation",
-        'validationNotes.improvedFlexibleRecoveryFeatAbility:' +
-          'Requires Constitution >= 15',
-        'validationNotes.improvedFlexibleRecoveryFeatFeatures:' +
-          'Requires Flexible Recovery/Max Magecraft >= 1'
-      ];
-      rules.defineRule('magicNotes.improvedFlexibleRecoveryFeature',
-        'charismaModifier', '=', null,
-        'intelligenceModifier', '^', null,
-        'wisdomModifier', '^', null
-      );
-    } else if(feat == 'Knack For Charms') {
-      notes = [
-        'skillNotes.knackForCharmsFeature:+4 Craft for charm-making',
-        'validationNotes.knackForCharmsFeatSkills:' +
-          'Requires Knowledge (Arcana) >= 4/Knowledge (Nature) >= 4'
-      ];
-    } else if(feat == 'Living Talisman') {
-      notes = [
-        'magicNotes.livingTalismanFeature:' +
-           'Chosen spell costs 1 fewer spell energy to cast',
-        'validationNotes.livingTalismanFeatFeatures:' +
-          'Requires Max Magecraft >= 1/Max Spellcasting >= 1',
-        'validationNotes.livingTalismanFeatLevel:Requires Level >= 5',
-        'validationNotes.livingTalismanFeatSkills:' +
-          'Requires Knowledge (Arcana) >= 6'
-      ];
-    } else if(feat == 'Power Reservoir') {
-      notes = [
-        'magicNotes.powerReservoirFeature:' +
-          'Store +%V siphoned spell energy points',
-        'validationNotes.powerReservoirFeatFeatures:' +
-          'Requires Max Magecraft >= 1',
-      ];
-      rules.defineRule('magicNotes.powerReservoirFeature',
-        'charismaModifier', '=', null,
-        'intelligenceModifier', '^', null,
-        'wisdomModifier', '^', null
-      );
-    } else if(feat == 'Sense Power') {
-      notes = [
-        'magicNotes.sensePowerFeature:' +
-          "<i>Detect Magic</i> %V/day, DC 13 Wis check w/in 20'",
-        'validationNotes.sensePowerFeatAbility:Requires Wisdom >= 15'
-      ];
-      rules.defineRule
-        ('magicNotes.sensePowerFeature', 'wisdomModifier', '=', null);
-    } else if(feat == 'Subtle Caster') {
-      notes = [
-        'skillNotes.subtleCasterFeature:' +
-          '+2 Bluff or Sleight Of Hand to disguise spell casting',
-        'validationNotes.subtleCasterFeatFeatures:' +
-          'Requires Max Magecraft >= 1',
-      ];
-    } else if(feat == 'Canny Strike') {
-      notes = [
-        'combatNotes.cannyStrikeFeature:+%Vd4 finesse weapon damage',
-        'validationNotes.cannyStrikeFeatAbility:' +
-          'Requires Intelligence >= 13',
-        'validationNotes.cannyStrikeFeatBaseAttack:' +
-          'Requires Base Attack >= 6',
-        'validationNotes.cannyStrikeFeatFeatures:' +
-          'Requires Clever Fighting/Weapon Finesse'
-      ];
-      rules.defineRule
-        ('combatNotes.cannyStrikeFeature', 'intelligenceModifier', '=', null);
-    } else if(feat == 'Caste Status') {
-      notes = [
-        'featureNotes.casteStatusFeature:Benefits of caste level'
-      ];
-    } else if(feat == 'Clever Fighting') {
-      notes = [
-        'combatNotes.cleverFightingFeature:+%V finesse weapon damage',
-        'validationNotes.cleverFightingFeatAbility:Requires Dexterity >= 13',
-        'validationNotes.cleverFightingFeatBaseAttack:' +
-          'Requires Base Attack >= 2',
-        'validationNotes.cleverFightingFeatFeatures:Requires Weapon Finesse'
-      ];
-      rules.defineRule('combatNotes.cleverFightingFeature',
-        'dexterityModifier', '=', null,
-        'strengthModifier', '+', '-source'
-      );
-    } else if(feat == 'Plains Warfare') {
-      var skills = LastAge.USE_PATHFINDER ? 'Perception' : 'Listen, Spot';
-      notes = [
-        'combatNotes.plainsWarfareFeature:+1 AC when mounted on plains',
-        'skillNotes.plainsWarfareFeature:' +
-          '+2 ' + skills + ' vs. surprise when mounted on plains',
-        'saveNotes.plainsWarfareFeature:+1 Reflex when mounted on plains',
-        'validationNotes.plainsWarfareFeatFeatures:Requires Mounted Combat'
-      ];
-    } else if(feat == 'Urban Intrigue') {
-      notes = [
-        'skillNotes.urbanIntrigueFeature:' +
-          'Use Gather Information to counter investigation of self, allies',
-        'sanityNotes.urbanIntrigueFeatSkills:Implies Gather Information',
-        'validationNotes.urbanIntrigueFeatRace:' +
-          'Requires Race == "Urban Sarcosan"',
-        'validationNotes.urbanIntrigueFeatSkills:Requires Bluff >= 1'
-      ];
-    } else if(feat == 'Well-Aimed Strike') {
-      notes = [
-        'combatNotes.well-AimedStrikeFeature:' +
-          'Canny Strike and Clever Fighting apply to all foes',
-        'validationNotes.well-AimedStrikeFeatBaseAttack:' +
-          'Requires Base Attack >= 9',
-        'validationNotes.well-AimedStrikeFeatFeatures:' +
-           'Requires Canny Strike/Clever Fighting/Weapon Finesse'
-      ];
-    } else if(feat == 'Resigned To Death') {
-      notes = [
-        'saveNotes.resignedToDeathFeature:' +
-          '+4 vs. fear, fail 1 step less intense',
-        'validationNotes.resignedToDeathFeatAbility:Requires Wisdom >= 13'
-      ];
-    } else if(feat == 'Whirlwind Charge') {
-      notes = [
-        'combatNotes.whirlwindChargeFeature:' +
-           'Attack all adjacent foes after charge',
-        'validationNotes.whirlwindChargeFeatAbility:Requires Strength >= 15',
-        'validationNotes.whirlwindChargeFeatBaseAttack:' +
-          'Requires Base Attack >= 6',
-        'validationNotes.whirlwindChargeFeatFeatures:' +
-          'Requires Cleave/Power Attack'
-      ];
-    } else
-      continue;
-    rules.defineChoice('feats', feat + ':' + pieces[1]);
-    rules.defineRule('features.' + feat, 'feats.' + feat, '=', null);
-    if(notes != null) {
-      rules.defineNote(notes);
+    rules.defineRule('casterLevels.' + feat,
+      'features.' + feat, '?', null,
+      'level', '=', null
+    );
+    rules.defineRule
+      ('casterLevels.' + spellCode, 'casterLevels.' + feat, '=', null);
+  } else if((matchInfo = feat.match(/^Spellcasting \((.*)\)/)) != null) {
+    var school = matchInfo[1];
+    var schoolNoSpace = school.replace(/ /g, '');
+    var note = 'magicNotes.spellcasting(' + schoolNoSpace + ')Feature';
+    notes = [note + ':May learn school spells/+1 school spell'];
+    if(school.indexOf('Greater ') == 0) {
+      notes[notes.length] =
+        'validationNotes.spellcasting(' + schoolNoSpace + ')FeatFeats:' +
+          'Requires Spellcasting (' + school.substring(8) + ')';
     }
+    rules.defineRule('spellsKnownBonus', note, '+=', '1');
+    rules.defineRule('spellcastingFeatureCount',
+      /features.Spellcasting \(.*\)$/, '+=', '1'
+    );
+    rules.defineRule(
+      'casterLevels.Spellcasting', 'spellcastingFeatureCount', '?', null,
+      'level', '=', null
+    );
+    rules.defineRule
+      ('casterLevels.Ch', 'casterLevels.Spellcasting', '=', null);
+  } else if((matchInfo = feat.match(/^Spell Focus \((.*)\)/)) != null) {
+    // Add validation note to what base rules already computed
+    var school = matchInfo[1];
+    var schoolNoSpace = school.replace(/ /g, '');
+    notes = [
+     'validationNotes.spellFocus(' + schoolNoSpace + ')FeatFeatures:' +
+       'Requires Spellcasting (' + school + ')'
+    ];
+  } else if(feat == 'Spell Knowledge') {
+    rules.defineRule
+      ('spellsKnownBonus', 'magicNotes.spellKnowledgeFeature', '+', '2');
+  } else if(feat == 'Warrior Of Shadow') {
+    rules.defineRule
+      ('combatNotes.warriorOfShadowFeature', 'charismaModifier', '=', null);
+    rules.defineRule
+      ('combatNotes.warriorOfShadowFeature.1', 'charismaModifier', '=', null);
+  } else if(feat == 'Dwarvencraft') {
+    rules.defineRule('featureNotes.dwarvencraftFeature',
+      'skills.Craft (Armor)', '+=', 'Math.floor(source / 4)',
+      'skills.Craft (Blacksmith)', '+=', 'Math.floor(source / 4)',
+      'skills.Craft (Weapons)', '+=', 'Math.floor(source / 4)'
+    );
+  } else if(feat == 'Touched By Magic') {
+    rules.defineRule
+      ('spellEnergy', 'magicNotes.touchedByMagicFeature', '+', '2');
+  } else if(feat == 'Born Of Duty') {
+    rules.defineRule('magicNotes.bornOfDutyFeature',
+      'level', '=', '10 + Math.floor(source / 2)',
+      'charismaModifier', '+', null
+    );
+  } else if(feat == 'Improved Flexible Recovery') {
+    rules.defineRule('magicNotes.improvedFlexibleRecoveryFeature',
+      'charismaModifier', '=', null,
+      'intelligenceModifier', '^', null,
+      'wisdomModifier', '^', null
+    );
+  } else if(feat == 'Power Reservoir') {
+    rules.defineRule('magicNotes.powerReservoirFeature',
+      'charismaModifier', '=', null,
+      'intelligenceModifier', '^', null,
+      'wisdomModifier', '^', null
+    );
+  } else if(feat == 'Sense Power') {
+    rules.defineRule
+      ('magicNotes.sensePowerFeature', 'wisdomModifier', '=', null);
+  } else if(feat == 'Canny Strike') {
+    rules.defineRule
+      ('combatNotes.cannyStrikeFeature', 'intelligenceModifier', '=', null);
+  } else if(feat == 'Clever Fighting') {
+    rules.defineRule('combatNotes.cleverFightingFeature',
+      'dexterityModifier', '=', null,
+      'strengthModifier', '+', '-source'
+    );
   }
 
 };
@@ -3219,9 +3391,6 @@ LastAge.heroicPathRules = function(rules, paths) {
 
   }
   rules.defineChoice('random', 'heroicPath');
-  rules.defineEditorElement
-    ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
-  rules.defineSheetElement('Heroic Path', 'Alignment');
 
 };
 
@@ -3238,137 +3407,6 @@ LastAge.magicRules = function(rules, classes, domains, schools) {
     var klass = classes[i];
     var spells;
     if(klass.indexOf("Channeler") >= 0 && !channelerDone) {
-      spells = [
-        'Ch0:Create Water:Cure Minor Wounds:Dancing Lights:Daze:Detect Magic:' +
-        'Detect Poison:Disrupt Undead:Flare:Ghost Sound:Guidance:' +
-        'Know Direction:Light:Lullaby:Mage Hand:Mending:Message:Open/Close:' +
-        'Ray Of Frost:Read Magic:Resistance:Summon Instrument:' +
-        'Touch Of Fatigue:Virtue',
-        'Ch1:Alarm:Animate Rope:Assist:Burial:Burning Hands:Calm Animals:' +
-        'Cause Fear:Channel Might:Charm Animal:Charm Person:Chill Touch:' +
-        'Color Spray:Comprehend Languages:Cure Light Wounds:' +
-        'Detect Animals Or Plants:Detect Astirax:Detect Secret Doors:' +
-        'Detect Snares And Pits:Detect Undead:Disguise Self:Disguise Weapon:' +
-        'Endure Elements:Enlarge Person:Entangle:Erase:Expeditious Retreat:' +
-        'Faerie Fire:Far Whisper:Feather Fall:Floating Disk:Goodberry:Grease:' +
-        'Hide From Animals:Hold Portal:Hypnotism:Identify:Inspiration:' +
-        'Joyful Speech:Jump:Know The Name:Lesser Confusion:Lie:Mage Armor:' +
-        'Magic Aura:Magic Fang:Magic Missile:Magic Mouth:Magic Stone:' +
-        "Magic Weapon:Mount:Obscuring Mist:Pass Without Trace:Peasant's Rest:" +
-        'Phantom Edge:Produce Flame:Protection From Chaos:' +
-        'Protection From Evil:Protection From Good:Protection From Law:' +
-        'Ray Of Enfeeblement:Reduce Person:Remove Fear:Shield:Shillelagh:' +
-        'Shocking Grasp:Silent Image:Sleep:Speak With Animals:Spider Climb:' +
-        "Stone Soup:Summon Monster I:Summon Nature's Ally I:True Strike:" +
-        'Undetectable Alignment:Unseen Servant:Ventriloquism:Woeful Speech',
-        'Ch2:Acid Arrow:Alter Self:Animal Messenger:Animal Trance:Arcane Lock:'+
-        "Barkskin:Bear's Endurance:Bleed Power:Blindness/Deafness:Blur:" +
-        "Bull's Strength:Cat's Grace:Chill Metal:Command Undead:Confer Power:" +
-        'Continual Flame:Cure Moderate Wounds:Darkness:Darkvision:' +
-        'Daze Monster:Delay Poison:Detect Chaos:Detect Evil:Detect Good:' +
-        "Detect Law:Detect Thoughts:Disguise Ally:Eagle's Splendor:" +
-        'False Life:Fell Forbiddance:Fey Fire:Fey Hearth:Flame Blade:' +
-        "Flaming Sphere:Fog Cloud:Fox's Cunning:Ghoul Touch:Glitterdust:" +
-        'Greenshield:Gust Of Wind:Heat Metal:Hideous Laughter:Hold Animal:' +
-        'Hypnotic Pattern:Invisibility:Knock:Lesser Restoration:Levitate:' +
-        'Lifetrap:Locate Object:Magic Mouth:Memorial:Minor Image:' +
-        "Mirror Image:Misdirection:Nature's Revelation:Obscure Object:" +
-        "Owl's Wisdom:Pacify:Phantom Trap:Protection From Arrows:" +
-        'Pyrotechnics:Reduce Animal:Resist Energy:Scare:Scorching Ray:' +
-        "Scryer's Mark:See Invisibility:Shatter:Silence:Silver Blood:" +
-        'Soften Earth And Stone:Sound Burst:Spectral Hand:Spider Climb:' +
-        "Summon Monster II:Summon Nature's Ally II:Summon Swarm:" +
-        'Touch Of Idiocy:Tree Shape:Warp Wood:Weather:Web:Whispering Wind:' +
-        'Withering Speech:Wood Shape',
-        'Ch3:Arcane Impotence:Arcane Sight:Call Lightning:Charm Repair:' +
-        'Clairaudience/Clairvoyance:Contagion:Cure Serious Wounds:Daylight:' +
-        'Deep Slumber:Diminish Plants:Dispel Magic:Displacement:' +
-        'Dominate Animal:Explosive Runes:Fireball:Flame Arrow:Fly:' +
-        'Gaseous Form:Gentle Repose:Glibness:Good Hope:Greater Magic Fang:' +
-        'Greater Magic Weapon:Greater Questing Bird:Gust Of Wind:' +
-        'Halfling Burrow:Halt Undead:Haste:Heroism:Hold Person:' +
-        'Illusory Script:Invisibility Sphere:Keen Edge:Lightning Bolt:' +
-        'Magic Circle Against Chaos:Magic Circle Against Evil:' +
-        'Magic Circle Against Good:Magic Circle Against Law:Major Image:' +
-        'Meld Into Stone:Neutralize Poison:Nondetection:Phantom Steed:' +
-        'Plant Growth:Poison:Protection From Energy:Questing Bird:Rage:' +
-        'Ray Of Exhaustion:Remove Disease:Sculpt Sound:Secret Page:' +
-        'Sepia Snake Sigil:Shrink Item:Silver Wind:Sleet Storm:Slow:Snare:' +
-        'Speak With Plants:Spike Growth:Stinking Cloud:Suggestion:' +
-        "Summon Monster III:Summon Nature's Ally III:Tiny Hut:Tongues:" +
-        'Vampiric Touch:Water Breathing:Water Walk:Willful Stand:Wind Wall',
-        'Ch4:Air Walk:Animate Dead:Antiplant Shell:Arcane Eye:Bestow Curse:' +
-        'Bestow Spell:Black Tentacles:Blight:Charm Monster:Command Plants:' +
-        'Confusion:Control Water:Crushing Despair:Cure Critical Wounds:' +
-        'Detect Scrying:Dimensional Anchor:Enervation:Fear:Fire Shield:' +
-        'Fire Trap:Flame Strike:Freedom Of Movement:Giant Vermin:' +
-        'Greater Invisibility:Hallucinatory Terrain:Ice Storm:Illusory Wall:' +
-        'Lesser Geas:Lesser Globe Of Invulnerability:Locate Creature:' +
-        'Mass Enlarge Person:Mass Reduce Person:Minor Creation:' +
-        'Mnemonic Enhancer:Modify Memory:Phantasmal Killer:Polymorph:' +
-        'Rainbow Pattern:Reincarnate:Remove Curse:Repel Vermin:' +
-        'Resilient Sphere:Restoration:Rusting Grasp:Scrying:Secure Shelter:' +
-        'Shadow Conjuration:Shout:Silver Storm:Solid Fog:Spike Stones:' +
-        "Stone Shape:Stoneskin:Summon Monster IV:Summon Nature's Ally IV:" +
-        'Wall Of Fire:Wall Of Ice:Zone Of Silence',
-        'Ch5:Animal Growth:Arcane Interference:Atonement:Awaken:' +
-        'Baleful Polymorph:Break Enchantment:Call Lightning Storm:Cloudkill:' +
-        'Commune With Nature:Cone Of Cold:Contact Other Plane:' +
-        'Control Winds:Death Ward:Dismissal:Dominate Person:Dream:Fabricate:' +
-        'False Vision:Feeblemind:Hallow:Hold Monster:Insect Plague:' +
-        "Interposing Hand:Lesser Planar Binding:Mage's Faithful Hound:" +
-        "Mage's Private Sanctum:Magic Circle Against Shadow:Magic Jar:" +
-        'Major Creation:Mass Cure Light Wounds:Mind Fog:Mirage Arcana:' +
-        'Nexus Fuel:Nightmare:Overland Flight:Passwall:Persistent Image:' +
-        'Prying Eyes:Secret Chest:Seeming:Sending:Shadow Evocation:' +
-        "Song Of Discord:Summon Monster V:Summon Nature's Ally V:" +
-        'Symbol Of Pain:Symbol Of Sleep:Telekinesis:Telepathic Bond:' +
-        'Transmute Mud To Rock:Transmute Rock To Mud:Unhallow:Wall Of Force:' +
-        'Wall Of Stone:Wall Of Thorns:Waves Of Fatigue',
-        'Ch6:Acid Fog:Analyze Dweomer:Animate Objects:Antilife Shell:' +
-        'Antimagic Field:Chain Lightning:Circle Of Death:Contingency:' +
-        'Create Undead:Disintegrate:Eyebite:Find The Path:Fire Seeds:' +
-        'Flesh To Stone:Forceful Hand:Freezing Sphere:Geas/Quest:' +
-        'Globe Of Invulnerability:Greater Dispel Magic:Greater Heroism:' +
-        "Greater Questing Bird:Guards And Wards:Heroes' Feast:Ironwood:" +
-        "Legend Lore:Liveoak:Mage's Lucubration:Mass Bear's Endurance:" +
-        "Mass Bull's Strength:Mass Cat's Grace:Mass Cure Moderate Wounds:" +
-        "Mass Eagle's Splendor:Mass Fox's Cunning:Mass Owl's Wisdom:" +
-        'Mass Suggestion:Mislead:Move Earth:Permanent Image:Planar Binding:' +
-        'Programmed Image:Repel Wood:Repulsion:Spellstaff:Stone Tell:' +
-        "Stone To Flesh:Summon Monster VI:Summon Nature's Ally VI:" +
-        'Symbol Of Fear:Symbol Of Persuasion:Sympathetic Vibration:' +
-        'Transformation:True Seeing:Undeath To Death:Veil:Wall Of Iron',
-        'Ch7:Animate Plants:Banishment:Changestaff:Control Undead:' +
-        'Control Weather:Creeping Doom:Delayed Blast Fireball:' +
-        'Finger Of Death:Fire Storm:Forcecage:Grasping Hand:' +
-        'Greater Arcane Sight:Greater Restoration:Greater Scrying:' +
-        "Greater Shadow Conjuration:Heal:Insanity:Mage's Sword:" +
-        'Mass Cure Serious Wounds:Mass Hold Person:Mass Invisibility:' +
-        'Power Word Blind:Prismatic Spray:Project Image:Reverse Gravity:' +
-        'Sequester:Simulacrum:Spell Turning:Statue:Summon Monster VII:' +
-        "Summon Nature's Ally VII:Sunbeam:Symbol Of Stunning:" +
-        'Symbol Of Weakness:Transmute Metal To Wood:Vision:' +
-        'Waves Of Exhaustion:Wind Walk',
-        'Ch8:Animal Shapes:Antipathy:Binding:Clenched Fist:Clone:' +
-        'Control Plants:Create Greater Undead:Demand:Discern Location:' +
-        'Earthquake:Greater Planar Binding:Greater Prying Eyes:' +
-        'Greater Shadow Evocation:Greater Shout:Horrid Wilting:' +
-        'Incendiary Cloud:Iron Body:Irresistible Dance:Mass Charm Monster:' +
-        'Mass Cure Critical Wounds:Mind Blank:Moment Of Prescience:' +
-        'Polar Ray:Polymorph Any Object:Power Word Stun:Prismatic Wall:' +
-        'Protection From Spells:Repel Metal Or Stone:Reverse Gravity:' +
-        'Scintillating Pattern:Screen:Summon Monster VIII:' +
-        "Summon Nature's Ally VIII:Sunburst:Symbol Of Death:" +
-        'Symbol Of Insanity:Sympathy:Telekinetic Sphere:Temporal Stasis:' +
-        'Trap The Soul:Whirlwind',
-        'Ch9:Astral Projection:Crushing Hand:Dominate Monster:' +
-        'Elemental Swarm:Energy Drain:Foresight:Freedom:Gate:Imprisonment:' +
-        "Mage's Disjunction:Mass Hold Monster:Meteor Swarm:Power Word Kill:" +
-        'Prismatic Sphere:Regenerate:Shades:Shambler:Shapechange:Soul Bind:' +
-        "Storm Of Vengeance:Summon Monster IX:Summon Nature's Ally IX:" +
-        'Time Stop:Wail Of The Banshee:Weird'
-      ];
       channelerDone = true;
     } else if(klass == 'Legate') {
       // Copy Cleric spells
