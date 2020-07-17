@@ -1968,9 +1968,8 @@ LastAge.companionRules = function(
   rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, level, size
 ) {
 
-  LastAge.baseRules.companionRules(rules, companions, familiars);
   LastAge.baseRules.companionRules(
-    rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, level, size
+    rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, size, level
   );
 
   // Override SRD3.5 feature list
@@ -2062,7 +2061,7 @@ LastAge.familiarRules = function(
   rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, level, size
 ) {
   LastAge.baseRules.familiarRules
-    (rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, level, size);
+    (rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, size, level);
   // No changes needed to the rules defined by base method
 };
 
