@@ -282,6 +282,177 @@ LastAge.FEATS_ADDED = {
 };
 LastAge.FEATS = Object.assign({}, SRD35.FEATS, LastAge.FEATS_ADDED);
 LastAge.FEATURES_ADDED = {
+  // Heroic Paths
+  'Ability Recovery':'combat:Regain 1 point ability damage/hour',
+  'Aid Another':'combat:Aid another as a move action',
+  'Aided Combat Bonus':'combat:Aided ally +%V to attack or AC',
+  'Ambush':'skill:Allies use self Hide for ambush',
+  'Animal Companion':'feature:Special bond/abilities w/up to %V animals',
+  'Animal Friend':[
+    'combat:Animals DC %V Will save to attack',
+    'skill:+4 Handle Animal'
+  ],
+  'Aquatic Adaptation':
+    'skill:Breathe through gills, no underwater pressure damage',
+  'Aquatic Ally':"magic:Aquatic <i>Summon Nature's Ally %V</i> %V/day",
+  'Aquatic Blindsight':"skill:R%V' Detect creatures in opaque water",
+  'Aquatic Emissary':'skill:Speak to all aquatic animals',
+  'Assist Allies':'skill:Allies move through water at full speed, share oxygen',
+  'Aura Of Courage':"save:Immune fear, +4 to allies w/in 30'",
+  'Aura Of Warmth':"magic:R10' Allies +4 Fortitude vs cold",
+  'Battle Cry':'combat:+%V hit points after cry %1/day',
+  'Bestial Aura':[
+    'combat:Turn animals',
+    'skill:-10 Handle Animal, no Wild Empathy'
+  ],
+  'Blindsense':"feature:R30' Other senses detect unseen objects",
+  'Blindsight':"feature:R30' Other senses compensate for loss of vision",
+  'Blood Of Kings':
+    'skill:Daily +%V on charisma skills in Shadow or resistance interactions',
+  'Blood Of The Planes':'skill:+%V on charisma skills with outsiders',
+  'Bolster Spell':'magic:Add 1 to DC of %V chosen spells',
+  'Burst Of Speed':
+    'combat:Extra attack or move action for %V rounds %1/day; fatigued afterward',
+  'Cold Immunity':'save:No damage from cold, x1.5 damage from fire',
+  'Cold Resistance':'save:Ignore first %V points cold damage',
+  'Combat Overview':
+    "combat:R60' Ally avoid AOO and flat-footed, foe flat-footed %V/day",
+  'Coordinated Initiative':"combat:R30' Allies use self initiative %V/day",
+  'Damage Reduction':'combat:%V subtracted from damage taken',
+  'Death Ward':'save:Immune to negative energy and death effects',
+  'Deep Lungs':'skill:Hold breath for %V rounds',
+  'Detect Evil':'magic:<i>Detect Evil</i> at will',
+  'Detect Outsider':'magic:Detect outsiders at will',
+  'Directed Attack':"combat:R30' Ally add 1/2 self base attack 1/day",
+  'Disrupting Attack':'combat:Undead %V Will save or destroyed %1/day',
+  "Dolphin's Grace":'skill:+8 swim hazards',
+  'Dragon Spell Penetration':'magic:+%V checks to overcome spell resistance',
+  'Elemental Friend':[
+    'combat:Elementals DC %V Will save to attack',
+    'skill:+4 Diplomacy (elementals)'
+  ],
+  'Enhanced Bestial Aura':"feature:R15' Animals act negatively, cannot ride",
+  'Extra Reach':"combat:15' reach",
+  'Fast Movement':'ability:+%V Speed',
+  'Fearsome Charge':"combat:+%V damage, -1 AC for every 10' in charge",
+  'Feat Bonus':'feature:+%V General Feats',
+  'Ferocity':'combat:Continue fighting below 0 HP',
+  'Fey Vision':'magic:Detect %V auras at will',
+  'Frightful Presence':
+    'magic:Casting panics or shakes foes of lesser level 4d6 rounds (DC %V Will neg)',
+  'Frost Weapon':'combat:+d6 cold damage on hit for %V rounds %1/day',
+  'Greater Frost Weapon':
+    'combat:+d10 cold damage, extra hit die on critical hit',
+  'Hide In Plain Sight':'skill:Hide even when observed',
+  'Howling Winds':'magic:<i>Commune With Nature</i> (winds) %V/day',
+  'Improved Ambush':
+    'combat:Allies +2 damage vs. flat-footed foes on surprise and 1st melee rounds',
+  'Improved Battle Cry':'combat:+1 attack and damage after cry',
+  'Improved Healing':'combat:Regain %V HP/hour',
+  'Improved Resist Spells':'save:+%V vs. spells',
+  'Improved Retributive Rage':
+    'combat:+%V damage next round after suffering %1 damage',
+  'Improved Spellcasting':
+    'magic:Reduce energy cost of spells from %V chosen schools by 1',
+  'Improved Stonecunning':
+    "feature:R5' Automatic Search for concealed stone door",
+  'Improved Untouchable':
+    'combat:No foe AOO from move, standard, and full-round actions',
+  'Increased Damage Threshold':'combat:Continue fighting until -%V HP',
+  'Indefatigable':'save:Immune %V effects',
+  'Inspire Valor':
+    "feature:R30' Allies extra attack, +%V fear saves for %1 rounds %2/day",
+  'Inspiring Oration':
+    "magic:R60' Speech applies spell-like ability to allies %V/day",
+  'Intimidating Size':'skill:+%V Intimidate',
+  'Ironborn Resilience':'combat:Improved hit die',
+  'Joint Attack':
+    "combat:R30' Allies attack same foe at +1/participant (max +5) %V/day",
+  'Language Savant':
+    'skill:Fluent in any language after listening for 10 minutes',
+  'Large':'combat:+4 bull rush, disarm, and grapple, -1 AC and attack',
+  'Last Stand':
+    'combat:1 minute of %V spell resistance, 15 damage reduction, 30 energy resistance; near death afterward %1/day',
+  'Lay On Hands':'magic:Harm undead or heal %V HP/day',
+  'Leadership':'feature:Attract followers',
+  'Luck Of Heroes':'feature:Add %V to any d20 roll 1/day',
+  'Magical Darkvision':'feature:See perfectly in any darkness',
+  'Master Adventurer':'skill:+%V on three chosen non-charisma skills',
+  'Metamagic Aura':"magic:R30' %V others' spells of up to level %1",
+  'Miss Chance':'combat:%V% chance of foe miss',
+  'Mountain Survival':'skill:+%V Survival (mountains)',
+  'Mountaineer':'skill:+%V Balance/+%V Climb/+%V Jump',
+  'Natural Armor':'combat:+%V AC',
+  'Natural Bond':'skill:Knowledge (Nature) is a class skill/Survival is a class skill/+2 Knowledge (Nature)/+2 Survival',
+  'Natural Leader':'feature: +%V Leadership score',
+  'Natural Swimmer':"ability:Swim %V' as move action",
+  'Nonlethal Damage Reduction':
+    'combat:Ignore first %V points of non-lethal damage',
+  'Northborn':[
+    'save:Immune to non-lethal cold/exposure',
+    'skill:+2 Survival (cold)/Wild Empathy (cold natives)'
+  ],
+  'Obvious':'skill:-4 Hide',
+  'Offensive Tactics':
+    'combat:+%V to first attack or all damage when using full attack action',
+  'One With Nature':'magic:<i>Commune With Nature</i> at will',
+  'Painless':[
+    'combat:+%V HP',
+    'save:+%V vs. pain effects'
+  ],
+  'Panar Fury':
+    'combat:+2 strength and constitution, +1 Will, -1 AC for %V rounds %1/day',
+  'Perfect Assault':"combat:R30' Allies threaten critical on any hit 1/day",
+  'Persistence':
+    'feature:Defensive Roll, Evasion, Slippery Mind, Uncanny Dodge %V/day',
+  'Persuasive Speaker':'skill:+%V verbal Cha skills',
+  'Plant Friend':[
+    'combat:Plants DC %V Will save to attack',
+    'skill:+4 Diplomacy (plants)'
+  ],
+  'Power Words':'magic:DC %2+spell level <i>Word of %V</i> %1/day',
+  'Quick Ambush':'skill:Hide allies for ambush in half time',
+  'Quickened Counterspelling':'magic:Counterspell as move action 1/round',
+  'Rage':
+    'combat:+4 strength, +4 constitution, +2 Will, -2 AC for %V rounds %1/day',
+  'Rallying Cry':'combat:Allies not flat-footed, +4 vs. surprise %V/day',
+  'Resist Elements':'save:%V resistance to acid, cold, electricity, and fire',
+  'Retributive Rage':
+    'combat:+%V attack next round after suffering double level damage',
+  'Righteous Fury':
+    'combat:Overcome %V points of evil foe melee damage reduction',
+  'Rock Throwing':'combat:Use debris as ranged weapon',
+  'Scent':"feature:R30' Detect creatures' presence, track by smell",
+  'See Invisible':'feature:See invisible creatures',
+  'Seer Sight':'magic:Discern recent history of touched object %V/day',
+  'Sense The Dead':"magic:R%V' Detect undead at will",
+  'Shadow Jump':"feature:R%V' Move between shadows",
+  'Shadow Veil':'skill:+%V Hide',
+  'Skill Boost':'skill:+4 to %V chosen skills',
+  'Skill Fixation':'skill:Take 10 despite distraction on %V chosen skills',
+  'Skilled Warrior':
+    'combat:Half penalty from %V choices of Fighting Defensively, Grapple Attack, Non-proficient Weapon, Two-Weapon Fighting',
+  'Smite Evil':'combat:+%1 attack, %2 damage vs. evil foe %V/dy',
+  'Sniping Ambush':'combat:Reduced Hide penalty for using ranged weapons',
+  'Spell Choice':'magic:Use chosen %V spell as spell-like ability 1/day',
+  'Spontaneous Spell':'magic:Use any %V spell as spell-like ability 1/day',
+  'Stonecunning':
+    "skill:+%V Search involving stone or metal, automatic check w/in 10'",
+  'Strategic Blow':'combat:Overcome %V points of foe damage reduction',
+  'Take Ten':'feature:Take 10 on any d20 roll 1/day',
+  'Take Twenty':'feature:Take 20 on any d20 roll 1/day',
+  'Telling Blow':"combat:R30' Allies re-roll damage 1/day",
+  'Touch Of The Living':'combat:+%V damage vs. undead',
+  'Tremorsense':"feature:R30' Detect creatures in contact w/ground",
+  'Uncaring Mind':'save:+%V vs. enchantment',
+  'Unfettered':'magic:<i>Freedom Of Movement</i> %V rounds/day',
+  'Untapped Potential':"magic:R30' Contribute %V points ally spells",
+  'Untouchable':'combat:No foe AOO from special attacks',
+  'Vicious Assault':'combat:Two claw attacks at %V each',
+  'Ward Of Life':'save:Immune to undead %V',
+  'Wild Empathy':'skill:+%V Diplomacy (animals)',
+  'Wild Shape':'magic:Change into creature of size %V %1/day',
+// TODO 'validationNotes.purebloodHeroicPathRace:Requires Race =~ Erenlander'
   // Feats
   'Blood-Channeler':'magic:Dbl spell energy for first two Con points lost',
   'Born Of Duty':
@@ -442,80 +613,296 @@ LastAge.FEATURES_ADDED = {
   'Wilderness Trapfinding':'skill:Search to find/Survival to remove DC 20+ traps',
   'Woodslore':"feature:Automatic Search vs. trap/concealed door w/in 5'",
   // Races
+  'Alert Senses':'skill:+2 Listen/+2 Spot',
+  'Bound To The Beast':'feature:Mounted Combat',
+  'Bound To The Spirit':'feature:Magecraft (Spiritual)',
+  'Brotherhood':'combat:+1 attack when fighting alongside 4+ Dorns',
+  'Cold Fortitude':'save:+5 cold, half nonlethal damage',
+  'Deep Lungs':'skill:Hold breath for %V rounds',
+  'Dextrous':'skill:+2 Craft (non-metal or wood)',
+  'Dodge Orcs':'combat:+1 AC vs. orc',
+  'Dorn Ability Adjustment':'ability:+2 strength/-2 intelligence',
   'Dwarf Ability Adjustment':'ability:+2 constitution/-2 charisma',
+  'Dwarf Favored Enemy':'combat:+1 attack vs. orc',
+  'Dwarf Favored Weapon':'combat:+1 attack with axes and hammers',
   'Dwarrow Ability Adjustment':'ability:+2 charisma',
   'Dworg Ability Adjustment':
     'ability:+2 strength/+2 constitution/-2 intelligence/-2 charisma',
-  'Dorn Ability Adjustment':'ability:+2 strength/-2 intelligence',
+  'Dworg Favored Enemy':'combat:+2 attack vs. orc',
   'Elf Ability Adjustment':'ability:+2 dexterity/-2 constitution',
   'Elfling Ability Adjustment':
     'ability:+4 dexterity/-2 strength/-2 constitution',
   'Erenlander Ability Adjustment':'ability:+2 choice/-2 choice',
+  'Favored Region':
+    'skill:%V; Knowledge (Local) is a class skill, +2 Survival (region)/Knowledge (Nature) (region)',
+  'Fierce':'combat:+1 attack w/two-handed weapons',
+  'Fortunate':'save:+1 Fortitude/+2 Reflex/+2 Will',
+  'Gifted Healer':'skill:+2 Heal',
   'Gnome Ability Adjustment':'ability:+4 charisma/-2 strength',
+  'Graceful':'skill:+2 Climb/+2 Jump/+2 Move Silently/+2 Tumble',
   'Halfling Ability Adjustment':'ability:+2 dexterity/-2 strength',
+  'Heartlander':'skill:+4 chosen Craft or Profession',
+  'Illiteracy':'skill:Must spend 2 skill points to read and write',
+  'Improved Cold Fortitude':'save:Immune non-lethal/half lethal',
+  'Improved Innate Magic':'magic:+1 Innate Magic spell',
+  'Improved Keen Senses':'skill:+2 Listen/+2 Search/+2 Spot',
+  'Improved Natural Channeler':'magic:+1 spell energy',
+  'Improved Natural Swimmer':
+    'skill:+8 special action or avoid hazard/always take 10/run',
+  'Improved Tree Climber':'skill:+2 Balance (trees)/Climb (trees)',
+  'Interactive':'skill:+2 Bluff/+2 Diplomacy/+2 Sense Motive',
+  'Keen Senses':'skill:+2 Listen/+2 Search/+2 Spot',
+  'Know Depth':'feature:Intuit approximate depth underground',
+  'Light Sensitivity':'combat:-1 attack in daylight',
+  'Minor Light Sensitivity':
+    'combat:DC 15 Fortitude save in sunlight to avoid -1 attack',
+  'Natural Channeler':'magic:+2 spell energy',
+  'Natural Horseman':[
+    'combat:+1 melee damage (horseback), half ranged penalty (horseback)',
+    'skill:+4 Concentration (horseback)/+4 Handle Animal (horse)/+4 Ride (horse)'
+  ],
+  'Natural Mountaineer':[
+    'ability:Unimpeded movement in mountainous terrain',
+    'skill:+2 Climb'
+  ],
+  'Natural Preditor':'skill:+%V Intimidate',
+  'Natural Riverfolk':
+    'skill:+2 Perform/+2 Profession (Sailor)/+2 Swim/+2 Use Rope',
+  'Natural Sailor':'skill:+2 Craft (ship)/Profession (ship)/Use Rope (ship)',
+  'Natural Swimmer':'ability:%V swim as move action',
+  'Natural Trader':
+    'skill:+4 Appraise, Bluff, Diplomacy, Forgery, Gather Information, Profession when smuggling or trading',
+  'Night Fighter':'combat:+1 attack in darkness',
+  'Nimble':'skill:+2 Climb/+2Hide',
   'Orc Ability Adjustment':'ability:+4 strength/-2 intelligence/-2 charisma',
-  'Sarcosan Ability Adjustment':'ability:+2 charisma/+2 intelligence/-2 wisdom'
+  'Orc Favored Enemy':'combat:+1 damage vs. dwarves',
+  'Orc Frenzy':'combat:+1 attack when fighting among 10+ Orcs',
+  'Quick':[
+    'combat:+1 attack w/light weapons',
+    'save:+1 Reflex'
+  ],
+  'Resilient':'combat:+2 AC',
+  'Resist Enchantment':'save:+2 vs. enchantments',
+  'Resist Poison':'save:+2 vs. poison',
+  'Resist Spells':'magic:-2 spell energy',
+  'Resist Spells':'save:+2 vs. spells',
+  'Robust':'save:+1 Fortitude',
+  'Rugged':'save:+2 Fortitude/+2 Reflex/+2 Will',
+  'Sarcosan Ability Adjustment':'ability:+2 charisma/+2 intelligence/-2 wisdom',
+  'Skilled Rider':
+    'skill:+2 Concentration (wogrenback)/+2 Handle Animal (wogren)/Ride (wogren)',
+  'Skilled Trader':
+    'skill:+2 Appraise, Bluff, Diplomacy, Forgery, Gather Information, Profession when smuggling/trading',
+  'Spirit Foe':[
+    'save:+2 vs. outsiders',
+    'skill:+4 Hide (nature)/Move Silently (nature)'
+  ],
+  'Stability':'save:+4 vs. Bull Rush and Trip',
+  'Stone Knowledge':'skill:+2 Appraise (stone, metal)/Craft (stone, metal)',
+  'Stonecunning':"skill:+%V Search (stone, metal), automatic check w/in 10'",
+  'Stout':'feature:Endurance/Toughness',
+  'Studious':'feature:Magecraft (Hermetic)',
+  'Sturdy':'combat:+1 AC',
+  'Tree Climber':'skill:+4 Balance (trees)/Climb (trees)',
+  'Unafraid':'save:+2 vs. fear',
+  'Urban':
+    'skill:+2 Gather Information (urban), untrained Knowledge use in urban areas'
 };
 LastAge.FEATURES = Object.assign({}, SRD35.FEATURES, LastAge.FEATURES_ADDED);
 LastAge.GENDERS = Object.assign({}, SRD35.GENDERS);
 LastAge.HEROIC_PATHS = {
   'None':'',
   'Beast':
-    '',
+    'Features=' +
+      '"1:Vicious Assault","1:Wild Sense","2:Bestial Aura",7:Rage,' +
+      '"12:Enhanced Bestial Aura" ' +
+    'Selectables=' +
+      '"Constitution Bonus","Dexterity Bonus","Low-Light Vision",Scent,' +
+      '"Strength Bonus","Wisdom Bonus" ' +
+    'Spells=' +
+      '"3:Magic Fang","4:Bear\'s Endurance","8:Greater Magic Fang",' +
+      '"9:Cat\'s Grace","13:Magic Fang","14:Bull\'s Strength",' +
+      '"17:Greater Magic Fang","19:Freedom Of Movement"',
   'Chanceborn':
-    '',
+    'Features=' +
+      '"1:Luck Of Heroes",3:Unfettered,"4:Miss Chance",6:Persistence,' +
+      '"9:Take Ten","19:Take Twenty" ' +
+    'Spells=' +
+      '2:Persistence,"7:True Strike",12:Aid,17:Prayer',
   'Charismatic':
-    '',
+    'Features=' +
+      '"4:Inspiring Oration","5:Charisma Bonus",6:Leadership,' +
+      '"12:Natural Leader" ' +
+    'Spells=' +
+      '"1:Charm Person","2:Remove Fear",3:Hypnotism,7:Aid,"8:Daze Monster",' +
+     '11:Heroism,"13:Charm Monster",16:Suggestion,"17:Greater Heroism"',
   'Dragonblooded':
-    '',
+    'Features=' +
+      '"1:Bolster Spell","4:Quickened Counterspelling",' +
+      '"6:Improved Spellcasting","9:Dragon Spell Penetration",' +
+      '"19:Frightful Presence"',
   'Earthbonded':
-    '',
+    'Features=' +
+      '1:Darkvision,"3:Natural Armor",4:Stonecunning,' +
+      '"8:Improved Stonecunning",12:Tremorsense,16:Blindsense,' +
+      '20:Blindsight ' +
+    'Spells=' +
+      '"2:Hold Portal","5:Soften Earth And Stone","6:Make Whole",' +
+      '"7:Spike Stones","9:Stone Shape","11:Meld Into Stone",' +
+      '"13:Transmute Rock To Mud",14:Stoneskin,"15:Move Earth",' +
+      '"17:Stone Tell",19:Earthquake',
   'Faithful':
-    '',
+    'Features=' +
+      '"4:Turn Undead" ' +
+    'Spells=' +
+      '1:Bless,"2:Protection From Evil","3:Divine Favor",6:Aid,' +
+      '"7:Bless Weapon",8:Consecrate,11:Daylight,' +
+      '"12:Magic Circle Against Evil",13:Prayer,"16:Holy Smite",' +
+      '"17:Dispel Evil","18:Holy Aura"',
   'Fellhunter':
-    '',
+    'Features=' +
+      '"1:Sense The Dead","2:Touch Of The Living","3:Ward Of Life",' +
+      '"5:Disrupting Attack"',
   'Feyblooded':
-    '',
+    'Features=' +
+      '"1:Low-Light Vision","7:Fey Vision" ' +
+    'Selectables=' +
+      '"Armor Class Bonus","Dexterity Bonus","Fortitude Bonus",' +
+      '"Reflex Bonus","Will Bonus" ' +
+    'Spells=' +
+      '"2:Disguise Self",3:Ventriloquism,"5:Magic Aura",6:Invisibility,' +
+      '9:Nondetection,10:Glibness,"11:Deep Slumber","14:False Vision",' +
+      '"15:Rainbow Pattern",17:Mislead,18:Seeming',
   'Giantblooded':
-    '',
+    'Features=' +
+      '1:Obvious,"2:Rock Throwing","3:Intimidating Size","4:Fast Movement",' +
+      '"5:Strength Bonus","8:Fearsome Charge",10:Large,"20:Extra Reach"',
   'Guardian':
-    '',
+    'Features=' +
+      '"1:Inspire Valor","2:Detect Evil","3:Righteous Fury","4:Smite Evil",' +
+      '"5:Constitution Bonus","6:Lay On Hands","12:Aura Of Courage",' +
+      '"16:Death Ward"',
   'Healer':
-    '',
+    'Features= ' +
+    'Spells=' +
+      '"1:Cure Light Wounds","2:Lesser Restoration","3:Cure Light Wounds",' +
+      '"4:Cure Moderate Wounds","5:Remove Disease","6:Cure Moderate Wounds",' +
+      '"7:Cure Serious Wounds","8:Remove Blindness/Deafness",' +
+      '"9:Cure Serious Wounds","10:Cure Critical Wounds",' +
+      '"11:Neutralize Poison","12:Cure Critical Wounds",' +
+      '"13:Mass Cure Light Wounds",14:Restoration,' +
+      '"15:Mass Cure Light Wounds",16:Heal,17:Restoration,18:Heal,' +
+      '19:Regenerate,"20:Raise Dead"',
   'Ironborn':
-    '',
+    'Features=' +
+      '"1:Ironborn Resilience","2:Fortitude Bonus","3:Natural Armor",' +
+      '"4:Improved Healing","5:Damage Reduction","6:Resist Elements",' +
+      '9:Indefatigable,"14:Ability Recovery"',
   'Jack-Of-All-Trades':
-    '',
+    'Features=' +
+      '"1:Spell Choice","2:Spontaneous Spell","3:Skill Boost","7:Feat Bonus" ' +
+    'Selectables=' +
+      '"Charisma Bonus","Constitution Bonus","Dexterity Bonus",' +
+      '"Intelligence Bonus","Strength Bonus","Wisdom Bonus"',
   'Mountainborn':
-    '',
+    'Features=' +
+      '1:Mountaineer,"1:Mountain Survival",3:Ambush,"4:Rallying Cry",' +
+      '"5:Constitution Bonus","8:Improved Ambush","13:Quick Ambush",' +
+      '"18:Sniping Ambush" ' +
+    'Spells=' +
+      '"2:Endure Elements","7:Pass Without Trace","12:Meld Into Stone",' +
+      '"17:Stone Tell"',
   'Naturefriend':
-    '',
+    'Features=' +
+      '"1:Natural Bond","1:Wild Empathy","5:Animal Friend","10:Plant Friend",' +
+      '"15:Elemental Friend","20:One With Nature" ' +
+    'Spells=' +
+      '"2:Calm Animals",3:Entangle,"4:Obscuring Mist","6:Animal Messenger",' +
+      '"7:Wood Shape","8:Gust Of Wind","9:Speak With Animals",' +
+      '"11:Speak With Plants","12:Call Lightning","13:Dominate Animal",' +
+      '"14:Spike Growth","16:Sleet Storm","17:Summon Nature\'s Ally IV",' +
+      '"18:Command Plants","19:Ice Storm"',
   'Northblooded':
-    '',
+    'Features=' +
+      '1:Northborn,"1:Wild Empathy","2:Cold Resistance","3:Battle Cry",' +
+      '"4:Howling Winds","5:Constitution Bonus","6:Aura Of Warmth",' +
+      '"11:Improved Battle Cry","13:Frost Weapon","16:Cold Immunity",' +
+      '"18:Greater Frost Weapon"',
   'Painless':
-    '',
+    'Features=' +
+      '1:Painless,"2:Nonlethal Damage Reduction","3:Uncaring Mind",' +
+      '"4:Retributive Rage",5:Ferocity,"9:Last Stand",' +
+      '"10:Increased Damage Threshold","14:Improved Retributive Rage"',
   'Pureblood':
-    '',
+    'Features=' +
+      '"1:Master Adventurer","2:Blood Of Kings","3:Feat Bonus",' +
+      '"4:Skill Fixation" ' +
+    'Selectables=' +
+      '"Charisma Bonus","Constitution Bonus","Dexterity Bonus",' +
+      '"Intelligence Bonus","Strength Bonus","Wisdom Bonus"',
   'Quickened':
-    '',
+    'Features=' +
+      '"1:Initiative Bonus","2:Armor Class Bonus","3:Fast Movement",' +
+      '"4:Burst Of Speed","5:Dexterity Bonus"',
   'Seaborn':
-    '',
+    'Features=' +
+      '"1:Dolphin\'s Grace","1:Natural Swimmer","2:Deep Lungs",' +
+      '"3:Aquatic Blindsight","4:Aquatic Ally","10:Aquatic Adaptation",' +
+      '"14:Cold Resistance","17:Aquatic Emissary","18:Assist Allies" ' +
+    'Spells=' +
+      '"4:Summon Nature\'s Ally II",5:Blur,"8:Summon Nature\'s Ally III",' +
+      '"9:Fog Cloud","12:Summon Nature\'s Ally IV",13:Displacement,' +
+      '"16:Summon Nature\'s Ally V","20:Summon Nature\'s Ally VI"',
   'Seer':
-    '',
+    'Features=' +
+      '"3:Seer Sight" ' +
+    'Spells=' +
+      '1:Alarm,2:Augury,4:Clairaudience/Clairvoyance,"5:Locate Object",' +
+      '"7:Locate Creature","8:Speak With Dead",10:Divination,11:Scrying,' +
+      '"13:Arcane Eye","14:Find The Path","16:Prying Eyes","17:Legend Lore",' +
+      '19:Commune,20:Vision',
   'Speaker':
-    '',
+    'Features=' +
+      '"2:Persuasive Speaker","3:Power Words","5:Charisma Bonus",' +
+      '"14:Language Savant" ' +
+    'Spells=' +
+      '"1:Comprehend Languages","4:Whispering Wind",8:Tongues,12:Shout,' +
+      '"18:Greater Shout"',
   'Spellsoul':
-    '',
+    'Features=' +
+      '"1:Untapped Potential","2:Metamagic Aura","3:Improved Resist Spells"',
   'Shadow Walker':
-    '',
+    'Features=' +
+      '1:Darkvision,"2:Shadow Veil","4:Shadow Jump","11:Hide In Plain Sight" ' +
+    'Spells=' +
+      '"3:Expeditious Retreat",5:Blur,"7:Undetectable Alignment",' +
+      '9:Displacement,"13:Expeditious Retreat",15:Blur,' +
+      '"17:Undetectable Alignment",19:Displacement',
   'Steelblooded':
-    '',
+    'Features=' +
+      '"2:Offensive Tactics","3:Strategic Blow","4:Skilled Warrior",' +
+      '14:Untouchable,"19:Improved Untouchable"',
   'Sunderborn':
-    '',
+    'Features=' +
+      '"1:Detect Outsider","2:Blood Of The Planes","4:Planar Fury",' +
+      '7:Darkvision,"13:Magical Darkvision","19:See Invisible" ' +
+    'Spells=' +
+      '"3:Summon Monster I","6:Summon Monster II","9:Summon Monster III",' +
+      '"12:Summon Monster IV","15:Summon Monster V","18:Summon Monster VI"',
   'Tactician':
-    '',
+    'Features=' +
+      '"1:Aid Another","2:Combat Overview","3:Coordinated Initiative",' +
+      '"4:Joint Attack","5:Aided Combat Bonus","13:Directed Attack",' +
+      '"18:Telling Blow","20:Perfect Assault"',
   'Warg':
-    ''
+    'Features=' +
+      '"1:Wild Empathy","2:Animal Companion","5:Wild Shape",13:Ferocity,' +
+      '20:Blindsense ' +
+    'Selectables=' +
+      '"Low-Light Vision",Scent ' +
+    'Spells=' +
+      '"4:Charm Animal","7:Speak With Animals","12:Charm Animal",' +
+      '"17:Speak With Animals"'
 };
 LastAge.LANGUAGES = {
   'Black Tongue':
@@ -1429,7 +1816,9 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     LastAge.genderRules(rules, name);
   else if(type == 'Heroic Path') {
     LastAge.heroicPathRules(rules, name,
-      // TODO
+      QuilvynUtils.getAttrValueArray(attrs, 'Features'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Selectables'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Spells')
     );
   } else if(type == 'Language')
     LastAge.languageRules(rules, name);
@@ -1652,44 +2041,41 @@ LastAge.classRulesExtra = function(rules, name) {
       }
       rules.defineRule
         ('channelerLevels', 'levels.Charismatic Channeler', '+=', null);
-      rules.defineRule('magicNotes.forceOfPersonalityFeature',
+      rules.defineRule('magicNotes.forceOfPersonality',
         'charismaModifier', '=', '3 + source'
       );
-      rules.defineRule('magicNotes.inspireConfidenceFeature',
+      rules.defineRule('magicNotes.inspireConfidence',
         'levels.Charismatic Channeler', '=', null
       );
-      rules.defineRule('magicNotes.inspireFascinationFeature',
+      rules.defineRule('magicNotes.inspireFascination',
         'levels.Charismatic Channeler', '=', null
       );
-      rules.defineRule('magicNotes.inspireFascinationFeature.1',
+      rules.defineRule('magicNotes.inspireFascination.1',
         'levels.Charismatic Channeler', '=', '10 + Math.floor(source / 2)',
         'charismaModifier', '+', null
       );
-      rules.defineRule('magicNotes.inspireFascinationFeature.2',
+      rules.defineRule('magicNotes.inspireFascination.2',
         'levels.Charismatic Channeler', '=', null
       );
-      rules.defineRule('magicNotes.inspireFuryFeature',
+      rules.defineRule('magicNotes.inspireFury',
         'levels.Charismatic Channeler', '=', 'source + 5'
       );
-      rules.defineRule('magicNotes.magecraft(Charismatic)Feature',
+      rules.defineRule('magicNotes.magecraft(Charismatic)',
         'charismaModifier', '=', null
       );
-      rules.defineRule('magicNotes.massSuggestionFeature',
+      rules.defineRule('magicNotes.massSuggestion',
         'levels.Charismatic Channeler', '=', 'Math.floor(source / 3)'
       );
       rules.defineRule('selectableFeatureCount.Charismatic Channeler',
         'levels.Charismatic Channeler', '=',
         'source < 3 ? null : Math.floor(source / 3)'
       );
-      rules.defineRule('spellEnergy',
-        'magicNotes.magecraft(Charismatic)Feature', '+=', null
-      );
-      rules.defineRule('spellsKnown.B0',
-        'magicNotes.magecraft(Charismatic)Feature', '+=', '3'
-      );
-      rules.defineRule('spellsKnown.B1',
-        'magicNotes.magecraft(Charismatic)Feature', '+=', '1'
-      );
+      rules.defineRule
+        ('spellEnergy', 'magicNotes.magecraft(Charismatic)', '+=', null);
+      rules.defineRule
+        ('spellsKnown.B0', 'magicNotes.magecraft(Charismatic)', '+=', '3');
+      rules.defineRule
+        ('spellsKnown.B1', 'magicNotes.magecraft(Charismatic)', '+=', '1');
     } else if(name == 'Hermetic Channeler') {
       feats = ['Spell Knowledge'];
       var allFeats = SRD35.FEATS.concat(LastAge.FEATS);
@@ -1701,25 +2087,22 @@ LastAge.classRulesExtra = function(rules, name) {
       }
       rules.defineRule
         ('channelerLevels', 'levels.Hermetic Channeler', '+=', null);
-      rules.defineRule('magicNotes.magecraft(Hermetic)Feature',
+      rules.defineRule('magicNotes.magecraft(Hermetic)',
         'intelligenceModifier', '=', null
       );
       rules.defineRule('selectableFeatureCount.Hermetic Channeler',
         'levels.Hermetic Channeler', '=',
         'source < 3 ? null : Math.floor(source / 3)'
       );
-      rules.defineRule('skillNotes.quickReferenceFeature',
+      rules.defineRule('skillNotes.quickReference',
         'hermeticChannelerFeatures.Quick Reference', '=', '5 * source'
       );
-      rules.defineRule('spellEnergy',
-        'magicNotes.magecraft(Hermetic)Feature', '+=', null
-      );
-      rules.defineRule('spellsKnown.W0',
-        'magicNotes.magecraft(Hermetic)Feature', '+=', '3'
-      );
-      rules.defineRule('spellsKnown.W1',
-        'magicNotes.magecraft(Hermetic)Feature', '+=', '1'
-      );
+      rules.defineRule
+        ('spellEnergy', 'magicNotes.magecraft(Hermetic)', '+=', null);
+      rules.defineRule
+        ('spellsKnown.W0', 'magicNotes.magecraft(Hermetic)', '+=', '3');
+      rules.defineRule
+        ('spellsKnown.W1', 'magicNotes.magecraft(Hermetic)', '+=', '1');
     } else if(name == 'Spiritual Channeler') {
       feats = ['Extra Gift', 'Spell Knowledge'];
       var allFeats = SRD35.FEATS.concat(LastAge.FEATS);
@@ -1731,26 +2114,22 @@ LastAge.classRulesExtra = function(rules, name) {
       }
       rules.defineRule
         ('channelerLevels', 'levels.Spiritual Channeler', '+=', null);
-      rules.defineRule('combatNotes.masterOfTwoWorldsFeature',
+      rules.defineRule('combatNotes.masterOfTwoWorlds',
         'levels.Spiritual Channeler', '?', 'source >= 3',
         'wisdomModifier', '=', '3 + source'
       );
-      rules.defineRule('magicNotes.magecraft(Spiritual)Feature',
-        'wisdomModifier', '=', null
-      );
+      rules.defineRule
+        ('magicNotes.magecraft(Spiritual)', 'wisdomModifier', '=', null);
       rules.defineRule('selectableFeatureCount.Spiritual Channeler',
         'levels.Spiritual Channeler', '=',
         'source < 3 ? null : Math.floor(source / 3)'
       );
-      rules.defineRule('spellEnergy',
-        'magicNotes.magecraft(Spiritual)Feature', '+=', null
-      );
-      rules.defineRule('spellsKnown.D0',
-        'magicNotes.magecraft(Spiritual)Feature', '+=', '3'
-      );
-      rules.defineRule('spellsKnown.D1',
-        'magicNotes.magecraft(Spiritual)Feature', '+=', '1'
-      );
+      rules.defineRule
+        ('spellEnergy', 'magicNotes.magecraft(Spiritual)', '+=', null);
+      rules.defineRule
+        ('spellsKnown.D0', 'magicNotes.magecraft(Spiritual)', '+=', '3');
+      rules.defineRule
+        ('spellsKnown.D1', 'magicNotes.magecraft(Spiritual)', '+=', '1');
       var turningTargets = {
         'Nature':'Nature', 'Spirits':'Spirit', 'The Unnatural':'Unnatural'
       };
@@ -1784,43 +2163,43 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Defender') {
 
-    rules.defineRule('abilityNotes.incredibleSpeedFeature',
+    rules.defineRule('abilityNotes.incredibleSpeed',
       'defenderFeatures.Incredible Speed', '=', '10 * source'
     );
     rules.defineRule('armorClass',
       'combatNotes.defenderArmorClassAdjustment', '+', null,
-      'combatNotes.dodgeTrainingFeature', '+', null
+      'combatNotes.dodgeTraining', '+', null
     );
-    rules.defineRule('combatNotes.defenderAbilitiesFeature',
+    rules.defineRule('combatNotes.defenderAbilities',
       'levels.Defender', '=', '3 + source * 3 / 4',
       'level', '+', 'source / 4'
     );
     rules.defineRule('combatNotes.defenderArmorClassAdjustment',
       'levels.Defender', '=', 'Math.floor((source + 1) / 2)'
     );
-    rules.defineRule('combatNotes.defenderStunningFistFeature',
+    rules.defineRule('combatNotes.defenderStunningFist',
       'levels.Defender', '=', '10 + Math.floor(source / 2)',
       'strengthModifier', '+', null
     );
-    rules.defineRule('combatNotes.dodgeTrainingFeature',
+    rules.defineRule('combatNotes.dodgeTraining',
       'defenderFeatures.Dodge Training', '=', null
     );
-    rules.defineRule('combatNotes.flurryAttackFeature',
+    rules.defineRule('combatNotes.flurryAttack',
       'defenderFeatures.Flurry Attack', '=', null
     );
-    rules.defineRule('combatNotes.incredibleResilienceFeature',
+    rules.defineRule('combatNotes.incredibleResilience',
       'defenderFeatures.Incredible Resilience', '=', '3 * source'
     );
-    rules.defineRule('combatNotes.masterfulStrikeFeature',
+    rules.defineRule('combatNotes.masterfulStrike',
       'defenderUnarmedDamageLarge', '=', null,
       'defenderUnarmedDamageMedium', '=', null,
       'defenderUnarmedDamageSmall', '=', null
     );
-    rules.defineRule('combatNotes.offensiveTrainingFeature',
+    rules.defineRule('combatNotes.offensiveTraining',
       'levels.Defender', '=', '14 + Math.floor(source / 2)',
       'strengthModifier', '+', null
     );
-    rules.defineRule('combatNotes.preciseStrikeFeature',
+    rules.defineRule('combatNotes.preciseStrike',
       'levels.Defender', '=', '3 * Math.floor((source + 2) / 6)'
     );
     rules.defineRule('defenderUnarmedDamageLarge',
@@ -1835,15 +2214,7 @@ LastAge.classRulesExtra = function(rules, name) {
       'features.Small', '?', null,
       'defenderUnarmedDamageMedium', '=', 'source.replace(/6/, "4")'
     );
-    rules.defineRule
-      ('hitPoints', 'combatNotes.incredibleResilienceFeature', '+', null);
-    rules.defineRule
-      ('save.Fortitude', 'saveNotes.defensiveMasteryFeature', '+', null);
-    rules.defineRule
-      ('save.Reflex', 'saveNotes.defensiveMasteryFeature', '+', null);
-    rules.defineRule
-      ('save.Will', 'saveNotes.defensiveMasteryFeature', '+', null);
-    rules.defineRule('saveNotes.defensiveMasteryFeature',
+    rules.defineRule('saveNotes.defensiveMastery',
       'defenderFeatures.Defensive Mastery', '=', null
     );
     rules.defineRule('selectableFeatureCount.Defender',
@@ -1852,10 +2223,7 @@ LastAge.classRulesExtra = function(rules, name) {
                            '(source < 6 ? 0 : Math.floor((source - 3) / 3)))'
     );
     rules.defineRule
-      ('speed', 'abilityNotes.incredibleSpeedFeature', '+', null);
-    rules.defineRule('weaponDamage.Unarmed',
-      'combatNotes.masterfulStrikeFeature', '=', null
-    );
+      ('weaponDamage.Unarmed', 'combatNotes.masterfulStrike', '=', null);
 
   } else if(name == 'Fighter') {
 
@@ -1865,12 +2233,12 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('selectableFeatureCount.Fighter',
       'levels.Fighter', '=', 'source < 4 ? null : (1 + Math.floor((source + 2) / 6))'
     );
-    rules.defineRule('skillNotes.adapterFeature',
+    rules.defineRule('skillNotes.adapter',
       'levels.Fighter', '=',
       'source - 3 + (source >= 10 ? source - 9 : 0) + ' +
       '(source >= 16 ? source - 15 : 0)'
     );
-    rules.defineRule('skillNotes.adapterFeature.1',
+    rules.defineRule('skillNotes.adapter.1',
       'fighterFeatures.Adapter', '?', null,
       'levels.Fighter', '=', 'source < 10 ? 1 : source < 16 ? 2 : 3'
     );
@@ -1906,7 +2274,7 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Wildlander') {
 
-    rules.defineRule('abilityNotes.quickStrideFeature',
+    rules.defineRule('abilityNotes.quickStride',
       'wildlanderFeatures.Quick Stride', '=', '10 * source'
     );
     rules.defineRule('casterLevels.Wildlander',
@@ -1918,40 +2286,35 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('casterLevels.W', 'casterLevels.Wildlander', '^=', null);
     rules.defineRule
       ('companionMasterLevel', 'levels.Wildlander', '+=', null);
-    rules.defineRule("combatNotes.hunter'sStrikeFeature",
+    rules.defineRule("combatNotes.hunter'sStrike",
       'levels.Wildlander', '=', 'Math.floor(source / 4)'
     );
-    rules.defineRule('combatNotes.initiativeBonusFeature',
+    rules.defineRule('combatNotes.initiativeBonus',
       'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
       'wildlanderFeatures.Initiative Bonus', '+', null
     );
-    rules.defineRule('featureNotes.animalCompanionFeature',
+    rules.defineRule('featureNotes.animalCompanion',
       'wildlanderFeatures.Animal Companion', '+=', null
-    );
-    rules.defineRule('initiative',
-      'combatNotes.improvedInitiativeFeature', '+', '4',
-      'combatNotes.initiativeBonusFeature', '+', null
     );
     rules.defineRule('selectableFeatureCount.Wildlander',
       'levels.Wildlander', '=',
       '1 + Math.floor((source + 1) / 3) + ' +
       '(source < 6 ? 0 : Math.floor((source - 3) / 3))'
     );
-    rules.defineRule('skillNotes.dangerSenseFeature',
+    rules.defineRule('skillNotes.dangerSense',
       'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
       'wildlanderFeatures.Danger Sense', '+', null
     );
-    rules.defineRule('skillNotes.skillMasteryFeature',
+    rules.defineRule('skillNotes.skillMastery',
       'wildlanderFeatures.Skill Mastery', '+=', null
     );
     rules.defineRule('skillNotes.skillMasteryFeature2',
       'wildlanderFeatures.Skill Mastery', '+=', null
     );
-    rules.defineRule('skillNotes.wildEmpathyFeature',
+    rules.defineRule('skillNotes.wildEmpathy',
       'levels.Wildlander', '+=', 'source',
       'charismaModifier', '+', null
     );
-    rules.defineRule('speed', 'abilityNotes.quickStrideFeature', '+', null);
 
   }
 
@@ -1995,7 +2358,7 @@ LastAge.companionRules = function(
   // Companion level based on feature count instead of class level
   rules.defineRule('companionLevel',
     'companionMasterLevel', '=', 'null',
-    'featureNotes.animalCompanionFeature', '=', null
+    'featureNotes.animalCompanion', '=', null
   );
 
   // Overrides of a couple of SRD3.5 calculations
@@ -2017,19 +2380,19 @@ LastAge.companionRules = function(
       ('features.' + feature, 'animalCompanionFeatures.' + feature, '=', '1');
   }
 
+  // TODO
   var notes = [
-    'companionNotes.companionEmpathyFeature:' +
+    'companionNotes.companionEmpathy:' +
       'Continuous emotional link w/no range limit',
-    'companionNotes.enhancedSenseFeature:' +
+    'companionNotes.enhancedSense:' +
       '+%V mile channeled event detection',
-    'companionNotes.telepathyFeature:' +
+    'companionNotes.telepathy:' +
       "Companion-controlled telepathic communication up to 100'"
   ];
-  rules.defineNote(notes);
 
   rules.defineRule
     ('astiraxLevel', 'levels.Legate', '=', 'Math.floor(source / 3)');
-  rules.defineRule('companionNotes.enhancedSenseFeature',
+  rules.defineRule('companionNotes.enhancedSense',
     'astiraxLevel', '=', 'source < 4 ? 5 : 10'
   );
   rules.defineRule
@@ -2084,40 +2447,38 @@ LastAge.featRulesExtra = function(rules, name) {
   if(feat == 'Drive It Deep') {
     rules.defineRule('combatNotes.driveItDeep', 'baseAttack', '=', null);
   } if(feat == 'Extra Gift') {
-    rules.defineRule('combatNotes.masterOfTwoWorldsFeature',
-      'featureNotes.extraGiftFeature', '+', '4'
-    );
-    rules.defineRule('magicNotes.forceOfPersonalityFeature',
-      'featureNotes.extraGiftFeature', '+', '4'
-    );
+    rules.defineRule
+      ('combatNotes.masterOfTwoWorlds', 'featureNotes.extraGift', '+', '4');
+    rules.defineRule
+      ('magicNotes.forceOfPersonality', 'featureNotes.extraGift', '+', '4');
   } else if(feat == 'Innate Magic') {
-    rules.defineRule('magicNotes.innateMagicFeature',
+    rules.defineRule('magicNotes.innateMagic',
       'charismaModifier', '=', null,
       'intelligenceModifier', '^', null,
       'wisdomModifier', '^', null
     );
-    rules.defineRule('magicNotes.innateMagicFeature.2',
+    rules.defineRule('magicNotes.innateMagic.2',
       'features.Innate Magic', '?', null,
       'charismaModifier', '=', '(source + 5) * 10000',
       'intelligenceModifier', '+', '(source + 5) * 100',
       'wisdomModifier', '+', 'source + 5'
     );
-    rules.defineRule('magicNotes.innateMagicFeature.1',
-      'magicNotes.innateMagicFeature.2', '=',
+    rules.defineRule('magicNotes.innateMagic.1',
+      'magicNotes.innateMagic.2', '=',
         'Math.floor(source/10000) >= Math.floor((source%10000)/100) && ' +
         'Math.floor(source/10000) >= source%100 ? "B0" : ' +
         'Math.floor((source%10000)/100) >= source%100 ? "W0" : "D0"'
     );
     rules.defineRule('casterLevels.innateB',
-      'magicNotes.innateMagicFeature.1', '?', 'source == "B0"',
+      'magicNotes.innateMagic.1', '?', 'source == "B0"',
       'level', '=', null
     );
     rules.defineRule('casterLevels.innateD',
-      'magicNotes.innateMagicFeature.1', '?', 'source == "D0"',
+      'magicNotes.innateMagic.1', '?', 'source == "D0"',
       'level', '=', null
     );
     rules.defineRule('casterLevels.innateW',
-      'magicNotes.innateMagicFeature.1', '?', 'source == "W0"',
+      'magicNotes.innateMagic.1', '?', 'source == "W0"',
       'level', '=', null
     );
     rules.defineRule('casterLevels.B', 'casterLevels.innateB', '=', null);
@@ -2125,7 +2486,7 @@ LastAge.featRulesExtra = function(rules, name) {
     rules.defineRule('casterLevels.W', 'casterLevels.innateW', '=', null);
   } else if((matchInfo = feat.match(/^Magecraft \((.*)\)/)) != null) {
     var tradition = matchInfo[1];
-    var note = 'magicNotes.magecraft(' + tradition + ')Feature';
+    var note = 'magicNotes.magecraft(' + tradition + ')';
     var ability = tradition == 'Charismatic' ? 'charisma' :
                   tradition == 'Hermetic' ? 'intelligence' : 'wisdom';
     var spellClass = tradition == 'Charismatic' ? 'Bard' :
@@ -2163,7 +2524,7 @@ LastAge.featRulesExtra = function(rules, name) {
   } else if((matchInfo = feat.match(/^Spellcasting \((.*)\)/)) != null) {
     var school = matchInfo[1];
     var schoolNoSpace = school.replace(/ /g, '');
-    var note = 'magicNotes.spellcasting(' + schoolNoSpace + ')Feature';
+    var note = 'magicNotes.spellcasting(' + schoolNoSpace + ')';
     notes = [note + ':May learn school spells/+1 school spell'];
     if(school.indexOf('Greater ') == 0) {
       notes[notes.length] =
@@ -2189,47 +2550,44 @@ LastAge.featRulesExtra = function(rules, name) {
        'Requires Spellcasting (' + school + ')'
     ];
   } else if(feat == 'Spell Knowledge') {
-    rules.defineRule
-      ('spellsKnownBonus', 'magicNotes.spellKnowledgeFeature', '+', '2');
+    rules.defineRule('spellsKnownBonus', 'magicNotes.spellKnowledge', '+', '2');
   } else if(feat == 'Warrior Of Shadow') {
     rules.defineRule
-      ('combatNotes.warriorOfShadowFeature', 'charismaModifier', '=', null);
+      ('combatNotes.warriorOfShadow', 'charismaModifier', '=', null);
     rules.defineRule
-      ('combatNotes.warriorOfShadowFeature.1', 'charismaModifier', '=', null);
+      ('combatNotes.warriorOfShadow.1', 'charismaModifier', '=', null);
   } else if(feat == 'Dwarvencraft') {
-    rules.defineRule('featureNotes.dwarvencraftFeature',
+    rules.defineRule('featureNotes.dwarvencraft',
       'skills.Craft (Armor)', '+=', 'Math.floor(source / 4)',
       'skills.Craft (Blacksmith)', '+=', 'Math.floor(source / 4)',
       'skills.Craft (Weapons)', '+=', 'Math.floor(source / 4)'
     );
   } else if(feat == 'Touched By Magic') {
-    rules.defineRule
-      ('spellEnergy', 'magicNotes.touchedByMagicFeature', '+', '2');
+    rules.defineRule('spellEnergy', 'magicNotes.touchedByMagic', '+', '2');
   } else if(feat == 'Born Of Duty') {
-    rules.defineRule('magicNotes.bornOfDutyFeature',
+    rules.defineRule('magicNotes.bornOfDuty',
       'level', '=', '10 + Math.floor(source / 2)',
       'charismaModifier', '+', null
     );
   } else if(feat == 'Improved Flexible Recovery') {
-    rules.defineRule('magicNotes.improvedFlexibleRecoveryFeature',
+    rules.defineRule('magicNotes.improvedFlexibleRecovery',
       'charismaModifier', '=', null,
       'intelligenceModifier', '^', null,
       'wisdomModifier', '^', null
     );
   } else if(feat == 'Power Reservoir') {
-    rules.defineRule('magicNotes.powerReservoirFeature',
+    rules.defineRule('magicNotes.powerReservoir',
       'charismaModifier', '=', null,
       'intelligenceModifier', '^', null,
       'wisdomModifier', '^', null
     );
   } else if(feat == 'Sense Power') {
-    rules.defineRule
-      ('magicNotes.sensePowerFeature', 'wisdomModifier', '=', null);
+    rules.defineRule('magicNotes.sensePower', 'wisdomModifier', '=', null);
   } else if(feat == 'Canny Strike') {
     rules.defineRule
-      ('combatNotes.cannyStrikeFeature', 'intelligenceModifier', '=', null);
+      ('combatNotes.cannyStrike', 'intelligenceModifier', '=', null);
   } else if(feat == 'Clever Fighting') {
-    rules.defineRule('combatNotes.cleverFightingFeature',
+    rules.defineRule('combatNotes.cleverFighting',
       'dexterityModifier', '=', null,
       'strengthModifier', '+', '-source'
     );
@@ -2237,1350 +2595,675 @@ LastAge.featRulesExtra = function(rules, name) {
 
 };
 
-/* Defines the rules related heroic paths. */
-LastAge.heroicPathRules = function(rules, paths) {
+/*
+ * TODO
+ */
+LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
 
-  rules.defineRule
-    ('abilityNotes.charismaBonusFeature', 'features.Charisma Bonus', '=', null);
-  rules.defineRule('abilityNotes.constitutionBonusFeature',
-    'features.Constitution Bonus', '=', null
+  if(!name) {
+    console.log('Empty class name');
+    return;
+  }
+
+  var prefix =
+    name.substring(0, 1).toLowerCase() + name.substring(1).replace(/ /g, '');
+
+  rules.defineRule('pathLevels.' + name,
+    'heroicPath', '?', 'source == "' + name + '"',
+    'level', '=', null
   );
-  rules.defineRule('abilityNotes.dexterityBonusFeature',
-    'features.Dexterity Bonus', '=', null
-  );
-  rules.defineRule('abilityNotes.intelligenceBonusFeature',
-    'features.Intelligence Bonus', '=', null
-  );
-  rules.defineRule
-    ('abilityNotes.strengthBonusFeature', 'features.Strength Bonus', '=', null);
-  rules.defineRule
-    ('abilityNotes.wisdomBonusFeature', 'features.Wisdom Bonus', '=', null);
-  rules.defineRule
-    ('charisma', 'abilityNotes.charismaBonusFeature', '+', null);
-  rules.defineRule
-    ('constitution', 'abilityNotes.constitutionBonusFeature', '+', null);
-  rules.defineRule
-    ('dexterity', 'abilityNotes.dexterityBonusFeature', '+', null);
-  rules.defineRule
-    ('intelligence', 'abilityNotes.intelligenceBonusFeature', '+', null);
-  rules.defineRule('strength', 'abilityNotes.strengthBonusFeature', '+', null);
-  rules.defineRule('wisdom', 'abilityNotes.wisdomBonusFeature', '+', null);
+  rules.defineSheetElement(name + ' Features', 'Feats', null, ' * ');
+  rules.defineChoice('extras', prefix + 'Features');
 
-  for(var i = 0; i < paths.length; i++) {
-
-    var path = paths[i];
-    var pathNoSpace =
-      path.substring(0,1).toLowerCase() + path.substring(1).replace(/ /g, '');
-    var feats, features, notes, selectableFeatures, spellFeatures;
-
-    if(path == 'Beast') {
-
-      feats = null;
-      features = [
-        '1:Vicious Assault', '2:Beastial Aura', '7:Rage',
-        '12:Enhanced Beastial Aura'
-      ];
-      notes = [
-        'combatNotes.beastialAuraFeature:Turn animals',
-        'combatNotes.rageFeature:' +
-          '+4 strength/constitution, +2 Will, -2 AC for %V rounds %1/day',
-        'combatNotes.viciousAssaultFeature:Two claw attacks at %V each',
-        'featureNotes.enhancedBeastialAuraFeature:' +
-          "Animals w/in 15' act negatively/cannot ride",
-        'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
-        'featureNotes.scentFeature:' +
-          "Detect creatures' presence w/in 30', track by smell",
-        'skillNotes.beastialAuraFeature:-10 Handle Animal/no Wild Empathy'
-      ];
-      selectableFeatures = [
-        'Constitution Bonus', 'Dexterity Bonus', 'Low-Light Vision', 'Scent',
-        'Strength Bonus', 'Wisdom Bonus'
-      ];
-      spellFeatures = [
-        '3:Magic Fang', "4:Bear's Endurance", '8:Greater Magic Fang',
-        "9:Cat's Grace", '13:Magic Fang', "14:Bull's Strength",
-        '17:Greater Magic Fang', '19:Freedom Of Movement'
-      ];
-      rules.defineRule('combatNotes.rageFeature',
-        'constitutionModifier', '=', '5 + source'
-      );
-      rules.defineRule('combatNotes.rageFeature.1',
-        'pathLevels.Beast', '+=', 'source >= 17 ? 2 : 1'
-      );
-      rules.defineRule('combatNotes.viciousAssaultFeature',
-        'mediumViciousAssault', '=', null,
-        'smallViciousAssault', '=', null
-      );
-      rules.defineRule('featureNotes.low-LightVisionFeature',
-        '', '=', '1',
-        'beastFeatures.Low-Light Vision', '+', null
-      );
-      rules.defineRule('mediumViciousAssault',
-        'pathLevels.Beast', '=', 'source>=11 ? "d8" : source>=6 ? "d6" : "d4"'
-      );
-      rules.defineRule('selectableFeatureCount.Beast',
-        'pathLevels.Beast', '=',
-        'Math.floor(source / 5) + ((source >= 16) ? 2 : 1)'
-      );
-      rules.defineRule('smallViciousAssault',
-        'features.Small', '?', null,
-        'mediumViciousAssault', '=', 'SRD35.weaponsSmallDamage[source]'
-      );
-      rules.defineRule('turnAnimal.damageModifier',
-        'turnAnimal.level', '=', null,
-        'charismaModifier', '+', null
-      );
-      rules.defineRule('turnAnimal.frequency',
-        'pathLevels.Beast', '+=', 'source >= 12 ? 6 : 3'
-      );
-      rules.defineRule('turnAnimal.level',
-        'pathLevels.Beast', '^=', 'source >= 2 ? source : null'
-      );
-      rules.defineRule('turnAnimal.maxHitDice',
-        'turnAnimal.level', '=', 'source * 3 - 10',
-        'charismaModifier', '+', null
-      );
-      rules.defineNote([
-        'turnAnimal.damageModifier:2d6 + %V',
-        'turnAnimal.frequency:%V/day',
-        'turnAnimal.maxHitDice:(d20 + %V) / 3'
-      ]);
-
-    } else if(path == 'Chanceborn') {
-
-      feats = null;
-      features = [
-        '1:Luck Of Heroes', '3:Unfettered', '4:Miss Chance', '6:Persistence',
-        '9:Take Ten', '19:Take Twenty'
-      ];
-      notes = [
-        'combatNotes.missChanceFeature:%V% chance of foe miss',
-        'featureNotes.luckOfHeroesFeature:Add %V to any d20 roll 1/day',
-        'featureNotes.persistenceFeature:' +
-          'Defensive Roll/Evasion/Slippery Mind/Uncanny Dodge %V/day',
-        'featureNotes.takeTenFeature:Take 10 on any d20 roll 1/day',
-        'featureNotes.takeTwentyFeature:Take 20 on any d20 roll 1/day',
-        'magicNotes.unfetteredFeature:<i>Freedom Of Movement</i> %V rounds/day'
-      ];
-      selectableFeatures = null;
-      spellFeatures = ['2:Persistence', '7:True Strike', '12:Aid', '17:Prayer'];
-      rules.defineRule('combatNotes.missChanceFeature',
-        'pathLevels.Chanceborn', '+=', 'source >= 14 ? 10 : 5'
-      );
-      rules.defineRule('featureNotes.luckOfHeroesFeature',
-        'pathLevels.Chanceborn', '=',
-        '"d4" + (source >= 5 ? "/d6" : "") + (source >= 10 ? "/d8" : "") + ' +
-        '(source >= 15 ? "/d10" : "") + (source >= 20 ? "/d12" : "")'
-      );
-      rules.defineRule('featureNotes.persistenceFeature',
-        'pathLevels.Chanceborn', '+=', 'Math.floor((source - 1) / 5)'
-      );
-      rules.defineRule
-        ('features.Defensive Roll', 'features.Survivor', '=', '1');
-      rules.defineRule('features.Evasion', 'features.Survivor', '=', '1');
-      rules.defineRule
-        ('features.Slippery Mind', 'features.Survivor', '=', '1');
-      rules.defineRule
-        ('features.Uncanny Dodge', 'features.Survivor', '=', '1');
-      rules.defineRule('magicNotes.unfetteredFeature',
-        'pathLevels.Chanceborn', '+=', 'Math.floor((source + 2) / 5)'
-      );
-
-    } else if(path == 'Charismatic') {
-
-      feats = null;
-      features = [
-        '4:Inspiring Oration', '5:Charisma Bonus', '6:Leadership',
-        '12:Natural Leader'
-      ];
-      notes = [
-        'featureNotes.leadershipFeature:Attract followers',
-        'featureNotes.naturalLeaderFeature: +%V Leadership score',
-        'magicNotes.inspiringOrationFeature:' +
-          "Give speech to apply spell-like ability to allies w/in 60' %V/day"
-      ];
-      selectableFeatures = null;
-      spellFeatures = [
-        '1:Charm Person', '2:Remove Fear', '3:Hypnotism', '7:Aid',
-        '8:Daze Monster', '11:Heroism', '13:Charm Monster', '16:Suggestion',
-        '17:Greater Heroism'
-      ];
-      rules.defineRule('charismaticFeatures.Charisma Bonus',
-        'level', '+', 'Math.floor((source - 5) / 5)'
-      );
-      rules.defineRule('featureNotes.naturalLeaderFeature',
-        'pathLevels.Charismatic', '=', 'source >= 18 ? 2 : 1'
-      );
-      rules.defineRule('magicNotes.inspiringOrationFeature',
-        'pathLevels.Charismatic', '+=', 'Math.floor((source + 1) / 5)'
-      );
-
-    } else if(path == 'Dragonblooded') {
-
-      feats = null;
-      features = [
-        '1:Bolster Spell', '4:Quickened Counterspelling',
-        '6:Improved Spellcasting', '9:Dragon Spell Penetration',
-        '19:Frightful Presence'
-      ];
-      notes = [
-        'magicNotes.bolsterSpellFeature:Add 1 to DC of %V chosen spells',
-        'magicNotes.frightfulPresenceFeature:' +
-          'Casting panics/shakes foes of lesser level 4d6 rounds failing ' +
-          'DC %V Will save',
-        'magicNotes.improvedSpellcastingFeature:' +
-          'Reduce energy cost of spells from %V chosen schools by 1',
-        'magicNotes.dragonSpellPenetrationFeature:' +
-          '+%V checks to overcome spell resistance',
-        'magicNotes.quickenedCounterspellingFeature:' +
-          'Counterspell as move action 1/round'
-      ];
-      selectableFeatures = null;
-      spellFeatures = null;
-      rules.defineRule('magicNotes.bolsterSpellFeature',
-        'pathLevels.Dragonblooded', '+=', '1 + Math.floor(source / 5)'
-      );
-      rules.defineRule('magicNotes.dragonbloodedSpellEnergy',
-        'pathLevels.Dragonblooded', '=',
-        'source>=16 ? 8 : source>=11 ? 6 : source>=7 ? 4 : source>=3 ? 2 : null'
-      );
-      rules.defineRule('magicNotes.dragonbloodedSpellsKnown',
-        'pathLevels.Dragonblooded', '=',
-        'source>=14 ? 3 : source>=8 ? 2 : source>=2 ? 1 : null'
-      );
-      rules.defineRule('magicNotes.dragonSpellPenetrationFeature',
-        'pathLevels.Dragonblooded', '+=', 'Math.floor((source - 5) / 4)'
-      );
-      rules.defineRule('magicNotes.frightfulPresenceFeature',
-        'pathLevels.Dragonblooded', '+=', '10 + Math.floor(source / 2)',
-        'charismaModifier', '+', null
-      );
-      rules.defineRule('magicNotes.improvedSpellcastingFeature',
-        'pathLevels.Dragonblooded', '+=', 'Math.floor(source / 6)'
-      );
-      rules.defineRule
-        ('spellEnergy', 'magicNotes.dragonbloodedSpellEnergy', '+', null);
-      rules.defineRule
-        ('spellsKnownBonus', 'magicNotes.dragonbloodedSpellsKnown', '+', null);
-
-    } else if(path == 'Earthbonded') {
-
-      feats = null;
-      features = [
-        '1:Darkvision', '3:Natural Armor', '4:Stonecunning',
-        '8:Improved Stonecunning', '12:Tremorsense', '16:Blindsense',
-        '20:Blindsight'
-      ];
-      notes = [
-        'combatNotes.naturalArmorFeature:+%V AC',
-        'featureNotes.blindsenseFeature:' +
-          "Other senses allow detection of unseen objects w/in 30'",
-        'featureNotes.blindsightFeature:' +
-          "Other senses compensate for loss of vision w/in 30'",
-        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
-        'featureNotes.improvedStonecunningFeature:' +
-          "Automatic Search w/in 5' of concealed stone door",
-        'featureNotes.tremorsenseFeature:' +
-          "Detect creatures in contact w/ground w/in 30'",
-        'skillNotes.stonecunningFeature:' +
-          "+%V Search involving stone or metal, automatic check w/in 10'"
-      ];
-      selectableFeatures = null;
-      spellFeatures = [
-        '2:Hold Portal', '5:Soften Earth And Stone', '6:Make Whole',
-        '7:Spike Stones', '9:Stone Shape', '11:Meld Into Stone',
-        '13:Transmute Rock To Mud', '14:Stoneskin', '15:Move Earth',
-        '17:Stone Tell', '19:Earthquake'
-      ];
-      rules.defineRule
-        ('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
-      rules.defineRule('combatNotes.naturalArmorFeature',
-        'earthbondedFeatures.Natural Armor', '+=', null
-      );
-      rules.defineRule('earthbondedFeatures.Natural Armor',
-        'level', '+', 'source >= 18 ? 2 : source >= 10 ? 1 : null'
-      );
-      rules.defineRule('featureNotes.darkvisionFeature',
-        'earthbondedFeatures.Darkvision', '+=', '30'
-      );
-      rules.defineRule('skillNotes.stonecunningFeature',
-        'earthbondedFeatures.Stonecunning', '+=', '2'
-      );
-
-    } else if(path == 'Faithful') {
-
-      feats = null;
-      features = ['4:Turn Undead'];
-      notes = [
-        'combatNotes.turnUndeadFeature:' +
-          'Turn (good) or rebuke (evil) undead creatures'
-      ];
-      selectableFeatures = null;
-      spellFeatures = [
-        '1:Bless', '2:Protection From Evil', '3:Divine Favor', '6:Aid',
-        '7:Bless Weapon', '8:Consecrate', '11:Daylight',
-        '12:Magic Circle Against Evil', '13:Prayer', '16:Holy Smite',
-        '17:Dispel Evil', '18:Holy Aura'
-      ];
-      rules.defineRule('faithfulFeatures.Wisdom Bonus',
-        'pathLevels.Faithful', '=', 'source<5 ? null : Math.floor(source/5)'
-      );
-      rules.defineRule('features.Wisdom Bonus',
-       'faithfulFeatures.Wisdom Bonus', '+=', null
-      );
-      rules.defineRule
-        ('turnUndead.damageModifier', 'pathLevels.Faithful', '^=', null);
-      rules.defineRule
-        ('turnUndead.frequency', 'turnUndeadFaithfulFrequency', '+=', null);
-      rules.defineRule
-        ('turnUndead.maxHitDice', 'pathLevels.Faithful', '^=', 'source*3-10');
-      rules.defineRule('turnUndeadFaithfulFrequency',
-        'pathLevels.Faithful', '=',
-        'source >= 4 ? Math.floor((source + 1) / 5) : null',
-        'charismaModifier', '+', '-source'
-      );
-
-    } else if(path == 'Fellhunter') {
-
-      feats = null;
-      features = [
-        '1:Sense The Dead', '2:Touch Of The Living', '3:Ward Of Life',
-        '5:Disrupting Attack'
-      ];
-      notes = [
-        'combatNotes.disruptingAttackFeature:' +
-           'Undead %V Will save or destroyed %1/day',
-        'combatNotes.touchOfTheLivingFeature:+%V damage vs. undead',
-        "magicNotes.senseTheDeadFeature:Detect undead %V' at will",
-        'saveNotes.wardOfLifeFeature:Immune to undead %V'
-      ];
-      selectableFeatures = null;
-      spellFeatures = null;
-      rules.defineRule('combatNotes.disruptingAttackFeature',
-        'pathLevels.Fellhunter', '+=', '10 + Math.floor(source / 2)',
-        'charismaModifier', '+', null
-      );
-      rules.defineRule('combatNotes.disruptingAttackFeature.1',
-        'pathLevels.Fellhunter', '+=', 'Math.floor(source / 5)'
-      );
-      rules.defineRule('combatNotes.touchOfTheLivingFeature',
-        'pathLevels.Fellhunter', '+=', 'Math.floor((source + 3) / 5) * 2'
-      );
-      rules.defineRule('magicNotes.senseTheDeadFeature',
-        'pathLevels.Fellhunter', '+=',
-          '10 * (Math.floor((source + 4) / 5) + Math.floor((source + 1) / 5))'
-      );
-      rules.defineRule('saveNotes.wardOfLifeFeature',
-        'pathLevels.Fellhunter', '=',
-        '"extraordinary special attacks" + ' +
-        '(source >= 8 ? "/ability damage" : "") + ' +
-        '(source >= 13 ? "/ability drain" : "") + ' +
-        '(source >= 18 ? "/energy drain" : "")'
-      );
-
-    } else if(path == 'Feyblooded') {
-
-      feats = null;
-      features = ['1:Low-Light Vision', '7:Fey Vision'];
-      notes = [
-        'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
-        'magicNotes.feyVisionFeature:Detect %V auras at will'
-      ];
-      selectableFeatures = [
-        'Armor Class Bonus', 'Dexterity Bonus', 'Fortitude Bonus',
-        'Reflex Bonus', 'Will Bonus'
-      ];
-      spellFeatures = [
-        '2:Disguise Self', '3:Ventriloquism', '5:Magic Aura',
-        '6:Invisibility', '9:Nondetection', '10:Glibness',
-        '11:Deep Slumber', '14:False Vision', '15:Rainbow Pattern',
-        '17:Mislead', '18:Seeming'
-      ];
-      rules.defineRule('armorClass',
-        'combatNotes.armorClassBonusFeature', '+', null
-      );
-      rules.defineRule('combatNotes.armorClassBonusFeature',
-        'features.Armor Class Bonus', '=', null
-      );
-      rules.defineRule('featureNotes.low-LightVisionFeature',
-        '', '=', '1',
-        'feybloodedFeatures.Low-Light Vision', '+', null
-      );
-      rules.defineRule
-        ('save.Fortitude', 'saveNotes.fortitudeBonusFeature', '+', null);
-      rules.defineRule
-        ('save.Reflex', 'saveNotes.reflexBonusFeature', '+', null);
-      rules.defineRule('save.Will', 'saveNotes.willBonusFeature', '+', null);
-      rules.defineRule('saveNotes.fortitudeBonusFeature',
-        'features.Fortitude Bonus', '=', null 
-      );
-      rules.defineRule
-        ('saveNotes.reflexBonusFeature', 'features.Reflex Bonus', '=', null);
-      rules.defineRule
-        ('saveNotes.willBonusFeature', 'features.Will Bonus', '=', null);
-      rules.defineRule('selectableFeatureCount.Feyblooded',
-        'unearthlyMaxBonusCount', '=',
-          'source > 0 ? (source * (source + 1)) / 2 : null',
-        'unearthlyChaModTotalBonus', '+', 'source > 0 ? source : null'
-      );
-      rules.defineRule('magicNotes.feyVisionFeature',
-        'pathLevels.Feyblooded', '=',
-        'source >= 19 ? "all magic" : ' +
-        'source >= 13 ? "enchantment/illusion" : "enchantment"'
-      );
-      rules.defineRule('unearthlyMaxBonusCount',
-        'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)',
-        'charismaModifier', 'v', null
-      );
-      rules.defineRule('unearthlyChaModTotalBonus',
-        'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)',
-        'unearthlyMaxBonusCount', '+', '-source',
-        'charismaModifier', '*', null
-      );
-
-    } else if(path == 'Giantblooded') {
-
-      feats = null;
-      features = [
-        '1:Obvious', '2:Rock Throwing', '3:Intimidating Size',
-        '4:Fast Movement', '5:Strength Bonus', '8:Fearsome Charge', '10:Large',
-        '20:Extra Reach'
-      ];
-      notes = [
-        'abilityNotes.fastMovementFeature:+%V speed',
-        "combatNotes.extraReachFeature:15' reach",
-        'combatNotes.fearsomeChargeFeature:' +
-           "+%V damage/-1 AC for every 10' in charge",
-        'combatNotes.largeFeature:+4 bull rush/disarm/grapple/-1 AC/attack',
-        'combatNotes.rockThrowingFeature:Use debris as ranged weapon',
-        'skillNotes.intimidatingSizeFeature:+%V Intimidate',
-        'skillNotes.obviousFeature:-4 Hide'
-      ];
-      selectableFeatures = null;
-      spellFeatures = null;
-      rules.defineRule('abilityNotes.fastMovementFeature',
-        'pathLevels.Giantblooded', '+=', 'Math.floor((source + 4) / 8) * 5'
-      );
-      rules.defineRule('armorClass', 'combatNotes.largeFeature', '+', '-1');
-      rules.defineRule('baseAttack', 'combatNotes.largeFeature', '+', '-1');
-      rules.defineRule('combatNotes.fearsomeChargeFeature',
-        'pathLevels.Giantblooded', '+=', 'Math.floor((source + 2) / 10)'
-      );
-      rules.defineRule('giantbloodedFeatures.Strength Bonus',
-        'level', '+', 'source >= 15 ? 1 : null'
-      );
-      rules.defineRule('skillNotes.intimidatingSizeFeature',
-        'pathLevels.Giantblooded', '+=',
-        'source>=17 ? 10 : source>=14 ? 8 : (Math.floor((source + 1) / 4) * 2)'
-      );
-      rules.defineRule('speed', 'abilityNotes.fastMovementFeature', '+', null);
-      rules.defineRule
-        ('weapons.Debris', 'combatNotes.rockThrowingFeature', '=', '1');
-      // Damage modified to account for Large adjustment starting level 10
-      rules.defineRule('weaponDamage.Debris',
-        'pathLevels.Giantblooded', '=',
-        'source>=16 ? "d10" : source>=10 ? "d8" : source>=9 ? "2d6" : "d10"'
-      );
-      rules.defineRule('weaponRange.Debris',
-        'pathLevels.Giantblooded', '=',
-        'source >= 19 ? 120 : source >= 13 ? 90 : source >= 6 ? 60 : 30'
-      );
-
-    } else if(path == 'Guardian') {
-
-      feats = null;
-      features = [
-        '1:Inspire Valor', '2:Detect Evil', '3:Righteous Fury', '4:Smite Evil',
-        '5:Constitution Bonus', '6:Lay On Hands', '12:Aura Of Courage',
-        '16:Death Ward'
-      ];
-      notes = [
-        'combatNotes.righteousFuryFeature:' +
-          'Overcome %V points of evil foe melee damage reduction',
-        'combatNotes.smiteEvilFeature:' +
-          '%V/day add %1 to attack, %2 to damage vs. evil foe',
-        'featureNotes.inspireValorFeature:' +
-          "Allies w/in 30' extra attack/+%V fear saves for %1 rounds %2/day",
-        'magicNotes.detectEvilFeature:<i>Detect Evil</i> at will',
-        'magicNotes.layOnHandsFeature:Harm undead or heal %V HP/day',
-        "saveNotes.auraOfCourageFeature:Immune fear; +4 to allies w/in 30'",
-        'saveNotes.deathWardFeature:Immune to negative energy/death effects'
-      ];
-      selectableFeatures = null;
-      spellFeatures = null;
-      rules.defineRule('guardianFeatures.Constitution Bonus',
-        'level', '+', 'Math.floor((source - 5) / 5)'
-      );
-      rules.defineRule('combatNotes.righteousFuryFeature',
-        'pathLevels.Guardian', '+=',
-        'source >= 17 ? 12 : source >= 12 ? 9 : ' +
-        '(Math.floor((source + 1) / 4) * 3)'
-      );
-      rules.defineRule('combatNotes.smiteEvilFeature',
-        'pathLevels.Guardian', '+=',
-        'source >= 18 ? 4 : source >= 14 ? 3 : source >= 8 ? 2 : 1'
-      );
-      rules.defineRule
-        ('combatNotes.smiteEvilFeature.1', 'charismaModifier', '=', null);
-      rules.defineRule
-        ('combatNotes.smiteEvilFeature.2', 'pathLevels.Guardian', '=', null);
-      rules.defineRule('featureNotes.inspireValorFeature',
-        'pathLevels.Guardian', '=', 'source >= 13 ? 2 : 1'
-      );
-      rules.defineRule('featureNotes.inspireValorFeature.1',
-        'pathLevels.Guardian', '=', null
-      );
-      rules.defineRule('featureNotes.inspireValorFeature.2',
-        'pathLevels.Guardian', '=', 'source >= 19 ? 3 : source >= 9 ? 2 : 1'
-      );
-      rules.defineRule('magicNotes.layOnHandsFeature',
-        'pathLevels.Guardian', '+=', null,
-        'charismaModifier', '*', null
-      );
-
-    } else if(path == 'Healer') {
-
-      feats = null;
-      features = null;
-      notes = null;
-      selectableFeatures = null;
-      spellFeatures = [
-        '1:Cure Light Wounds', '2:Lesser Restoration', '3:Cure Light Wounds',
-        '4:Cure Moderate Wounds', '5:Remove Disease', '6:Cure Moderate Wounds',
-        '7:Cure Serious Wounds', '8:Remove Blindness/Deafness',
-        '9:Cure Serious Wounds', '10:Cure Critical Wounds',
-        '11:Neutralize Poison', '12:Cure Critical Wounds',
-        '13:Mass Cure Light Wounds', '14:Restoration',
-        '15:Mass Cure Light Wounds', '16:Heal', '17:Restoration', '18:Heal',
-        '19:Regenerate', '20:Raise Dead'
-      ];
-
-    } else if(path == 'Ironborn') {
-
-      feats = null;
-      features = [
-        '1:Ironborn Resilience', '2:Fortitude Bonus', '3:Natural Armor',
-        '4:Improved Healing', '5:Damage Reduction', '6:Resist Elements',
-        '9:Indefatigable', '14:Ability Recovery'
-      ];
-      notes = [
-        'combatNotes.abilityRecoveryFeature:Regain 1 point ability damage/hour',
-        'combatNotes.damageReductionFeature:%V subtracted from damage taken',
-        'combatNotes.improvedHealingFeature:Regain %V HP/hour',
-        'combatNotes.ironbornResilienceFeature:Improved hit die',
-        'combatNotes.naturalArmorFeature:+%V AC',
-        'saveNotes.resistElementsFeature:' +
-          '%V resistance to acid/cold/electricity/fire',
-        'saveNotes.indefatigableFeature:Immune %V effects'
-      ];
-      selectableFeatures = null;
-      spellFeatures = null;
-      rules.defineRule
-        ('armorClass', 'combatNotes.naturalArmorFeature', '+', null);
-      rules.defineRule('combatNotes.damageReductionFeature',
-        'pathLevels.Ironborn', '+=', 'Math.floor(source / 5)'
-      );
-      rules.defineRule('combatNotes.improvedHealingFeature',
-        'pathLevels.Ironborn', '+=', 'Math.floor(source / 2)'
-      );
-      rules.defineRule('combatNotes.naturalArmorFeature',
-        'ironbornFeatures.Natural Armor', '+=', null
-      );
-      rules.defineRule('ironbornFeatures.Fortitude Bonus',
-        'level', '+', 'Math.floor((source - 2) / 5)'
-      );
-      rules.defineRule('ironbornFeatures.Natural Armor',
-        'level', '+', 'Math.floor((source - 3) / 5)'
-      );
-      rules.defineRule
-        ('resistance.Acid', 'saveNotes.resistElementsFeature', '+=', null);
-      rules.defineRule
-        ('resistance.Cold', 'saveNotes.resistElementsFeature', '+=', null);
-      rules.defineRule
-        ('resistance.Electricity','saveNotes.resistElementsFeature','+=',null);
-      rules.defineRule
-        ('resistance.Fire', 'saveNotes.resistElementsFeature', '+=', null);
-      rules.defineRule
-        ('save.Fortitude', 'saveNotes.fortitudeBonusFeature', '+', null);
-      rules.defineRule('saveNotes.resistElementsFeature',
-        'pathLevels.Ironborn', '+=', 'Math.floor((source - 1) / 5) * 3'
-      );
-      rules.defineRule('saveNotes.fortitudeBonusFeature',
-        'features.Fortitude Bonus', '=', null 
-      );
-      rules.defineRule('saveNotes.indefatigableFeature',
-        'pathLevels.Ironborn', '=',
-         'source < 9 ? null : source < 19 ? "fatigue" : "fatigue/exhaustion"'
-      );
-
-    } else if(path == 'Jack-Of-All-Trades') {
-
-      feats = null;
-      features = [
-        '1:Spell Choice', '2:Spontaneous Spell', '3:Skill Boost', '7:Feat Bonus'
-      ];
-      notes = [
-        'magicNotes.spellChoiceFeature:' +
-          'Use chosen %V spell as spell-like ability 1/day',
-        'magicNotes.spontaneousSpellFeature:' +
-          'Use any %V spell as spell-like ability 1/day',
-        'skillNotes.skillBoostFeature:+4 to %V chosen skills'
-      ];
-      selectableFeatures = [
-        'Charisma Bonus', 'Constitution Bonus', 'Dexterity Bonus',
-        'Intelligence Bonus', 'Strength Bonus', 'Wisdom Bonus'
-      ];
-      spellFeatures = null;
-      rules.defineRule('featCount.General',
-       'jack-Of-All-TradesFeatures.Feat Bonus', '+', null
-      );
-      rules.defineRule('jack-Of-All-TradesFeatures.Feat Bonus',
-        'level', '+', 'source >= 14 ? 1 : null'
-      );
-      rules.defineRule('magicNotes.spellChoiceFeature',
-        'pathLevels.Jack-Of-All-Trades', '=',
-        'source>=16 ? "Ch0/Ch1/Ch2/Ch3" : source>=10 ? "Ch0/Ch1/Ch2" : ' +
-        'source>=6 ? "Ch0/Ch1" : "Ch0"'
-      );
-      rules.defineRule('magicNotes.spontaneousSpellFeature',
-        'pathLevels.Jack-Of-All-Trades', '=',
-        'source >= 19 ? "Ch0/Ch1/Ch2" : source >= 13 ? "Ch0/Ch1" : "Ch0"'
-      );
-      rules.defineRule('selectableFeatureCount.Jack-Of-All-Trades',
-        'pathLevels.Jack-Of-All-Trades', '=',
-        'source>=18 ? 7 : source>=15 ? 6 : source>=12 ? 5 : source>=9 ? 4 : ' +
-        'source>=8 ? 3 : source>=5 ? 2 : source>=4 ? 1 : null'
-      );
-      rules.defineRule('skillNotes.skillBoostFeature',
-        'pathLevels.Jack-Of-All-Trades', '=',
-        'source >= 20 ? 4 : source >= 17 ? 3 : source >= 11 ? 2 : 1'
-      );
-      rules.defineRule
-        ('skillPoints', 'skillNotes.skillBoostFeature', '+', '4 * source');
-
-    } else if(path == 'Mountainborn') {
-
-      feats = null;
-      features = [
-        '1:Mountaineer', '1:Mountain Survival', '3:Ambush', '4:Rallying Cry',
-        '5:Constitution Bonus', '8:Improved Ambush', '13:Quick Ambush',
-        '18:Sniping Ambush'
-      ];
-      notes = [
-        'combatNotes.improvedAmbushFeature:' +
-           'Allies +2 damage vs. flat-footed foes on surprise/1st melee rounds',
-        'combatNotes.rallyingCryFeature:' +
-          'Allies not flat-footed/+4 vs. surprise %V/day',
-        'combatNotes.snipingAmbushFeature:' +
-          'Reduced Hide penalty for using ranged weapons',
-        "skillNotes.ambushFeature:Allies use character's Hide for ambush",
-        'skillNotes.quickAmbushFeature:Hide allies for ambush in half time',
-        'skillNotes.mountaineerFeature:+%V Balance/Climb/Jump',
-        'skillNotes.mountainSurvivalFeature:+%V Survival (mountains)'
-      ];
-      selectableFeatures = null;
-      spellFeatures = [
-        '2:Endure Elements', '7:Pass Without Trace', '12:Meld Into Stone',
-        '17:Stone Tell'
-      ];
-      rules.defineRule('combatNotes.rallyingCryFeature',
-        'pathLevels.Mountainborn', '+=', 'Math.floor((source + 1) / 5)'
-      );
-      rules.defineRule('mountainbornFeatures.Constitution Bonus',
-        'level', '+', 'Math.floor((source - 5) / 5)'
-      );
-      rules.defineRule('skillNotes.mountaineerFeature',
-        'pathLevels.Mountainborn', '+=', 'Math.floor((source + 4) / 5) * 2'
-      );
-      rules.defineRule('skillNotes.mountainSurvivalFeature',
-        'pathLevels.Mountainborn', '+=', 'Math.floor((source + 4) / 5) * 2'
-      );
-
-    } else if(path == 'Naturefriend') {
-
-      feats = null;
-      features = [
-        '1:Natural Bond', '1:Wild Empathy', '5:Animal Friend',
-        '10:Plant Friend', '15:Elemental Friend', '20:One With Nature'
-      ];
-      notes = [
-        'combatNotes.animalFriendFeature:Animals DC %V Will save to attack',
-        'combatNotes.elementalFriendFeature:' +
-          'Elementals DC %V Will save to attack',
-        'combatNotes.plantFriendFeature:Plants DC %V Will save to attack',
-        'featureNotes.naturalBondFeature:' +
-          'Knowledge (Nature) and Survival are class skills',
-        'magicNotes.oneWithNatureFeature:<i>Commune With Nature</i> at will',
-        'skillNotes.animalFriendFeature:+4 Handle Animal',
-        'skillNotes.elementalFriendFeature:+4 Diplomacy (elementals)',
-        'skillNotes.naturalBondFeature:+2 Knowledge (Nature)/Survival',
-        'skillNotes.plantFriendFeature:+4 Diplomacy (plants)',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy (animals)'
-      ];
-      selectableFeatures = null;
-      spellFeatures = [
-        '2:Calm Animals', '3:Entangle', '4:Obscuring Mist',
-        '6:Animal Messenger', '7:Wood Shape', '8:Gust Of Wind',
-        '9:Speak With Animals', '11:Speak With Plants', '12:Call Lightning',
-        '13:Dominate Animal', '14:Spike Growth', '16:Sleet Storm',
-        "17:Summon Nature's Ally IV", '18:Command Plants', '19:Ice Storm'
-      ];
-      rules.defineRule('combatNotes.animalFriendFeature',
-        'charismaModifier', '=', '10 + source'
-      );
-      rules.defineRule('combatNotes.elementalFriendFeature',
-        'charismaModifier', '=', '10 + source'
-      );
-      rules.defineRule('combatNotes.plantFriendFeature',
-        'charismaModifier', '=', '10 + source'
-      );
-      rules.defineRule('classSkills.Knowledge (Nature)',
-        'featureNotes.naturalBondFeature', '=', '1'
-      );
-      rules.defineRule
-        ('classSkills.Survival', 'featureNotes.naturalBondFeature', '=', '1');
-      rules.defineRule
-        ('skillNotes.wildEmpathyFeature','pathLevels.Naturefriend','+=',null);
-
-    } else if(path == 'Northblooded') {
-
-      feats = null;
-      features = [
-        '1:Northborn', '1:Wild Empathy', '2:Cold Resistance', '3:Battle Cry',
-        '4:Howling Winds', '5:Constitution Bonus', '6:Aura Of Warmth',
-        '11:Improved Battle Cry', '13:Frost Weapon', '16:Cold Immunity',
-        '18:Greater Frost Weapon'
-      ];
-      notes = [
-        'combatNotes.battleCryFeature:+%V hit points after cry %1/day',
-        'combatNotes.frostWeaponFeature:' +
-           '+d6 cold damage on hit for %V rounds %1/day',
-        'combatNotes.greaterFrostWeaponFeature:' +
-          '+d10 cold damage/extra critical hit die on critical hit',
-        'combatNotes.improvedBattleCryFeature:+1 attack/damage after cry',
-        "magicNotes.auraOfWarmthFeature:Allies w/in 10' +4 Fortitude vs cold",
-        'magicNotes.howlingWindsFeature:' +
-          '<i>Commune With Nature</i> (winds) %V/day',
-        'saveNotes.coldImmunityFeature:' +
-          'No damage from cold/50% greater damage from fire',
-        'saveNotes.coldResistanceFeature:Ignore first %V points cold damage',
-        'saveNotes.northbornFeature:Immune to non-lethal cold/exposure',
-        'skillNotes.northbornFeature:' +
-          '+2 Survival (cold)/Wild Empathy (cold natives)',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy (animals)'
-      ];
-      selectableFeatures = null;
-      spellFeatures = null;
-      rules.defineRule
-        ('combatNotes.battleCryFeature', 'pathLevels.Northblooded', '=', null);
-      rules.defineRule('combatNotes.battleCryFeature.1',
-        'pathLevels.Northblooded', '=',
-        'source >= 17 ? 4 : source >= 14 ? 3 : source >= 7 ? 2 : 1'
-      );
-      rules.defineRule('combatNotes.frostWeaponFeature',
-        'pathLevels.Northblooded', '=', null
-      );
-      rules.defineRule('combatNotes.frostWeaponFeature.1',
-        'pathLevels.Northblooded', '=', 'source >= 19 ? 2 : 1'
-      );
-      rules.defineRule('northbloodedFeatures.Constitution Bonus',
-        'level', '+', 'Math.floor((source - 5) / 5)'
-      );
-      rules.defineRule('magicNotes.howlingWindsFeature',
-        'pathLevels.Northblooded', '+=',
-        'source >= 12 ? 3 : source >= 8 ? 2 : 1'
-      );
-      rules.defineRule('saveNotes.coldResistanceFeature',
-        'pathLevels.Northblooded', '+=', 'source >= 9 ? 15 : 5'
-      );
-      rules.defineRule('skillNotes.wildEmpathyFeature',
-        'pathLevels.Northblooded', '+=', null
-      );
-
-    } else if(path == 'Painless') {
-
-      feats = null;
-      features = [
-        '1:Painless', '2:Nonlethal Damage Reduction', '3:Uncaring Mind',
-        '4:Retributive Rage', '5:Ferocity', '9:Last Stand',
-        '10:Increased Damage Threshold', '14:Improved Retributive Rage'
-      ];
-      notes = [
-        'combatNotes.ferocityFeature:Continue fighting below 0 HP',
-        'combatNotes.improvedRetributiveRageFeature:' +
-          '+%V damage next round after suffering double level damage',
-        'combatNotes.increasedDamageThresholdFeature:' +
-          'Continue fighting until -%V HP',
-        'combatNotes.lastStandFeature:' +
-           '1 minute of %V spell resistance/15 damage reduction/30 energy ' +
-           'resistance/near death afterward %1/day',
-        'combatNotes.nonlethalDamageReductionFeature:' +
-          'Ignore first %V points of non-lethal damage',
-        'combatNotes.painlessFeature:+%V HP',
-        'combatNotes.retributiveRageFeature:' +
-          '+%V attack next round after suffering double level damage',
-        'saveNotes.painlessFeature:+%V vs. pain effects',
-        'saveNotes.uncaringMindFeature:+%V vs. enchantment'
-      ];
-      selectableFeatures = null;
-      spellFeatures = null;
-      rules.defineRule('combatNotes.improvedRetributiveRageFeature',
-        'pathLevels.Painless', '+=', null
-      );
-      rules.defineRule('combatNotes.increasedDamageThresholdFeature',
-        'pathLevels.Painless', '+=',
-        'source >= 20 ? 25 : source >= 15 ? 20 : 15'
-      );
-      rules.defineRule('combatNotes.lastStandFeature',
-        'pathLevels.Painless', '+=', '10 + source'
-      );
-      rules.defineRule('combatNotes.lastStandFeature.1',
-        'pathLevels.Painless', '+=', 'source >= 19 ? 2 : 1'
-      );
-      rules.defineRule('combatNotes.nonlethalDamageReductionFeature',
-        'pathLevels.Painless', '+=', 'Math.floor((source + 3) / 5) * 3'
-      );
-      rules.defineRule
-        ('combatNotes.painlessFeature', 'pathLevels.Painless', '+=', null);
-      rules.defineRule('combatNotes.retributiveRageFeature',
-        'pathLevels.Painless', '+=', null
-      );
-      rules.defineRule
-        ('hitPoints', 'combatNotes.painlessFeature', '+', null);
-      rules.defineRule
-        ('resistance.Enchantment', 'saveNotes.uncaringMindFeature', '+=', null);
-      rules.defineRule
-        ('resistance.Pain', 'saveNotes.painlessFeature', '+=', null);
-      rules.defineRule('saveNotes.uncaringMindFeature',
-        'pathLevels.Painless', '+=', 'Math.floor((source + 2) / 5)'
-      );
-      rules.defineRule('saveNotes.painlessFeature',
-        'pathLevels.Painless', '=', 'Math.floor((source + 4) / 5) * 5'
-      );
-
-    } else if(path == 'Pureblood') {
-
-      feats = null;
-      features = [
-        '1:Master Adventurer', '2:Blood Of Kings', '3:Feat Bonus',
-        '4:Skill Fixation'
-      ];
-      notes = [
-        'skillNotes.bloodOfKingsFeature:' +
-          'Daily +%V on charisma skills in shadow or resistance interactions',
-        'skillNotes.masterAdventurerFeature:' +
-          '+%V on three chosen non-charisma skills',
-        'skillNotes.skillFixationFeature:' +
-          'Take 10 despite distraction on %V chosen skills',
-        'validationNotes.purebloodHeroicPathRace:Requires Race =~ Erenlander'
-      ];
-      selectableFeatures = [
-        'Charisma Bonus', 'Constitution Bonus', 'Dexterity Bonus',
-        'Intelligence Bonus', 'Strength Bonus', 'Wisdom Bonus'
-      ];
-      spellFeatures = null;
-      rules.defineRule
-        ('featCount.General', 'purebloodFeatures.Feat Bonus', '+', null);
-      rules.defineRule('purebloodFeatures.Feat Bonus',
-        'level', '+', 'Math.floor((source - 3) / 5)'
-      );
-      rules.defineRule('selectableFeatureCount.Pureblood',
-        'pathLevels.Pureblood', '=', 'source>=5 ? Math.floor(source / 5) : null'
-      );
-      rules.defineRule('skillNotes.skillFixationFeature',
-        'pathLevels.Pureblood', '+=', 'Math.floor((source + 1) / 5)'
-      );
-      rules.defineRule('skillNotes.bloodOfKingsFeature',
-        'pathLevels.Pureblood', '+=', 'Math.floor((source + 3) / 5) * 2'
-      );
-      rules.defineRule('skillNotes.masterAdventurerFeature',
-        'pathLevels.Pureblood', '+=', 'Math.floor((source + 4) / 5) * 2'
-      );
-      rules.defineRule
-        ('skillPoints', 'skillNotes.masterAdventurerFeature', '+', '3*source');
-      rules.defineRule('validationNotes.purebloodHeroicPathRace',
-        'pathLevels.Pureblood', '=', '-1',
-        'race', '+', 'source.match(/Erenlander/) ? 1 : null'
-      );
-
-    } else if(path == 'Quickened') {
-
-      feats = null;
-      features = [
-        '1:Initiative Bonus', '2:Armor Class Bonus', '3:Fast Movement',
-        '4:Burst Of Speed', '5:Dexterity Bonus'
-      ];
-      notes = [
-        'abilityNotes.fastMovementFeature:+%V speed',
-        'combatNotes.burstOfSpeedFeature:' +
-          'Extra attack/move action for %V rounds %1/day/fatigued afterward'
-      ];
-      selectableFeatures = null;
-      spellFeatures = null;
-      rules.defineRule('abilityNotes.fastMovementFeature',
-        'pathLevels.Quickened', '+=', 'Math.floor((source + 2) / 5) * 5'
-      );
-      rules.defineRule('armorClass',
-        'combatNotes.armorClassBonusFeature', '+', null
-      );
-      rules.defineRule('combatNotes.armorClassBonusFeature',
-        'features.Armor Class Bonus', '=', null
-      );
-      rules.defineRule('combatNotes.burstOfSpeedFeature',
-        'constitutionModifier', '+=', 'source + 3'
-      );
-      rules.defineRule('combatNotes.burstOfSpeedFeature.1',
-        'pathLevels.Quickened', '+=', 'Math.floor((source + 1) / 5)'
-      );
-      rules.defineRule('combatNotes.initiativeBonusFeature',
-        'pathLevels.Quickened', '+=', 'Math.floor((source + 4) / 5) * 2'
-      );
-      rules.defineRule
-        ('initiative', 'combatNotes.initiativeBonusFeature', '+', null);
-      rules.defineRule('quickenedFeatures.Armor Class Bonus',
-        'level', '+', 'Math.floor((source - 2) / 5)'
-      );
-      rules.defineRule('quickenedFeatures.Dexterity Bonus',
-        'level', '+', 'Math.floor((source - 5) / 5)'
-      );
-      rules.defineRule('speed', 'abilityNotes.fastMovementFeature', '+', null);
-
-    } else if(path == 'Seaborn') {
-
-      feats = null;
-      features = [
-        "1:Dolphin's Grace", '1:Natural Swimmer', '2:Deep Lungs',
-        '3:Aquatic Blindsight', '4:Aquatic Ally', '10:Aquatic Adaptation',
-        '14:Cold Resistance', '17:Aquatic Emissary', '18:Assist Allies'
-      ];
-      notes = [
-        'magicNotes.aquaticAllyFeature:' +
-          "<i>Summon Nature's Ally</i> aquatic creatures %V/day",
-        'saveNotes.coldResistanceFeature:Ignore first %V points cold damage',
-        'skillNotes.aquaticAdaptationFeature:' +
-          'Breathe through gills/no underwater pressure damage',
-        'skillNotes.aquaticBlindsightFeature:' +
-          'Detect creatures in opaque water up to %V feet',
-        'skillNotes.aquaticEmissaryFeature:Speak to all aquatic animals',
-        'skillNotes.assistAlliesFeature:' +
-          'Allies move through water at full speed/give oxygen to allies',
-        'skillNotes.deepLungsFeature:Hold breath for %V rounds',
-        "skillNotes.dolphin'sGraceFeature:+8 swim hazards",
-        'skillNotes.naturalSwimmerFeature:%V swim as move action'
-      ];
-      selectableFeatures = null;
-      spellFeatures = [
-        "4:Summon Nature's Ally II", '5:Blur', "8:Summon Nature's Ally III",
-        '9:Fog Cloud', "12:Summon Nature's Ally IV", '13:Displacement',
-        "16:Summon Nature's Ally V", "20:Summon Nature's Ally VI"
-      ];
-      rules.defineRule('deepLungsMultiplier',
-        'seabornFeatures.Deep Lungs', '^=', '2',
-        'pathLevels.Seaborn', '+', 'source >= 6 ? 2 : 1'
-      );
-      rules.defineRule('magicNotes.aquaticAllyFeature',
-        'pathLevels.Seaborn', '+=', 'Math.floor(source / 4)'
-      );
-      rules.defineRule('saveNotes.coldResistanceFeature',
-        'pathLevels.Seaborn', '+=', 'source >= 14 ? 5 : null'
-      );
-      rules.defineRule('skillNotes.aquaticBlindsightFeature',
-        'pathLevels.Seaborn', '+=', 'Math.floor((source + 5) / 8) * 30'
-      );
-      rules.defineRule('skillNotes.deepLungsFeature',
-        'deepLungsMultiplier', '=', null,
-        'constitution', '*', null
-      );
-      rules.defineRule('skillNotes.naturalSwimmerFeature',
-        'pathLevels.Seaborn', '+=', 'source >= 15 ? 60 : source >= 7 ? 40 : 20'
-      );
-
-    } else if(path == 'Seer') {
-
-      feats = null;
-      features = ['3:Seer Sight'];
-      notes = [
-        'magicNotes.seerSightFeature:' +
-          'Discern recent history of touched object %V/day'
-      ];
-      selectableFeatures = null;
-      spellFeatures = [
-        '1:Alarm', '2:Augury', '4:Clairaudience/Clairvoyance',
-        '5:Locate Object', '7:Locate Creature', '8:Speak With Dead',
-        '10:Divination', '11:Scrying', '13:Arcane Eye', '14:Find The Path',
-        '16:Prying Eyes', '17:Legend Lore', '19:Commune', '20:Vision'
-      ];
-      rules.defineRule('magicNotes.seerSightFeature',
-        'pathLevels.Seer', '=', 'Math.floor((source + 6) / 6)'
-      );
-
-    } else if(path == 'Shadow Walker') {
-
-      feats = null;
-      features = [
-        '1:Darkvision', '2:Shadow Veil', '4:Shadow Jump',
-        '11:Hide In Plain Sight'
-      ];
-      notes = [
-        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
-        "featureNotes.shadowJumpFeature:Move %V' between shadows",
-        'skillNotes.hideInPlainSightFeature:Hide even when observed',
-        'skillNotes.shadowVeilFeature:+%V Hide'
-      ];
-      selectableFeatures = null;
-      spellFeatures = [
-        '3:Expeditious Retreat', '5:Blur', '7:Undetectable Alignment',
-        '9:Displacement', '13:Expeditious Retreat', '15:Blur',
-        '17:Undetectable Alignment', '19:Displacement'
-      ];
-      rules.defineRule('featureNotes.darkvisionFeature',
-        'shadowWalkerFeatures.Darkvision', '+=', '60'
-      );
-      rules.defineRule('featureNotes.shadowJumpFeature',
-        'pathLevels.Shadow Walker', '+=', 'Math.floor(source / 4) * 10'
-      );
-      rules.defineRule('skillNotes.shadowVeilFeature',
-        'pathLevels.Shadow Walker', '+=', 'Math.floor((source + 2) / 4) * 2'
-      );
-
-    } else if(path == 'Speaker') {
-
-      feats = null;
-      features = [
-        '2:Persuasive Speaker', '3:Power Words', '5:Charisma Bonus',
-        '14:Language Savant'
-      ];
-      notes = [
-        'magicNotes.powerWordsFeature:' +
-          'DC %2+spell level <i>Word of %V</i> %1/day',
-        'skillNotes.languageSavantFeature:' +
-          'Fluent in any language after listening for 10 minutes',
-        'skillNotes.persuasiveSpeakerFeature:+%V verbal charisma skills'
-      ];
-      selectableFeatures = null;
-      spellFeatures = [
-        '1:Comprehend Languages', '4:Whispering Wind', '8:Tongues', '12:Shout',
-        '18:Greater Shout'
-      ];
-      rules.defineRule('speakerFeatures.Charisma Bonus',
-        'level', '+', 'Math.floor((source - 5) / 5)'
-      );
-      rules.defineRule('magicNotes.powerWordsFeature',
-        'pathLevels.Speaker', '=',
-        '"Opening" + (source >= 6 ? "/Shattering" : "") + ' +
-                    '(source >= 9 ? "/Silence" : "") + ' +
-                    '(source >= 13  ? "/Slumber" : "") + ' +
-                    '(source >= 16 ? "/Charming" : "") + ' +
-                    '(source >= 19 ? "/Holding" : "")'
-      );
-      rules.defineRule('magicNotes.powerWordsFeature.1',
-        'charismaModifier', '=', 'source + 3'
-      );
-      rules.defineRule('magicNotes.powerWordsFeature.2',
-        'charismaModifier', '=', 'source + 10'
-      );
-      rules.defineRule('skillNotes.persuasiveSpeakerFeature',
-        'pathLevels.Speaker', '=',
-        'source >= 17 ? 8 : source >= 11 ? 6 : source >= 7 ? 4 : 2'
-      );
-
-    } else if(path == 'Spellsoul') {
-
-      feats = null;
-      features = [
-        '1:Untapped Potential', '2:Metamagic Aura', '3:Improved Resist Spells'
-      ];
-      notes = [
-        'magicNotes.metamagicAuraFeature:' +
-          "%V others' spells of up to level %1 w/in 30'",
-        'magicNotes.untappedPotentialFeature:' +
-          "Contribute %V points to others' spells w/in 30'",
-        'saveNotes.improvedResistSpellsFeature:+%V vs. spells'
-      ];
-      selectableFeatures = null;
-      spellFeatures = null;
-      rules.defineRule('highestMagicModifier',
-        'charismaModifier', '=', null,
-        'intelligenceModifier', '^', null,
-        'wisdomModifier', '^', null
-      );
-      rules.defineRule('magicNotes.metamagicAuraFeature',
-        'pathLevels.Spellsoul', '=',
-        '(source>=15 ? 4 : source>=10 ? 3 : source>=6 ? 2 : 1) + "/day " + ' +
-        '["enlarge"].concat(source >= 5 ? ["extend"] : [])' +
-                   '.concat(source >= 8 ? ["reduce"] : [])' +
-                   '.concat(source >= 11 ? ["attract"] : [])' +
-                   '.concat(source >= 14 ? ["empower"] : [])' +
-                   '.concat(source >= 17 ? ["maximize"] : [])' +
-                   '.concat(source >= 20 ? ["redirect"] : []).sort().join("/")'
-      );
-      rules.defineRule('magicNotes.metamagicAuraFeature',
-        'pathLevels.Spellsoul', '=', 'Math.floor(source / 2)'
-      );
-      rules.defineRule('magicNotes.untappedPotentialFeature',
-        'highestMagicModifier', '=', 'source + 1',
-        'level', '+',
-          'source>=18 ? 8 : source>=13 ? 6 : source>=9 ? 4 : source>=4 ? 2 : 0'
-      );
-      rules.defineRule('resistance.Spell',
-        'saveNotes.improvedResistSpellsFeature', '+=', null
-      );
-      rules.defineRule('saveNotes.improvedResistSpellsFeature',
-        'pathLevels.Spellsoul', '=',
-        'source>=19 ? 5 : source>=16 ? 4 : source>=12 ? 3 : source>=7 ? 2 : ' +
-        'source>=3 ? 1 : null'
-      );
-
-    } else if(path == 'Steelblooded') {
-
-      feats = [];
-      for(var feat in rules.getChoices('feats')) {
-        if(feat.match(/Weapon (Focus|Proficiency|Specialization) \(/)) {
-          feats[feats.length] = feat;
-        }
+  for(var i = 0; i < features.length; i++) {
+    var matchInfo = features[i].match(/^((\d+):)?(.*)$/);
+    var feature = matchInfo ? matchInfo[3] : features[i];
+    var level = matchInfo ? matchInfo[2] : 1;
+    rules.defineRule(prefix + 'Features.' + feature,
+      'levels.' + name, '=', 'source >= ' + level + ' ? 1 : null'
+    );
+    rules.defineRule
+      ('features.' + feature, prefix + 'Features.' + feature, '+=', null);
+    if((matchInfo = feature.match(/^Weapon (Familiarity|Proficiency) \((.*\/.*)\)$/)) != null) {
+      // Set individual features for each weapon on the list.
+      var weapons = matchInfo[2].split('/');
+      for(var j = 0; j < weapons.length; j++) {
+        rules.defineRule('features.Weapon ' + matchInfo[1] + ' (' + weapons[j] + ')', 'features.' + feature, '=', '1');
       }
-      features = [
-        '2:Offensive Tactics', '3:Strategic Blow', '4:Skilled Warrior',
-        '14:Untouchable', '19:Improved Untouchable'
-      ];
-      notes = [
-        'combatNotes.improvedUntouchableFeature:' +
-           'No foe AOO from move/standard/full-round actions',
-        'combatNotes.offensiveTacticsFeature:' +
-          '+%V to first attack or all damage when using full attack action',
-        'combatNotes.skilledWarriorFeature:' +
-           'Half penalty from %V choices of Fighting Defensively/Grapple ' +
-           'Attack/Non-proficient Weapon/Two-Weapon Fighting',
-        'combatNotes.strategicBlowFeature:' +
-          'Overcome %V points of foe damage reduction',
-        'combatNotes.untouchableFeature:No foe AOO from special attacks'
-      ];
-      selectableFeatures = null;
-      spellFeatures = null;
-      rules.defineRule('combatNotes.offensiveTacticsFeature',
-        'pathLevels.Steelblooded', '+=',
-        'source>=17 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
-      );
-      rules.defineRule('combatNotes.skilledWarriorFeature',
-        'pathLevels.Steelblooded', '+=',
-        'source>=18 ? 4 : source>=13 ? 3 : source>=8 ? 2 : 1'
-      );
-      rules.defineRule('combatNotes.strategicBlowFeature',
-        'pathLevels.Steelblooded', '+=',
-        'source>=16 ? 15 : source>=12 ? 12 : source>=9 ? 9 : source>=6 ? 6 : 3'
-      );
-      rules.defineRule('featCount.Steelblooded',
-        'pathLevels.Steelblooded', '=', '1 + Math.floor(source / 5)'
-      );
-
-    } else if(path == 'Sunderborn') {
-
-      feats = null;
-      features = [
-        '1:Detect Outsider', '2:Blood Of The Planes', '4:Planar Fury',
-        '7:Darkvision', '13:Magical Darkvision', '19:See Invisible'
-      ];
-      notes = [
-        'combatNotes.planarFuryFeature:' +
-          '+2 strength/constitution/+1 Will save/-1 AC for %V rounds %1/day',
-        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
-        'featureNotes.magicalDarkvisionFeature:See perfectly in any darkness',
-        'featureNotes.seeInvisibleFeature:See invisible creatures',
-        'magicNotes.detectOutsiderFeature:Detect outsiders at will',
-        'skillNotes.bloodOfThePlanesFeature:' +
-          '+%V on charisma skills when dealing with outsiders'
-      ];
-      selectableFeatures = null;
-      spellFeatures = [
-        '3:Summon Monster I', '6:Summon Monster II', '9:Summon Monster III',
-        '12:Summon Monster IV', '15:Summon Monster V', '18:Summon Monster VI'
-      ];
-      rules.defineRule('combatNotes.planarFuryFeature',
-        'constitutionModifier', '+=', 'Math.floor((source + 2) / 6)'
-      );
-      rules.defineRule('combatNotes.planarFuryFeature.1',
-        'pathLevels.Sunderborn', '+=', 'Math.floor((source + 2) / 6)'
-      );
-      rules.defineRule('featureNotes.darkvisionFeature',
-        'sunderbornFeatures.Darkvision', '+=', '60'
-      );
-      rules.defineRule('skillNotes.bloodOfThePlanesFeature',
-        'pathLevels.Sunderborn', '+=', 'Math.floor((source + 1) / 3) * 2'
-      );
-
-    } else if(path == 'Tactician') {
-
-      feats = null;
-      features = [
-        '1:Aid Another', '2:Combat Overview', '3:Coordinated Initiative',
-        '4:Joint Attack', '5:Aided Combat Bonus', '13:Directed Attack',
-        '18:Telling Blow', '20:Perfect Assault'
-      ];
-      notes = [
-        'combatNotes.aidAnotherFeature:Aid another as a move action',
-        'combatNotes.aidedCombatBonusFeature:Aided ally +%V to attack or AC',
-        'combatNotes.combatOverviewFeature:' +
-          "Ally w/in 60' avoid AOO/avoid flat-footed/foe flat-footed %V/day",
-        'combatNotes.coordinatedInitiativeFeature:' +
-          "Allies w/in 30' use character's initiative %V/day",
-        'combatNotes.directedAttackFeature:' +
-          "Ally w/in 30' add 1/2 character's base attack 1/day",
-        'combatNotes.jointAttackFeature:' +
-          "Allies w/in 30' attack single foe at +1/participant (+5 max) " +
-          '%V/day',
-        'combatNotes.perfectAssaultFeature:' +
-          "Allies w/in 30' threaten critical on any hit 1/day",
-        "combatNotes.tellingBlowFeature:Allies w/in 30' re-roll damage 1/day"
-      ];
-      selectableFeatures = null;
-      spellFeatures = null;
-      rules.defineRule('combatNotes.aidedCombatBonusFeature',
-        'pathLevels.Tactician', '+=',
-        'source>=19 ? 4 : source>=14 ? 3 : source>=9 ? 2 : source>=5 ? 1 : 0'
-      );
-      rules.defineRule('combatNotes.combatOverviewFeature',
-        'pathLevels.Tactician', '+=',
-        'source>=15 ? 4 : source>=10 ? 3 : source>=6 ? 2 : 1'
-      );
-      rules.defineRule('combatNotes.coordinatedInitiativeFeature',
-        'pathLevels.Tactician', '+=',
-        'source>=16 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
-      );
-      rules.defineRule('combatNotes.jointAttackFeature',
-        'pathLevels.Tactician', '+=',
-        'source>=17 ? 4 : source==16 ? 3 : Math.floor(source / 4)'
-      );
-
-    } else if(path == 'Warg') {
-
-      feats = null;
-      features = [
-        '1:Wild Empathy', '2:Animal Companion', '5:Wild Shape', '13:Ferocity',
-        '20:Blindsense'
-      ];
-      notes = [
-        'combatNotes.ferocityFeature:Continue fighting below 0 HP',
-        'featureNotes.animalCompanionFeature:' +
-          'Special bond/abilities w/up to %V animals',
-        'featureNotes.blindsenseFeature:' +
-          "Other senses allow detection of unseen objects w/in 30'",
-        'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
-        'featureNotes.scentFeature:' +
-          "Detect creatures' presence w/in 30', track by smell",
-        'magicNotes.wildShapeFeature:Change into creature of size %V %1/day',
-        'skillNotes.wildEmpathyFeature:+%V Diplomacy (animals)'
-      ];
-      selectableFeatures = ['Low-Light Vision', 'Scent'];
-      spellFeatures = [
-        '4:Charm Animal', '7:Speak With Animals', '12:Charm Animal',
-        '17:Speak With Animals'
-      ];
-      rules.defineRule
-        ('companionMasterLevel', 'pathLevels.Warg', '=', null);
-      rules.defineRule('featureNotes.animalCompanionFeature',
-        'wargFeatures.Animal Companion', '+=', null
-      );
-      rules.defineRule('featureNotes.low-LightVisionFeature',
-        '', '=', '1',
-        'wargFeatures.Low-Light Vision', '+', null
-      );
-      rules.defineRule('wargFeatures.Animal Companion',
-        'level', '+', 'Math.floor((source - 2) / 4)'
-      );
-      rules.defineRule('magicNotes.wildShapeFeature',
-        'pathLevels.Warg', '=',
-        'source >= 19 ? "medium-huge" : ' +
-        'source >= 11 ? "medium-large" : ' +
-        'source >= 5 ? "medium" : null'
-      );
-      rules.defineRule('magicNotes.wildShapeFeature.1',
-        'pathLevels.Warg', '=', 'source >= 15 ? 3 : source >= 8 ? 2 : 1'
-      );
-      rules.defineRule('selectableFeatureCount.Warg',
-        'pathLevels.Warg', '=', 'source >= 16 ? 3 : source >= 9 ? 2 : 1'
-      );
-      rules.defineRule
-        ('skillNotes.wildEmpathyFeature', 'pathLevels.Warg', '+=', null);
-
-    } else
-      continue;
-
-    if(LastAge.USE_PATHFINDER) {
-      notes = LastAge.SRD35ToPathfinder(notes);
     }
-    var prefix =
-      path.substring(0, 1).toLowerCase() + path.substring(1).replace(/ /g, '');
-    rules.defineRule('pathLevels.' + path,
-      'heroicPath', '?', 'source == "' + path + '"',
+  }
+
+  for(var i = 0; i < selectables.length; i++) {
+    var matchInfo = selectables[i].match(/^((\d+):)?(.*)$/);
+    var feature = matchInfo ? matchInfo[3] : selectables[i];
+    var level = matchInfo ? matchInfo[2] : 1;
+    var choice = name + ' - ' + feature;
+    rules.defineChoice('selectableFeatures', choice + ':' + name);
+    rules.defineRule(prefix + 'Features.' + feature,
+      'selectableFeatures.' + choice, '+=', null
+    );
+    rules.defineRule('features.' + feature,
+      'selectableFeatures.' + choice, '+=', null
+    );
+    SRD35.testRules(rules, 'validation', prefix + ' - ' + feature.replace(/ /g, '') + 'HeroicPath', 'selectableFeatures.' + choice, ['levels.' + name + ' >= ' + level]);
+  }
+
+  if(spells.length > 0) {
+    rules.defineRule('casterLevels.' + name,
+      'heroicPath', '?', 'source == "' + name + '"',
       'level', '=', null
     );
-    rules.defineSheetElement(path + ' Features', 'Feats', null, ' * ');
-    rules.defineChoice('extras', pathNoSpace + 'Features');
-    if(feats != null) {
-      for(var j = 0; j < feats.length; j++) {
-        rules.defineChoice('feats', feats[j] + ':' + path);
+    rules.defineRule('casterLevels.Ch', 'casterLevels.' + name, '^=', null);
+    var spellLevels = {};
+    for(var i = 0; i < spells.length; i++) {
+      var levelAndSpell = spellFeatures[i].split(/:/);
+      var level = levelAndSpell.length == 1 ? 1 : levelAndSpell[0];
+      var spell = levelAndSpell[levelAndSpell.length == 1 ? 0 : 1];
+      spell = '<i>' + spell + '</i>';
+      if(spellLevels[spell] == null) {
+        spellLevels[spell] = [level];
+      } else {
+        spellLevels[spell][spellLevels[spell].length] = level;
       }
     }
-    if(features != null) {
-      for(var j = 0; j < features.length; j++) {
-        var levelAndFeature = features[j].split(/:/);
-        var feature = levelAndFeature[levelAndFeature.length == 1 ? 0 : 1];
-        var level = levelAndFeature.length == 1 ? 1 : levelAndFeature[0];
-        rules.defineRule(prefix + 'Features.' + feature,
-          'pathLevels.' + path, '=', 'source >= ' + level + ' ? 1 : null'
-        );
-        rules.defineRule
-          ('features.' + feature, prefix + 'Features.' + feature, '+=', null);
+    for(spell in spellLevels) {
+      var levels = spellLevels[spell];
+      var rule = '';
+      for(var j = levels.length - 1; j >= 0; j--) {
+        rule += 'source >= ' + levels[j] + ' ? ' + (j + 1) + ' : ';
+      }
+      rule += 'null';
+      rules.defineRule
+        (prefix + 'Spells.' + spell, 'pathLevels.' + name, '=', rule);
+    }
+    rules.defineSheetElement(name + ' Spells', 'Spells', null, ' * ');
+  }
+
+  rules.defineSheetElement(name + ' Features', 'Feats+', null, '; ');
+  rules.defineChoice('extras', prefix + 'Features');
+
+};
+
+/*
+ * TODO
+ */
+LastAge.heroicPathRulesExtra = function(rules, name) {
+
+  if(name == 'Beast') {
+
+    rules.defineRule('combatNotes.rage',
+      'constitutionModifier', '=', '5 + source'
+    );
+    rules.defineRule('combatNotes.rage.1',
+      'features.Rage', '?', null,
+      'pathLevels.Beast', '+=', 'source >= 17 ? 2 : 1'
+    );
+    rules.defineRule('combatNotes.viciousAssault',
+      'mediumViciousAssault', '=', null,
+      'smallViciousAssault', '=', null
+    );
+    rules.defineRule('mediumViciousAssault',
+      'pathLevels.Beast', '=', 'source>=11 ? "d8" : source>=6 ? "d6" : "d4"'
+    );
+    rules.defineRule('selectableFeatureCount.Beast',
+      'pathLevels.Beast', '=', 'Math.floor(source / 5) + ((source >= 16) ? 2 : 1)'
+    );
+    rules.defineRule('smallViciousAssault',
+      'features.Small', '?', null,
+      'mediumViciousAssault', '=', 'SRD35.weaponsSmallDamage[source]'
+    );
+
+  } else if(name == 'Chanceborn') {
+
+    rules.defineRule('combatNotes.missChance',
+      'pathLevels.Chanceborn', '+=', 'source >= 14 ? 10 : 5'
+    );
+    rules.defineRule('featureNotes.luckOfHeroes',
+      'pathLevels.Chanceborn', '=',
+      '"d4" + (source >= 5 ? "/d6" : "") + (source >= 10 ? "/d8" : "") + ' +
+      '(source >= 15 ? "/d10" : "") + (source >= 20 ? "/d12" : "")'
+    );
+    rules.defineRule('featureNotes.persistence',
+      'pathLevels.Chanceborn', '+=', 'Math.floor((source - 1) / 5)'
+    );
+    rules.defineRule('features.Defensive Roll', 'features.Survivor', '=', '1');
+    rules.defineRule('features.Evasion', 'features.Survivor', '=', '1');
+    rules.defineRule('features.Slippery Mind', 'features.Survivor', '=', '1');
+    rules.defineRule('features.Uncanny Dodge', 'features.Survivor', '=', '1');
+    rules.defineRule('magicNotes.unfettered',
+      'pathLevels.Chanceborn', '+=', 'Math.floor((source + 2) / 5)'
+    );
+
+  } else if(name == 'Charismatic') {
+
+    rules.defineRule('charismaticFeatures.Charisma Bonus',
+      'level', '+', 'Math.floor((source - 5) / 5)'
+    );
+    rules.defineRule('featureNotes.naturalLeader',
+      'pathLevels.Charismatic', '=', 'source >= 18 ? 2 : 1'
+    );
+    rules.defineRule('magicNotes.inspiringOration',
+      'pathLevels.Charismatic', '+=', 'Math.floor((source + 1) / 5)'
+    );
+
+  } else if(name == 'Dragonblooded') {
+
+    rules.defineRule('magicNotes.bolsterSpell',
+      'pathLevels.Dragonblooded', '+=', '1 + Math.floor(source / 5)'
+    );
+    rules.defineRule('magicNotes.dragonbloodedSpellEnergy',
+      'pathLevels.Dragonblooded', '=',
+      'source>=16 ? 8 : source>=11 ? 6 : source>=7 ? 4 : source>=3 ? 2 : null'
+    );
+    rules.defineRule('magicNotes.dragonbloodedSpellsKnown',
+      'pathLevels.Dragonblooded', '=',
+      'source>=14 ? 3 : source>=8 ? 2 : source>=2 ? 1 : null'
+    );
+    rules.defineRule('magicNotes.dragonSpellPenetration',
+      'pathLevels.Dragonblooded', '+=', 'Math.floor((source - 5) / 4)'
+    );
+    rules.defineRule('magicNotes.frightfulPresence',
+      'pathLevels.Dragonblooded', '+=', '10 + Math.floor(source / 2)',
+      'charismaModifier', '+', null
+    );
+    rules.defineRule('magicNotes.improvedSpellcasting',
+      'pathLevels.Dragonblooded', '+=', 'Math.floor(source / 6)'
+    );
+    rules.defineRule
+      ('spellEnergy', 'magicNotes.dragonbloodedSpellEnergy', '+', null);
+    rules.defineRule
+      ('spellsKnownBonus', 'magicNotes.dragonbloodedSpellsKnown', '+', null);
+
+  } else if(name == 'Earthbonded') {
+
+    rules.defineRule('combatNotes.naturalArmor',
+      'earthbondedFeatures.Natural Armor', '+=', null
+    );
+    rules.defineRule('earthbondedFeatures.Natural Armor',
+      'level', '+', 'source >= 18 ? 2 : source >= 10 ? 1 : null'
+    );
+    rules.defineRule('skillNotes.stonecunning',
+      'earthbondedFeatures.Stonecunning', '+=', '2'
+    );
+
+  } else if(name == 'Faithful') {
+
+    rules.defineRule('faithfulFeatures.Wisdom Bonus',
+      'pathLevels.Faithful', '=', 'source<5 ? null : Math.floor(source/5)'
+    );
+    rules.defineRule('features.Wisdom Bonus',
+     'faithfulFeatures.Wisdom Bonus', '+=', null
+    );
+    // TODO
+    rules.defineRule
+      ('turnUndead.damageModifier', 'pathLevels.Faithful', '^=', null);
+    rules.defineRule
+      ('turnUndead.frequency', 'turnUndeadFaithfulFrequency', '+=', null);
+    rules.defineRule
+      ('turnUndead.maxHitDice', 'pathLevels.Faithful', '^=', 'source*3-10');
+    rules.defineRule('turnUndeadFaithfulFrequency',
+      'pathLevels.Faithful', '=',
+      'source >= 4 ? Math.floor((source + 1) / 5) : null',
+      'charismaModifier', '+', '-source'
+    );
+
+  } else if(name == 'Fellhunter') {
+
+    rules.defineRule('combatNotes.disruptingAttack',
+      'pathLevels.Fellhunter', '+=', '10 + Math.floor(source / 2)',
+      'charismaModifier', '+', null
+    );
+    rules.defineRule('combatNotes.disruptingAttack.1',
+      'pathLevels.Fellhunter', '+=', 'Math.floor(source / 5)'
+    );
+    rules.defineRule('combatNotes.touchOfTheLiving',
+      'pathLevels.Fellhunter', '+=', 'Math.floor((source + 3) / 5) * 2'
+    );
+    rules.defineRule('magicNotes.senseTheDead',
+      'pathLevels.Fellhunter', '+=',
+        '10 * (Math.floor((source + 4) / 5) + Math.floor((source + 1) / 5))'
+    );
+    rules.defineRule('saveNotes.wardOfLife',
+      'pathLevels.Fellhunter', '=',
+      '"extraordinary special attacks" + ' +
+      '(source >= 8 ? "/ability damage" : "") + ' +
+      '(source >= 13 ? "/ability drain" : "") + ' +
+      '(source >= 18 ? "/energy drain" : "")'
+    );
+
+  } else if(name == 'Feyblooded') {
+
+    rules.defineRule('selectableFeatureCount.Feyblooded',
+      'unearthlyMaxBonusCount', '=',
+        'source > 0 ? (source * (source + 1)) / 2 : null',
+      'unearthlyChaModTotalBonus', '+', 'source > 0 ? source : null'
+    );
+    rules.defineRule('magicNotes.feyVision',
+      'pathLevels.Feyblooded', '=',
+      'source >= 19 ? "all magic" : ' +
+      'source >= 13 ? "enchantment/illusion" : "enchantment"'
+    );
+    rules.defineRule('unearthlyMaxBonusCount',
+      'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)',
+      'charismaModifier', 'v', null
+    );
+    rules.defineRule('unearthlyChaModTotalBonus',
+      'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)',
+      'unearthlyMaxBonusCount', '+', '-source',
+      'charismaModifier', '*', null
+    );
+
+  } else if(name == 'Giantblooded') {
+
+    rules.defineRule('abilityNotes.fastMovement',
+      'pathLevels.Giantblooded', '+=', 'Math.floor((source + 4) / 8) * 5'
+    );
+    rules.defineRule('combatNotes.fearsomeCharge',
+      'pathLevels.Giantblooded', '+=', 'Math.floor((source + 2) / 10)'
+    );
+    rules.defineRule('giantbloodedFeatures.Strength Bonus',
+      'level', '+', 'source >= 15 ? 1 : null'
+    );
+    rules.defineRule('skillNotes.intimidatingSize',
+      'pathLevels.Giantblooded', '+=',
+      'source>=17 ? 10 : source>=14 ? 8 : (Math.floor((source + 1) / 4) * 2)'
+    );
+    rules.defineRule
+      ('weapons.Debris', 'combatNotes.rockThrowing', '=', '1');
+    // Damage modified to account for Large adjustment starting level 10
+    rules.defineRule('weaponDamage.Debris',
+      'pathLevels.Giantblooded', '=',
+      'source>=16 ? "d10" : source>=10 ? "d8" : source>=9 ? "2d6" : "d10"'
+    );
+    rules.defineRule('weaponRange.Debris',
+      'pathLevels.Giantblooded', '=',
+      'source >= 19 ? 120 : source >= 13 ? 90 : source >= 6 ? 60 : 30'
+    );
+
+  } else if(name == 'Guardian') {
+
+    rules.defineRule('guardianFeatures.Constitution Bonus',
+      'level', '+', 'Math.floor((source - 5) / 5)'
+    );
+    rules.defineRule('combatNotes.righteousFury',
+      'pathLevels.Guardian', '+=',
+      'source >= 17 ? 12 : source >= 12 ? 9 : ' +
+      '(Math.floor((source + 1) / 4) * 3)'
+    );
+    rules.defineRule('combatNotes.smiteEvil',
+      'pathLevels.Guardian', '+=',
+      'source >= 18 ? 4 : source >= 14 ? 3 : source >= 8 ? 2 : 1'
+    );
+    rules.defineRule('combatNotes.smiteEvil.1', 'charismaModifier', '=', null);
+    rules.defineRule
+      ('combatNotes.smiteEvil.2', 'pathLevels.Guardian', '=', null);
+    rules.defineRule('featureNotes.inspireValor',
+      'pathLevels.Guardian', '=', 'source >= 13 ? 2 : 1'
+    );
+    rules.defineRule('featureNotes.inspireValor.1',
+      'pathLevels.Guardian', '=', null
+    );
+    rules.defineRule('featureNotes.inspireValor.2',
+      'pathLevels.Guardian', '=', 'source >= 19 ? 3 : source >= 9 ? 2 : 1'
+    );
+    rules.defineRule('magicNotes.layOnHands',
+      'pathLevels.Guardian', '+=', null,
+      'charismaModifier', '*', null
+    );
+
+  } else if(name == 'Ironborn') {
+
+    rules.defineRule('combatNotes.damageReduction',
+      'pathLevels.Ironborn', '+=', 'Math.floor(source / 5)'
+    );
+    rules.defineRule('combatNotes.improvedHealing',
+      'pathLevels.Ironborn', '+=', 'Math.floor(source / 2)'
+    );
+    rules.defineRule('combatNotes.naturalArmor',
+      'ironbornFeatures.Natural Armor', '+=', null
+    );
+    rules.defineRule('ironbornFeatures.Fortitude Bonus',
+      'level', '+', 'Math.floor((source - 2) / 5)'
+    );
+    rules.defineRule('ironbornFeatures.Natural Armor',
+      'level', '+', 'Math.floor((source - 3) / 5)'
+    );
+    rules.defineRule('saveNotes.resistElements',
+      'pathLevels.Ironborn', '+=', 'Math.floor((source - 1) / 5) * 3'
+    );
+    rules.defineRule('saveNotes.fortitudeBonus',
+      'features.Fortitude Bonus', '=', null 
+    );
+    rules.defineRule('saveNotes.indefatigable',
+      'pathLevels.Ironborn', '=',
+       'source < 9 ? null : source < 19 ? "fatigue" : "fatigue/exhaustion"'
+    );
+
+  } else if(name == 'Jack-Of-All-Trades') {
+
+    rules.defineRule('featureNotes.featBonus',
+      'pathLevels.Jack-Of-All-Trades', '=', 'source >= 14 ? 1 : null'
+    );
+    rules.defineRule('magicNotes.spellChoice',
+      'pathLevels.Jack-Of-All-Trades', '=',
+      'source>=16 ? "Ch0/Ch1/Ch2/Ch3" : source>=10 ? "Ch0/Ch1/Ch2" : ' +
+      'source>=6 ? "Ch0/Ch1" : "Ch0"'
+    );
+    rules.defineRule('magicNotes.spontaneousSpell',
+      'pathLevels.Jack-Of-All-Trades', '=',
+      'source >= 19 ? "Ch0/Ch1/Ch2" : source >= 13 ? "Ch0/Ch1" : "Ch0"'
+    );
+    rules.defineRule('selectableFeatureCount.Jack-Of-All-Trades',
+      'pathLevels.Jack-Of-All-Trades', '=',
+      'source>=18 ? 7 : source>=15 ? 6 : source>=12 ? 5 : source>=9 ? 4 : ' +
+      'source>=8 ? 3 : source>=5 ? 2 : source>=4 ? 1 : null'
+    );
+    rules.defineRule('skillNotes.skillBoost',
+      'pathLevels.Jack-Of-All-Trades', '=',
+      'source >= 20 ? 4 : source >= 17 ? 3 : source >= 11 ? 2 : 1'
+    );
+    rules.defineRule('skillPoints', 'skillNotes.skillBoost', '+', '4 * source');
+
+  } else if(name == 'Mountainborn') {
+
+    rules.defineRule('combatNotes.rallyingCry',
+      'pathLevels.Mountainborn', '+=', 'Math.floor((source + 1) / 5)'
+    );
+    rules.defineRule('mountainbornFeatures.Constitution Bonus',
+      'level', '+', 'Math.floor((source - 5) / 5)'
+    );
+    rules.defineRule('skillNotes.mountaineer',
+      'pathLevels.Mountainborn', '+=', 'Math.floor((source + 4) / 5) * 2'
+    );
+    rules.defineRule('skillNotes.mountainSurvival',
+      'pathLevels.Mountainborn', '+=', 'Math.floor((source + 4) / 5) * 2'
+    );
+
+  } else if(name == 'Naturefriend') {
+
+    rules.defineRule('combatNotes.animalFriend',
+      'charismaModifier', '=', '10 + source'
+    );
+    rules.defineRule('combatNotes.elementalFriend',
+      'charismaModifier', '=', '10 + source'
+    );
+    rules.defineRule('combatNotes.plantFriend',
+      'charismaModifier', '=', '10 + source'
+    );
+    rules.defineRule
+      ('skillNotes.wildEmpathy','pathLevels.Naturefriend','+=',null);
+
+  } else if(name == 'Northblooded') {
+
+    rules.defineRule
+      ('combatNotes.battleCry', 'pathLevels.Northblooded', '=', null);
+    rules.defineRule('combatNotes.battleCry.1',
+      'pathLevels.Northblooded', '=',
+      'source >= 17 ? 4 : source >= 14 ? 3 : source >= 7 ? 2 : 1'
+    );
+    rules.defineRule('combatNotes.frostWeapon',
+      'pathLevels.Northblooded', '=', null
+    );
+    rules.defineRule('combatNotes.frostWeapon.1',
+      'pathLevels.Northblooded', '=', 'source >= 19 ? 2 : 1'
+    );
+    rules.defineRule('northbloodedFeatures.Constitution Bonus',
+      'level', '+', 'Math.floor((source - 5) / 5)'
+    );
+    rules.defineRule('magicNotes.howlingWinds',
+      'pathLevels.Northblooded', '+=',
+      'source >= 12 ? 3 : source >= 8 ? 2 : 1'
+    );
+    rules.defineRule('saveNotes.coldResistance',
+      'pathLevels.Northblooded', '+=', 'source >= 9 ? 15 : 5'
+    );
+    rules.defineRule('skillNotes.wildEmpathy',
+      'pathLevels.Northblooded', '+=', null
+    );
+
+  } else if(name == 'Painless') {
+
+    rules.defineRule('combatNotes.improvedRetributiveRage',
+      'pathLevels.Painless', '+=', null
+    );
+    rules.defineRule('combatNotes.increasedDamageThreshold',
+      'pathLevels.Painless', '+=',
+      'source >= 20 ? 25 : source >= 15 ? 20 : 15'
+    );
+    rules.defineRule('combatNotes.lastStand',
+      'pathLevels.Painless', '+=', '10 + source'
+    );
+    rules.defineRule('combatNotes.lastStand.1',
+      'pathLevels.Painless', '+=', 'source >= 19 ? 2 : 1'
+    );
+    rules.defineRule('combatNotes.nonlethalDamageReduction',
+      'pathLevels.Painless', '+=', 'Math.floor((source + 3) / 5) * 3'
+    );
+    rules.defineRule('combatNotes.painless', 'pathLevels.Painless', '+=', null);
+    rules.defineRule('combatNotes.retributiveRage',
+      'pathLevels.Painless', '+=', null
+    );
+    rules.defineRule('saveNotes.uncaringMind',
+      'pathLevels.Painless', '+=', 'Math.floor((source + 2) / 5)'
+    );
+    rules.defineRule('saveNotes.painless',
+      'pathLevels.Painless', '=', 'Math.floor((source + 4) / 5) * 5'
+    );
+
+  } else if(name == 'Pureblood') {
+
+    rules.defineRule('featureRules.featBonus',
+      'pathLevels.Pureblood', '+=', 'Math.floor((source - 3) / 5)'
+    );
+    rules.defineRule('selectableFeatureCount.Pureblood',
+      'pathLevels.Pureblood', '=', 'source>=5 ? Math.floor(source / 5) : null'
+    );
+    rules.defineRule('skillNotes.skillFixation',
+      'pathLevels.Pureblood', '+=', 'Math.floor((source + 1) / 5)'
+    );
+    rules.defineRule('skillNotes.bloodOfKings',
+      'pathLevels.Pureblood', '+=', 'Math.floor((source + 3) / 5) * 2'
+    );
+    rules.defineRule('skillNotes.masterAdventurer',
+      'pathLevels.Pureblood', '+=', 'Math.floor((source + 4) / 5) * 2'
+    );
+
+  } else if(name == 'Quickened') {
+
+    rules.defineRule('abilityNotes.fastMovement',
+      'pathLevels.Quickened', '+=', 'Math.floor((source + 2) / 5) * 5'
+    );
+    rules.defineRule('combatNotes.armorClassBonus',
+      'features.Armor Class Bonus', '=', null
+    );
+    rules.defineRule('combatNotes.burstOfSpeed',
+      'constitutionModifier', '+=', 'source + 3'
+    );
+    rules.defineRule('combatNotes.burstOfSpeed.1',
+      'pathLevels.Quickened', '+=', 'Math.floor((source + 1) / 5)'
+    );
+    rules.defineRule('combatNotes.initiativeBonus',
+      'pathLevels.Quickened', '+=', 'Math.floor((source + 4) / 5) * 2'
+    );
+    rules.defineRule('quickenedFeatures.Armor Class Bonus',
+      'level', '+', 'Math.floor((source - 2) / 5)'
+    );
+    rules.defineRule('quickenedFeatures.Dexterity Bonus',
+      'level', '+', 'Math.floor((source - 5) / 5)'
+    );
+
+  } else if(name == 'Seaborn') {
+
+    rules.defineRule('deepLungsMultiplier',
+      'seabornFeatures.Deep Lungs', '^=', '2',
+      'pathLevels.Seaborn', '+', 'source >= 6 ? 2 : 1'
+    );
+    rules.defineRule('magicNotes.aquaticAlly',
+      'pathLevels.Seaborn', '+=', 'Math.floor(source / 4)'
+    );
+    rules.defineRule('saveNotes.coldResistance',
+      'pathLevels.Seaborn', '+=', 'source >= 14 ? 5 : null'
+    );
+    rules.defineRule('skillNotes.aquaticBlindsight',
+      'pathLevels.Seaborn', '+=', 'Math.floor((source + 5) / 8) * 30'
+    );
+    rules.defineRule('skillNotes.deepLungs',
+      'deepLungsMultiplier', '=', null,
+      'constitution', '*', null
+    );
+    rules.defineRule('skillNotes.naturalSwimmer',
+      'pathLevels.Seaborn', '+=', 'source >= 15 ? 60 : source >= 7 ? 40 : 20'
+    );
+
+  } else if(name == 'Seer') {
+
+    rules.defineRule('magicNotes.seerSight',
+      'pathLevels.Seer', '=', 'Math.floor((source + 6) / 6)'
+    );
+
+  } else if(name == 'Shadow Walker') {
+
+    rules.defineRule('featureNotes.shadowJump',
+      'pathLevels.Shadow Walker', '+=', 'Math.floor(source / 4) * 10'
+    );
+    rules.defineRule('skillNotes.shadowVeil',
+      'pathLevels.Shadow Walker', '+=', 'Math.floor((source + 2) / 4) * 2'
+    );
+
+  } else if(name == 'Speaker') {
+
+    rules.defineRule('speakerFeatures.Charisma Bonus',
+      'level', '+', 'Math.floor((source - 5) / 5)'
+    );
+    rules.defineRule('magicNotes.powerWords',
+      'pathLevels.Speaker', '=',
+      '"Opening" + (source >= 6 ? "/Shattering" : "") + ' +
+                  '(source >= 9 ? "/Silence" : "") + ' +
+                  '(source >= 13  ? "/Slumber" : "") + ' +
+                  '(source >= 16 ? "/Charming" : "") + ' +
+                  '(source >= 19 ? "/Holding" : "")'
+    );
+    rules.defineRule('magicNotes.powerWords.1',
+      'charismaModifier', '=', 'source + 3'
+    );
+    rules.defineRule('magicNotes.powerWords.2',
+      'charismaModifier', '=', 'source + 10'
+    );
+    rules.defineRule('skillNotes.persuasiveSpeaker',
+      'pathLevels.Speaker', '=',
+      'source >= 17 ? 8 : source >= 11 ? 6 : source >= 7 ? 4 : 2'
+    );
+
+  } else if(name == 'Spellsoul') {
+
+    rules.defineRule('highestMagicModifier',
+      'charismaModifier', '=', null,
+      'intelligenceModifier', '^', null,
+      'wisdomModifier', '^', null
+    );
+    rules.defineRule('magicNotes.metamagicAura',
+      'pathLevels.Spellsoul', '=',
+      '(source>=15 ? 4 : source>=10 ? 3 : source>=6 ? 2 : 1) + "/day " + ' +
+      '["enlarge"].concat(source >= 5 ? ["extend"] : [])' +
+                 '.concat(source >= 8 ? ["reduce"] : [])' +
+                 '.concat(source >= 11 ? ["attract"] : [])' +
+                 '.concat(source >= 14 ? ["empower"] : [])' +
+                 '.concat(source >= 17 ? ["maximize"] : [])' +
+                 '.concat(source >= 20 ? ["redirect"] : []).sort().join("/")'
+    );
+    rules.defineRule('magicNotes.metamagicAura',
+      'pathLevels.Spellsoul', '=', 'Math.floor(source / 2)'
+    );
+    rules.defineRule('magicNotes.untappedPotential',
+      'highestMagicModifier', '=', 'source + 1',
+      'level', '+',
+        'source>=18 ? 8 : source>=13 ? 6 : source>=9 ? 4 : source>=4 ? 2 : 0'
+    );
+    rules.defineRule('saveNotes.improvedResistSpells',
+      'pathLevels.Spellsoul', '=',
+      'source>=19 ? 5 : source>=16 ? 4 : source>=12 ? 3 : source>=7 ? 2 : ' +
+      'source>=3 ? 1 : null'
+    );
+
+  } else if(name == 'Steelblooded') {
+
+    feats = [];
+    for(var feat in rules.getChoices('feats')) {
+      if(feat.match(/Weapon (Focus|Proficiency|Specialization) \(/)) {
+        feats[feats.length] = feat;
       }
     }
-    if(notes != null)
-      rules.defineNote(notes);
-    if(selectableFeatures != null) {
-      for(var j = 0; j < selectableFeatures.length; j++) {
-        var selectable = selectableFeatures[j];
-        var choice = path + ' - ' + selectable;
-        rules.defineChoice('selectableFeatures', choice + ':' + path);
-        rules.defineRule(pathNoSpace + 'Features.' + selectable,
-          'selectableFeatures.' + choice, '+=', null
-        );
-        rules.defineRule('features.' + selectable,
-          'selectableFeatures.' + choice, '+=', null
-        );
-      }
-    }
-    if(spellFeatures != null) {
-      rules.defineRule('casterLevels.' + path,
-        'heroicPath', '?', 'source == "' + path + '"',
-        'level', '=', null
-      );
-      rules.defineRule('casterLevels.Ch', 'casterLevels.' + path, '^=', null);
-      var spellLevels = {};
-      for(var j = 0; j < spellFeatures.length; j++) {
-        var levelAndSpell = spellFeatures[j].split(/:/);
-        var level = levelAndSpell.length == 1 ? 1 : levelAndSpell[0];
-        var spell = levelAndSpell[levelAndSpell.length == 1 ? 0 : 1];
-        spell = '<i>' + spell + '</i>';
-        if(spellLevels[spell] == null) {
-          spellLevels[spell] = [level];
-        } else {
-          spellLevels[spell][spellLevels[spell].length] = level;
-        }
-      }
-      for(spell in spellLevels) {
-        var levels = spellLevels[spell];
-        var rule = '';
-        for(var j = levels.length - 1; j >= 0; j--) {
-          rule += 'source >= ' + levels[j] + ' ? ' + (j + 1) + ' : ';
-        }
-        rule += 'null';
-        rules.defineRule
-          (prefix + 'Spells.' + spell, 'pathLevels.' + path, '=', rule);
-      }
-      rules.defineSheetElement(path + ' Spells', 'Spells', null, ' * ');
-    }
+    rules.defineRule('combatNotes.offensiveTactics',
+      'pathLevels.Steelblooded', '+=',
+      'source>=17 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
+    );
+    rules.defineRule('combatNotes.skilledWarrior',
+      'pathLevels.Steelblooded', '+=',
+      'source>=18 ? 4 : source>=13 ? 3 : source>=8 ? 2 : 1'
+    );
+    rules.defineRule('combatNotes.strategicBlow',
+      'pathLevels.Steelblooded', '+=',
+      'source>=16 ? 15 : source>=12 ? 12 : source>=9 ? 9 : source>=6 ? 6 : 3'
+    );
+    rules.defineRule('featCount.Steelblooded',
+      'pathLevels.Steelblooded', '=', '1 + Math.floor(source / 5)'
+    );
+
+  } else if(name == 'Sunderborn') {
+
+    rules.defineRule('combatNotes.planarFury',
+      'constitutionModifier', '+=', 'Math.floor((source + 2) / 6)'
+    );
+    rules.defineRule('combatNotes.planarFury.1',
+      'pathLevels.Sunderborn', '+=', 'Math.floor((source + 2) / 6)'
+    );
+    rules.defineRule('skillNotes.bloodOfThePlanes',
+      'pathLevels.Sunderborn', '+=', 'Math.floor((source + 1) / 3) * 2'
+    );
+
+  } else if(name == 'Tactician') {
+
+    rules.defineRule('combatNotes.aidedCombatBonus',
+      'pathLevels.Tactician', '+=',
+      'source>=19 ? 4 : source>=14 ? 3 : source>=9 ? 2 : source>=5 ? 1 : 0'
+    );
+    rules.defineRule('combatNotes.combatOverview',
+      'pathLevels.Tactician', '+=',
+      'source>=15 ? 4 : source>=10 ? 3 : source>=6 ? 2 : 1'
+    );
+    rules.defineRule('combatNotes.coordinatedInitiative',
+      'pathLevels.Tactician', '+=',
+      'source>=16 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
+    );
+    rules.defineRule('combatNotes.jointAttack',
+      'pathLevels.Tactician', '+=',
+      'source>=17 ? 4 : source==16 ? 3 : Math.floor(source / 4)'
+    );
+
+  } else if(name == 'Warg') {
+
+    rules.defineRule('companionMasterLevel', 'pathLevels.Warg', '=', null);
+    rules.defineRule('featureNotes.animalCompanion',
+      'wargFeatures.Animal Companion', '+=', null
+    );
+    rules.defineRule('wargFeatures.Animal Companion',
+      'level', '+', 'Math.floor((source - 2) / 4)'
+    );
+    rules.defineRule('magicNotes.wildShape',
+      'pathLevels.Warg', '=',
+      'source >= 19 ? "medium-huge" : ' +
+      'source >= 11 ? "medium-large" : ' +
+      'source >= 5 ? "medium" : null'
+    );
+    rules.defineRule('magicNotes.wildShape.1',
+      'pathLevels.Warg', '=', 'source >= 15 ? 3 : source >= 8 ? 2 : 1'
+    );
+    rules.defineRule('selectableFeatureCount.Warg',
+      'pathLevels.Warg', '=', 'source >= 16 ? 3 : source >= 9 ? 2 : 1'
+    );
+    rules.defineRule('skillNotes.wildEmpathy', 'pathLevels.Warg', '+=', null);
 
   }
-  rules.defineChoice('random', 'heroicPath');
 
 };
 
@@ -3691,18 +3374,12 @@ LastAge.raceRules = function(rules, languages, races) {
     'skillModifier.Speak Language', '+', '2 * source'
   );
 
-  var notes = [
-    'skillNotes.favoredRegion:' +
-      '%V; Knowledge (Local) is a class skill/+2 Survival/Knowledge (Nature)',
-    'skillNotes.illiteracyFeature:Must spend 2 skill points to read/write'
-  ];
-  rules.defineNote(notes);
   rules.defineRule('skillNotes.favoredRegion',
     'race', '=', 'LastAge.racesFavoredRegions[source]'
   );
   rules.defineRule('features.Illiteracy', '', '=', '1');
   rules.defineRule
-    ('skillModifier.Speak Language', 'skillNotes.illiteracyFeature', '+', '-2');
+    ('skillModifier.Speak Language', 'skillNotes.illiteracy', '+', '-2');
 
   for(var i = 0; i < races.length; i++) {
 
@@ -3713,13 +3390,6 @@ LastAge.raceRules = function(rules, languages, races) {
 
     if(race == 'Dorn') {
 
-      notes = [
-        'combatNotes.brotherhoodFeature:' +
-          '+1 attack when fighting alongside 4+ Dorns',
-        'combatNotes.fierceFeature:+1 attack w/two-handed weapons',
-        'saveNotes.coldFortitudeFeature:+5 cold/half nonlethal damage',
-        'saveNotes.robustFeature:+1 Fortitude'
-      ];
       selectableFeatures = null;
       rules.defineRule('featCount.Fighter',
         'featureNotes.dornFeatCountBonus', '+=', null
@@ -3737,17 +3407,6 @@ LastAge.raceRules = function(rules, languages, races) {
 
     } else if(race.indexOf(' Dwarf') >= 0) {
 
-      notes = [
-        'abilityNotes.slowFeature:-10 speed',
-        'combatNotes.dwarfFavoredEnemyFeature:+1 attack vs. orc',
-        'combatNotes.dwarfFavoredWeaponFeature:+1 attack with axes/hammers',
-        'combatNotes.resilientFeature:+2 AC',
-        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
-        'magicNotes.resistSpellsFeature:-2 spell energy',
-        'saveNotes.resistPoisonFeature:+2 vs. poison',
-        'saveNotes.resistSpellsFeature:+2 vs. spells',
-        'skillNotes.stoneKnowledgeFeature:+2 Appraise/Craft (stone, metal)'
-      ];
       selectableFeatures = null;
       rules.defineRule('abilityNotes.armorSpeedAdjustment',
         'race', '^', 'source.indexOf("Dwarf") >= 0 ? 0 : null'
@@ -3765,73 +3424,22 @@ LastAge.raceRules = function(rules, languages, races) {
       rules.defineRule
         ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
       if(race == 'Clan Dwarf') {
-        notes = notes.concat([
-          'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
-          'featureNotes.knowDepthFeature:Intuit approximate depth underground',
-          'saveNotes.stabilityFeature:+4 vs. Bull Rush/Trip',
-          'skillNotes.stonecunningFeature:' +
-            "+%V Search (stone, metal), automatic check w/in 10'"
-        ]);
         rules.defineRule('skillNotes.stonecunningFeature',
           'clanDwarfFeatures.Stonecunning', '+=', '2'
         );
       } else if(race == 'Kurgun Dwarf') {
-        notes = notes.concat([
-          'abilityNotes.naturalMountaineerFeature:' +
-             'Unimpeded movement in mountainous terrain',
-          'skillNotes.naturalMountaineerFeature:+2 Climb'
-        ]);
       }
 
     } else if(race.indexOf(' Dwarrow') >= 0) {
 
-      notes = [
-        'abilityNotes.slowFeature:-10 speed',
-        'combatNotes.smallFeature:+1 AC/attack',
-        'combatNotes.sturdyFeature:+1 AC',
-        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
-        'magicNotes.resistSpellsFeature:-2 spell energy',
-        'saveNotes.resistPoisonFeature:+2 vs. poison',
-        'saveNotes.resistSpellsFeature:+2 vs. spells',
-        'skillNotes.smallFeature:+4 Hide'
-      ];
       selectableFeatures = null;
-      rules.defineRule('armorClass',
-        'combatNotes.smallFeature', '+', '1',
-        'combatNotes.sturdyFeature', '+', '1'
-      );
-      rules.defineRule('featureNotes.darkvisionFeature',
-        raceNoSpace + 'Features.Darkvision', '+=', '60'
-      );
-      rules.defineRule('baseAttack', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule
-        ('resistance.Poison', 'saveNotes.resistPoisonFeature', '+=', '2');
-      rules.defineRule
-        ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
-      rules.defineRule('speed', 'abilityNotes.slowFeature', '+', '-10');
       rules.defineRule
         ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
       if(race == 'Clan-Raised Dwarrow') {
-        notes = notes.concat([
-          'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
-          'skillNotes.stonecunningFeature:' +
-            "+%V Search (stone, metal), automatic check w/in 10'",
-          'skillNotes.stoneKnowledgeFeature:' +
-             '+2 Appraise (stone, metal)/Craft (stone, metal)'
-        ]);
         rules.defineRule('skillNotes.stonecunningFeature',
           'clanRaisedDwarrowFeatures.Stonecunning', '+=', '2'
         );
       } else if(race == 'Gnome-Raised Dwarrow') {
-        notes = [
-          'skillNotes.deepLungsFeature:Hold breath for %V rounds',
-          'skillNotes.naturalRiverfolkFeature:' +
-            '+2 Perform/Profession (Sailor)/Swim/Use Rope',
-          'skillNotes.naturalSwimmerFeature:%V swim as move action',
-          'skillNotes.skilledTraderFeature:' +
-            '+2 Appraise, Bluff, Diplomacy, Forgery, Gather Information, ' +
-            'Profession when smuggling/trading'
-        ];
         rules.defineRule('deepLungsMultiplier',
           'gnomeRaisedDwarrowFeatures.Deep Lungs', '=', '3'
         );
@@ -3842,28 +3450,10 @@ LastAge.raceRules = function(rules, languages, races) {
         rules.defineRule('skillNotes.naturalSwimmerFeature',
           'speed', '=', 'Math.floor(source / 2)'
         );
-      } else if(race == 'Kurgun-Raised Dwarrow') {
-        notes = notes.concat([
-          'abilityNotes.naturalMountaineerFeature:' +
-             'Unimpeded movement in mountainous terrain',
-          'combatNotes.dodgeOrcsFeature:+1 AC vs. orc',
-          'skillNotes.naturalMountaineerFeature:+2 Climb',
-          'skillNotes.stoneKnowledgeFeature:' +
-             '+2 Appraise (stone, metal)/Craft (stone, metal)'
-        ]);
       }
 
     } else if(race.indexOf(' Dworg') >= 0) {
 
-      notes = [
-        'combatNotes.dworgFavoredEnemyFeature:+2 attack vs. orc',
-        'combatNotes.minorLightSensitivityFeature:' +
-          'DC 15 Fortitude save in sunlight to avoid -1 attack',
-        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
-        'magicNotes.resistSpellsFeature:-2 spell energy',
-        'saveNotes.ruggedFeature:+2 all saves',
-        'saveNotes.resistSpellsFeature:+2 vs. spells'
-      ];
       selectableFeatures = null;
       rules.defineRule('featureNotes.darkvisionFeature',
         raceNoSpace + 'Features.Darkvision', '+=', '60'
@@ -3876,31 +3466,13 @@ LastAge.raceRules = function(rules, languages, races) {
       rules.defineRule
         ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
       if(race == 'Clan-Raised Dworg') {
-        notes = notes.concat([
-          'skillNotes.stonecunningFeature:' +
-            "+%V Search involving stone or metal, automatic check w/in 10'"
-        ]);
         rules.defineRule('skillNotes.stonecunningFeature',
           'clanRaisedDworgFeatures.Stonecunning', '+=', '2'
         );
-      } else if(race == 'Kurgun-Raised Dworg') {
-        notes = notes.concat([
-          'abilityNotes.naturalMountaineerFeature:' +
-             'Unimpeded movement in mountainous terrain',
-          'skillNotes.naturalMountaineerFeature:+2 Climb'
-        ]);
       }
 
     } else if(race.indexOf(' Elfling') >= 0) {
 
-      notes = [
-        'combatNotes.smallFeature:+1 AC/attack',
-        'saveNotes.fortunateFeature:+1 all saves',
-        'skillNotes.giftedHealerFeature:+2 Heal',
-        'skillNotes.keenSensesFeature:+2 Listen/Search/Spot',
-        'skillNotes.nimbleFeature:+2 Climb/Hide',
-        'skillNotes.smallFeature:+4 Hide'
-      ];
       selectableFeatures = null;
       rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule('baseAttack', 'combatNotes.smallFeature', '+', '1');
@@ -3910,9 +3482,6 @@ LastAge.raceRules = function(rules, languages, races) {
       rules.defineRule('save.Will', 'saveNotes.fortunateFeature', '+', '1');
       if(race == 'Danisil-Raised Elfling') {
       } else if(race == 'Halfling-Raised Elfling') {
-        notes = notes.concat([
-          'featureNotes.boundToTheBeastFeature:Mounted Combat'
-        ]);
         rules.defineRule('features.Mounted Combat',
           'featureNotes.boundToTheBeastFeature', '=', '1'
         );
@@ -3920,13 +3489,6 @@ LastAge.raceRules = function(rules, languages, races) {
 
     } else if(race.indexOf(' Elf') >= 0) {
 
-      notes = [
-        'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
-        'magicNotes.naturalChannelerFeature:+2 spell energy',
-        'saveNotes.resistEnchantmentFeature:+2 vs. enchantments',
-        'skillNotes.keenSensesFeature:+2 Listen/Search/Spot',
-        'skillNotes.treeClimberFeature:+4 Balance (trees)/Climb (trees)'
-      ];
       selectableFeatures = null;
       rules.defineRule('featureNotes.low-LightVisionFeature',
         '', '=', '1',
@@ -3939,28 +3501,12 @@ LastAge.raceRules = function(rules, languages, races) {
         ('spellEnergy', 'magicNotes.naturalChannelerFeature', '+', '2');
 
       if(race == 'Jungle Elf') {
-        notes = notes.concat([
-          'magicNotes.improvedInnateMagicFeature:+1 Innate Magic spell',
-          'saveNotes.spiritFoeFeature:+2 vs. outsiders',
-          'skillNotes.improvedKeenSensesFeature:+2 Listen/Search/Spot',
-          'skillNotes.improvedTreeClimberFeature:' +
-            '+2 Balance (trees)/Climb (trees)',
-          'skillNotes.spiritFoeFeature:+4 Hide (nature)/Move Silently (nature)'
-        ]);
         rules.defineRule('magicNotes.innateMagicFeature',
           'magicNotes.improvedInnateMagicFeature', '+', '1'
         );
         rules.defineRule
           ('skillNotes.feralElfFeature2', 'features.Feral Elf', '=', '1');
       } else if(race == 'Sea Elf') {
-        notes = notes.concat([
-          'skillNotes.deepLungsFeature:Hold breath for %V rounds',
-          'skillNotes.improvedNaturalSwimmerFeature:' +
-            '+8 special action or avoid hazard/always take 10/run',
-          'skillNotes.naturalSailorFeature:' +
-            '+2 Craft (ship)/Profession (ship)/Use Rope (ship)',
-          'skillNotes.naturalSwimmerFeature:%V swim as move action'
-        ]);
         rules.defineRule('deepLungsMultiplier',
           'seaElfFeatures.Deep Lungs', '=', '6'
         );
@@ -3971,17 +3517,7 @@ LastAge.raceRules = function(rules, languages, races) {
         rules.defineRule('skillNotes.naturalSwimmerFeature',
           'speed', '=', 'Math.floor(source / 2)'
         );
-      } else if(race == 'Snow Elf') {
-        notes = notes.concat([
-          'saveNotes.coldFortitudeFeature:+5 cold/half nonlethal damage',
-          'saveNotes.robustFeature:+1 Fortitude'
-        ]);
-        rules.defineRule('save.Fortitude', 'saveNotes.robustFeature', '+', '1');
       } else if(race == 'Wood Elf') {
-        notes = notes.concat([
-          'magicNotes.improvedInnateMagicFeature:+1 Innate Magic spell',
-          'magicNotes.improvedNaturalChannelerFeature:+1 spell energy'
-        ]);
         rules.defineRule('magicNotes.innateMagicFeature',
           'magicNotes.improvedInnateMagicFeature', '+', '1'
         );
@@ -3989,8 +3525,6 @@ LastAge.raceRules = function(rules, languages, races) {
           'race', '?', 'source == "Wood Elf"',
           'level', '=', 'source'
         );
-        rules.defineRule
-          ('skillPoints', 'skillNotes.woodElfSkillPointsBonus', '+', null);
         rules.defineRule('spellEnergy',
           'magicNotes.improvedNaturalChannelerFeature', '+', '1'
         );
@@ -3998,9 +3532,6 @@ LastAge.raceRules = function(rules, languages, races) {
 
     } else if(race == 'Erenlander') {
 
-      notes = [
-        'skillNotes.heartlanderFeature:+4 chosen Craft or Profession'
-      ];
       selectableFeatures = null;
       rules.defineRule('abilityNotes.erenlanderAbilityAdjustment',
         'race', '=', 'source == "Erenlander" ? 1 : null'
@@ -4022,22 +3553,6 @@ LastAge.raceRules = function(rules, languages, races) {
 
     } else if(race == 'Gnome') {
 
-      notes = [
-        'abilityNotes.slowFeature:-10 speed',
-        'combatNotes.smallFeature:+1 AC/attack',
-        'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
-        'magicNotes.resistSpellsFeature:-2 spell energy',
-        'saveNotes.robustFeature:+1 Fortitude',
-        'saveNotes.resistSpellsFeature:+2 vs. spells',
-        'skillNotes.deepLungsFeature:Hold breath for %V rounds',
-        'skillNotes.naturalRiverfolkFeature:' +
-          '+2 Perform/Profession (Sailor)/Swim/Use Rope',
-        'skillNotes.naturalSwimmerFeature:%V swim as move action',
-        'skillNotes.naturalTraderFeature:' +
-          '+4 Appraise, Bluff, Diplomacy, Forgery, Gather Information, ' +
-          'Profession when smuggling/trading',
-        'skillNotes.smallFeature:+4 Hide'
-      ];
       selectableFeatures = null;
       rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
       rules.defineRule
@@ -4063,39 +3578,10 @@ LastAge.raceRules = function(rules, languages, races) {
 
     } else if(race.indexOf(' Halfling') >= 0) {
 
-      notes = [
-        'abilityNotes.slowFeature:-10 speed',
-        'combatNotes.smallFeature:+1 AC/attack',
-        'featureNotes.low-LightVisionFeature:x%V normal distance in poor light',
-        'saveNotes.fortunateFeature:+1 all saves',
-        'saveNotes.unafraidFeature:+2 vs. fear',
-        'skillNotes.alertSensesFeature:+2 Listen/Spot',
-        'skillNotes.gracefulFeature:+2 Climb/Jump/Move Silently/Tumble',
-        'skillNotes.smallFeature:+4 Hide'
-      ];
       selectableFeatures = null;
-      rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule('featureNotes.low-LightVisionFeature',
-        '', '=', '1',
-        raceNoSpace + 'Features.Low-Light Vision', '+', null
-      );
-      rules.defineRule('baseAttack', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule
-        ('resistance.Fear', 'saveNotes.resistFearFeature', '+=', '2');
-      rules.defineRule
-        ('save.Fortitude', 'saveNotes.fortunateFeature', '+', '1');
-      rules.defineRule('save.Reflex', 'saveNotes.fortunateFeature', '+', '1');
-      rules.defineRule('save.Will', 'saveNotes.fortunateFeature', '+', '1');
-      rules.defineRule('speed', 'abilityNotes.slowFeature', '+', '-10');
 
       if(race == 'Agrarian Halfling') {
         selectableFeatures = ['Stout', 'Studious'];
-        notes = notes.concat([
-          'featureNotes.stoutFeature:Endurance/Toughness',
-          'featureNotes.studiousFeature:Magecraft (Hermetic)',
-          'skillNotes.dextrousHandsFeature:+2 Craft (non-metal, -wood)',
-          'skillNotes.giftedHealerFeature:+2 Heal'
-        ]);
         rules.defineRule('agrarianHalflingFeatures.Endurance',
           'featureNotes.stoutFeature', '=', '1'
         );
@@ -4119,13 +3605,6 @@ LastAge.raceRules = function(rules, languages, races) {
         );
       } else if(race == 'Nomadic Halfling') {
         selectableFeatures = ['Bound To The Beast', 'Bound To The Spirits'];
-        notes = notes.concat([
-          'featureNotes.boundToTheBeastFeature:Mounted Combat',
-          'featureNotes.boundToTheSpiritsFeature:Magecraft (Spiritual)',
-          'skillNotes.skilledRiderFeature:' +
-            '+2 Concentration (wogrenback)/+2 Handle Animal (wogren)/' +
-            'Ride (wogren)'
-        ]);
         rules.defineRule('features.Magecraft (Spiritual)',
           'nomadicHalflingFeatures.Magecraft (Spiritual)', '=', '1'
         );
@@ -4145,17 +3624,6 @@ LastAge.raceRules = function(rules, languages, races) {
 
     } else if(race == 'Orc') {
 
-      notes = [
-        'combatNotes.lightSensitivityFeature:-1 attack in daylight',
-        'combatNotes.nightFighterFeature:+1 attack in darkness',
-        'combatNotes.orcFrenzyFeature:+1 attack when fighting among 10+ Orcs',
-        'combatNotes.orcFavoredEnemyFeature:+1 damage vs. dwarves',
-        "featureNotes.darkvisionFeature:%V' b/w vision in darkness",
-        'magicNotes.resistSpellsFeature:-2 spell energy',
-        'saveNotes.improvedColdFortitudeFeature:Immune non-lethal/half lethal',
-        'saveNotes.resistSpellsFeature:+2 vs. spells',
-        'skillNotes.naturalPredatorFeature:+%V Intimidate'
-      ];
       selectableFeatures = null;
       rules.defineRule('featureNotes.darkvisionFeature',
         raceNoSpace + 'Features.Darkvision', '+=', '60'
@@ -4169,13 +3637,7 @@ LastAge.raceRules = function(rules, languages, races) {
 
     } else if(race.indexOf(' Sarcosan') >= 0) {
 
-      notes = [
-        'combatNotes.quickFeature:+1 attack w/light weapons',
-        'saveNotes.quickFeature:+1 Reflex'
-      ];
       selectableFeatures = null;
-      rules.defineRule
-        ('featCount.General', 'featureNotes.sarcosanFeatCountBonus', '+', null);
       rules.defineRule('featureNotes.sarcosanFeatCountBonus',
         'race', '=', 'source.indexOf("Sarcosan") >= 0 ? 1 : null'
       );
@@ -4183,45 +3645,7 @@ LastAge.raceRules = function(rules, languages, races) {
         'race', '?', 'source.indexOf("Sarcosan") >= 0',
         'level', '=', 'source + 3'
       );
-      rules.defineRule('save.Reflex', 'saveNotes.quickFeature', '+', '1');
-      rules.defineRule
-        ('skillPoints', 'skillNotes.sarcosanSkillPointsBonus', '+', null);
-      if(race == 'Plains Sarcosan') {
-        notes = notes.concat([
-          'combatNotes.naturalHorsemanFeature:' +
-            '+1 melee damage (horseback)/half ranged penalty (horseback)',
-          'skillNotes.naturalHorsemanFeature:' +
-            '+4 Concentration (horseback)/Handle Animal (horse)/Ride (horse)'
-        ]);
-      } else if(race == 'Urban Sarcosan') {
-        notes = notes.concat([
-          'skillNotes.urbanFeature:' +
-            '+2 Gather Information (urban)/untrained Knowledge in urban areas',
-          'skillNotes.interactiveFeature:+2 Bluff/Diplomacy/Sense Motive'
-        ]);
-      }
 
-    } else
-      continue;
-
-    if(LastAge.USE_PATHFINDER) {
-      notes = LastAge.SRD35ToPathfinder(notes);
-    }
-    SRD35.defineRace(rules, race, adjustment, features);
-    if(notes != null)
-      rules.defineNote(notes);
-    if(selectableFeatures != null) {
-      for(var j = 0; j < selectableFeatures.length; j++) {
-        var selectable = selectableFeatures[j];
-        var choice = race + ' - ' + selectable;
-        rules.defineChoice('selectableFeatures', choice + ':' + race);
-        rules.defineRule(raceNoSpace + 'Features.' + selectable,
-          'selectableFeatures.' + choice, '+=', null
-        );
-        rules.defineRule('features.' + selectable,
-          'selectableFeatures.' + choice, '+=', null
-        );
-      }
     }
 
   }
