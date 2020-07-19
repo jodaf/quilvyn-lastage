@@ -621,26 +621,26 @@ LastAge.FEATURES_ADDED = {
   'Deep Lungs':'skill:Hold breath for %V rounds',
   'Dextrous':'skill:+2 Craft (non-metal or wood)',
   'Dodge Orcs':'combat:+1 AC vs. orc',
-  'Dorn Ability Adjustment':'ability:+2 strength/-2 intelligence',
-  'Dwarf Ability Adjustment':'ability:+2 constitution/-2 charisma',
+  'Dorn Ability Adjustment':'ability:+2 Strength/-2 Intelligence',
+  'Dwarf Ability Adjustment':'ability:+2 Constitution/-2 Charisma',
   'Dwarf Favored Enemy':'combat:+1 attack vs. orc',
   'Dwarf Favored Weapon':'combat:+1 attack with axes and hammers',
-  'Dwarrow Ability Adjustment':'ability:+2 charisma',
+  'Dwarrow Ability Adjustment':'ability:+2 Charisma',
   'Dworg Ability Adjustment':
-    'ability:+2 strength/+2 constitution/-2 intelligence/-2 charisma',
+    'ability:+2 Strength/+2 Constitution/-2 Intelligence/-2 Charisma',
   'Dworg Favored Enemy':'combat:+2 attack vs. orc',
-  'Elf Ability Adjustment':'ability:+2 dexterity/-2 constitution',
+  'Elf Ability Adjustment':'ability:+2 Dexterity/-2 Constitution',
   'Elfling Ability Adjustment':
-    'ability:+4 dexterity/-2 strength/-2 constitution',
+    'ability:+4 Dexterity/-2 Strength/-2 Constitution',
   'Erenlander Ability Adjustment':'ability:+2 choice/-2 choice',
   'Favored Region':
     'skill:%V; Knowledge (Local) is a class skill, +2 Survival (region)/Knowledge (Nature) (region)',
   'Fierce':'combat:+1 attack w/two-handed weapons',
   'Fortunate':'save:+1 Fortitude/+2 Reflex/+2 Will',
   'Gifted Healer':'skill:+2 Heal',
-  'Gnome Ability Adjustment':'ability:+4 charisma/-2 strength',
+  'Gnome Ability Adjustment':'ability:+4 Charisma/-2 Strength',
   'Graceful':'skill:+2 Climb/+2 Jump/+2 Move Silently/+2 Tumble',
-  'Halfling Ability Adjustment':'ability:+2 dexterity/-2 strength',
+  'Halfling Ability Adjustment':'ability:+2 Dexterity/-2 Strength',
   'Heartlander':'skill:+4 chosen Craft or Profession',
   'Illiteracy':'skill:Must spend 2 skill points to read and write',
   'Improved Cold Fortitude':'save:Immune non-lethal/half lethal',
@@ -674,7 +674,7 @@ LastAge.FEATURES_ADDED = {
     'skill:+4 Appraise, Bluff, Diplomacy, Forgery, Gather Information, Profession when smuggling or trading',
   'Night Fighter':'combat:+1 attack in darkness',
   'Nimble':'skill:+2 Climb/+2Hide',
-  'Orc Ability Adjustment':'ability:+4 strength/-2 intelligence/-2 charisma',
+  'Orc Ability Adjustment':'ability:+4 Strength/-2 Intelligence/-2 Charisma',
   'Orc Favored Enemy':'combat:+1 damage vs. dwarves',
   'Orc Frenzy':'combat:+1 attack when fighting among 10+ Orcs',
   'Quick':[
@@ -688,7 +688,7 @@ LastAge.FEATURES_ADDED = {
   'Resist Spells':'save:+2 vs. spells',
   'Robust':'save:+1 Fortitude',
   'Rugged':'save:+2 Fortitude/+2 Reflex/+2 Will',
-  'Sarcosan Ability Adjustment':'ability:+2 charisma/+2 intelligence/-2 wisdom',
+  'Sarcosan Ability Adjustment':'ability:+2 Charisma/+2 Intelligence/-2 Wisdom',
   'Skilled Rider':
     'skill:+2 Concentration (wogrenback)/+2 Handle Animal (wogren)/Ride (wogren)',
   'Skilled Trader':
@@ -940,7 +940,9 @@ LastAge.RACES = {
       '"Alert Senses",Fortunate,Graceful,"Halfling Ability Adjustment",' +
       '"Innate Magic","Low-Light Vision",Slow,Small,"Resist Fear",' +
       '"Weapon Familiarity (Halfling Lance)",' +
-      '"Dextrous Hands","Gifted Healer"',
+      '"Dextrous Hands","Gifted Healer" ' +
+    'Selectables=' +
+      'Stout,Studious',
   'Clan Dwarf':
     'Features=' +
       'Darkvision,"Dwarf Ability Adjustment","Dwarf Favored Enemy",' +
@@ -1018,7 +1020,9 @@ LastAge.RACES = {
       '"Alert Senses",Fortunate,Graceful,"Halfling Ability Adjustment",' +
       '"Innate Magic","Low-Light Vision",Slow,Small,"Resist Fear",' +
       '"Weapon Familiarity (Halfling Lance)",' +
-      '"Focused Rider","Skilled Rider"',
+      '"Focused Rider","Skilled Rider" ' +
+    'Selectables=' +
+      '"Bound To The Beast","Bound To The Spirits"',
   'Orc':
     'Features=' +
       'Darkvision,"Improved Cold Fortitude","Light Sensitivity",' +
@@ -1528,16 +1532,16 @@ LastAge.CLASSES = {
       '"3:Astirax Companion" ' +
     'SpellAbility=charisma ' +
     'SpellsPerDay=' +
-      'C0=1=3;2=4;4=5;7=6,' +
-      'C1=1=1;2=2;4=3;7=4;11=5,' +
-      'C2=3=1;4=2;6=3;9=4;13=5,' +
-      'C3=5=1;6=2;8=3;11=4;15=5,' +
-      'C4=7=1;8=2;10=3;13=4;17=5,' +
-      'C5=9=1;10=2;12=3;15=4;19=5,' +
-      'C6=11=1;12=2;14=3;17=4,' +
-      'C7=13=1;14=2;16=3;19=4,' +
-      'C8=15=1;16=2;18=3;20=4,' +
-      'C9=17=1;18=2;19=3;20=4,' +
+      'C0:1=3;2=4;4=5;7=6,' +
+      'C1:1=1;2=2;4=3;7=4;11=5,' +
+      'C2:3=1;4=2;6=3;9=4;13=5,' +
+      'C3:5=1;6=2;8=3;11=4;15=5,' +
+      'C4:7=1;8=2;10=3;13=4;17=5,' +
+      'C5:9=1;10=2;12=3;15=4;19=5,' +
+      'C6:11=1;12=2;14=3;17=4,' +
+      'C7:13=1;14=2;16=3;19=4,' +
+      'C8:15=1;16=2;18=3;20=4,' +
+      'C9:17=1;18=2;19=3;20=4,' +
       'Dom1:1=1,' +
       'Dom2:3=1,' +
       'Dom3:5=1,' +
@@ -1547,7 +1551,9 @@ LastAge.CLASSES = {
       'Dom7:13=1,' +
       'Dom8:15=1,' +
       'Dom9:17=1 ' +
-    'Spells=' + QuilvynUtils.getAttrValueArray(SRD35.CLASSES['Cleric'], 'Spells').concat(['C3:Boil Blood;Speak With Fell']).join(','),
+    // Cleric spells added by choiceRules method
+    'Spells=' +
+      '"C3:Boil Blood;Speak With Fell"',
   'Rogue':SRD35.CLASSES['Rogue'],
   'Spiritual Channeler':
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -1761,6 +1767,9 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'Spell')
     );
   else if(type == 'Class') {
+    var spells = QuilvynUtils.getAttrValueArray(attrs, 'Spells');
+    if(name == 'Legate')
+      spells = spells.concat(QuilvynUtils.getAttrValueArray(LastAge.baseRules.CLASSES['Cleric'], 'Spells'));
     LastAge.classRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Require'),
       QuilvynUtils.getAttrValueArray(attrs, 'Imply'),
@@ -1778,11 +1787,16 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'CasterLevelDivine'),
       QuilvynUtils.getAttrValue(attrs, 'SpellAbility'),
       QuilvynUtils.getAttrValueArray(attrs, 'SpellsPerDay'),
-      QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
+      spells,
       LastAge.SPELLS
     );
     LastAge.classRulesExtra(rules, name);
-  } else if(type == 'Domain')
+  } else if(type == 'Deity')
+    LastAge.deityRules(rules, name,
+      QuilvynUtils.getAttrValueArray(attrs, 'Domain'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Weapon')
+    );
+  else if(type == 'Domain')
     LastAge.domainRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Features'),
       QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
@@ -1825,6 +1839,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
   else if(type == 'Race') {
     LastAge.raceRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Features'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Selectables'),
       QuilvynUtils.getAttrValueArray(attrs, 'Languages'),
       QuilvynUtils.getAttrValue(attrs, 'SpellAbility'),
       QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
@@ -1847,9 +1862,9 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     LastAge.skillRules(rules, name,
       QuilvynUtils.getAttrValue(attrs, 'Ability'),
       untrained != 'n' && untrained != 'N',
-      QuilvynUtils.getAttrValueArray(attrs, 'Class')
+      QuilvynUtils.getAttrValueArray(attrs, 'Class'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Synergies')
     );
-    LastAge.skillRulesExtra(rules, name);
   } else if(type == 'Spell')
     LastAge.spellRules(rules, name,
       QuilvynUtils.getAttrValue(attrs, 'School'),
@@ -1877,6 +1892,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
   }
   if(type != 'Feature') {
     type = type == 'Class' ? 'levels' :
+    type = type == 'Deity' ? 'deities' :
     (type.substring(0,1).toLowerCase() + type.substring(1).replace(/ /g, '') + 's');
     rules.addChoice(type, name, attrs);
   }
@@ -1950,6 +1966,15 @@ LastAge.companionRules = function(
   LastAge.baseRules.companionRules
     (rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage,
      level, size);
+  // No changes needed to the rules defined by base method
+};
+
+/*
+ * Defines in #rules# the rules associated with deity #name#. #domains# and
+ * #favoredWeapons# list the associated domains and favored weapons.
+ */
+LastAge.deityRules = function(rules, name, domains, favoredWeapons) {
+  LastAge.baseRules.deityRules(rules, name, domains, favoredWeapons);
   // No changes needed to the rules defined by base method
 };
 
@@ -2138,6 +2163,7 @@ LastAge.classRulesExtra = function(rules, name) {
         ('spellsKnown.D0', 'magicNotes.magecraft(Spiritual)', '+=', '3');
       rules.defineRule
         ('spellsKnown.D1', 'magicNotes.magecraft(Spiritual)', '+=', '1');
+      /* TODO
       var turningTargets = {
         'Nature':'Nature', 'Spirits':'Spirit', 'The Unnatural':'Unnatural'
       };
@@ -2167,6 +2193,7 @@ LastAge.classRulesExtra = function(rules, name) {
         rules.defineSheetElement
           ('Turn ' + turningTargets[a], 'Turn Undead', null, ' * ');
       }
+      */
     }
 
   } else if(name == 'Defender') {
@@ -2452,14 +2479,14 @@ LastAge.featRules = function(rules, name, types, requires, implies) {
  */
 LastAge.featRulesExtra = function(rules, name) {
 
-  if(feat == 'Drive It Deep') {
+  if(name == 'Drive It Deep') {
     rules.defineRule('combatNotes.driveItDeep', 'baseAttack', '=', null);
-  } if(feat == 'Extra Gift') {
+  } if(name == 'Extra Gift') {
     rules.defineRule
       ('combatNotes.masterOfTwoWorlds', 'featureNotes.extraGift', '+', '4');
     rules.defineRule
       ('magicNotes.forceOfPersonality', 'featureNotes.extraGift', '+', '4');
-  } else if(feat == 'Innate Magic') {
+  } else if(name == 'Innate Magic') {
     rules.defineRule('magicNotes.innateMagic',
       'charismaModifier', '=', null,
       'intelligenceModifier', '^', null,
@@ -2492,7 +2519,7 @@ LastAge.featRulesExtra = function(rules, name) {
     rules.defineRule('casterLevels.B', 'casterLevels.innateB', '=', null);
     rules.defineRule('casterLevels.D', 'casterLevels.innateD', '=', null);
     rules.defineRule('casterLevels.W', 'casterLevels.innateW', '=', null);
-  } else if((matchInfo = feat.match(/^Magecraft \((.*)\)/)) != null) {
+  } else if((matchInfo = name.match(/^Magecraft \((.*)\)/)) != null) {
     var tradition = matchInfo[1];
     var note = 'magicNotes.magecraft(' + tradition + ')';
     var ability = tradition == 'Charismatic' ? 'charisma' :
@@ -2500,14 +2527,14 @@ LastAge.featRulesExtra = function(rules, name) {
     var spellClass = tradition == 'Charismatic' ? 'Bard' :
                      tradition == 'Hermetic' ? 'Wizard' : 'Druid';
     var spellCode = spellClass.substring(0, 1);
-    notes = [note + ':4 spells/%V spell energy points'];
+    // TODO notes = [note + ':4 spells/%V spell energy points'];
     rules.defineRule(note, ability + 'Modifier', '=', null);
     rules.defineRule('spellEnergy', note, '+=', null);
     rules.defineRule('spellsKnown.' + spellCode + '0', note, '+=', '3');
     rules.defineRule('spellsKnown.' + spellCode + '1', note, '+=', '1');
     // Pick up SRD35 level 0/1 spells of the appropriate class.
     var classRules = new QuilvynRules('');
-    SRD35.magicRules(classRules, [spellClass], [], []);
+    // TODO SRD35.magicRules(classRules, [spellClass], [], []);
     var schools = rules.getChoices('schools');
     for(var s in classRules.getChoices('spells')) {
       var matchInfo = s.match('^(.*)\\((' + spellCode + '[01])');
@@ -2523,21 +2550,21 @@ LastAge.featRulesExtra = function(rules, name) {
                (school == 'Universal' ? 'None' : schools[school]) + ')';
       rules.defineChoice('spells', spell);
     }
-    rules.defineRule('casterLevels.' + feat,
-      'features.' + feat, '?', null,
+    rules.defineRule('casterLevels.' + name,
+      'features.' + name, '?', null,
       'level', '=', null
     );
     rules.defineRule
-      ('casterLevels.' + spellCode, 'casterLevels.' + feat, '=', null);
-  } else if((matchInfo = feat.match(/^Spellcasting \((.*)\)/)) != null) {
+      ('casterLevels.' + spellCode, 'casterLevels.' + name, '=', null);
+  } else if((matchInfo = name.match(/^Spellcasting \((.*)\)/)) != null) {
     var school = matchInfo[1];
     var schoolNoSpace = school.replace(/ /g, '');
     var note = 'magicNotes.spellcasting(' + schoolNoSpace + ')';
-    notes = [note + ':May learn school spells/+1 school spell'];
+    // TODO notes = [note + ':May learn school spells/+1 school spell'];
     if(school.indexOf('Greater ') == 0) {
-      notes[notes.length] =
-        'validationNotes.spellcasting(' + schoolNoSpace + ')FeatFeats:' +
-          'Requires Spellcasting (' + school.substring(8) + ')';
+      // TODO notes[notes.length] =
+      // TODO   'validationNotes.spellcasting(' + schoolNoSpace + ')FeatFeats:' +
+      // TODO     'Requires Spellcasting (' + school.substring(8) + ')';
     }
     rules.defineRule('spellsKnownBonus', note, '+=', '1');
     rules.defineRule('spellcastingFeatureCount',
@@ -2549,52 +2576,52 @@ LastAge.featRulesExtra = function(rules, name) {
     );
     rules.defineRule
       ('casterLevels.Ch', 'casterLevels.Spellcasting', '=', null);
-  } else if((matchInfo = feat.match(/^Spell Focus \((.*)\)/)) != null) {
+  } else if((matchInfo = name.match(/^Spell Focus \((.*)\)/)) != null) {
     // Add validation note to what base rules already computed
     var school = matchInfo[1];
     var schoolNoSpace = school.replace(/ /g, '');
-    notes = [
-     'validationNotes.spellFocus(' + schoolNoSpace + ')FeatFeatures:' +
-       'Requires Spellcasting (' + school + ')'
-    ];
-  } else if(feat == 'Spell Knowledge') {
+    // TODO notes = [
+    // TODO  'validationNotes.spellFocus(' + schoolNoSpace + ')FeatFeatures:' +
+    // TODO    'Requires Spellcasting (' + school + ')'
+    // TODO ];
+  } else if(name == 'Spell Knowledge') {
     rules.defineRule('spellsKnownBonus', 'magicNotes.spellKnowledge', '+', '2');
-  } else if(feat == 'Warrior Of Shadow') {
+  } else if(name == 'Warrior Of Shadow') {
     rules.defineRule
       ('combatNotes.warriorOfShadow', 'charismaModifier', '=', null);
     rules.defineRule
       ('combatNotes.warriorOfShadow.1', 'charismaModifier', '=', null);
-  } else if(feat == 'Dwarvencraft') {
+  } else if(name == 'Dwarvencraft') {
     rules.defineRule('featureNotes.dwarvencraft',
       'skills.Craft (Armor)', '+=', 'Math.floor(source / 4)',
       'skills.Craft (Blacksmith)', '+=', 'Math.floor(source / 4)',
       'skills.Craft (Weapons)', '+=', 'Math.floor(source / 4)'
     );
-  } else if(feat == 'Touched By Magic') {
+  } else if(name == 'Touched By Magic') {
     rules.defineRule('spellEnergy', 'magicNotes.touchedByMagic', '+', '2');
-  } else if(feat == 'Born Of Duty') {
+  } else if(name == 'Born Of Duty') {
     rules.defineRule('magicNotes.bornOfDuty',
       'level', '=', '10 + Math.floor(source / 2)',
       'charismaModifier', '+', null
     );
-  } else if(feat == 'Improved Flexible Recovery') {
+  } else if(name == 'Improved Flexible Recovery') {
     rules.defineRule('magicNotes.improvedFlexibleRecovery',
       'charismaModifier', '=', null,
       'intelligenceModifier', '^', null,
       'wisdomModifier', '^', null
     );
-  } else if(feat == 'Power Reservoir') {
+  } else if(name == 'Power Reservoir') {
     rules.defineRule('magicNotes.powerReservoir',
       'charismaModifier', '=', null,
       'intelligenceModifier', '^', null,
       'wisdomModifier', '^', null
     );
-  } else if(feat == 'Sense Power') {
+  } else if(name == 'Sense Power') {
     rules.defineRule('magicNotes.sensePower', 'wisdomModifier', '=', null);
-  } else if(feat == 'Canny Strike') {
+  } else if(name == 'Canny Strike') {
     rules.defineRule
       ('combatNotes.cannyStrike', 'intelligenceModifier', '=', null);
-  } else if(feat == 'Clever Fighting') {
+  } else if(name == 'Clever Fighting') {
     rules.defineRule('combatNotes.cleverFighting',
       'dexterityModifier', '=', null,
       'strengthModifier', '+', '-source'
@@ -2619,7 +2646,8 @@ LastAge.genderRules = function(rules, name) {
 };
 
 /*
- * TODO
+ * Defines in #rules# the rules associated with heroic path #name#. #features#,
+ * #selectables#, and #spells# list the features associated with the path.
  */
 LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
 
@@ -2638,23 +2666,8 @@ LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
   rules.defineSheetElement(name + ' Features', 'Feats', null, ' * ');
   rules.defineChoice('extras', prefix + 'Features');
 
-  for(var i = 0; i < features.length; i++) {
-    var matchInfo = features[i].match(/^((\d+):)?(.*)$/);
-    var feature = matchInfo ? matchInfo[3] : features[i];
-    var level = matchInfo ? matchInfo[2] : 1;
-    rules.defineRule(prefix + 'Features.' + feature,
-      'pathLevels.' + name, '=', 'source >= ' + level + ' ? 1 : null'
-    );
-    rules.defineRule
-      ('features.' + feature, prefix + 'Features.' + feature, '+=', null);
-    if((matchInfo = feature.match(/^Weapon (Familiarity|Proficiency) \((.*\/.*)\)$/)) != null) {
-      // Set individual features for each weapon on the list.
-      var weapons = matchInfo[2].split('/');
-      for(var j = 0; j < weapons.length; j++) {
-        rules.defineRule('features.Weapon ' + matchInfo[1] + ' (' + weapons[j] + ')', 'features.' + feature, '=', '1');
-      }
-    }
-  }
+  SRD35.featureListRules
+    (rules, features, prefix + 'Features', null, 'pathLevels.' + name);
 
   for(var i = 0; i < selectables.length; i++) {
     var matchInfo = selectables[i].match(/^((\d+):)?(.*)$/);
@@ -2678,7 +2691,7 @@ LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
     rules.defineRule('casterLevels.Ch', 'casterLevels.' + name, '^=', null);
     var spellLevels = {};
     for(var i = 0; i < spells.length; i++) {
-      var levelAndSpell = spellFeatures[i].split(/:/);
+      var levelAndSpell = spells[i].split(/:/);
       var level = levelAndSpell.length == 1 ? 1 : levelAndSpell[0];
       var spell = levelAndSpell[levelAndSpell.length == 1 ? 0 : 1];
       spell = '<i>' + spell + '</i>';
@@ -2707,7 +2720,8 @@ LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
 };
 
 /*
- * TODO
+ * Defines in #rules# the rules associated with heroic path #name# that are not
+ * directly derived from the parmeters passed to heroicPathRules.
  */
 LastAge.heroicPathRulesExtra = function(rules, name) {
 
@@ -3326,16 +3340,18 @@ LastAge.languageRules = function(rules, name) {
 */
 
 /*
- * Defines in #rules# the rules associated with race #name#. #features# lists
- * associated features and #languages# the automatic languages. #spells# lists
- * any natural spells, for which #spellAbility# is used to compute the save DC.
+ * Defines in #rules# the rules associated with race #name#. #features# and
+ * #selectables# list associated features and #languages# the automatic
+ * languages. #spells# lists any natural spells, for which #spellAbility# is
+ * used to compute the save DC.
  */
 LastAge.raceRules = function(
-  rules, name, features, languages, spellAbility, spells, spellDict
+  rules, name, features, selectables, languages, spellAbility, spells, spellDict
 ) {
   LastAge.baseRules.raceRules
-    (rules, name, features, languages, spellAbility, spells, spellDict);
-  // No changes needed to the rules defined by SRD35 method
+    (rules, name, features, selectables, languages, spellAbility, spells,
+     spellDict);
+  // No changes needed to the rules defined by base method
 };
 
 /*
@@ -3376,7 +3392,7 @@ LastAge.raceRulesExtra = function(rules, name) {
   var prefix =
     name.substring(0,1).toLowerCase() + name.substring(1).replace(/ /g, '');
 
-  if(race == 'Dorn') {
+  if(name == 'Dorn') {
 
     rules.defineRule('featCount.Fighter',
       'featureNotes.dornFeatCountBonus', '+=', null
@@ -3389,24 +3405,24 @@ LastAge.raceRulesExtra = function(rules, name) {
       'level', '=', 'source + 3'
     );
 
-  } else if(race.indexOf(' Dwarf') >= 0) {
+  } else if(name.indexOf(' Dwarf') >= 0) {
 
     rules.defineRule('abilityNotes.armorSpeedAdjustment',
       'race', '^', 'source.indexOf("Dwarf") >= 0 ? 0 : null'
     );
-    if(race == 'Clan Dwarf') {
+    if(name == 'Clan Dwarf') {
       rules.defineRule('skillNotes.stonecunningFeature',
         'clanDwarfFeatures.Stonecunning', '+=', '2'
       );
     }
 
-  } else if(race.indexOf(' Dwarrow') >= 0) {
+  } else if(name.indexOf(' Dwarrow') >= 0) {
 
-    if(race == 'Clan-Raised Dwarrow') {
+    if(name == 'Clan-Raised Dwarrow') {
       rules.defineRule('skillNotes.stonecunningFeature',
         'clanRaisedDwarrowFeatures.Stonecunning', '+=', '2'
       );
-    } else if(race == 'Gnome-Raised Dwarrow') {
+    } else if(name == 'Gnome-Raised Dwarrow') {
       rules.defineRule('deepLungsMultiplier',
         'gnomeRaisedDwarrowFeatures.Deep Lungs', '=', '3'
       );
@@ -3419,31 +3435,31 @@ LastAge.raceRulesExtra = function(rules, name) {
       );
     }
 
-  } else if(race.indexOf(' Dworg') >= 0) {
+  } else if(name.indexOf(' Dworg') >= 0) {
 
-    if(race == 'Clan-Raised Dworg') {
+    if(name == 'Clan-Raised Dworg') {
       rules.defineRule('skillNotes.stonecunningFeature',
         'clanRaisedDworgFeatures.Stonecunning', '+=', '2'
       );
     }
 
-  } else if(race.indexOf(' Elfling') >= 0) {
+  } else if(name.indexOf(' Elfling') >= 0) {
 
-    if(race == 'Halfling-Raised Elfling') {
+    if(name == 'Halfling-Raised Elfling') {
       rules.defineRule('features.Mounted Combat',
         'featureNotes.boundToTheBeastFeature', '=', '1'
       );
     }
 
-  } else if(race.indexOf(' Elf') >= 0) {
+  } else if(name.indexOf(' Elf') >= 0) {
 
-    if(race == 'Jungle Elf') {
+    if(name == 'Jungle Elf') {
       rules.defineRule('magicNotes.innateMagicFeature',
         'magicNotes.improvedInnateMagicFeature', '+', '1'
       );
       rules.defineRule
         ('skillNotes.feralElfFeature2', 'features.Feral Elf', '=', '1');
-    } else if(race == 'Sea Elf') {
+    } else if(name == 'Sea Elf') {
       rules.defineRule('deepLungsMultiplier',
         'seaElfFeatures.Deep Lungs', '=', '6'
       );
@@ -3454,7 +3470,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       rules.defineRule('skillNotes.naturalSwimmerFeature',
         'speed', '=', 'Math.floor(source / 2)'
       );
-    } else if(race == 'Wood Elf') {
+    } else if(name == 'Wood Elf') {
       rules.defineRule('magicNotes.innateMagicFeature',
         'magicNotes.improvedInnateMagicFeature', '+', '1'
       );
@@ -3464,7 +3480,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       );
     }
 
-  } else if(race == 'Erenlander') {
+  } else if(name == 'Erenlander') {
 
     rules.defineRule('abilityNotes.erenlanderAbilityAdjustment',
       'race', '=', 'source == "Erenlander" ? 1 : null'
@@ -3477,7 +3493,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       'level', '=', '(source + 3) * 2'
     );
 
-  } else if(race == 'Gnome') {
+  } else if(name == 'Gnome') {
 
     rules.defineRule
       ('deepLungsMultiplier', 'gnomeFeatures.Deep Lungs', '=', '3');
@@ -3489,10 +3505,9 @@ LastAge.raceRulesExtra = function(rules, name) {
       'speed', '=', 'Math.floor(source / 2)'
     );
 
-  } else if(race.indexOf(' Halfling') >= 0) {
+  } else if(name.indexOf(' Halfling') >= 0) {
 
-    if(race == 'Agrarian Halfling') {
-      selectableFeatures = ['Stout', 'Studious'];
+    if(name == 'Agrarian Halfling') {
       rules.defineRule('agrarianHalflingFeatures.Endurance',
         'featureNotes.stoutFeature', '=', '1'
       );
@@ -3514,8 +3529,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       rules.defineRule('selectableFeatureCount.Agrarian Halfling',
         'race', '=', 'source == "Agrarian Halfling" ? 1 : null'
       );
-    } else if(race == 'Nomadic Halfling') {
-      selectableFeatures = ['Bound To The Beast', 'Bound To The Spirits'];
+    } else if(name == 'Nomadic Halfling') {
       rules.defineRule('features.Magecraft (Spiritual)',
         'nomadicHalflingFeatures.Magecraft (Spiritual)', '=', '1'
       );
@@ -3533,12 +3547,12 @@ LastAge.raceRulesExtra = function(rules, name) {
       );
     }
 
-  } else if(race == 'Orc') {
+  } else if(name == 'Orc') {
 
     rules.defineRule
       ('skillNotes.naturalPredatorFeature', 'strengthModifier', '=', null);
 
-  } else if(race.indexOf(' Sarcosan') >= 0) {
+  } else if(name.indexOf(' Sarcosan') >= 0) {
 
     rules.defineRule('featureNotes.sarcosanFeatCountBonus',
       'race', '=', 'source.indexOf("Sarcosan") >= 0 ? 1 : null'
