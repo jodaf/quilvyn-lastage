@@ -1779,14 +1779,14 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'SpellAbility'),
       QuilvynUtils.getAttrValueArray(attrs, 'SpellsPerDay'),
       QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
-      LastAge.baseRules.SPELLS
+      LastAge.SPELLS
     );
     LastAge.classRulesExtra(rules, name);
   } else if(type == 'Domain')
     LastAge.domainRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Features'),
       QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
-      LastAge.baseRules.SPELLS
+      LastAge.SPELLS
     );
   else if(type == 'Familiar')
     LastAge.familiarRules(rules, name,
@@ -1991,13 +1991,15 @@ LastAge.domainRules = function(rules, name, features, spells, spellDict) {
  */
 LastAge.classRules = function(
   rules, name, requires, implies, hitDie, attack, skillPoints, saveFort,
-  saveRef, saveWill, skills, features, selectables, casterLevelArcane,
-  casterLevelDivine, spellAbility, spellsPerDay, spells, spellDict
+  saveRef, saveWill, skills, features, selectables, languages,
+  casterLevelArcane, casterLevelDivine, spellAbility, spellsPerDay, spells,
+  spellDict
 ) {
   LastAge.baseRules.classRules(
     rules, name, requires, implies, hitDie, attack, skillPoints, saveFort,
-    saveRef, saveWill, skills, features, selectables, casterLevelArcane,
-    casterLevelDivine, spellAbility, spellsPerDay, spells, spellDict
+    saveRef, saveWill, skills, features, selectables, languages,
+    casterLevelArcane, casterLevelDivine, spellAbility, spellsPerDay, spells,
+    spellDict
   );
 };
 
@@ -2033,12 +2035,14 @@ LastAge.classRulesExtra = function(rules, name) {
       ('spellsKnownBonus', 'magicNotes.channelerSpellsKnown', '+', null);
 
     if(name == 'Charismatic Channeler') {
+      /* TODO
       feats = ['Extra Gift', 'Spell Knowledge'];
       for(var j = 0; j < LastAge.SCHOOLS.length; j++) {
         var school = LastAge.SCHOOLS[j].split(':')[0];
         feats[feats.length] = 'Greater Spell Focus (' + school + ')';
         feats[feats.length] = 'Spell Focus (' + school + ')';
       }
+      */
       rules.defineRule
         ('channelerLevels', 'levels.Charismatic Channeler', '+=', null);
       rules.defineRule('magicNotes.forceOfPersonality',
@@ -2077,6 +2081,7 @@ LastAge.classRulesExtra = function(rules, name) {
       rules.defineRule
         ('spellsKnown.B1', 'magicNotes.magecraft(Charismatic)', '+=', '1');
     } else if(name == 'Hermetic Channeler') {
+      /* TODO
       feats = ['Spell Knowledge'];
       var allFeats = SRD35.FEATS.concat(LastAge.FEATS);
       for(var j = 0; j < allFeats.length; j++) {
@@ -2085,6 +2090,7 @@ LastAge.classRulesExtra = function(rules, name) {
           feats.push(pieces[0]);
         }
       }
+      */
       rules.defineRule
         ('channelerLevels', 'levels.Hermetic Channeler', '+=', null);
       rules.defineRule('magicNotes.magecraft(Hermetic)',
@@ -2104,6 +2110,7 @@ LastAge.classRulesExtra = function(rules, name) {
       rules.defineRule
         ('spellsKnown.W1', 'magicNotes.magecraft(Hermetic)', '+=', '1');
     } else if(name == 'Spiritual Channeler') {
+      /* TODO
       feats = ['Extra Gift', 'Spell Knowledge'];
       var allFeats = SRD35.FEATS.concat(LastAge.FEATS);
       for(var j = 0; j < allFeats.length; j++) {
@@ -2112,6 +2119,7 @@ LastAge.classRulesExtra = function(rules, name) {
           feats.push(pieces[0]);
         }
       }
+      */
       rules.defineRule
         ('channelerLevels', 'levels.Spiritual Channeler', '+=', null);
       rules.defineRule('combatNotes.masterOfTwoWorlds',
@@ -3195,12 +3203,14 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
 
   } else if(name == 'Steelblooded') {
 
+    /* TODO
     feats = [];
     for(var feat in rules.getChoices('feats')) {
       if(feat.match(/Weapon (Focus|Proficiency|Specialization) \(/)) {
         feats[feats.length] = feat;
       }
     }
+    */
     rules.defineRule('combatNotes.offensiveTactics',
       'pathLevels.Steelblooded', '+=',
       'source>=17 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
@@ -3544,7 +3554,7 @@ LastAge.raceRulesExtra = function(rules, name) {
 
 /* Defines in #rules# the rules associated with magic school #name#. */
 LastAge.schoolRules = function(rules, name, features) {
-  LastAge.baseRules(rules, name, features);
+  LastAge.baseRules.schoolRules(rules, name, features);
   // No changes needed to the rules defined by base method
 };
 
@@ -3576,12 +3586,20 @@ LastAge.skillRules = function(
 ) {
   LastAge.baseRules.skillRules
     (rules, name, ability, untrained, classes, synergies);
-  // No changes needed to the rules defined by SRD35 method
+  // No changes needed to the rules defined by base method
 };
 
-/* Replaces spell names with longer descriptions on the character sheet. */
-LastAge.spellRules = function(rules, spells, descriptions) {
-  LastAge.baseRules.spellRules(rules, spells, descriptions);
+/*
+ * Defines in #rules# the rules associated with spell #name#, which is from
+ * magic school #school#. #casterGroup# and #level# are used to compute any
+ * saving throw value required by the spell. #description# is a verbose
+ * description of the spell's effects.
+ */
+LastAge.spellRules = function(
+  rules, name, school, casterGroup, level, description
+) {
+  LastAge.baseRules.spellRules
+    (rules, name, school, casterGroup, level, description);
   // No changes needed to the rules defined by base method
 };
 
