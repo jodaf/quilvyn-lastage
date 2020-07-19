@@ -684,7 +684,7 @@ LastAge.FEATURES_ADDED = {
   'Resilient':'combat:+2 AC',
   'Resist Enchantment':'save:+2 vs. enchantments',
   'Resist Poison':'save:+2 vs. poison',
-  'Resist Spells':'magic:-2 spell energy',
+  'Resist Spells':'magic:-2 Spell Energy',
   'Resist Spells':'save:+2 vs. spells',
   'Robust':'save:+1 Fortitude',
   'Rugged':'save:+2 Fortitude/+2 Reflex/+2 Will',
@@ -1547,7 +1547,7 @@ LastAge.CLASSES = {
       'Dom7:13=1,' +
       'Dom8:15=1,' +
       'Dom9:17=1 ' +
-    'Spells=' + QuilvynUtils.getAttrValue(SRD35.CLASSES['Cleric'], 'Spells'),
+    'Spells=' + QuilvynUtils.getAttrValueArray(SRD35.CLASSES['Cleric'], 'Spells').concat(['C3:Boil Blood;Speak With Fell']).join(','),
   'Rogue':SRD35.CLASSES['Rogue'],
   'Spiritual Channeler':
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -1831,12 +1831,11 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       LastAge.SPELLS
     );
     LastAge.raceRulesExtra(rules, name);
-  } else if(type == 'School') {
+  } else if(type == 'School')
     LastAge.schoolRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Features')
     );
-    LastAge.schoolRulesExtra(rules, name);
-  } else if(type == 'Shield')
+  else if(type == 'Shield')
     LastAge.shieldRules(rules, name,
       QuilvynUtils.getAttrValue(attrs, 'AC'),
       QuilvynUtils.getAttrValue(attrs, 'Weight'),
@@ -2010,6 +2009,7 @@ LastAge.classRulesExtra = function(rules, name) {
 
   if(name.indexOf(' Channeler') >= 0) {
 
+    rules.defineRule('casterLevelArcane', 'casterLevels.Ch', '+=', null);
     rules.defineRule('familiarLevel',
       'channelerLevels', '+=', 'source >= 2 ? Math.floor(source / 2) : null'
     );
@@ -2270,7 +2270,7 @@ LastAge.classRulesExtra = function(rules, name) {
         'levels.Legate', '=',
         'source >= ' + (j * 2 - 1) + ' ? 1 : null');
     }
-    rules.defineRule('turnUndead.level', 'levels.Legate', '+=', null);
+    rules.defineRule('turningLevel', 'levels.Legate', '+=', null);
 
   } else if(name == 'Wildlander') {
 
@@ -2596,6 +2596,21 @@ LastAge.featRulesExtra = function(rules, name) {
 };
 
 /*
+ * Defines in #rules# the rules associated with feature #name#. #notes# lists
+ * notes associated with feature.
+ */
+LastAge.featureRules = function(rules, name, notes) {
+  LastAge.baseRules.featureRules(rules, name, notes);
+  // No changes needed to the rules defined by base method
+};
+
+/* Defines in #rules# the rules associated with gender #name#. */
+LastAge.genderRules = function(rules, name) {
+  LastAge.baseRules.genderRules(rules, name);
+  // No changes needed to the rules defined by base method
+};
+
+/*
  * TODO
  */
 LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
@@ -2620,7 +2635,7 @@ LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
     var feature = matchInfo ? matchInfo[3] : features[i];
     var level = matchInfo ? matchInfo[2] : 1;
     rules.defineRule(prefix + 'Features.' + feature,
-      'levels.' + name, '=', 'source >= ' + level + ' ? 1 : null'
+      'pathLevels.' + name, '=', 'source >= ' + level + ' ? 1 : null'
     );
     rules.defineRule
       ('features.' + feature, prefix + 'Features.' + feature, '+=', null);
@@ -2642,9 +2657,8 @@ LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
     rules.defineRule(prefix + 'Features.' + feature,
       'selectableFeatures.' + choice, '+=', null
     );
-    rules.defineRule('features.' + feature,
-      'selectableFeatures.' + choice, '+=', null
-    );
+    rules.defineRule
+      ('features.' + feature, prefix + 'Features.' + feature, '+=', null);
     SRD35.testRules(rules, 'validation', prefix + ' - ' + feature.replace(/ /g, '') + 'HeroicPath', 'selectableFeatures.' + choice, ['levels.' + name + ' >= ' + level]);
   }
 
@@ -2691,9 +2705,8 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
 
   if(name == 'Beast') {
 
-    rules.defineRule('combatNotes.rage',
-      'constitutionModifier', '=', '5 + source'
-    );
+    rules.defineRule
+      ('combatNotes.rage', 'constitutionModifier', '=', '5 + source');
     rules.defineRule('combatNotes.rage.1',
       'features.Rage', '?', null,
       'pathLevels.Beast', '+=', 'source >= 17 ? 2 : 1'
@@ -2710,7 +2723,7 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
     );
     rules.defineRule('smallViciousAssault',
       'features.Small', '?', null,
-      'mediumViciousAssault', '=', 'SRD35.weaponsSmallDamage[source]'
+      'mediumViciousAssault', '=', 'SRD35.SMALL_DAMAGE[source]'
     );
 
   } else if(name == 'Chanceborn') {
@@ -2794,17 +2807,12 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
     rules.defineRule('features.Wisdom Bonus',
      'faithfulFeatures.Wisdom Bonus', '+=', null
     );
-    // TODO
-    rules.defineRule
-      ('turnUndead.damageModifier', 'pathLevels.Faithful', '^=', null);
-    rules.defineRule
-      ('turnUndead.frequency', 'turnUndeadFaithfulFrequency', '+=', null);
-    rules.defineRule
-      ('turnUndead.maxHitDice', 'pathLevels.Faithful', '^=', 'source*3-10');
-    rules.defineRule('turnUndeadFaithfulFrequency',
-      'pathLevels.Faithful', '=',
-      'source >= 4 ? Math.floor((source + 1) / 5) : null',
-      'charismaModifier', '+', '-source'
+    rules.defineRule('turningLevel',
+      'pathLevels.Faithful', '+=', 'source < 4 ? null : source'
+    );
+    // Override SRD35 turning frequency
+    rules.defineRule('combatNotes.turnUndead.3',
+      'pathLevels.Faithful', 'v', 'Math.floor((source + 1) / 5)'
     );
 
   } else if(name == 'Fellhunter') {
@@ -3267,48 +3275,13 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
 
 };
 
-/* Defines the rules related to spells and domains. */
-LastAge.magicRules = function(rules, classes, domains, schools) {
+/* Defines in #rules# the rules associated with language #name#. */
+LastAge.languageRules = function(rules, name) {
+  LastAge.baseRules.languageRules(rules, name);
+  // TODO
+};
 
-  if(!rules.choices.spells)
-    rules.choices.spells = {};
-  LastAge.baseRules.magicRules(rules, [], domains, schools);
-
-  var channelerDone = false;
-  var schools = rules.getChoices('schools');
-  for(var i = 0; i < classes.length; i++) {
-    var klass = classes[i];
-    var spells;
-    if(klass.indexOf("Channeler") >= 0 && !channelerDone) {
-      channelerDone = true;
-    } else if(klass == 'Legate') {
-      // Copy Cleric spells
-      LastAge.baseRules.magicRules(rules, ['Cleric'], [], []);
-      spells = [
-        'C3:Boil Blood:Speak With Fell'
-      ];
-    } else
-      continue;
-
-    if(spells != null) {
-      for(var j = 0; j < spells.length; j++) {
-        var pieces = spells[j].split(':');
-        for(var k = 1; k < pieces.length; k++) {
-          var spell = pieces[k];
-          var school = LastAge.spellsSchools[spell] || SRD35.spellsSchools[spell];
-          if(school == null) {
-            console.log("Ignoring school-less spell " + spell);
-            continue;
-          }
-          spell += '(' + pieces[0] + ' ' +
-                    (school == 'Universal' ? 'None' : schools[school]) + ')';
-          rules.defineChoice('spells', spell);
-        }
-      }
-    }
-  }
-
-  rules.defineRule('casterLevelArcane', 'casterLevels.Ch', '+=', null);
+/* TODO
   rules.defineRule('spellDifficultyClass.B',
     'casterLevels.B', '?', null,
     'charismaModifier', '=', '10 + source'
@@ -3340,20 +3313,28 @@ LastAge.magicRules = function(rules, classes, domains, schools) {
   }
   rules.defineSheetElement('Spell Energy', 'Spells Per Day');
 
+*/
+
+/*
+ * Defines in #rules# the rules associated with race #name#. #features# lists
+ * associated features and #languages# the automatic languages. #spells# lists
+ * any natural spells, for which #spellAbility# is used to compute the save DC.
+ */
+LastAge.raceRules = function(
+  rules, name, features, languages, spellAbility, spells, spellDict
+) {
+  LastAge.baseRules.raceRules
+    (rules, name, features, languages, spellAbility, spells, spellDict);
+  // No changes needed to the rules defined by SRD35 method
 };
 
-/* Defines the rules related to character movement. */
-LastAge.movementRules = function(rules) {
-  LastAge.baseRules.movementRules(rules);
-};
+/*
+ * Defines in #rules# the rules associated with race #name# that are not
+ * directly derived from the parmeters passed to raceRules.
+ */
+LastAge.raceRulesExtra = function(rules, name) {
 
-/* Defines the rules related to PC races. */
-LastAge.raceRules = function(rules, languages, races) {
-
-  // Call baseRules function only to pick up any rules unrelated to specific
-  // languages and races (e.g., languageCount).
-  LastAge.baseRules.raceRules(rules, [], []);
-
+/* TODO
   for(var i = 0; i < languages.length; i++) {
     var language = languages[i];
     rules.defineRule('languages.' + language,
@@ -3377,194 +3358,48 @@ LastAge.raceRules = function(rules, languages, races) {
   rules.defineRule('skillNotes.favoredRegion',
     'race', '=', 'LastAge.racesFavoredRegions[source]'
   );
+*/
   rules.defineRule('features.Illiteracy', '', '=', '1');
   rules.defineRule
     ('skillModifier.Speak Language', 'skillNotes.illiteracy', '+', '-2');
 
-  for(var i = 0; i < races.length; i++) {
+  var prefix =
+    name.substring(0,1).toLowerCase() + name.substring(1).replace(/ /g, '');
 
-    var race = races[i];
-    var raceNoSpace =
-      race.substring(0,1).toLowerCase() + race.substring(1).replace(/ /g, '');
-    var adjustment, features, notes, selectableFeatures;
+  if(race == 'Dorn') {
 
-    if(race == 'Dorn') {
+    rules.defineRule('featCount.Fighter',
+      'featureNotes.dornFeatCountBonus', '+=', null
+    );
+    rules.defineRule('featureNotes.dornFeatCountBonus',
+      'race', '=', 'source == "Dorn" ? 1 : null'
+    );
+    rules.defineRule('skillNotes.dornSkillPointsBonus',
+      'race', '?', 'source == "Dorn"',
+      'level', '=', 'source + 3'
+    );
 
-      selectableFeatures = null;
-      rules.defineRule('featCount.Fighter',
-        'featureNotes.dornFeatCountBonus', '+=', null
+  } else if(race.indexOf(' Dwarf') >= 0) {
+
+    rules.defineRule('abilityNotes.armorSpeedAdjustment',
+      'race', '^', 'source.indexOf("Dwarf") >= 0 ? 0 : null'
+    );
+    if(race == 'Clan Dwarf') {
+      rules.defineRule('skillNotes.stonecunningFeature',
+        'clanDwarfFeatures.Stonecunning', '+=', '2'
       );
-      rules.defineRule('featureNotes.dornFeatCountBonus',
-        'race', '=', 'source == "Dorn" ? 1 : null'
+    }
+
+  } else if(race.indexOf(' Dwarrow') >= 0) {
+
+    if(race == 'Clan-Raised Dwarrow') {
+      rules.defineRule('skillNotes.stonecunningFeature',
+        'clanRaisedDwarrowFeatures.Stonecunning', '+=', '2'
       );
-      rules.defineRule('save.Fortitude', 'saveNotes.robustFeature', '+', '1');
-      rules.defineRule('skillNotes.dornSkillPointsBonus',
-        'race', '?', 'source == "Dorn"',
-        'level', '=', 'source + 3'
+    } else if(race == 'Gnome-Raised Dwarrow') {
+      rules.defineRule('deepLungsMultiplier',
+        'gnomeRaisedDwarrowFeatures.Deep Lungs', '=', '3'
       );
-      rules.defineRule
-        ('skillPoints', 'skillNotes.dornSkillPointsBonus', '+', null);
-
-    } else if(race.indexOf(' Dwarf') >= 0) {
-
-      selectableFeatures = null;
-      rules.defineRule('abilityNotes.armorSpeedAdjustment',
-        'race', '^', 'source.indexOf("Dwarf") >= 0 ? 0 : null'
-      );
-      rules.defineRule
-        ('armorClass', 'combatNotes.resilientFeature', '+', '2');
-      rules.defineRule('featureNotes.darkvisionFeature',
-        raceNoSpace + 'Features.Darkvision', '+=', '60'
-      );
-      rules.defineRule
-        ('resistance.Poison', 'saveNotes.resistPoisonFeature', '+=', '2');
-      rules.defineRule
-        ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
-      rules.defineRule('speed', 'abilityNotes.slowFeature', '+', '-10');
-      rules.defineRule
-        ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
-      if(race == 'Clan Dwarf') {
-        rules.defineRule('skillNotes.stonecunningFeature',
-          'clanDwarfFeatures.Stonecunning', '+=', '2'
-        );
-      } else if(race == 'Kurgun Dwarf') {
-      }
-
-    } else if(race.indexOf(' Dwarrow') >= 0) {
-
-      selectableFeatures = null;
-      rules.defineRule
-        ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
-      if(race == 'Clan-Raised Dwarrow') {
-        rules.defineRule('skillNotes.stonecunningFeature',
-          'clanRaisedDwarrowFeatures.Stonecunning', '+=', '2'
-        );
-      } else if(race == 'Gnome-Raised Dwarrow') {
-        rules.defineRule('deepLungsMultiplier',
-          'gnomeRaisedDwarrowFeatures.Deep Lungs', '=', '3'
-        );
-        rules.defineRule('skillNotes.deepLungsFeature',
-          'deepLungsMultiplier', '=', null,
-          'constitution', '*', 'source'
-        );
-        rules.defineRule('skillNotes.naturalSwimmerFeature',
-          'speed', '=', 'Math.floor(source / 2)'
-        );
-      }
-
-    } else if(race.indexOf(' Dworg') >= 0) {
-
-      selectableFeatures = null;
-      rules.defineRule('featureNotes.darkvisionFeature',
-        raceNoSpace + 'Features.Darkvision', '+=', '60'
-      );
-      rules.defineRule
-        ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
-      rules.defineRule('save.Fortitude', 'saveNotes.ruggedFeature', '+', '2');
-      rules.defineRule('save.Reflex', 'saveNotes.ruggedFeature', '+', '2');
-      rules.defineRule('save.Will', 'saveNotes.ruggedFeature', '+', '2');
-      rules.defineRule
-        ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
-      if(race == 'Clan-Raised Dworg') {
-        rules.defineRule('skillNotes.stonecunningFeature',
-          'clanRaisedDworgFeatures.Stonecunning', '+=', '2'
-        );
-      }
-
-    } else if(race.indexOf(' Elfling') >= 0) {
-
-      selectableFeatures = null;
-      rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule('baseAttack', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule
-        ('save.Fortitude', 'saveNotes.fortunateFeature', '+', '1');
-      rules.defineRule('save.Reflex', 'saveNotes.fortunateFeature', '+', '1');
-      rules.defineRule('save.Will', 'saveNotes.fortunateFeature', '+', '1');
-      if(race == 'Danisil-Raised Elfling') {
-      } else if(race == 'Halfling-Raised Elfling') {
-        rules.defineRule('features.Mounted Combat',
-          'featureNotes.boundToTheBeastFeature', '=', '1'
-        );
-      }
-
-    } else if(race.indexOf(' Elf') >= 0) {
-
-      selectableFeatures = null;
-      rules.defineRule('featureNotes.low-LightVisionFeature',
-        '', '=', '1',
-        raceNoSpace + 'Features.Low-Light Vision', '+', null
-      );
-      rules.defineRule('resistance.Enchantment',
-        'saveNotes.resistEnchantmentFeature', '+=', '2'
-      );
-      rules.defineRule
-        ('spellEnergy', 'magicNotes.naturalChannelerFeature', '+', '2');
-
-      if(race == 'Jungle Elf') {
-        rules.defineRule('magicNotes.innateMagicFeature',
-          'magicNotes.improvedInnateMagicFeature', '+', '1'
-        );
-        rules.defineRule
-          ('skillNotes.feralElfFeature2', 'features.Feral Elf', '=', '1');
-      } else if(race == 'Sea Elf') {
-        rules.defineRule('deepLungsMultiplier',
-          'seaElfFeatures.Deep Lungs', '=', '6'
-        );
-        rules.defineRule('skillNotes.deepLungsFeature',
-          'deepLungsMultiplier', '=', null,
-          'constitution', '*', 'source'
-        );
-        rules.defineRule('skillNotes.naturalSwimmerFeature',
-          'speed', '=', 'Math.floor(source / 2)'
-        );
-      } else if(race == 'Wood Elf') {
-        rules.defineRule('magicNotes.innateMagicFeature',
-          'magicNotes.improvedInnateMagicFeature', '+', '1'
-        );
-        rules.defineRule('skillNotes.woodElfSkillPointsBonus',
-          'race', '?', 'source == "Wood Elf"',
-          'level', '=', 'source'
-        );
-        rules.defineRule('spellEnergy',
-          'magicNotes.improvedNaturalChannelerFeature', '+', '1'
-        );
-      }
-
-    } else if(race == 'Erenlander') {
-
-      selectableFeatures = null;
-      rules.defineRule('abilityNotes.erenlanderAbilityAdjustment',
-        'race', '=', 'source == "Erenlander" ? 1 : null'
-      );
-      rules.defineRule('featCount.General',
-        'featureNotes.erenlanderFeatCountBonus', '+', null
-      );
-      rules.defineRule('featureNotes.erenlanderFeatCountBonus',
-        'race', '=', 'source == "Erenlander" ? 2 : null'
-      );
-      rules.defineRule('skillNotes.erenlanderSkillPointsBonus',
-        'race', '?', 'source == "Erenlander"',
-        'level', '=', '(source + 3) * 2'
-      );
-      rules.defineRule('skillPoints',
-        'skillNotes.heartlanderFeature', '+', '4',
-        'skillNotes.erenlanderSkillPointsBonus', '+', null
-      );
-
-    } else if(race == 'Gnome') {
-
-      selectableFeatures = null;
-      rules.defineRule('armorClass', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule
-        ('deepLungsMultiplier', 'gnomeFeatures.Deep Lungs', '=', '3');
-      rules.defineRule('featureNotes.low-LightVisionFeature',
-        '', '=', '1',
-        raceNoSpace + 'Features.Low-Light Vision', '+', null
-      );
-      rules.defineRule('baseAttack', 'combatNotes.smallFeature', '+', '1');
-      rules.defineRule
-        ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
-      rules.defineRule('save.Fortitude', 'saveNotes.robustFeature', '+', '1');
       rules.defineRule('skillNotes.deepLungsFeature',
         'deepLungsMultiplier', '=', null,
         'constitution', '*', 'source'
@@ -3572,95 +3407,201 @@ LastAge.raceRules = function(rules, languages, races) {
       rules.defineRule('skillNotes.naturalSwimmerFeature',
         'speed', '=', 'Math.floor(source / 2)'
       );
-      rules.defineRule('speed', 'abilityNotes.slowFeature', '+', '-10');
-      rules.defineRule
-        ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
-
-    } else if(race.indexOf(' Halfling') >= 0) {
-
-      selectableFeatures = null;
-
-      if(race == 'Agrarian Halfling') {
-        selectableFeatures = ['Stout', 'Studious'];
-        rules.defineRule('agrarianHalflingFeatures.Endurance',
-          'featureNotes.stoutFeature', '=', '1'
-        );
-        rules.defineRule('agrarianHalflingFeatures.Toughness',
-          'featureNotes.stoutFeature', '=', '1'
-        );
-        rules.defineRule('agrarianHalflingFeatures.Magecraft (Hermetic)',
-          'featureNotes.studiousFeature', '=', '1'
-        );
-        rules.defineRule('features.Endurance',
-          'agrarianHalflingFeatures.Endurance', '=', '1'
-        );
-        rules.defineRule('features.Magecraft (Hermetic)',
-          'agrarianHalflingFeatures.Magecraft (Hermetic)', '=', '1'
-        );
-        rules.defineRule('features.Toughness',
-          'agrarianHalflingFeatures.Toughness', '=', '1'
-        );
-        rules.defineRule('selectableFeatureCount.Agrarian Halfling',
-          'race', '=', 'source == "Agrarian Halfling" ? 1 : null'
-        );
-      } else if(race == 'Nomadic Halfling') {
-        selectableFeatures = ['Bound To The Beast', 'Bound To The Spirits'];
-        rules.defineRule('features.Magecraft (Spiritual)',
-          'nomadicHalflingFeatures.Magecraft (Spiritual)', '=', '1'
-        );
-        rules.defineRule('features.Mounted Combat',
-          'nomadicHalflingFeatures.Mounted Combat', '=', '1'
-        );
-        rules.defineRule('nomadicHalflingFeatures.Magecraft (Spiritual)',
-          'featureNotes.boundToTheSpiritsFeature', '=', '1'
-        );
-        rules.defineRule('nomadicHalflingFeatures.Mounted Combat',
-          'featureNotes.boundToTheBeastFeature', '=', '1'
-        );
-        rules.defineRule('selectableFeatureCount.Nomadic Halfling',
-          'race', '=', 'source == "Nomadic Halfling" ? 1 : null'
-        );
-      }
-
-    } else if(race == 'Orc') {
-
-      selectableFeatures = null;
-      rules.defineRule('featureNotes.darkvisionFeature',
-        raceNoSpace + 'Features.Darkvision', '+=', '60'
-      );
-      rules.defineRule
-        ('resistance.Spell', 'saveNotes.resistSpellsFeature', '+=', '2');
-      rules.defineRule
-        ('skillNotes.naturalPredatorFeature', 'strengthModifier', '=', null);
-      rules.defineRule
-        ('spellEnergy', 'magicNotes.resistSpellsFeature', '+', '-2');
-
-    } else if(race.indexOf(' Sarcosan') >= 0) {
-
-      selectableFeatures = null;
-      rules.defineRule('featureNotes.sarcosanFeatCountBonus',
-        'race', '=', 'source.indexOf("Sarcosan") >= 0 ? 1 : null'
-      );
-      rules.defineRule('skillNotes.sarcosanSkillPointsBonus',
-        'race', '?', 'source.indexOf("Sarcosan") >= 0',
-        'level', '=', 'source + 3'
-      );
-
     }
+
+  } else if(race.indexOf(' Dworg') >= 0) {
+
+    if(race == 'Clan-Raised Dworg') {
+      rules.defineRule('skillNotes.stonecunningFeature',
+        'clanRaisedDworgFeatures.Stonecunning', '+=', '2'
+      );
+    }
+
+  } else if(race.indexOf(' Elfling') >= 0) {
+
+    if(race == 'Halfling-Raised Elfling') {
+      rules.defineRule('features.Mounted Combat',
+        'featureNotes.boundToTheBeastFeature', '=', '1'
+      );
+    }
+
+  } else if(race.indexOf(' Elf') >= 0) {
+
+    if(race == 'Jungle Elf') {
+      rules.defineRule('magicNotes.innateMagicFeature',
+        'magicNotes.improvedInnateMagicFeature', '+', '1'
+      );
+      rules.defineRule
+        ('skillNotes.feralElfFeature2', 'features.Feral Elf', '=', '1');
+    } else if(race == 'Sea Elf') {
+      rules.defineRule('deepLungsMultiplier',
+        'seaElfFeatures.Deep Lungs', '=', '6'
+      );
+      rules.defineRule('skillNotes.deepLungsFeature',
+        'deepLungsMultiplier', '=', null,
+        'constitution', '*', 'source'
+      );
+      rules.defineRule('skillNotes.naturalSwimmerFeature',
+        'speed', '=', 'Math.floor(source / 2)'
+      );
+    } else if(race == 'Wood Elf') {
+      rules.defineRule('magicNotes.innateMagicFeature',
+        'magicNotes.improvedInnateMagicFeature', '+', '1'
+      );
+      rules.defineRule('skillNotes.woodElfSkillPointsBonus',
+        'race', '?', 'source == "Wood Elf"',
+        'level', '=', 'source'
+      );
+    }
+
+  } else if(race == 'Erenlander') {
+
+    rules.defineRule('abilityNotes.erenlanderAbilityAdjustment',
+      'race', '=', 'source == "Erenlander" ? 1 : null'
+    );
+    rules.defineRule('featureNotes.erenlanderFeatCountBonus',
+      'race', '=', 'source == "Erenlander" ? 2 : null'
+    );
+    rules.defineRule('skillNotes.erenlanderSkillPointsBonus',
+      'race', '?', 'source == "Erenlander"',
+      'level', '=', '(source + 3) * 2'
+    );
+
+  } else if(race == 'Gnome') {
+
+    rules.defineRule
+      ('deepLungsMultiplier', 'gnomeFeatures.Deep Lungs', '=', '3');
+    rules.defineRule('skillNotes.deepLungsFeature',
+      'deepLungsMultiplier', '=', null,
+      'constitution', '*', 'source'
+    );
+    rules.defineRule('skillNotes.naturalSwimmerFeature',
+      'speed', '=', 'Math.floor(source / 2)'
+    );
+
+  } else if(race.indexOf(' Halfling') >= 0) {
+
+    if(race == 'Agrarian Halfling') {
+      selectableFeatures = ['Stout', 'Studious'];
+      rules.defineRule('agrarianHalflingFeatures.Endurance',
+        'featureNotes.stoutFeature', '=', '1'
+      );
+      rules.defineRule('agrarianHalflingFeatures.Toughness',
+        'featureNotes.stoutFeature', '=', '1'
+      );
+      rules.defineRule('agrarianHalflingFeatures.Magecraft (Hermetic)',
+        'featureNotes.studiousFeature', '=', '1'
+      );
+      rules.defineRule('features.Endurance',
+        'agrarianHalflingFeatures.Endurance', '=', '1'
+      );
+      rules.defineRule('features.Magecraft (Hermetic)',
+        'agrarianHalflingFeatures.Magecraft (Hermetic)', '=', '1'
+      );
+      rules.defineRule('features.Toughness',
+        'agrarianHalflingFeatures.Toughness', '=', '1'
+      );
+      rules.defineRule('selectableFeatureCount.Agrarian Halfling',
+        'race', '=', 'source == "Agrarian Halfling" ? 1 : null'
+      );
+    } else if(race == 'Nomadic Halfling') {
+      selectableFeatures = ['Bound To The Beast', 'Bound To The Spirits'];
+      rules.defineRule('features.Magecraft (Spiritual)',
+        'nomadicHalflingFeatures.Magecraft (Spiritual)', '=', '1'
+      );
+      rules.defineRule('features.Mounted Combat',
+        'nomadicHalflingFeatures.Mounted Combat', '=', '1'
+      );
+      rules.defineRule('nomadicHalflingFeatures.Magecraft (Spiritual)',
+        'featureNotes.boundToTheSpiritsFeature', '=', '1'
+      );
+      rules.defineRule('nomadicHalflingFeatures.Mounted Combat',
+        'featureNotes.boundToTheBeastFeature', '=', '1'
+      );
+      rules.defineRule('selectableFeatureCount.Nomadic Halfling',
+        'race', '=', 'source == "Nomadic Halfling" ? 1 : null'
+      );
+    }
+
+  } else if(race == 'Orc') {
+
+    rules.defineRule
+      ('skillNotes.naturalPredatorFeature', 'strengthModifier', '=', null);
+
+  } else if(race.indexOf(' Sarcosan') >= 0) {
+
+    rules.defineRule('featureNotes.sarcosanFeatCountBonus',
+      'race', '=', 'source.indexOf("Sarcosan") >= 0 ? 1 : null'
+    );
+    rules.defineRule('skillNotes.sarcosanSkillPointsBonus',
+      'race', '?', 'source.indexOf("Sarcosan") >= 0',
+      'level', '=', 'source + 3'
+    );
 
   }
 
 };
 
-/* Replaces spell names with longer descriptions on the character sheet. */
-LastAge.spellRules = function(rules, spells, descriptions) {
-  SRD35.spellRules(rules, spells, descriptions);
+/* Defines in #rules# the rules associated with magic school #name#. */
+LastAge.schoolRules = function(rules, name, features) {
+  LastAge.baseRules(rules, name, features);
+  // No changes needed to the rules defined by base method
 };
 
-/* Defines the rules related to character skills. */
-LastAge.skillRules = function(rules, skills, subskills, synergies) {
-  LastAge.baseRules.skillRules(rules, skills, subskills, synergies);
-}
+/*
+ * Defines in #rules# the rules associated with shield #name#, which adds #ac#
+ * to the character's armor class, requires a #profLevel# proficiency level to
+ * use effectively, imposes #skillPenalty# on specific skills
+ * and yields a #spellFail# percent chance of arcane spell failure.
+ */
+LastAge.shieldRules = function(
+  rules, name, ac, profLevel, skillFail, spellFail
+) {
+  LastAge.baseRules.shieldRules
+    (rules, name, ac, profLevel, skillFail, spellFail);
+  // No changes needed to the rules defined by SRD35 method
+};
+
+/*
+ * Defines in #rules# the rules associated with skill #name#, associated with
+ * #ability# (one of 'strength', 'intelligence', etc.). #untrained#, if
+ * specified is a boolean indicating whether or not the skill can be used
+ * untrained; the default is true. #classes# lists the classes for which this
+ * is a class skill; a value of "all" indicates that this is a class skill for
+ * all classes. #synergies#, if specified, lists synergies to other skills and
+ * abilities granted by high ranks in this skill.
+ */
+LastAge.skillRules = function(
+  rules, name, ability, untrained, classes, synergies
+) {
+  LastAge.baseRules.skillRules
+    (rules, name, ability, untrained, classes, synergies);
+  // No changes needed to the rules defined by SRD35 method
+};
+
+/* Replaces spell names with longer descriptions on the character sheet. */
+LastAge.spellRules = function(rules, spells, descriptions) {
+  LastAge.baseRules.spellRules(rules, spells, descriptions);
+  // No changes needed to the rules defined by base method
+};
+
+/*
+ * Defines in #rules# the rules associated with weapon #name#, which requires a
+ * #profLevel# proficiency level to use effectively and belongs to weapon
+ * category #category# (one of '1h', '2h', 'Li', 'R', 'Un' or their spelled-out
+ * equivalents). The weapon does #damage# HP on a successful attack and
+ * threatens x#critMultiplier# (default 2) damage on a roll of #threat# (default
+ * 20). If specified, the weapon can be used as a ranged weapon with a range
+ * increment of #range# feet.
+ */
+LastAge.weaponRules = function(
+  rules, name, profLevel, category, damage, threat, critMultiplier, range
+) {
+  LastAge.baseRules.weaponRules(
+    rules, name, profLevel, category, damage, threat, critMultiplier, range
+  );
+  // No changes needed to the rules defined by base method
+};
 
 /*
  * Replaces references to SRD35 skills in each element of #arr# with the
