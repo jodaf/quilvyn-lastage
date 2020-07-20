@@ -218,8 +218,10 @@ LastAge.FEATS_ADDED = {
   'Spellcasting (Illusion)':'Type=Channeling',
   'Spellcasting (Necromancy)':'Type=Channeling',
   'Spellcasting (Transmutation)':'Type=Channeling',
-  'Spellcasting (Greater Conjuration)':'Type=Channeling',
-  'Spellcasting (Greater Evocation)':'Type=Channeling',
+  'Spellcasting (Greater Conjuration)':
+    'Type=Channeling Require="features.Spellcasting (Conjuration)"',
+  'Spellcasting (Greater Evocation)':
+    'Type=Channeling Require="features.Spellcasting (Evocation)"',
   // Skill Focus (Profession (Soldier)) available to Leader Of Men Fighters
   'Skill Focus':'Profession (Soldier)',
   'Spell Knowledge':'Type=General Require="Sum features.Spellcasting >= 1"',
@@ -522,13 +524,26 @@ LastAge.FEATURES_ADDED = {
   'Shield Mate':
     'combat:Allies +2 AC when self fighting defensively or -2 Combat Expertise',
   'Slow Learner':'feature:Replace later with another feat',
-  'Spell Knowledge':'magic:+2 spells',
+  'Spell Knowledge':'magic:+2 Spells Known Bonus',
+  'Spellcasting (Abjuration)':'magic:May learn school spells/+1 school spell',
+  'Spellcasting (Conjuration)':'magic:May learn school spells/+1 school spell',
+  'Spellcasting (Divination)':'magic:May learn school spells/+1 school spell',
+  'Spellcasting (Enchantment)':'magic:May learn school spells/+1 school spell',
+  'Spellcasting (Evocation)':'magic:May learn school spells/+1 school spell',
+  'Spellcasting (Illusion)':'magic:May learn school spells/+1 school spell',
+  'Spellcasting (Necromancy)':'magic:May learn school spells/+1 school spell',
+  'Spellcasting (Transmutation)':
+    'magic:May learn school spells/+1 school spell',
+  'Spellcasting (Greater Conjuration)':
+    'magic:May learn school spells/+1 school spell',
+  'Spellcasting (Greater Evocation)':
+    'magic:May learn school spells/+1 school spell',
   'Stalwart':'save:Delay negative HP for 1 rd, dbl heal required',
   'Stealthy Rider':'companion:Mount use rider Hide, Move Silently',
   'Subtle Caster':'skill:+2 Bluff or Sleight Of Hand to disguise spell casting',
   'Thick Skull':'save:DC 10 + damage save to stay at 1 HP',
   'Touched By Magic':[
-    'magic:+2 spell energy',
+    'magic:+2 Spell Energy',
     'save:-2 vs. spells'
   ],
   'Trapsmith':'skill:+2 Craft (Traps)/+2 Disable Device/+2 Search (find traps)',
@@ -636,10 +651,36 @@ LastAge.FEATURES_ADDED = {
   'Elfling Ability Adjustment':
     'ability:+4 Dexterity/-2 Strength/-2 Constitution',
   'Erenlander Ability Adjustment':'ability:+2 choice/-2 choice',
-  'Favored Region':
-    'skill:%V; Knowledge (Local) is a class skill, +2 Survival (region)/Knowledge (Nature) (region)',
+  'Favored Region (Aruun)':
+     'skill:Knowledge (Local (Aruun)) is a class skill/+2 Survival (within Aruun)/+2 Knowledge (Nature) (within Aruun)',
+  'Favored Region (Caraheen)':
+     'skill:Knowledge (Local (Caraheen)) is a class skill/+2 Survival (within Caraheen)/+2 Knowledge (Nature) (within Caraheen)',
+  'Favored Region (Central Erenland)':
+     'skill:Knowledge (Local (Central Erenland)) is a class skill/+2 Survival (within Central Erenland)/+2 Knowledge (Nature) (within Central Erenland)',
+  'Favored Region (Erenland region)':
+     'skill:Knowledge (Local (Erenland Region)) is a class skill/+2 Survival (within Erenland region)/+2 Knowledge (Nature) (within Erenland region)',
+  'Favored Region (Erethor)':
+     'skill:Knowledge (Local (Erethor)) is a class skill/+2 Survival (within Erethor)/+2 Knowledge (Nature) (within Erethor)',
+  'Favored Region (Kaladrun Mountains)':
+     'skill:Knowledge (Local (Kaladrun Mounts)) is a class skill/+2 Survival (within Kaladrun Mountains)/+2 Knowledge (Nature) (within Kaladrun Mountains)',
+  'Favored Region (Miraleen)':
+     'skill:Knowledge (Local (Miraleen)) is a class skill/+2 Survival (within Miraleen)/+2 Knowledge (Nature) (within Miraleen)',
+  'Favored Region (Northern Reaches)':
+     'skill:Knowledge (Local (Northern Reaches)) is a class skill/+2 Survival (within Northern Reaches)/+2 Knowledge (Nature) (within Northern Reaches)',
+  'Favored Region (Northlands)':
+     'skill:Knowledge (Local (Northlands)) is a class skill/+2 Survival (within Northlands)/+2 Knowledge (Nature) (within Northlands)',
+  'Favored Region (Southern Erenland)':
+     'skill:Knowledge (Local (Southern Erenland)) is a class skill/+2 Survival (within Southern Erenland)/+2 Knowledge (Nature) (within Southern Erenland)',
+  'Favored Region (Subterranean Kaladruns)':
+     'skill:Knowledge (Local (Subterranean Kaladruns)) is a class skill/+2 Survival (within Subterranean Kaladruns)/+2 Knowledge (Nature) (within Subterranean Kaladruns)',
+  'Favored Region (Surface Kaladruns)':
+     'skill:Knowledge (Local (Surface Kaladruns)) is a class skill/+2 Survival (within Surface Kaladruns)/+2 Knowledge (Nature) (within Surface Kaladruns)',
+  'Favored Region (Urban)':
+    'skill:+2 Gather Information (urban), untrained Knowledge use in urban areas',
+  'Favored Region (Veradeeen)':
+     'skill:Knowledge (Local (Veradeeen)) is a class skill/+2 Survival (within Veradeeen)/+2 Knowledge (Nature) (within Veradeeen)',
   'Fierce':'combat:+1 attack w/two-handed weapons',
-  'Fortunate':'save:+1 Fortitude/+2 Reflex/+2 Will',
+  'Fortunate':'save:+1 Fortitude/+1 Reflex/+1 Will',
   'Gifted Healer':'skill:+2 Heal',
   'Gnome Ability Adjustment':'ability:+4 Charisma/-2 Strength',
   'Graceful':'skill:+2 Climb/+2 Jump/+2 Move Silently/+2 Tumble',
@@ -708,9 +749,7 @@ LastAge.FEATURES_ADDED = {
   'Studious':'feature:Magecraft (Hermetic)',
   'Sturdy':'combat:+1 AC',
   'Tree Climber':'skill:+4 Balance (trees)/Climb (trees)',
-  'Unafraid':'save:+2 vs. fear',
-  'Urban':
-    'skill:+2 Gather Information (urban), untrained Knowledge use in urban areas'
+  'Unafraid':'save:+2 vs. fear'
 };
 LastAge.FEATURES = Object.assign({}, SRD35.FEATURES, LastAge.FEATURES_ADDED);
 LastAge.GENDERS = Object.assign({}, SRD35.GENDERS);
@@ -941,6 +980,7 @@ LastAge.LANGUAGES = {
 LastAge.RACES = {
   'Agrarian Halfling':
     'Features=' +
+      '"Favored Region (Central Erenland)",' +
       '"Alert Senses",Fortunate,Graceful,"Halfling Ability Adjustment",' +
       '"Innate Magic","Low-Light Vision",Slow,Small,"Resist Fear",' +
       '"Weapon Familiarity (Halfling Lance)",' +
@@ -949,53 +989,64 @@ LastAge.RACES = {
       'Stout,Studious',
   'Clan Dwarf':
     'Features=' +
+      '"Favored Region (Kaladrun Mountains)",' +
+      '"Favored Region (Subterranean Kaladruns)",' +
       'Darkvision,"Dwarf Ability Adjustment","Dwarf Favored Enemy",' +
       '"Dwarf Favored Weapon","Resist Poison",Resilient,Slow,"Resist Spells",' +
       '"Stone Knowledge","Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe)",'+
       '"Dodge Orcs","Know Depth,Stability,Stonecunning',
   'Clan-Raised Dwarrow':
     'Features=' +
+      '"Favored Region (Kaladrun Mountains)",' +
       'Darkvision,"Dwarrow Ability Adjustment","Resist Poison",Small,Slow,' +
       '"Resist Spells",Sturdy,' +
       '"Dodge Orcs",Stonecunning,"Stone Knowledge",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)"',
   'Clan-Raised Dworg':
     'Features=' +
+      '"Favored Region (Kaladrun Mountains)",' +
       'Darkvision,"Dworg Ability Adjustment","Dworg Favored Enemy",' +
       '"Minor Light Sensitivity",Rugged,"Resist Spells",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
       'Stonecunning',
   'Danisil-Raised Elfling':
     'Features=' +
+      '"Favored Region (Aruun)",' +
       '"Elfling Ability Adjustment",Fortunate,"Gifted Healer","Innate Magic",' +
       '"Keen Senses","Low-Light Vision",Nimble,Small,' +
       '"Weapon Familiarity (Atharak/Sepi)"',
   'Dorn':
     'Features=' +
+      '"Favored Region (Northlands)",' +
       'Brotherhood,"Cold Fortitude","Dorn Ability Adjustment",Fierce,Robust,' +
       '"Weapon Familiarity (Bastard Sword/Dornish Horse Spear)"',
   'Erenlander':
     'Features=' +
+      '"Favored Region (Erenland region)",' +
       '"Erenlander Ability Adjustment",Heartlander,' +
       '"Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)"',
   'Gnome':
     'Features=' +
+      '"Favored Region (Central Erenland)",' +
       '"Deep Lungs","Gnome Ability Adjustment","Low-Light Vision",' +
       '"Natural Riverfolk","Natural Swimmer","Natural Trader",Robust,Slow,' +
       'Small,"Resist Spells","Weapon Familiarity (Hand Crossbow)"',
   'Gnome-Raised Dwarrow':
     'Features=' +
+      '"Favored Region (Central Erenland)",' +
       'Darkvision,"Dwarrow Ability Adjustment","Resist Poison",Small,Slow,' +
       '"Resist Spells",Sturdy,' +
       '"Deep Lungs","Natural Riverfolk","Natural Swimmer","Skilled Trader",' +
       '"Weapon Familiarity (Hand Crossbow/Inutek)"',
   'Halfling-Raised Elfling':
     'Features=' +
+      '"Favored Region (Central Erenland)",' +
       '"Elfling Ability Adjustment",Fortunate,"Gifted Healer","Innate Magic",' +
       '"Keen Senses","Low-Light Vision",Nimble,Small,' +
       '"Bound To The Beast","Weapon Familiarity (Atharak/Halfling Lance)"',
   'Jungle Elf':
     'Features=' +
+      '"Favored Region (Erethor)","Favored Region (Aruun)",' +
       '"Elf Ability Adjustment","Innate Magic","Keen Senses",' +
       '"Low-Light Vision","Natural Channeler","Resist Enchantment",' +
       '"Tree Climber",' +
@@ -1004,23 +1055,29 @@ LastAge.RACES = {
       '"Spirit Foe","Weapon Familiarity (Sepi)"',
   'Kurgun Dwarf':
     'Features=' +
+      '"Favored Region (Kaladrun Mountains)",' +
+      '"Favored Region (Surface Kaladruns)",' +
+      '"Elf Ability Adjustment","Innate Magic","Keen Senses",' +
       'Darkvision,"Dwarf Ability Adjustment","Dwarf Favored Enemy",' +
       '"Dwarf Favored Weapon","Resist Poison",Resilient,Slow,"Resist Spells",' +
       '"Stone Knowledge","Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe)",'+
       '"Natural Mountaineer","Weapon Familiarity (Urutuk Hatchet)"',
   'Kurgun-Raised Dwarrow':
     'Features=' +
+      '"Favored Region (Kaladrun Mountains)",' +
       'Darkvision,"Dwarrow Ability Adjustment","Resist Poison",Small,Slow,' +
       '"Resist Spells",Sturdy,' +
       '"Dodge Orcs","Natural Mountaineer","Stone Knowledge"',
   'Kurgun-Raised Dworg':
     'Features=' +
+      '"Favored Region (Kaladrun Mountains)",' +
       'Darkvision,"Dworg Ability Adjustment","Dworg Favored Enemy",' +
       '"Minor Light Sensitivity",Rugged,"Resist Spells",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
       '"Natural Mountaineer"',
   'Nomadic Halfling':
     'Features=' +
+      '"Favored Region (Central Erenland)",' +
       '"Alert Senses",Fortunate,Graceful,"Halfling Ability Adjustment",' +
       '"Innate Magic","Low-Light Vision",Slow,Small,"Resist Fear",' +
       '"Weapon Familiarity (Halfling Lance)",' +
@@ -1029,17 +1086,20 @@ LastAge.RACES = {
       '"Bound To The Beast","Bound To The Spirits"',
   'Orc':
     'Features=' +
+      '"Favored Region (Northern Reaches)",' +
       'Darkvision,"Improved Cold Fortitude","Light Sensitivity",' +
       '"Natural Predator","Night Fighter","Orc Ability Adjustment",' +
       '"Orc Favored Enemy","Orc Frenzy","Resist Spells",' +
       '"Weapon Familiarity (Vardatch)"',
   'Plains Sarcosan':
     'Features=' +
+      '"Favored Region (Southern Erenland)",' +
       'Quick,"Sarcosan Ability Adjustment",' +
       '"Weapon Familiarity (Cedeku/Sarcosan Lance)",' +
       '"Natural Horseman"',
   'Sea Elf':
     'Features=' +
+      '"Favored Region (Erathor)","Favored Region (Miraleen)",' +
       '"Elf Ability Adjustment","Innate Magic","Keen Senses",' +
       '"Low-Light Vision","Natural Channeler","Resist Enchantment",' +
       '"Tree Climber",' +
@@ -1049,6 +1109,7 @@ LastAge.RACES = {
       '"Weapon Proficiency (Guisarme/Ranseur/Tident)"',
   'Snow Elf':
     'Features=' +
+      '"Favored Region (Erathor)","Favored Region (Veradeen)",' +
       '"Elf Ability Adjustment","Innate Magic","Keen Senses",' +
       '"Low-Light Vision","Natural Channeler","Resist Enchantment",' +
       '"Tree Climber",' +
@@ -1056,11 +1117,13 @@ LastAge.RACES = {
        '"Cold Fortitude",Robust,"Weapon Familiarity (Fighting Knife)"',
   'Urban Sarcosan':
     'Features=' +
+      '"Favored Region (Urban)",' +
       'Quick,"Sarcosan Ability Adjustment",' +
       '"Weapon Familiarity (Cedeku/Sarcosan Lance)",' +
-      'Interactive,Urban',
+      'Interactive',
   'Wood Elf':
     'Features=' +
+      '"Favored Region (Erethor)","Favored Region (Caraheen)",' +
       '"Elf Ability Adjustment","Innate Magic","Keen Senses",' +
       '"Low-Light Vision","Natural Channeler","Resist Enchantment",' +
       '"Tree Climber",' +
@@ -1349,6 +1412,8 @@ LastAge.CLASSES = {
       '"3:Improved Fury","3:Inspire Confidence","3:Inspire Fascination",' +
       '"3:Inspire Fury","3:Mass Suggestion",3:Suggestion ' +
     'SpellAbility=charisma ' +
+    'SpellsPerDay=' +
+      'Ch0:1=0 ' +
     'Spells=' +
       '"Ch0:Create Water;Cure Minor Wounds;Dancing Lights;Daze;Detect Magic;' +
       'Detect Poison;Disrupt Undead;Flare;Ghost Sound;Guidance;' +
@@ -1523,7 +1588,9 @@ LastAge.CLASSES = {
     'Selectables=' +
       '"3:Foe Specialty","3:Knowledge Specialty","3:Quick Reference",' +
       '"3:Spell Specialty" ' +
-    'SpellAbility=intelligence',
+    'SpellAbility=intelligence ' +
+    'SpellsPerDay=' +
+      'Ch0:1=0',
   'Legate':
     'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
     'Skills =' +
@@ -1575,7 +1642,9 @@ LastAge.CLASSES = {
       '"3:Mastery Of Spirits","3:Mastery Of The Unnatural",' +
       '"3:Powerful Effect","3:Precise Effect","3:Specific Effect",' +
       '"3:Universal Effect" ' +
-    'SpellAbility=wisdom',
+    'SpellAbility=wisdom ' +
+    'SpellsPerDay=' +
+      'Ch0:1=0',
   'Wildlander':
     'HitDie=d8 Attack=1 SkillPoints=6 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
     'Skills =' +
@@ -1597,23 +1666,6 @@ LastAge.CLASSES = {
       '"1:Wilderness Trapfinding","1:Woodland Stride",1:Woodslore'
 };
 
-LastAge.racesFavoredRegions = {
-  'Agrarian Halfling':'Central Erenland',
-  'Clan Dwarf':'Kaladrun Mountains/Subterranean',
-  'Clan-Raised Dwarrow':'Kaladrun Mountains',
-  'Clan-Raised Dworg':'Kaladrun Mountains',
-  'Danisil-Raised Elfling':'Aruun', 'Dorn':'Northlands',
-  'Erenlander':'Erenland', 'Gnome':'Central Erenland',
-  'Gnome-Raised Dwarrow':'Central Erenland',
-  'Halfling-Raised Elfling':'Central Erenland', 'Jungle Elf':'Erethor/Aruun',
-  'Kurgun Dwarf':'Kaladrun Mountains/Surface',
-  'Kurgun-Raised Dwarrow':'Kaladrun Mountains',
-  'Kurgun-Raised Dworg':'Kaladrun Mountains',
-  'Nomadic Halfling':'Central Erenland', 'Orc':'Northern Reaches',
-  'Plains Sarcosan':'Southern Erenland', 'Sea Elf':'Erethor/Miraleen',
-  'Snow Elf':'Erethor/Veradeen', 'Urban Sarcosan':null,
-  'Wood Elf':'Erethor/Caraheen'
-};
 LastAge.racesLanguages = {
   "Agrarian Halfling":
     "Colonial:3/Halfling:3/" +
@@ -1727,6 +1779,24 @@ LastAge.identityRules = function(
   rules.defineEditorElement
     ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
   rules.defineSheetElement('Heroic Path', 'Alignment');
+  rules.defineRule('spellDifficultyClass.Ch',
+    'casterLevels.Ch', '?', null,
+    'charismaModifier', '=', '10 + source',
+    'intelligenceModifier', '^', '10 + source',
+    'wisdomModifier', '^', '10 + source'
+  );
+  rules.defineRule('maxSpellLevel',
+    'casterLevels.Ch', '?', null,
+    'level', '=', 'source / 2',
+    'features.Art Of Magic', '+', '1/2'
+  );
+  for(var i = 0; i < 10; i++) {
+    rules.defineRule('spellsKnown.Ch' + i,
+      'maxSpellLevel', '?', 'Math.floor(source) == ' + i,
+      'spellsKnownBonus', '=', null
+    );
+  }
+  rules.defineSheetElement('Spell Energy', 'Spells Per Day');
 };
 
 /* Defines rules related to magic use. */
@@ -1830,7 +1900,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'Require'),
       QuilvynUtils.getAttrValueArray(attrs, 'Imply')
     );
-    LastAge.featRulesExtra(rules, name);
+    LastAge.featRulesExtra(rules, name, LastAge.SPELLS);
   } else if(type == 'Feature')
     LastAge.featureRules(rules, name, attrs);
   else if(type == 'Gender')
@@ -1841,6 +1911,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'Selectables'),
       QuilvynUtils.getAttrValueArray(attrs, 'Spells')
     );
+    LastAge.heroicPathRulesExtra(rules, name);
   } else if(type == 'Language')
     LastAge.languageRules(rules, name);
   else if(type == 'Race') {
@@ -2463,7 +2534,9 @@ LastAge.featRules = function(rules, name, types, requires, implies) {
  * Defines in #rules# the rules associated with feat #name# that are not
  * directly derived from the parmeters passed to featRules.
  */
-LastAge.featRulesExtra = function(rules, name) {
+LastAge.featRulesExtra = function(rules, name, spellDict) {
+
+  var matchInfo;
 
   if(name == 'Drive It Deep') {
     rules.defineRule('combatNotes.driveItDeep', 'baseAttack', '=', null);
@@ -2513,45 +2586,42 @@ LastAge.featRulesExtra = function(rules, name) {
     var spellClass = tradition == 'Charismatic' ? 'Bard' :
                      tradition == 'Hermetic' ? 'Wizard' : 'Druid';
     var spellCode = spellClass.substring(0, 1);
-    // TODO notes = [note + ':4 spells/%V spell energy points'];
     rules.defineRule(note, ability + 'Modifier', '=', null);
     rules.defineRule('spellEnergy', note, '+=', null);
     rules.defineRule('spellsKnown.' + spellCode + '0', note, '+=', '3');
     rules.defineRule('spellsKnown.' + spellCode + '1', note, '+=', '1');
-    // Pick up SRD35 level 0/1 spells of the appropriate class.
-    var classRules = new QuilvynRules('');
-    // TODO SRD35.magicRules(classRules, [spellClass], [], []);
-    var schools = rules.getChoices('schools');
-    for(var s in classRules.getChoices('spells')) {
-      var matchInfo = s.match('^(.*)\\((' + spellCode + '[01])');
-      if(matchInfo == null) {
-        continue;
-      }
-      var spell = matchInfo[1];
-      var school = LastAge.spellsSchools[spell] || SRD35.spellsSchools[spell];
-      if(school == null) {
-        continue;
-      }
-      spell += '(' + matchInfo[2] + ' ' +
-               (school == 'Universal' ? 'None' : schools[school]) + ')';
-      rules.defineChoice('spells', spell);
-    }
     rules.defineRule('casterLevels.' + name,
       'features.' + name, '?', null,
       'level', '=', null
     );
     rules.defineRule
       ('casterLevels.' + spellCode, 'casterLevels.' + name, '=', null);
-  } else if((matchInfo = name.match(/^Spellcasting \((.*)\)/)) != null) {
-    var school = matchInfo[1];
-    var schoolNoSpace = school.replace(/ /g, '');
-    var note = 'magicNotes.spellcasting(' + schoolNoSpace + ')';
-    // TODO notes = [note + ':May learn school spells/+1 school spell'];
-    if(school.indexOf('Greater ') == 0) {
-      // TODO notes[notes.length] =
-      // TODO   'validationNotes.spellcasting(' + schoolNoSpace + ')FeatFeats:' +
-      // TODO     'Requires Spellcasting (' + school.substring(8) + ')';
+    // Pick up SRD35 level 0/1 spells of the appropriate class.
+    var spellList =
+      QuilvynUtils.getAttrValueArray(LastAge.baseRules.CLASSES[spellClass], 'Spells').filter(x => x.match(new RegExp('^' + spellCode + '[01]')));
+    for(var i = 0; i < spellList.length; i++) {
+      var pieces = spellList[i].split(':');
+      var spellNames = pieces[1].split(';');
+      for(var j = 0; j < spellNames.length; j++) {
+        var spellName = spellNames[j];
+        if(spellDict[spellName] == null) {
+          console.log('Unknown spell "' + spellName + '"');
+          continue;
+        }
+        var school = QuilvynUtils.getAttrValue(spellDict[spellName], 'School');
+        if(school == null) {
+          console.log('No school given for spell "' + spellName + '"');
+          continue;
+        }
+        var fullSpell =
+          spellName + '(' + pieces[0] + ' ' + school.substring(0, 4) + ')';
+        rules.choiceRules
+          (rules, 'Spell', fullSpell,
+           spellDict[spellName] + ' Group=' + spellCode + ' Level=' + pieces[0].substring(1,2));
+      }
     }
+  } else if((matchInfo = name.match(/^Spellcasting \((.*)\)/)) != null) {
+    var note = 'magicNotes.spellcasting('+matchInfo[1].replace(/ /g, '')+')';
     rules.defineRule('spellsKnownBonus', note, '+=', '1');
     rules.defineRule('spellcastingFeatureCount',
       /features.Spellcasting \(.*\)$/, '+=', '1'
@@ -2560,8 +2630,7 @@ LastAge.featRulesExtra = function(rules, name) {
       'casterLevels.Spellcasting', 'spellcastingFeatureCount', '?', null,
       'level', '=', null
     );
-    rules.defineRule
-      ('casterLevels.Ch', 'casterLevels.Spellcasting', '=', null);
+    rules.defineRule('casterLevels.Ch', 'casterLevels.Spellcasting', '=', null);
   } else if((matchInfo = name.match(/^Spell Focus \((.*)\)/)) != null) {
     // Add validation note to what base rules already computed
     var school = matchInfo[1];
@@ -2570,8 +2639,6 @@ LastAge.featRulesExtra = function(rules, name) {
     // TODO  'validationNotes.spellFocus(' + schoolNoSpace + ')FeatFeatures:' +
     // TODO    'Requires Spellcasting (' + school + ')'
     // TODO ];
-  } else if(name == 'Spell Knowledge') {
-    rules.defineRule('spellsKnownBonus', 'magicNotes.spellKnowledge', '+', '2');
   } else if(name == 'Warrior Of Shadow') {
     rules.defineRule
       ('combatNotes.warriorOfShadow', 'charismaModifier', '=', null);
@@ -2583,8 +2650,6 @@ LastAge.featRulesExtra = function(rules, name) {
       'skills.Craft (Blacksmith)', '+=', 'Math.floor(source / 4)',
       'skills.Craft (Weapons)', '+=', 'Math.floor(source / 4)'
     );
-  } else if(name == 'Touched By Magic') {
-    rules.defineRule('spellEnergy', 'magicNotes.touchedByMagic', '+', '2');
   } else if(name == 'Born Of Duty') {
     rules.defineRule('magicNotes.bornOfDuty',
       'level', '=', '10 + Math.floor(source / 2)',
@@ -3316,12 +3381,6 @@ LastAge.languageRules = function(rules, name) {
     'casterLevels.B', '?', null,
     'charismaModifier', '=', '10 + source'
   );
-  rules.defineRule('spellDifficultyClass.Ch',
-    'casterLevels.Ch', '?', null,
-    'charismaModifier', '=', '10 + source',
-    'intelligenceModifier', '^', '10 + source',
-    'wisdomModifier', '^', '10 + source'
-  );
   rules.defineRule('spellDifficultyClass.D',
     'casterLevels.D', '?', null,
     'wisdomModifier', '=', '10 + source'
@@ -3330,18 +3389,6 @@ LastAge.languageRules = function(rules, name) {
     'casterLevels.W', '?', null,
     'intelligenceModifier', '=', '10 + source'
   );
-  rules.defineRule('maxSpellLevel',
-    'casterLevels.Ch', '?', null,
-    'level', '=', 'source / 2',
-    'features.Art Of Magic', '+', '1/2'
-  );
-  for(var i = 0; i < 10; i++) {
-    rules.defineRule('spellsKnown.Ch' + i,
-      'maxSpellLevel', '?', 'Math.floor(source) == ' + i,
-      'spellsKnownBonus', '=', null
-    );
-  }
-  rules.defineSheetElement('Spell Energy', 'Spells Per Day');
 
 */
 
@@ -3387,9 +3434,6 @@ LastAge.raceRulesExtra = function(rules, name) {
     'skillModifier.Speak Language', '+', '2 * source'
   );
 
-  rules.defineRule('skillNotes.favoredRegion',
-    'race', '=', 'LastAge.racesFavoredRegions[source]'
-  );
 */
   rules.defineRule('features.Illiteracy', '', '=', '1');
   rules.defineRule
