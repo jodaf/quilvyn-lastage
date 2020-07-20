@@ -70,6 +70,8 @@ function LastAge() {
   for(var domain in LastAge.DOMAINS) {
     LastAge.DOMAINS[domain] = LastAge.baseRules.DOMAINS[domain];
   }
+  LastAge.CLASSES['Barbarian'] = LastAge.baseRules.CLASSES['Barbarian'];
+  LastAge.CLASSES['Rogue'] = LastAge.baseRules.CLASSES['Rogue'];
   LastAge.FAMILIARS = Object.assign({}, LastAge.baseRules.FAMILIARS);
   LastAge.FEATS =
     Object.assign({}, LastAge.baseRules.FEATS, LastAge.FEATS_ADDED);
@@ -283,7 +285,7 @@ LastAge.FEATS_ADDED = {
 LastAge.FEATS = Object.assign({}, SRD35.FEATS, LastAge.FEATS_ADDED);
 LastAge.FEATURES_ADDED = {
   // Heroic Paths
-  'Ability Recovery':'combat:Regain 1 point ability damage/hour',
+  'Ability Recovery':'combat:Regain 1 point ability damage/hr',
   'Aid Another':'combat:Aid another as a move action',
   'Aided Combat Bonus':'combat:Aided ally +%V to attack or AC',
   'Ambush':'skill:Allies use self Hide for ambush',
@@ -354,8 +356,7 @@ LastAge.FEATURES_ADDED = {
     'combat:+%V damage next round after suffering %1 damage',
   'Improved Spellcasting':
     'magic:Reduce energy cost of spells from %V chosen schools by 1',
-  'Improved Stonecunning':
-    "feature:R5' Automatic Search for concealed stone door",
+  'Improved Stonecunning':"skill:R5' Automatic Search for concealed stone door",
   'Improved Untouchable':
     'combat:No foe AOO from move, standard, and full-round actions',
   'Increased Damage Threshold':'combat:Continue fighting until -%V HP',
@@ -385,7 +386,6 @@ LastAge.FEATURES_ADDED = {
   'Natural Armor':'combat:+%V AC',
   'Natural Bond':'skill:Knowledge (Nature) is a class skill/Survival is a class skill/+2 Knowledge (Nature)/+2 Survival',
   'Natural Leader':'feature: +%V Leadership score',
-  'Natural Swimmer':"ability:Swim %V' as move action",
   'Nonlethal Damage Reduction':
     'combat:Ignore first %V points of non-lethal damage',
   'Northborn':[
@@ -506,7 +506,7 @@ LastAge.FEATURES_ADDED = {
   'Plains Warfare':[
     'combat:+1 AC when mounted on plains',
     'save:+1 Reflex when mounted on plains',
-    'skill:+2 Listen, Spot vs. surprise when mounted on plains'
+    'skill:+2 Spot vs. surprise when mounted on plains'
   ],
   'Power Reservoir':'magic:Store +%V siphoned spell energy points',
   'Powerful Throw':'combat:+10 range, use Str bonus for attack',
@@ -546,6 +546,7 @@ LastAge.FEATURES_ADDED = {
   'Confident Effect':'combat:+4 Master of Two Worlds checks',
   'Counterattack':'combat:AOO on foe miss 1/round',
   'Cover Ally':"combat:Take hit for ally w/in 5' 1/round",
+  'Danger Sense':'skill:+%V Listen/+%V Spot',
   'Defender Abilities':'combat:Counterattack/Cover Ally/Defender Stunning Fist/Devastating Strike/Rapid Strike/Retaliatory Strike/Strike And Hold/Weapon Trap %V/day',
   'Defender Stunning Fist':'combat:Foe %V Fortitude save or stunned',
   'Defensive Mastery':'save:+%V Fortitude/+%V Reflex/+%V Will',
@@ -565,7 +566,8 @@ LastAge.FEATURES_ADDED = {
   'Improved Fury':'magic:+1 Initiative/attack/damage',
   'Improved Woodland Stride':'feature:Normal movement through enchanted terrain',
   'Incredible Resilience':'combat:+%V HP',
-  'Incredible Speed':'ability:+%V speed',
+  'Incredible Speed':'ability:+%V Speed',
+  'Initiative Bonus':'combat:+%V Initiative',
   'Insire Confidence':"magic:Allies w/in 60' +4 save vs. enchantment/fear for %V rounds",
   'Inspire Fascination':"magic:%V creatures w/in 120' make %1 DC Will save or enthralled %2 rounds",
   'Inspire Fury':"magic:Allies w/in 60' +1 initiative/attack/damage %V rounds",
@@ -610,8 +612,9 @@ LastAge.FEATURES_ADDED = {
   'True Aim':"combat:x3 damage on Hunter's Strike",
   'Universal Effect':'combat:Use multiple mastery powers simultaneously',
   'Weapon Trap':'combat:Attack to catch foe weapon for disarm/damage/AOO 1/round',
-  'Wilderness Trapfinding':'skill:Search to find/Survival to remove DC 20+ traps',
-  'Woodslore':"feature:Automatic Search vs. trap/concealed door w/in 5'",
+  'Wilderness Trapfinding':
+    'skill:Search to find and Survival to remove DC 20+ traps',
+  'Woodslore':"skill:Automatic Search vs. trap or concealed door w/in 5'",
   // Races
   'Alert Senses':'skill:+2 Listen/+2 Spot',
   'Bound To The Beast':'feature:Mounted Combat',
@@ -649,7 +652,7 @@ LastAge.FEATURES_ADDED = {
   'Improved Natural Channeler':'magic:+1 spell energy',
   'Improved Natural Swimmer':
     'skill:+8 special action or avoid hazard/always take 10/run',
-  'Improved Tree Climber':'skill:+2 Balance (trees)/Climb (trees)',
+  'Improved Tree Climber':'skill:+2 Balance (trees)/+2 Climb (trees)',
   'Interactive':'skill:+2 Bluff/+2 Diplomacy/+2 Sense Motive',
   'Keen Senses':'skill:+2 Listen/+2 Search/+2 Spot',
   'Know Depth':'feature:Intuit approximate depth underground',
@@ -659,7 +662,7 @@ LastAge.FEATURES_ADDED = {
   'Natural Channeler':'magic:+2 spell energy',
   'Natural Horseman':[
     'combat:+1 melee damage (horseback), half ranged penalty (horseback)',
-    'skill:+4 Concentration (horseback)/+4 Handle Animal (horse)/+4 Ride (horse)'
+    'skill:+4 Handle Animal (horse)/+4 Ride (horse)/+4 Concentration (horseback)'
   ],
   'Natural Mountaineer':[
     'ability:Unimpeded movement in mountainous terrain',
@@ -668,12 +671,13 @@ LastAge.FEATURES_ADDED = {
   'Natural Preditor':'skill:+%V Intimidate',
   'Natural Riverfolk':
     'skill:+2 Perform/+2 Profession (Sailor)/+2 Swim/+2 Use Rope',
-  'Natural Sailor':'skill:+2 Craft (ship)/Profession (ship)/Use Rope (ship)',
+  'Natural Sailor':
+    'skill:+2 Craft (ship)/+2 Profession (ship)/+2 Use Rope (ship)',
   'Natural Swimmer':'ability:%V swim as move action',
   'Natural Trader':
     'skill:+4 Appraise, Bluff, Diplomacy, Forgery, Gather Information, Profession when smuggling or trading',
   'Night Fighter':'combat:+1 attack in darkness',
-  'Nimble':'skill:+2 Climb/+2Hide',
+  'Nimble':'skill:+2 Climb/+2 Hide',
   'Orc Ability Adjustment':'ability:+4 Strength/-2 Intelligence/-2 Charisma',
   'Orc Favored Enemy':'combat:+1 damage vs. dwarves',
   'Orc Frenzy':'combat:+1 attack when fighting among 10+ Orcs',
@@ -690,7 +694,7 @@ LastAge.FEATURES_ADDED = {
   'Rugged':'save:+2 Fortitude/+2 Reflex/+2 Will',
   'Sarcosan Ability Adjustment':'ability:+2 Charisma/+2 Intelligence/-2 Wisdom',
   'Skilled Rider':
-    'skill:+2 Concentration (wogrenback)/+2 Handle Animal (wogren)/Ride (wogren)',
+    'skill:+2 Handle Animal (wogren)/+2 Ride (wogren)/+2 Concentration (wogrenback)',
   'Skilled Trader':
     'skill:+2 Appraise, Bluff, Diplomacy, Forgery, Gather Information, Profession when smuggling/trading',
   'Spirit Foe':[
@@ -1343,7 +1347,7 @@ LastAge.CLASSES = {
     'Selectables=' +
       '"3:Greater Confidence","3:Greater Fury","3:Improved Confidence",' +
       '"3:Improved Fury","3:Inspire Confidence","3:Inspire Fascination",' +
-      '"3:Inspire Fury","3:Mass Suggestion",3"Suggestion ' +
+      '"3:Inspire Fury","3:Mass Suggestion",3:Suggestion ' +
     'SpellAbility=charisma ' +
     'Spells=' +
       '"Ch0:Create Water;Cure Minor Wounds;Dancing Lights;Daze;Detect Magic;' +
@@ -1504,8 +1508,9 @@ LastAge.CLASSES = {
     'Selectables=' +
       '4:Adapter,4:Improviser,"4:Leader Of Men",4:Survivor,"4:Improved Grapple",' +
       '"4:Improved Unarmed Strike","4:Improvised Weapon","4:Stunning Fist",' +
-      '"4:Iron Will",4:Leadership","4:Skill Focus (Diplomacy)",' +
-      '"4:Skill Focus (Profession (Soldier))","4:Combat Expertise",4:Dodge,4:Endurance',
+      '"4:Iron Will",4:Leadership,"4:Skill Focus (Diplomacy)",' +
+      '"4:Skill Focus (Profession (Soldier))","4:Combat Expertise",4:Dodge,' +
+      '4:Endurance',
   'Hermetic Channeler':
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
@@ -1581,8 +1586,8 @@ LastAge.CLASSES = {
       '"1:Armor Proficiency (Medium)","1:Shield Proficiency (Heavy)",' +
       '"1:Weapon Proficiency (Martial)",' +
       '1:Track,"3:Danger Sense","3:Initiative Bonus","4:Hunter\'s Strike" ' +
-    'Selectable=' +
-      '1:Alertness,"1:Animal Companion",1:Camouflage,1:"Danger Sense",' +
+    'Selectables=' +
+      '1:Alertness,"1:Animal Companion",1:Camouflage,"1:Danger Sense",' +
       '1:Evasion,"1:Hated Foe","1:Hide In Plain Sight",' +
       '"1:Hunted By The Shadow","1:Improved Evasion","1:Improved Initiative",' +
       '"1:Improved Woodland Stride","1:Initiative Bonus",' +
@@ -1707,13 +1712,13 @@ LastAge.goodiesRules = function(rules) {
 LastAge.identityRules = function(
   rules, alignments, classes, deities, domains, genders, heroicPaths, races
 ) {
-  if(LastAge.baseRules == SRD35)
-    SRD35.identityRules
-      (rules, alignments, classes, deities, domains, genders, races);
-  else
+  if(LastAge.baseRules == Pathfinder)
     Pathfinder.identityRules
       (rules, alignments, [], classes, deities, domains, [], genders, races,
        Pathfinder.TRAITS);
+  else
+    SRD35.identityRules
+      (rules, alignmens, classes, deities, domains, genders, races)
   for(var path in heroicPaths) {
     rules.choiceRules(rules, 'Heroic Path', path, heroicPaths[path]);
   }
@@ -1770,6 +1775,8 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     var spells = QuilvynUtils.getAttrValueArray(attrs, 'Spells');
     if(name == 'Legate')
       spells = spells.concat(QuilvynUtils.getAttrValueArray(LastAge.baseRules.CLASSES['Cleric'], 'Spells'));
+    else if(name == 'Barbarian' || name == 'Rogue')
+      attrs = LastAge.baseRules.CLASSES[name];
     LastAge.classRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Require'),
       QuilvynUtils.getAttrValueArray(attrs, 'Imply'),
@@ -1944,6 +1951,17 @@ LastAge.classRules = function(
   casterLevelArcane, casterLevelDivine, spellAbility, spellsPerDay, spells,
   spellDict
 ) {
+  if(LastAge.baseRules == Pathfinder) {
+    for(var i = skills.length - 1; i >= 0; i--) {
+      var skill = skills[i];
+      if(!(skill in Pathfinder.SRD35_SKILL_MAP))
+        continue;
+      if(Pathfinder.SRD35_SKILL_MAP[skill] == '')
+        skills.splice(i, 1);
+      else
+        skills[i] = Pathfinder.SRD35_SKILL_MAP[skill];
+    }
+  }
   LastAge.baseRules.classRules(
     rules, name, requires, implies, hitDie, attack, skillPoints, saveFort,
     saveRef, saveWill, skills, features, selectables, languages,
@@ -1994,38 +2012,6 @@ LastAge.deityRules = function(rules, name, domains, favoredWeapons) {
 LastAge.domainRules = function(rules, name, features, spells, spellDict) {
   LastAge.baseRules.domainRules(rules, name, features, spells, spellDict);
   // No changes needed to the rules defined by base method
-};
-
-/*
- * Defines in #rules# the rules associated with class #name#, which has the list
- * of hard prerequisites #requires# and soft prerequisites #implies#. The class
- * grants #hitDie# (format [n]'d'n) additional hit points and #skillPoint#
- * additional skill points with each level advance. #attack# is one of '1',
- * '1/2', or '3/4', indicating the base attack progression for the class;
- * similarly, #saveFort#, #saveRef#, and #saveWill# are each one of '1/2' or
- * '1/3', indicating the saving through progressions. #skills# indicate class
- * skills for the class (but see also skillRules for an alternate way these can
- * be defined). #features# and #selectables# list the features and selectable
- * features acquired as the character advances in class level.
- * #casterLevelArcane# and #casterLevelDivine#, if specified, give the
- * expression for determining the caster level for the class; within these
- * expressions the text "Level" indicates class level. #spellAbility#, if
- * specified, contains the base ability for computing spell difficulty class
- * for cast spells. #spellsPerDay# lists the number of spells per day that the
- * class can cast, and #spells# lists spells defined by the class.
- */
-LastAge.classRules = function(
-  rules, name, requires, implies, hitDie, attack, skillPoints, saveFort,
-  saveRef, saveWill, skills, features, selectables, languages,
-  casterLevelArcane, casterLevelDivine, spellAbility, spellsPerDay, spells,
-  spellDict
-) {
-  LastAge.baseRules.classRules(
-    rules, name, requires, implies, hitDie, attack, skillPoints, saveFort,
-    saveRef, saveWill, skills, features, selectables, languages,
-    casterLevelArcane, casterLevelDivine, spellAbility, spellsPerDay, spells,
-    spellDict
-  );
 };
 
 /*
@@ -2635,6 +2621,26 @@ LastAge.featRulesExtra = function(rules, name) {
  * notes associated with feature.
  */
 LastAge.featureRules = function(rules, name, notes) {
+  if(typeof notes == 'string')
+    notes = [notes];
+  if(LastAge.baseRules == Pathfinder) {
+    for(var i = 0; i < notes.length; i++) {
+      var note = notes[i];
+      if(!note.startsWith('skill:'))
+        continue;
+      for(var skill in Pathfinder.SRD35_SKILL_MAP) {
+        if(note.indexOf(skill) < 0)
+          continue;
+        var pfSkill = Pathfinder.SRD35_SKILL_MAP[skill];
+        if(pfSkill == '' || note.indexOf(pfSkill) >= 0) {
+          note = note.replace(new RegExp('[,/]?[^,/:]*' + skill + '[^,/]*', 'g'), '');
+        } else {
+          note = note.replace(new RegExp(skill, 'g'), pfSkill);
+        }
+      }
+      notes[i] = note;
+    }
+  }
   LastAge.baseRules.featureRules(rules, name, notes);
   // No changes needed to the rules defined by base method
 };
@@ -2652,7 +2658,7 @@ LastAge.genderRules = function(rules, name) {
 LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
 
   if(!name) {
-    console.log('Empty class name');
+    console.log('Empty heroic path name');
     return;
   }
 
@@ -3141,7 +3147,7 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
       'deepLungsMultiplier', '=', null,
       'constitution', '*', null
     );
-    rules.defineRule('skillNotes.naturalSwimmer',
+    rules.defineRule('abilityNotes.naturalSwimmer',
       'pathLevels.Seaborn', '+=', 'source >= 15 ? 60 : source >= 7 ? 40 : 20'
     );
 
@@ -3411,7 +3417,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       'race', '^', 'source.indexOf("Dwarf") >= 0 ? 0 : null'
     );
     if(name == 'Clan Dwarf') {
-      rules.defineRule('skillNotes.stonecunningFeature',
+      rules.defineRule('skillNotes.stonecunning',
         'clanDwarfFeatures.Stonecunning', '+=', '2'
       );
     }
@@ -3419,18 +3425,18 @@ LastAge.raceRulesExtra = function(rules, name) {
   } else if(name.indexOf(' Dwarrow') >= 0) {
 
     if(name == 'Clan-Raised Dwarrow') {
-      rules.defineRule('skillNotes.stonecunningFeature',
+      rules.defineRule('skillNotes.stonecunning',
         'clanRaisedDwarrowFeatures.Stonecunning', '+=', '2'
       );
     } else if(name == 'Gnome-Raised Dwarrow') {
       rules.defineRule('deepLungsMultiplier',
         'gnomeRaisedDwarrowFeatures.Deep Lungs', '=', '3'
       );
-      rules.defineRule('skillNotes.deepLungsFeature',
+      rules.defineRule('skillNotes.deepLungs',
         'deepLungsMultiplier', '=', null,
         'constitution', '*', 'source'
       );
-      rules.defineRule('skillNotes.naturalSwimmerFeature',
+      rules.defineRule('abilityNotes.naturalSwimmer',
         'speed', '=', 'Math.floor(source / 2)'
       );
     }
@@ -3438,7 +3444,7 @@ LastAge.raceRulesExtra = function(rules, name) {
   } else if(name.indexOf(' Dworg') >= 0) {
 
     if(name == 'Clan-Raised Dworg') {
-      rules.defineRule('skillNotes.stonecunningFeature',
+      rules.defineRule('skillNotes.stonecunning',
         'clanRaisedDworgFeatures.Stonecunning', '+=', '2'
       );
     }
@@ -3447,15 +3453,15 @@ LastAge.raceRulesExtra = function(rules, name) {
 
     if(name == 'Halfling-Raised Elfling') {
       rules.defineRule('features.Mounted Combat',
-        'featureNotes.boundToTheBeastFeature', '=', '1'
+        'featureNotes.boundToTheBeast', '=', '1'
       );
     }
 
   } else if(name.indexOf(' Elf') >= 0) {
 
     if(name == 'Jungle Elf') {
-      rules.defineRule('magicNotes.innateMagicFeature',
-        'magicNotes.improvedInnateMagicFeature', '+', '1'
+      rules.defineRule('magicNotes.innateMagic',
+        'magicNotes.improvedInnateMagic', '+', '1'
       );
       rules.defineRule
         ('skillNotes.feralElfFeature2', 'features.Feral Elf', '=', '1');
@@ -3463,16 +3469,16 @@ LastAge.raceRulesExtra = function(rules, name) {
       rules.defineRule('deepLungsMultiplier',
         'seaElfFeatures.Deep Lungs', '=', '6'
       );
-      rules.defineRule('skillNotes.deepLungsFeature',
+      rules.defineRule('skillNotes.deepLungs',
         'deepLungsMultiplier', '=', null,
         'constitution', '*', 'source'
       );
-      rules.defineRule('skillNotes.naturalSwimmerFeature',
+      rules.defineRule('abilityNotes.naturalSwimmer',
         'speed', '=', 'Math.floor(source / 2)'
       );
     } else if(name == 'Wood Elf') {
-      rules.defineRule('magicNotes.innateMagicFeature',
-        'magicNotes.improvedInnateMagicFeature', '+', '1'
+      rules.defineRule('magicNotes.innateMagic',
+        'magicNotes.improvedInnateMagic', '+', '1'
       );
       rules.defineRule('skillNotes.woodElfSkillPointsBonus',
         'race', '?', 'source == "Wood Elf"',
@@ -3497,11 +3503,11 @@ LastAge.raceRulesExtra = function(rules, name) {
 
     rules.defineRule
       ('deepLungsMultiplier', 'gnomeFeatures.Deep Lungs', '=', '3');
-    rules.defineRule('skillNotes.deepLungsFeature',
+    rules.defineRule('skillNotes.deepLungs',
       'deepLungsMultiplier', '=', null,
       'constitution', '*', 'source'
     );
-    rules.defineRule('skillNotes.naturalSwimmerFeature',
+    rules.defineRule('abilityNotes.naturalSwimmer',
       'speed', '=', 'Math.floor(source / 2)'
     );
 
@@ -3509,13 +3515,13 @@ LastAge.raceRulesExtra = function(rules, name) {
 
     if(name == 'Agrarian Halfling') {
       rules.defineRule('agrarianHalflingFeatures.Endurance',
-        'featureNotes.stoutFeature', '=', '1'
+        'featureNotes.stout', '=', '1'
       );
       rules.defineRule('agrarianHalflingFeatures.Toughness',
-        'featureNotes.stoutFeature', '=', '1'
+        'featureNotes.stout', '=', '1'
       );
       rules.defineRule('agrarianHalflingFeatures.Magecraft (Hermetic)',
-        'featureNotes.studiousFeature', '=', '1'
+        'featureNotes.studious', '=', '1'
       );
       rules.defineRule('features.Endurance',
         'agrarianHalflingFeatures.Endurance', '=', '1'
@@ -3537,10 +3543,10 @@ LastAge.raceRulesExtra = function(rules, name) {
         'nomadicHalflingFeatures.Mounted Combat', '=', '1'
       );
       rules.defineRule('nomadicHalflingFeatures.Magecraft (Spiritual)',
-        'featureNotes.boundToTheSpiritsFeature', '=', '1'
+        'featureNotes.boundToTheSpirits', '=', '1'
       );
       rules.defineRule('nomadicHalflingFeatures.Mounted Combat',
-        'featureNotes.boundToTheBeastFeature', '=', '1'
+        'featureNotes.boundToTheBeast', '=', '1'
       );
       rules.defineRule('selectableFeatureCount.Nomadic Halfling',
         'race', '=', 'source == "Nomadic Halfling" ? 1 : null'
@@ -3550,7 +3556,7 @@ LastAge.raceRulesExtra = function(rules, name) {
   } else if(name == 'Orc') {
 
     rules.defineRule
-      ('skillNotes.naturalPredatorFeature', 'strengthModifier', '=', null);
+      ('skillNotes.naturalPreditor', 'strengthModifier', '=', null);
 
   } else if(name.indexOf(' Sarcosan') >= 0) {
 
@@ -3634,50 +3640,6 @@ LastAge.weaponRules = function(
   );
   // No changes needed to the rules defined by base method
 };
-
-/*
- * Replaces references to SRD35 skills in each element of #arr# with the
- * appropriate Pathfinder skill.
- */
-LastAge.SRD35ToPathfinder = function(arr) {
-  if(arr == null)
-    return null;
-  var pieces;
-  var result = [];
-  for(var i = 0; i < arr.length; i++) {
-    var item = arr[i];
-    var prefix = '';
-    var matchInfo = item.match(/(.*:((\+|-)\S+\s+)?)(.*)/);
-    if(matchInfo) {
-      item = matchInfo[4];
-      prefix = matchInfo[1];
-    }
-    pieces = item.split('/');
-    var newPieces = [];
-    for(var j = 0; j < pieces.length; j++) {
-      var piece = pieces[j];
-      for(var skill in Pathfinder.SRD35_SKILL_MAP) {
-        if(piece.indexOf(skill) >= 0) {
-          if(Pathfinder.SRD35_SKILL_MAP[skill] == '') {
-            piece = '';
-          } else {
-            piece = piece.replace(skill, Pathfinder.SRD35_SKILL_MAP[skill]);
-          }
-          break;
-        }
-      }
-      if(piece != '' && newPieces.indexOf(piece) < 0) {
-        newPieces.push(piece);
-      }
-    }
-    if(newPieces.length > 0) {
-      var newItem = prefix + newPieces.join('/');
-      if(result.indexOf(newItem) < 0)
-        result.push(newItem);
-    }
-  }
-  return result;
-}
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
 LastAge.randomizeOneAttribute = function(attributes, attribute) {
