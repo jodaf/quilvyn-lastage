@@ -2738,7 +2738,7 @@ LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
   rules.defineChoice('extras', prefix + 'Features');
 
   SRD35.featureListRules
-    (rules, features, prefix + 'Features', null, 'pathLevels.' + name);
+    (rules, features, prefix + 'Features', 'pathLevels.' + name);
 
   for(var i = 0; i < selectables.length; i++) {
     var matchInfo = selectables[i].match(/^((\d+):)?(.*)$/);
