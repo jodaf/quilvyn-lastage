@@ -502,7 +502,7 @@ LastAge.FEATURES_ADDED = {
     'skill:Successful Heal raises patient to 1 HP/triple normal healing rate',
   'Orc Slayer':[
     'combat:+1 AC and damage vs. orcs and dworgs',
-    'skill:-4 Cha skills vs. orcs and dworgs'
+    'skill:-4 Cha skills (orcs and dworgs)'
   ],
   'Pikeman':'combat:Receive charge as move action',
   'Plains Warfare':[
@@ -749,7 +749,11 @@ LastAge.FEATURES_ADDED = {
   'Studious':'feature:Magecraft (Hermetic)',
   'Sturdy':'combat:+1 AC',
   'Tree Climber':'skill:+4 Balance (trees)/Climb (trees)',
-  'Unafraid':'save:+2 vs. fear'
+  'Unafraid':'save:+2 vs. fear',
+  // Animal Companions
+  'Companion Empathy':'companion:Continuous emotional link w/no range limit',
+  'Enhanced Sense':'companion:+%V mile channeled event detection',
+  'Telepathy':"companion:R100' Companion-controlled telepathic communication"
 };
 LastAge.FEATURES = Object.assign({}, SRD35.FEATURES, LastAge.FEATURES_ADDED);
 LastAge.GENDERS = Object.assign({}, SRD35.GENDERS);
@@ -1745,7 +1749,29 @@ LastAge.abilityRules = function(rules) {
 /* Defines rules related to animal companions and familiars. */
 LastAge.aideRules = function(rules, companions, familiars) {
   LastAge.baseRules.aideRules(rules, companions, familiars);
-  // No changes needed to the rules defined by base method
+  // For the purpose of companion stats, compute companionMasterLevel in terms
+  // of the count of selections of the Animal Companion selectable feature
+  rules.defineRule('companionMasterLevel',
+    'featureNotes.animalCompanion', '=', 'source * 3 - 1'
+  );
+  var features = [
+    '1:Devotion', '2:Magical Beast', '3:Companion Evasion', '4:Improved Speed',
+    '5:Empathic Link'
+  ];
+  SRD35.featureListRules
+    (rules, features, 'Animal Companion', 'featureNotes.animalCompanion', false);
+  // Remove N/A companion features from the base ruleset
+  features = ['Link', 'Share Spells', 'Multiattack', 'Improved Evasion'];
+  for(var i = 0; i < features.length; i++)
+    rules.defineRule
+      ('companionFeatures.' + features[i], 'companionMasterLevel', '=', 'null');
+  // MN rules bump Str and Tricks a bit higher
+  rules.defineRule('animalCompanionStats.Str',
+    'featureNotes.animalCompanion', '+', '2'
+  );
+  rules.defineRule('animalCompanionStats.Tricks',
+    'featureNotes.animalCompanion', '+', '1'
+  );
 };
 
 /* Defines rules related to combat. */
@@ -2052,11 +2078,12 @@ LastAge.classRules = function(
 LastAge.companionRules = function(
   rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, level, size
 ) {
-  LastAge.baseRules.companionRules
-    (rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage,
-     level, size);
+  LastAge.baseRules.companionRules(
+    rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, size, level
+  );
   // No changes needed to the rules defined by base method
 };
+
 
 /*
  * Defines in #rules# the rules associated with deity #name#. #domains# and
@@ -2283,8 +2310,8 @@ LastAge.classRulesExtra = function(rules, name) {
       'defenderFeatures.Incredible Resilience', '=', '3 * source'
     );
     rules.defineRule('combatNotes.masterfulStrike',
-      'defenderUnarmedDamageLarge', '=', null,
       'defenderUnarmedDamageMedium', '=', null,
+      'defenderUnarmedDamageLarge', '=', null,
       'defenderUnarmedDamageSmall', '=', null
     );
     rules.defineRule('combatNotes.offensiveTraining',
@@ -2300,7 +2327,7 @@ LastAge.classRulesExtra = function(rules, name) {
     );
     rules.defineRule('defenderUnarmedDamageMedium',
       'levels.Defender', '=',
-      '"1d6" + (source < 7 ? "" : ("+" + Math.floor((source-1) / 6) + "d6"))'
+      '"d6" + (source < 7 ? "" : ("+" + Math.floor((source-1) / 6) + "d6"))'
     );
     rules.defineRule('defenderUnarmedDamageSmall',
       'features.Small', '?', null,
@@ -2337,7 +2364,6 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Legate') {
 
-    rules.defineRule('astiraxMasterLevel', 'levels.Legate', '+=', null);
     rules.defineRule('casterLevels.C', 'levels.Legate', '=', null);
     rules.defineRule('casterLevels.Dom', 'casterLevels.C', '+=', null);
     rules.defineRule('casterLevelDivine', 'casterLevels.C', '+=', null);
@@ -2363,6 +2389,25 @@ LastAge.classRulesExtra = function(rules, name) {
         'source >= ' + (j * 2 - 1) + ' ? 1 : null');
     }
     rules.defineRule('turningLevel', 'levels.Legate', '+=', null);
+    // Use animal companion stats and features for astirax abilities
+    var features = [
+      '3:Empathic Link', '6:Telepathy', '9:Enhanced Sense',
+      '12:Companion Evasion', '18:Companion Empathy'
+    ];
+    SRD35.featureListRules
+      (rules, features, 'Animal Companion', 'levels.Legate', false);
+    rules.defineRule('companionNotes.enhancedSense',
+      'levels.Legate', '=', 'source < 15 ? 5 : 10'
+    );
+    rules.defineRule('animalCompanionStats.Cha',
+      'levels.Legate', '+', 'Math.floor(source / 3) - 1'
+    );
+    rules.defineRule('animalCompanionStats.HD',
+      'levels.Legate', '+', '(Math.floor(source / 3) - 1) * 2'
+    );
+    rules.defineRule('animalCompanionStats.Int',
+     'levels.Legate', '+', 'Math.floor(source / 3) - 1'
+    );
 
   } else if(name == 'Wildlander') {
 
@@ -2376,8 +2421,6 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule
       ('casterLevels.Detect Magic', 'casterLevels.Wildlander', '^=', null);
     rules.defineRule('casterLevels.W', 'casterLevels.Wildlander', '^=', null);
-    rules.defineRule
-      ('companionMasterLevel', 'levels.Wildlander', '+=', null);
     rules.defineRule("combatNotes.hunter'sStrike",
       'levels.Wildlander', '=', 'Math.floor(source / 4)'
     );
@@ -2409,90 +2452,6 @@ LastAge.classRulesExtra = function(rules, name) {
     );
 
   }
-
-};
-
-/*
- * Defines in #rules# the rules associated with animal companion #name#, which
- * has abilities #str#, #intel#, #wis#, #dex#, #con#, and #cha#, hit dice #hd#,
- * and armor class #ac#. The companion has attack bonus #attack# and does
- * #damage# damage. If specified, #level# indicates the minimum master level
- * the character needs to have this animal as a companion.
- */
-LastAge.companionRules = function(
-  rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, level, size
-) {
-
-  LastAge.baseRules.companionRules(
-    rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, size, level
-  );
-
-  // Override SRD3.5 feature list
-  var features = {
-    'Devotion': 1, 'Magical Beast': 2, 'Companion Evasion': 3,
-    'Improved Speed': 4, 'Empathic Link': 5,
-    'Link': 0, 'Share Spells': 0, 'Multiattack': 0,
-    'Companion Improved Evasion': 0
-  };
-  for(var feature in features) {
-    if(features[feature] > 0) {
-      rules.defineRule('animalCompanionFeatures.' + feature,
-        'companionLevel', '=',
-        'source >= ' + features[feature] + ' ? 1 : null'
-      );
-    } else {
-      // Disable N/A SRD3.5 companion features
-      rules.defineRule
-        ('animalCompanionFeatures.' + feature, 'companionLevel', '=', 'null');
-    }
-  }
-
-  // Companion level based on feature count instead of class level
-  rules.defineRule('companionLevel',
-    'companionMasterLevel', '=', 'null',
-    'featureNotes.animalCompanion', '=', null
-  );
-
-  // Overrides of a couple of SRD3.5 calculations
-  rules.defineRule
-    ('animalCompanionStats.Str', 'companionLevel', '+', 'source * 2');
-  rules.defineRule
-    ('animalCompanionStats.Tricks', 'companionLevel', '=', 'source+1');
-
-  // Adapt Legate astirax rules to make it a form of animal companion.
-  features = {
-    'Telepathy': 2, 'Enhanced Sense': 3, 'Companion Evasion': 4,
-    'Companion Empathy': 6
-  };
-  for(var feature in features) {
-    rules.defineRule('animalCompanionFeatures.' + feature,
-      'astiraxLevel', '=', 'source >= ' + features[feature] + ' ? 1 : null'
-    );
-    rules.defineRule
-      ('features.' + feature, 'animalCompanionFeatures.' + feature, '=', '1');
-  }
-
-  // TODO
-  var notes = [
-    'companionNotes.companionEmpathy:' +
-      'Continuous emotional link w/no range limit',
-    'companionNotes.enhancedSense:' +
-      '+%V mile channeled event detection',
-    'companionNotes.telepathy:' +
-      "Companion-controlled telepathic communication up to 100'"
-  ];
-
-  rules.defineRule
-    ('astiraxLevel', 'levels.Legate', '=', 'Math.floor(source / 3)');
-  rules.defineRule('companionNotes.enhancedSense',
-    'astiraxLevel', '=', 'source < 4 ? 5 : 10'
-  );
-  rules.defineRule
-    ('animalCompanionStats.Cha', 'astiraxLevel', '+', 'source - 1');
-  rules.defineRule
-    ('animalCompanionStats.HD', 'astiraxLevel', '+', '(source - 1) * 2');
-  rules.defineRule
-    ('animalCompanionStats.Int', 'astiraxLevel', '+', 'source - 1');
 
 };
 
@@ -2728,31 +2687,16 @@ LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
   }
 
   var prefix =
-    name.substring(0, 1).toLowerCase() + name.substring(1).replace(/ /g, '');
+    name.charAt(0).toLowerCase() + name.substring(1).replace(/ /g, '');
+  var pathLevel = prefix + 'Level';
 
-  rules.defineRule('pathLevels.' + name,
+  rules.defineRule(pathLevel,
     'heroicPath', '?', 'source == "' + name + '"',
     'level', '=', null
   );
-  rules.defineSheetElement(name + ' Features', 'Feats', null, ' * ');
-  rules.defineChoice('extras', prefix + 'Features');
 
-  SRD35.featureListRules
-    (rules, features, prefix + 'Features', 'pathLevels.' + name);
-
-  for(var i = 0; i < selectables.length; i++) {
-    var matchInfo = selectables[i].match(/^((\d+):)?(.*)$/);
-    var feature = matchInfo ? matchInfo[3] : selectables[i];
-    var level = matchInfo ? matchInfo[2] : 1;
-    var choice = name + ' - ' + feature;
-    rules.defineChoice('selectableFeatures', choice + ':' + name);
-    rules.defineRule(prefix + 'Features.' + feature,
-      'selectableFeatures.' + choice, '+=', null
-    );
-    rules.defineRule
-      ('features.' + feature, prefix + 'Features.' + feature, '+=', null);
-    SRD35.testRules(rules, 'validation', prefix + ' - ' + feature.replace(/ /g, '') + 'HeroicPath', 'selectableFeatures.' + choice, ['levels.' + name + ' >= ' + level]);
-  }
+  SRD35.featureListRules(rules, features, name, pathLevel, false);
+  SRD35.featureListRules(rules, selectables, name, pathLevel, true);
 
   if(spells.length > 0) {
     rules.defineRule('casterLevels.' + name,
@@ -2779,8 +2723,7 @@ LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
         rule += 'source >= ' + levels[j] + ' ? ' + (j + 1) + ' : ';
       }
       rule += 'null';
-      rules.defineRule
-        (prefix + 'Spells.' + spell, 'pathLevels.' + name, '=', rule);
+      rules.defineRule(prefix + 'Spells.' + spell, pathLevel, '=', rule);
     }
     rules.defineSheetElement(name + ' Spells', 'Spells', null, ' * ');
   }
@@ -2796,23 +2739,26 @@ LastAge.heroicPathRules = function(rules, name, features, selectables, spells) {
  */
 LastAge.heroicPathRulesExtra = function(rules, name) {
 
+  var pathLevel =
+    name.charAt(0).toLowerCase() + name.substring(1).replace(/ /g, '') + 'Level';
+
   if(name == 'Beast') {
 
     rules.defineRule
       ('combatNotes.rage', 'constitutionModifier', '=', '5 + source');
     rules.defineRule('combatNotes.rage.1',
       'features.Rage', '?', null,
-      'pathLevels.Beast', '+=', 'source >= 17 ? 2 : 1'
+      pathLevel, '+=', 'source >= 17 ? 2 : 1'
     );
     rules.defineRule('combatNotes.viciousAssault',
       'mediumViciousAssault', '=', null,
       'smallViciousAssault', '=', null
     );
     rules.defineRule('mediumViciousAssault',
-      'pathLevels.Beast', '=', 'source>=11 ? "d8" : source>=6 ? "d6" : "d4"'
+      pathLevel, '=', 'source>=11 ? "d8" : source>=6 ? "d6" : "d4"'
     );
     rules.defineRule('selectableFeatureCount.Beast',
-      'pathLevels.Beast', '=', 'Math.floor(source / 5) + ((source >= 16) ? 2 : 1)'
+      pathLevel, '=', 'Math.floor(source / 5) + ((source >= 16) ? 2 : 1)'
     );
     rules.defineRule('smallViciousAssault',
       'features.Small', '?', null,
@@ -2821,23 +2767,22 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
 
   } else if(name == 'Chanceborn') {
 
-    rules.defineRule('combatNotes.missChance',
-      'pathLevels.Chanceborn', '+=', 'source >= 14 ? 10 : 5'
-    );
+    rules.defineRule
+      ('combatNotes.missChance', pathLevel, '+=', 'source >= 14 ? 10 : 5');
     rules.defineRule('featureNotes.luckOfHeroes',
-      'pathLevels.Chanceborn', '=',
+      pathLevel, '=',
       '"d4" + (source >= 5 ? "/d6" : "") + (source >= 10 ? "/d8" : "") + ' +
       '(source >= 15 ? "/d10" : "") + (source >= 20 ? "/d12" : "")'
     );
     rules.defineRule('featureNotes.persistence',
-      'pathLevels.Chanceborn', '+=', 'Math.floor((source - 1) / 5)'
+      pathLevel, '+=', 'Math.floor((source - 1) / 5)'
     );
     rules.defineRule('features.Defensive Roll', 'features.Survivor', '=', '1');
     rules.defineRule('features.Evasion', 'features.Survivor', '=', '1');
     rules.defineRule('features.Slippery Mind', 'features.Survivor', '=', '1');
     rules.defineRule('features.Uncanny Dodge', 'features.Survivor', '=', '1');
     rules.defineRule('magicNotes.unfettered',
-      'pathLevels.Chanceborn', '+=', 'Math.floor((source + 2) / 5)'
+      pathLevel, '+=', 'Math.floor((source + 2) / 5)'
     );
 
   } else if(name == 'Charismatic') {
@@ -2845,35 +2790,32 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
     rules.defineRule('charismaticFeatures.Charisma Bonus',
       'level', '+', 'Math.floor((source - 5) / 5)'
     );
-    rules.defineRule('featureNotes.naturalLeader',
-      'pathLevels.Charismatic', '=', 'source >= 18 ? 2 : 1'
-    );
+    rules.defineRule
+      ('featureNotes.naturalLeader', pathLevel, '=', 'source >= 18 ? 2 : 1');
     rules.defineRule('magicNotes.inspiringOration',
-      'pathLevels.Charismatic', '+=', 'Math.floor((source + 1) / 5)'
+      pathLevel, '+=', 'Math.floor((source + 1) / 5)'
     );
 
   } else if(name == 'Dragonblooded') {
 
     rules.defineRule('magicNotes.bolsterSpell',
-      'pathLevels.Dragonblooded', '+=', '1 + Math.floor(source / 5)'
+      pathLevel, '+=', '1 + Math.floor(source / 5)'
     );
     rules.defineRule('magicNotes.dragonbloodedSpellEnergy',
-      'pathLevels.Dragonblooded', '=',
-      'source>=16 ? 8 : source>=11 ? 6 : source>=7 ? 4 : source>=3 ? 2 : null'
+      pathLevel, '=', 'source>=16 ? 8 : source>=11 ? 6 : source>=7 ? 4 : source>=3 ? 2 : null'
     );
     rules.defineRule('magicNotes.dragonbloodedSpellsKnown',
-      'pathLevels.Dragonblooded', '=',
-      'source>=14 ? 3 : source>=8 ? 2 : source>=2 ? 1 : null'
+      pathLevel, '=', 'source>=14 ? 3 : source>=8 ? 2 : source>=2 ? 1 : null'
     );
     rules.defineRule('magicNotes.dragonSpellPenetration',
-      'pathLevels.Dragonblooded', '+=', 'Math.floor((source - 5) / 4)'
+      pathLevel, '+=', 'Math.floor((source - 5) / 4)'
     );
     rules.defineRule('magicNotes.frightfulPresence',
-      'pathLevels.Dragonblooded', '+=', '10 + Math.floor(source / 2)',
+      pathLevel, '+=', '10 + Math.floor(source / 2)',
       'charismaModifier', '+', null
     );
     rules.defineRule('magicNotes.improvedSpellcasting',
-      'pathLevels.Dragonblooded', '+=', 'Math.floor(source / 6)'
+      pathLevel, '+=', 'Math.floor(source / 6)'
     );
     rules.defineRule
       ('spellEnergy', 'magicNotes.dragonbloodedSpellEnergy', '+', null);
@@ -2895,37 +2837,35 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
   } else if(name == 'Faithful') {
 
     rules.defineRule('faithfulFeatures.Wisdom Bonus',
-      'pathLevels.Faithful', '=', 'source<5 ? null : Math.floor(source/5)'
+      pathLevel, '=', 'source<5 ? null : Math.floor(source/5)'
     );
     rules.defineRule('features.Wisdom Bonus',
      'faithfulFeatures.Wisdom Bonus', '+=', null
     );
-    rules.defineRule('turningLevel',
-      'pathLevels.Faithful', '+=', 'source < 4 ? null : source'
-    );
+    rules.defineRule
+      ('turningLevel', pathLevel, '+=', 'source < 4 ? null : source');
     // Override SRD35 turning frequency
     rules.defineRule('combatNotes.turnUndead.3',
-      'pathLevels.Faithful', 'v', 'Math.floor((source + 1) / 5)'
+      pathLevel, 'v', 'Math.floor((source + 1) / 5)'
     );
 
   } else if(name == 'Fellhunter') {
 
     rules.defineRule('combatNotes.disruptingAttack',
-      'pathLevels.Fellhunter', '+=', '10 + Math.floor(source / 2)',
+      pathLevel, '+=', '10 + Math.floor(source / 2)',
       'charismaModifier', '+', null
     );
     rules.defineRule('combatNotes.disruptingAttack.1',
-      'pathLevels.Fellhunter', '+=', 'Math.floor(source / 5)'
+      pathLevel, '+=', 'Math.floor(source / 5)'
     );
     rules.defineRule('combatNotes.touchOfTheLiving',
-      'pathLevels.Fellhunter', '+=', 'Math.floor((source + 3) / 5) * 2'
+      pathLevel, '+=', 'Math.floor((source + 3) / 5) * 2'
     );
     rules.defineRule('magicNotes.senseTheDead',
-      'pathLevels.Fellhunter', '+=',
-        '10 * (Math.floor((source + 4) / 5) + Math.floor((source + 1) / 5))'
+      pathLevel, '+=', '10 * (Math.floor((source + 4) / 5) + Math.floor((source + 1) / 5))'
     );
     rules.defineRule('saveNotes.wardOfLife',
-      'pathLevels.Fellhunter', '=',
+      pathLevel, '=',
       '"extraordinary special attacks" + ' +
       '(source >= 8 ? "/ability damage" : "") + ' +
       '(source >= 13 ? "/ability drain" : "") + ' +
@@ -2940,16 +2880,16 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
       'unearthlyChaModTotalBonus', '+', 'source > 0 ? source : null'
     );
     rules.defineRule('magicNotes.feyVision',
-      'pathLevels.Feyblooded', '=',
+      pathLevel, '=',
       'source >= 19 ? "all magic" : ' +
       'source >= 13 ? "enchantment/illusion" : "enchantment"'
     );
     rules.defineRule('unearthlyMaxBonusCount',
-      'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)',
+      pathLevel, '=', 'Math.floor(source / 4)',
       'charismaModifier', 'v', null
     );
     rules.defineRule('unearthlyChaModTotalBonus',
-      'pathLevels.Feyblooded', '=', 'Math.floor(source / 4)',
+      pathLevel, '=', 'Math.floor(source / 4)',
       'unearthlyMaxBonusCount', '+', '-source',
       'charismaModifier', '*', null
     );
@@ -2957,28 +2897,25 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
   } else if(name == 'Giantblooded') {
 
     rules.defineRule('abilityNotes.fastMovement',
-      'pathLevels.Giantblooded', '+=', 'Math.floor((source + 4) / 8) * 5'
+      pathLevel, '+=', 'Math.floor((source + 4) / 8) * 5'
     );
     rules.defineRule('combatNotes.fearsomeCharge',
-      'pathLevels.Giantblooded', '+=', 'Math.floor((source + 2) / 10)'
+      pathLevel, '+=', 'Math.floor((source + 2) / 10)'
     );
     rules.defineRule('giantbloodedFeatures.Strength Bonus',
       'level', '+', 'source >= 15 ? 1 : null'
     );
     rules.defineRule('skillNotes.intimidatingSize',
-      'pathLevels.Giantblooded', '+=',
-      'source>=17 ? 10 : source>=14 ? 8 : (Math.floor((source + 1) / 4) * 2)'
+      pathLevel, '+=', 'source>=17 ? 10 : source>=14 ? 8 : (Math.floor((source + 1) / 4) * 2)'
     );
     rules.defineRule
       ('weapons.Debris', 'combatNotes.rockThrowing', '=', '1');
     // Damage modified to account for Large adjustment starting level 10
     rules.defineRule('weaponDamage.Debris',
-      'pathLevels.Giantblooded', '=',
-      'source>=16 ? "d10" : source>=10 ? "d8" : source>=9 ? "2d6" : "d10"'
+      pathLevel, '=', 'source>=16 ? "d10" : source>=10 ? "d8" : source>=9 ? "2d6" : "d10"'
     );
     rules.defineRule('weaponRange.Debris',
-      'pathLevels.Giantblooded', '=',
-      'source >= 19 ? 120 : source >= 13 ? 90 : source >= 6 ? 60 : 30'
+      pathLevel, '=', 'source >= 19 ? 120 : source >= 13 ? 90 : source >= 6 ? 60 : 30'
     );
 
   } else if(name == 'Guardian') {
@@ -2987,38 +2924,31 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
       'level', '+', 'Math.floor((source - 5) / 5)'
     );
     rules.defineRule('combatNotes.righteousFury',
-      'pathLevels.Guardian', '+=',
-      'source >= 17 ? 12 : source >= 12 ? 9 : ' +
-      '(Math.floor((source + 1) / 4) * 3)'
+      pathLevel, '+=', 'source >= 17 ? 12 : source >= 12 ? 9 : (Math.floor((source + 1) / 4) * 3)'
     );
     rules.defineRule('combatNotes.smiteEvil',
-      'pathLevels.Guardian', '+=',
-      'source >= 18 ? 4 : source >= 14 ? 3 : source >= 8 ? 2 : 1'
+      pathLevel, '+=', 'source>=18 ? 4 : source>=14 ? 3 : source>=8 ? 2 : 1'
     );
     rules.defineRule('combatNotes.smiteEvil.1', 'charismaModifier', '=', null);
+    rules.defineRule('combatNotes.smiteEvil.2', pathLevel, '=', null);
     rules.defineRule
-      ('combatNotes.smiteEvil.2', 'pathLevels.Guardian', '=', null);
-    rules.defineRule('featureNotes.inspireValor',
-      'pathLevels.Guardian', '=', 'source >= 13 ? 2 : 1'
-    );
-    rules.defineRule('featureNotes.inspireValor.1',
-      'pathLevels.Guardian', '=', null
-    );
+      ('featureNotes.inspireValor', pathLevel, '=', 'source >= 13 ? 2 : 1');
+    rules.defineRule('featureNotes.inspireValor.1', pathLevel, '=', null);
     rules.defineRule('featureNotes.inspireValor.2',
-      'pathLevels.Guardian', '=', 'source >= 19 ? 3 : source >= 9 ? 2 : 1'
+      pathLevel, '=', 'source >= 19 ? 3 : source >= 9 ? 2 : 1'
     );
     rules.defineRule('magicNotes.layOnHands',
-      'pathLevels.Guardian', '+=', null,
+      pathLevel, '+=', null,
       'charismaModifier', '*', null
     );
 
   } else if(name == 'Ironborn') {
 
     rules.defineRule('combatNotes.damageReduction',
-      'pathLevels.Ironborn', '+=', 'Math.floor(source / 5)'
+      pathLevel, '+=', 'Math.floor(source / 5)'
     );
     rules.defineRule('combatNotes.improvedHealing',
-      'pathLevels.Ironborn', '+=', 'Math.floor(source / 2)'
+      pathLevel, '+=', 'Math.floor(source / 2)'
     );
     rules.defineRule('combatNotes.naturalArmor',
       'ironbornFeatures.Natural Armor', '+=', null
@@ -3030,54 +2960,50 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
       'level', '+', 'Math.floor((source - 3) / 5)'
     );
     rules.defineRule('saveNotes.resistElements',
-      'pathLevels.Ironborn', '+=', 'Math.floor((source - 1) / 5) * 3'
+      pathLevel, '+=', 'Math.floor((source - 1) / 5) * 3'
     );
     rules.defineRule('saveNotes.fortitudeBonus',
       'features.Fortitude Bonus', '=', null 
     );
     rules.defineRule('saveNotes.indefatigable',
-      'pathLevels.Ironborn', '=',
-       'source < 9 ? null : source < 19 ? "fatigue" : "fatigue/exhaustion"'
+      pathLevel, '=', 'source < 19 ? "fatigue" : "fatigue/exhaustion"'
     );
 
   } else if(name == 'Jack-Of-All-Trades') {
 
-    rules.defineRule('featureNotes.featBonus',
-      'pathLevels.Jack-Of-All-Trades', '=', 'source >= 14 ? 1 : null'
-    );
+    rules.defineRule
+      ('featureNotes.featBonus', pathLevel, '=', 'source >= 14 ? 1 : null');
     rules.defineRule('magicNotes.spellChoice',
-      'pathLevels.Jack-Of-All-Trades', '=',
+      pathLevel, '=',
       'source>=16 ? "Ch0/Ch1/Ch2/Ch3" : source>=10 ? "Ch0/Ch1/Ch2" : ' +
       'source>=6 ? "Ch0/Ch1" : "Ch0"'
     );
     rules.defineRule('magicNotes.spontaneousSpell',
-      'pathLevels.Jack-Of-All-Trades', '=',
-      'source >= 19 ? "Ch0/Ch1/Ch2" : source >= 13 ? "Ch0/Ch1" : "Ch0"'
+      pathLevel, '=', 'source >= 19 ? "Ch0/Ch1/Ch2" : source >= 13 ? "Ch0/Ch1" : "Ch0"'
     );
     rules.defineRule('selectableFeatureCount.Jack-Of-All-Trades',
-      'pathLevels.Jack-Of-All-Trades', '=',
+      pathLevel, '=',
       'source>=18 ? 7 : source>=15 ? 6 : source>=12 ? 5 : source>=9 ? 4 : ' +
       'source>=8 ? 3 : source>=5 ? 2 : source>=4 ? 1 : null'
     );
     rules.defineRule('skillNotes.skillBoost',
-      'pathLevels.Jack-Of-All-Trades', '=',
-      'source >= 20 ? 4 : source >= 17 ? 3 : source >= 11 ? 2 : 1'
+      pathLevel, '=', 'source>=20 ? 4 : source>=17 ? 3 : source>=11 ? 2 : 1'
     );
     rules.defineRule('skillPoints', 'skillNotes.skillBoost', '+', '4 * source');
 
   } else if(name == 'Mountainborn') {
 
     rules.defineRule('combatNotes.rallyingCry',
-      'pathLevels.Mountainborn', '+=', 'Math.floor((source + 1) / 5)'
+      pathLevel, '+=', 'Math.floor((source + 1) / 5)'
     );
     rules.defineRule('mountainbornFeatures.Constitution Bonus',
       'level', '+', 'Math.floor((source - 5) / 5)'
     );
     rules.defineRule('skillNotes.mountaineer',
-      'pathLevels.Mountainborn', '+=', 'Math.floor((source + 4) / 5) * 2'
+      pathLevel, '+=', 'Math.floor((source + 4) / 5) * 2'
     );
     rules.defineRule('skillNotes.mountainSurvival',
-      'pathLevels.Mountainborn', '+=', 'Math.floor((source + 4) / 5) * 2'
+      pathLevel, '+=', 'Math.floor((source + 4) / 5) * 2'
     );
 
   } else if(name == 'Naturefriend') {
@@ -3091,88 +3017,71 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
     rules.defineRule('combatNotes.plantFriend',
       'charismaModifier', '=', '10 + source'
     );
-    rules.defineRule
-      ('skillNotes.wildEmpathy','pathLevels.Naturefriend','+=',null);
+    rules.defineRule('skillNotes.wildEmpathy', pathLevel, '+=', null);
 
   } else if(name == 'Northblooded') {
 
-    rules.defineRule
-      ('combatNotes.battleCry', 'pathLevels.Northblooded', '=', null);
+    rules.defineRule('combatNotes.battleCry', pathLevel, '=', null);
     rules.defineRule('combatNotes.battleCry.1',
-      'pathLevels.Northblooded', '=',
-      'source >= 17 ? 4 : source >= 14 ? 3 : source >= 7 ? 2 : 1'
+      pathLevel, '=', 'source>=17 ? 4 : source>=14 ? 3 : source>=7 ? 2 : 1'
     );
-    rules.defineRule('combatNotes.frostWeapon',
-      'pathLevels.Northblooded', '=', null
-    );
-    rules.defineRule('combatNotes.frostWeapon.1',
-      'pathLevels.Northblooded', '=', 'source >= 19 ? 2 : 1'
-    );
+    rules.defineRule('combatNotes.frostWeapon', pathLevel, '=', null);
+    rules.defineRule
+      ('combatNotes.frostWeapon.1', pathLevel, '=', 'source >= 19 ? 2 : 1');
     rules.defineRule('northbloodedFeatures.Constitution Bonus',
       'level', '+', 'Math.floor((source - 5) / 5)'
     );
     rules.defineRule('magicNotes.howlingWinds',
-      'pathLevels.Northblooded', '+=',
-      'source >= 12 ? 3 : source >= 8 ? 2 : 1'
+      pathLevel, '+=', 'source >= 12 ? 3 : source >= 8 ? 2 : 1'
     );
-    rules.defineRule('saveNotes.coldResistance',
-      'pathLevels.Northblooded', '+=', 'source >= 9 ? 15 : 5'
-    );
-    rules.defineRule('skillNotes.wildEmpathy',
-      'pathLevels.Northblooded', '+=', null
-    );
+    rules.defineRule
+      ('saveNotes.coldResistance', pathLevel, '+=', 'source >= 9 ? 15 : 5');
+    rules.defineRule('skillNotes.wildEmpathy', pathLevel, '+=', null);
 
   } else if(name == 'Painless') {
 
-    rules.defineRule('combatNotes.improvedRetributiveRage',
-      'pathLevels.Painless', '+=', null
-    );
+    rules.defineRule
+      ('combatNotes.improvedRetributiveRage', pathLevel, '+=', null);
     rules.defineRule('combatNotes.increasedDamageThreshold',
-      'pathLevels.Painless', '+=',
-      'source >= 20 ? 25 : source >= 15 ? 20 : 15'
+      pathLevel, '+=', 'source >= 20 ? 25 : source >= 15 ? 20 : 15'
     );
-    rules.defineRule('combatNotes.lastStand',
-      'pathLevels.Painless', '+=', '10 + source'
-    );
-    rules.defineRule('combatNotes.lastStand.1',
-      'pathLevels.Painless', '+=', 'source >= 19 ? 2 : 1'
-    );
+    rules.defineRule('combatNotes.lastStand', pathLevel, '+=', '10 + source');
+    rules.defineRule
+      ('combatNotes.lastStand.1', pathLevel, '+=', 'source >= 19 ? 2 : 1');
     rules.defineRule('combatNotes.nonlethalDamageReduction',
-      'pathLevels.Painless', '+=', 'Math.floor((source + 3) / 5) * 3'
+      pathLevel, '+=', 'Math.floor((source + 3) / 5) * 3'
     );
-    rules.defineRule('combatNotes.painless', 'pathLevels.Painless', '+=', null);
-    rules.defineRule('combatNotes.retributiveRage',
-      'pathLevels.Painless', '+=', null
-    );
+    rules.defineRule('combatNotes.painless', pathLevel, '+=', null);
+    rules.defineRule('combatNotes.retributiveRage', pathLevel, '+=', null);
     rules.defineRule('saveNotes.uncaringMind',
-      'pathLevels.Painless', '+=', 'Math.floor((source + 2) / 5)'
+      pathLevel, '+=', 'Math.floor((source + 2) / 5)'
     );
     rules.defineRule('saveNotes.painless',
-      'pathLevels.Painless', '=', 'Math.floor((source + 4) / 5) * 5'
+      pathLevel, '=', 'Math.floor((source + 4) / 5) * 5'
     );
 
   } else if(name == 'Pureblood') {
 
     rules.defineRule('featureRules.featBonus',
-      'pathLevels.Pureblood', '+=', 'Math.floor((source - 3) / 5)'
+      pathLevel, '+=', 'Math.floor((source - 3) / 5)'
     );
     rules.defineRule('selectableFeatureCount.Pureblood',
-      'pathLevels.Pureblood', '=', 'source>=5 ? Math.floor(source / 5) : null'
+      pathLevel, '=', 'source>=5 ? Math.floor(source / 5) : null'
     );
     rules.defineRule('skillNotes.skillFixation',
-      'pathLevels.Pureblood', '+=', 'Math.floor((source + 1) / 5)'
+      pathLevel, '+=', 'Math.floor((source + 1) / 5)'
     );
     rules.defineRule('skillNotes.bloodOfKings',
-      'pathLevels.Pureblood', '+=', 'Math.floor((source + 3) / 5) * 2'
+      pathLevel, '+=', 'Math.floor((source + 3) / 5) * 2'
     );
     rules.defineRule('skillNotes.masterAdventurer',
-      'pathLevels.Pureblood', '+=', 'Math.floor((source + 4) / 5) * 2'
+      pathLevel, '+=', 'Math.floor((source + 4) / 5) * 2'
     );
 
   } else if(name == 'Quickened') {
 
     rules.defineRule('abilityNotes.fastMovement',
-      'pathLevels.Quickened', '+=', 'Math.floor((source + 2) / 5) * 5'
+      pathLevel, '+=', 'Math.floor((source + 2) / 5) * 5'
     );
     rules.defineRule('combatNotes.armorClassBonus',
       'features.Armor Class Bonus', '=', null
@@ -3181,10 +3090,10 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
       'constitutionModifier', '+=', 'source + 3'
     );
     rules.defineRule('combatNotes.burstOfSpeed.1',
-      'pathLevels.Quickened', '+=', 'Math.floor((source + 1) / 5)'
+      pathLevel, '+=', 'Math.floor((source + 1) / 5)'
     );
     rules.defineRule('combatNotes.initiativeBonus',
-      'pathLevels.Quickened', '+=', 'Math.floor((source + 4) / 5) * 2'
+      pathLevel, '+=', 'Math.floor((source + 4) / 5) * 2'
     );
     rules.defineRule('quickenedFeatures.Armor Class Bonus',
       'level', '+', 'Math.floor((source - 2) / 5)'
@@ -3197,38 +3106,35 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
 
     rules.defineRule('deepLungsMultiplier',
       'seabornFeatures.Deep Lungs', '^=', '2',
-      'pathLevels.Seaborn', '+', 'source >= 6 ? 2 : 1'
+      pathLevel, '+', 'source >= 6 ? 2 : 1'
     );
-    rules.defineRule('magicNotes.aquaticAlly',
-      'pathLevels.Seaborn', '+=', 'Math.floor(source / 4)'
-    );
-    rules.defineRule('saveNotes.coldResistance',
-      'pathLevels.Seaborn', '+=', 'source >= 14 ? 5 : null'
-    );
+    rules.defineRule
+      ('magicNotes.aquaticAlly', pathLevel, '+=', 'Math.floor(source / 4)');
+    rules.defineRule
+      ('saveNotes.coldResistance', pathLevel, '+=', 'source >= 14 ? 5 : null');
     rules.defineRule('skillNotes.aquaticBlindsight',
-      'pathLevels.Seaborn', '+=', 'Math.floor((source + 5) / 8) * 30'
+      pathLevel, '+=', 'Math.floor((source + 5) / 8) * 30'
     );
     rules.defineRule('skillNotes.deepLungs',
       'deepLungsMultiplier', '=', null,
       'constitution', '*', null
     );
     rules.defineRule('abilityNotes.naturalSwimmer',
-      'pathLevels.Seaborn', '+=', 'source >= 15 ? 60 : source >= 7 ? 40 : 20'
+      pathLevel, '+=', 'source >= 15 ? 60 : source >= 7 ? 40 : 20'
     );
 
   } else if(name == 'Seer') {
 
-    rules.defineRule('magicNotes.seerSight',
-      'pathLevels.Seer', '=', 'Math.floor((source + 6) / 6)'
-    );
+    rules.defineRule
+      ('magicNotes.seerSight', pathLevel, '=', 'Math.floor((source + 6) / 6)');
 
   } else if(name == 'Shadow Walker') {
 
     rules.defineRule('featureNotes.shadowJump',
-      'pathLevels.Shadow Walker', '+=', 'Math.floor(source / 4) * 10'
+      pathLevel, '+=', 'Math.floor(source / 4) * 10'
     );
     rules.defineRule('skillNotes.shadowVeil',
-      'pathLevels.Shadow Walker', '+=', 'Math.floor((source + 2) / 4) * 2'
+      pathLevel, '+=', 'Math.floor((source + 2) / 4) * 2'
     );
 
   } else if(name == 'Speaker') {
@@ -3237,7 +3143,7 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
       'level', '+', 'Math.floor((source - 5) / 5)'
     );
     rules.defineRule('magicNotes.powerWords',
-      'pathLevels.Speaker', '=',
+      pathLevel, '=',
       '"Opening" + (source >= 6 ? "/Shattering" : "") + ' +
                   '(source >= 9 ? "/Silence" : "") + ' +
                   '(source >= 13  ? "/Slumber" : "") + ' +
@@ -3251,8 +3157,7 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
       'charismaModifier', '=', 'source + 10'
     );
     rules.defineRule('skillNotes.persuasiveSpeaker',
-      'pathLevels.Speaker', '=',
-      'source >= 17 ? 8 : source >= 11 ? 6 : source >= 7 ? 4 : 2'
+      pathLevel, '=', 'source>=17 ? 8 : source>=11 ? 6 : source>=7 ? 4 : 2'
     );
 
   } else if(name == 'Spellsoul') {
@@ -3263,7 +3168,7 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
       'wisdomModifier', '^', null
     );
     rules.defineRule('magicNotes.metamagicAura',
-      'pathLevels.Spellsoul', '=',
+      pathLevel, '=',
       '(source>=15 ? 4 : source>=10 ? 3 : source>=6 ? 2 : 1) + "/day " + ' +
       '["enlarge"].concat(source >= 5 ? ["extend"] : [])' +
                  '.concat(source >= 8 ? ["reduce"] : [])' +
@@ -3272,18 +3177,15 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
                  '.concat(source >= 17 ? ["maximize"] : [])' +
                  '.concat(source >= 20 ? ["redirect"] : []).sort().join("/")'
     );
-    rules.defineRule('magicNotes.metamagicAura',
-      'pathLevels.Spellsoul', '=', 'Math.floor(source / 2)'
-    );
+    rules.defineRule
+      ('magicNotes.metamagicAura', pathLevel, '=', 'Math.floor(source / 2)');
     rules.defineRule('magicNotes.untappedPotential',
       'highestMagicModifier', '=', 'source + 1',
       'level', '+',
         'source>=18 ? 8 : source>=13 ? 6 : source>=9 ? 4 : source>=4 ? 2 : 0'
     );
     rules.defineRule('saveNotes.improvedResistSpells',
-      'pathLevels.Spellsoul', '=',
-      'source>=19 ? 5 : source>=16 ? 4 : source>=12 ? 3 : source>=7 ? 2 : ' +
-      'source>=3 ? 1 : null'
+      pathLevel, '=', 'source>=19 ? 5 : source>=16 ? 4 : source>=12 ? 3 : source>=7 ? 2 : source>=3 ? 1 : null'
     );
 
   } else if(name == 'Steelblooded') {
@@ -3297,20 +3199,16 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
     }
     */
     rules.defineRule('combatNotes.offensiveTactics',
-      'pathLevels.Steelblooded', '+=',
-      'source>=17 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
+      pathLevel, '+=', 'source>=17 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
     );
     rules.defineRule('combatNotes.skilledWarrior',
-      'pathLevels.Steelblooded', '+=',
-      'source>=18 ? 4 : source>=13 ? 3 : source>=8 ? 2 : 1'
+      pathLevel, '+=', 'source>=18 ? 4 : source>=13 ? 3 : source>=8 ? 2 : 1'
     );
     rules.defineRule('combatNotes.strategicBlow',
-      'pathLevels.Steelblooded', '+=',
-      'source>=16 ? 15 : source>=12 ? 12 : source>=9 ? 9 : source>=6 ? 6 : 3'
+      pathLevel, '+=', 'source>=16 ? 15 : source>=12 ? 12 : source>=9 ? 9 : source>=6 ? 6 : 3'
     );
-    rules.defineRule('featCount.Steelblooded',
-      'pathLevels.Steelblooded', '=', '1 + Math.floor(source / 5)'
-    );
+    rules.defineRule
+      ('featCount.Steelblooded', pathLevel, '=', '1 + Math.floor(source / 5)');
 
   } else if(name == 'Sunderborn') {
 
@@ -3318,34 +3216,29 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
       'constitutionModifier', '+=', 'Math.floor((source + 2) / 6)'
     );
     rules.defineRule('combatNotes.planarFury.1',
-      'pathLevels.Sunderborn', '+=', 'Math.floor((source + 2) / 6)'
+      pathLevel, '+=', 'Math.floor((source + 2) / 6)'
     );
     rules.defineRule('skillNotes.bloodOfThePlanes',
-      'pathLevels.Sunderborn', '+=', 'Math.floor((source + 1) / 3) * 2'
+      pathLevel, '+=', 'Math.floor((source + 1) / 3) * 2'
     );
 
   } else if(name == 'Tactician') {
 
     rules.defineRule('combatNotes.aidedCombatBonus',
-      'pathLevels.Tactician', '+=',
-      'source>=19 ? 4 : source>=14 ? 3 : source>=9 ? 2 : source>=5 ? 1 : 0'
+      pathLevel, '+=', 'source>=19 ? 4 : source>=14 ? 3 : source>=9 ? 2 : source>=5 ? 1 : 0'
     );
     rules.defineRule('combatNotes.combatOverview',
-      'pathLevels.Tactician', '+=',
-      'source>=15 ? 4 : source>=10 ? 3 : source>=6 ? 2 : 1'
+      pathLevel, '+=', 'source>=15 ? 4 : source>=10 ? 3 : source>=6 ? 2 : 1'
     );
     rules.defineRule('combatNotes.coordinatedInitiative',
-      'pathLevels.Tactician', '+=',
-      'source>=16 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
+      pathLevel, '+=', 'source>=16 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
     );
     rules.defineRule('combatNotes.jointAttack',
-      'pathLevels.Tactician', '+=',
-      'source>=17 ? 4 : source==16 ? 3 : Math.floor(source / 4)'
+      pathLevel, '+=', 'source>=17 ? 4 : source==16 ? 3 : Math.floor(source/4)'
     );
 
   } else if(name == 'Warg') {
 
-    rules.defineRule('companionMasterLevel', 'pathLevels.Warg', '=', null);
     rules.defineRule('featureNotes.animalCompanion',
       'wargFeatures.Animal Companion', '+=', null
     );
@@ -3353,18 +3246,18 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
       'level', '+', 'Math.floor((source - 2) / 4)'
     );
     rules.defineRule('magicNotes.wildShape',
-      'pathLevels.Warg', '=',
+      pathLevel, '=',
       'source >= 19 ? "medium-huge" : ' +
       'source >= 11 ? "medium-large" : ' +
       'source >= 5 ? "medium" : null'
     );
     rules.defineRule('magicNotes.wildShape.1',
-      'pathLevels.Warg', '=', 'source >= 15 ? 3 : source >= 8 ? 2 : 1'
+      pathLevel, '=', 'source >= 15 ? 3 : source >= 8 ? 2 : 1'
     );
     rules.defineRule('selectableFeatureCount.Warg',
-      'pathLevels.Warg', '=', 'source >= 16 ? 3 : source >= 9 ? 2 : 1'
+      pathLevel, '=', 'source >= 16 ? 3 : source >= 9 ? 2 : 1'
     );
-    rules.defineRule('skillNotes.wildEmpathy', 'pathLevels.Warg', '+=', null);
+    rules.defineRule('skillNotes.wildEmpathy', pathLevel, '+=', null);
 
   }
 
