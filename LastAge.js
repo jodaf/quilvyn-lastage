@@ -1899,7 +1899,7 @@ LastAge.identityRules = function(
        Pathfinder.TRAITS);
   else
     SRD35.identityRules
-      (rules, alignmens, classes, deities, domains, genders, races)
+      (rules, alignments, classes, deities, domains, genders, races)
 
   for(var path in heroicPaths) {
     rules.choiceRules(rules, 'Heroic Path', path, heroicPaths[path]);
