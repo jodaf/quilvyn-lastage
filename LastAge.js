@@ -975,6 +975,7 @@ LastAge.HEROIC_PATHS = {
       '"4:Retributive Rage",5:Ferocity,"9:Last Stand",' +
       '"10:Increased Damage Threshold","14:Improved Retributive Rage"',
   'Pureblood':
+    'Require="Race == "Erenlander" ' +
     'Features=' +
       '"1:Master Adventurer","2:Blood Of Kings","3:Feat Bonus",' +
       '"4:Skill Fixation" ' +
@@ -2043,6 +2044,8 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     LastAge.genderRules(rules, name);
   else if(type == 'Heroic Path') {
     LastAge.heroicPathRules(rules, name,
+      QuilvynUtils.getAttrValueArray(attrs, 'Require'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Imply'),
       QuilvynUtils.getAttrValueArray(attrs, 'Features'),
       QuilvynUtils.getAttrValueArray(attrs, 'Selectables'),
       QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
@@ -2715,14 +2718,15 @@ LastAge.genderRules = function(rules, name) {
 };
 
 /*
- * Defines in #rules# the rules associated with heroic path #name#. #features#
+ * Defines in #rules# the rules associated with heroic path #name#, which has
+ * the list of hard and soft prerequisites #requires# and #implies#. #features#
  * and #selectables# list the fixed and selectable features associated with the
  * path. #spells# lists the spells granted, along with the level for each.
  * #spellDict# is the dictionary of all spells used to look up individual
  * spell attributes.
  */
 LastAge.heroicPathRules = function(
-  rules, name, features, selectables, spells, spellDict
+  rules, name, requires, implies, features, selectables, spells, spellDict
 ) {
 
   if(!name) {
@@ -2738,6 +2742,13 @@ LastAge.heroicPathRules = function(
     'heroicPath', '?', 'source == "' + name + '"',
     'level', '=', null
   );
+
+  if(requires.length > 0)
+    SRD35.prerequisiteRules
+      (rules, 'validation', prefix + 'HeroicPath', pathLevel, requires);
+  if(implies.length > 0)
+    SRD35.prerequisiteRules
+      (rules, 'sanity', prefix + 'HeroicPath', pathLevel, implies);
 
   SRD35.featureListRules(rules, features, name, pathLevel, false);
   SRD35.featureListRules(rules, selectables, name, pathLevel, true);
