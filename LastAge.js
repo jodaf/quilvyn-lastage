@@ -101,12 +101,13 @@ function LastAge() {
   // Spell definition is handled by each individual class and domain. Schools
   // have to be defined before this can be done.
   LastAge.magicRules(rules, LastAge.SCHOOLS, []);
+  // Feats must be defined before classes
+  LastAge.talentRules
+    (rules, LastAge.FEATS, LastAge.FEATURES, LastAge.LANGUAGES, LastAge.SKILLS);
   LastAge.identityRules(
     rules, LastAge.ALIGNMENTS, LastAge.CLASSES, LastAge.DEITIES,
     LastAge.DOMAINS, LastAge.GENDERS, LastAge.HEROIC_PATHS, LastAge.RACES
   );
-  LastAge.talentRules
-    (rules, LastAge.FEATS, LastAge.FEATURES, LastAge.LANGUAGES, LastAge.SKILLS);
   LastAge.goodiesRules(rules);
 
   if(window.SRD35NPC != null) {
@@ -174,7 +175,7 @@ LastAge.FEATS_ADDED = {
   'Craft Charm':'Type=Item Creation Require="Max /^skills.Craft/ >= 4"',
   'Craft Greater Spell Talisman':
     'Type=Item Creation Require="Sum features.Magecraft >= 1","level >= 12"',
-    // TODO any 3 channeling
+    // TODO any 3 Channeling
   'Craft Spell Talisman':
     'Type=Item Creation Require="Sum features.Magecraft >= 1","Sum features.Spellcasting >= 1","level >= 3"',
   'Devastating Mounted Assault':
@@ -202,18 +203,18 @@ LastAge.FEATS_ADDED = {
     'Type=Channeling Require="Sum features.Magecraft >= 1","Sum features.Spellcasting >= 1"',
   'Sarcosan Pureblood':'Type=General Require="race =~ /Sarcosan/"',
   'Sense Nexus':'Type=General',
-  'Spellcasting (Abjuration)':'Type=Channeling',
-  'Spellcasting (Conjuration)':'Type=Channeling',
-  'Spellcasting (Divination)':'Type=Channeling',
-  'Spellcasting (Enchantment)':'Type=Channeling',
-  'Spellcasting (Evocation)':'Type=Channeling',
-  'Spellcasting (Illusion)':'Type=Channeling',
-  'Spellcasting (Necromancy)':'Type=Channeling',
-  'Spellcasting (Transmutation)':'Type=Channeling',
+  'Spellcasting (Abjuration)':'Type=Channeling,Spellcasting',
+  'Spellcasting (Conjuration)':'Type=Channeling,Spellcasting',
+  'Spellcasting (Divination)':'Type=Channeling,Spellcasting',
+  'Spellcasting (Enchantment)':'Type=Channeling,Spellcasting',
+  'Spellcasting (Evocation)':'Type=Channeling,Spellcasting',
+  'Spellcasting (Illusion)':'Type=Channeling,Spellcasting',
+  'Spellcasting (Necromancy)':'Type=Channeling,Spellcasting',
+  'Spellcasting (Transmutation)':'Type=Channeling,Spellcasting',
   'Spellcasting (Greater Conjuration)':
-    'Type=Channeling Require="features.Spellcasting (Conjuration)"',
+    'Type=Channeling,Spellcasting Require="features.Spellcasting (Conjuration)"',
   'Spellcasting (Greater Evocation)':
-    'Type=Channeling Require="features.Spellcasting (Evocation)"',
+    'Type=Channeling,Spellcasting Require="features.Spellcasting (Evocation)"',
   // Skill Focus (Profession (Soldier)) available to Leader Of Men Fighters
   'Skill Focus':'Profession (Soldier)',
   'Spell Knowledge':'Type=General Require="Sum features.Spellcasting >= 1"',
@@ -470,6 +471,8 @@ LastAge.FEATURES_ADDED = {
   'Touch Of The Living':'Section=combat Note="+%V damage vs. undead"',
   'Tremorsense':
     'Section=feature Note="R30\' Detect creatures in contact w/ground"',
+  'Turn Undead':
+    'Section=combat Note="Turn (good) or rebuke (evil) 2d6+%1 HD of undead creatures of up to (d20+%2)/3 HD %3/dy"',
   'Uncaring Mind':'Section=save Note="+%V vs. enchantment"',
   'Unfettered':'Section=magic Note="<i>Freedom Of Movement</i> %V rd/dy"',
   'Untapped Potential':
@@ -506,7 +509,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="Trade up to -%V attack for equal damage bonus"',
   'Dwarvencraft':'Section=feature Note="Know %V Dwarvencraft techniques"',
   'Extra Gift':
-    'Section=feature Note="Use Master Of Two Worlds and Force Of Personality +4 times/dy"',
+    'Section=feature Note="Use Mastery or Force Of Personality +4 times/dy"',
   'Fanatic':
     'Section=combat Note="+1 attack, divine spell benefit within 60\' of Izrador servant"',
   'Flexible Recovery':
@@ -605,7 +608,7 @@ LastAge.FEATURES_ADDED = {
   'Armor Class Bonus':'Section=combat Note="+%V AC"',
   'Art Of Magic':'Section=magic Note="+1 character level for max spell level"',
   'Astirax Companion':'Section=feature Note="Special bond/abilities"',
-  'Confident Effect':'Section=combat Note="+4 Master of Two Worlds checks"',
+  'Confident Effect':'Section=combat Note="+4 Mastery checks"',
   'Counterattack':'Section=combat Note="AOO on foe miss 1/rd"',
   'Cover Ally':'Section=combat Note="Take hit for ally w/in 5\' 1/rd"',
   'Danger Sense':'Section=skill Note="+%V Listen/+%V Spot"',
@@ -634,7 +637,7 @@ LastAge.FEATURES_ADDED = {
   'Hated Foe':
     'Section=combat Note="Additional Hunter\'s Strike vs. Master Hunter creature"',
   'Heightened Effect':
-    'Section=combat Note="+2 level for Master of Two Worlds checks"',
+    'Section=combat Note="+2 level for Mastery checks"',
   'Hunted By The Shadow':
     'Section=combat Note="No surprise by servant of shadow"',
   "Hunter's Strike":'Section=combat Note="x2 damage %V/dy"',
@@ -667,13 +670,13 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="<i>Suggestion</i> to %V fascinated creatures"',
   'Master Hunter':
     'Section=combat,skill Note="+2 or more damage vs. selected creature type(s)","+2 or more Bluff, Listen, Sense Motive, Spot, Survival vs. chosen creature type(s)"',
-  'Master Of Two Worlds':
-    'Section=combat Note="Mastery of Nature, Spirits, or The Unnatural %V/dy"',
   'Masterful Strike':'Section=combat Note="%V unarmed damage"',
-  'Mastery Of Nature':'Section=combat Note="Turn animals or plants"',
-  'Mastery Of Spirits':'Section=combat Note="Turn to exorcise spirits"',
+  'Mastery Of Nature':
+    'Section=combat Note="Turn or rebuke %4d6+%1 HD of plants or animals of up to (d20+%2)/3 HD %3/dy"',
+  'Mastery Of Spirits':
+    'Section=combat Note="Exorcise %4d6+%1 HD of spirits of up to (d20+%2)/3 HD %3/dy"',
   'Mastery Of The Unnatural':
-    'Section=combat Note="Turn constructs or outsiders (double hit die)"',
+    'Section=combat Note="Turn or rebuke %4d6+%1 HD of constructs or outsiders of up to (d20+%2)/3 HD %3/dy"',
   'Offensive Training':
     'Section=combat Note="Stunned foe blind or deaf (DC %V Fort neg)"',
   'One With The Weapon':
@@ -704,6 +707,7 @@ LastAge.FEATURES_ADDED = {
   'Temple Dependency':
     'Section=magic Note="Must participate at temple to receive spells"',
   'True Aim':'Section=combat Note="x3 damage on Hunter\'s Strike"',
+  // Turn Undead as heroic path
   'Universal Effect':
     'Section=combat Note="Use multiple mastery powers simultaneously"',
   'Weapon Trap':
@@ -1694,7 +1698,7 @@ LastAge.CLASSES = {
       'Profession,"Speak Language,Spellcraft ' +
     'Features=' +
       '"1:Armor Proficiency (Heavy)","1:Shield Proficiency (Heavy)",' +
-      '"1:Weapon Proficiency (Simple)"' +
+      '"1:Weapon Proficiency (Simple)",' +
       '"1:Spontaneous Legate Spell","1:Temple Dependency","1:Turn Undead",' +
       '"3:Astirax Companion" ' +
     'Selectables=' +
@@ -1733,13 +1737,14 @@ LastAge.CLASSES = {
       'Diplomacy,"Knowledge (Nature)","Sense Motive",Survival,Swim ' +
     'Features=' +
       '"1:Weapon Proficiency (Simple)",' +
-      '"1:Art Of Magic","2:Familiar","1:Magecraft (Spiritual)",' +
-      '"3:Master Of Two Worlds" ' +
+      '"1:Art Of Magic","2:Familiar","1:Magecraft (Spiritual)" ' +
     'Selectables=' +
       '"3:Confident Effect","3:Heightened Effect","3:Mastery Of Nature",' +
       '"3:Mastery Of Spirits","3:Mastery Of The Unnatural",' +
-      '"3:Powerful Effect","3:Precise Effect","3:Specific Effect",' +
-      '"3:Universal Effect" ' +
+      '"features.Mastery Of Nature || features.Mastery Of Spirits || features.Mastery Of Nature ? 3:Powerful Effect",' +
+      '"features.Mastery Of Nature || features.Mastery Of Spirits || features.Mastery Of Nature ? 3:Precise Effect",' +
+      '"features.Mastery Of Nature || features.Mastery Of Spirits || features.Mastery Of Nature ? 3:Specific Effect",' +
+      '"features.Mastery Of Nature || features.Mastery Of Spirits || features.Mastery Of Nature ? 3:Universal Effect" ' +
     'CasterLevelArcane="levels.Spiritual Channeler" ' +
     'SpellAbility=wisdom ' +
     'SpellsPerDay=' +
@@ -2181,17 +2186,17 @@ LastAge.classRules = function(
  */
 LastAge.classRulesExtra = function(rules, name) {
 
+  var classLevel = 'levels.' + name;
+
   if(name.endsWith(' Channeler')) {
 
-    rules.defineRule('channelerLevels', 'levels.' + name, '+=', null);
+    rules.defineRule('channelerLevels', classLevel, '+=', null);
     rules.defineRule('familiarMasterLevel', 'channelerLevels', '^=', null);
     rules.defineRule('featCount.' + name,
-      'levels.' + name, '=',
-      'source >= 4 ? Math.floor((source - 1) / 3) : null'
+      classLevel, '=', 'source >= 4 ? Math.floor((source - 1) / 3) : null'
     );
     rules.defineRule('featCount.Spellcasting',
-      'channelerLevels', '+=',
-      'source >= 2 ? Math.floor((source + 1) / 3) : null'
+      'channelerLevels', '+=', 'source>=2 ? Math.floor((source + 1) / 3) : null'
     );
     rules.defineRule
       ('magicNotes.channelerSpellEnergy', 'channelerLevels', '=', null);
@@ -2202,58 +2207,98 @@ LastAge.classRulesExtra = function(rules, name) {
       ('spellEnergy', 'magicNotes.channelerSpellEnergy', '+', null);
     rules.defineRule
       ('spellsKnownBonus', 'magicNotes.channelerSpellsKnown', '+', null);
+    var allFeats = rules.getChoices('feats');
 
     if(name == 'Charismatic Channeler') {
-      /* TODO
-      feats = ['Extra Gift', 'Spell Knowledge'];
-      for(var j = 0; j < LastAge.SCHOOLS.length; j++) {
-        var school = LastAge.SCHOOLS[j].split(':')[0];
-        feats[feats.length] = 'Greater Spell Focus (' + school + ')';
-        feats[feats.length] = 'Spell Focus (' + school + ')';
+      for(var feat in allFeats) {
+        if(feat == 'Extra Gift' || feat == 'Spell Knowledge' ||
+           feat.startsWith('Spell Focus') ||
+           feat.startsWith('Greater Spell Focus')) {
+          allFeats[feat] =
+            allFeats[feat].replace('Type=', 'Type="' + name + '",');
+        }
       }
-      */
+      rules.defineRule('combatNotes.masteryOfNature.1',
+        'turningLevel', '=', null,
+        'wisdomModifier', '+', null
+      );
+      rules.defineRule('combatNotes.masteryOfNature.2',
+        'turningLevel', '=', 'source * 3 - 10',
+        'wisdomModifier', '+', null,
+        'combatNotes.heightenedEffect', '+', '2'
+      );
+      rules.defineRule('combatNotes.masteryOfNature.3',
+        'features.Mastery Of Nature', '?', null,
+        'wisdomModifier', '=', '3 + source'
+      );
+      rules.defineRule('combatNotes.masteryOfNature.4',
+        'features.Mastery Of Nature', '=', '2',
+        'combatNotes.powerfulEffect', '+', '1'
+      );
+      rules.defineRule('combatNotes.masteryOfTheUnnatural.1',
+        'turningLevel', '=', null,
+        'wisdomModifier', '+', null
+      );
+      rules.defineRule('combatNotes.masteryOfTheUnnatural.2',
+        'turningLevel', '=', 'source * 3 - 10',
+        'wisdomModifier', '+', null,
+        'combatNotes.heightenedEffect', '+', '2'
+      );
+      rules.defineRule('combatNotes.masteryOfTheUnnatural.3',
+        'features.Mastery Of The Unnatural', '?', null,
+        'wisdomModifier', '=', '3 + source'
+      );
+      rules.defineRule('combatNotes.masteryOfTheUnnatural.4',
+        'features.Mastery Of The Unnatural', '=', '2',
+        'combatNotes.powerfulEffect', '+', '1'
+      );
+      rules.defineRule('combatNotes.masteryOfSpirits.1',
+        'turningLevel', '=', null,
+        'wisdomModifier', '+', null
+      );
+      rules.defineRule('combatNotes.masteryOfSpirits.2',
+        'turningLevel', '=', 'source * 3 - 10',
+        'wisdomModifier', '+', null,
+        'combatNotes.heightenedEffect', '+', '2'
+      );
+      rules.defineRule('combatNotes.masteryOfSpirits.3',
+        'features.Mastery Of Spirits', '?', null,
+        'wisdomModifier', '=', '3 + source'
+      );
+      rules.defineRule('combatNotes.masteryOfSpirits.4',
+        'features.Mastery Of Spirits', '=', '2',
+        'combatNotes.powerfulEffect', '+', '1'
+      );
       rules.defineRule('magicNotes.forceOfPersonality',
         'charismaModifier', '=', '3 + source'
       );
-      rules.defineRule('magicNotes.inspireConfidence',
-        'levels.Charismatic Channeler', '=', null
-      );
-      rules.defineRule('magicNotes.inspireFascination',
-        'levels.Charismatic Channeler', '=', null
-      );
+      rules.defineRule('magicNotes.inspireConfidence', classLevel, '=', null);
+      rules.defineRule('magicNotes.inspireFascination', classLevel, '=', null);
       rules.defineRule('magicNotes.inspireFascination.1',
-        'levels.Charismatic Channeler', '=', '10 + Math.floor(source / 2)',
+        classLevel, '=', '10 + Math.floor(source / 2)',
         'charismaModifier', '+', null
       );
-      rules.defineRule('magicNotes.inspireFascination.2',
-        'levels.Charismatic Channeler', '=', null
-      );
-      rules.defineRule('magicNotes.inspireFury',
-        'levels.Charismatic Channeler', '=', 'source + 5'
-      );
-      rules.defineRule('magicNotes.massSuggestion',
-        'levels.Charismatic Channeler', '=', 'Math.floor(source / 3)'
-      );
+      rules.defineRule
+        ('magicNotes.inspireFascination.2', classLevel, '=', null);
+      rules.defineRule('magicNotes.inspireFury', classLevel, '=', 'source + 5');
+      rules.defineRule
+        ('magicNotes.massSuggestion', classLevel, '=', 'Math.floor(source/3)');
       rules.defineRule('selectableFeatureCount.Charismatic Channeler',
-        'levels.Charismatic Channeler', '=',
-        'source < 3 ? null : Math.floor(source / 3)'
+        classLevel, '=', 'source < 3 ? null : Math.floor(source / 3)'
       );
       rules.defineRule
         ('spellDifficultyClass.Ch', 'spellDifficultyClass.CC', '=', null);
     } else if(name == 'Hermetic Channeler') {
-      /* TODO
-      feats = ['Spell Knowledge'];
-      var allFeats = SRD35.FEATS.concat(LastAge.FEATS);
-      for(var j = 0; j < allFeats.length; j++) {
-        var pieces = allFeats[j].split(':');
-        if(pieces[1].match(/Item Creation|Metamagic/)) {
-          feats.push(pieces[0]);
+      for(var feat in allFeats) {
+        if(feat == 'Spell Knowledge' ||
+           allFeats[feat].indexOf('Item Creation') >= 0 ||
+           allFeats[feat].indexOf('Metamagic') >= 0) {
+          allFeats[feat] =
+            allFeats[feat].replace('Type=', 'Type="' + name + '",');
         }
       }
-      */
       rules.defineRule('selectableFeatureCount.Hermetic Channeler',
-        'levels.Hermetic Channeler', '=',
-        'source < 3 ? null : Math.floor(source / 3)'
+        classLevel, '=', 'source < 3 ? null : Math.floor(source / 3)'
       );
       rules.defineRule('skillNotes.quickReference',
         'hermeticChannelerFeatures.Quick Reference', '=', '5 * source'
@@ -2261,57 +2306,19 @@ LastAge.classRulesExtra = function(rules, name) {
       rules.defineRule
         ('spellDifficultyClass.Ch', 'spellDifficultyClass.HC', '=', null);
     } else if(name == 'Spiritual Channeler') {
-      /* TODO
-      feats = ['Extra Gift', 'Spell Knowledge'];
-      var allFeats = SRD35.FEATS.concat(LastAge.FEATS);
-      for(var j = 0; j < allFeats.length; j++) {
-        var pieces = allFeats[j].split(':');
-        if(pieces[1].indexOf('Item Creation') >= 0) {
-          feats.push(pieces[0]);
+      for(var feat in allFeats) {
+        if(feat == 'Extra Gift' || feat == 'Spell Knowledge' ||
+           allFeats[feat].indexOf('Item Creation') >= 0) {
+          allFeats[feat] =
+            allFeats[feat].replace('Type=', 'Type="' + name + '",');
         }
       }
-      */
-      rules.defineRule('combatNotes.masterOfTwoWorlds',
-        'levels.Spiritual Channeler', '?', 'source >= 3',
-        'wisdomModifier', '=', '3 + source'
-      );
       rules.defineRule('selectableFeatureCount.Spiritual Channeler',
-        'levels.Spiritual Channeler', '=',
-        'source < 3 ? null : Math.floor(source / 3)'
+        classLevel, '=', 'source < 3 ? null : Math.floor(source / 3)'
       );
       rules.defineRule
         ('spellDifficultyClass.Ch', 'spellDifficultyClass.SC', '=', null);
-      /* TODO
-      var turningTargets = {
-        'Nature':'Nature', 'Spirits':'Spirit', 'The Unnatural':'Unnatural'
-      };
-      for(var a in turningTargets) {
-        var prefix = 'turn' + turningTargets[a];
-        rules.defineRule(prefix + '.level',
-          'features.Mastery Of ' + a, '?', null,
-          'levels.Spiritual Channeler', '+=', null
-        );
-        rules.defineRule(prefix + '.damageModifier',
-          prefix + '.level', '=', null,
-          'wisdomModifier', '+', null
-        );
-        rules.defineRule(prefix + '.frequency',
-          prefix + '.level', '=', '3',
-          'wisdomModifier', '+', null
-        );
-        rules.defineRule(prefix + '.maxHitDice',
-          prefix + '.level', '=', 'source * 3 - 10',
-          'wisdomModifier', '+', null
-        );
-        rules.defineNote([
-          prefix + '.damageModifier:2d6 + %V',
-          prefix + '.frequency:%V/dy',
-          prefix + '.maxHitDice:(d20 + %V) / 3'
-        ]);
-        rules.defineSheetElement
-          ('Turn ' + turningTargets[a], 'Turn Undead', null, ' * ');
-      }
-      */
+      rules.defineRule('turningLevel', 'levels.Spiritual Channeler', '=', null);
     }
 
   } else if(name == 'Defender') {
@@ -2320,14 +2327,14 @@ LastAge.classRulesExtra = function(rules, name) {
       'defenderFeatures.Incredible Speed', '=', '10 * source'
     );
     rules.defineRule('combatNotes.defenderAbilities',
-      'levels.Defender', '=', '3 + source * 3 / 4',
+      classLevel, '=', '3 + source * 3 / 4',
       'level', '+', 'source / 4'
     );
     rules.defineRule('combatNotes.armorClassBonus',
-      'levels.Defender', '+=', 'Math.floor((source + 1) / 2)'
+      classLevel, '+=', 'Math.floor((source + 1) / 2)'
     );
     rules.defineRule('combatNotes.defenderStunningFist',
-      'levels.Defender', '=', '10 + Math.floor(source / 2)',
+      classLevel, '=', '10 + Math.floor(source / 2)',
       'strengthModifier', '+', null
     );
     rules.defineRule('combatNotes.incredibleResilience',
@@ -2339,18 +2346,18 @@ LastAge.classRulesExtra = function(rules, name) {
       'defenderUnarmedDamageSmall', '=', null
     );
     rules.defineRule('combatNotes.offensiveTraining',
-      'levels.Defender', '=', '14 + Math.floor(source / 2)',
+      classLevel, '=', '14 + Math.floor(source / 2)',
       'strengthModifier', '+', null
     );
     rules.defineRule('combatNotes.preciseStrike',
-      'levels.Defender', '=', '3 * Math.floor((source + 2) / 6)'
+      classLevel, '=', '3 * Math.floor((source + 2) / 6)'
     );
     rules.defineRule('defenderUnarmedDamageLarge',
       'features.Large', '?', null,
       'defenderUnarmedDamageMedium', '=', 'source.replace(/6/, "8")'
     );
     rules.defineRule('defenderUnarmedDamageMedium',
-      'levels.Defender', '=',
+      classLevel, '=',
       '"d6" + (source < 7 ? "" : ("+" + Math.floor((source-1) / 6) + "d6"))'
     );
     rules.defineRule('defenderUnarmedDamageSmall',
@@ -2358,7 +2365,7 @@ LastAge.classRulesExtra = function(rules, name) {
       'defenderUnarmedDamageMedium', '=', 'source.replace(/6/, "4")'
     );
     rules.defineRule('selectableFeatureCount.Defender',
-      'levels.Defender', '=',
+      classLevel, '=',
       'source < 2 ? null : (Math.floor((source + 1) / 3) + ' +
                            '(source < 6 ? 0 : Math.floor((source - 3) / 3)))'
     );
@@ -2367,46 +2374,57 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Fighter') {
 
-    rules.defineRule('featCount.Fighter',
-      'levels.Fighter', '=', '1 + Math.floor(source / 2)'
-    );
+    rules.defineRule
+      ('featCount.Fighter', classLevel, '=', '1 + Math.floor(source / 2)');
     rules.defineRule('selectableFeatureCount.Fighter',
-      'levels.Fighter', '=', 'source>=4 ? 1 + Math.floor((source+2)/6) : null'
+      classLevel, '=', 'source>=4 ? 1 + Math.floor((source+2)/6) : null'
     );
     rules.defineRule('skillNotes.adapter',
-      'levels.Fighter', '=',
+      classLevel, '=',
       'source - 3 + (source >= 10 ? source - 9 : 0) + ' +
       '(source >= 16 ? source - 15 : 0)'
     );
     rules.defineRule('skillNotes.adapter.1',
       'features.Adapter', '?', null,
-      'levels.Fighter', '=', 'source < 10 ? 1 : source < 16 ? 2 : 3'
+      classLevel, '=', 'source < 10 ? 1 : source < 16 ? 2 : 3'
     );
 
   } else if(name == 'Legate') {
 
+    rules.defineRule('combatNotes.turnUndead.1',
+      'turningLevel', '=', null,
+      'charismaModifier', '+', null
+    );
+    rules.defineRule('combatNotes.turnUndead.2',
+      'turningLevel', '=', 'source * 3 - 10',
+      'charismaModifier', '+', null
+    );
+    rules.defineRule('combatNotes.turnUndead.3',
+      'turningLevel', '=', '3',
+      'charismaModifier', '+', null
+    );
     rules.defineRule('deity', 'levels.Legate', '=', '"Izrador (NE)"');
     rules.defineRule
-      ('selectableFeatureCount.Legate', 'levels.Legate', '=', '2');
-    rules.defineRule('turningLevel', 'levels.Legate', '+=', null);
+      ('selectableFeatureCount.Legate', classLevel, '=', '2');
+    rules.defineRule('turningLevel', classLevel, '+=', null);
     // Use animal companion stats and features for astirax abilities
     var features = [
       '3:Empathic Link', '6:Telepathy', '9:Enhanced Sense',
       '12:Companion Evasion', '18:Companion Empathy'
     ];
     SRD35.featureListRules
-      (rules, features, 'Animal Companion', 'levels.Legate', false);
+      (rules, features, 'Animal Companion', classLevel, false);
     rules.defineRule('companionNotes.enhancedSense',
-      'levels.Legate', '=', 'source < 15 ? 5 : 10'
+      classLevel, '=', 'source < 15 ? 5 : 10'
     );
     rules.defineRule('animalCompanionStats.Cha',
-      'levels.Legate', '+', 'Math.floor(source / 3) - 1'
+      classLevel, '+', 'Math.floor(source / 3) - 1'
     );
     rules.defineRule('animalCompanionStats.HD',
-      'levels.Legate', '+', '(Math.floor(source / 3) - 1) * 2'
+      classLevel, '+', '(Math.floor(source / 3) - 1) * 2'
     );
     rules.defineRule('animalCompanionStats.Int',
-     'levels.Legate', '+', 'Math.floor(source / 3) - 1'
+     classLevel, '+', 'Math.floor(source / 3) - 1'
     );
 
   } else if(name == 'Wildlander') {
@@ -2419,32 +2437,32 @@ LastAge.classRulesExtra = function(rules, name) {
       'level', '=', null
     );
     rules.defineRule("combatNotes.hunter'sStrike",
-      'levels.Wildlander', '=', 'Math.floor(source / 4)'
+      classLevel, '=', 'Math.floor(source / 4)'
     );
     rules.defineRule('combatNotes.initiativeBonus',
-      'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
+      classLevel, '+=', 'source >= 3 ? 1 : null',
       'wildlanderFeatures.Initiative Bonus', '+', null
     );
     rules.defineRule('featureNotes.animalCompanion',
       'wildlanderFeatures.Animal Companion', '+=', null
     );
     rules.defineRule('selectableFeatureCount.Wildlander',
-      'levels.Wildlander', '=',
+      classLevel, '=',
       '1 + Math.floor((source + 1) / 3) + ' +
       '(source < 6 ? 0 : Math.floor((source - 3) / 3))'
     );
     rules.defineRule('skillNotes.dangerSense',
-      'levels.Wildlander', '+=', 'source >= 3 ? 1 : null',
+      classLevel, '+=', 'source >= 3 ? 1 : null',
       'wildlanderFeatures.Danger Sense', '+', null
     );
     if(LastAge.baseRules == Pathfinder) {
       // Computation as per PRD Ranger
       rules.defineRule('skillNotes.track',
-        'levels.Wildlander', '+=', 'Math.max(1, Math.floor(source / 2))'
+        classLevel, '+=', 'Math.max(1, Math.floor(source / 2))'
       );
     }
     rules.defineRule('skillNotes.wildEmpathy',
-      'levels.Wildlander', '+=', null,
+      classLevel, '+=', null,
       'charismaModifier', '+', null
     );
 
@@ -2523,7 +2541,11 @@ LastAge.featRulesExtra = function(rules, name, spellDict) {
     rules.defineRule('combatNotes.driveItDeep', 'baseAttack', '=', null);
   } if(name == 'Extra Gift') {
     rules.defineRule
-      ('combatNotes.masterOfTwoWorlds', 'featureNotes.extraGift', '+', '4');
+      ('combatNotes.masteryOfNature.3', 'featureNotes.extraGift', '+', '4');
+    rules.defineRule
+      ('combatNotes.masteryOfSpirits.3', 'featureNotes.extraGift', '+', '4');
+    rules.defineRule
+      ('combatNotes.masteryOfTheUnnatural.3', 'featureNotes.extraGift', '+', '4');
     rules.defineRule
       ('magicNotes.forceOfPersonality', 'featureNotes.extraGift', '+', '4');
   } else if(name == 'Innate Magic') {
