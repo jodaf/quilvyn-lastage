@@ -482,7 +482,6 @@ LastAge.FEATURES_ADDED = {
   'Ward Of Life':'Section=save Note="Immune to undead %V"',
   'Wild Empathy':'Section=skill Note="+%V Diplomacy (animals)"',
   'Wild Shape':'Section=magic Note="Change into creature of size %V %1/dy"',
-// TODO 'validationNotes.purebloodHeroicPathRace:Requires Race =~ Erenlander"'
   // Feats
   'Blood-Channeler':
     'Section=magic Note="Dbl spell energy for first two Con points lost"',
@@ -2164,6 +2163,18 @@ LastAge.classRules = function(
   spellDict
 ) {
   if(LastAge.baseRules == Pathfinder) {
+    for(var i = 0; i < requires.length; i++) {
+      for(var skill in Pathfinder.SRD35_SKILL_MAP) {
+        requires[i] =
+          requires[i].replaceAll(skill, Pathfinder.SRD35_SKILL_MAP[skill]);
+      }
+    }
+    for(var i = 0; i < implies.length; i++) {
+      for(var skill in Pathfinder.SRD35_SKILL_MAP) {
+        implies[i] =
+          implies[i].replaceAll(skill, Pathfinder.SRD35_SKILL_MAP[skill]);
+      }
+    }
     for(var i = skills.length - 1; i >= 0; i--) {
       var skill = skills[i];
       if(!(skill in Pathfinder.SRD35_SKILL_MAP))
