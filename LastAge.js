@@ -159,8 +159,8 @@ LastAge.ANIMAL_COMPANIONS =
 LastAge.ARMORS = Object.assign({}, SRD35.ARMORS);
 LastAge.DEITIES = {
   'None':'',
-  'Izrador (NE)':
-    'Weapon=Longsword Domain=Death,Destruction,Evil,Magic,War'
+  'Izrador':
+    'Alignment=NE Weapon=Longsword Domain=Death,Destruction,Evil,Magic,War'
 };
 LastAge.DOMAINS = {
   'Death':SRD35.DOMAINS['Death'],
@@ -2003,6 +2003,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     LastAge.classRulesExtra(rules, name);
   } else if(type == 'Deity')
     LastAge.deityRules(rules, name,
+      QuilvynUtils.getAttrValue(attrs, 'Alignment'),
       QuilvynUtils.getAttrValueArray(attrs, 'Domain'),
       QuilvynUtils.getAttrValueArray(attrs, 'Weapon')
     );
@@ -2501,11 +2502,12 @@ LastAge.companionRules = function(
 };
 
 /*
- * Defines in #rules# the rules associated with deity #name#. #domains# and
- * #favoredWeapons# list the associated domains and favored weapons.
+ * Defines in #rules# the rules associated with deity #name#. #alignment# gives
+ * the deity's alignment, and #domains# and #weapons# list the associated
+ * domains and favored weapons.
  */
-LastAge.deityRules = function(rules, name, domains, favoredWeapons) {
-  LastAge.baseRules.deityRules(rules, name, domains, favoredWeapons);
+LastAge.deityRules = function(rules, name, alignment, domains, weapons) {
+  LastAge.baseRules.deityRules(rules, name, alignment, domains, weapons);
   // No changes needed to the rules defined by base method
 };
 
