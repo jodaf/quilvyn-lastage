@@ -1954,10 +1954,10 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
   else if(type == 'Animal Companion')
     LastAge.companionRules(rules, name,
       QuilvynUtils.getAttrValue(attrs, 'Str'),
-      QuilvynUtils.getAttrValue(attrs, 'Int'),
-      QuilvynUtils.getAttrValue(attrs, 'Wis'),
       QuilvynUtils.getAttrValue(attrs, 'Dex'),
       QuilvynUtils.getAttrValue(attrs, 'Con'),
+      QuilvynUtils.getAttrValue(attrs, 'Int'),
+      QuilvynUtils.getAttrValue(attrs, 'Wis'),
       QuilvynUtils.getAttrValue(attrs, 'Cha'),
       QuilvynUtils.getAttrValue(attrs, 'HD'),
       QuilvynUtils.getAttrValue(attrs, 'AC'),
@@ -2016,10 +2016,10 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
   else if(type == 'Familiar')
     LastAge.familiarRules(rules, name,
       QuilvynUtils.getAttrValue(attrs, 'Str'),
-      QuilvynUtils.getAttrValue(attrs, 'Int'),
-      QuilvynUtils.getAttrValue(attrs, 'Wis'),
       QuilvynUtils.getAttrValue(attrs, 'Dex'),
       QuilvynUtils.getAttrValue(attrs, 'Con'),
+      QuilvynUtils.getAttrValue(attrs, 'Int'),
+      QuilvynUtils.getAttrValue(attrs, 'Wis'),
       QuilvynUtils.getAttrValue(attrs, 'Cha'),
       QuilvynUtils.getAttrValue(attrs, 'HD'),
       QuilvynUtils.getAttrValue(attrs, 'AC'),
@@ -2030,9 +2030,9 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     );
   else if(type == 'Feat') {
     LastAge.featRules(rules, name,
-      QuilvynUtils.getAttrValueArray(attrs, 'Type'),
       QuilvynUtils.getAttrValueArray(attrs, 'Require'),
-      QuilvynUtils.getAttrValueArray(attrs, 'Imply')
+      QuilvynUtils.getAttrValueArray(attrs, 'Imply'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Type')
     );
     LastAge.featRulesExtra(rules, name, LastAge.SPELLS);
   } else if(type == 'Feature')
@@ -2487,16 +2487,16 @@ LastAge.classRulesExtra = function(rules, name) {
 
 /*
  * Defines in #rules# the rules associated with animal companion #name#, which
- * has abilities #str#, #intel#, #wis#, #dex#, #con#, and #cha#, hit dice #hd#,
+ * has abilities #str#, #dex#, #con#, #intel#, #wis#, and #cha#, hit dice #hd#,
  * and armor class #ac#. The companion has attack bonus #attack# and does
  * #damage# damage. If specified, #level# indicates the minimum master level
  * the character needs to have this animal as a companion.
  */
 LastAge.companionRules = function(
-  rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, level, size
+  rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, level, size
 ) {
   LastAge.baseRules.companionRules(
-    rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, size, level
+    rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, size, level
   );
   // No changes needed to the rules defined by base method
 };
@@ -2522,26 +2522,26 @@ LastAge.domainRules = function(rules, name, features, spells, spellDict) {
 
 /*
  * Defines in #rules# the rules associated with familiar #name#, which has
- * abilities #str#, #intel#, #wis#, #dex#, #con#, and #cha#, hit dice #hd#,
+ * abilities #str#, #dex#, #con#, #intel#, #wis#, and #cha#, hit dice #hd#,
  * and armor class #ac#. The familiar has attack bonus #attack# and does
  * #damage# damage. If specified, #level# indicates the minimum master level
  * the character needs to have this animal as a familiar.
  */
 LastAge.familiarRules = function(
-  rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, level, size
+  rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, level, size
 ) {
   LastAge.baseRules.familiarRules
-    (rules, name, str, intel, wis, dex, con, cha, hd, ac, attack, damage, size, level);
+    (rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, size, level);
   // No changes needed to the rules defined by base method
 };
 
 /*
- * Defines in #rules# the rules associated with feat #name#. #types# lists the
- * categories of the feat, and #require# and #implies# list the hard and soft
- * prerequisites for the feat.
+ * Defines in #rules# the rules associated with feat #name#. #require# and
+ * #implies# list any hard and soft prerequisites for the feat, and #types#
+ * lists the categories of the feat.
  */
-LastAge.featRules = function(rules, name, types, requires, implies) {
-  LastAge.baseRules.featRules(rules, name, types, requires, implies);
+LastAge.featRules = function(rules, name, requires, implies, types) {
+  LastAge.baseRules.featRules(rules, name, requires, implies, types);
   // No changes needed to the rules defined by SRD35 method
 };
 
@@ -3630,6 +3630,25 @@ LastAge.weaponRules = function(
     rules, name, profLevel, category, damage, threat, critMultiplier, range
   );
   // No changes needed to the rules defined by base method
+};
+
+/*
+ * Returns the list of editing elements needed by #choiceRules# to add a #type#
+ * item to #rules#.
+ */
+LastAge.choiceEditorElements = function(rules, type) {
+  var result = [];
+  if(type == 'Heroic Path')
+    result.push(
+      ['Require', 'Prerequisites', 'text', [40]],
+      ['Imply', 'Implies', 'text', [40]],
+      ['Features', 'Features', 'text', [40]],
+      ['Selectables', 'Selectables', 'text', [40]],
+      ['Spells', 'Spells', 'text', [80]]
+    );
+  else
+    return LastAge.baseRules.choiceEditorElements(rules, type);
+  return result
 };
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
