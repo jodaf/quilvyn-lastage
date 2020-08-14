@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var LASTAGE_VERSION = '2.0-alpha';
+var LASTAGE_VERSION = '2.0.1.0';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -184,24 +184,24 @@ LastAge.FEATS_ADDED = {
   'Extra Gift':
     'Type=General Require="levels.Charismatic Channeler >= 4 || levels.Spiritual Channeler >= 4"',
   'Friendly Agent':
-    'Type=General Require="alignment =~ /Good/","race =~ /Gnome|Dorn|Erenlander|Sarcosan/"',
+    'Type=General Require="alignment =~ \'Good\'","race =~ \'Gnome|Dorn|Erenlander|Sarcosan\'"',
   'Giant Fighter':'Type=Fighter Require="Sum features.Weapon Focus >= 1"',
   'Herbalist':'Type=Item Creation Require="skills.Profession (Herbalist) >= 4"',
   'Improvised Weapon':'Type=Fighter',
-  'Innate Magic':'Type=General Require="race =~ /Elf|Halfling/"',
+  'Innate Magic':'Type=General Require="race =~ \'Elf|Halfling\'"',
   'Inconspicuous':'Type=General',
-  'Knife Thrower':'Type=Fighter Require="race =~ /Jungle Elf|Snow Elf/"',
+  'Knife Thrower':'Type=Fighter Require="race =~ \'Jungle Elf|Snow Elf\'"',
   'Lucky':'Type=General',
   'Magecraft (Charismatic)':'Type=Channeling',
   'Magecraft (Hermetic)':'Type=Channeling',
   'Magecraft (Spiritual)':'Type=Channeling',
-  'Magic Hardened':'Type=General Require="race =~ /Dwarf|Dworg|Orc/"',
+  'Magic Hardened':'Type=General Require="race =~ \'Dwarf|Dworg|Orc\'"',
   'Natural Healer':'Type=General',
   'Orc Slayer':'Type=FighterGeneral',
   'Quickened Donning':'Type=Fighter',
   'Ritual Magic':
     'Type=Channeling Require="Sum features.Magecraft >= 1","Sum features.Spellcasting >= 1"',
-  'Sarcosan Pureblood':'Type=General Require="race =~ /Sarcosan/"',
+  'Sarcosan Pureblood':'Type=General Require="race =~ \'Sarcosan\'"',
   'Sense Nexus':'Type=General',
   'Spellcasting (Abjuration)':'Type=Channeling,Spellcasting',
   'Spellcasting (Conjuration)':'Type=Channeling,Spellcasting',
@@ -222,7 +222,7 @@ LastAge.FEATS_ADDED = {
   'Warrior Of Shadow':'Type=General Require="charisma >= 12","levels.Legate >= 5"',
   // Legates w/War domain receive Weapon Focus (Longsword)
   'Weapon Focus (Longsword)':'Type=Fighter',
-  'Whispering Awareness':'Type=General Require="wisdom >= 15","race =~ /Elf/"',
+  'Whispering Awareness':'Type=General Require="wisdom >= 15","race =~ \'Elf\'"',
   // Destiny & Shadow
   'Clear-Eyed':'Type=General Require="race == \'Erenlander\'"',
   'Defiant':'Type=General Require="race == \'Erenlander\'"',
@@ -240,13 +240,13 @@ LastAge.FEATS_ADDED = {
     'Type=Fighter Require="strength >= 13","features.Power Attack","features.Weapon Focus (Light Hammer) || features.Weapon Focus (Thowing Axe) || features.Weapon Focus (Urutuk Hatchet)"',
   'Shield Mate':
     'Type=Fighter Require="dexterity >= 13","features.Shield Proficiency (Heavy)"',
-  'Touched By Magic':'Type=General Require="race =~ /Dwarf|Orc/"',
+  'Touched By Magic':'Type=General Require="race =~ \'Dwarf|Orc\'"',
   'Trapsmith':'Type=General',
   'Tunnel Fighting':'Type=Fighter',
   // TODO Dwarvencraft Techniques -- probably selectable features
   // Honor & Shadow
-  'Born Of Duty':'Type=General Require="alignment =~ /Lawful/","race == \'Dorn\'"',
-  'Born Of The Grave':'Type=General Require="alignment !~ /Good/",race == \'Dorn\'"',
+  'Born Of Duty':'Type=General Require="alignment =~ \'Lawful\'","race == \'Dorn\'"',
+  'Born Of The Grave':'Type=General Require="alignment !~ \'Good\'",race == \'Dorn\'"',
   // Sorcery & Shadow
   'Blood-Channeler':
     'Type=General Require="constitution >= 15","Sum features.Magecraft >= 1"',
@@ -409,7 +409,7 @@ LastAge.FEATURES_ADDED = {
   'Nonlethal Damage Reduction':
     'Section=combat Note="Ignore first %V points of non-lethal damage"',
   'Northborn':
-    'Section=save,skill Note="Immune to non-lethal cold/exposure","+2 Survival (cold)/Wild Empathy (cold natives)"',
+    'Section=save,skill Note="Immune to non-lethal cold/exposure","+2 Survival (cold)/+2 Wild Empathy (cold natives)"',
   'Obvious':'Section=skill Note="-4 Hide"',
   'Offensive Tactics':
     'Section=combat Note="+%V to first attack or all damage when using full attack action"',
@@ -516,7 +516,7 @@ LastAge.FEATURES_ADDED = {
   'Friendly Agent':
     'Section=skill Note="+4 Diplomacy (convince allegiance)/+4 Sense Motive (determine allegiance)"',
   'Giant Fighter':
-    'Section=combat Note="+4 AC, double critical range w/in 30\' vs. giants"',
+    'Section=combat Note="+4 AC, dbl critical range w/in 30\' vs. giants"',
   'Hardy':'Section=feature Note="Functional on half food, sleep"',
   'Herbalist':'Section=magic Note="Create herbal concoctions"',
   'Huntsman':
@@ -550,7 +550,7 @@ LastAge.FEATURES_ADDED = {
      'Section=save Note="+4 vs. fear, fail 1 step less intense"',
   'Ritual Magic':'Section=magic Note="Learn and lead magic rituals"',
   'Sarcosan Pureblood':
-    'Section=combat,skill Note="+2 AC (horsed)","Use Diplomacy w/horses, +2 Cha skills (horses/Sarcosans)"',
+    'Section=combat,skill Note="+2 AC (horsed)","Use Diplomacy w/horses, +2 Cha skills (horses and Sarcosans)"',
   'Sense Nexus':'Section=magic Note="DC 15 Wis to sense nexus w/in 5 miles"',
   'Sense Power':
     'Section=magic Note="<i>Detect Magic</i> %V/dy, DC 13 Wis check w/in 20\'"',
@@ -642,7 +642,8 @@ LastAge.FEATURES_ADDED = {
   "Hunter's Strike":'Section=combat Note="x2 damage %V/dy"',
   'Improved Confidence':
     'Section=magic Note="Allies failing enchantment saves affected for half duration; fear reduced"',
-  'Improved Fury':'Section=magic Note="+1 Initiative/attack/damage"',
+  'Improved Fury':
+    'Section=magic Note="+1 Initiative, attack, and damage during Ispire Fury"',
   'Improved Woodland Stride':
     'Section=feature Note="Normal movement through enchanted terrain"',
   'Incredible Resilience':'Section=combat Note="+%V HP"',
@@ -653,7 +654,7 @@ LastAge.FEATURES_ADDED = {
   'Inspire Fascination':
     'Section=magic Note="R120\' %V creatures enthralled %2 rd (DC %1 Will neg)"',
   'Inspire Fury':
-    'Section=magic Note="R60\' Allies +1 initiative/attack/damage %V rd"',
+    'Section=magic Note="R60\' Allies +1 Initiative, attack, and damage %V rd"',
   'Instinctive Response':'Section=combat Note="Re-roll Initiative"',
   'Knowledge Specialty':
     'Section=skill Note="Each day Choose a Knowledge Skill Focus"',
@@ -824,18 +825,18 @@ LastAge.FEATURES_ADDED = {
   'Skilled Rider':
     'Section=skill Note="+2 Handle Animal (wogren)/+2 Ride (wogren)/+2 Concentration (wogrenback)"',
   'Skilled Trader':
-    'Section=skill Note="+2 Appraise, Bluff, Diplomacy, Forgery, Gather Information, Profession when smuggling/trading"',
+    'Section=skill Note="+2 Appraise, Bluff, Diplomacy, Forgery, Gather Information, Profession when smuggling or trading"',
   'Spirit Foe':
-    'Section=save,skill Note="+2 vs. outsiders","+4 Hide (nature)/Move Silently (nature)"',
+    'Section=save,skill Note="+2 vs. outsiders","+4 Hide (nature)/+4 Move Silently (nature)"',
   'Stability':'Section=save Note="+4 vs. Bull Rush and Trip"',
   'Stone Knowledge':
-    'Section=skill Note="+2 Appraise (stone, metal)/Craft (stone, metal)"',
+    'Section=skill Note="+2 Appraise (stone, metal)/+2 Craft (stone, metal)"',
   'Stonecunning':
     'Section=skill Note="+%V Search (stone, metal), automatic check w/in 10\'"',
   'Stout':'Section=feature Note="Endurance and Toughness"',
   'Studious':'Section=feature Note="Magecraft (Hermetic)"',
   'Sturdy':'Section=combat Note="+1 AC"',
-  'Tree Climber':'Section=skill Note="+4 Balance (trees)/Climb (trees)"',
+  'Tree Climber':'Section=skill Note="+4 Balance (trees)/+4 Climb (trees)"',
   'Unafraid':'Section=save Note="+2 vs. fear"',
   // Animal Companions
   'Companion Empathy':
@@ -1352,7 +1353,7 @@ LastAge.SPELLS_ADDED = {
     'Description="+10 Bluff on next lie"',
   'Magic Circle Against Shadow':
     'School=Abjuration ' +
-    'Description="10\' radius from touched +2 AC/+2 saves/extra save vs. mental control/no contact vs. Izrador agents for $L10 min (Will neg)"',
+    'Description="10\' radius from touched +2 AC, +2 saves, extra save vs. mental control, no contact vs. Izrador agents for $L10 min (Will neg)"',
   'Memorial':
     'School=Divination ' +
     'Description="Touched $L10\' radius replays previous/next $L min to next passerby"',

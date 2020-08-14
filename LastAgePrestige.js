@@ -74,7 +74,7 @@ LastAgePrestige.CLASSES = {
       '"8:Undetectable Alignment","9:Nonmagical Alteration","10:Master Spy"',
   'Avenging Knife':
     'Require=' +
-     '"alignment !~ /Evil/","features.Improved Initiative",' +
+     '"alignment !~ \'Evil\'","features.Improved Initiative",' +
      'features.Inconspicuous,"features.Sneak Attack","skills.Bluff >= 5",' +
      '"skills.Gather Information >= 5","skills.Hide >= 8",' +
      '"skills.Move Silently >= 8" ' +
@@ -313,7 +313,8 @@ LastAgePrestige.FEATURES = {
   'Ghost Sight':'Section=magic Note="<i>See Invisible</i> at will"',
   'Hit And Run':
     'Section=combat Note="Move away from foe after attack w/out foe AOO"',
-  'Horse Lord':'Section=skill Note="+1 Handle Animal (horse)/Ride (horseback)"',
+  'Horse Lord':
+    'Section=skill Note="+1 Handle Animal (horse)/+1 Ride (horseback)"',
   'Immovable Blade':'Section=combat Note="Cannot be involuntarily disarmed"',
   'Improved Coup De Grace':
     'Section=combat Note="Max damage from standard action coup de grace"',
