@@ -54,7 +54,7 @@ function LastAge() {
   LastAge.RANDOMIZABLE_ATTRIBUTES =
     LastAge.baseRules.RANDOMIZABLE_ATTRIBUTES.concat
     (LastAge.RANDOMIZABLE_ATTRIBUTES_ADDED);
-  rules.defineChoice('random', SRD35.RANDOMIZABLE_ATTRIBUTES);
+  rules.defineChoice('random', LastAge.RANDOMIZABLE_ATTRIBUTES);
   delete rules.getChoices('random').deity;
   rules.ruleNotes = LastAge.ruleNotes;
 
