@@ -1983,7 +1983,6 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       attrs = LastAge.baseRules.CLASSES[name];
     LastAge.classRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Require'),
-      QuilvynUtils.getAttrValueArray(attrs, 'Imply'),
       QuilvynUtils.getAttrValue(attrs, 'HitDie'),
       QuilvynUtils.getAttrValue(attrs, 'Attack'),
       QuilvynUtils.getAttrValue(attrs, 'SkillPoints'),
@@ -2057,6 +2056,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     LastAge.languageRules(rules, name);
   else if(type == 'Race') {
     LastAge.raceRules(rules, name,
+      QuilvynUtils.getAttrValueArray(attrs, 'Require'),
       QuilvynUtils.getAttrValueArray(attrs, 'Features'),
       QuilvynUtils.getAttrValueArray(attrs, 'Selectables'),
       QuilvynUtils.getAttrValueArray(attrs, 'Languages'),
@@ -2140,41 +2140,34 @@ LastAge.armorRules = function(
 
 /*
  * Defines in #rules# the rules associated with class #name#, which has the list
- * of hard prerequisites #requires# and soft prerequisites #implies#. The class
- * grants #hitDie# (format [n]'d'n) additional hit points and #skillPoints#
- * additional skill points with each level advance. #attack# is one of '1',
- * '1/2', or '3/4', indicating the base attack progression for the class;
- * similarly, #saveFort#, #saveRef#, and #saveWill# are each one of '1/2' or
- * '1/3', indicating the saving throw progressions. #skills# indicate class
- * skills for the class; see skillRules for an alternate way these can be
- * defined. #features# and #selectables# list the fixed and selectable features
- * acquired as the character advances in class level, and #languages# list any
- * automatic languages for the class. #casterLevelArcane# and
- * #casterLevelDivine#, if specified, give the Javascript expression for
- * determining the caster level for the class; these can incorporate a class
- * level attribute (e.g., 'levels.Fighter') or the character level attribute
- * 'level'. #spellAbility#, if specified, contains the ability for computing
- * spell difficulty class for cast spells. #spellsPerDay# lists the number of
- * spells per level per day that the class can cast, and #spells# lists spells
- * defined by the class.
+ * of hard prerequisites #requires#. The class grants #hitDie# (format [n]'d'n)
+ * additional hit points and #skillPoints# additional skill points with each
+ * level advance. #attack# is one of '1', '1/2', or '3/4', indicating the base
+ * attack progression for the class; similarly, #saveFort#, #saveRef#, and
+ * #saveWill# are each one of '1/2' or '1/3', indicating the saving throw
+ * progressions. #skills# indicate class skills for the class; see skillRules
+ * for an alternate way these can be defined. #features# and #selectables# list
+ * the fixed and selectable features acquired as the character advances in
+ * class level, and #languages# lists any automatic languages for the class.
+ * #casterLevelArcane# and #casterLevelDivine#, if specified, give the
+ * Javascript expression for determining the caster level for the class; these
+ * can incorporate a class level attribute (e.g., 'levels.Cleric') or the
+ * character level attribute 'level'. #spellAbility#, if specified, names the
+ * ability for computing spell difficulty class. #spellsPerDay# lists the
+ * number of spells per level per day that the class can cast, and #spells#
+ * lists spells defined by the class. #spellDict# is the dictionary of all
+ * spells used to look up individual spell attributes.
  */
 LastAge.classRules = function(
-  rules, name, requires, implies, hitDie, attack, skillPoints, saveFort,
-  saveRef, saveWill, skills, features, selectables, languages,
-  casterLevelArcane, casterLevelDivine, spellAbility, spellsPerDay, spells,
-  spellDict
+  rules, name, requires, hitDie, attack, skillPoints, saveFort, saveRef,
+  saveWill, skills, features, selectables, languages, casterLevelArcane,
+  casterLevelDivine, spellAbility, spellsPerDay, spells, spellDict
 ) {
   if(LastAge.baseRules == Pathfinder) {
     for(var i = 0; i < requires.length; i++) {
       for(var skill in Pathfinder.SRD35_SKILL_MAP) {
         requires[i] =
           requires[i].replaceAll(skill, Pathfinder.SRD35_SKILL_MAP[skill]);
-      }
-    }
-    for(var i = 0; i < implies.length; i++) {
-      for(var skill in Pathfinder.SRD35_SKILL_MAP) {
-        implies[i] =
-          implies[i].replaceAll(skill, Pathfinder.SRD35_SKILL_MAP[skill]);
       }
     }
     for(var i = skills.length - 1; i >= 0; i--) {
@@ -2188,10 +2181,9 @@ LastAge.classRules = function(
     }
   }
   LastAge.baseRules.classRules(
-    rules, name, requires, implies, hitDie, attack, skillPoints, saveFort,
-    saveRef, saveWill, skills, features, selectables, languages,
-    casterLevelArcane, casterLevelDivine, spellAbility, spellsPerDay, spells,
-    spellDict
+    rules, name, requires, hitDie, attack, skillPoints, saveFort, saveRef,
+    saveWill, skills, features, selectables, languages, casterLevelArcane,
+    casterLevelDivine, spellAbility, spellsPerDay, spells, spellDict
   );
   // No changes needed to the rules defined by base method
 };
@@ -3341,17 +3333,20 @@ LastAge.languageRules = function(rules, name) {
 };
 
 /*
- * Defines in #rules# the rules associated with race #name#. #features# and
- * #selectables# list associated features and #languages# the automatic
- * languages. #spells# lists any natural spells, for which #spellAbility# is
- * used to compute the save DC.
+ * Defines in #rules# the rules associated with race #name#, which has the list
+ * of hard prerequisites #requires#. #features# and #selectables# list
+ * associated features and #languages# the automatic languages. #spells# lists
+ * any natural spells, for which #spellAbility# is used to compute the save DC.
+ * #spellDict# is the dictionary of all spells used to look up individual spell
+ * attributes.
  */
 LastAge.raceRules = function(
-  rules, name, features, selectables, languages, spellAbility, spells, spellDict
+  rules, name, requires, features, selectables, languages, spellAbility,
+  spells, spellDict
 ) {
   LastAge.baseRules.raceRules
-    (rules, name, features, selectables, languages, spellAbility, spells,
-     spellDict);
+    (rules, name, requires, features, selectables, languages, spellAbility,
+     spells, spellDict);
   // No changes needed to the rules defined by base method
 };
 
