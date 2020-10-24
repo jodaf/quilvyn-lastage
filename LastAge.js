@@ -15,9 +15,10 @@ this program; if not, write to the Free Software Foundation, Inc., 59 Temple
 Place, Suite 330, Boston, MA 02111-1307 USA.
 */
 
+/*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.0.1.0';
+var LASTAGE_VERSION = '2.1.1.0';
 
 /*
  * This module loads the rules from the Second Edition core rule book.
@@ -67,9 +68,6 @@ function LastAge() {
     {}, LastAge.baseRules.ANIMAL_COMPANIONS, LastAge.ANIMAL_COMPANIONS_ADDED
   );
   LastAge.ARMORS = Object.assign({}, LastAge.baseRules.ARMORS);
-  for(var domain in LastAge.DOMAINS) {
-    LastAge.DOMAINS[domain] = LastAge.baseRules.DOMAINS[domain];
-  }
   LastAge.CLASSES['Barbarian'] = LastAge.baseRules.CLASSES['Barbarian'];
   LastAge.CLASSES['Rogue'] = LastAge.baseRules.CLASSES['Rogue'];
   LastAge.FAMILIARS = Object.assign({}, LastAge.baseRules.FAMILIARS);
@@ -78,8 +76,9 @@ function LastAge() {
   LastAge.FEATURES =
     Object.assign({}, LastAge.baseRules.FEATURES, LastAge.FEATURES_ADDED);
   LastAge.GENDERS = Object.assign({}, LastAge.baseRules.GENDERS);
-  LastAge.SCHOOLS =
-    Object.assign({}, LastAge.baseRules.SCHOOLS, LastAge.SCHOOLS_ADDED);
+  for(var path in LastAge.PATHS) {
+    LastAge.PATHS[path] = LastAge.baseRules.PATHS[path];
+  }
   LastAge.SHIELDS = Object.assign({}, LastAge.baseRules.SHIELDS);
   LastAge.SKILLS =
     Object.assign({}, LastAge.baseRules.SKILLS, LastAge.SKILLS_ADDED);
@@ -98,7 +97,7 @@ function LastAge() {
   LastAge.abilityRules(rules);
   LastAge.aideRules(rules, LastAge.ANIMAL_COMPANIONS, LastAge.FAMILIARS);
   LastAge.combatRules(rules, LastAge.ARMORS, LastAge.SHIELDS, LastAge.WEAPONS);
-  // Spell definition is handled by each individual class and domain. Schools
+  // Spell definition is handled by each individual class and path. Schools
   // have to be defined before this can be done.
   LastAge.magicRules(rules, LastAge.SCHOOLS, []);
   // Feats must be defined before classes
@@ -106,7 +105,7 @@ function LastAge() {
     (rules, LastAge.FEATS, LastAge.FEATURES, LastAge.LANGUAGES, LastAge.SKILLS);
   LastAge.identityRules(
     rules, LastAge.ALIGNMENTS, LastAge.CLASSES, LastAge.DEITIES,
-    LastAge.DOMAINS, LastAge.GENDERS, LastAge.HEROIC_PATHS, LastAge.RACES
+    LastAge.GENDERS, LastAge.HEROIC_PATHS, LastAge.PATHS, LastAge.RACES
   );
   LastAge.goodiesRules(rules);
 
@@ -162,22 +161,15 @@ LastAge.DEITIES = {
   'Izrador':
     'Alignment=NE Weapon=Longsword Domain=Death,Destruction,Evil,Magic,War'
 };
-LastAge.DOMAINS = {
-  'Death':SRD35.DOMAINS['Death'],
-  'Destruction':SRD35.DOMAINS['Destruction'],
-  'Evil':SRD35.DOMAINS['Evil'],
-  'Magic':SRD35.DOMAINS['Magic'],
-  'War':SRD35.DOMAINS['War']
-};
 LastAge.FAMILIARS = Object.assign({}, SRD35.FAMILIARS);
 LastAge.FEATS_ADDED = {
   // MN2E
-  'Craft Charm':'Type=Item Creation Require="Max /^skills.Craft/ >= 4"',
+  'Craft Charm':'Type="Item Creation" Require="Max \'^skills.Craft\' >= 4"',
   'Craft Greater Spell Talisman':
-    'Type=Item Creation Require="Sum features.Magecraft >= 1","level >= 12"',
-    // TODO any 3 Channeling
+    'Type="Item Creation" Require="Sum \'features.Magecraft\' >= 1","level >= 12"',
+    // TBD any 3 Channeling
   'Craft Spell Talisman':
-    'Type=Item Creation Require="Sum features.Magecraft >= 1","Sum features.Spellcasting >= 1","level >= 3"',
+    'Type="Item Creation" Require="Sum \'features.Magecraft\' >= 1","Sum features.Spellcasting >= 1","level >= 3"',
   'Devastating Mounted Assault':
     'Type=Fighter Require="features.Mounted Combat >= 1","skills.Ride >= 10"',
   'Drive It Deep':'Type=Fighter Require="baseAttack >= 1"',
@@ -186,7 +178,11 @@ LastAge.FEATS_ADDED = {
   'Friendly Agent':
     'Type=General Require="alignment =~ \'Good\'","race =~ \'Gnome|Dorn|Erenlander|Sarcosan\'"',
   'Giant Fighter':'Type=Fighter Require="Sum features.Weapon Focus >= 1"',
-  'Herbalist':'Type=Item Creation Require="skills.Profession (Herbalist) >= 4"',
+  'Greater Spell Focus (Greater Conjuration)':
+    'Type=General Require="features.Spell Focus (Greater Conjuration)"',
+  'Greater Spell Focus (Greater Evocation)':
+    'Type=General Require="features.Spell Focus (Greater Evocation)"',
+  'Herbalist':'Type="Item Creation" Require="skills.Profession (Herbalist) >= 4"',
   'Improvised Weapon':'Type=Fighter',
   'Innate Magic':'Type=General Require="race =~ \'Elf|Halfling\'"',
   'Inconspicuous':'Type=General',
@@ -200,9 +196,29 @@ LastAge.FEATS_ADDED = {
   'Orc Slayer':'Type=FighterGeneral',
   'Quickened Donning':'Type=Fighter',
   'Ritual Magic':
-    'Type=Channeling Require="Sum features.Magecraft >= 1","Sum features.Spellcasting >= 1"',
+    'Type=Channeling Require="Sum \'features.Magecraft\' >= 1","Sum \'features.Spellcasting\' >= 1"',
   'Sarcosan Pureblood':'Type=General Require="race =~ \'Sarcosan\'"',
   'Sense Nexus':'Type=General',
+  'Spell Focus (Abjuration)':
+    'Type=General Require="features.Spellcasting (Abjuration)"',
+  'Spell Focus (Conjuration)':
+    'Type=General Require="features.Spellcasting (Conjuration)"',
+  'Spell Focus (Divination)':
+    'Type=General Require="features.Spellcasting (Divination)"',
+  'Spell Focus (Enchantment)':
+    'Type=General Require="features.Spellcasting (Enchantment)"',
+  'Spell Focus (Evocation)':
+    'Type=General Require="features.Spellcasting (Evocation)"',
+  'Spell Focus (Greater Conjuration)':
+    'Type=General Require="features.Spellcasting (Conjuration)"',
+  'Spell Focus (Greater Evocation)':
+    'Type=General Require="features.Spellcasting (Evocation)"',
+  'Spell Focus (Illusion)':
+    'Type=General Require="features.Spellcasting (Illusion)"',
+  'Spell Focus (Necromancy)':
+    'Type=General Require="features.Spellcasting (Necromancy)"',
+  'Spell Focus (Transmutation)':
+    'Type=General Require="features.Spellcasting (Transmutation)"',
   'Spellcasting (Abjuration)':'Type=Channeling,Spellcasting',
   'Spellcasting (Conjuration)':'Type=Channeling,Spellcasting',
   'Spellcasting (Divination)':'Type=Channeling,Spellcasting',
@@ -216,8 +232,8 @@ LastAge.FEATS_ADDED = {
   'Spellcasting (Greater Evocation)':
     'Type=Channeling,Spellcasting Require="features.Spellcasting (Evocation)"',
   // Skill Focus (Profession (Soldier)) available to Leader Of Men Fighters
-  'Skill Focus':'Profession (Soldier)',
-  'Spell Knowledge':'Type=General Require="Sum features.Spellcasting >= 1"',
+  'Skill Focus (Profession (Soldier))':'Type=General',
+  'Spell Knowledge':'Type=General Require="Sum \'features.Spellcasting\' >= 1"',
   'Thick Skull':'Type=General',
   'Warrior Of Shadow':'Type=General Require="charisma >= 12","levels.Legate >= 5"',
   // Legates w/War domain receive Weapon Focus (Longsword)
@@ -243,26 +259,26 @@ LastAge.FEATS_ADDED = {
   'Touched By Magic':'Type=General Require="race =~ \'Dwarf|Orc\'"',
   'Trapsmith':'Type=General',
   'Tunnel Fighting':'Type=Fighter',
-  // TODO Dwarvencraft Techniques -- probably selectable features
+  // TBD Dwarvencraft Techniques -- probably selectable features
   // Honor & Shadow
   'Born Of Duty':'Type=General Require="alignment =~ \'Lawful\'","race == \'Dorn\'"',
-  'Born Of The Grave':'Type=General Require="alignment !~ \'Good\'",race == \'Dorn\'"',
+  'Born Of The Grave':'Type=General Require="alignment !~ \'Good\'","race == \'Dorn\'"',
   // Sorcery & Shadow
   'Blood-Channeler':
-    'Type=General Require="constitution >= 15","Sum features.Magecraft >= 1"',
+    'Type=General Require="constitution >= 15","Sum \'features.Magecraft\' >= 1"',
   'Craft Rune Of Power':
-    'Type=Item Creation Require="Sum features.Magecraft >= 1","Sum features.Spellcasting >= 1","level >= 3"',
+    'Type="Item Creation" Require="Sum \'features.Magecraft\' >= 1","Sum \'features.Spellcasting\' >= 1","level >= 3"',
   'Flexible Recovery':
-    'Type=General Require="constitution >= 13","Sum features.Magecraft >= 1"',
+    'Type=General Require="constitution >= 13","Sum \'features.Magecraft\' >= 1"',
   'Improved Flexible Recovery':
-    'Type=General Require="constitution >= 15","features.Flexible Recovery","Sum features.Magecraft >= 1"',
+    'Type=General Require="constitution >= 15","features.Flexible Recovery","Sum \'features.Magecraft\' >= 1"',
   'Knack For Charms':
-    'Type=Item Creation Require="skills.Knowledge (Arcana) >= 4","skills.Knowledge (Nature) >= 4"',
+    'Type="Item Creation" Require="skills.Knowledge (Arcana) >= 4","skills.Knowledge (Nature) >= 4"',
   'Living Talisman':
-    'Type=General Require="Sum features.Magecraft >= 1","Sum features.Spellcasting >= 1","level >= 5","skills.Knowledge (Arcana) >= 6"',
-  'Power Reservoir':'Type=General Require="Sum features.Magecraft >= 1"',
+    'Type=General Require="Sum \'features.Magecraft\' >= 1","Sum \'features.Spellcasting\' >= 1","level >= 5","skills.Knowledge (Arcana) >= 6"',
+  'Power Reservoir':'Type=General Require="Sum \'features.Magecraft\' >= 1"',
   'Sense Power':'Type=General Require="wisdom >= 15"',
-  'Subtle Caster':'Type=General Require="Sum features.Magecraft >= 1"',
+  'Subtle Caster':'Type=General Require="Sum \'features.Magecraft\' >= 1"',
   // Star & Shadow
   'Canny Strike':
     'Type=Fighter Require="intelligence >= 13","baseAttack >= 6","features.Clever Fighting","features.Weapon Finesse"',
@@ -277,17 +293,6 @@ LastAge.FEATS_ADDED = {
   'Resigned To Death':'Type=General Require="wisdom >= 13"',
   'Whirlwind Charge':'Type=General Require="strength >= 15","baseAttack >= 6","features.Cleave","features.Power Attack"'
 };
-for(var school in SRD35.SCHOOLS) {
-  LastAge.FEATS_ADDED['Spell Focus (' + school + ')'] =
-    SRD35.FEATS['Spell Focus (' + school + ')'] + ' Require="Spellcasting (' + school + ')';
-  if(school == 'Conjuration' || school == 'Evocation') {
-    var greaterSchool = 'Greater ' + school;
-    LastAge.FEATS_ADDED['Greater Spell Focus (' + greaterSchool + ')'] =
-      SRD35.FEATS['Greater Spell Focus (' + school + ')'].replaceAll(school, greaterSchool);
-    LastAge.FEATS_ADDED['Spell Focus (' + greaterSchool + ')'] =
-      LastAge.FEATS_ADDED['Spell Focus (' + school + ')'].replaceAll(school, greaterSchool);
-  }
-}
 LastAge.FEATS = Object.assign({}, SRD35.FEATS, LastAge.FEATS_ADDED);
 LastAge.FEATURES_ADDED = {
   // Heroic Paths
@@ -313,9 +318,9 @@ LastAge.FEATURES_ADDED = {
   'Battle Cry':'Section=combat Note="+%V hit points after cry %1/dy"',
   'Bestial Aura':
     'Section=combat,skill Note="Turn animals","-10 Handle Animal, no Wild Empathy"',
-  'Blindsense':'Section=feature Note=R30\' Other senses detect unseen objects"',
+  'Blindsense':'Section=feature Note="R30\' Other senses detect unseen objects"',
   'Blindsight':
-    'Section=feature Note=R30\' Other senses compensate for loss of vision"',
+    'Section=feature Note="R30\' Other senses compensate for loss of vision"',
   'Blood Of Kings':
     'Section=skill Note="Daily +%V Cha skills in Shadow or resistance interactions"',
   'Blood Of The Planes':'Section=skill Note="+%V Cha skills with outsiders"',
@@ -419,7 +424,7 @@ LastAge.FEATURES_ADDED = {
   'Panar Fury':
     'Section=combat Note="+2 Str and Con, +1 Will, -1 AC for %V rd %1/dy"',
   'Perfect Assault':
-    'Section=combat Note=R30\' Allies threaten critical on any hit 1/dy"',
+    'Section=combat Note="R30\' Allies threaten critical on any hit 1/dy"',
   'Persistence':
     'Section=feature Note="Defensive Roll, Evasion, Slippery Mind, Uncanny Dodge %V/dy"',
   'Persuasive Speaker':'Section=skill Note="+%V verbal Cha skills"',
@@ -517,6 +522,10 @@ LastAge.FEATURES_ADDED = {
     'Section=skill Note="+4 Diplomacy (convince allegiance)/+4 Sense Motive (determine allegiance)"',
   'Giant Fighter':
     'Section=combat Note="+4 AC, dbl critical range w/in 30\' vs. giants"',
+  'Greater Spell Focus (Greater Conjuration)':
+    'Section=magic Note="+1 Spell DC (Greater Conjuration)"',
+  'Greater Spell Focus (Greater Evocation)':
+    'Section=magic Note="+1 Spell DC (Greater Evocation)"',
   'Hardy':'Section=feature Note="Functional on half food, sleep"',
   'Herbalist':'Section=magic Note="Create herbal concoctions"',
   'Huntsman':
@@ -557,7 +566,11 @@ LastAge.FEATURES_ADDED = {
   'Shield Mate':
     'Section=combat Note="Allies +2 AC when self fighting defensively or -2 Combat Expertise"',
   'Slow Learner':'Section=feature Note="Replace later with another feat"',
-  'Spell Knowledge':'Section=magic Note="+2 Spells Known Bonus"',
+  'Spell Focus (Greater Conjuration)':
+    'Section=magic Note="+1 Spell DC (Greater Conjuration)"',
+  'Spell Focus (Greater Evocation)':
+    'Section=magic Note="+1 Spell DC (Greater Evocation)"',
+  'Spell Knowledge':'Section=magic Note="+2 Spell Slots Bonus"',
   'Spellcasting (Abjuration)':
     'Section=magic Note="May learn school spells/+1 school spell"',
   'Spellcasting (Conjuration)':
@@ -846,13 +859,6 @@ LastAge.FEATURES_ADDED = {
   'Telepathy':
     'Section=companion Note="R100\' Companion-controlled telepathic communication"'
 };
-for(var school in {'Conjuration':'', 'Evocation':''}) {
-  var greaterSchool = 'Greater ' + school;
-  LastAge.FEATURES_ADDED['Greater Spell Focus (' + greaterSchool + ')'] =
-    SRD35.FEATURES['Greater Spell Focus (' + school + ')'].replaceAll(school, greaterSchool);
-  LastAge.FEATURES_ADDED['Spell Focus (' + greaterSchool + ')'] =
-    SRD35.FEATURES['Spell Focus (' + school + ')'].replaceAll(school, greaterSchool);
-}
 LastAge.FEATURES = Object.assign({}, SRD35.FEATURES, LastAge.FEATURES_ADDED);
 LastAge.GENDERS = Object.assign({}, SRD35.GENDERS);
 LastAge.HEROIC_PATHS = {
@@ -975,7 +981,7 @@ LastAge.HEROIC_PATHS = {
       '"4:Retributive Rage",5:Ferocity,"9:Last Stand",' +
       '"10:Increased Damage Threshold","14:Improved Retributive Rage"',
   'Pureblood':
-    'Require="Race == "Erenlander" ' +
+    'Require="race == \'Erenlander\'" ' +
     'Features=' +
       '"1:Master Adventurer","2:Blood Of Kings","3:Feat Bonus",' +
       '"4:Skill Fixation" ' +
@@ -1075,6 +1081,13 @@ LastAge.LANGUAGES = {
   "Trader's Tongue":
     ''
 };
+LastAge.PATHS = {
+  'Death Domain':SRD35.PATHS['Death Domain'],
+  'Destruction Domain':SRD35.PATHS['Destruction Domain'],
+  'Evil Domain':SRD35.PATHS['Evil Domain'],
+  'Magic Domain':SRD35.PATHS['Magic Domain'],
+  'War Domain':SRD35.PATHS['War Domain']
+};
 LastAge.RACES = {
   'Agrarian Halfling':
     'Features=' +
@@ -1084,7 +1097,8 @@ LastAge.RACES = {
       '"Weapon Familiarity (Halfling Lance)",' +
       '"Dextrous Hands","Gifted Healer" ' +
     'Selectables=' +
-      'Stout,Studious',
+      'Stout,Studious ' +
+    'Languages=Colonial,Halfling',
   'Clan Dwarf':
     'Features=' +
       '"Favored Region (Kaladrun Mountains)",' +
@@ -1092,65 +1106,75 @@ LastAge.RACES = {
       'Darkvision,"Dwarf Ability Adjustment","Dwarf Enmity",' +
       '"Dwarf Favored Weapon","Resist Poison",Resilient,Slow,"Resist Spells",' +
       '"Stone Knowledge","Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe)",'+
-      '"Dodge Orcs","Know Depth,Stability,Stonecunning',
+      '"Dodge Orcs","Know Depth",Stability,Stonecunning ' +
+    'Languages="Clan Dwarven","Old Dwarven"',
   'Clan-Raised Dwarrow':
     'Features=' +
       '"Favored Region (Kaladrun Mountains)",' +
       'Darkvision,"Dwarrow Ability Adjustment","Resist Poison",Small,Slow,' +
       '"Resist Spells",Sturdy,' +
       '"Dodge Orcs",Stonecunning,"Stone Knowledge",' +
-      '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)"',
+      '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)" ' +
+    'Languages="Clan Dwarven","Old Dwarven","Trader\'s Tongue"',
   'Clan-Raised Dworg':
     'Features=' +
       '"Favored Region (Kaladrun Mountains)",' +
       'Darkvision,"Dworg Ability Adjustment","Dworg Enmity",' +
       '"Minor Light Sensitivity",Rugged,"Resist Spells",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
-      'Stonecunning',
+      'Stonecunning ' +
+    'Languages="Clan Dwarven","Old Dwarven",Orcish',
   'Danisil-Raised Elfling':
     'Features=' +
       '"Favored Region (Aruun)",' +
       '"Elfling Ability Adjustment",Fortunate,"Gifted Healer","Innate Magic",' +
       '"Keen Senses","Low-Light Vision",Nimble,Small,' +
-      '"Weapon Familiarity (Atharak/Sepi)"',
+      '"Weapon Familiarity (Atharak/Sepi)" ' +
+    'Languages=Halfling,"High Elven","Jungle Mouth"',
   'Dorn':
     'Features=' +
       '"Favored Region (Northlands)",' +
       'Brotherhood,"Cold Fortitude","Dorn Ability Adjustment",Fierce,Robust,' +
-      '"Weapon Familiarity (Bastard Sword/Dornish Horse Spear)"',
+      '"Weapon Familiarity (Bastard Sword/Dornish Horse Spear)" ' +
+    'Languages=Erenlander,Norther',
   'Erenlander':
     'Features=' +
       '"Favored Region (Erenland region)",' +
       '"Erenlander Ability Adjustment",Heartlander,' +
-      '"Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)"',
+      '"Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)" ' +
+    'Languages=Erenlander',
   'Gnome':
     'Features=' +
       '"Favored Region (Central Erenland)",' +
       '"Deep Lungs","Gnome Ability Adjustment","Low-Light Vision",' +
       '"Natural Riverfolk","Natural Swimmer","Natural Trader",Robust,Slow,' +
-      'Small,"Resist Spells","Weapon Familiarity (Hand Crossbow)"',
+      'Small,"Resist Spells","Weapon Familiarity (Hand Crossbow)" ' +
+    'Languages="Trader\'s Tongue",any,any',
   'Gnome-Raised Dwarrow':
     'Features=' +
       '"Favored Region (Central Erenland)",' +
       'Darkvision,"Dwarrow Ability Adjustment","Resist Poison",Small,Slow,' +
       '"Resist Spells",Sturdy,' +
       '"Deep Lungs","Natural Riverfolk","Natural Swimmer","Skilled Trader",' +
-      '"Weapon Familiarity (Hand Crossbow/Inutek)"',
+      '"Weapon Familiarity (Hand Crossbow/Inutek)" ' +
+    'Languages="Clan Dwarven","Old Dwarven","Trader\'s Tongue",any,any',
   'Halfling-Raised Elfling':
     'Features=' +
       '"Favored Region (Central Erenland)",' +
       '"Elfling Ability Adjustment",Fortunate,"Gifted Healer","Innate Magic",' +
       '"Keen Senses","Low-Light Vision",Nimble,Small,' +
-      '"Bound To The Beast","Weapon Familiarity (Atharak/Halfling Lance)"',
+      '"Bound To The Beast","Weapon Familiarity (Atharak/Halfling Lance)" ' +
+    'Languages=Erenlander,Halfling,"Jungle Mouth"',
   'Jungle Elf':
     'Features=' +
       '"Favored Region (Erethor)","Favored Region (Aruun)",' +
       '"Elf Ability Adjustment","Innate Magic","Keen Senses",' +
       '"Low-Light Vision","Natural Channeler","Resist Enchantment",' +
       '"Tree Climber",' +
-      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)" ' +
+      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
       '"Improved Innate Magic","Improved Keen Senses","Improved Tree Climber",'+
-      '"Spirit Foe","Weapon Familiarity (Sepi)"',
+      '"Spirit Foe","Weapon Familiarity (Sepi)" ' +
+    'Languages="Jungle Mouth"',
   'Kurgun Dwarf':
     'Features=' +
       '"Favored Region (Kaladrun Mountains)",' +
@@ -1159,20 +1183,23 @@ LastAge.RACES = {
       'Darkvision,"Dwarf Ability Adjustment","Dwarf Enmity",' +
       '"Dwarf Favored Weapon","Resist Poison",Resilient,Slow,"Resist Spells",' +
       '"Stone Knowledge","Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe)",'+
-      '"Natural Mountaineer","Weapon Familiarity (Urutuk Hatchet)"',
+      '"Natural Mountaineer","Weapon Familiarity (Urutuk Hatchet)" ' +
+    'Languages="Clan Dwarven","Old Dwarven"',
   'Kurgun-Raised Dwarrow':
     'Features=' +
       '"Favored Region (Kaladrun Mountains)",' +
       'Darkvision,"Dwarrow Ability Adjustment","Resist Poison",Small,Slow,' +
       '"Resist Spells",Sturdy,' +
-      '"Dodge Orcs","Natural Mountaineer","Stone Knowledge"',
+      '"Dodge Orcs","Natural Mountaineer","Stone Knowledge" ' +
+    'Languages="Clan Dwarven","Old Dwarven","Trader\'s Tongue"',
   'Kurgun-Raised Dworg':
     'Features=' +
       '"Favored Region (Kaladrun Mountains)",' +
       'Darkvision,"Dworg Ability Adjustment","Dworg Enmity",' +
       '"Minor Light Sensitivity",Rugged,"Resist Spells",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
-      '"Natural Mountaineer"',
+      '"Natural Mountaineer" ' +
+    'Languages="Clan Dwarven","Old Dwarven",Orcish',
   'Nomadic Halfling':
     'Features=' +
       '"Favored Region (Central Erenland)",' +
@@ -1181,61 +1208,74 @@ LastAge.RACES = {
       '"Weapon Familiarity (Halfling Lance)",' +
       '"Focused Rider","Skilled Rider" ' +
     'Selectables=' +
-      '"Bound To The Beast","Bound To The Spirits"',
+      '"Bound To The Beast","Bound To The Spirits" ' +
+    'Languages=Colonial,Halfling',
   'Orc':
     'Features=' +
       '"Favored Region (Northern Reaches)",' +
       'Darkvision,"Improved Cold Fortitude","Light Sensitivity",' +
       '"Natural Predator","Night Fighter","Orc Ability Adjustment",' +
       '"Orc Enmity","Orc Frenzy","Resist Spells",' +
-      '"Weapon Familiarity (Vardatch)"',
+      '"Weapon Familiarity (Vardatch)" ' +
+    'Languages="Black Tongue","Old Dwarven","High Elven",Orcish',
   'Plains Sarcosan':
     'Features=' +
       '"Favored Region (Southern Erenland)",' +
       'Quick,"Sarcosan Ability Adjustment",' +
       '"Weapon Familiarity (Cedeku/Sarcosan Lance)",' +
-      '"Natural Horseman"',
+      '"Natural Horseman" ' +
+    'Languages=Colonial,Erenlander',
   'Sea Elf':
     'Features=' +
       '"Favored Region (Erathor)","Favored Region (Miraleen)",' +
       '"Elf Ability Adjustment","Innate Magic","Keen Senses",' +
       '"Low-Light Vision","Natural Channeler","Resist Enchantment",' +
       '"Tree Climber",' +
-      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)" ' +
+      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
       '"Deep Lungs","Improved Natural Swimmer","Natural Sailor",' +
       '"Natural Swimmer","Weapon Familiarity (Net)",' +
-      '"Weapon Proficiency (Guisarme/Ranseur/Tident)"',
+      '"Weapon Proficiency (Guisarme/Ranseur/Tident)" ' +
+    'Languages="High Elven","Jungle Mouth"',
   'Snow Elf':
     'Features=' +
       '"Favored Region (Erathor)","Favored Region (Veradeen)",' +
       '"Elf Ability Adjustment","Innate Magic","Keen Senses",' +
       '"Low-Light Vision","Natural Channeler","Resist Enchantment",' +
       '"Tree Climber",' +
-      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)" ' +
-       '"Cold Fortitude",Robust,"Weapon Familiarity (Fighting Knife)"',
+      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
+       '"Cold Fortitude",Robust,"Weapon Familiarity (Fighting Knife)" ' +
+    'Languages="High Elven",Orcish,"Patrol Sign"',
   'Urban Sarcosan':
     'Features=' +
       '"Favored Region (Urban)",' +
       'Quick,"Sarcosan Ability Adjustment",' +
       '"Weapon Familiarity (Cedeku/Sarcosan Lance)",' +
-      'Interactive',
+      'Interactive ' +
+    'Languages=Colonial,Erenlander',
   'Wood Elf':
     'Features=' +
       '"Favored Region (Erethor)","Favored Region (Caraheen)",' +
       '"Elf Ability Adjustment","Innate Magic","Keen Senses",' +
       '"Low-Light Vision","Natural Channeler","Resist Enchantment",' +
       '"Tree Climber",' +
-      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)" ' +
+      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
       '"Improved Innate Magic","Improved Natural Channeler",' +
-      '"Weapon Proficiency (Longsword/Short Sword)"'
+      '"Weapon Proficiency (Longsword/Short Sword)" ' +
+    'Languages="High Elven"'
 };
-LastAge.SCHOOLS_ADDED = {
-  'Greater Conjuration':
-    '',
-  'Greater Evocation':
-    ''
+LastAge.SCHOOLS = {
+  'Abjuration':'',
+  'Conjuration':'',
+  'Divination':'',
+  'Enchantment':'',
+  'Evocation':'',
+  'Greater Conjuration':'',
+  'Greater Evocation':'',
+  'Illusion':'',
+  'Necromancy':'',
+  'Transmutation':'',
+  'Universal':''
 };
-LastAge.SCHOOLS = Object.assign({}, SRD35.SCHOOLS, LastAge.SCHOOLS_ADDED);
 LastAge.SHIELDS = Object.assign({}, SRD35.SHIELDS);
 LastAge.SKILLS_ADDED = {
   'Knowledge (Local)':
@@ -1511,7 +1551,7 @@ LastAge.CLASSES = {
       '"3:Inspire Fury","3:Mass Suggestion",3:Suggestion ' +
     'CasterLevelArcane="levels.Charismatic Channeler" ' +
     'SpellAbility=charisma ' +
-    'SpellsPerDay=' +
+    'SpellSlots=' +
       'CC0:1=0 ' +
     'Spells=' +
       '"Ch0:Create Water;Cure Minor Wounds;Dancing Lights;Daze;Detect Magic;' +
@@ -1663,7 +1703,7 @@ LastAge.CLASSES = {
        '"2:Strike And Hold","2:Weapon Trap"',
   'Fighter':
     'HitDie=d10 Attack=1 SkillPoints=2 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
-    'Skills =' +
+    'Skills=' +
       'Climb,Craft,"Handle Animal",Intimidate,Jump,"Knowledge (Shadow)",' +
       'Profession,Ride,"Speak Language",Swim ' +
     'Features=' +
@@ -1689,24 +1729,24 @@ LastAge.CLASSES = {
       '"3:Spell Specialty" ' +
     'CasterLevelArcane="levels.Hermetic Channeler" ' +
     'SpellAbility=intelligence ' +
-    'SpellsPerDay=' +
+    'SpellSlots=' +
       'HC0:1=0',
   'Legate':
     'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
-    'Skills =' +
+    'Skills=' +
       'Concentration,Craft,Diplomacy,"Handle Animal",Heal,Intimidate,' +
       '"Knowledge (Arcana)","Knowledge (Shadow)","Knowledge (Spirits)",' +
-      'Profession,"Speak Language,Spellcraft ' +
+      'Profession,"Speak Language",Spellcraft ' +
     'Features=' +
       '"1:Armor Proficiency (Heavy)","1:Shield Proficiency (Heavy)",' +
       '"1:Weapon Proficiency (Simple)",' +
       '"1:Spontaneous Legate Spell","1:Temple Dependency","1:Turn Undead",' +
       '"3:Astirax Companion" ' +
     'Selectables=' +
-      QuilvynUtils.getKeys(LastAge.DOMAINS).map(x => '"1:' + x + ' Domain"').join(',') + ' ' +
+      QuilvynUtils.getKeys(LastAge.PATHS).map(x => '"1:' + x + '"').join(',') + ' ' +
     'CasterLevelDivine=levels.Legate ' +
     'SpellAbility=charisma ' +
-    'SpellsPerDay=' +
+    'SpellSlots=' +
       'C0:1=3;2=4;4=5;7=6,' +
       'C1:1=1;2=2;4=3;7=4;11=5,' +
       'C2:3=1;4=2;6=3;9=4;13=5,' +
@@ -1748,14 +1788,14 @@ LastAge.CLASSES = {
       '"features.Mastery Of Nature || features.Mastery Of Spirits || features.Mastery Of Nature ? 3:Universal Effect" ' +
     'CasterLevelArcane="levels.Spiritual Channeler" ' +
     'SpellAbility=wisdom ' +
-    'SpellsPerDay=' +
+    'SpellSlots=' +
       'SC0:1=0',
   'Wildlander':
     'HitDie=d8 Attack=1 SkillPoints=6 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
-    'Skills =' +
+    'Skills=' +
       'Balance,Climb,Craft,"Handle Animal",Heal,Hide,Jump,' +
       '"Knowledge (Geography)","Knowledge (Nature)",Listen,"Move Silently",' +
-      'Profession,Ride,Search,"Speak Language",Spot,Survival,Swim,Use Rope ' +
+      'Profession,Ride,Search,"Speak Language",Spot,Survival,Swim,"Use Rope" ' +
     'Features=' +
       '"1:Armor Proficiency (Medium)","1:Shield Proficiency (Heavy)",' +
       '"1:Weapon Proficiency (Martial)",' +
@@ -1769,77 +1809,6 @@ LastAge.CLASSES = {
       '"1:Quick Stride","1:Sense Dark Magic","1:Skill Mastery",' +
       '"1:Slippery Mind","1:Trackless Step","1:True Aim","1:Wild Empathy",' +
       '"1:Wilderness Trapfinding","1:Woodland Stride",1:Woodslore'
-};
-
-// TODO
-LastAge.racesLanguages = {
-  "Agrarian Halfling":
-    "Colonial:3/Halfling:3/" +
-    "Black Tongue:0/Courtier:0/Erenlander:0/Jungle Mouth:0/Orcish:0/" +
-    "Trader's Tongue:0",
-  "Clan Dwarf":
-    "Clan Dwarven:3/Old Dwarven:3/" +
-    "Clan Dwarven:0/Orcish:0",
-  "Clan-Raised Dwarrow":
-    "Clan Dwarven:3/Old Dwarven:3/Trader's Tongue:1/" +
-    "Clan Dwarven:0/Orcish:0",
-  "Clan-Raised Dworg":
-    "Clan Dwarven:3/Old Dwarven:1/Orcish:1/" +
-    "Clan Dwarven:0/Trader's Tongue:0",
-  "Danisil-Raised Elfling":
-    "Halfling:1/High Elven:3/Jungle Mouth:3/" +
-    "Colonial:0/Erenlander:0/Orcish:0/Trader's Tongue:0",
-  "Dorn":
-    "Erenlander:3/Norther:3/" +
-    "Colonial:0/High Elven:0/Orcish:0/Trader's Tongue:0",
-  "Erenlander":
-    "Erenlander:3/" +
-    "Any:0",
-  "Gnome":
-    "Trader's Tongue:3/Any:2/Any:1" +
-    "Any:0",
-  "Gnome-Raised Dwarrow":
-    "Clan Dwarven:2/Old Dwarven:1/Trader's Tongue:1/Any:1/Any:1/" +
-    "Any:0",
-  "Halfling-Raised Elfling":
-    "Erenlander:3/Halfling:3/Jungle Mouth:1/" +
-    "Colonial:0/Orcish:0/Trader's Tongue:0",
-  "Jungle Elf":
-    "Jungle Mouth:3/" +
-    "Colonial:0/Erenlander:0/Halfling:0/High Elven:0/Sylvan:0/" +
-    "Trader's Tongue:0",
-  "Kurgun Dwarf":
-    "Clan Dwarven:3/Old Dwarven:3/" +
-    "Clan Dwarven:0/Orcish:0/Trader's Tongue:0",
-  "Kurgun-Raised Dwarrow":
-    "Clan Dwarven:3/Old Dwarven:3/Trader's Tongue:1/" +
-    "Clan Dwarven:0/Orcish:0",
-  "Kurgun-Raised Dworg":
-    "Clan Dwarven:3/Old Dwarven:1/Orcish:1/" +
-    "Clan Dwarven:0/Trader's Tongue:0",
-  "Nomadic Halfling":
-    "Colonial:3/Halfling:3/" +
-    "Black Tongue:0/Courtier:0/Erenlander:0/Jungle Mouth:0/Orcish:0/" +
-    "Trader's Tongue:0",
-  "Orc":
-    "Black Tongue:1/Old Dwarven:1/High Elven:1/Orcish:3/" +
-    "Any:0",
-  "Plains Sarcosan":
-    "Colonial:3/Erenlander:3/" +
-    "Courtier:0/Halfling:0/Norther:0/Orcish:0/Trader's Tongue:0",
-  "Sea Elf":
-    "High Elven:3/Jungle Mouth:3/" +
-    "Halfling:0/Sylvan:0/Trader's Tongue:0",
-  "Snow Elf":
-    "High Elven:3/Orcish:1/Patrol Sign:1/" +
-    "Black Tongue:0/Erenlander:0/Norther:0/Sylvan:0/Trader's Tongue:0",
-  "Urban Sarcosan":
-    "Colonial:3/Erenlander:3/" +
-    "Courtier:0/Halfling:0/Norther:0/Orcish:0/Trader's Tongue:0",
-  "Wood Elf":
-    "High Elven:3/" +
-    "Colonial:0/Erenlander:0/Halfling:0/Jungle Mouth:0/Old Dwarven:0/" +
-    "Orcish:0/Sylvan:0/Trader's Tongue:0"
 };
 
 /* Defines the rules related to character abilities. */
@@ -1864,7 +1833,7 @@ LastAge.aideRules = function(rules, companions, familiars) {
     '1:Devotion', '2:Magical Beast', '3:Companion Evasion', '4:Improved Speed',
     '5:Empathic Link'
   ];
-  SRD35.featureListRules
+  QuilvynRules.featureListRules
     (rules, features, 'Animal Companion', 'featureNotes.animalCompanion', false);
   features = ['Link', 'Share Spells', 'Multiattack', 'Improved Evasion'];
   for(var i = 0; i < features.length; i++)
@@ -1896,16 +1865,16 @@ LastAge.goodiesRules = function(rules) {
 
 /* Defines rules related to basic character identity. */
 LastAge.identityRules = function(
-  rules, alignments, classes, deities, domains, genders, heroicPaths, races
+  rules, alignments, classes, deities, genders, heroicPaths, paths, races
 ) {
 
-  if(LastAge.baseRules == Pathfinder)
+  if(LastAge.baseRules == window.Pathfinder)
     Pathfinder.identityRules
-      (rules, alignments, [], classes, deities, domains, [], genders, races,
-       Pathfinder.TRAITS);
+      (rules, alignments, classes, deities, {}, genders, paths, races,
+       Pathfinder.TRACKS, Pathfinder.TRAITS);
   else
     SRD35.identityRules
-      (rules, alignments, classes, deities, domains, genders, races)
+      (rules, alignments, classes, deities, genders, paths, races)
 
   for(var path in heroicPaths) {
     rules.choiceRules(rules, 'Heroic Path', path, heroicPaths[path]);
@@ -1917,9 +1886,9 @@ LastAge.identityRules = function(
     'features.Art Of Magic', '+', '1/2'
   );
   for(var i = 0; i < 10; i++) {
-    rules.defineRule('spellsKnown.Ch' + i,
+    rules.defineRule('spellSlots.Ch' + i,
       'maxSpellLevel', '?', 'Math.floor(source) == ' + i,
-      'spellsKnownBonus', '=', null
+      'spellSlotsBonus', '=', null
     );
   }
 
@@ -1929,7 +1898,7 @@ LastAge.identityRules = function(
   rules.defineEditorElement
     ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
   rules.defineSheetElement('Heroic Path', 'Alignment');
-  rules.defineSheetElement('Spell Energy', 'Spells Per Day');
+  rules.defineSheetElement('Spell Energy', 'Spell Slots');
 
 };
 
@@ -1996,7 +1965,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'CasterLevelArcane'),
       QuilvynUtils.getAttrValue(attrs, 'CasterLevelDivine'),
       QuilvynUtils.getAttrValue(attrs, 'SpellAbility'),
-      QuilvynUtils.getAttrValueArray(attrs, 'SpellsPerDay'),
+      QuilvynUtils.getAttrValueArray(attrs, 'SpellSlots'),
       spells,
       LastAge.SPELLS
     );
@@ -2006,12 +1975,6 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'Alignment'),
       QuilvynUtils.getAttrValueArray(attrs, 'Domain'),
       QuilvynUtils.getAttrValueArray(attrs, 'Weapon')
-    );
-  else if(type == 'Domain')
-    LastAge.domainRules(rules, name,
-      QuilvynUtils.getAttrValueArray(attrs, 'Features'),
-      QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
-      LastAge.SPELLS
     );
   else if(type == 'Familiar')
     LastAge.familiarRules(rules, name,
@@ -2034,7 +1997,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'Imply'),
       QuilvynUtils.getAttrValueArray(attrs, 'Type')
     );
-    LastAge.featRulesExtra(rules, name, LastAge.SPELLS);
+    LastAge.featRulesExtra(rules, name);
   } else if(type == 'Feature')
     LastAge.featureRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Section'),
@@ -2054,13 +2017,27 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     LastAge.heroicPathRulesExtra(rules, name);
   } else if(type == 'Language')
     LastAge.languageRules(rules, name);
-  else if(type == 'Race') {
+  else if(type == 'Path') {
+    LastAge.pathRules(rules, name,
+      QuilvynUtils.getAttrValue(attrs, 'Group'),
+      QuilvynUtils.getAttrValue(attrs, 'Level'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Features'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Selectables'),
+      QuilvynUtils.getAttrValue(attrs, 'SpellAbility'),
+      QuilvynUtils.getAttrValueArray(attrs, 'SpellSlots'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
+      SRD35.SPELLS
+    );
+    if(LastAge.baseRules.pathRulesExtra)
+      LastAge.baseRules.pathRulesExtra(rules, name);
+  } else if(type == 'Race') {
     LastAge.raceRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Require'),
       QuilvynUtils.getAttrValueArray(attrs, 'Features'),
       QuilvynUtils.getAttrValueArray(attrs, 'Selectables'),
       QuilvynUtils.getAttrValueArray(attrs, 'Languages'),
       QuilvynUtils.getAttrValue(attrs, 'SpellAbility'),
+      QuilvynUtils.getAttrValueArray(attrs, 'SpellSlots'),
       QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
       LastAge.SPELLS
     );
@@ -2084,6 +2061,8 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'Class'),
       QuilvynUtils.getAttrValueArray(attrs, 'Synergies')
     );
+    if(LastAge.baseRules.skillRulesExtra)
+      LastAge.baseRules.skillRulesExtra(rules, name);
   } else if(type == 'Spell')
     LastAge.spellRules(rules, name,
       QuilvynUtils.getAttrValue(attrs, 'School'),
@@ -2091,12 +2070,18 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'Level'),
       QuilvynUtils.getAttrValue(attrs, 'Description')
     );
-  else if(type == 'Trait')
+  else if(type == 'Track')
+    Pathfinder.trackRules(rules, name,
+      QuilvynUtils.getAttrValueArray(attrs, 'Progression')
+    );
+  else if(type == 'Trait') {
     Pathfinder.traitRules(rules, name,
       QuilvynUtils.getAttrValue(attrs, 'Type'),
       QuilvynUtils.getAttrValue(attrs, 'Subtype')
     );
-  else if(type == 'Weapon')
+    if(Pathfinder.traitRulesExtra)
+      Pathfinder.traitRulesExtra(rules, name);
+  } else if(type == 'Weapon')
     LastAge.weaponRules(rules, name,
       QuilvynUtils.getAttrValue(attrs, 'Level'),
       QuilvynUtils.getAttrValue(attrs, 'Category'),
@@ -2153,7 +2138,7 @@ LastAge.armorRules = function(
  * Javascript expression for determining the caster level for the class; these
  * can incorporate a class level attribute (e.g., 'levels.Cleric') or the
  * character level attribute 'level'. #spellAbility#, if specified, names the
- * ability for computing spell difficulty class. #spellsPerDay# lists the
+ * ability for computing spell difficulty class. #spellSlots# lists the
  * number of spells per level per day that the class can cast, and #spells#
  * lists spells defined by the class. #spellDict# is the dictionary of all
  * spells used to look up individual spell attributes.
@@ -2161,9 +2146,9 @@ LastAge.armorRules = function(
 LastAge.classRules = function(
   rules, name, requires, hitDie, attack, skillPoints, saveFort, saveRef,
   saveWill, skills, features, selectables, languages, casterLevelArcane,
-  casterLevelDivine, spellAbility, spellsPerDay, spells, spellDict
+  casterLevelDivine, spellAbility, spellSlots, spells, spellDict
 ) {
-  if(LastAge.baseRules == Pathfinder) {
+  if(LastAge.baseRules == window.Pathfinder) {
     for(var i = 0; i < requires.length; i++) {
       for(var skill in Pathfinder.SRD35_SKILL_MAP) {
         requires[i] =
@@ -2183,7 +2168,7 @@ LastAge.classRules = function(
   LastAge.baseRules.classRules(
     rules, name, requires, hitDie, attack, skillPoints, saveFort, saveRef,
     saveWill, skills, features, selectables, languages, casterLevelArcane,
-    casterLevelDivine, spellAbility, spellsPerDay, spells, spellDict
+    casterLevelDivine, spellAbility, spellSlots, spells, spellDict
   );
   // No changes needed to the rules defined by base method
 };
@@ -2208,13 +2193,13 @@ LastAge.classRulesExtra = function(rules, name) {
     );
     rules.defineRule
       ('magicNotes.channelerSpellEnergy', 'channelerLevels', '=', null);
-    rules.defineRule('magicNotes.channelerSpellsKnown',
+    rules.defineRule('magicNotes.channelerSpellSlots',
       'channelerLevels', '=', '(source - 1) * 2'
     );
     rules.defineRule
       ('spellEnergy', 'magicNotes.channelerSpellEnergy', '+', null);
     rules.defineRule
-      ('spellsKnownBonus', 'magicNotes.channelerSpellsKnown', '+', null);
+      ('spellSlotsBonus', 'magicNotes.channelerSpellSlots', '+', null);
     var allFeats = rules.getChoices('feats');
 
     if(name == 'Charismatic Channeler') {
@@ -2420,7 +2405,7 @@ LastAge.classRulesExtra = function(rules, name) {
       '3:Empathic Link', '6:Telepathy', '9:Enhanced Sense',
       '12:Companion Evasion', '18:Companion Empathy'
     ];
-    SRD35.featureListRules
+    QuilvynRules.featureListRules
       (rules, features, 'Animal Companion', classLevel, false);
     rules.defineRule('companionNotes.enhancedSense',
       classLevel, '=', 'source < 15 ? 5 : 10'
@@ -2463,7 +2448,7 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '+=', 'source >= 3 ? 1 : null',
       'wildlanderFeatures.Danger Sense', '+', null
     );
-    if(LastAge.baseRules == Pathfinder) {
+    if(LastAge.baseRules == window.Pathfinder) {
       // Computation as per PRD Ranger
       rules.defineRule('skillNotes.track',
         classLevel, '+=', 'Math.max(1, Math.floor(source / 2))'
@@ -2473,6 +2458,10 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '+=', null,
       'charismaModifier', '+', null
     );
+
+  } else if(LastAge.baseRules.classRulesExtra) {
+
+    LastAge.baseRules.classRulesExtra(rules, name);
 
   }
 
@@ -2505,11 +2494,27 @@ LastAge.deityRules = function(rules, name, alignment, domains, weapons) {
 };
 
 /*
- * Defines in #rules# the rules associated with domain #name#. #features# and
- * #spells# list the associated features and domain spells.
+ * Defines in #rules# the rules associated with path #name#, which is a
+ * selection for characters belonging to #group# and tracks path level via
+ * #levelAttr#. The path grants the features and spells listed in #features#
+ * and #spells#. #spellAbility#, if specified, names the ability for computing
+ * spell difficulty class. #spellDict# is the dictionary of all spells used to
+ * look up individual spell attributes.
  */
-LastAge.domainRules = function(rules, name, features, spells, spellDict) {
-  LastAge.baseRules.domainRules(rules, name, features, spells, spellDict);
+LastAge.pathRules = function(
+  rules, name, group, levelAttr, features, selectables, spellAbility,
+  spellSlots, spells, spellDict
+) {
+  if(LastAge.baseRules == window.Pathfinder)
+    LastAge.baseRules.pathRules(
+      rules, name, group, levelAttr, features, selectables, [], [],
+      spellAbility, spellSlots, spells, spellDict
+    );
+  else
+    LastAge.baseRules.pathRules(
+      rules, name, group, levelAttr, features, selectables, spellAbility,
+      spellSlots, spells, spellDict
+    );
   // No changes needed to the rules defined by base method
 };
 
@@ -2536,6 +2541,7 @@ LastAge.familiarRules = function(
 LastAge.featRules = function(rules, name, requires, implies, types) {
   LastAge.baseRules.featRules(rules, name, requires, implies, types);
   // No changes needed to the rules defined by SRD35 method
+  LastAge.featRulesExtra(rules, name);
 };
 
 /*
@@ -2600,14 +2606,18 @@ LastAge.featRulesExtra = function(rules, name, spellDict) {
     var spellCode = spellClass.substring(0, 1);
     rules.defineRule(note, ability + 'Modifier', '=', null);
     rules.defineRule('spellEnergy', note, '+=', null);
-    rules.defineRule('spellsKnown.' + spellCode + '0', note, '+=', '3');
-    rules.defineRule('spellsKnown.' + spellCode + '1', note, '+=', '1');
+    rules.defineRule('spellSlots.' + spellCode + '0', note, '+=', '3');
+    rules.defineRule('spellSlots.' + spellCode + '1', note, '+=', '1');
     rules.defineRule('casterLevels.' + name,
       'features.' + name, '?', null,
       'level', '=', null
     );
     rules.defineRule
       ('casterLevels.' + spellCode, 'casterLevels.' + name, '=', null);
+    rules.defineRule('spellDifficultyClass.' + spellCode,
+      'casterLevels.' + spellCode, '?', null,
+      ability + 'Modifier', '=', '10 + source',
+    );
     // Pick up SRD35 level 0/1 spells of the appropriate class.
     var spellList =
       QuilvynUtils.getAttrValueArray(LastAge.baseRules.CLASSES[spellClass], 'Spells').filter(x => x.match(new RegExp('^' + spellCode + '[01]')));
@@ -2616,11 +2626,11 @@ LastAge.featRulesExtra = function(rules, name, spellDict) {
       var spellNames = pieces[1].split(';');
       for(var j = 0; j < spellNames.length; j++) {
         var spellName = spellNames[j];
-        if(spellDict[spellName] == null) {
+        if(LastAge.SPELLS[spellName] == null) {
           console.log('Unknown spell "' + spellName + '"');
           continue;
         }
-        var school = QuilvynUtils.getAttrValue(spellDict[spellName], 'School');
+        var school = QuilvynUtils.getAttrValue(LastAge.SPELLS[spellName], 'School');
         if(school == null) {
           console.log('No school given for spell "' + spellName + '"');
           continue;
@@ -2629,12 +2639,12 @@ LastAge.featRulesExtra = function(rules, name, spellDict) {
           spellName + '(' + pieces[0] + ' ' + school.substring(0, 4) + ')';
         rules.choiceRules
           (rules, 'Spell', fullSpell,
-           spellDict[spellName] + ' Group=' + spellCode + ' Level=' + pieces[0].substring(1,2));
+           LastAge.SPELLS[spellName] + ' Group=' + spellCode + ' Level=' + pieces[0].substring(1,2));
       }
     }
   } else if((matchInfo = name.match(/^Spellcasting \((.*)\)/)) != null) {
     var note = 'magicNotes.spellcasting('+matchInfo[1].replace(/ /g, '')+')';
-    rules.defineRule('spellsKnownBonus', note, '+=', '1');
+    rules.defineRule('spellSlotsBonus', note, '+=', '1');
     rules.defineRule('spellcastingFeatureCount',
       /features.Spellcasting \(.*\)$/, '+=', '1'
     );
@@ -2681,6 +2691,8 @@ LastAge.featRulesExtra = function(rules, name, spellDict) {
       'dexterityModifier', '=', null,
       'strengthModifier', '+', '-source'
     );
+  } else if(LastAge.baseRules.featRulesExtra) {
+    LastAge.baseRules.featRulesExtra(rules, name);
   }
 
 };
@@ -2695,7 +2707,7 @@ LastAge.featureRules = function(rules, name, sections, notes) {
     sections = [sections];
   if(typeof notes == 'string')
     notes = [notes];
-  if(LastAge.baseRules == Pathfinder) {
+  if(LastAge.baseRules == window.Pathfinder) {
     for(var i = 0; i < sections.length; i++) {
       if(sections[i] != 'skill')
         continue;
@@ -2750,14 +2762,14 @@ LastAge.heroicPathRules = function(
   );
 
   if(requires.length > 0)
-    SRD35.prerequisiteRules
+    QuilvynRules.prerequisiteRules
       (rules, 'validation', prefix + 'HeroicPath', pathLevel, requires);
   if(implies.length > 0)
-    SRD35.prerequisiteRules
+    QuilvynRules.prerequisiteRules
       (rules, 'sanity', prefix + 'HeroicPath', pathLevel, implies);
 
-  SRD35.featureListRules(rules, features, name, pathLevel, false);
-  SRD35.featureListRules(rules, selectables, name, pathLevel, true);
+  QuilvynRules.featureListRules(rules, features, name, pathLevel, false);
+  QuilvynRules.featureListRules(rules, selectables, name, pathLevel, true);
 
   if(spells.length > 0) {
     var nameNoSpace = name.replace(/ /g, '');
@@ -2765,7 +2777,6 @@ LastAge.heroicPathRules = function(
       'heroicPath', '?', 'source == "' + name + '"',
       'level', '=', null
     );
-    // TODO
     rules.defineRule('spellDifficultyClass.' + nameNoSpace,
       pathLevel, '?', null,
       'charismaModifier', '=', '10 + source'
@@ -2870,7 +2881,7 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
     rules.defineRule('magicNotes.dragonbloodedSpellEnergy',
       pathLevel, '=', 'source>=16 ? 8 : source>=11 ? 6 : source>=7 ? 4 : source>=3 ? 2 : null'
     );
-    rules.defineRule('magicNotes.dragonbloodedSpellsKnown',
+    rules.defineRule('magicNotes.dragonbloodedSpellSlots',
       pathLevel, '=', 'source>=14 ? 3 : source>=8 ? 2 : source>=2 ? 1 : null'
     );
     rules.defineRule('magicNotes.dragonSpellPenetration',
@@ -2886,7 +2897,7 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
     rules.defineRule
       ('spellEnergy', 'magicNotes.dragonbloodedSpellEnergy', '+', null);
     rules.defineRule
-      ('spellsKnownBonus', 'magicNotes.dragonbloodedSpellsKnown', '+', null);
+      ('spellSlotsBonus', 'magicNotes.dragonbloodedSpellSlots', '+', null);
 
   } else if(name == 'Earthbonded') {
 
@@ -3253,7 +3264,7 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
 
   } else if(name == 'Steelblooded') {
 
-    /* TODO
+    /* TBD
     feats = [];
     for(var feat in rules.getChoices('feats')) {
       if(feat.match(/Weapon (Focus|Proficiency|Specialization) \(/)) {
@@ -3329,7 +3340,7 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
 /* Defines in #rules# the rules associated with language #name#. */
 LastAge.languageRules = function(rules, name) {
   LastAge.baseRules.languageRules(rules, name);
-  // TODO
+  // No changes needed to the rules defined by base method
 };
 
 /*
@@ -3342,11 +3353,11 @@ LastAge.languageRules = function(rules, name) {
  */
 LastAge.raceRules = function(
   rules, name, requires, features, selectables, languages, spellAbility,
-  spells, spellDict
+  spells, spellSlots, spellDict
 ) {
   LastAge.baseRules.raceRules
     (rules, name, requires, features, selectables, languages, spellAbility,
-     spells, spellDict);
+     spells, spellSlots, spellDict);
   // No changes needed to the rules defined by base method
 };
 
@@ -3356,28 +3367,6 @@ LastAge.raceRules = function(
  */
 LastAge.raceRulesExtra = function(rules, name) {
 
-/* TODO
-  for(var i = 0; i < languages.length; i++) {
-    var language = languages[i];
-    rules.defineRule('languages.' + language,
-      'race', '+=',
-      'LastAge.racesLanguages[source] == null ? null : ' +
-      'LastAge.racesLanguages[source].indexOf("' + language + ':3")>=0 ? 3 : ' +
-      'LastAge.racesLanguages[source].indexOf("' + language + ':2")>=0 ? 2 : ' +
-      'LastAge.racesLanguages[source].indexOf("' + language + ':1")>=0 ? 1 : ' +
-      'null'
-    );
-  }
-  rules.defineChoice('languages', languages);
-  rules.defineRule('languageCount',
-    'race', '=',
-      'LastAge.racesLanguages[source] == null ? 0 : ' +
-      'eval(LastAge.racesLanguages[source].replace(/\\D+/g, "+"))',
-    'intelligenceModifier', '+', 'source > 0 ? source : null',
-    'skillModifier.Speak Language', '+', '2 * source'
-  );
-
-*/
   rules.defineRule('features.Illiteracy', '', '=', '1');
   rules.defineRule
     ('skillModifier.Speak Language', 'skillNotes.illiteracy', '+', '-2');
@@ -3556,13 +3545,17 @@ LastAge.raceRulesExtra = function(rules, name) {
     );
 
   }
+  // Since we inherit no races, no need to invoke baseRules.raceRulesExtra
 
 };
 
 /* Defines in #rules# the rules associated with magic school #name#. */
 LastAge.schoolRules = function(rules, name, features) {
-  LastAge.baseRules.schoolRules(rules, name, features);
-  // No changes needed to the rules defined by base method
+  if(!name) {
+    console.log('Empty school name');
+    return;
+  }
+  // No rules pertain to schools
 };
 
 /*
@@ -3649,59 +3642,11 @@ LastAge.choiceEditorElements = function(rules, type) {
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
 LastAge.randomizeOneAttribute = function(attributes, attribute) {
-  if(attribute == 'languages') {
-    var attrs = this.applyRules(attributes);
-    var choices;
-    var howMany =
-      attrs.languageCount - QuilvynUtils.sumMatching(attrs, /^languages\./);
-    if(attrs.race == null || LastAge.racesLanguages[attrs.race] == null) {
-      // Allow any non-restricted language
-      choices = QuilvynUtils.getKeys(this.getChoices('languages'));
-      for(var i = choices.length - 1; i >= 0; i--) {
-        if(choices[i].match(/Patrol Sign|Sylvan/)) {
-          choices = choices.slice(0, i).concat(choices.slice(i + 1));
-        }
-      }
-    } else if(LastAge.racesLanguages[attrs.race].indexOf('Any') >= 0) {
-      // Allow (at least) any non-restricted language
-      choices = QuilvynUtils.getKeys(this.getChoices('languages'));
-      for(var i = choices.length - 1; i >= 0; i--) {
-        if(choices[i].match(/Patrol Sign|Sylvan/) &&
-           LastAge.racesLanguages[attrs.race].indexOf(choices[i]) < 0) {
-          choices = choices.slice(0, i).concat(choices.slice(i + 1));
-        }
-      }
-    } else {
-      // Allow only those listed for this race
-      choices =
-        LastAge.racesLanguages[attrs.race].replace(/:\d*/g, '').split('/');
-    }
-    while(howMany > 0 && choices.length > 0) {
-      var i = QuilvynUtils.random(0, choices.length - 1);
-      var language = choices[i];
-      var attr = 'languages.' + language;
-      var currentPoints = attrs[attr] == null ? 0 : attrs[attr];
-      var maxPoints = 'Black Tongue/Patrol Sign'.indexOf(language) < 0 ? 3 : 1;
-      if(currentPoints < maxPoints) {
-        // Maximize half the time; otherwise, randomize
-        var addedPoints = QuilvynUtils.random(0, 99) < 50 ?
-                          maxPoints - currentPoints:
-                          QuilvynUtils.random(1, maxPoints - currentPoints);
-        if(addedPoints > howMany)
-          addedPoints = howMany;
-        attrs[attr] = currentPoints + addedPoints;
-        attributes[attr] =
-          (attributes[attr] == null ? 0 : attributes[attr]) + addedPoints;
-        howMany -= addedPoints;
-      } else {
-        choices = choices.slice(0, i).concat(choices.slice(i + 1));
-      }
-    }
-  } else if(attribute == 'spells') {
+  if(attribute == 'spells') {
     var attrs = this.applyRules(attributes);
     var spells = LastAge.rules.getChoices('spells');
     for(var attr in attrs) {
-      var matchInfo = attr.match(/^spellsKnown\.([A-Z][A-Za-z]*)([0-9])$/);
+      var matchInfo = attr.match(/^spellSlots\.([A-Z][A-Za-z]*)([0-9])$/);
       if(!matchInfo)
         continue;
       var abbr = matchInfo[1];
@@ -3814,7 +3759,7 @@ LastAge.ruleNotes = function() {
     '<p>\n' +
     '<ul>\n' +
     '  <li>\n' +
-    '    Language synergy is not reported.\n' +
+    '    Variable language proficiency and synergies are not reported.\n' +
     '  </li><li>\n' +
     '    Quilvyn does not report a validation error for a character with\n' +
     '    pidgin language competence in Courtier or High Elven.  Note that\n' +
@@ -3829,16 +3774,3 @@ LastAge.ruleNotes = function() {
     '</ul>\n' +
     '</p>';
 };
-
-// Language synergies:
-// Pidgin Colonial or Norther -> Pidgin Erenlander
-// Basic Colonial and Norther -> Basic Erenlander
-// Basic High Elven -> Pidgin Jungle Mouth
-// Basic Halfling -> Pidgin Jungle Mouth
-// Basic Jungle Mouth -> Pidgin Halfling
-// Basic Colonial -> Pidgin Trader's Tongue
-// Basic Erenlander -> Pidgin Trader's Tongue
-// Basic Halfling -> Pidgin Trader's Tongue
-// Basic High Elven -> Pidgin Trader's Tongue
-// Basic Norther -> Pidgin Trader's Tongue
-// Basic Old Dwarven -> Pidgin Trader's Tongue
