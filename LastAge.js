@@ -75,7 +75,6 @@ function LastAge() {
     Object.assign({}, LastAge.baseRules.FEATS, LastAge.FEATS_ADDED);
   LastAge.FEATURES =
     Object.assign({}, LastAge.baseRules.FEATURES, LastAge.FEATURES_ADDED);
-  LastAge.GENDERS = Object.assign({}, LastAge.baseRules.GENDERS);
   for(var path in LastAge.PATHS) {
     LastAge.PATHS[path] = LastAge.baseRules.PATHS[path];
   }
@@ -105,7 +104,7 @@ function LastAge() {
     (rules, LastAge.FEATS, LastAge.FEATURES, LastAge.LANGUAGES, LastAge.SKILLS);
   LastAge.identityRules(
     rules, LastAge.ALIGNMENTS, LastAge.CLASSES, LastAge.DEITIES,
-    LastAge.GENDERS, LastAge.HEROIC_PATHS, LastAge.PATHS, LastAge.RACES
+    LastAge.HEROIC_PATHS, LastAge.PATHS, LastAge.RACES
   );
   LastAge.goodiesRules(rules);
 
@@ -860,7 +859,6 @@ LastAge.FEATURES_ADDED = {
     'Section=companion Note="R100\' Companion-controlled telepathic communication"'
 };
 LastAge.FEATURES = Object.assign({}, SRD35.FEATURES, LastAge.FEATURES_ADDED);
-LastAge.GENDERS = Object.assign({}, SRD35.GENDERS);
 LastAge.HEROIC_PATHS = {
   'None':'',
   'Beast':
@@ -1865,16 +1863,15 @@ LastAge.goodiesRules = function(rules) {
 
 /* Defines rules related to basic character identity. */
 LastAge.identityRules = function(
-  rules, alignments, classes, deities, genders, heroicPaths, paths, races
+  rules, alignments, classes, deities, heroicPaths, paths, races
 ) {
 
   if(LastAge.baseRules == window.Pathfinder)
     Pathfinder.identityRules
-      (rules, alignments, classes, deities, {}, genders, paths, races,
+      (rules, alignments, classes, deities, {}, paths, races,
        Pathfinder.TRACKS, Pathfinder.TRAITS);
   else
-    SRD35.identityRules
-      (rules, alignments, classes, deities, genders, paths, races)
+    SRD35.identityRules(rules, alignments, classes, deities, paths, races)
 
   for(var path in heroicPaths) {
     rules.choiceRules(rules, 'Heroic Path', path, heroicPaths[path]);
@@ -2003,8 +2000,6 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'Section'),
       QuilvynUtils.getAttrValueArray(attrs, 'Note')
     );
-  else if(type == 'Gender')
-    LastAge.genderRules(rules, name);
   else if(type == 'Heroic Path') {
     LastAge.heroicPathRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Require'),
@@ -2726,12 +2721,6 @@ LastAge.featureRules = function(rules, name, sections, notes) {
     }
   }
   LastAge.baseRules.featureRules(rules, name, sections, notes);
-  // No changes needed to the rules defined by base method
-};
-
-/* Defines in #rules# the rules associated with gender #name#. */
-LastAge.genderRules = function(rules, name) {
-  LastAge.baseRules.genderRules(rules, name);
   // No changes needed to the rules defined by base method
 };
 
