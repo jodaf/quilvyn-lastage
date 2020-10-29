@@ -76,7 +76,8 @@ function LastAge() {
   LastAge.FEATURES =
     Object.assign({}, LastAge.baseRules.FEATURES, LastAge.FEATURES_ADDED);
   for(var path in LastAge.PATHS) {
-    LastAge.PATHS[path] = LastAge.baseRules.PATHS[path];
+    LastAge.PATHS[path] =
+      LastAge.baseRules.PATHS[path].replaceAll('Cleric', 'Legate');
   }
   LastAge.SHIELDS = Object.assign({}, LastAge.baseRules.SHIELDS);
   LastAge.SKILLS =
@@ -1080,11 +1081,11 @@ LastAge.LANGUAGES = {
     ''
 };
 LastAge.PATHS = {
-  'Death Domain':SRD35.PATHS['Death Domain'],
-  'Destruction Domain':SRD35.PATHS['Destruction Domain'],
-  'Evil Domain':SRD35.PATHS['Evil Domain'],
-  'Magic Domain':SRD35.PATHS['Magic Domain'],
-  'War Domain':SRD35.PATHS['War Domain']
+  'Death Domain':SRD35.PATHS['Death Domain'].replaceAll('Cleric', 'Legate'),
+  'Destruction Domain':SRD35.PATHS['Destruction Domain'].replaceAll('Cleric', 'Legate'),
+  'Evil Domain':SRD35.PATHS['Evil Domain'].replaceAll('Cleric', 'Legate'),
+  'Magic Domain':SRD35.PATHS['Magic Domain'].replaceAll('Cleric', 'Legate'),
+  'War Domain':SRD35.PATHS['War Domain'].replaceAll('Cleric', 'Legate')
 };
 LastAge.RACES = {
   'Agrarian Halfling':
@@ -1754,16 +1755,7 @@ LastAge.CLASSES = {
       'C6:11=1;12=2;14=3;17=4,' +
       'C7:13=1;14=2;16=3;19=4,' +
       'C8:15=1;16=2;18=3;20=4,' +
-      'C9:17=1;18=2;19=3;20=4,' +
-      'Dom1:1=1,' +
-      'Dom2:3=1,' +
-      'Dom3:5=1,' +
-      'Dom4:7=1,' +
-      'Dom5:9=1,' +
-      'Dom6:11=1,' +
-      'Dom7:13=1,' +
-      'Dom8:15=1,' +
-      'Dom9:17=1 ' +
+      'C9:17=1;18=2;19=3;20=4 ' +
     // Cleric spells added by choiceRules method
     'Spells=' +
       '"C3:Boil Blood;Speak With Fell"',
