@@ -49,7 +49,7 @@ LastAgePrestige.CLASSES = {
       '"10:Awaken Ancestral Blade" ' +
     'CasterLevelArcane="levels.Ancestral Bladebearer" ' +
     'SpellAbility=charisma ' +
-    'SpellsPerDay=' +
+    'SpellSlots=' +
       'AB1:3=1;7=2,' +
       'AB2:5=1;9=2 ' +
     'Spells=' +
@@ -194,7 +194,7 @@ LastAgePrestige.CLASSES = {
       '"4:Information Network","5:Disguise Contraband","10:Slippery Mind" ' +
     'CasterLevelArcane=levels.Smuggler ' +
     'SpellAbility=charisma ' +
-    'SpellsPerDay=' +
+    'SpellsSlots=' +
       'Smuggler2:5=1,' +
       'Smuggler4:3=1 ' +
     'Spells=' +
