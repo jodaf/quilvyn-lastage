@@ -1986,7 +1986,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'Imply'),
       QuilvynUtils.getAttrValueArray(attrs, 'Type')
     );
-    LastAge.featRulesExtra(rules, name);
+    LastAge.featRulesExtra(rules, name, LastAge.SPELLS);
   } else if(type == 'Feature')
     LastAge.featureRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Section'),
@@ -2029,11 +2029,13 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       LastAge.SPELLS
     );
     LastAge.raceRulesExtra(rules, name);
-  } else if(type == 'School')
+  } else if(type == 'School') {
     LastAge.schoolRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Features')
     );
-  else if(type == 'Shield')
+    if(LastAge.baseRules.schoolRulesExtra)
+      LastAge.baseRules.schoolRulesExtra(rules, name);
+  } else if(type == 'Shield')
     LastAge.shieldRules(rules, name,
       QuilvynUtils.getAttrValue(attrs, 'AC'),
       QuilvynUtils.getAttrValue(attrs, 'Weight'),
@@ -2081,7 +2083,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     console.log('Unknown choice type "' + type + '"');
     return;
   }
-  if(type != 'Feature') {
+  if(type != 'Feature' && type != 'Path') {
     type = type == 'Class' ? 'levels' :
     type = type == 'Deity' ? 'deities' :
     (type.substring(0,1).toLowerCase() + type.substring(1).replace(/ /g, '') + 's');
@@ -2528,7 +2530,6 @@ LastAge.familiarRules = function(
 LastAge.featRules = function(rules, name, requires, implies, types) {
   LastAge.baseRules.featRules(rules, name, requires, implies, types);
   // No changes needed to the rules defined by SRD35 method
-  LastAge.featRulesExtra(rules, name);
 };
 
 /*
@@ -2605,30 +2606,10 @@ LastAge.featRulesExtra = function(rules, name, spellDict) {
       'casterLevels.' + spellCode, '?', null,
       ability + 'Modifier', '=', '10 + source',
     );
-    // Pick up SRD35 level 0/1 spells of the appropriate class.
-    var spellList =
+    // Pick up baseRules level 0/1 spells of the appropriate class.
+    var spells =
       QuilvynUtils.getAttrValueArray(LastAge.baseRules.CLASSES[spellClass], 'Spells').filter(x => x.match(new RegExp('^' + spellCode + '[01]')));
-    for(var i = 0; i < spellList.length; i++) {
-      var pieces = spellList[i].split(':');
-      var spellNames = pieces[1].split(';');
-      for(var j = 0; j < spellNames.length; j++) {
-        var spellName = spellNames[j];
-        if(LastAge.SPELLS[spellName] == null) {
-          console.log('Unknown spell "' + spellName + '"');
-          continue;
-        }
-        var school = QuilvynUtils.getAttrValue(LastAge.SPELLS[spellName], 'School');
-        if(school == null) {
-          console.log('No school given for spell "' + spellName + '"');
-          continue;
-        }
-        var fullSpell =
-          spellName + '(' + pieces[0] + ' ' + school.substring(0, 4) + ')';
-        rules.choiceRules
-          (rules, 'Spell', fullSpell,
-           LastAge.SPELLS[spellName] + ' Group=' + spellCode + ' Level=' + pieces[0].substring(1,2));
-      }
-    }
+    QuilvynRules.spellListRules(rules, spells, spellDict);
   } else if((matchInfo = name.match(/^Spellcasting \((.*)\)/)) != null) {
     var note = 'magicNotes.spellcasting('+matchInfo[1].replace(/ /g, '')+')';
     rules.defineRule('spellSlotsBonus', note, '+=', '1');
