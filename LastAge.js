@@ -534,7 +534,7 @@ LastAge.FEATURES_ADDED = {
     'Note="Turn (good) or rebuke (evil) 2d6+%1 HD of undead creatures of up to (d20+%2)/3 HD %3/dy"',
   'Uncaring Mind':'Section=save Note="+%V vs. enchantment"',
   'Unearthly Defense':'Section=combat Note="+%V AC"',
-  'Unearthly Dexterity':'Section=combat Note="+%V Dexterity"',
+  'Unearthly Dexterity':'Section=ability Note="+%V Dexterity"',
   'Unearthly Fortitude':'Section=save Note="+%V Fortitude"',
   'Unearthly Reflexes':'Section=save Note="+%V Reflex"',
   'Unearthly Will':'Section=save Note="+%V Will"',
