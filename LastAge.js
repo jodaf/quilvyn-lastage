@@ -310,7 +310,7 @@ LastAge.FEATS = Object.assign({}, SRD35.FEATS, LastAge.FEATS_ADDED);
 LastAge.FEATURES_ADDED = {
 
   // Heroic Paths
-  'Ability Boost':'Section=combat Note="%V to distribute"',
+  'Ability Boost':'Section=ability Note="%V to distribute"',
   'Ability Recovery':'Section=combat Note="Regain 1 point ability damage/hr"',
   'Aid Another':'Section=combat Note="Aid another as a move action"',
   'Aided Combat Bonus':'Section=combat Note="Aided ally +%V attack or AC"',
@@ -337,6 +337,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat,skill ' +
     'Note="Turn animals",' +
          '"-10 Handle Animal, no Wild Empathy"',
+  'Big':'Section=combat,skill Note="Use Large weapons","-4 Hide"',
   'Blindsense':
      'Section=feature Note="R30\' Other senses detect unseen objects"',
   'Blindsight':
@@ -377,6 +378,9 @@ LastAge.FEATURES_ADDED = {
     'Section=combat,skill ' +
     'Note="Elementals DC %V Will save to attack",' +
          '"+4 Diplomacy (elementals)"',
+  'Enhanced Bestial Aura':
+    'Section=feature Note="R15\' Animals act negatively, cannot ride"',
+  'Extended Darkvision':'Section=feature Note="+30\' b/w vision in darkness"',
   'Extra Reach':'Section=combat Note="15\' reach"',
   'Fast Movement':'Section=ability Note="+%V Speed"',
   'Fearsome Charge':
@@ -384,6 +388,7 @@ LastAge.FEATURES_ADDED = {
   'Feat Bonus':'Section=feature Note="+%V General Feat"',
   'Ferocity':'Section=combat Note="Continue fighting below 0 HP"',
   'Fey Vision':'Section=magic Note="Detect %V auras at will"',
+  'Fortitude Bonus':'Section=save Note="+%V Fortitude"',
   'Frightful Presence':
     'Section=magic ' +
     'Note="Casting panics or shakes foes of lesser level 4d6 rd (DC %V Will neg)"',
@@ -398,8 +403,6 @@ LastAge.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="Allies +2 damage vs. flat-footed foes on surprise and 1st melee rd"',
   'Improved Battle Cry':'Section=combat Note="+1 attack and damage after cry"',
-  'Improved Bestial Aura':
-    'Section=feature Note="R15\' Animals act negatively, cannot ride"',
   'Improved Healing':'Section=combat Note="Regain %V HP/hr"',
   'Improved Resist Spells':'Section=save Note="+%V vs. spells"',
   'Improved Retributive Rage':
@@ -440,6 +443,7 @@ LastAge.FEATURES_ADDED = {
     'Note="1 minute of %V spell resistance, 15 damage reduction, 30 energy resistance; near death afterward %1/dy"',
   'Lay On Hands':'Section=magic Note="Harm undead or heal %V HP/dy"',
   'Leadership':'Section=feature Note="Attract followers"',
+  'Long Rock Throwing':'Section=combat Note="Debris range %V\'"',
   'Luck Of Heroes':'Section=feature Note="Add %V to any d20 roll 1/dy"',
   'Magical Darkvision':'Section=feature Note="See perfectly in any darkness"',
   'Master Adventurer':'Section=skill Note="+%V on three chosen non-Cha skills"',
@@ -459,7 +463,6 @@ LastAge.FEATURES_ADDED = {
     'Section=save,skill ' +
     'Note="Immune to non-lethal cold/exposure",' +
          '"+2 Survival (cold)/+2 Wild Empathy (cold natives)"',
-  'Obvious':'Section=skill Note="-4 Hide"',
   'Offensive Tactics':
     'Section=combat ' +
     'Note="+%V to first attack or all damage when using full attack action"',
@@ -510,7 +513,8 @@ LastAge.FEATURES_ADDED = {
   'Skilled Warrior':
     'Section=combat ' +
     'Note="Half penalty from %V choices of Fighting Defensively, Grapple Attack, Non-proficient Weapon, Two-Weapon Fighting"',
-  'Smite Evil':'Section=combat Note="+%1 attack, %2 damage vs. evil foe %V/dy"',
+  'Smite Evil':
+    'Section=combat Note="+%1 attack, +%2 damage vs. evil foe %V/dy"',
   'Sniping Ambush':
     'Section=combat Note="Reduced Hide penalty for using ranged weapons"',
   'Spell Choice':
@@ -978,8 +982,6 @@ LastAge.FEATURES_ADDED = {
   'Stability':'Section=save Note="+4 vs. Bull Rush and Trip"',
   'Stone Knowledge':
     'Section=skill Note="+2 Appraise (stone, metal)/+2 Craft (stone, metal)"',
-  'Stonecunning':
-    'Section=skill Note="+%V Search (stone, metal), automatic check w/in 10\'"',
   'Stout':'Section=feature Note="Endurance and Toughness"',
   'Studious':'Section=feature Note="Magecraft (Hermetic)"',
   'Sturdy':'Section=combat Note="+1 AC"',
@@ -1039,13 +1041,13 @@ LastAge.PATHS = {
     'Group=Beast ' +
     'Level=level ' +
     'Features=' +
-      '"1:Vicious Assault","2:Bestial Aura","5:AbilityBoost",7:Rage,' +
-      '"12:Improved Bestial Aura" '+
+      '"1:Vicious Assault","2:Bestial Aura","5:Ability Boost",7:Rage,' +
+      '"12:Enhanced Bestial Aura" '+
     'Selectables=' +
       '"Low-Light Vision",Scent ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
-      'Beast1:3=1,' +
+      'Beast1:3=1;3=2,' + // Magic Fang 2/dy
       'Beast2:4=1;9=2;14=3,' +
       'Beast3:8=1,' +
       'Beast4:19=1 ' +
@@ -1101,7 +1103,7 @@ LastAge.PATHS = {
     'Group=Earthbonded ' +
     'Level=level ' +
     'Features=' +
-      '1:Darkvision,"3:Natural Armor",4:Stonecunning,' +
+      '"1:Extended Darkvision","3:Natural Armor",4:Stonecunning,' +
       '"8:Improved Stonecunning",12:Tremorsense,16:Blindsense,' +
       '20:Blindsight ' +
     'SpellAbility=charisma ' +
@@ -1179,8 +1181,9 @@ LastAge.PATHS = {
     'Group=Giantblooded ' +
     'Level=level ' +
     'Features=' +
-      '1:Obvious,"2:Rock Throwing","3:Intimidating Size","4:Fast Movement",' +
-      '"5:Strength Bonus","8:Fearsome Charge",10:Large,"20:Extra Reach"',
+      '1:Big,"2:Rock Throwing","3:Intimidating Size","4:Fast Movement",' +
+      '"5:Strength Bonus","6:Long Rock Throwing","8:Fearsome Charge",' +
+      '10:Large,"20:Extra Reach"',
   'Guardian':
     'Group=Guardian ' +
     'Level=level ' +
@@ -1200,12 +1203,12 @@ LastAge.PATHS = {
     'Level=level ' +
     'SpellAbility=wisdom ' +
     'SpellSlots=' +
-      'Healer1:1=1,' +
-      'Healer2:2=1;4=2,' +
-      'Healer3:5=1;7=2;8=3,' +
-      'Healer4:10=1;11=2;14=3,' +
-      'Healer5:13=1;20=2,' +
-      'Healer6:16=1,' +
+      'Healer1:1=1;3=2,' + // Cure Light 2/dy
+      'Healer2:2=1;4=2;6=3,' + // Cure Moderate 2/dy
+      'Healer3:5=1;7=2;8=3;9=4,' + // Cure Serious 2/dy
+      'Healer4:10=1;11=2;12=3;14=4;17=5,' + // Cure Critical, Restoration 2/dy, 
+      'Healer5:13=1;15=2;20=3,' + // Mass Cure Light 2/dy
+      'Healer6:16=1;18=2,' + // Heal 2/dy
       'Healer7:19=1 ' +
     'Spells=' +
       '"Healer1:Cure Light Wounds",' +
@@ -1874,7 +1877,9 @@ LastAge.WEAPONS_ADDED = {
   'Staghorn':'Level=3 Category=1h Damage=d6',
   'Tack Whip':'Level=1 Category=Li Damage=d4',
   'Urutuk Hatchet':'Level=3 Category=1h Damage=d8 Crit=3 Range=20',
-  'Vardatch':'Level=3 Category=1h Damage=d12'
+  'Vardatch':'Level=3 Category=1h Damage=d12',
+  // Debris for Giantblooded heroic path
+  'Debris':'Level=0 Category=R Damage=d10 Range=30'
 };
 LastAge.WEAPONS = Object.assign({}, SRD35.WEAPONS, LastAge.WEAPONS_ADDED);
 LastAge.CLASSES = {
@@ -3127,7 +3132,10 @@ LastAge.pathRulesExtra = function(rules, name) {
   } else if(name == 'Earthbonded') {
 
     rules.defineRule('combatNotes.naturalArmor',
-      pathLevel, '+=', 'source >= 18 ? 2 : source >= 10 ? 1 : null'
+      pathLevel, '+=', 'source >= 18 ? 3 : source >= 10 ? 2 : source >= 3 ? 1 : null'
+    );
+    rules.defineRule('skillNotes.stonecunning',
+      'earthbondedFeatures.Stonecunning', '+=', '2'
     );
 
   } else if(name == 'Faithful') {
@@ -3199,27 +3207,27 @@ LastAge.pathRulesExtra = function(rules, name) {
 
     rules.defineRule
       ('abilityNotes.fastMovement', pathLevel, '+=', 'source >= 12 ? 10 : 5');
+    rules.defineRule('abilityNotes.strengthBonus',
+      pathLevel, '+=', 'source >= 15 ? 2 : source >= 5 ? 1 : null'
+    );
     rules.defineRule
       ('combatNotes.fearsomeCharge', pathLevel, '+=', 'source >= 18 ? 2 : 1');
-    rules.defineRule('abilityNotes.strengthBonus',
-      pathLevel, '+=', 'source >= 15 ? 1 : null'
+    rules.defineRule('combatNotes.longRockThrowing',
+      pathLevel, '^=', 'source>=19?120 : source>=13?90 : source>=6?60 : 30'
     );
+    rules.defineRule('debrisDamageDice',
+      pathLevel, '=', 'source >= 16 ? "2d8" : source >= 9 ? "2d6" : null'
+    );
+    rules.defineRule('debrisRange', 'combatNotes.longRockThrowing', '^=', null);
     rules.defineRule('skillNotes.intimidatingSize',
       pathLevel, '+=', 'source>=17 ? 10 : source>=14 ? 8 : (Math.floor((source + 1) / 4) * 2)'
     );
     rules.defineRule('weapons.Debris', 'combatNotes.rockThrowing', '=', '1');
-    // Damage modified to account for Large adjustment starting level 10
-    rules.defineRule('weaponDamage.Debris',
-      pathLevel, '=', 'source>=16 ? "d10" : source>=10 ? "d8" : source>=9 ? "2d6" : "d10"'
-    );
-    rules.defineRule('weaponRange.Debris',
-      pathLevel, '=', 'source >= 19 ? 120 : source >= 13 ? 90 : source >= 6 ? 60 : 30'
-    );
 
   } else if(name == 'Guardian') {
 
     rules.defineRule('abilityNotes.constitutionBonus',
-      'guardianLevel', '+=', 'Math.floor((source - 5) / 5)'
+      'guardianLevel', '+=', 'Math.floor(source / 5)'
     );
     rules.defineRule('combatNotes.righteousFury',
       pathLevel, '+=', 'source >= 17 ? 12 : source >= 12 ? 9 : (Math.floor((source + 1) / 4) * 3)'
@@ -3249,13 +3257,13 @@ LastAge.pathRulesExtra = function(rules, name) {
       pathLevel, '+=', 'Math.floor(source / 2)'
     );
     rules.defineRule('combatNotes.naturalArmor',
-      pathLevel, '+=', 'Math.floor((source - 3) / 5)'
+      pathLevel, '+=', 'Math.floor((source + 2) / 5)'
     );
     rules.defineRule('saveNotes.resistElements',
       pathLevel, '+=', 'Math.floor((source - 1) / 5) * 3'
     );
     rules.defineRule('saveNotes.fortitudeBonus',
-      pathLevel, '+', 'Math.floor((source - 2) / 5)'
+      pathLevel, '+=', 'Math.floor((source + 3) / 5)'
     );
     rules.defineRule('saveNotes.indefatigable',
       pathLevel, '=', 'source < 19 ? "fatigue" : "fatigue and exhaustion"'
@@ -3888,7 +3896,7 @@ LastAge.ruleNotes = function() {
     '    In situations where a feature has very different effects at\n' +
     '    different character levels, Quilvyn uses a different feature name\n' +
     '    for each effect.  For example, the Giantblooded "Size Features"\n' +
-    '    feature is replaced by "Obvious" at level 1, "Large" at level 10,\n' +
+    '    feature is replaced by "Big" at level 1, "Large" at level 10,\n' +
     '    and "Extra Reach" at level 20.  Other instances: Ironborn level\n' +
     '    14 "Improved Healing" becomes "Ability Recovery"; Mountaineer\n' +
     '    "Ambush" becomes "Improved Ambush", "Quick Ambush", and "Sniping\n' +
