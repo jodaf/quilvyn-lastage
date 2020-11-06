@@ -15,12 +15,14 @@ this program; if not, write to the Free Software Foundation, Inc., 59 Temple
 Place, Suite 330, Boston, MA 02111-1307 USA.
 */
 
+/*jshint esversion: 6 */
 "use strict";
 
 /*
- * This module loads the rules for the rule book Prestige Classes.  The
- * LastAgePrestige.PRESTIGE_CLASSES constant fields can be manipulated in order
- * to trim the choices offered.
+ * This module loads the Prestige class rules from the Midnight 2E rule book.
+ * Member methods can be called independently in order to use a subset of the
+ * rules. Similarly, the constant fields of LastAgePrestige (CLASSES,
+ * FEATURES) can be manipulated to modify the choices.
  */
 function LastAgePrestige() {
   if(window.SRD35 == null || window.LastAge == null) {
@@ -50,11 +52,11 @@ LastAgePrestige.CLASSES = {
     'CasterLevelArcane="levels.Ancestral Bladebearer" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
-      'AB1:3=1;7=2,' +
-      'AB2:5=1;9=2 ' +
+      'Bladebearer1:3=1;7=2,' +
+      'Bladebearer2:5=1;9=2 ' +
     'Spells=' +
-      '"AB1:Alarm;Detect Secret Doors",' +
-      '"AB2:Augury;Protection From Arrows"',
+      '"Bladebearer1:Alarm;Detect Secret Doors",' +
+      '"Bladebearer2:Augury;Protection From Arrows"',
   "Aradil's Eye":
     'Require=' +
       'features.Inconspicuous,"race == \'Wood Elf\'","skills.Bluff >= 8",' +
@@ -145,7 +147,6 @@ LastAgePrestige.CLASSES = {
     'Features=' +
       '"1:Armor Proficiency (Heavy)","1:Shield Proficiency (Heavy)",' +
       '"1:Weapon Proficiency (Martial)"' +
-      // TODO PF Magical Mount?
       '"1:Horse Lord","1:Special Mount","2:Mounted Maneuver","4:Spur On",' +
       '"7:Devastating Mounted Assault","7:Improved Mounted Assault",' +
       '"10:Sweeping Strike" ' +
@@ -232,8 +233,8 @@ LastAgePrestige.CLASSES = {
   'Wizard':
     'Require=' +
       '"features.Magecraft (Hermetic)","Sum features.Spellcasting >= 2",' +
-      '"skills.Knowledge (Arcana) >= 10","skills.Spellcraft >= 10" ' +
-      // TODO 1 Item Creation and 1 Metamagic feat
+      '"skills.Knowledge (Arcana) >= 10","skills.Spellcraft >= 10",' +
+      '"sumItemCreationFeats >= 1","sumMetamagicFeats >= 1" ' +
     'HitDie=d4 Attack=1/2 SkillPoints=2 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
       'Concentration,Craft,Knowledge,Profession,"Speak Language",Spellcraft ' +
@@ -270,7 +271,8 @@ LastAgePrestige.FEATURES = {
   'Armored Casting':'Section=magic Note="Reduce arcane casting penalty by %V%"',
   'Awaken Ancestral Blade':'Section=combat Note="Weapon becomes intelligent"',
   'Bind Astirax':
-    'Section=magic Note="R60\' Astirax bound to current form for %V hr (DC %1 Will neg)"',
+    'Section=magic ' +
+    'Note="R60\' Astirax bound to current form for %V hr (DC %1 Will neg)"',
   'Channeled Armor Class':
     'Section=magic Note="Use 1 spell energy point to gain +%V AC for 1 rd"',
   'Channeled Attack':
@@ -284,27 +286,33 @@ LastAgePrestige.FEATURES = {
     'Section=magic Note="<i>Commune With Nature</i> %V/dy"',
   'Conceal Aura':'Section=feature Note="Conceal %V magical auras"',
   'Conceal Magic':
-    'Section=magic Note="Spells considered half level for purposes of astirax detection"',
+    'Section=magic ' +
+    'Note="Spells considered half level for purposes of astirax detection"',
   'Coordinated Attack':
-    'Section=combat Note="Rider and mount +2 attack on same target when other hits"',
+    'Section=combat ' +
+    'Note="Rider and mount +2 attack on same target when other hits"',
   "Counter Legate's Will":
     'Section=magic Note="<i>Dispel Magic</i> vs. legates"',
   'Cover Story':
     'Section=skill Note="DC 20 Bluff four consecutive dy to establish alibi"',
   'Death Attack':
-    'Section=combat Note="Sneak attack after 3 rd of study causes death or paralysis d6+%1 rd (DC %V Fort neg)"',
+    'Section=combat ' +
+    'Note="Sneak attack after 3 rd of study causes death or paralysis d6+%1 rd (DC %V Fort neg)"',
   'Deft Dodging':
     'Section=combat Note="+4 self and mount AC on full rd mounted move"',
   'Disarming Shot':'Section=combat Note="Disarm via ranged touch attack"',
   'Disguise Contraband':
-    'Section=magic Note="<i>Misdirection</i> on 1\' cu/level of contraband 1 hr/level"',
+    'Section=magic ' +
+    'Note="<i>Misdirection</i> on 1\' cu/level of contraband 1 hr/level"',
   'Dismounting Cut':
     'Section=combat Note="Trip attack w/weapon to dismount opponent"',
   'Dominant Will':
-    'Section=save Note="+%V Will vs. detection and compulsion spells to reveal activities"',
+    'Section=save ' +
+    'Note="+%V Will vs. detection and compulsion spells to reveal activities"',
   'Druidcraft':'Section=magic Note="Energy cost of Druid spells reduced by 1"',
   'Efficient Study':
-    'Section=feature Note="XP cost for learning spells and creating magic items reduced by %V%"',
+    'Section=feature ' +
+    'Note="XP cost for learning spells and creating magic items reduced by %V%"',
   'Erratic Attack':
     'Section=combat Note="+2 self and mount AC when either attacks"',
   'Fast Hands':'Section=combat Note="+4 Initiative/-2 first rd attack"',
@@ -319,7 +327,8 @@ LastAgePrestige.FEATURES = {
   'Improved Coup De Grace':
     'Section=combat Note="Max damage from standard action coup de grace"',
   'Improved Mounted Archery':
-    'Section=combat Note="No ranged attack penalty when mounted, mounted Rapid Shot"',
+    'Section=combat ' +
+    'Note="No ranged attack penalty when mounted, mounted Rapid Shot"',
   'Improved Mounted Assault':
     'Section=combat Note="No penalty for additional mounted attacks"',
   'Improved Mounted Combat':
@@ -330,13 +339,17 @@ LastAgePrestige.FEATURES = {
     'Section=combat Note="Improved Critical w/charging weapon"',
   'Improved Trample':'Section=combat Note="No foe AOO during overrun"',
   'Information Network':
-    'Section=skill Note="Take %V on Gather Information after 1 hr in new locale"',
+    'Section=skill ' +
+    'Note="Take %V on Gather Information after 1 hr in new locale"',
   'Intimidating Shot':
-    'Section=combat Note="Intimidate check after attack w/bonus of half damage"',
+    'Section=combat ' +
+    'Note="Intimidate check after attack w/bonus of half damage"',
   'Leaf Reader':
-    'Section=combat Note="DC 10 Spot check to eliminate vegetation concealment"',
+    'Section=combat ' +
+    'Note="DC 10 Spot check to eliminate vegetation concealment"',
   'Master Spy':
-    'Section=feature Note="Mindbond to all known Master Spies and those in homeland at will"',
+    'Section=feature ' +
+    'Note="Mindbond to all known Master Spies and those in homeland at will"',
   'Melee Caster':'Section=magic Note="Deliver spell via weapon"',
   'Meticulous Aim':
     'Section=combat Note="+1 critical range for every 2 rd aiming; +%V max"',
@@ -350,9 +363,11 @@ LastAgePrestige.FEATURES = {
   'Quick Alteration':
     'Section=feature Note="Change to alter ego as a full rd action"',
   'Ranged Sneak Attack':
-    'Section=combat Note="%Vd6 extra damage when surprising or flanking w/in 30\'"',
+    'Section=combat ' +
+    'Note="%Vd6 extra damage when surprising or flanking w/in 30\'"',
   'Regenerative Strike':
-    'Section=magic Note="Recover spell energy equal to 2*weapon multiplier on critical hit"',
+    'Section=magic ' +
+    'Note="Recover spell energy equal to 2*weapon multiplier on critical hit"',
   "Resist Legate's Will":'Section=save Note="+10 vs. legate magic"',
   'Seance':
     'Section=magic Note="<i>Augury</i>, <i>Legend Lore</i> via spirits %V/dy"',
@@ -360,21 +375,28 @@ LastAgePrestige.FEATURES = {
     'Section=skill Note="Gather Information uncovers chinks in site security"',
   'See Astirax':'Section=feature Note="See astirax as shadowy form"',
   'Shadow Contacts':
-    'Section=skill Note="Gather Information obtains %V favor from Shadow minion"',
+    'Section=skill ' +
+    'Note="Gather Information obtains %V favor from Shadow minion"',
   'Shadow Speak':
-    'Section=skill Note="+%V Bluff, Diplomacy, Intimidate, Sense Motive w/Shadow minions"',
+    'Section=skill ' +
+    'Note="+%V Bluff, Diplomacy, Intimidate, Sense Motive w/Shadow minions"',
   "Smuggler's Trade":
-    'Section=skill Note="+%V or take 10 on Bluff, Disguise, Forgery, Gather Information when smuggling"',
+    'Section=skill ' +
+    'Note="+%V or take 10 on Bluff, Disguise, Forgery, Gather Information when smuggling"',
   'Speed Mount':'Section=combat Note="Dismount, mount as free action"',
   'Spirit Manipulation':
-    'Section=magic Note="%V chosen Divination or Necromancy spells as spell-like ability 1/dy"',
+    'Section=magic ' +
+    'Note="%V chosen Divination or Necromancy spells as spell-like ability 1/dy"',
   'Spiritcraft':
-    'Section=magic Note="Divination and Necromancy spell energy cost reduced by 1"',
+    'Section=magic ' +
+    'Note="Divination and Necromancy spell energy cost reduced by 1"',
   'Spur On':'Section=feature Note="Dbl mount speed during charge or dbl move"',
   'Spy':
-    'Section=feature Note="%V% chance of help from d3 Aradil\'s Eyes in dire need"',
+    'Section=feature ' +
+    'Note="%V% chance of help from d3 Aradil\'s Eyes in dire need"',
   'Spy Initiate':
-    'Section=feature,skill Note="Services from Elven contacts","+%V Diplomacy (Elves, allies)"',
+    'Section=feature,skill ' +
+    'Note="Services from Elven contacts","+%V Diplomacy (Elves, allies)"',
   'Still As Stone':'Section=skill Note="+10 Hide (infiltration)"',
   'Strength Of The Wood':
     'Section=magic Note="Recover 1 spell energy point/hr while inside tree"',
@@ -385,14 +407,16 @@ LastAgePrestige.FEATURES = {
   'Sweeping Strike':
     'Section=combat Note="Attack all threatened foes during mount move"',
   'Target Study':
-    'Section=combat Note="Gather Information yields +2 attack and damage or +4 AC vs. chosen foe"',
+    'Section=combat ' +
+    'Note="Gather Information yields +2 attack and damage or +4 AC vs. chosen foe"',
   'The Drop':'Section=combat Note="+%V attack and damage vs. flat-footed foe"',
   'Tree Meld':'Section=magic Note="Merge into tree"',
   'Unbreakable Blade':'Section=combat Note="Ancestral weapon cannot be harmed"',
   'Undetectable Alignment':
     'Section=magic Note="Continuous <i>Undetectable Alignment</i>"',
   'Unwavering Blade':
-    'Section=combat Note="Detect weapon if separated; if unconscious, weapon fights"',
+    'Section=combat ' +
+    'Note="Detect weapon if separated; if unconscious, weapon fights"',
   'Venom Immunity':'Section=save Note="Immune to organic poisons"',
   'Wheel About':
     'Section=combat Note="May make 90 degree turn during mounted charge"',
@@ -409,7 +433,7 @@ LastAgePrestige.FEATURES = {
   "Wogren's Sight":'Section=feature Note="Blindsense while mounted"'
 };
 
-/* Defines the rules related to LastAge Prestige Classes. */
+/* Defines rules related to basic character identity. */
 LastAgePrestige.identityRules = function(rules, classes) {
   for(var clas in classes) {
     rules.choiceRules(rules, 'Class', clas, classes[clas]);
@@ -417,7 +441,7 @@ LastAgePrestige.identityRules = function(rules, classes) {
   }
 };
 
-/* Defines rules related to character features. */
+/* Defines rules related to character aptitudes. */
 LastAgePrestige.talentRules = function(rules, features) {
   for(var feature in features) {
     rules.choiceRules(rules, 'Feature', feature, features[feature]);
@@ -425,8 +449,8 @@ LastAgePrestige.talentRules = function(rules, features) {
 };
 
 /*
- * Defines in #rules# the rules associated with class #name# that are not
- * directly derived from the parmeters passed to classRules.
+ * Defines in #rules# the rules associated with class #name# that cannot be
+ * derived directly from the attributes passed to classRules.
  */
 LastAgePrestige.classRulesExtra = function(rules, name) {
 
