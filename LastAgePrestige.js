@@ -19,7 +19,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 "use strict";
 
 /*
- * This module loads the Prestige class rules from the Midnight 2E rule book.
+ * This module loads the prestige class rules from the Midnight 2E rule book.
  * Member methods can be called independently in order to use a subset of the
  * rules. Similarly, the constant fields of LastAgePrestige (CLASSES,
  * FEATURES) can be manipulated to modify the choices.

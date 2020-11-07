@@ -2577,8 +2577,8 @@ LastAge.classRules = function(
 };
 
 /*
- * Defines in #rules# the rules associated with class #name# that are not
- * directly derived from the parmeters passed to classRules.
+ * Defines in #rules# the rules associated with class #name# that cannot be
+ * derived directly from the abilities passed to classRules.
  */
 LastAge.classRulesExtra = function(rules, name) {
 
@@ -2916,8 +2916,8 @@ LastAge.featRules = function(rules, name, requires, implies, types) {
 };
 
 /*
- * Defines in #rules# the rules associated with feat #name# that are not
- * directly derived from the parmeters passed to featRules.
+ * Defines in #rules# the rules associated with feat #name# that cannot be
+ * derived directly from the abilties passed to featRules.
  */
 LastAge.featRulesExtra = function(rules, name, spellDict) {
 
@@ -3113,8 +3113,8 @@ LastAge.pathRules = function(
 };
 
 /*
- * Defines in #rules# the rules associated with heroic path #name# that are not
- * directly derived from the parmeters passed to heroicPathRules.
+ * Defines in #rules# the rules associated with heroic path #name# that cannot
+ * be derived directly from the abilities passed to heroicPathRules.
  */
 LastAge.pathRulesExtra = function(rules, name) {
 
