@@ -518,8 +518,11 @@ LastAgePrestige.classRulesExtra = function(rules, name) {
     rules.defineRule
       ('magicNotes.bindAstirax', 'levels.Bane Of Legates', '=', null);
     rules.defineRule('magicNotes.bindAstirax.1',
-      'features.Bind Astirax', '=', '15'
-      // TODO + Spellcasting modifier
+      // 15 + ability modifier; spellDifficultyClass is 10 + abilityModifier
+      'features.Bind Astirax', '?', null,
+      'spellDifficultyClass.B', '^=', 'source + 5',
+      'spellDifficultyClass.D', '^=', 'source + 5',
+      'spellDifficultyClass.W', '^=', 'source + 5'
     );
     rules.defineRule('magicNotes.baneOfLegatesSpellsKnown',
       'levels.Bane Of Legates', '=', null
