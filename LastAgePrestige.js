@@ -455,7 +455,7 @@ LastAgePrestige.talentRules = function(rules, features) {
 LastAgePrestige.classRulesExtra = function(rules, name) {
 
   var prefix =
-    name.substring(0,1).toLowerCase() + name.substring(1).replace(/ /g, '');
+    name.substring(0,1).toLowerCase() + name.substring(1).replaceAll(' ', '');
 
   if(name == 'Ancestral Bladebearer') {
 

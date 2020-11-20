@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.1.1.1';
+var LASTAGE_VERSION = '2.1.1.2';
 
 /*
  * This module loads the rules from the Second Edition core rule book. The
@@ -2500,7 +2500,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     type = type == 'Class' ? 'levels' :
     type = type == 'Deity' ? 'deities' :
     type = type == 'Path' ? 'heroicPaths' :
-    (type.substring(0,1).toLowerCase() + type.substring(1).replace(/ /g, '') + 's');
+    (type.substring(0,1).toLowerCase() + type.substring(1).replaceAll(' ', '') + 's');
     rules.addChoice(type, name, attrs);
   }
 };
@@ -2967,7 +2967,7 @@ LastAge.featRulesExtra = function(rules, name, spellDict) {
     rules.defineRule('casterLevels.B', 'casterLevels.innateB', '=', null);
     rules.defineRule('casterLevels.D', 'casterLevels.innateD', '=', null);
     rules.defineRule('casterLevels.W', 'casterLevels.innateW', '=', null);
-  } else if((matchInfo = name.match(/^Magecraft \((.*)\)/)) != null) {
+  } else if((matchInfo = name.match(/^Magecraft\s\((.*)\)/)) != null) {
     var tradition = matchInfo[1];
     var note = 'magicNotes.magecraft(' + tradition + ')';
     var ability = tradition == 'Charismatic' ? 'charisma' :
@@ -2993,12 +2993,11 @@ LastAge.featRulesExtra = function(rules, name, spellDict) {
     var spells =
       QuilvynUtils.getAttrValueArray(LastAge.baseRules.CLASSES[spellClass], 'Spells').filter(x => x.match(new RegExp('^' + spellCode + '[01]')));
     QuilvynRules.spellListRules(rules, spells, spellDict);
-  } else if((matchInfo = name.match(/^Spellcasting \((.*)\)/)) != null) {
-    var note = 'magicNotes.spellcasting('+matchInfo[1].replace(/ /g, '')+')';
+  } else if((matchInfo = name.match(/^Spellcasting\s\((.*)\)/)) != null) {
+    var note = 'magicNotes.spellcasting('+matchInfo[1].replaceAll(' ', '')+')';
     rules.defineRule('spellSlotsBonus', note, '+=', '1');
-    rules.defineRule('spellcastingFeatureCount',
-      /features.Spellcasting \(.*\)$/, '+=', '1'
-    );
+    rules.defineRule
+      ('spellcastingFeatureCount', /^features.Spellcasting/, '+=', '1');
     rules.defineRule(
       'casterLevels.Spellcasting', 'spellcastingFeatureCount', '?', null,
       'level', '=', null
@@ -3119,7 +3118,7 @@ LastAge.pathRules = function(
 LastAge.pathRulesExtra = function(rules, name) {
 
   var pathLevel =
-    name.charAt(0).toLowerCase() + name.substring(1).replace(/ /g, '') + 'Level';
+    name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') + 'Level';
 
   if(name == 'Beast') {
 
@@ -3568,7 +3567,7 @@ LastAge.pathRulesExtra = function(rules, name) {
 
     var allFeats = rules.getChoices('feats');
     for(var feat in allFeats) {
-      if(feat.match(/Weapon (Focus|Proficiency|Specialization) \(/)) {
+      if(feat.match(/Weapon\s(Focus|Proficiency|Specialization)\s\(/)) {
         allFeats[feat] =
           allFeats[feat].replace('Type=', 'Type="Steelblooded",');
       }
@@ -3665,7 +3664,7 @@ LastAge.raceRules = function(
 LastAge.raceRulesExtra = function(rules, name) {
 
   var prefix =
-    name.substring(0,1).toLowerCase() + name.substring(1).replace(/ /g, '');
+    name.substring(0,1).toLowerCase() + name.substring(1).replaceAll(' ', '');
   var raceLevel = prefix + 'Level';
 
   if(name == 'Dorn') {
