@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.1.1.2';
+var LASTAGE_VERSION = '2.1.1.3';
 
 /*
  * This module loads the rules from the Second Edition core rule book. The
@@ -1203,7 +1203,7 @@ LastAge.PATHS = {
   'Healer':
     'Group=Healer ' +
     'Level=level ' +
-    'SpellAbility=wisdom ' +
+    'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Healer1:1=1;3=2,' + // Cure Light 2/dy
       'Healer2:2=1;4=2;6=3,' + // Cure Moderate 2/dy
@@ -1320,7 +1320,7 @@ LastAge.PATHS = {
     'Features=' +
       '"1:Natural Bond","1:Wild Empathy","5:Animal Friend","10:Plant Friend",' +
       '"15:Elemental Friend","20:One With Nature" ' +
-    'SpellAbility=wisdom ' +
+    'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Naturefriend1:2=1;3=2;4=3;9=4,' +
       'Naturefriend2:6=1;8=2,' +
@@ -2166,7 +2166,7 @@ LastAge.CLASSES = {
       '"1:Spontaneous Legate Spell","1:Temple Dependency","1:Turn Undead",' +
       '"3:Astirax Companion" ' +
     'Selectables=' +
-      QuilvynUtils.getKeys(LastAge.PATHS).map(x => '"1:' + x + '"').join(',') + ' ' +
+      QuilvynUtils.getKeys(LastAge.PATHS).filter(x => x.match(/Domain$/)).map(x => '"deityDomains =~ \'' + x.replace(' Domain', '') + '\' ? 1:' + x + '"').join(',') + ' ' +
     'CasterLevelDivine=levels.Legate ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
@@ -2179,7 +2179,16 @@ LastAge.CLASSES = {
       'C6:11=1;12=2;14=3;17=4,' +
       'C7:13=1;14=2;16=3;19=4,' +
       'C8:15=1;16=2;18=3;20=4,' +
-      'C9:17=1;18=2;19=3;20=4 ' +
+      'C9:17=1;18=2;19=3;20=4,' +
+      'Domain1:1=1,' +
+      'Domain2:3=1,' +
+      'Domain3:5=1,' +
+      'Domain4:7=1,' +
+      'Domain5:9=1,' +
+      'Domain6:11=1,' +
+      'Domain7:13=1,' +
+      'Domain8:15=1,' +
+      'Domain9:17=1 ' +
     // Cleric spells added by choiceRules method
     'Spells=' +
       '"C3:Boil Blood;Speak With Fell"',
@@ -2308,6 +2317,7 @@ LastAge.identityRules = function(
   // Remove Deity from editor and sheet; add heroic path and spell energy
   rules.defineEditorElement('deity');
   rules.defineSheetElement('Deity');
+  rules.defineSheetElement('Deity Alignment');
   rules.defineEditorElement
     ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
   rules.defineSheetElement('Heroic Path', 'Alignment');
@@ -2793,7 +2803,7 @@ LastAge.classRulesExtra = function(rules, name) {
       'turningLevel', '=', '3',
       'charismaModifier', '+', null
     );
-    rules.defineRule('deity', 'levels.Legate', '=', '"Izrador (NE)"');
+    rules.defineRule('deity', 'levels.Legate', '=', '"Izrador"');
     rules.defineRule
       ('selectableFeatureCount.Legate', classLevel, '=', '2');
     rules.defineRule('turningLevel', classLevel, '+=', null);
@@ -3903,7 +3913,7 @@ LastAge.choiceEditorElements = function(rules, type) {
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
 LastAge.randomizeOneAttribute = function(attributes, attribute) {
-  if(attribute == 'spells') {
+  if(attribute == 'spells' && !('levels.Legate' in attributes)) {
     var attrs = this.applyRules(attributes);
     var spells = LastAge.rules.getChoices('spells');
     for(var attr in attrs) {
