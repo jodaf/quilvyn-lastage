@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.1.1.4';
+var LASTAGE_VERSION = '2.1.1.5';
 
 /*
  * This module loads the rules from the Second Edition core rule book. The
@@ -176,22 +176,37 @@ LastAge.FEATS_ADDED = {
   // MN2E
   'Craft Charm':'Type="Item Creation" Require="Max \'^skills.Craft\' >= 4"',
   'Craft Greater Spell Talisman':
-    'Type="Item Creation" Require="Sum \'features.Magecraft\' >= 1","level >= 12","sumChannelingFeats >= 3"',
+    'Type="Item Creation" ' +
+    'Require=' +
+      '"Sum \'features.Magecraft\' >= 1",' +
+      '"level >= 12",' +
+      '"sumChannelingFeats >= 3"',
   'Craft Spell Talisman':
-    'Type="Item Creation" Require="Sum \'features.Magecraft\' >= 1","Sum features.Spellcasting >= 1","level >= 3"',
+    'Type="Item Creation" ' +
+    'Require=' +
+      '"Sum \'features.Magecraft\' >= 1",' +
+      '"Sum features.Spellcasting >= 1",' +
+      '"level >= 3"',
   'Devastating Mounted Assault':
     'Type=Fighter Require="features.Mounted Combat >= 1","skills.Ride >= 10"',
   'Drive It Deep':'Type=Fighter Require="baseAttack >= 1"',
   'Extra Gift':
-    'Type=General Require="levels.Charismatic Channeler >= 4 || levels.Spiritual Channeler >= 4"',
+    'Type=General ' +
+    'Require=' +
+      '"levels.Charismatic Channeler >= 4 || ' +
+       'levels.Spiritual Channeler >= 4"',
   'Friendly Agent':
-    'Type=General Require="alignment =~ \'Good\'","race =~ \'Gnome|Dorn|Erenlander|Sarcosan\'"',
+    'Type=General ' +
+    'Require=' +
+      '"alignment =~ \'Good\'",' +
+      '"race =~ \'Gnome|Dorn|Erenlander|Sarcosan\'"',
   'Giant Fighter':'Type=Fighter Require="Sum features.Weapon Focus >= 1"',
   'Greater Spell Focus (Greater Conjuration)':
     'Type=General Require="features.Spell Focus (Greater Conjuration)"',
   'Greater Spell Focus (Greater Evocation)':
     'Type=General Require="features.Spell Focus (Greater Evocation)"',
-  'Herbalist':'Type="Item Creation" Require="skills.Profession (Herbalist) >= 4"',
+  'Herbalist':
+    'Type="Item Creation" Require="skills.Profession (Herbalist) >= 4"',
   'Improvised Weapon':'Type=Fighter',
   'Innate Magic':'Type=General',
   'Inconspicuous':'Type=General',
@@ -205,7 +220,10 @@ LastAge.FEATS_ADDED = {
   'Orc Slayer':'Type=FighterGeneral',
   'Quickened Donning':'Type=Fighter',
   'Ritual Magic':
-    'Type=Channeling Require="Sum \'features.Magecraft\' >= 1","Sum \'features.Spellcasting\' >= 1"',
+    'Type=Channeling ' +
+    'Require=' +
+      '"Sum \'features.Magecraft\' >= 1",' +
+      '"Sum \'features.Spellcasting\' >= 1"',
   'Sarcosan Pureblood':'Type=General Require="race =~ \'Sarcosan\'"',
   'Sense Nexus':'Type=General',
   'Spell Focus (Abjuration)':
@@ -237,17 +255,21 @@ LastAge.FEATS_ADDED = {
   'Spellcasting (Necromancy)':'Type=Channeling,Spellcasting',
   'Spellcasting (Transmutation)':'Type=Channeling,Spellcasting',
   'Spellcasting (Greater Conjuration)':
-    'Type=Channeling,Spellcasting Require="features.Spellcasting (Conjuration)"',
+    'Type=Channeling,Spellcasting ' +
+    'Require="features.Spellcasting (Conjuration)"',
   'Spellcasting (Greater Evocation)':
     'Type=Channeling,Spellcasting Require="features.Spellcasting (Evocation)"',
   // Skill Focus (Profession (Soldier)) available to Leader Of Men Fighters
   'Skill Focus (Profession (Soldier))':'Type=General',
   'Spell Knowledge':'Type=General Require="Sum \'features.Spellcasting\' >= 1"',
   'Thick Skull':'Type=General',
-  'Warrior Of Shadow':'Type=General Require="charisma >= 12","levels.Legate >= 5"',
+  'Warrior Of Shadow':
+    'Type=General Require="charisma >= 12","levels.Legate >= 5"',
   // Legates w/War domain receive Weapon Focus (Longsword)
   'Weapon Focus (Longsword)':'Type=Fighter',
-  'Whispering Awareness':'Type=General Require="wisdom >= 15","race =~ \'Elf\'"',
+  'Whispering Awareness':
+    'Type=General Require="wisdom >= 15","race =~ \'Elf\'"',
+
   // Destiny & Shadow
   'Clear-Eyed':'Type=General Require="race == \'Erenlander\'"',
   'Defiant':'Type=General Require="race == \'Erenlander\'"',
@@ -260,57 +282,126 @@ LastAge.FEATS_ADDED = {
   'Stealthy Rider':'Type=General Require="skills.Ride >= 1"',
 
   // Hammer & Shadow
+  'Advanced Tempering':'Type=Dwarvencraft Require=features.Dwarvencraft',
+  'Clouding':'Type=Dwarvencraft Require=features.Dwarvencraft',
   'Dwarvencraft':
-    'Type=General Require="skills.Craft (Armor) >= 4 || skills.Craft (Blacksmith) >= 4 || skills.Craft (Weapons) >= 4"',
+    'Type=General ' +
+    'Require=' +
+      '"skills.Craft (Armor) >= 4 || ' +
+       'skills.Craft (Blacksmith) >= 4 || ' +
+       'skills.Craft (Weapons) >= 4"',
+  'Greater Masterwork':
+    'Type=Dwarvencraft Require="features.Improved Masterwork"',
+  'Improved Masterwork':
+    'Type=Dwarvencraft ' +
+    'Require=' +
+      '"features.Dwarvencraft",' +
+      '"skills.Craft (Armor) >= 8 || ' +
+       'skills.Craft (Blacksmith) >= 8 || ' +
+       'skills.Craft (Weapons) >= 8"',
   'Powerful Throw':
-    'Type=Fighter Require="strength >= 13","features.Power Attack","features.Weapon Focus (Light Hammer) || features.Weapon Focus (Thowing Axe) || features.Weapon Focus (Urutuk Hatchet)"',
+    'Type=Fighter ' +
+    'Require=' +
+      '"strength >= 13",' +
+      '"features.Power Attack",' +
+      '"features.Weapon Focus (Light Hammer) || ' +
+       'features.Weapon Focus (Thowing Axe) || ' +
+       'features.Weapon Focus (Urutuk Hatchet)"',
+  'Reinforcing':'Type=Dwarvencraft Require=features.Dwarvencraft',
   'Shield Mate':
-    'Type=Fighter Require="dexterity >= 13","features.Shield Proficiency (Heavy)"',
+    'Type=Fighter ' +
+    'Require="dexterity >= 13","features.Shield Proficiency (Heavy)"',
+  'Tempering (Fireforged)':
+    'Type=Dwarvencraft Require="features.Advanced Tempering"',
+  'Tempering (Icebound)':
+    'Type=Dwarvencraft Require="features.Advanced Tempering"',
+  'Tempering (Quick-Cooled)':
+    'Type=Dwarvencraft Require="features.Advanced Tempering"',
   'Touched By Magic':'Type=General Require="race =~ \'Dwarf|Orc\'"',
   'Trapsmith':'Type=General',
   'Tunnel Fighting':'Type=Fighter',
-  // TBD Dwarvencraft Techniques -- probably selectable features
 
   // Honor & Shadow
-  'Born Of Duty':'Type=General Require="alignment =~ \'Lawful\'","race == \'Dorn\'"',
-  'Born Of The Grave':'Type=General Require="alignment !~ \'Good\'","race == \'Dorn\'"',
+  'Born Of Duty':
+    'Type=General Require="alignment =~ \'Lawful\'","race == \'Dorn\'"',
+  'Born Of The Grave':
+    'Type=General Require="alignment !~ \'Good\'","race == \'Dorn\'"',
+
   // Sorcery & Shadow
   'Blood-Channeler':
-    'Type=General Require="constitution >= 15","Sum \'features.Magecraft\' >= 1"',
+    'Type=General ' +
+    'Require="constitution >= 15","Sum \'features.Magecraft\' >= 1"',
   'Craft Rune Of Power':
-    'Type="Item Creation" Require="Sum \'features.Magecraft\' >= 1","Sum \'features.Spellcasting\' >= 1","level >= 3"',
+    'Type="Item Creation" ' +
+    'Require=' +
+      '"Sum \'features.Magecraft\' >= 1",' +
+      '"Sum \'features.Spellcasting\' >= 1",' +
+      '"level >= 3"',
   'Flexible Recovery':
-    'Type=General Require="constitution >= 13","Sum \'features.Magecraft\' >= 1"',
+    'Type=General ' +
+    'Require="constitution >= 13","Sum \'features.Magecraft\' >= 1"',
   'Improved Flexible Recovery':
-    'Type=General Require="constitution >= 15","features.Flexible Recovery","Sum \'features.Magecraft\' >= 1"',
+    'Type=General ' +
+    'Require=' +
+      '"constitution >= 15",' +
+      '"features.Flexible Recovery",' +
+      '"Sum \'features.Magecraft\' >= 1"',
   'Knack For Charms':
-    'Type="Item Creation" Require="skills.Knowledge (Arcana) >= 4","skills.Knowledge (Nature) >= 4"',
+    'Type="Item Creation" ' +
+    'Require=' +
+      '"skills.Knowledge (Arcana) >= 4",' +
+      '"skills.Knowledge (Nature) >= 4"',
   'Living Talisman':
-    'Type=General Require="Sum \'features.Magecraft\' >= 1","Sum \'features.Spellcasting\' >= 1","level >= 5","skills.Knowledge (Arcana) >= 6"',
+    'Type=General ' +
+    'Require=' +
+      '"Sum \'features.Magecraft\' >= 1",' +
+      '"Sum \'features.Spellcasting\' >= 1",' +
+      '"level >= 5",' +
+      '"skills.Knowledge (Arcana) >= 6"',
   'Power Reservoir':'Type=General Require="Sum \'features.Magecraft\' >= 1"',
   'Sense Power':'Type=General Require="wisdom >= 15"',
   'Subtle Caster':'Type=General Require="Sum \'features.Magecraft\' >= 1"',
 
   // Star & Shadow
   'Canny Strike':
-    'Type=Fighter Require="intelligence >= 13","baseAttack >= 6","features.Clever Fighting","features.Weapon Finesse"',
+    'Type=Fighter ' +
+    'Require=' +
+      '"intelligence >= 13",' +
+      '"baseAttack >= 6",' +
+      '"features.Clever Fighting",' +
+      '"features.Weapon Finesse"',
   'Caste Status':'Type=General',
-  'Clever Fighting':'Type=Fighter Require="dexterity >= 13","baseAttack >= 2","features.Weapon Finesse"',
+  'Clever Fighting':
+    'Type=Fighter ' +
+    'Require="dexterity >= 13","baseAttack >= 2","features.Weapon Finesse"',
   'Plains Warfare':'Type=Fighter Require="features.Mounted Combat"',
   'Urban Intrigue':
-    'Type=General Imply="skills.Gather Information >= 1" Require="race == \'Urban Sarcosan\'","skills.Bluff >= 1"',
+    'Type=General ' +
+    'Imply="skills.Gather Information >= 1" ' +
+    'Require="race == \'Urban Sarcosan\'","skills.Bluff >= 1"',
   'Well-Aimed Strike':
-    'Type=Fighter Require="baseAttack >= 9","features.Canny Strike","features.Clever Fighting","features.Weapon Finesse"',
+    'Type=Fighter ' +
+    'Require=' +
+      '"baseAttack >= 9",' +
+      '"features.Canny Strike",' +
+      '"features.Clever Fighting",' +
+      '"features.Weapon Finesse"',
 
   // Steel & Shadow
   'Resigned To Death':'Type=General Require="wisdom >= 13"',
-  'Whirlwind Charge':'Type=General Require="strength >= 15","baseAttack >= 6","features.Cleave","features.Power Attack"'
+  'Whirlwind Charge':
+    'Type=General ' +
+    'Require=' +
+      '"strength >= 15",' +
+      '"baseAttack >= 6",' +
+      '"features.Cleave",' +
+      '"features.Power Attack"'
 
 };
 LastAge.FEATS = Object.assign({}, SRD35.FEATS, LastAge.FEATS_ADDED);
 LastAge.FEATURES_ADDED = {
 
-  // Heroic Paths
+  // Heroic Path
   'Ability Boost':'Section=ability Note="%V to distribute"',
   'Ability Recovery':'Section=combat Note="Regain 1 point ability damage/hr"',
   'Aid Another':'Section=combat Note="Aid another as a move action"',
@@ -408,7 +499,8 @@ LastAge.FEATURES_ADDED = {
   'Improved Healing':'Section=combat Note="Regain %V HP/hr"',
   'Improved Resist Spells':'Section=save Note="+%V vs. spells"',
   'Improved Retributive Rage':
-    'Section=combat Note="+%V damage next rd after suffering ${level*2} HP damage"',
+    'Section=combat ' +
+    'Note="+%V damage next rd after suffering ${level*2} HP damage"',
   'Improved Spell Penetration':
     'Section=magic Note="+%V checks to overcome spell resistance"',
   'Improved Spellcasting':
@@ -556,6 +648,7 @@ LastAge.FEATURES_ADDED = {
   'Wisdom Bonus':'Section=ability Note="+%V Wisdom"',
 
   // Feats
+  'Advanced Tempering':'Section=skill Note="Increase item hardness 20%"',
   'Blood-Channeler':
     'Section=magic Note="Dbl spell energy for first two Con points lost"',
   'Born Of Duty':
@@ -569,6 +662,7 @@ LastAge.FEATURES_ADDED = {
     'Note="Half penalty for distance sight, x2 normal vision in dim light on plains",' +
          '"Spot is a class skill"',
   'Clever Fighting':'Section=combat Note="+%V finesse weapon damage"',
+  'Clouding':'Section=skill Note="Item half weight, thrown +10\' range"',
   'Craft Charm':
     'Section=magic Note="Use Craft to create single-use magic item"',
   'Craft Greater Spell Talisman':
@@ -597,6 +691,9 @@ LastAge.FEATURES_ADDED = {
     'Note="+4 Diplomacy (convince allegiance)/+4 Sense Motive (determine allegiance)"',
   'Giant Fighter':
     'Section=combat Note="+4 AC, dbl critical range w/in 30\' vs. giants"',
+  'Greater Masterwork':
+    'Section=skill ' +
+    'Note="Weapon +2 attack and +1 damage, armor and shield -1 skill penalty, +1 max dex, and -5% acane spell failure, armor don or remove in half time, light shield use with ranged weapon, other +4 DC"',
   'Greater Spell Focus (Greater Conjuration)':
     'Section=magic Note="+1 Spell DC (Greater Conjuration)"',
   'Greater Spell Focus (Greater Evocation)':
@@ -609,6 +706,9 @@ LastAge.FEATURES_ADDED = {
   'Improved Flexible Recovery':
     'Section=magic ' +
     'Note="DC 30 Concentration to recover %V spell energy per hr meditating"',
+  'Improved Masterwork':
+    'Section=skill ' +
+    'Note="Weapon +1 attack and damage, armor and shield -1 skill penalty and +1 max dex, other +2 DC"',
   'Improvised Weapon':
     'Section=combat ' +
     'Note="No penalty for improvised weapon, -2 for non-proficient weapon"',
@@ -640,6 +740,7 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="Store +%V siphoned spell energy points"',
   'Powerful Throw':'Section=combat Note="+10 range, use Str bonus for attack"',
   'Quickened Donning':'Section=feature Note="No penalty for hastened donning"',
+  'Reinforcing':'Section=skill Note="Item +5 HP, weapon -1 attack and range"',
   'Resigned To Death':
      'Section=save Note="+4 vs. fear, fail 1 step less intense"',
   'Ritual Magic':'Section=magic Note="Learn and lead magic rituals"',
@@ -686,6 +787,14 @@ LastAge.FEATURES_ADDED = {
   'Subtle Caster':
     'Section=skill ' +
     'Note="+2 Bluff or Sleight Of Hand to disguise spell casting"',
+  'Tempering (Fireforged)':
+    'Section=skill ' +
+    'Note="No item damage from fire, light/medium/heavy armor gives fire resistance 2/3/4"',
+  'Tempering (Icebound)':
+    'Section=skill ' +
+    'Note="No item damage from cold, light/medium/heavy armor gives cold resistance 2/3/4"',
+  'Tempering (Quick-Cooled)':
+    'Section=skill Note="Increase item hardness 40%, decrease item HP 2x"',
   'Thick Skull':'Section=save Note="DC 10 + damage save to stay at 1 HP"',
   'Touched By Magic':
     'Section=magic,save Note="+2 Spell Energy","-2 vs. spells"',
@@ -706,7 +815,7 @@ LastAge.FEATURES_ADDED = {
   'Whispering Awareness':
     'Section=feature Note="DC 12 Wis to hear Whispering Wood"',
 
-  // Classes
+  // Class
   'Adapter':
     'Section=skill Note="+%V skill points or %1 additional class skills"',
   'Armor Class Bonus':'Section=combat Note="+%V AC"',
@@ -752,8 +861,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="No surprise by servant of shadow"',
   "Hunter's Strike":'Section=combat Note="x2 damage %V/dy"',
   'Improved Confidence':
-    'Section=magic ' +
-    'Note="Allies failing enchantment saves affected for half duration; fear reduced"',
+    'Section=magic Note="Allies enchanted for half duration, fear reduced"',
   'Improved Fury':
     'Section=magic ' +
     'Note="+1 Initiative, attack, and damage during Ispire Fury"',
@@ -842,7 +950,7 @@ LastAge.FEATURES_ADDED = {
   'Woodslore':
     'Section=skill Note="Automatic Search vs. trap or concealed door w/in 5\'"',
 
-  // Races
+  // Race
   'Alert Senses':'Section=skill Note="+2 Listen/+2 Spot"',
   'Bound To The Beast':'Section=feature Note="Mounted Combat"',
   'Bound To The Spirit':'Section=feature Note="Magecraft (Spiritual)"',
@@ -997,7 +1105,8 @@ LastAge.FEATURES_ADDED = {
   'Enhanced Sense':
     'Section=companion Note="+%V mile channeled event detection"',
   'Telepathy':
-    'Section=companion Note="R100\' Companion-controlled telepathic communication"'
+    'Section=companion ' +
+    'Note="R100\' Companion-controlled telepathic communication"'
 
 };
 LastAge.FEATURES = Object.assign({}, SRD35.FEATURES, LastAge.FEATURES_ADDED);
@@ -3025,6 +3134,8 @@ LastAge.featRulesExtra = function(rules, name, spellDict) {
       'skills.Craft (Blacksmith)', '+=', 'Math.floor(source / 4)',
       'skills.Craft (Weapons)', '+=', 'Math.floor(source / 4)'
     );
+    rules.defineRule
+      ('featCount.Dwarvencraft', 'featureNotes.dwarvencraft', '=', null);
   } else if(name == 'Born Of Duty') {
     rules.defineRule('magicNotes.bornOfDuty',
       'level', '=', '10 + Math.floor(source / 2)',
