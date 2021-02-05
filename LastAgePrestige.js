@@ -25,11 +25,12 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
  * FEATURES) can be manipulated to modify the choices.
  */
 function LastAgePrestige() {
-  if(window.SRD35 == null || window.LastAge == null) {
-    alert('The LastAgePrestige module requires the SRD35 and LastAge modules');
+  if(window.LastAge == null) {
+    alert('The LastAgePrestige module requires the LastAge module');
     return;
   }
   LastAgePrestige.identityRules(LastAge.rules, LastAgePrestige.CLASSES);
+  LastAgePrestige.magicRules(LastAge.rules, LastAgePrestige.SPELLS);
   LastAgePrestige.talentRules(LastAge.rules, LastAgePrestige.FEATURES);
 }
 
@@ -53,10 +54,7 @@ LastAgePrestige.CLASSES = {
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Bladebearer1:3=1;7=2,' +
-      'Bladebearer2:5=1;9=2 ' +
-    'Spells=' +
-      '"Bladebearer1:Alarm;Detect Secret Doors",' +
-      '"Bladebearer2:Augury;Protection From Arrows"',
+      'Bladebearer2:5=1;9=2',
   "Aradil's Eye":
     'Require=' +
       'features.Inconspicuous,"race == \'Wood Elf\'","skills.Bluff >= 8",' +
@@ -197,10 +195,7 @@ LastAgePrestige.CLASSES = {
     'SpellAbility=charisma ' +
     'SpellsSlots=' +
       'Smuggler2:5=1,' +
-      'Smuggler4:3=1 ' +
-    'Spells=' +
-      'Smuggler2:Misdirection,' +
-      '"Smuggler5:Modify Memory"',
+      'Smuggler4:3=1',
   'Warrior Arcanist':
     'Require=' +
       '"baseAttack >= 4","Sum features.Magecraft >= 1",' +
@@ -432,12 +427,28 @@ LastAgePrestige.FEATURES = {
   'Wogren Dodge':'Section=combat Note="+2 AC during mounted move"',
   "Wogren's Sight":'Section=feature Note="Blindsense while mounted"'
 };
+LastAgePrestige.SPELLS = {
+  'Alarm':'Level=Bladebearer1',
+  'Augury':'Level=Bladebearer2',
+  'Detect Secret Doors':'Level=Bladebearer1',
+  'Misdirection':'Level=Smuggler2',
+  'Modify Memory':'Level=Smuggler5',
+  'Protection From Arrows':'Level=Bladebearer2'
+};
 
 /* Defines rules related to basic character identity. */
 LastAgePrestige.identityRules = function(rules, classes) {
   for(var clas in classes) {
     rules.choiceRules(rules, 'Class', clas, classes[clas]);
     LastAgePrestige.classRulesExtra(rules, clas);
+  }
+};
+
+/* Defines rules related to magic use. */
+LastAgePrestige.magicRules = function(rules, spells) {
+  QuilvynUtils.checkAttrTable(spells, ['School', 'Level', 'Description']);
+  for(var s in spells) {
+    rules.choiceRules(rules, 'Spell', s, LastAge.SPELLS[s] + ' ' + spells[s]);
   }
 };
 

@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.1.1.5';
+var LASTAGE_VERSION = '2.2.1.0';
 
 /*
  * This module loads the rules from the Second Edition core rule book. The
@@ -90,11 +90,21 @@ function LastAge() {
   for(var skill in LastAge.SKILLS) {
     LastAge.SKILLS[skill] = LastAge.SKILLS[skill].replace(/Class=\S+/i, '');
   }
-  LastAge.SPELLS =
-    Object.assign({}, LastAge.basePlugin.SPELLS, LastAge.SPELLS_ADDED);
-  for(var spell in LastAge.SPELL_SCHOOL_CHANGES) {
-    LastAge.SPELLS[spell] +=
-      ' School="' + LastAge.SPELL_SCHOOL_CHANGES[spell] + '"';
+  LastAge.SPELLS = Object.assign({}, LastAge.SPELLS_ADDED);
+  for(var s in LastAge.basePlugin.SPELLS) {
+    var m = LastAge.basePlugin.SPELLS[s].match(/\b[BD][01]|\b(C|Death|Destruction|Evil|Magic|War)[0-9]/g);
+    if(m == null && !(s in LastAge.SPELLS_LEVELS))
+      continue;
+    var spellAttrs = LastAge.basePlugin.SPELLS[s] + ' Level=';
+    if(m == null)
+      spellAttrs += LastAge.SPELLS_LEVELS[s];
+    else if(s in LastAge.SPELLS_LEVELS)
+      spellAttrs += LastAge.SPELLS_LEVELS[s] + ',' + m.join(',');
+    else
+      spellAttrs += m.join(',');
+    if(s in LastAge.SPELLS_SCHOOLS)
+      spellAttrs += ' School="' + LastAge.SPELLS_SCHOOLS[s] + '"';
+    LastAge.SPELLS[s] = spellAttrs;
   }
   LastAge.WEAPONS =
     Object.assign({}, LastAge.basePlugin.WEAPONS, LastAge.WEAPONS_ADDED);
@@ -102,9 +112,7 @@ function LastAge() {
   LastAge.abilityRules(rules);
   LastAge.aideRules(rules, LastAge.ANIMAL_COMPANIONS, LastAge.FAMILIARS);
   LastAge.combatRules(rules, LastAge.ARMORS, LastAge.SHIELDS, LastAge.WEAPONS);
-  // Most spell definitions are handled by individual classes and pathes.
-  // Schools must be defined before this can be done.
-  LastAge.magicRules(rules, LastAge.SCHOOLS, []);
+  LastAge.magicRules(rules, LastAge.SCHOOLS, LastAge.SPELLS);
   // Feats must be defined before paths
   LastAge.talentRules
     (rules, LastAge.FEATS, LastAge.FEATURES, LastAge.LANGUAGES, LastAge.SKILLS);
@@ -1162,12 +1170,7 @@ LastAge.PATHS = {
       'Beast1:3=1;3=2,' + // Magic Fang 2/dy
       'Beast2:4=1;9=2;14=3,' +
       'Beast3:8=1,' +
-      'Beast4:19=1 ' +
-    'Spells=' +
-      '"Beast1:Magic Fang",' +
-      '"Beast2:Bear\'s Endurance;Cat\'s Grace;Bull\'s Strength",' +
-      '"Beast3:Greater Magic Fang",' +
-      '"Beast4:Freedom Of Movement"',
+      'Beast4:19=1',
   'Chanceborn':
     'Group=Chanceborn ' +
     'Level=level ' +
@@ -1179,12 +1182,7 @@ LastAge.PATHS = {
       'Chanceborn0:2=1,' +
       'Chanceborn1:7=1,' +
       'Chanceborn2:12=1,' +
-      'Chanceborn3:17=1 ' +
-    'Spells=' +
-      '"Chanceborn0:Resistance",' +
-      '"Chanceborn1:True Strike",' +
-      '"Chanceborn2:Aid",' +
-      '"Chanceborn3:Prayer"',
+      'Chanceborn3:17=1',
   'Charismatic':
     'Group=Charismatic ' +
     'Level=level ' +
@@ -1197,13 +1195,7 @@ LastAge.PATHS = {
       'Charismatic2:7=1;8=2,' +
       'Charismatic3:11=1;16=2,' +
       'Charismatic4:13=1,' +
-      'Charismatic6:17=1 ' +
-    'Spells=' +
-      '"Charismatic1:Charm Person;Hypnotism;Remove Fear",' +
-      '"Charismatic2:Aid;Daze Monster",' +
-      '"Charismatic3:Heroism;Suggestion",' +
-      '"Charismatic4:Charm Monster",' +
-      '"Charismatic6:Greater Heroism"',
+      'Charismatic6:17=1',
   'Dragonblooded':
     'Group=Dragonblooded ' +
     'Level=level ' +
@@ -1226,15 +1218,7 @@ LastAge.PATHS = {
       'Earthbonded4:7=1;9=2;14=3,' +
       'Earthbonded5:13=1,' +
       'Earthbonded6:15=1;17=2,' +
-      'Earthbonded8:19=1 ' +
-    'Spells=' +
-      '"Earthbonded1:Hold Portal",' +
-      '"Earthbonded2:Make Whole;Soften Earth And Stone",' +
-      '"Earthbonded3:Meld Into Stone",' +
-      '"Earthbonded4:Spike Stones;Stone Shape;Stoneskin",' +
-      '"Earthbonded5:Transmute Rock To Mud",' +
-      '"Earthbonded6:Move Earth;Stone Tell",' +
-      '"Earthbonded8:Earthquake"',
+      'Earthbonded8:19=1',
   'Faithful':
     'Group=Faithful ' +
     'Level=level ' +
@@ -1247,14 +1231,7 @@ LastAge.PATHS = {
       'Faithful3:11=1;12=2;13=3,' +
       'Faithful4:16=1,' +
       'Faithful5:17=1,' +
-      'Faithful8:18=1 ' +
-    'Spells=' +
-      '"Faithful1:Bless;Bless Weapon;Divine Favor;Protection From Evil",' +
-      '"Faithful2:Aid;Consecrate",' +
-      '"Faithful3:Daylight;Magic Circle Against Evil;Prayer",' +
-      '"Faithful4:Holy Smite",' +
-      '"Faithful5:Dispel Evil",' +
-      '"Faithful8:Holy Aura"',
+      'Faithful8:18=1',
   'Fellhunter':
     'Group=Fellhunter ' +
     'Level=level ' +
@@ -1263,9 +1240,7 @@ LastAge.PATHS = {
       '"5:Disrupting Attack" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
-      'Fellhunter1:1=1 ' +
-    'Spells=' +
-      '"Fellhunter1:Detect Undead"',
+      'Fellhunter1:1=1',
   'Feyblooded':
     'Group=Feyblooded ' +
     'Level=level ' +
@@ -1281,14 +1256,7 @@ LastAge.PATHS = {
       'Feyblooded3:9=1;10=2;11=3,' +
       'Feyblooded4:15=1,' +
       'Feyblooded5:14=1;18=2,' +
-      'Feyblooded6:17=1 ' +
-    'Spells=' +
-      '"Feyblooded1:Disguise Self;Magic Aura;Ventriloquism",' +
-      '"Feyblooded2:Invisibility",' +
-      '"Feyblooded3:Deep Slumber;Glibness;Nondetection",' +
-      '"Feyblooded4:Rainbow Pattern",' +
-      '"Feyblooded5:False Vision;Seeming",' +
-      '"Feyblooded6:Mislead"',
+      'Feyblooded6:17=1',
   'Giantblooded':
     'Group=Giantblooded ' +
     'Level=level ' +
@@ -1305,11 +1273,8 @@ LastAge.PATHS = {
       '"16:Death Ward" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
-      'Guardian1:2=1,' +
-      'Guardian4:16=1 ' +
-    'Spells=' +
-      '"Guardian1:Detect Evil",' +
-      '"Guardian4:Death Ward"',
+      'Guardian2:2=1,' +
+      'Guardian5:16=1',
   'Healer':
     'Group=Healer ' +
     'Level=level ' +
@@ -1317,19 +1282,11 @@ LastAge.PATHS = {
     'SpellSlots=' +
       'Healer1:1=1;3=2,' + // Cure Light 2/dy
       'Healer2:2=1;4=2;6=3,' + // Cure Moderate 2/dy
-      'Healer3:5=1;7=2;8=3;9=4,' + // Cure Serious 2/dy
-      'Healer4:10=1;11=2;12=3;14=4;17=5,' + // Cure Critical, Restoration 2/dy, 
+      'Healer3:5=1;7=2;8=3;9=4;11=5,' + // Cure Serious 2/dy
+      'Healer4:10=1;12=2;14=3;17=4,' + // Cure Critical, Restoration 2/dy, 
       'Healer5:13=1;15=2;20=3,' + // Mass Cure Light 2/dy
-      'Healer6:16=1;18=2,' + // Heal 2/dy
-      'Healer7:19=1 ' +
-    'Spells=' +
-      '"Healer1:Cure Light Wounds",' +
-      '"Healer2:Cure Moderate Wounds;Lesser Restoration",' +
-      '"Healer3:Cure Serious Wounds;Remove Blindness/Deafness;Remove Disease",'+
-      '"Healer4:Cure Critical Wounds;Neutralize Poison;Restoration",' +
-      '"Healer5:Mass Cure Light Wounds;Raise Dead",' +
-      '"Healer6:Heal",' +
-      '"Healer7:Regenerate"',
+      'Healer7:16=1;18=2,' + // Heal 2/dy
+      'Healer9:19=1',
   'Ironborn':
     'Group=Ironborn ' +
     'Level=level ' +
@@ -1348,66 +1305,7 @@ LastAge.PATHS = {
       'Jack0:1=1;2=2,' +
       'Jack1:6=1;13=2,' +
       'Jack2:10=1;19=2,' +
-      'Jack3:16=1 ' +
-    'Spells=' +
-      '"Jack0:Create Water;Cure Minor Wounds;Dancing Lights;Daze;Detect Magic;'+
-      'Detect Poison;Disrupt Undead;Flare;Ghost Sound;Guidance;' +
-      'Know Direction;Light;Lullaby;Mage Hand;Mending;Message;Open/Close;' +
-      'Ray Of Frost;Read Magic;Resistance;Summon Instrument;' +
-      'Touch Of Fatigue;Virtue",' +
-      '"Jack1:Alarm;Animate Rope;Assist;Burial;Burning Hands;Calm Animals;' +
-      'Cause Fear;Channel Might;Charm Animal;Charm Person;Chill Touch;' +
-      'Color Spray;Comprehend Languages;Cure Light Wounds;' +
-      'Detect Animals Or Plants;Detect Astirax;Detect Secret Doors;' +
-      'Detect Snares And Pits;Detect Undead;Disguise Self;Disguise Weapon;' +
-      'Endure Elements;Enlarge Person;Entangle;Erase;Expeditious Retreat;' +
-      'Faerie Fire;Far Whisper;Feather Fall;Floating Disk;Goodberry;Grease;' +
-      'Hide From Animals;Hold Portal;Hypnotism;Identify;Inspiration;' +
-      'Joyful Speech;Jump;Know The Name;Lesser Confusion;Lie;Mage Armor;' +
-      'Magic Aura;Magic Fang;Magic Missile;Magic Mouth;Magic Stone;' +
-      "Magic Weapon;Mount;Obscuring Mist;Pass Without Trace;Peasant's Rest;" +
-      'Phantom Edge;Produce Flame;Protection From Chaos;' +
-      'Protection From Evil;Protection From Good;Protection From Law;' +
-      'Ray Of Enfeeblement;Reduce Person;Remove Fear;Shield;Shillelagh;' +
-      'Shocking Grasp;Silent Image;Sleep;Speak With Animals;Spider Climb;' +
-      'Stone Soup;Summon Monster I;Summon Nature\'s Ally I;True Strike;' +
-      'Undetectable Alignment;Unseen Servant;Ventriloquism;Woeful Speech",' +
-      '"Jack2:Acid Arrow;Alter Self;Animal Messenger;Animal Trance;' +
-      'Arcane Lock;Barkskin;Bear\'s Endurance;Bleed Power;Blindness/Deafness;' +
-      'Blur;Bull\'s Strength;Cat\'s Grace;Chill Metal;Command Undead;' +
-      'Confer Power;Continual Flame;Cure Moderate Wounds;Darkness;Darkvision;' +
-      'Daze Monster;Delay Poison;Detect Chaos;Detect Evil;Detect Good;' +
-      'Detect Law;Detect Thoughts;Disguise Ally;Eagle\'s Splendor;' +
-      'False Life;Fell Forbiddance;Fey Fire;Fey Hearth;Flame Blade;' +
-      'Flaming Sphere;Fog Cloud;Fox\'s Cunning;Ghoul Touch;Glitterdust;' +
-      'Greenshield;Gust Of Wind;Heat Metal;Hideous Laughter;Hold Animal;' +
-      'Hypnotic Pattern;Invisibility;Knock;Lesser Restoration;Levitate;' +
-      'Lifetrap;Locate Object;Magic Mouth;Memorial;Minor Image;' +
-      'Mirror Image;Misdirection;Nature\'s Revelation;Obscure Object;' +
-      'Owl\'s Wisdom;Pacify;Phantom Trap;Protection From Arrows;' +
-      'Pyrotechnics;Reduce Animal;Resist Energy;Scare;Scorching Ray;' +
-      'Scryer\'s Mark;See Invisibility;Shatter;Silence;Silver Blood;' +
-      'Soften Earth And Stone;Sound Burst;Spectral Hand;Spider Climb;' +
-      'Summon Monster II;Summon Nature\'s Ally II;Summon Swarm;' +
-      'Touch Of Idiocy;Tree Shape;Warp Wood;Weather;Web;Whispering Wind;' +
-      'Withering Speech;Wood Shape",' +
-      '"Jack3:Arcane Impotence;Arcane Sight;Call Lightning;Charm Repair;' +
-      'Clairaudience/Clairvoyance;Contagion;Cure Serious Wounds;Daylight;' +
-      'Deep Slumber;Diminish Plants;Dispel Magic;Displacement;' +
-      'Dominate Animal;Explosive Runes;Fireball;Flame Arrow;Fly;' +
-      'Gaseous Form;Gentle Repose;Glibness;Good Hope;Greater Magic Fang;' +
-      'Greater Magic Weapon;Greater Questing Bird;Gust Of Wind;' +
-      'Halfling Burrow;Halt Undead;Haste;Heroism;Hold Person;' +
-      'Illusory Script;Invisibility Sphere;Keen Edge;Lightning Bolt;' +
-      'Magic Circle Against Chaos;Magic Circle Against Evil;' +
-      'Magic Circle Against Good;Magic Circle Against Law;Major Image;' +
-      'Meld Into Stone;Neutralize Poison;Nondetection;Phantom Steed;' +
-      'Plant Growth;Poison;Protection From Energy;Questing Bird;Rage;' +
-      'Ray Of Exhaustion;Remove Disease;Sculpt Sound;Secret Page;' +
-      'Sepia Snake Sigil;Shrink Item;Silver Wind;Sleet Storm;Slow;Snare;' +
-      'Speak With Plants;Spike Growth;Stinking Cloud;Suggestion;' +
-      'Summon Monster III;Summon Nature\'s Ally III;Tiny Hut;Tongues;' +
-      'Vampiric Touch;Water Breathing;Water Walk;Willful Stand;Wind Wall"',
+      'Jack3:16=1',
   'Mountainborn':
     'Group=Mountainborn ' +
     'Level=level ' +
@@ -1419,11 +1317,7 @@ LastAge.PATHS = {
     'SpellSlots=' +
       'Mountainborn1:2=1;7=2,' +
       'Mountainborn3:12=1,' +
-      'Mountainborn6:17=1 ' +
-    'Spells=' +
-      '"Mountainborn1:Endure Elements;Pass Without Trace",' +
-      '"Mountainborn3:Meld Into Stone",' +
-      '"Mountainborn6:Stone Tell"',
+      'Mountainborn6:17=1',
   'Naturefriend':
     'Group=Naturefriend ' +
     'Level=level ' +
@@ -1433,18 +1327,10 @@ LastAge.PATHS = {
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Naturefriend1:2=1;3=2;4=3;9=4,' +
-      'Naturefriend2:6=1;8=2,' +
-      'Naturefriend3:7=1;11=2;12=3;13=4;14=5;16=6,' +
+      'Naturefriend2:6=1;7=2;8=3,' +
+      'Naturefriend3:11=1;12=2;13=3;14=4;16=5,' +
       'Naturefriend4:17=1;18=2;19=3,' +
-      'Naturefriend5:20=1 ' +
-    'Spells=' +
-      '"Naturefriend1:Calm Animals;Entangle;Obscuring Mist;' +
-      'Speak With Animals",' +
-      '"Naturefriend2:Animal Messenger;Gust Of Wind",' +
-      '"Naturefriend3:Call Lightning;Dominate Animal;Sleet Storm;' +
-      'Speak With Plants;Spike Growth;Wood Shape",' +
-      '"Naturefriend4:Command Plants;Ice Storm;Summon Nature\'s Ally IV",' +
-      '"Naturefriend5:Commune With Nature"',
+      'Naturefriend5:20=1',
   'Northblooded':
     'Group=Northblooded ' +
     'Level=level ' +
@@ -1455,9 +1341,7 @@ LastAge.PATHS = {
       '"18:Greater Frost Weapon" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
-      'Northborn1:4=1;8=2;12=3 ' +
-    'Spells=' +
-      '"Northborn1:Commune With Nature"',
+      'Northborn5:4=1;8=2;12=3',
   'Painless':
     'Group=Painless ' +
     'Level=level ' +
@@ -1490,13 +1374,7 @@ LastAge.PATHS = {
       'Seaborn3:8=2;13=3,' +
       'Seaborn4:12=3,' +
       'Seaborn5:16=4,' +
-      'Seaborn6:20=5 ' +
-    'Spells=' +
-      '"Seaborn2:Blur;Fog Cloud;Summon Nature\'s Ally II",' +
-      '"Seaborn3:Displacement;Summon Nature\'s Ally III",' +
-      '"Seaborn4:Summon Nature\'s Ally IV",' +
-      '"Seaborn5:Summon Nature\'s Ally V",' +
-      '"Seaborn6:Summon Nature\'s Ally VI"',
+      'Seaborn6:20=5',
   'Seer':
     'Group=Seer ' +
     'Level=level ' +
@@ -1506,19 +1384,11 @@ LastAge.PATHS = {
     'SpellSlots=' +
       'Seer1:1=1,' +
       'Seer2:2=1,' +
-      'Seer3:4=1;5=2;8=3,' +
-      'Seer4:7=1;10=2;11=3;13=4,' +
+      'Seer3:5=1;8=2,' +
+      'Seer4:4=1;7=2;10=3;11=4;13=5,' +
       'Seer5:16=1;19=2,' +
       'Seer6:14=1;17=2,' +
-      'Seer7:20=1 ' +
-    'Spells=' +
-      '"Seer1:Alarm",' +
-      '"Seer2:Augury",' +
-      '"Seer3:Clairaudience/Clairvoyance;Locate Object;Speak With Dead",' +
-      '"Seer4:Arcane Eye;Divination;Locate Creature;Scrying",' +
-      '"Seer5:Commune;Prying Eyes",' +
-      '"Seer6:Find The Path;Legend Lore",' +
-      '"Seer7:Vision"',
+      'Seer7:20=1',
   'Speaker':
     'Group=Speaker ' +
     'Level=level ' +
@@ -1529,13 +1399,9 @@ LastAge.PATHS = {
     'SpellSlots=' +
       'Speaker1:1=1,' +
       'Speaker2:4=1,' +
-      'Speaker4:8=1;12=2,' +
-      'Speaker8:18=1 ' +
-    'Spells=' +
-      '"Speaker1:Comprehend Languages",' +
-      '"Speaker2:Whispering Wind",' +
-      '"Speaker4:Shout;Tongues",' +
-      '"Speaker8:Greater Shout"',
+      'Speaker3:8=1,' +
+      'Speaker4:12=1,' +
+      'Speaker8:18=1',
   'Spellsoul':
     'Group=Spellsoul ' +
     'Level=level ' +
@@ -1549,13 +1415,9 @@ LastAge.PATHS = {
       '1:Darkvision,"2:Shadow Veil","4:Shadow Jump","11:Hide In Plain Sight" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
-      'Shadow1:3=1;13=2,' + // Expeditious Retreat 2/dy
-      'Shadow2:5=1;7=2;15=3,' + // Blur 2/dy
-      'Shadow3:9=1;19=2 ' + // Displacement 2/dy
-    'Spells=' +
-      '"Shadow1:Expeditious Retreat",' +
-      '"Shadow2:Blur;Undetectable Alignment",' +
-      '"Shadow3:Displacement"',
+      'Shadow1:3=1;7=2;13=3;17=4,' + // Expeditious Retreat 2/dy; Undetectable Alignment 2/dy
+      'Shadow2:5=1;15=2,' + // Blur 2/dy
+      'Shadow3:9=1;19=2', // Displacement 2/dy
   'Steelblooded':
     'Group=Steelblooded ' +
     'Level=level ' +
@@ -1575,14 +1437,7 @@ LastAge.PATHS = {
       'Sunderborn3:9=1,' +
       'Sunderborn4:12=1,' +
       'Sunderborn5:15=1,' +
-      'Sunderborn6:18=1 ' +
-    'Spells=' +
-      '"Sunderborn1:Detect Outsider;Summon Monster I",' +
-      '"Sunderborn2:Summon Monster II",' +
-      '"Sunderborn3:Summon Monster III",' +
-      '"Sunderborn4:Summon Monster IV",' +
-      '"Sunderborn5:Summon Monster V",' +
-      '"Sunderborn6:Summon Monster VI"',
+      'Sunderborn6:18=1',
   'Tactician':
     'Group=Tactician ' +
     'Level=level ' +
@@ -1600,9 +1455,7 @@ LastAge.PATHS = {
       '"Low-Light Vision",Scent ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
-      'Warg1:4=1;7=2;12=3;17=4 ' + // Charm Animal 2/dy; Speak w/Animals 2/dy
-    'Spells=' +
-      '"Warg1:Charm Animal;Speak With Animals"'
+      'Warg1:4=1;7=2;12=3;17=4' // Charm Animal 2/dy; Speak w/Animals 2/dy
 };
 LastAge.RACES = {
   'Agrarian Halfling':
@@ -1822,145 +1675,690 @@ LastAge.SPELLS_ADDED = {
 
   'Charm Repair':
     'School=Transmutation ' +
-    'Description="Touched minor/lesser charm restored to use"',
+    'Level=Ch3,Jack3 ' +
+    'Description="Touched minor or lesser charm restored to use"',
   'Detect Astirax':
     'School=Divination ' +
+    'Level=Ch1,Jack1 ' +
     'Description="R$RL\' quarter circle Info on astiraxes for $L10 min"',
-  // Sunderborn heroic path
   'Detect Outsider':
     'School=Divination ' +
+    'Level=Sunderborn1 ' +
     'Description="R60\' cone info on outsiders for $L10 min"',
   'Disguise Ally':
     'School=Illusion ' +
-    'Description="Change touched appearance/+10 disguise for $L10 min (Will disbelieve)"',
+    'Level=Ch2,Jack2 ' +
+    'Description="Change touched appearance, +10 disguise for $L10 min (Will disbelieve)"',
   'Disguise Weapon':
     'School=Illusion ' +
+    'Level=Ch1,Jack1 ' +
     'Description="$L touched weapons look benign for $L hr"',
   'Far Whisper':
     'School=Divination ' +
+    'Level=Ch1,Jack1 ' +
     'Description="+4 checks to hear Whispering Wood w/in $L10 miles for $L min"',
   'Greenshield':
     'School=Illusion ' +
+    'Level=Ch2,Jack2 ' +
     'Description="Touched surrounded by 30\' foliage sphere for $L hr"',
   'Halfling Burrow':
     'School=Transmutation ' +
+    'Level=Ch3,Jack3 ' +
     'Description="Hidden hole holds $L small creatures for $L hr"',
   'Lifetrap':
     'School=Transmutation ' +
+    'Level=Ch2,Jack2 ' +
     'Description="R$RM\' Undead in 50\' radius tangled for $L rd, 3d6 HP (Ref neg)"',
   "Nature's Revelation":
     'School=Transmutation ' +
-    'Description="R$RS Plants/animals in 30\' radius reveal creatures"',
+    'Level=Ch2,Jack2 ' +
+    'Description="R$RS Plants and animals in 30\' radius reveal creatures"',
   'Nexus Fuel':
     'School=Necromancy ' +
+    'Level=Ch5 ' +
     'Description="Sacrifice boosts nexus recovery rate"',
   'Silver Blood':
     'School=Transmutation ' +
+    'Level=Ch2,Jack2 ' +
     'Description="Caster\'s blood damages astiraxes for 1 hr"',
   'Silver Storm':
     'School=Transmutation ' +
+    'Level=Ch4 ' +
     'Description="R$RS\' Targets in cone ${Lmin15}d4 HP silver needle (Ref half)"',
   'Silver Wind':
     'School=Conjuration ' +
+    'Level=Ch3,Jack3 ' +
     'Description="R$RM\' Targets in 20\' circle d6/rd for $L rd (Will neg)"',
   'Stone Soup':
     'School=Transmutation ' +
+    'Level=Ch1,Jack1 ' +
     'Description="Buried stone creates broth"',
   // Sorcery and Shadow
   'Arcane Impotence':
     'School=Abjuration ' +
+    'Level=Ch3,Jack3 ' +
     'Description="R$RM\' Target Channeler must use $Ldiv2 spell energy to cast w/in $L rd (Will $Ldiv2 rd)"',
   'Arcane Interference':
     'School=Abjuration ' +
+    'Level=Ch5 ' +
     'Description="Spells require added $Ldiv2 energy to affect 10\' radius of touched for $L min (Will neg)"',
   'Assist':
     'School=Enchantment ' +
+    'Level=Ch1,Jack1 ' +
     'Description="R$RS\' Targets in 30\' radius +2 skill checks for conc + 1 rd"',
   'Bestow Spell':
     'School=Evocation ' +
+    'Level=Ch4 ' +
     'Description="Touched convey spell (Will neg)"',
   'Bleed Power':
     'School="Greater Evocation" ' +
+    'Level=Ch2,Jack2 ' +
     'Description="Successful foe attack on self causes 1d6 HP to attacker for $L10 min"',
   'Boil Blood':
     'School=Transmutation ' +
+    'Level=C3 ' +
     'Description="R$RS\' Target 1d8 HP for conc + 1 rd (Fort half)"',
   'Burial':
     'School=Transmutation ' +
+    'Level=Ch1,Jack1 ' +
     'Description="R$RS\' Earth swallows target non-living, unattended object"',
   'Channel Might':
     'School=Evocation ' +
+    'Level=Ch1,Jack1 ' +
     'Description="Touched next hit does maximum+$L HP w/in $L rd (Will neg)"',
   'Confer Power':
     'School=Transmutation ' +
+    'Level=Ch2,Jack2 ' +
     'Description="Transfer spell energy to nearby casters for $L rd"',
   'Fell Forbiddance':
     'School=Abjuration ' +
+    'Level=Ch2,Jack2 ' +
     'Description="R$RS\' Target ${lvl*25}\' sq area impassible to undead for $L min (Will neg for intelligent)"',
   'Fey Fire':
     'School=Conjuration ' +
+    'Level=Ch2,Jack2 ' +
     'Description="Touched point invisible 5\' radius fire that warms and heals 1 HP for $L hr"',
   'Fey Hearth':
     'School=Abjuration ' +
+    'Level=Ch2,Jack2 ' +
     'Description="R$RS\' Creatures in 30\' radius of target fire +2 Will saves, heal 1.5xlevel HP for as long as fire lasts"',
   'Greater Questing Bird':
     'School=Conjuration ' +
+    'Level=Ch6 ' +
     'Description="Self temporarily learn spell le level 6"',
   'Inspiration':
     'School=Enchantment ' +
+    'Level=Ch1,Jack1 ' +
     'Description="Touched +10 one Craft check"',
   'Inspirational Might':
     'School=Enchantment ' +
+    'Level=Ch5 ' +
     'Description="R$RS\' 4 allies in 30\' radius +2d10 HP, +2 attack, +1 Fortitude save for $Ldiv2 rd"',
   'Joyful Speech':
     'School=Enchantment ' +
+    'Level=Ch1,Jack1 ' +
     'Description="R$RM\' Listeners in 30\' radius improve reaction, unshaken, +4 vs. fear for $L rd (Will neg)"',
   'Know The Name':
     'School=Divination ' +
+    'Level=Ch1,Jack1 ' +
     'Description="Discover name(s) of touched (Will neg)"',
   'Lie':
     'School=Transmutation ' +
+    'Level=Ch1,Jack1 ' +
     'Description="+10 Bluff on next lie"',
   'Magic Circle Against Shadow':
     'School=Abjuration ' +
+    'Level=Ch5 ' +
     'Description="10\' radius from touched +2 AC, +2 saves, extra save vs. mental control, no contact vs. Izrador agents for $L10 min (Will neg)"',
   'Memorial':
     'School=Divination ' +
+    'Level=Ch2,Jack2 ' +
     'Description="Touched $L10\' radius replays previous/next $L min to next passerby"',
   'Pacify':
     'School=Abjuration ' +
+    'Level=Ch2,Jack2 ' +
     'Description="R$RS\' ${Math.floor(lvl/3) + 1} targets cannot attack for $Ldiv2 rd (Will neg)"',
   "Peasant's Rest":
     'School=Conjuration ' +
+    'Level=Ch1,Jack1 ' +
     'Description="Touched gets 8 hrs rest from 4 hrs sleep"',
   'Phantom Edge':
     'School=Transmutation ' +
+    'Level=Ch1,Jack1 ' +
     'Description="Touched weapon different type for $L min (Will neg)"',
   'Questing Bird':
     'School=Conjuration ' +
+    'Level=Ch3,Jack3 ' +
     'Description="Self temporarily learn spell le level 3"',
   "Scryer's Mark":
     'School=Divination ' +
+    'Level=Ch2,Jack2 ' +
     'Description="Touched -4 Will vs. scrying (Will neg)"',
   'Speak With Fell':
     'School=Necromancy ' +
+    'Level=C3 ' +
     'Description="R$RS\' Compel 3 correct answers from target fell w/in $L min (Will neg)"',
   'Weather':
     'School=Conjuration ' +
+    'Level=Ch2,Jack2 ' +
     'Description="R$RM\' 60\' radius, 30\' high cylinder of rain or snow"',
   'Willful Stand':
     'School=Abjuration ' +
+    'Level=Ch3,Jack3 ' +
     'Description="R$RM\' Target cannot attack self or enter threat space for conc (Will neg)"',
   'Withering Speech':
     'School=Enchantment ' +
+    'Level=Ch2,Jack2 ' +
     'Description="R$RS\' Target 1 Wis, 1 Cha damage/min for conc"',
   'Woeful Speech':
     'School=Enchantment ' +
-    'Description="R$RM\' Listeners in 30\' radius shaken, -4 vs. fear for $L rd (Will neg)"',
+    'Level=Ch1,Jack1 ' +
+    'Description="R$RM\' Listeners in 30\' radius shaken, -4 vs. fear for $L rd (Will neg)"'
 
 };
-LastAge.SPELLS = Object.assign({}, SRD35.SPELLS, LastAge.SPELLS_ADDED);
-LastAge.SPELL_SCHOOL_CHANGES = {
+LastAge.SPELLS_LEVELS = {
+  'Acid Arrow':'Ch2,Jack2',
+  'Acid Fog':'Ch6',
+  'Aid':'Chanceborn2,Charismatic2,Faithful2',
+  'Air Walk':'Ch4',
+  'Alarm':'Ch1,Jack1,Seer1',
+  'Alter Self':'Ch2,Jack2',
+  'Analyze Dweomer':'Ch6',
+  'Animal Growth':'Ch5',
+  'Animal Messenger':'Ch2,Jack2,Naturefriend2',
+  'Animal Shapes':'Ch8',
+  'Animal Trance':'Ch2,Jack2',
+  'Animate Dead':'Ch4',
+  'Animate Objects':'Ch6',
+  'Animate Plants':'Ch7',
+  'Animate Rope':'Ch1,Jack1',
+  'Antilife Shell':'Ch6',
+  'Antimagic Field':'Ch6',
+  'Antipathy':'Ch8',
+  'Antiplant Shell':'Ch4',
+  'Arcane Eye':'Ch4,Seer4',
+  'Arcane Lock':'Ch2,Jack2',
+  'Arcane Sight':'Ch3,Jack3',
+  'Astral Projection':'Ch9',
+  'Atonement':'Ch5',
+  'Augury':'Seer2',
+  'Awaken':'Ch5',
+  'Baleful Polymorph':'Ch5',
+  'Banishment':'Ch7',
+  'Barkskin':'Ch2,Jack2',
+  'Bear\'s Endurance':'Beast2,Ch2,Jack2',
+  'Bestow Curse':'Ch4',
+  'Binding':'Ch8',
+  'Black Tentacles':'Ch4',
+  'Bless Weapon':'Faithful1',
+  'Bless':'Faithful1',
+  'Blight':'Ch4',
+  'Blindness/Deafness':'Ch2,Jack2',
+  'Blur':'Ch2,Jack2,Seaborn2,Shadow2',
+  'Break Enchantment':'Ch5',
+  'Bull\'s Strength':'Beast2,Ch2,Jack2',
+  'Burning Hands':'Ch1,Jack1',
+  'Call Lightning':'Ch3,Jack3,Naturefriend3',
+  'Call Lightning Storm':'Ch5',
+  'Calm Animals':'Ch1,Jack1,Naturefriend1',
+  'Cat\'s Grace':'Beast2,Ch2,Jack2',
+  'Cause Fear':'Ch1,Jack1',
+  'Chain Lightning':'Ch6',
+  'Changestaff':'Ch7',
+  'Charm Animal':'Ch1,Jack1,Warg1',
+  'Charm Monster':'Ch4,Charismatic4',
+  'Charm Person':'Ch1,Charismatic1,Jack1',
+  'Chill Metal':'Ch2,Jack2',
+  'Chill Touch':'Ch1,Jack1',
+  'Circle Of Death':'Ch6',
+  'Clairaudience/Clairvoyance':'Ch3,Jack3,Seer3',
+  'Clenched Fist':'Ch8',
+  'Clone':'Ch8',
+  'Cloudkill':'Ch5',
+  'Color Spray':'Ch1,Jack1',
+  'Command Plants':'Ch4,Naturefriend4',
+  'Command Undead':'Ch2,Jack2',
+  'Commune With Nature':'Ch5,Naturefriend5,Northborn5',
+  'Commune':'Seer5',
+  'Comprehend Languages':'Ch1,Jack1,Speaker1',
+  'Cone Of Cold':'Ch5',
+  'Confusion':'Ch4',
+  'Consecrate':'Faithful2',
+  'Contact Other Plane':'Ch5',
+  'Contagion':'Ch3,Jack3',
+  'Contingency':'Ch6',
+  'Continual Flame':'Ch2,Jack2',
+  'Control Plants':'Ch8',
+  'Control Undead':'Ch7',
+  'Control Water':'Ch4',
+  'Control Weather':'Ch7',
+  'Control Winds':'Ch5',
+  'Create Greater Undead':'Ch8',
+  'Create Undead':'Ch6',
+  'Create Water':'Ch0,Jack0',
+  'Creeping Doom':'Ch7',
+  'Crushing Despair':'Ch4',
+  'Crushing Hand':'Ch9',
+  'Cure Critical Wounds':'Ch4,Healer4',
+  'Cure Light Wounds':'Ch1,Healer1,Jack1',
+  'Cure Minor Wounds':'Ch0,Jack0',
+  'Cure Moderate Wounds':'Ch2,Healer2,Jack2',
+  'Cure Serious Wounds':'Ch3,Healer3,Jack3',
+  'Dancing Lights':'Ch0,Jack0',
+  'Darkness':'Ch2,Jack2',
+  'Darkvision':'Ch2,Jack2',
+  'Daylight':'Ch3,Faithful3,Jack3',
+  'Daze':'Ch0,Jack0',
+  'Daze Monster':'Ch2,Charismatic2,Jack2',
+  'Death Ward':'Ch5,Guardian5',
+  'Deep Slumber':'Ch3,Feyblooded3,Jack3',
+  'Delay Poison':'Ch2,Jack2',
+  'Delayed Blast Fireball':'Ch7',
+  'Demand':'Ch8',
+  'Detect Animals Or Plants':'Ch1,Jack1',
+  'Detect Chaos':'Ch2,Jack2',
+  'Detect Evil':'Ch2,Guardian2,Jack2',
+  'Detect Good':'Ch2,Jack2',
+  'Detect Law':'Ch2,Jack2',
+  'Detect Magic':'Ch0,Jack0',
+  'Detect Poison':'Ch0,Jack0',
+  'Detect Scrying':'Ch4',
+  'Detect Secret Doors':'Ch1,Jack1',
+  'Detect Snares And Pits':'Ch1,Jack1',
+  'Detect Thoughts':'Ch2,Jack2',
+  'Detect Undead':'Ch1,Fellhunter1,Jack1',
+  'Dimensional Anchor':'Ch4',
+  'Diminish Plants':'Ch3,Jack3',
+  'Discern Location':'Ch8',
+  'Disguise Self':'Ch1,Feyblooded1,Jack1',
+  'Disintegrate':'Ch6',
+  'Dismissal':'Ch5',
+  'Dispel Evil':'Faithful5',
+  'Dispel Magic':'Ch3,Jack3',
+  'Displacement':'Ch3,Jack3,Seaborn3,Shadow3',
+  'Disrupt Undead':'Ch0,Jack0',
+  'Divination':'Seer4',
+  'Divine Favor':'Faithful1',
+  'Dominate Animal':'Ch3,Jack3,Naturefriend3',
+  'Dominate Monster':'Ch9',
+  'Dominate Person':'Ch5',
+  'Dream':'Ch5',
+  'Eagle\'s Splendor':'Ch2,Jack2',
+  'Earthquake':'Ch8,Earthbonded8',
+  'Elemental Swarm':'Ch9',
+  'Endure Elements':'Ch1,Jack1,Mountainborn1',
+  'Energy Drain':'Ch9',
+  'Enervation':'Ch4',
+  'Enlarge Person':'Ch1,Jack1',
+  'Entangle':'Ch1,Jack1,Naturefriend1',
+  'Erase':'Ch1,Jack1',
+  'Expeditious Retreat':'Ch1,Jack1,Shadow1',
+  'Explosive Runes':'Ch3,Jack3',
+  'Eyebite':'Ch6',
+  'Fabricate':'Ch5',
+  'Faerie Fire':'Ch1,Jack1',
+  'False Life':'Ch2,Jack2',
+  'False Vision':'Ch5,Feyblooded5',
+  'Fear':'Ch4',
+  'Feather Fall':'Ch1,Jack1',
+  'Feeblemind':'Ch5',
+  'Find The Path':'Ch6',
+  'Finger Of Death':'Ch7',
+  'Fire Seeds':'Ch6',
+  'Fire Shield':'Ch4',
+  'Fire Storm':'Ch7',
+  'Fire Trap':'Ch4',
+  'Fireball':'Ch3,Jack3',
+  'Flame Arrow':'Ch3,Jack3',
+  'Flame Blade':'Ch2,Jack2',
+  'Flame Strike':'Ch4',
+  'Flaming Sphere':'Ch2,Jack2',
+  'Flare':'Ch0,Jack0',
+  'Flesh To Stone':'Ch6',
+  'Floating Disk':'Ch1,Jack1',
+  'Fly':'Ch3,Jack3',
+  'Fog Cloud':'Ch2,Jack2,Seaborn2',
+  'Forcecage':'Ch7',
+  'Forceful Hand':'Ch6',
+  'Foresight':'Ch9',
+  'Fox\'s Cunning':'Ch2,Jack2',
+  'Freedom Of Movement':'Beast4,Ch4',
+  'Freedom':'Ch9',
+  'Freezing Sphere':'Ch6',
+  'Gaseous Form':'Ch3,Jack3',
+  'Gate':'Ch9',
+  'Geas/Quest':'Ch6',
+  'Gentle Repose':'Ch3,Jack3',
+  'Ghost Sound':'Ch0,Jack0',
+  'Ghoul Touch':'Ch2,Jack2',
+  'Giant Vermin':'Ch4',
+  'Glibness':'Ch3,Feyblooded3,Jack3',
+  'Glitterdust':'Ch2,Jack2',
+  'Globe Of Invulnerability':'Ch6',
+  'Good Hope':'Ch3,Jack3',
+  'Goodberry':'Ch1,Jack1',
+  'Grasping Hand':'Ch7',
+  'Grease':'Ch1,Jack1',
+  'Greater Arcane Sight':'Ch7',
+  'Greater Dispel Magic':'Ch6',
+  'Greater Heroism':'Ch6,Charismatic6',
+  'Greater Invisibility':'Ch4',
+  'Greater Magic Fang':'Beast3,Ch3,Jack3',
+  'Greater Magic Weapon':'Ch3,Jack3',
+  'Greater Planar Binding':'Ch8',
+  'Greater Prying Eyes':'Ch8',
+  'Greater Restoration':'Ch7',
+  'Greater Scrying':'Ch7',
+  'Greater Shadow Conjuration':'Ch7',
+  'Greater Shadow Evocation':'Ch8',
+  'Greater Shout':'Ch8,Speaker8',
+  'Guards And Wards':'Ch6',
+  'Guidance':'Ch0,Jack0',
+  'Gust Of Wind':'Ch2,Jack2,Naturefriend2',
+  'Hallow':'Ch5',
+  'Hallucinatory Terrain':'Ch4',
+  'Halt Undead':'Ch3,Jack3',
+  'Haste':'Ch3,Jack3',
+  'Heal':'Ch7,Healer7',
+  'Heat Metal':'Ch2,Jack2',
+  'Heroes\' Feast':'Ch6',
+  'Heroism':'Ch3,Charismatic3,Jack3',
+  'Hide From Animals':'Ch1,Jack1',
+  'Hideous Laughter':'Ch2,Jack2',
+  'Hold Animal':'Ch2,Jack2',
+  'Hold Monster':'Ch5',
+  'Hold Person':'Ch3,Jack3',
+  'Hold Portal':'Ch1,Earthbonded1,Jack1',
+  'Holy Aura':'Faithful8',
+  'Holy Smite':'Faithful4',
+  'Horrid Wilting':'Ch8',
+  'Hypnotic Pattern':'Ch2,Jack2',
+  'Hypnotism':'Ch1,Charismatic1,Jack1',
+  'Ice Storm':'Ch4,Naturefriend4',
+  'Identify':'Ch1,Jack1',
+  'Illusory Script':'Ch3,Jack3',
+  'Illusory Wall':'Ch4',
+  'Imprisonment':'Ch9',
+  'Incendiary Cloud':'Ch8',
+  'Insanity':'Ch7',
+  'Insect Plague':'Ch5',
+  'Interposing Hand':'Ch5',
+  'Invisibility':'Ch2,Feyblooded2,Jack2',
+  'Invisibility Sphere':'Ch3,Jack3',
+  'Iron Body':'Ch8',
+  'Ironwood':'Ch6',
+  'Irresistible Dance':'Ch8',
+  'Jump':'Ch1,Jack1',
+  'Keen Edge':'Ch3,Jack3',
+  'Knock':'Ch2,Jack2',
+  'Know Direction':'Ch0,Jack0',
+  'Legend Lore':'Ch6,Seer6',
+  'Lesser Confusion':'Ch1,Jack1',
+  'Lesser Geas':'Ch4',
+  'Lesser Globe Of Invulnerability':'Ch4',
+  'Lesser Planar Binding':'Ch5',
+  'Lesser Restoration':'Ch2,Healer2,Jack2',
+  'Levitate':'Ch2,Jack2',
+  'Light':'Ch0,Jack0',
+  'Lightning Bolt':'Ch3,Jack3',
+  'Liveoak':'Ch6',
+  'Locate Creature':'Ch4,Seer4',
+  'Locate Object':'Ch2,Jack2,Seer2',
+  'Lullaby':'Ch0,Jack0',
+  'Mage Armor':'Ch1,Jack1',
+  'Mage Hand':'Ch0,Jack0',
+  'Mage\'s Disjunction':'Ch9',
+  'Mage\'s Faithful Hound':'Ch5',
+  'Mage\'s Lucubration':'Ch6',
+  'Mage\'s Private Sanctum':'Ch5',
+  'Mage\'s Sword':'Ch7',
+  'Magic Aura':'Ch1,Feyblooded1,Jack1',
+  'Magic Circle Against Chaos':'Ch3,Jack3',
+  'Magic Circle Against Evil':'Ch3,Faithful3,Jack3',
+  'Magic Circle Against Good':'Ch3,Jack3',
+  'Magic Circle Against Law':'Ch3,Jack3',
+  'Magic Fang':'Beast1,Ch1,Jack1',
+  'Magic Jar':'Ch5',
+  'Magic Missile':'Ch1,Jack1',
+  'Magic Mouth':'Ch2,Jack2',
+  'Magic Stone':'Ch1,Jack1',
+  'Magic Weapon':'Ch1,Jack1',
+  'Major Creation':'Ch5',
+  'Major Image':'Ch3,Jack3',
+  'Make Whole':'Earthbonded2',
+  'Mass Bear\'s Endurance':'Ch6',
+  'Mass Bull\'s Strength':'Ch6',
+  'Mass Cat\'s Grace':'Ch6',
+  'Mass Charm Monster':'Ch8',
+  'Mass Cure Critical Wounds':'Ch8',
+  'Mass Cure Light Wounds':'Ch5,Healer5',
+  'Mass Cure Moderate Wounds':'Ch6',
+  'Mass Cure Serious Wounds':'Ch7',
+  'Mass Eagle\'s Splendor':'Ch6',
+  'Mass Enlarge Person':'Ch4',
+  'Mass Fox\'s Cunning':'Ch6',
+  'Mass Hold Monster':'Ch9',
+  'Mass Hold Person':'Ch7',
+  'Mass Invisibility':'Ch7',
+  'Mass Owl\'s Wisdom':'Ch6',
+  'Mass Reduce Person':'Ch4',
+  'Mass Suggestion':'Ch6',
+  'Meld Into Stone':'Ch3,Earthbonded3,Jack3,Mountainborn3',
+  'Mending':'Ch0,Jack0',
+  'Message':'Ch0,Jack0',
+  'Meteor Swarm':'Ch9',
+  'Mind Blank':'Ch8',
+  'Mind Fog':'Ch5',
+  'Minor Creation':'Ch4',
+  'Minor Image':'Ch2,Jack2',
+  'Mirage Arcana':'Ch5',
+  'Mirror Image':'Ch2,Jack2',
+  'Misdirection':'Ch2,Jack2',
+  'Mislead':'Ch6,Feyblooded6',
+  'Mnemonic Enhancer':'Ch4',
+  'Modify Memory':'Ch4',
+  'Moment Of Prescience':'Ch8',
+  'Mount':'Ch1,Jack1',
+  'Move Earth':'Ch6,Earthbonded6',
+  'Neutralize Poison':'Ch3,Healer3,Jack3',
+  'Nightmare':'Ch5',
+  'Nondetection':'Ch3,Feyblooded3,Jack3',
+  'Obscure Object':'Ch2,Jack2',
+  'Obscuring Mist':'Ch1,Jack1,Naturefriend1',
+  'Open/Close':'Ch0,Jack0',
+  'Overland Flight':'Ch5',
+  'Owl\'s Wisdom':'Ch2,Jack2',
+  'Pass Without Trace':'Ch1,Jack1,Mountainborn1',
+  'Passwall':'Ch5',
+  'Permanent Image':'Ch6',
+  'Persistent Image':'Ch5',
+  'Phantasmal Killer':'Ch4',
+  'Phantom Steed':'Ch3,Jack3',
+  'Phantom Trap':'Ch2,Jack2',
+  'Planar Binding':'Ch6',
+  'Plant Growth':'Ch3,Jack3',
+  'Poison':'Ch3,Jack3',
+  'Polar Ray':'Ch8',
+  'Polymorph':'Ch4',
+  'Polymorph Any Object':'Ch8',
+  'Power Word Blind':'Ch7',
+  'Power Word Kill':'Ch9',
+  'Power Word Stun':'Ch8',
+  'Prayer':'Chanceborn3,Faithful3',
+  'Prismatic Sphere':'Ch9',
+  'Prismatic Spray':'Ch7',
+  'Prismatic Wall':'Ch8',
+  'Produce Flame':'Ch1,Jack1',
+  'Programmed Image':'Ch6',
+  'Project Image':'Ch7',
+  'Protection From Arrows':'Ch2,Jack2',
+  'Protection From Chaos':'Ch1,Jack1',
+  'Protection From Energy':'Ch3,Jack3',
+  'Protection From Evil':'Ch1,Faithful1,Jack1',
+  'Protection From Good':'Ch1,Jack1',
+  'Protection From Law':'Ch1,Jack1',
+  'Protection From Spells':'Ch8',
+  'Prying Eyes':'Ch5,Seer5',
+  'Pyrotechnics':'Ch2,Jack2',
+  'Rage':'Ch3,Jack3',
+  'Rainbow Pattern':'Ch4,Feyblooded4',
+  'Raise Dead':'Healer5',
+  'Ray Of Enfeeblement':'Ch1,Jack1',
+  'Ray Of Exhaustion':'Ch3,Jack3',
+  'Ray Of Frost':'Ch0,Jack0',
+  'Read Magic':'Ch0,Jack0',
+  'Reduce Animal':'Ch2,Jack2',
+  'Reduce Person':'Ch1,Jack1',
+  'Regenerate':'Ch9,Healer9',
+  'Reincarnate':'Ch4',
+  'Remove Blindness/Deafness':'Healer3',
+  'Remove Curse':'Ch4',
+  'Remove Disease':'Ch3,Healer3,Jack3',
+  'Remove Fear':'Ch1,Charismatic1,Jack1',
+  'Repel Metal Or Stone':'Ch8',
+  'Repel Vermin':'Ch4',
+  'Repel Wood':'Ch6',
+  'Repulsion':'Ch6',
+  'Resilient Sphere':'Ch4',
+  'Resist Energy':'Ch2,Jack2',
+  'Resistance':'Ch0,Chanceborn0,Jack0',
+  'Restoration':'Ch4,Healer4',
+  'Reverse Gravity':'Ch7',
+  'Rusting Grasp':'Ch4',
+  'Scare':'Ch2,Jack2',
+  'Scintillating Pattern':'Ch8',
+  'Scorching Ray':'Ch2,Jack2',
+  'Screen':'Ch8',
+  'Scrying':'Ch4,Seer4',
+  'Sculpt Sound':'Ch3,Jack3',
+  'Secret Chest':'Ch5',
+  'Secret Page':'Ch3,Jack3',
+  'Secure Shelter':'Ch4',
+  'See Invisibility':'Ch2,Jack2',
+  'Seeming':'Ch5,Feyblooded5',
+  'Sending':'Ch5',
+  'Sepia Snake Sigil':'Ch3,Jack3',
+  'Sequester':'Ch7',
+  'Shades':'Ch9',
+  'Shadow Conjuration':'Ch4',
+  'Shadow Evocation':'Ch5',
+  'Shambler':'Ch9',
+  'Shapechange':'Ch9',
+  'Shatter':'Ch2,Jack2',
+  'Shield':'Ch1,Jack1',
+  'Shillelagh':'Ch1,Jack1',
+  'Shocking Grasp':'Ch1,Jack1',
+  'Shout':'Ch4,Speaker4',
+  'Shrink Item':'Ch3,Jack3',
+  'Silence':'Ch2,Jack2',
+  'Silent Image':'Ch1,Jack1',
+  'Simulacrum':'Ch7',
+  'Sleep':'Ch1,Jack1',
+  'Sleet Storm':'Ch3,Jack3,Naturefriend3',
+  'Slow':'Ch3,Jack3',
+  'Snare':'Ch3,Jack3',
+  'Soften Earth And Stone':'Ch2,Earthbonded2,Jack2',
+  'Solid Fog':'Ch4',
+  'Song Of Discord':'Ch5',
+  'Soul Bind':'Ch9',
+  'Sound Burst':'Ch2,Jack2',
+  'Speak With Animals':'Ch1,Jack1,Naturefriend1,Warg1',
+  'Speak With Dead':'Seer3',
+  'Speak With Plants':'Ch3,Jack3,Naturefriend3',
+  'Spectral Hand':'Ch2,Jack2',
+  'Spell Turning':'Ch7',
+  'Spellstaff':'Ch6',
+  'Spider Climb':'Ch2,Jack2',
+  'Spike Growth':'Ch3,Jack3,Naturefriend3',
+  'Spike Stones':'Ch4,Earthbonded4',
+  'Statue':'Ch7',
+  'Stinking Cloud':'Ch3,Jack3',
+  'Stone Shape':'Ch4,Earthbonded4',
+  'Stone Tell':'Ch6,Earthbonded6,Mountainborn6',
+  'Stone To Flesh':'Ch6',
+  'Stoneskin':'Ch4,Earthbonded4',
+  'Storm Of Vengeance':'Ch9',
+  'Suggestion':'Ch3,Charismatic3,Jack3',
+  'Summon Instrument':'Ch0,Jack0',
+  'Summon Monster I':'Ch1,Jack1,Sunderborn1',
+  'Summon Monster II':'Ch2,Jack2,Sunderborn2',
+  'Summon Monster III':'Ch3,Jack3,Sunderborn3',
+  'Summon Monster IV':'Ch4,Sunderborn4',
+  'Summon Monster IX':'Ch9',
+  'Summon Monster V':'Ch5,Sunderborn5',
+  'Summon Monster VI':'Ch6,Sunderborn6',
+  'Summon Monster VII':'Ch7',
+  'Summon Monster VIII':'Ch8',
+  'Summon Nature\'s Ally I':'Ch1,Jack1',
+  'Summon Nature\'s Ally II':'Ch2,Jack2,Seaborn2',
+  'Summon Nature\'s Ally III':'Ch3,Jack3,Seaborn3',
+  'Summon Nature\'s Ally IV':'Ch4,Naturefriend4,Seaborn4',
+  'Summon Nature\'s Ally IX':'Ch9',
+  'Summon Nature\'s Ally V':'Ch5,Seaborn5',
+  'Summon Nature\'s Ally VI':'Ch6,Seaborn6',
+  'Summon Nature\'s Ally VII':'Ch7',
+  'Summon Nature\'s Ally VIII':'Ch8',
+  'Summon Swarm':'Ch2,Jack2',
+  'Sunbeam':'Ch7',
+  'Sunburst':'Ch8',
+  'Symbol Of Death':'Ch8',
+  'Symbol Of Fear':'Ch6',
+  'Symbol Of Insanity':'Ch8',
+  'Symbol Of Pain':'Ch5',
+  'Symbol Of Persuasion':'Ch6',
+  'Symbol Of Sleep':'Ch5',
+  'Symbol Of Stunning':'Ch7',
+  'Symbol Of Weakness':'Ch7',
+  'Sympathetic Vibration':'Ch6',
+  'Sympathy':'Ch8',
+  'Telekinesis':'Ch5',
+  'Telekinetic Sphere':'Ch8',
+  'Telepathic Bond':'Ch5',
+  'Temporal Stasis':'Ch8',
+  'Time Stop':'Ch9',
+  'Tiny Hut':'Ch3,Jack3',
+  'Tongues':'Ch3,Jack3,Speaker3',
+  'Touch Of Fatigue':'Ch0,Jack0',
+  'Touch Of Idiocy':'Ch2,Jack2',
+  'Transformation':'Ch6',
+  'Transmute Metal To Wood':'Ch7',
+  'Transmute Mud To Rock':'Ch5',
+  'Transmute Rock To Mud':'Ch5,Earthbonded5',
+  'Trap The Soul':'Ch8',
+  'Tree Shape':'Ch2,Jack2',
+  'True Seeing':'Ch6',
+  'True Strike':'Ch1,Chanceborn1,Jack1',
+  'Undeath To Death':'Ch6',
+  'Undetectable Alignment':'Ch1,Jack1,Shadow1',
+  'Unhallow':'Ch5',
+  'Unseen Servant':'Ch1,Jack1',
+  'Vampiric Touch':'Ch3,Jack3',
+  'Veil':'Ch6',
+  'Ventriloquism':'Ch1,Feyblooded1,Jack1',
+  'Virtue':'Ch0,Jack0',
+  'Vision':'Ch7,Seer7',
+  'Wail Of The Banshee':'Ch9',
+  'Wall Of Fire':'Ch4',
+  'Wall Of Force':'Ch5',
+  'Wall Of Ice':'Ch4',
+  'Wall Of Iron':'Ch6',
+  'Wall Of Stone':'Ch5',
+  'Wall Of Thorns':'Ch5',
+  'Warp Wood':'Ch2,Jack2',
+  'Water Breathing':'Ch3,Jack3',
+  'Water Walk':'Ch3,Jack3',
+  'Waves Of Exhaustion':'Ch7',
+  'Waves Of Fatigue':'Ch5',
+  'Web':'Ch2,Jack2',
+  'Weird':'Ch9',
+  'Whirlwind':'Ch8',
+  'Whispering Wind':'Ch2,Jack2,Speaker2',
+  'Wind Walk':'Ch7',
+  'Wind Wall':'Ch3,Jack3',
+  'Wood Shape':'Ch2,Jack2,Naturefriend2',
+  'Zone Of Silence':'Ch4'
+};
+LastAge.SPELLS_SCHOOLS = {
   // SRD spells placed in Greater Conjuration/Evocation
   'Burning Hands':'Greater Evocation',
   'Call Lightning':'Greater Evocation',
@@ -2038,9 +2436,21 @@ LastAge.SPELL_SCHOOL_CHANGES = {
   'Ray Of Frost':'Conjuration',
   'Zone Of Silence':'Enchantment'
 };
-for(var spell in LastAge.SPELL_SCHOOL_CHANGES) {
-  LastAge.SPELLS[spell] +=
-    ' School="' + LastAge.SPELL_SCHOOL_CHANGES[spell] + '"';
+LastAge.SPELLS = Object.assign({}, LastAge.SPELLS_ADDED);
+for(var s in SRD35.SPELLS) {
+  var m = SRD35.SPELLS[s].match(/\b[BD][01]|\b(C|Death|Destruction|Evil|Magic|War)[0-9]/g);
+  if(m == null && !(s in LastAge.SPELLS_LEVELS))
+    continue;
+  var spellAttrs = SRD35.SPELLS[s] + ' Level=';
+  if(m == null)
+    spellAttrs += LastAge.SPELLS_LEVELS[s];
+  else if(s in LastAge.SPELLS_LEVELS)
+    spellAttrs += LastAge.SPELLS_LEVELS[s] + ',' + m.join(',');
+  else
+    spellAttrs += m.join(',');
+  if(s in LastAge.SPELLS_SCHOOLS)
+    spellAttrs += ' School="' + LastAge.SPELLS_SCHOOLS[s] + '"';
+  LastAge.SPELLS[s] = spellAttrs;
 }
 LastAge.WEAPONS_ADDED = {
   'Atharak':'Level=3 Category=2h Damage=d6',
@@ -2085,137 +2495,7 @@ LastAge.CLASSES = {
     'CasterLevelArcane="levels.Charismatic Channeler" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
-      'Ch0:1=0 ' +
-    'Spells=' +
-      '"Ch0:Create Water;Cure Minor Wounds;Dancing Lights;Daze;Detect Magic;' +
-      'Detect Poison;Disrupt Undead;Flare;Ghost Sound;Guidance;' +
-      'Know Direction;Light;Lullaby;Mage Hand;Mending;Message;Open/Close;' +
-      'Ray Of Frost;Read Magic;Resistance;Summon Instrument;' +
-      'Touch Of Fatigue;Virtue",' +
-      '"Ch1:Alarm;Animate Rope;Assist;Burial;Burning Hands;Calm Animals;' +
-      'Cause Fear;Channel Might;Charm Animal;Charm Person;Chill Touch;' +
-      'Color Spray;Comprehend Languages;Cure Light Wounds;' +
-      'Detect Animals Or Plants;Detect Astirax;Detect Secret Doors;' +
-      'Detect Snares And Pits;Detect Undead;Disguise Self;Disguise Weapon;' +
-      'Endure Elements;Enlarge Person;Entangle;Erase;Expeditious Retreat;' +
-      'Faerie Fire;Far Whisper;Feather Fall;Floating Disk;Goodberry;Grease;' +
-      'Hide From Animals;Hold Portal;Hypnotism;Identify;Inspiration;' +
-      'Joyful Speech;Jump;Know The Name;Lesser Confusion;Lie;Mage Armor;' +
-      'Magic Aura;Magic Fang;Magic Missile;Magic Mouth;Magic Stone;' +
-      'Magic Weapon;Mount;Obscuring Mist;Pass Without Trace;Peasant\'s Rest;' +
-      'Phantom Edge;Produce Flame;Protection From Chaos;' +
-      'Protection From Evil;Protection From Good;Protection From Law;' +
-      'Ray Of Enfeeblement;Reduce Person;Remove Fear;Shield;Shillelagh;' +
-      'Shocking Grasp;Silent Image;Sleep;Speak With Animals;Spider Climb;' +
-      'Stone Soup;Summon Monster I;Summon Nature\'s Ally I;True Strike;' +
-      'Undetectable Alignment;Unseen Servant;Ventriloquism;Woeful Speech",' +
-      '"Ch2:Acid Arrow;Alter Self;Animal Messenger;Animal Trance;Arcane Lock;' +
-      'Barkskin;Bear\'s Endurance;Bleed Power;Blindness/Deafness;Blur;' +
-      'Bull\'s Strength;Cat\'s Grace;Chill Metal;Command Undead;Confer Power;' +
-      'Continual Flame;Cure Moderate Wounds;Darkness;Darkvision;' +
-      'Daze Monster;Delay Poison;Detect Chaos;Detect Evil;Detect Good;' +
-      'Detect Law;Detect Thoughts;Disguise Ally;Eagle\'s Splendor;' +
-      'False Life;Fell Forbiddance;Fey Fire;Fey Hearth;Flame Blade;' +
-      'Flaming Sphere;Fog Cloud;Fox\'s Cunning;Ghoul Touch;Glitterdust;' +
-      'Greenshield;Gust Of Wind;Heat Metal;Hideous Laughter;Hold Animal;' +
-      'Hypnotic Pattern;Invisibility;Knock;Lesser Restoration;Levitate;' +
-      'Lifetrap;Locate Object;Magic Mouth;Memorial;Minor Image;' +
-      'Mirror Image;Misdirection;Nature\'s Revelation;Obscure Object;' +
-      'Owl\'s Wisdom;Pacify;Phantom Trap;Protection From Arrows;' +
-      'Pyrotechnics;Reduce Animal;Resist Energy;Scare;Scorching Ray;' +
-      'Scryer\'s Mark;See Invisibility;Shatter;Silence;Silver Blood;' +
-      'Soften Earth And Stone;Sound Burst;Spectral Hand;Spider Climb;' +
-      'Summon Monster II;Summon Nature\'s Ally II;Summon Swarm;' +
-      'Touch Of Idiocy;Tree Shape;Warp Wood;Weather;Web;Whispering Wind;' +
-      'Withering Speech;Wood Shape",' +
-      '"Ch3:Arcane Impotence;Arcane Sight;Call Lightning;Charm Repair;' +
-      'Clairaudience/Clairvoyance;Contagion;Cure Serious Wounds;Daylight;' +
-      'Deep Slumber;Diminish Plants;Dispel Magic;Displacement;' +
-      'Dominate Animal;Explosive Runes;Fireball;Flame Arrow;Fly;' +
-      'Gaseous Form;Gentle Repose;Glibness;Good Hope;Greater Magic Fang;' +
-      'Greater Magic Weapon;Greater Questing Bird;Gust Of Wind;' +
-      'Halfling Burrow;Halt Undead;Haste;Heroism;Hold Person;' +
-      'Illusory Script;Invisibility Sphere;Keen Edge;Lightning Bolt;' +
-      'Magic Circle Against Chaos;Magic Circle Against Evil;' +
-      'Magic Circle Against Good;Magic Circle Against Law;Major Image;' +
-      'Meld Into Stone;Neutralize Poison;Nondetection;Phantom Steed;' +
-      'Plant Growth;Poison;Protection From Energy;Questing Bird;Rage;' +
-      'Ray Of Exhaustion;Remove Disease;Sculpt Sound;Secret Page;' +
-      'Sepia Snake Sigil;Shrink Item;Silver Wind;Sleet Storm;Slow;Snare;' +
-      'Speak With Plants;Spike Growth;Stinking Cloud;Suggestion;' +
-      'Summon Monster III;Summon Nature\'s Ally III;Tiny Hut;Tongues;' +
-      'Vampiric Touch;Water Breathing;Water Walk;Willful Stand;Wind Wall",' +
-      '"Ch4:Air Walk;Animate Dead;Antiplant Shell;Arcane Eye;Bestow Curse;' +
-      'Bestow Spell;Black Tentacles;Blight;Charm Monster;Command Plants;' +
-      'Confusion;Control Water;Crushing Despair;Cure Critical Wounds;' +
-      'Detect Scrying;Dimensional Anchor;Enervation;Fear;Fire Shield;' +
-      'Fire Trap;Flame Strike;Freedom Of Movement;Giant Vermin;' +
-      'Greater Invisibility;Hallucinatory Terrain;Ice Storm;Illusory Wall;' +
-      'Lesser Geas;Lesser Globe Of Invulnerability;Locate Creature;' +
-      'Mass Enlarge Person;Mass Reduce Person;Minor Creation;' +
-      'Mnemonic Enhancer;Modify Memory;Phantasmal Killer;Polymorph;' +
-      'Rainbow Pattern;Reincarnate;Remove Curse;Repel Vermin;' +
-      'Resilient Sphere;Restoration;Rusting Grasp;Scrying;Secure Shelter;' +
-      'Shadow Conjuration;Shout;Silver Storm;Solid Fog;Spike Stones;' +
-      'Stone Shape;Stoneskin;Summon Monster IV;Summon Nature\'s Ally IV;' +
-      'Wall Of Fire;Wall Of Ice;Zone Of Silence",' +
-      '"Ch5:Animal Growth;Arcane Interference;Atonement;Awaken;' +
-      'Baleful Polymorph;Break Enchantment;Call Lightning Storm;Cloudkill;' +
-      'Commune With Nature;Cone Of Cold;Contact Other Plane;' +
-      'Control Winds;Death Ward;Dismissal;Dominate Person;Dream;Fabricate;' +
-      'False Vision;Feeblemind;Hallow;Hold Monster;Insect Plague;' +
-      'Interposing Hand;Lesser Planar Binding;Mage\'s Faithful Hound;' +
-      'Mage\'s Private Sanctum;Magic Circle Against Shadow;Magic Jar;' +
-      'Major Creation;Mass Cure Light Wounds;Mind Fog;Mirage Arcana;' +
-      'Nexus Fuel;Nightmare;Overland Flight;Passwall;Persistent Image;' +
-      'Prying Eyes;Secret Chest;Seeming;Sending;Shadow Evocation;' +
-      'Song Of Discord;Summon Monster V;Summon Nature\'s Ally V;' +
-      'Symbol Of Pain;Symbol Of Sleep;Telekinesis;Telepathic Bond;' +
-      'Transmute Mud To Rock;Transmute Rock To Mud;Unhallow;Wall Of Force;' +
-      'Wall Of Stone;Wall Of Thorns;Waves Of Fatigue",' +
-      '"Ch6:Acid Fog;Analyze Dweomer;Animate Objects;Antilife Shell;' +
-      'Antimagic Field;Chain Lightning;Circle Of Death;Contingency;' +
-      'Create Undead;Disintegrate;Eyebite;Find The Path;Fire Seeds;' +
-      'Flesh To Stone;Forceful Hand;Freezing Sphere;Geas/Quest;' +
-      'Globe Of Invulnerability;Greater Dispel Magic;Greater Heroism;' +
-      'Greater Questing Bird;Guards And Wards;Heroes\' Feast;Ironwood;' +
-      'Legend Lore;Liveoak;Mage\'s Lucubration;Mass Bear\'s Endurance;' +
-      'Mass Bull\'s Strength;Mass Cat\'s Grace;Mass Cure Moderate Wounds;' +
-      'Mass Eagle\'s Splendor;Mass Fox\'s Cunning;Mass Owl\'s Wisdom;' +
-      'Mass Suggestion;Mislead;Move Earth;Permanent Image;Planar Binding;' +
-      'Programmed Image;Repel Wood;Repulsion;Spellstaff;Stone Tell;' +
-      'Stone To Flesh;Summon Monster VI;Summon Nature\'s Ally VI;' +
-      'Symbol Of Fear;Symbol Of Persuasion;Sympathetic Vibration;' +
-      'Transformation;True Seeing;Undeath To Death;Veil;Wall Of Iron",' +
-      '"Ch7:Animate Plants;Banishment;Changestaff;Control Undead;' +
-      'Control Weather;Creeping Doom;Delayed Blast Fireball;' +
-      'Finger Of Death;Fire Storm;Forcecage;Grasping Hand;' +
-      'Greater Arcane Sight;Greater Restoration;Greater Scrying;' +
-      'Greater Shadow Conjuration;Heal;Insanity;Mage\'s Sword;' +
-      'Mass Cure Serious Wounds;Mass Hold Person;Mass Invisibility;' +
-      'Power Word Blind;Prismatic Spray;Project Image;Reverse Gravity;' +
-      'Sequester;Simulacrum;Spell Turning;Statue;Summon Monster VII;' +
-      'Summon Nature\'s Ally VII;Sunbeam;Symbol Of Stunning;' +
-      'Symbol Of Weakness;Transmute Metal To Wood;Vision;' +
-      'Waves Of Exhaustion;Wind Walk",' +
-      '"Ch8:Animal Shapes;Antipathy;Binding;Clenched Fist;Clone;' +
-      'Control Plants;Create Greater Undead;Demand;Discern Location;' +
-      'Earthquake;Greater Planar Binding;Greater Prying Eyes;' +
-      'Greater Shadow Evocation;Greater Shout;Horrid Wilting;' +
-      'Incendiary Cloud;Iron Body;Irresistible Dance;Mass Charm Monster;' +
-      'Mass Cure Critical Wounds;Mind Blank;Moment Of Prescience;' +
-      'Polar Ray;Polymorph Any Object;Power Word Stun;Prismatic Wall;' +
-      'Protection From Spells;Repel Metal Or Stone;Reverse Gravity;' +
-      'Scintillating Pattern;Screen;Summon Monster VIII;' +
-      'Summon Nature\'s Ally VIII;Sunburst;Symbol Of Death;' +
-      'Symbol Of Insanity;Sympathy;Telekinetic Sphere;Temporal Stasis;' +
-      'Trap The Soul;Whirlwind",' +
-      '"Ch9:Astral Projection;Crushing Hand;Dominate Monster;' +
-      'Elemental Swarm;Energy Drain;Foresight;Freedom;Gate;Imprisonment;' +
-      'Mage\'s Disjunction;Mass Hold Monster;Meteor Swarm;Power Word Kill;' +
-      'Prismatic Sphere;Regenerate;Shades;Shambler;Shapechange;Soul Bind;' +
-      'Storm Of Vengeance;Summon Monster IX;Summon Nature\'s Ally IX;' +
-      'Time Stop;Wail Of The Banshee;Weird"',
+      'Ch0:1=0',
   'Defender':
     'HitDie=d8 Attack=1 SkillPoints=4 Fortitude=1/3 Reflex=1/2 Will=1/3 ' +
     'Skills=' +
@@ -2298,10 +2578,7 @@ LastAge.CLASSES = {
       'Domain6:11=1,' +
       'Domain7:13=1,' +
       'Domain8:15=1,' +
-      'Domain9:17=1 ' +
-    // Cleric spells added by choiceRules method
-    'Spells=' +
-      '"C3:Boil Blood;Speak With Fell"',
+      'Domain9:17=1',
   'Rogue':SRD35.CLASSES['Rogue'],
   'Spiritual Channeler':
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -2478,10 +2755,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'Spell')
     );
   else if(type == 'Class') {
-    var spells = QuilvynUtils.getAttrValueArray(attrs, 'Spells');
-    if(name == 'Legate')
-      spells = spells.concat(QuilvynUtils.getAttrValueArray(LastAge.basePlugin.CLASSES['Cleric'], 'Spells'));
-    else if(name == 'Barbarian' || name == 'Rogue')
+    if(name == 'Barbarian' || name == 'Rogue')
       attrs = LastAge.basePlugin.CLASSES[name];
     LastAge.classRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Require'),
@@ -2498,9 +2772,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'CasterLevelArcane'),
       QuilvynUtils.getAttrValue(attrs, 'CasterLevelDivine'),
       QuilvynUtils.getAttrValue(attrs, 'SpellAbility'),
-      QuilvynUtils.getAttrValueArray(attrs, 'SpellSlots'),
-      spells,
-      LastAge.SPELLS
+      QuilvynUtils.getAttrValueArray(attrs, 'SpellSlots')
     );
     LastAge.classRulesExtra(rules, name);
   } else if(type == 'Deity')
@@ -2530,7 +2802,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'Imply'),
       QuilvynUtils.getAttrValueArray(attrs, 'Type')
     );
-    LastAge.featRulesExtra(rules, name, LastAge.SPELLS);
+    LastAge.featRulesExtra(rules, name);
   } else if(type == 'Feature')
     LastAge.featureRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Section'),
@@ -2545,9 +2817,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'Features'),
       QuilvynUtils.getAttrValueArray(attrs, 'Selectables'),
       QuilvynUtils.getAttrValue(attrs, 'SpellAbility'),
-      QuilvynUtils.getAttrValueArray(attrs, 'SpellSlots'),
-      QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
-      LastAge.SPELLS
+      QuilvynUtils.getAttrValueArray(attrs, 'SpellSlots')
     );
     LastAge.pathRulesExtra(rules, name);
   } else if(type == 'Race') {
@@ -2557,9 +2827,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'Selectables'),
       QuilvynUtils.getAttrValueArray(attrs, 'Languages'),
       QuilvynUtils.getAttrValue(attrs, 'SpellAbility'),
-      QuilvynUtils.getAttrValueArray(attrs, 'SpellSlots'),
-      QuilvynUtils.getAttrValueArray(attrs, 'Spells'),
-      LastAge.SPELLS
+      QuilvynUtils.getAttrValueArray(attrs, 'SpellSlots')
     );
     LastAge.raceRulesExtra(rules, name);
   } else if(type == 'School') {
@@ -2585,14 +2853,27 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     );
     if(LastAge.basePlugin.skillRulesExtra)
       LastAge.basePlugin.skillRulesExtra(rules, name);
-  } else if(type == 'Spell')
-    LastAge.spellRules(rules, name,
-      QuilvynUtils.getAttrValue(attrs, 'School'),
-      QuilvynUtils.getAttrValue(attrs, 'Group'),
-      QuilvynUtils.getAttrValue(attrs, 'Level'),
-      QuilvynUtils.getAttrValue(attrs, 'Description')
-    );
-  else if(type == 'Track')
+  } else if(type == 'Spell') {
+    var description = QuilvynUtils.getAttrValue(attrs, 'Description');
+    var groupLevels = QuilvynUtils.getAttrValueArray(attrs, 'Level');
+    var school = QuilvynUtils.getAttrValue(attrs, 'School');
+    var schoolAbbr = school.substring(0, 4);
+    for(var i = 0; i < groupLevels.length; i++) {
+      var matchInfo = groupLevels[i].match(/^(\D+)(\d+)$/);
+      if(!matchInfo) {
+        console.log('Bad level "' + groupLevels[i] + '" for spell ' + name);
+        continue;
+      }
+      var group = matchInfo[1];
+      var level = matchInfo[2] * 1;
+      var fullName = name + '(' + group + level + ' ' + schoolAbbr + ')';
+      // TODO indicate domain spells in attributes?
+      var domainSpell = LastAge.PATHS[group + ' Domain'] != null;
+      LastAge.spellRules
+        (rules, fullName, school, group, level, description, domainSpell);
+      rules.addChoice('spells', fullName, attrs);
+    }
+  } else if(type == 'Track')
     Pathfinder.trackRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Progression')
     );
@@ -2616,7 +2897,8 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     console.log('Unknown choice type "' + type + '"');
     return;
   }
-  if(type != 'Feature' && (type != 'Path' || name.indexOf('Domain') < 0)) {
+  if(type != 'Feature' && (type != 'Path' || name.indexOf('Domain') < 0) &&
+     type != 'Spell') {
     type = type == 'Class' ? 'levels' :
     type = type == 'Deity' ? 'deities' :
     type = type == 'Path' ? 'heroicPaths' :
@@ -2660,16 +2942,14 @@ LastAge.armorRules = function(
  * #casterLevelArcane# and #casterLevelDivine#, if specified, give the
  * Javascript expression for determining the caster level for the class; these
  * can incorporate a class level attribute (e.g., 'levels.Cleric') or the
- * character level attribute 'level'. #spellAbility#, if specified, names the
- * ability for computing spell difficulty class. #spellSlots# lists the
- * number of spells per level per day granted by the class, and #spells# lists
- * spells defined by the class. #spellDict# is the dictionary of all spells,
- * used to look up individual spell attributes.
+ * character level attribute 'level'. If the class grants spell slots,
+ * #spellAbility# names the ability for computing spell difficulty class, and
+ * #spellSlots# lists the number of spells per level per day granted.
  */
 LastAge.classRules = function(
   rules, name, requires, hitDie, attack, skillPoints, saveFort, saveRef,
   saveWill, skills, features, selectables, languages, casterLevelArcane,
-  casterLevelDivine, spellAbility, spellSlots, spells, spellDict
+  casterLevelDivine, spellAbility, spellSlots
 ) {
   if(LastAge.basePlugin == window.Pathfinder) {
     for(var i = 0; i < requires.length; i++) {
@@ -2691,7 +2971,7 @@ LastAge.classRules = function(
   LastAge.basePlugin.classRules(
     rules, name, requires, hitDie, attack, skillPoints, saveFort, saveRef,
     saveWill, skills, features, selectables, languages, casterLevelArcane,
-    casterLevelDivine, spellAbility, spellSlots, spells, spellDict
+    casterLevelDivine, spellAbility, spellSlots
   );
   // No changes needed to the rules defined by base method
 };
@@ -3039,7 +3319,7 @@ LastAge.featRules = function(rules, name, requires, implies, types) {
  * Defines in #rules# the rules associated with feat #name# that cannot be
  * derived directly from the abilties passed to featRules.
  */
-LastAge.featRulesExtra = function(rules, name, spellDict) {
+LastAge.featRulesExtra = function(rules, name) {
 
   var matchInfo;
 
@@ -3109,10 +3389,6 @@ LastAge.featRulesExtra = function(rules, name, spellDict) {
       'casterLevels.' + spellCode, '?', null,
       ability + 'Modifier', '=', '10 + source',
     );
-    // Pick up basePlugin level 0/1 spells of the appropriate class.
-    var spells =
-      QuilvynUtils.getAttrValueArray(LastAge.basePlugin.CLASSES[spellClass], 'Spells').filter(x => x.match(new RegExp('^' + spellCode + '[01]')));
-    QuilvynRules.spellListRules(rules, spells, spellDict);
   } else if((matchInfo = name.match(/^Spellcasting\s\((.*)\)/)) != null) {
     var note = 'magicNotes.spellcasting('+matchInfo[1].replaceAll(' ', '')+')';
     rules.defineRule('spellSlotsBonus', note, '+=', '1');
@@ -3206,24 +3482,24 @@ LastAge.languageRules = function(rules, name) {
 /*
  * Defines in #rules# the rules associated with path #name#, which is a
  * selection for characters belonging to #group# and tracks path level via
- * #levelAttr#. The path grants the features and spells listed in #features#
- * and #spells#. #spellAbility#, if specified, names the ability for computing
- * spell difficulty class. #spellDict# is the dictionary of all spells used to
- * look up individual spell attributes.
+ * #levelAttr#. The path grants the features listed in #features#. If the path
+ * grants spell slots, #spellAbility# names the ability for computing spell
+ * difficulty class, and #spellSlots# lists the number of spells per level per
+ * day granted.
  */
 LastAge.pathRules = function(
   rules, name, group, levelAttr, features, selectables, spellAbility,
-  spellSlots, spells, spellDict
+  spellSlots
 ) {
   if(LastAge.basePlugin == window.Pathfinder)
     LastAge.basePlugin.pathRules(
       rules, name, group, levelAttr, features, selectables, [], [],
-      spellAbility, spellSlots, spells, spellDict
+      spellAbility, spellSlots
     );
   else
     LastAge.basePlugin.pathRules(
       rules, name, group, levelAttr, features, selectables, spellAbility,
-      spellSlots, spells, spellDict
+      spellSlots
     );
   // No changes needed to the rules defined by base method
   if(!name.match(/Domain/)) {
@@ -3763,19 +4039,18 @@ LastAge.pathRulesExtra = function(rules, name) {
 /*
  * Defines in #rules# the rules associated with race #name#, which has the list
  * of hard prerequisites #requires#. #features# and #selectables# list
- * associated features and #languages# any automatic languages. #spells# lists
- * any natural spells, for which #spellAbility# is used to compute the save DC.
- * #spellSlots# lists the number of spells per level per day granted by the
- * race, and #spells# lists spells defined by the race. #spellDict# is the
- * dictionary of all spells, used to look up individual spell attributes.
+ * associated features and #languages# any automatic languages. If the race
+ * grants spell slots, #spellAbility# names the ability for computing spell
+ * difficulty class, and #spellSlots# lists the number of spells per level per
+ * day granted.
  */
 LastAge.raceRules = function(
   rules, name, requires, features, selectables, languages, spellAbility,
-  spells, spellSlots, spellDict
+  spellSlots
 ) {
   LastAge.basePlugin.raceRules
     (rules, name, requires, features, selectables, languages, spellAbility,
-     spells, spellSlots, spellDict);
+     spellSlots);
   // No changes needed to the rules defined by base method
 };
 
@@ -3990,10 +4265,10 @@ LastAge.skillRules = function(
  * description of the spell's effects.
  */
 LastAge.spellRules = function(
-  rules, name, school, casterGroup, level, description
+  rules, name, school, casterGroup, level, description, domainSpell
 ) {
   LastAge.basePlugin.spellRules
-    (rules, name, school, casterGroup, level, description);
+    (rules, name, school, casterGroup, level, description, domainSpell);
   // No changes needed to the rules defined by base method
 };
 
