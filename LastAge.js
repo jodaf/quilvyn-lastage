@@ -60,6 +60,11 @@ function LastAge() {
   delete rules.getChoices('random').deity;
   rules.ruleNotes = LastAge.ruleNotes;
 
+  if(LastAge.basePlugin == window.Pathfinder) {
+    SRD35.ABBREVIATIONS['CMB'] = 'Combat Maneuver Bonus';
+    SRD35.ABBREVIATIONS['CMD'] = 'Combat Maneuver Defense';
+  }
+
   SRD35.createViewers(rules, SRD35.VIEWERS);
   rules.defineChoice('extras',
     'feats', 'featCount', 'sanityNotes', 'selectableFeatureCount',
@@ -79,6 +84,7 @@ function LastAge() {
     Object.assign({}, LastAge.basePlugin.FEATS, LastAge.FEATS_ADDED);
   LastAge.FEATURES =
     Object.assign({}, LastAge.basePlugin.FEATURES, LastAge.FEATURES_ADDED);
+  LastAge.GOODIES = Object.assign({}, LastAge.basePlugin.GOODIES);
   for(var path in LastAge.PATHS) {
     if(LastAge.basePlugin.PATHS[path])
       LastAge.PATHS[path] =
@@ -92,7 +98,7 @@ function LastAge() {
   }
   LastAge.SPELLS = Object.assign({}, LastAge.SPELLS_ADDED);
   for(var s in LastAge.basePlugin.SPELLS) {
-    var m = LastAge.basePlugin.SPELLS[s].match(/\b[BD][01]|\b(C|Death|Destruction|Evil|Magic|War)[0-9]/g);
+    var m = LastAge.basePlugin.SPELLS[s].match(/\b[BDW][01]|\b(C|Death|Destruction|Evil|Magic|War)[0-9]/g);
     if(m == null && !(s in LastAge.SPELLS_LEVELS))
       continue;
     var spellAttrs = LastAge.basePlugin.SPELLS[s] + ' Level=';
@@ -115,12 +121,12 @@ function LastAge() {
   LastAge.magicRules(rules, LastAge.SCHOOLS, LastAge.SPELLS);
   // Feats must be defined before paths
   LastAge.talentRules
-    (rules, LastAge.FEATS, LastAge.FEATURES, LastAge.LANGUAGES, LastAge.SKILLS);
+    (rules, LastAge.FEATS, LastAge.FEATURES, LastAge.GOODIES,
+     LastAge.LANGUAGES, LastAge.SKILLS);
   LastAge.identityRules(
     rules, LastAge.ALIGNMENTS, LastAge.CLASSES, LastAge.DEITIES, LastAge.PATHS,
     LastAge.RACES
   );
-  LastAge.goodiesRules(rules);
 
   if(window.SRD35NPC != null) {
     SRD35NPC.identityRules(rules, SRD35NPC.CLASSES);
@@ -1118,6 +1124,7 @@ LastAge.FEATURES_ADDED = {
 
 };
 LastAge.FEATURES = Object.assign({}, SRD35.FEATURES, LastAge.FEATURES_ADDED);
+LastAge.GOODIES = Object.assign({}, SRD35.GOODIES);
 LastAge.LANGUAGES = {
   'Black Tongue':
     '',
@@ -2667,12 +2674,6 @@ LastAge.combatRules = function(rules, armors, shields, weapons) {
   // No changes needed to the rules defined by base method
 };
 
-/* Defines the rules related to goodies included in character notes. */
-LastAge.goodiesRules = function(rules) {
-  LastAge.basePlugin.goodiesRules(rules);
-  // No changes needed to the rules defined by base method
-};
-
 /* Defines rules related to basic character identity. */
 LastAge.identityRules = function(
   rules, alignments, classes, deities, paths, races
@@ -2719,8 +2720,11 @@ LastAge.magicRules = function(rules, schools, spells) {
 };
 
 /* Defines rules related to character aptitudes. */
-LastAge.talentRules = function(rules, feats, features, languages, skills) {
-  LastAge.basePlugin.talentRules(rules, feats, features, languages, skills);
+LastAge.talentRules = function(
+  rules, feats, features, goodies, languages, skills
+) {
+  LastAge.basePlugin.talentRules
+    (rules, feats, features, goodies, languages, skills);
   // No changes needed to the rules defined by base method
 };
 
@@ -2808,6 +2812,15 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'Section'),
       QuilvynUtils.getAttrValueArray(attrs, 'Note')
     );
+  else if(type == 'Goody')
+    LastAge.goodyRules(rules, name,
+      QuilvynUtils.getAttrValue(attrs, 'Pattern'),
+      QuilvynUtils.getAttrValue(attrs, 'Effect'),
+      QuilvynUtils.getAttrValue(attrs, 'Value'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Attribute'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Section'),
+      QuilvynUtils.getAttrValueArray(attrs, 'Note')
+  );
   else if(type == 'Language')
     LastAge.languageRules(rules, name);
   else if(type == 'Path') {
@@ -3470,6 +3483,26 @@ LastAge.featureRules = function(rules, name, sections, notes) {
     }
   }
   LastAge.basePlugin.featureRules(rules, name, sections, notes);
+  // No changes needed to the rules defined by base method
+};
+
+/*
+ * Defines in #rules# the rules associated with goody #name#, triggered by
+ * a starred line in the character notes that matches #pattern#. #effect#
+ * specifies the effect of the goody on each attribute in list #attributes#.
+ * This is one of "increment" (adds #value# to the attribute), "set" (replaces
+ * the value of the attribute by #value#), "lower" (decreases the value to
+ * #value#), or "raise" (increases the value to #value#). #value#, if null,
+ * defaults to 1; occurrences of $1, $2, ... in #value# reference capture
+ * groups in #pattern#. #sections# and #notes# list the note sections
+ * ("attribute", "combat", "companion", "feature", "magic", "save", or "skill")
+ * and formats that show the effects of the goody on the character sheet.
+ */
+LastAge.goodyRules = function(
+  rules, name, pattern, effect, value, attributes, sections, notes
+) {
+  LastAge.basePlugin.goodyRules
+    (rules, name, pattern, effect, value, attributes, sections, notes);
   // No changes needed to the rules defined by base method
 };
 
