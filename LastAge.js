@@ -4361,6 +4361,11 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
   }
 };
 
+/* Returns an array of plugins upon which this one depends. */
+LastAge.getPlugins = function() {
+  return [LastAge.basePlugin].concat(LastAge.basePlugin.getPlugins());
+};
+
 /* Returns HTML body content for user notes associated with this rule set. */
 LastAge.ruleNotes = function() {
   return '' +
@@ -4469,9 +4474,4 @@ LastAge.ruleNotes = function() {
     '  </li>\n' +
     '</ul>\n' +
     '</p>';
-};
-
-/* Returns an array of plugins upon which this one depends. */
-LastAge.getPlugins = function() {
-  return LastAge.basePlugin.rules.getPlugins().concat([LastAge.basePlugin]);
 };
