@@ -21,12 +21,12 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 var LASTAGE_VERSION = '2.2.1.0';
 
 /*
- * This module loads the rules from the Second Edition core rule book. The
- * LastAge function contains methods that load rules for particular parts of
- * the rule book; raceRules for character races, weaponRules for weapons, etc.
- * These member methods can be called independently in order to use a subset of
- * the LastAge rules. Similarly, the constant fields of LastAge (FEATS_ADDED,
- * RACES, etc.) can be manipulated to modify the choices.
+ * This module loads the rules from the Midnight Second Edition core rule book.
+ * The LastAge function contains methods that load rules for particular parts
+ * of the rule book; raceRules for character races, weaponRules for weapons,
+ * etc. These member methods can be called independently in order to use a
+ * subset of the LastAge rules. Similarly, the constant fields of LastAge
+ * (FEATS_ADDED, RACES, etc.) can be manipulated to modify the choices.
  */
 function LastAge() {
 
@@ -130,6 +130,7 @@ function LastAge() {
 
   if(window.SRD35NPC != null) {
     SRD35NPC.identityRules(rules, SRD35NPC.CLASSES);
+    SRD35NPC.magicRules(rules, SRD35NPC.SPELLS);
     SRD35NPC.talentRules(rules, SRD35NPC.FEATURES);
   }
 
@@ -149,7 +150,6 @@ LastAge.RANDOMIZABLE_ATTRIBUTES =
 
 LastAge.ALIGNMENTS = Object.assign({}, SRD35.ALIGNMENTS);
 LastAge.ANIMAL_COMPANIONS_ADDED = {
-
   // Attack, Dam, AC include all modifiers
   'Boro':
     'Str=18 Dex=10 Con=16 Int=2 Wis=11 Cha=5 HD=5 AC=13 Attack=7 Dam=1d8+6 ' +
@@ -172,7 +172,6 @@ LastAge.ANIMAL_COMPANIONS_ADDED = {
   'Wogren':
     'Str=16 Dex=13 Con=14 Int=6 Wis=13 Cha=12 HD=3 AC=16 Attack=6 ' +
     'Dam=2@1d4+1,1d6+3 Size=M'
-
 };
 LastAge.ANIMAL_COMPANIONS =
   Object.assign({}, SRD35.ANIMAL_COMPANIONS, LastAge.ANIMAL_COMPANIONS_ADDED);
@@ -199,7 +198,7 @@ LastAge.FEATS_ADDED = {
     'Type="Item Creation" ' +
     'Require=' +
       '"Sum \'features.Magecraft\' >= 1",' +
-      '"Sum features.Spellcasting >= 1",' +
+      '"Sum \'features.Spellcasting\' >= 1",' +
       '"level >= 3"',
   'Devastating Mounted Assault':
     'Type=Fighter Require="features.Mounted Combat >= 1","skills.Ride >= 10"',
@@ -207,14 +206,13 @@ LastAge.FEATS_ADDED = {
   'Extra Gift':
     'Type=General ' +
     'Require=' +
-      '"levels.Charismatic Channeler >= 4 || ' +
-       'levels.Spiritual Channeler >= 4"',
+      '"levels.Charismatic Channeler >= 4 || levels.Spiritual Channeler >= 4"',
   'Friendly Agent':
     'Type=General ' +
     'Require=' +
       '"alignment =~ \'Good\'",' +
       '"race =~ \'Gnome|Dorn|Erenlander|Sarcosan\'"',
-  'Giant Fighter':'Type=Fighter Require="Sum features.Weapon Focus >= 1"',
+  'Giant Fighter':'Type=Fighter Require="Sum \'features.Weapon Focus\' >= 1"',
   'Greater Spell Focus (Greater Conjuration)':
     'Type=General Require="features.Spell Focus (Greater Conjuration)"',
   'Greater Spell Focus (Greater Evocation)':
@@ -2747,8 +2745,8 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'AC'),
       QuilvynUtils.getAttrValue(attrs, 'Attack'),
       QuilvynUtils.getAttrValueArray(attrs, 'Dam'),
-      QuilvynUtils.getAttrValue(attrs, 'Level'),
-      QuilvynUtils.getAttrValue(attrs, 'Size')
+      QuilvynUtils.getAttrValue(attrs, 'Size'),
+      QuilvynUtils.getAttrValue(attrs, 'Level')
     );
   else if(type == 'Armor')
     LastAge.armorRules(rules, name,
@@ -2759,8 +2757,6 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'Spell')
     );
   else if(type == 'Class') {
-    if(name == 'Barbarian' || name == 'Rogue')
-      attrs = LastAge.basePlugin.CLASSES[name];
     LastAge.classRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Require'),
       QuilvynUtils.getAttrValue(attrs, 'HitDie'),
@@ -2797,8 +2793,8 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'AC'),
       QuilvynUtils.getAttrValue(attrs, 'Attack'),
       QuilvynUtils.getAttrValueArray(attrs, 'Dam'),
-      QuilvynUtils.getAttrValue(attrs, 'Level'),
-      QuilvynUtils.getAttrValue(attrs, 'Size')
+      QuilvynUtils.getAttrValue(attrs, 'Size'),
+      QuilvynUtils.getAttrValue(attrs, 'Level')
     );
   else if(type == 'Feat') {
     LastAge.featRules(rules, name,
@@ -3285,10 +3281,12 @@ LastAge.classRulesExtra = function(rules, name) {
  * the character needs to have this animal as a companion.
  */
 LastAge.companionRules = function(
-  rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, level, size
+  rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, size,
+  level
 ) {
   LastAge.basePlugin.companionRules(
-    rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, size, level
+    rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, size,
+    level
   );
   // No changes needed to the rules defined by base method
 };
@@ -3311,10 +3309,13 @@ LastAge.deityRules = function(rules, name, alignment, domains, weapons) {
  * minimum master level the character needs to have this animal as a familiar.
  */
 LastAge.familiarRules = function(
-  rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, level, size
+  rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, size,
+  level
 ) {
-  LastAge.basePlugin.familiarRules
-    (rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, size, level);
+  LastAge.basePlugin.familiarRules(
+    rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, size,
+    level
+  );
   // No changes needed to the rules defined by base method
 };
 
@@ -3534,7 +3535,6 @@ LastAge.pathRules = function(
       rules, name, group, levelAttr, features, selectables, spellAbility,
       spellSlots
     );
-  // No changes needed to the rules defined by base method
   if(!name.match(/Domain/)) {
     rules.defineRule('features.' + name, 'heroicPath', '=', 'source == "' + name + '" ? 1 : null');
     rules.defineSheetElement(name + ' Features', 'Feats+', null, '; ');
@@ -4364,8 +4364,8 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
 /* Returns HTML body content for user notes associated with this rule set. */
 LastAge.ruleNotes = function() {
   return '' +
-    '<h2>LastAge Quilvyn Module Notes</h2>\n' +
-    'LastAge Quilvyn Module Version ' + LASTAGE_VERSION + '\n' +
+    '<h2>LastAge Quilvyn Plugin Notes</h2>\n' +
+    'LastAge Quilvyn Plugin Version ' + LASTAGE_VERSION + '\n' +
     '\n' +
     '<h3>Usage Notes</h3>\n' +
     '<p>\n' +
@@ -4444,9 +4444,9 @@ LastAge.ruleNotes = function() {
     '    Sarcosan weapons, rather than with a single one.\n' +
     '  </li><li>\n' +
     '    Quilvyn removes the racial requirement (Elf or Halfling) from the\n' +
-    '     Innate Magic feat. Since these races automatically receive thist\n' +
-    '     feat, enforcing the requirement would eliminate the possibility\n' +
-    '     of any character taking the feat.\n' +
+    '    Innate Magic feat. Since these races automatically receive this\n' +
+    '    feat, enforcing the requirement would eliminate the possibility\n' +
+    '    of any character selecting the feat.\n' +
     '  </li>\n' +
     '</ul>\n' +
     '</p>\n' +

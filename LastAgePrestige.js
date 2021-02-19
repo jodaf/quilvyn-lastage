@@ -22,7 +22,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
  * This module loads the prestige class rules from the Midnight 2E rule book.
  * Member methods can be called independently in order to use a subset of the
  * rules. Similarly, the constant fields of LastAgePrestige (CLASSES,
- * FEATURES) can be manipulated to modify the choices.
+ * FEATURES, SPELLS) can be manipulated to modify the choices.
  */
 function LastAgePrestige() {
   if(window.LastAge == null) {
@@ -37,8 +37,8 @@ function LastAgePrestige() {
 LastAgePrestige.CLASSES = {
   'Ancestral Bladebearer':
     'Require=' +
-      '"baseAttack >= 6","Sum features.Weapon Focus >= 1",' +
-      '"Sum features.Weapon Specialization >= 1" ' +
+      '"baseAttack >= 6","Sum \'features.Weapon Focus\' >= 1",' +
+      '"Sum \'features.Weapon Specialization\' >= 1" ' +
     'HitDie=d10 Attack=1 SkillPoints=2 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
     'Skills=' +
       'Climb,Craft,"Handle Animal",Intimidate,Jump,Profession,Ride,' +
@@ -58,7 +58,7 @@ LastAgePrestige.CLASSES = {
   "Aradil's Eye":
     'Require=' +
       'features.Inconspicuous,"race == \'Wood Elf\'","skills.Bluff >= 8",' +
-      '"skills.Disguise >= 5","skills.Gather Information" >= 8",' +
+      '"skills.Disguise >= 5","skills.Gather Information >= 8",' +
       '"skills.Hide >= 8","skills.Move Silently >= 5",' +
       '"skills.Sense Motive >= 5","skills.Spot >= 5" ' +
     'HitDie=d6 Attack=3/4 SkillPoints=8 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -90,7 +90,7 @@ LastAgePrestige.CLASSES = {
       '"8:Improved Coup De Grace","9:Still As Stone","10:Death Attack"',
   'Bane Of Legates':
     'Require=' +
-      '"features.Iron Will","Sum features.Magecraft >= 1",' +
+      '"features.Iron Will","Sum \'features.Magecraft\' >= 1",' +
       '"skills.Knowledge (Arcana) >= 13","skills.Knowledge (Shadow) >= 8",' +
       '"skills.Spellcraft >= 10","spellEnergy >= 10" ' +
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -103,7 +103,7 @@ LastAgePrestige.CLASSES = {
       '"8:Conceal Magic","10:Sundered Spirit"',
   'Druid':
     'Require=' +
-      '"features.Magecraft (Spiritual)","Sum features.Spellcasting >= 1",' +
+      '"features.Magecraft (Spiritual)","Sum \'features.Spellcasting\' >= 1",' +
       '"features.Mastery Of Nature||features.Wild Empathy",' +
       '"skills.Knowledge (Nature) >= 8","skills.Survival >= 8" ' +
     'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
@@ -127,7 +127,7 @@ LastAgePrestige.CLASSES = {
       'Balance,Climb,Craft,Heal,Hide,Intimidate,Jump,Listen,"Move Silently",' +
       'Profession,Ride,Search,"Speak Language",Spot,Survival,Swim,"Use Rope" ' +
     'Features=' +
-      '"1:Armor Proficiency (Light)","1:Weapon Proficiency (Simple)"' +
+      '"1:Armor Proficiency (Light)","1:Weapon Proficiency (Simple)",' +
       '"1:Ranged Sneak Attack","2:Improved Sneak Attack","3:Meticulous Aim",' +
       '"4:Intimidating Shot","6:Leaf Reader","7:Disarming Shot",' +
       '"9:Close Combat Archery"',
@@ -136,15 +136,13 @@ LastAgePrestige.CLASSES = {
       '"baseAttack >= 6","features.Mounted Combat","features.Ride-By Attack",' +
       '"features.Spirited Charge","race =~ /Erenlander|Sarcosan/",' +
       '"skills.Handle Animal >= 4","skills.Ride >= 8","skills.Survival >= 4" ' +
-    'Implies=' +
-      '"Weapons.Composite Longbow||weapons.Sarcosan Lance||weapons.Scimitar ' +
     'HitDie=d10 Attack=1 SkillPoints=2 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
     'Skills=' +
       'Climb,Craft,Diplomacy,"Handle Animal",Jump,Profession,Ride,' +
       '"Speak Language",Spot,Survival,Swim ' +
     'Features=' +
       '"1:Armor Proficiency (Heavy)","1:Shield Proficiency (Heavy)",' +
-      '"1:Weapon Proficiency (Martial)"' +
+      '"1:Weapon Proficiency (Martial)",' +
       '"1:Horse Lord","1:Special Mount","2:Mounted Maneuver","4:Spur On",' +
       '"7:Devastating Mounted Assault","7:Improved Mounted Assault",' +
       '"10:Sweeping Strike" ' +
@@ -153,7 +151,8 @@ LastAgePrestige.CLASSES = {
       '"2:Hit And Run","2:Wheel About"',
   'Haunted One':
     'Require=' +
-      '"Sum features.Magecraft >= 1","features.Spellcasting (Divination)",' +
+      '"Sum \'features.Magecraft\' >= 1",' +
+      '"features.Spellcasting (Divination)",' +
       '"features.Spellcasting (Necromancy)","skills.Knowledge (Arcana) >= 8",' +
       '"skills.Knowledge (Spirits) >= 10" ' +
     'HitDie=d6 Attack=3/4 SkillPoints=2 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -185,7 +184,7 @@ LastAgePrestige.CLASSES = {
     'Skills=' +
       'Appraise,Balance,Bluff,Climb,Craft,"Decipher Script",Diplomacy,' +
       '"Disable Device",Disguise,"Escape Artist",Forgery,' +
-      '"Gather Information",Hide,Jump,Listen,"Move Silently,"Open Lock",' +
+      '"Gather Information",Hide,Jump,Listen,"Move Silently","Open Lock",' +
       'Perform,Profession,Search,"Sense Motive","Sleight Of Hand",Spot,' +
       'Swim,Tumble,"Use Magic Device","Use Rope" ' +
     'Features=' +
@@ -193,13 +192,14 @@ LastAgePrestige.CLASSES = {
       '"4:Information Network","5:Disguise Contraband","10:Slippery Mind" ' +
     'CasterLevelArcane=levels.Smuggler ' +
     'SpellAbility=charisma ' +
-    'SpellsSlots=' +
+    'SpellSlots=' +
       'Smuggler2:5=1,' +
       'Smuggler4:3=1',
   'Warrior Arcanist':
     'Require=' +
-      '"baseAttack >= 4","Sum features.Magecraft >= 1",' +
-      '"Sum features.Spellcasting >= 1","Sum features.Weapon Focus >= 1",' +
+      '"baseAttack >= 4","Sum \'features.Magecraft\' >= 1",' +
+      '"Sum \'features.Spellcasting\' >= 1",' +
+      '"Sum \'features.Weapon Focus\' >= 1",' +
       '"features.Weapon Proficiency (Medium)","skills.Spellcraft >= 8" ' +
     'HitDie=d8 Attack=1 SkillPoints=2 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
     'Skills=' +
@@ -211,7 +211,8 @@ LastAgePrestige.CLASSES = {
       '"10:Regenerative Strike"',
   'Whisper Adept':
     'Require=' +
-      '"Sum features.Magecraft >= 1","Sum features.Spellcasting >= 2",' +
+      '"Sum \'features.Magecraft\' >= 1",' +
+      '"Sum \'features.Spellcasting\' >= 2",' +
       '"race =~ /Elf/","skills.Knowledge (Nature) >= 8",' +
       '"skills.Knowledge (Spirits) >= 10","skills.Survival >= 8" ' +
     'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -220,14 +221,14 @@ LastAgePrestige.CLASSES = {
       '"Speak Language",Spellcraft,Survival ' +
     'Features=' +
       '"1:Armor Proficiency (Medium)","1:Shield Proficiency (Heavy)",' +
-      '"1:Weapon Proficiency (Martial)"' +
+      '"1:Weapon Proficiency (Martial)",' +
       '"1:Art Of Magic","1:Whisper Sense","2:Whisper Initiative",' +
       '"3:Fell Touch","4:Whisper Surprise","5:Tree Meld",' +
       '"6:Whisper Clairaudience","7:Strength Of The Wood",' +
       '"8:Whisper Clairvoyance","9:Whisper\'s Ward","10:Whisper Commune"',
   'Wizard':
     'Require=' +
-      '"features.Magecraft (Hermetic)","Sum features.Spellcasting >= 2",' +
+      '"features.Magecraft (Hermetic)","Sum \'features.Spellcasting\' >= 2",' +
       '"skills.Knowledge (Arcana) >= 10","skills.Spellcraft >= 10",' +
       '"sumItemCreationFeats >= 1","sumMetamagicFeats >= 1" ' +
     'HitDie=d4 Attack=1/2 SkillPoints=2 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -243,9 +244,9 @@ LastAgePrestige.CLASSES = {
     'HitDie=d8 Attack=1 SkillPoints=4 Fortitude=1/3 Reflex=1/2 Will=1/3 ' +
     'Skills=' +
       'Climb,Craft,"Handle Animal",Heal,Hide,Jump,Listen,"Move Silently",' +
-      'Profession,Ride,"Speak Language,Spot,Survival,Swim ' +
+      'Profession,Ride,"Speak Language",Spot,Survival,Swim ' +
     'Features=' +
-      '"1:Armor Proficiency (Medium)","1:Weapon Proficiency (Martial)"' +
+      '"1:Armor Proficiency (Medium)","1:Weapon Proficiency (Martial)",' +
       '"1:Coordinated Attack","1:Special Mount","3:Speed Mount",' +
       '"5:Mounted Hide","7:Wogren Dodge","9:Wogren\'s Sight" ' +
     'Selectables=' +
@@ -352,7 +353,7 @@ LastAgePrestige.FEATURES = {
   'Mounted Hide':'Section=skill Note="Hide while mounted"',
   'Mystifying Speech':'Section=magic Note="DC %V <i>Modify Memory</i> %1/dy"',
   'Nature Sense':
-    'Section=skill Note="Identify animals, plants, unsafe food and  drink"',
+    'Section=skill Note="Identify animals, plants, unsafe food and drink"',
   'Nonmagical Alteration':
     'Section=feature Note="Transform to alter ego as a extraordinary ability"',
   'Quick Alteration':
@@ -438,6 +439,8 @@ LastAgePrestige.SPELLS = {
 
 /* Defines rules related to basic character identity. */
 LastAgePrestige.identityRules = function(rules, classes) {
+  QuilvynUtils.checkAttrTable
+    (classes, ['Require', 'HitDie', 'Attack', 'SkillPoints', 'Fortitude', 'Reflex', 'Will', 'Skills', 'Features', 'Selectables', 'Languages', 'CasterLevelArcane', 'CasterLevelDivine', 'SpellAbility', 'SpellSlots']);
   for(var clas in classes) {
     rules.choiceRules(rules, 'Class', clas, classes[clas]);
     LastAgePrestige.classRulesExtra(rules, clas);
@@ -454,6 +457,7 @@ LastAgePrestige.magicRules = function(rules, spells) {
 
 /* Defines rules related to character aptitudes. */
 LastAgePrestige.talentRules = function(rules, features) {
+  QuilvynUtils.checkAttrTable(features, ['Section', 'Note']);
   for(var feature in features) {
     rules.choiceRules(rules, 'Feature', feature, features[feature]);
   }
