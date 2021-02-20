@@ -4363,7 +4363,7 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
 
 /* Returns an array of plugins upon which this one depends. */
 LastAge.getPlugins = function() {
-  return [LastAge.basePlugin].concat(LastAge.basePlugin.getPlugins());
+  return [LastAge.basePlugin].concat(LastAge.basePlugin.rules.getPlugins());
 };
 
 /* Returns HTML body content for user notes associated with this rule set. */
