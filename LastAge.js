@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.1.0';
+var LASTAGE_VERSION = '2.2.1.1';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.

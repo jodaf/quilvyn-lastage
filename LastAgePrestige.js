@@ -81,7 +81,7 @@ LastAgePrestige.CLASSES = {
     'HitDie=d6 Attack=3/4 SkillPoints=6 Fortitude=1/3 Reflex=1/2 Will=1/3 ' +
     'Skills=' +
       'Balance,Bluff,"Decipher Script",Disguise,"Escape Artist",' +
-      '"Gather Information",Hide,Jump,Listen,"Move Silently","Open Locak",' +
+      '"Gather Information",Hide,Jump,Listen,"Move Silently","Open Lock",' +
       'Profession,Search,"Sense Motive","Speak Language",Spot,Swim,Tumble,' +
       '"Use Rope" ' +
     'Features=' +
