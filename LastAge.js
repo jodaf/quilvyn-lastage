@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.1.1';
+var LASTAGE_VERSION = '2.2.1.2';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -278,7 +278,7 @@ LastAge.FEATS_ADDED = {
   'Warrior Of Shadow':
     'Type=General Require="charisma >= 12","levels.Legate >= 5"',
   // Legates w/War domain receive Weapon Focus (Longsword)
-  'Weapon Focus (Longsword)':'Type=Fighter',
+  'Weapon Focus (Longsword)':'Type=Fighter Imply="weapons.Longsword"',
   'Whispering Awareness':
     'Type=General Require="wisdom >= 15","race =~ \'Elf\'"',
 
@@ -974,8 +974,17 @@ LastAge.FEATURES_ADDED = {
   'Dodge Orcs':'Section=combat Note="+1 AC vs. orc"',
   'Dorn Ability Adjustment':
     'Section=ability Note="+2 Strength/-2 Intelligence"',
+  'Dorn Feat Bonus':'Section=feature Note="+1 Fighter Feat"',
+  'Dorn Skill Bonus':'Section=skill Note="+%V Skill Points"',
+  'Double Hatchets':
+    'Section=combat Note="Half penalty fighting w/2 Urutuk hatchets"',
+  'Double Knives':
+    'Section=combat Note="Half penalty fighting w/2 fighting knives"',
+  'Double Sepis':'Section=combat Note="Half penalty fighting w/2 sepi"',
   'Dwarf Ability Adjustment':
     'Section=ability Note="+2 Constitution/-2 Charisma"',
+  'Dwarf Armor Speed Adjustment':
+    'Section=ability Note="No armor speed penalty"',
   'Dwarf Enmity':'Section=combat Note="+1 attack vs. orc"',
   'Dwarf Favored Weapon':'Section=combat Note="+1 attack w/axes and hammers"',
   'Dwarrow Ability Adjustment':'Section=ability Note="+2 Charisma"',
@@ -988,48 +997,55 @@ LastAge.FEATURES_ADDED = {
   'Elfling Ability Adjustment':
     'Section=ability Note="+4 Dexterity/-2 Strength/-2 Constitution"',
   'Erenlander Ability Adjustment':'Section=ability Note="+2 any/-2 any"',
+  'Erenlander Feat Bonus':'Section=feature Note="+2 General Feat"',
+  'Erenlander Skill Bonus':'Section=skill Note="+%V Skill Points"',
   'Favored Region (Aruun)':
      'Section=skill ' +
-     'Note="Knowledge (Local (Aruun)) is a class skill/+2 Survival (within Aruun)/+2 Knowledge (Nature) (within Aruun)"',
+     'Note="+2 Survival (within Aruun)/+2 Knowledge (Nature) (within Aruun)"',
   'Favored Region (Caraheen)':
      'Section=skill ' +
-     'Note="Knowledge (Local (Caraheen)) is a class skill/+2 Survival (within Caraheen)/+2 Knowledge (Nature) (within Caraheen)"',
+     'Note="+2 Survival (within Caraheen)/+2 Knowledge (Nature) (within Caraheen)"',
   'Favored Region (Central Erenland)':
      'Section=skill ' +
      'Note="Knowledge (Local (Central Erenland)) is a class skill/+2 Survival (within Central Erenland)/+2 Knowledge (Nature) (within Central Erenland)"',
-  'Favored Region (Erenland region)':
+  'Favored Region (Erenland)':
      'Section=skill ' +
-     'Note="Knowledge (Local (Erenland Region)) is a class skill/+2 Survival (within Erenland region)/+2 Knowledge (Nature) (within Erenland region)"',
+     'Note="Knowledge (Local (Erenland)) is a class skill/+2 Survival (within Erenland)/+2 Knowledge (Nature) (within Erenland)"',
   'Favored Region (Erethor)':
      'Section=skill ' +
      'Note="Knowledge (Local (Erethor)) is a class skill/+2 Survival (within Erethor)/+2 Knowledge (Nature) (within Erethor)"',
-  'Favored Region (Kaladrun Mountains)':
+  'Favored Region (Kaladruns)':
      'Section=skill ' +
-     'Note="Knowledge (Local (Kaladrun Mounts)) is a class skill/+2 Survival (within Kaladrun Mountains)/+2 Knowledge (Nature) (within Kaladrun Mountains)"',
+     'Note="Knowledge (Local (Kaladruns)) is a class skill/+2 Survival (within Kaladruns)/+2 Knowledge (Nature) (within Kaladruns)"',
   'Favored Region (Miraleen)':
      'Section=skill ' +
-     'Note="Knowledge (Local (Miraleen)) is a class skill/+2 Survival (within Miraleen)/+2 Knowledge (Nature) (within Miraleen)"',
+     'Note="+2 Survival (within Miraleen)/+2 Knowledge (Nature) (within Miraleen)"',
   'Favored Region (Northern Reaches)':
      'Section=skill ' +
      'Note="Knowledge (Local (Northern Reaches)) is a class skill/+2 Survival (within Northern Reaches)/+2 Knowledge (Nature) (within Northern Reaches)"',
   'Favored Region (Northlands)':
      'Section=skill ' +
      'Note="Knowledge (Local (Northlands)) is a class skill/+2 Survival (within Northlands)/+2 Knowledge (Nature) (within Northlands)"',
+  'Favored Region (Rivers)':
+     'Section=skill ' +
+     'Note="+2 Survival (on rivers)/+2 Knowledge (Nature) (on rivers)"',
   'Favored Region (Southern Erenland)':
      'Section=skill ' +
      'Note="Knowledge (Local (Southern Erenland)) is a class skill/+2 Survival (within Southern Erenland)/+2 Knowledge (Nature) (within Southern Erenland)"',
   'Favored Region (Subterranean Kaladruns)':
      'Section=skill ' +
-     'Note="Knowledge (Local (Subterranean Kaladruns)) is a class skill/+2 Survival (within Subterranean Kaladruns)/+2 Knowledge (Nature) (within Subterranean Kaladruns)"',
+     'Note="+2 Survival (within Subterranean Kaladruns)/+2 Knowledge (Nature) (within Subterranean Kaladruns)"',
   'Favored Region (Surface Kaladruns)':
      'Section=skill ' +
-     'Note="Knowledge (Local (Surface Kaladruns)) is a class skill/+2 Survival (within Surface Kaladruns)/+2 Knowledge (Nature) (within Surface Kaladruns)"',
+     'Note="+2 Survival (within Surface Kaladruns)/+2 Knowledge (Nature) (within Surface Kaladruns)"',
   'Favored Region (Urban)':
     'Section=skill ' +
      'Note="+2 Gather Information (urban), untrained Knowledge use in urban areas"',
-  'Favored Region (Veradeeen)':
+  'Favored Region (Veradeen)':
      'Section=skill ' +
-     'Note="Knowledge (Local (Veradeeen)) is a class skill/+2 Survival (within Veradeeen)/+2 Knowledge (Nature) (within Veradeeen)"',
+     'Note="+2 Survival (within Veradeeen)/+2 Knowledge (Nature) (within Veradeeen)"',
+  'Feral Elf':
+    'Section=skill Note="+2 Balance (trees)/+2 Climb (trees)/+2 Listen/+2 Search/+2 Spot/+2 Survival (within Erethor)/+2 Knowledge (Nature) (within Erethor)"',
   'Fierce':'Section=combat Note="+1 attack w/two-handed weapons"',
   'Fortunate':'Section=save Note="+1 Fortitude/+1 Reflex/+1 Will"',
   'Gifted Healer':'Section=skill Note="+2 Heal"',
@@ -1042,20 +1058,14 @@ LastAge.FEATURES_ADDED = {
     'Section=skill Note="Must spend 2 skill points to read and write"',
   'Improved Cold Fortitude':'Section=save Note="Immune non-lethal/half lethal"',
   'Improved Innate Magic':'Section=magic Note="+1 Innate Magic spell"',
-  'Improved Keen Senses':'Section=skill Note="+2 Listen/+2 Search/+2 Spot"',
-  'Improved Natural Channeler':'Section=magic Note="+1 spell energy"',
-  'Improved Natural Swimmer':
-    'Section=skill ' +
-     'Note="+8 special action or avoid hazard, always take 10, run"',
-  'Improved Tree Climber':
-    'Section=skill Note="+2 Balance (trees)/+2 Climb (trees)"',
+  'Improved Natural Channeler':'Section=magic Note="+1 Spell Energy"',
   'Interactive':'Section=skill Note="+2 Bluff/+2 Diplomacy/+2 Sense Motive"',
   'Keen Senses':'Section=skill Note="+2 Listen/+2 Search/+2 Spot"',
   'Know Depth':'Section=feature Note="Intuit approximate depth underground"',
   'Light Sensitivity':'Section=combat Note="-1 attack in daylight"',
   'Minor Light Sensitivity':
     'Section=combat Note="DC 15 Fortitude save in sunlight to avoid -1 attack"',
-  'Natural Channeler':'Section=magic Note="+2 spell energy"',
+  'Natural Channeler':'Section=magic Note="+2 Spell Energy"',
   'Natural Horseman':
     'Section=combat,skill ' +
      'Note="+1 melee damage (horseback), half ranged penalty (horseback)",' +
@@ -1071,7 +1081,11 @@ LastAge.FEATURES_ADDED = {
   'Natural Sailor':
     'Section=skill ' +
     'Note="+2 Craft (ship)/+2 Profession (ship)/+2 Use Rope (ship)"',
-  'Natural Swimmer':'Section=ability Note="%V swim as move action"',
+  'Natural Swimmer':
+    'Section=ability,skill ' +
+    'Note=' +
+      '"%V swim as move action",' +
+      '"+8 special action or avoid hazard, always take 10, run"',
   'Natural Trader':
     'Section=skill ' +
     'Note="+4 Appraise, Bluff, Diplomacy, Forgery, Gather Information, Profession when smuggling or trading"',
@@ -1092,6 +1106,7 @@ LastAge.FEATURES_ADDED = {
   'Sarcosan Ability Adjustment':
     'Section=ability Note="+2 Charisma/+2 Intelligence/-2 Wisdom"',
   'Sarcosan Feat Bonus':'Section=feature Note="+1 General Feat"',
+  'Sarcosan Skill Bonus':'Section=skill Note="+%V Skill Points"',
   'Skilled Rider':
     'Section=skill ' +
     'Note="+2 Handle Animal (wogren)/+2 Ride (wogren)/+2 Concentration (wogrenback)"',
@@ -1102,7 +1117,7 @@ LastAge.FEATURES_ADDED = {
     'Section=save,skill ' +
     'Note="+2 vs. outsiders",' +
           '"+4 Hide (nature)/+4 Move Silently (nature)"',
-  'Stability':'Section=save Note="+4 vs. Bull Rush and Trip"',
+  'Stability':'Section=combat Note="+4 vs. Bull Rush and Trip"',
   'Stone Knowledge':
     'Section=skill Note="+2 Appraise (stone, metal)/+2 Craft (stone, metal)"',
   'Stout':'Section=feature Note="Endurance and Toughness"',
@@ -1110,6 +1125,7 @@ LastAge.FEATURES_ADDED = {
   'Sturdy':'Section=combat Note="+1 AC"',
   'Tree Climber':'Section=skill Note="+4 Balance (trees)/+4 Climb (trees)"',
   'Unafraid':'Section=save Note="+2 vs. fear"',
+  'Wood Elf Skill Bonus':'Section=skill Note="+%V Skill Points"',
 
   // Animal Companions
   'Companion Empathy':
@@ -1477,16 +1493,17 @@ LastAge.RACES = {
     'Features=' +
       '"Dwarf Ability Adjustment",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe)",' +
-      '"Favored Region (Kaladrun Mountains/Subterranean Kaladruns)",' +
-      'Darkvision,"Dodge Orcs","Dwarf Enmity","Dwarf Favored Weapon",' +
-      '"Know Depth",Resilient,"Resist Poison","Resist Spells",Slow,Stability,' +
-      '"Stone Knowledge",Stonecunning ' +
+      '"Favored Region (Kaladruns)",' +
+      '"Favored Region (Subterranean Kaladruns)",' +
+      'Darkvision,"Dodge Orcs","Dwarf Armor Speed Adjustment","Dwarf Enmity",' +
+      '"Dwarf Favored Weapon","Know Depth",Resilient,"Resist Poison",' +
+      '"Resist Spells",Slow,Stability,"Stone Knowledge",Stonecunning ' +
     'Languages="Clan Dwarven","Old Dwarven"',
   'Clan-Raised Dwarrow':
     'Features=' +
       '"Dwarrow Ability Adjustment",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
-      '"Favored Region (Kaladrun Mountains)",' +
+      '"Favored Region (Kaladruns)",' +
       'Darkvision,"Dodge Orcs","Resist Poison","Resist Spells",Small,Slow,' +
       '"Stone Knowledge",Stonecunning,Sturdy ' +
     'Languages="Clan Dwarven","Old Dwarven","Trader\'s Tongue"',
@@ -1494,7 +1511,7 @@ LastAge.RACES = {
     'Features=' +
       '"Dworg Ability Adjustment",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
-      '"Favored Region (Kaladrun Mountains)",' +
+      '"Favored Region (Kaladruns)",' +
       'Darkvision,"Dworg Enmity","Minor Light Sensitivity",Rugged,' +
       '"Resist Spells",Stonecunning ' +
     'Languages="Clan Dwarven","Old Dwarven",Orcish',
@@ -1511,20 +1528,22 @@ LastAge.RACES = {
       '"Dorn Ability Adjustment",' +
       '"Weapon Familiarity (Bastard Sword/Dornish Horse Spear)",' +
       '"Favored Region (Northlands)",' +
-      'Brotherhood,"Cold Fortitude",Fierce,Robust ' +
+      'Brotherhood,"Cold Fortitude","Dorn Feat Bonus","Dorn Skill Bonus",' +
+      'Fierce,Robust ' +
     'Languages=Erenlander,Norther',
   'Erenlander':
     'Features=' +
       '"Erenlander Ability Adjustment",' +
       '"Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)",' +
-      '"Favored Region (Erenland region)",' +
-      'Heartlander ' +
+      '"Favored Region (Erenland)",' +
+      '"Erenlander Feat Bonus","Erenlander Skill Bonus",Heartlander ' +
     'Languages=Erenlander',
   'Gnome':
     'Features=' +
       '"Gnome Ability Adjustment",' +
       '"Weapon Familiarity (Hand Crossbow)",' +
       '"Favored Region (Central Erenland)",' +
+      '"Favored Region (Rivers)",' +
       '"Deep Lungs","Low-Light Vision","Natural Riverfolk","Natural Swimmer",' +
       '"Natural Trader","Resist Spells",Robust,Slow,Small ' +
     'Languages="Trader\'s Tongue",any,any',
@@ -1549,18 +1568,19 @@ LastAge.RACES = {
       '"Elf Ability Adjustment",' +
       '"Weapon Familiarity (Sepi)",' +
       '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
-      '"Favored Region (Aruun/Erethor)",' +
-      '"Improved Innate Magic","Improved Keen Senses",' +
-      '"Improved Tree Climber","Innate Magic","Keen Senses",' +
-      '"Low-Light Vision","Natural Channeler","Resist Enchantment",' +
-      '"Spirit Foe","Tree Climber" ' +
+      '"Favored Region (Aruun)","Favored Region (Erethor)",' +
+      '"Double Sepis","Feral Elf","Improved Innate Magic","Innate Magic",' +
+      '"Keen Senses","Low-Light Vision","Natural Channeler",' +
+      '"Resist Enchantment","Spirit Foe","Tree Climber" ' +
     'Languages="Jungle Mouth"',
   'Kurgun Dwarf':
     'Features=' +
       '"Dwarf Ability Adjustment",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",'+
-      '"Favored Region (Kaladrun Mountains/Surface Kaladruns)",' +
-      'Darkvision,"Dwarf Enmity","Dwarf Favored Weapon",' +
+      '"Favored Region (Kaladruns)",' +
+      '"Favored Region (Surface Kaladruns)",' +
+      'Darkvision,"Double Hatchets","Dwarf Enmity",' +
+      '"Dwarf Armor Speed Adjustment","Dwarf Favored Weapon",' +
       '"Natural Mountaineer",Resilient,"Resist Poison","Resist Spells",Slow,' +
       '"Stone Knowledge" ' +
     'Languages="Clan Dwarven","Old Dwarven"',
@@ -1569,14 +1589,14 @@ LastAge.RACES = {
       '"Dwarrow Ability Adjustment",' +
       // Choice of one of these three weapons
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",'+
-      '"Favored Region (Kaladrun Mountains)",' +
+      '"Favored Region (Kaladruns)",' +
       'Darkvision,"Dodge Orcs","Natural Mountaineer","Resist Poison",' +
       '"Resist Spells",Small,Slow,"Stone Knowledge",Sturdy ' +
     'Languages="Clan Dwarven","Old Dwarven","Trader\'s Tongue"',
   'Kurgun-Raised Dworg':
     'Features=' +
       '"Dworg Ability Adjustment",' +
-      '"Favored Region (Kaladrun Mountains)",' +
+      '"Favored Region (Kaladruns)",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
       'Darkvision,"Dworg Enmity",' +
       '"Minor Light Sensitivity","Natural Mountaineer","Resist Spells",Rugged '+
@@ -1605,7 +1625,7 @@ LastAge.RACES = {
       '"Sarcosan Ability Adjustment",' +
       '"Weapon Familiarity (Cedeku/Sarcosan Lance)",' +
       '"Favored Region (Southern Erenland)",' +
-      '"Natural Horseman",Quick,"Sarcosan Feat Bonus" ' +
+      '"Natural Horseman",Quick,"Sarcosan Feat Bonus","Sarcosan Skill Bonus" ' +
     'Languages=Colonial,Erenlander',
   'Sea Elf':
     'Features=' +
@@ -1613,36 +1633,39 @@ LastAge.RACES = {
       '"Weapon Familiarity (Net)",' +
       '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
       '"Weapon Proficiency (Guisarme/Ranseur/Tident)",' +
-      '"Favored Region (Erathor/Miraleen)",' +
-      '"Deep Lungs","Improved Natural Swimmer","Innate Magic","Keen Senses",' +
-      '"Low-Light Vision","Natural Channeler","Natural Sailor",' +
-      '"Natural Swimmer","Resist Enchantment","Tree Climber" ' +
+      '"Favored Region (Erethor)",' +
+      '"Favored Region (Miraleen)",' +
+      '"Deep Lungs","Innate Magic","Keen Senses","Low-Light Vision",' +
+      '"Natural Channeler","Natural Sailor","Natural Swimmer",' +
+      '"Resist Enchantment","Tree Climber" ' +
     'Languages="High Elven","Jungle Mouth"',
   'Snow Elf':
     'Features=' +
       '"Elf Ability Adjustment",' +
       '"Weapon Familiarity (Fighting Knife)",' +
       '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
-      '"Favored Region (Erathor/Veradeen)",' +
-      '"Cold Fortitude","Innate Magic","Keen Senses","Low-Light Vision",' +
-      '"Natural Channeler","Resist Enchantment",Robust,"Tree Climber" ' +
+      '"Favored Region (Erethor)",' +
+      '"Favored Region (Veradeen)",' +
+      '"Cold Fortitude","Double Knives","Innate Magic","Keen Senses",' +
+      '"Low-Light Vision","Natural Channeler","Resist Enchantment",Robust,' +
+      '"Tree Climber" ' +
     'Languages="High Elven",Orcish,"Patrol Sign"',
   'Urban Sarcosan':
     'Features=' +
       '"Sarcosan Ability Adjustment",' +
       '"Weapon Familiarity (Cedeku/Sarcosan Lance)",' +
       '"Favored Region (Urban)",' +
-      'Interactive,Quick,"Sarcosan Feat Bonus" ' +
+      'Interactive,Quick,"Sarcosan Feat Bonus","Sarcosan Skill Bonus" ' +
     'Languages=Colonial,Erenlander',
   'Wood Elf':
     'Features=' +
       '"Elf Ability Adjustment",' +
       '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
       '"Weapon Proficiency (Longsword/Short Sword)",' +
-      '"Favored Region (Caraheen/Erethor)",' +
+      '"Favored Region (Caraheen)","Favored Region (Erethor)",' +
       '"Improved Innate Magic","Improved Natural Channeler","Innate Magic",' +
       '"Keen Senses","Low-Light Vision","Natural Channeler",' +
-      '"Resist Enchantment","Tree Climber" ' +
+      '"Resist Enchantment","Tree Climber","Wood Elf Skill Bonus" ' +
     'Languages="High Elven"'
 };
 LastAge.SCHOOLS = {
@@ -2714,7 +2737,11 @@ LastAge.identityRules = function(
 /* Defines rules related to magic use. */
 LastAge.magicRules = function(rules, schools, spells) {
   LastAge.basePlugin.magicRules(rules, schools, spells);
-  // No changes needed to the rules defined by base method
+  rules.defineRule('highestMagicModifier',
+    'charismaModifier', '=', null,
+    'intelligenceModifier', '^', null,
+    'wisdomModifier', '^', null
+  );
 };
 
 /* Defines rules related to character aptitudes. */
@@ -3349,11 +3376,8 @@ LastAge.featRulesExtra = function(rules, name) {
     rules.defineRule
       ('magicNotes.forceOfPersonality', 'featureNotes.extraGift', '+', '4');
   } else if(name == 'Innate Magic') {
-    rules.defineRule('magicNotes.innateMagic',
-      'charismaModifier', '=', null,
-      'intelligenceModifier', '^', null,
-      'wisdomModifier', '^', null
-    );
+    rules.defineRule
+      ('magicNotes.innateMagic', 'highestMagicModifier', '=', null);
     rules.defineRule('magicNotes.innateMagic.2',
       'features.Innate Magic', '?', null,
       'charismaModifier', '=', '(source + 5) * 10000',
@@ -3433,16 +3457,11 @@ LastAge.featRulesExtra = function(rules, name) {
     );
   } else if(name == 'Improved Flexible Recovery') {
     rules.defineRule('magicNotes.improvedFlexibleRecovery',
-      'charismaModifier', '=', null,
-      'intelligenceModifier', '^', null,
-      'wisdomModifier', '^', null
+      'highestMagicModifier', '=', null
     );
   } else if(name == 'Power Reservoir') {
-    rules.defineRule('magicNotes.powerReservoir',
-      'charismaModifier', '=', null,
-      'intelligenceModifier', '^', null,
-      'wisdomModifier', '^', null
-    );
+    rules.defineRule
+      ('magicNotes.powerReservoir', 'highestMagicModifier', '=', null);
   } else if(name == 'Sense Power') {
     rules.defineRule('magicNotes.sensePower', 'wisdomModifier', '=', null);
   } else if(name == 'Canny Strike') {
@@ -3963,11 +3982,6 @@ LastAge.pathRulesExtra = function(rules, name) {
 
   } else if(name == 'Spellsoul') {
 
-    rules.defineRule('highestMagicModifier',
-      'charismaModifier', '=', null,
-      'intelligenceModifier', '^', null,
-      'wisdomModifier', '^', null
-    );
     rules.defineRule('magicNotes.bonusSpellEnergy',
       pathLevel, '+=', 'source >= 18 ? 8 : source >= 13 ? 6 : source >= 9 ? 4 : source >= 4 ? 2 : null'
     );
@@ -4099,18 +4113,12 @@ LastAge.raceRulesExtra = function(rules, name) {
 
   if(name == 'Dorn') {
 
-    rules.defineRule
-      ('featCount.Fighter', 'featureNotes.dornFeatCountBonus', '+=', null);
-    rules.defineRule('featureNotes.dornFeatCountBonus',
-      'race', '=', 'source == "Dorn" ? 1 : null'
-    );
-    rules.defineRule
-      ('skillNotes.dornSkillPointsBonus', raceLevel, '=', 'source + 3');
+    rules.defineRule('skillNotes.dornSkillBonus', raceLevel, '=', 'source + 3');
 
   } else if(name.indexOf(' Dwarf') >= 0) {
 
     rules.defineRule('abilityNotes.armorSpeedAdjustment',
-      'race', '^', 'source.indexOf("Dwarf") >= 0 ? 0 : null'
+      'abilityNotes.dwarfArmorSpeedAdjustment', '^', '0'
     );
     if(name == 'Clan Dwarf') {
       rules.defineRule('skillNotes.stonecunning',
@@ -4172,20 +4180,13 @@ LastAge.raceRulesExtra = function(rules, name) {
       rules.defineRule
         ('magicNotes.innateMagic', 'magicNotes.improvedInnateMagic', '+', '1');
       rules.defineRule
-        ('skillNotes.woodElfSkillPointsBonus', raceLevel, '=', 'source');
+        ('skillNotes.woodElfSkillBonus', raceLevel, '=', 'source');
     }
 
   } else if(name == 'Erenlander') {
 
-    rules.defineRule('abilityNotes.erenlanderAbilityAdjustment',
-      'race', '=', 'source == "Erenlander" ? 1 : null'
-    );
-    rules.defineRule('featureNotes.erenlanderFeatCountBonus',
-      'race', '=', 'source == "Erenlander" ? 2 : null'
-    );
-    rules.defineRule('skillNotes.erenlanderSkillPointsBonus',
-      raceLevel, '=', '(source + 3) * 2'
-    );
+    rules.defineRule
+      ('skillNotes.erenlanderSkillBonus', raceLevel, '=', '(source + 3) * 2');
 
   } else if(name == 'Gnome') {
 
@@ -4244,7 +4245,7 @@ LastAge.raceRulesExtra = function(rules, name) {
   } else if(name.indexOf(' Sarcosan') >= 0) {
 
     rules.defineRule
-      ('skillNotes.sarcosanSkillPointsBonus', raceLevel, '=', 'source + 3');
+      ('skillNotes.sarcosanSkillBonus', raceLevel, '=', 'source + 3');
 
   }
   // Since we inherit no races, no need to invoke basePlugin.raceRulesExtra
@@ -4461,6 +4462,9 @@ LastAge.ruleNotes = function() {
     '<ul>\n' +
     '  <li>\n' +
     '    Variable language proficiency and synergies are not reported.\n' +
+    '  </li><li>\n' +
+    '    Quilvyn gives Erenlander character weapon familiarity in all\n' +
+    '    Dornish and Sarcosan weapons, rather than a choice of one weapon.\n' +
     '  </li><li>\n' +
     '    Quilvyn does not report a validation error for a character with\n' +
     '    pidgin language competence in Courtier or High Elven.  Note that\n' +
