@@ -1040,7 +1040,7 @@ LastAge.FEATURES_ADDED = {
      'Note="+2 Survival (within Surface Kaladruns)/+2 Knowledge (Nature) (within Surface Kaladruns)"',
   'Favored Region (Urban)':
     'Section=skill ' +
-     'Note="+2 Gather Information (urban), untrained Knowledge use in urban areas"',
+     'Note="+2 Gather Information (in cities), untrained Knowledge use regarding cities"',
   'Favored Region (Veradeen)':
      'Section=skill ' +
      'Note="+2 Survival (within Veradeeen)/+2 Knowledge (Nature) (within Veradeeen)"',
@@ -1487,8 +1487,8 @@ LastAge.RACES = {
       '"Favored Region (Central Erenland)",' +
       '"Alert Senses","Dextrous Hands",Fortunate,"Gifted Healer",Graceful,' +
       '"Innate Magic","Low-Light Vision",Slow,Small,"Resist Fear",' +
-      '"features.Stout ? Endurance","features.Stout ? Toughness",' +
-      '"features.Studious ? Magecraft (Hermetic)" ' +
+      '"features.Stout ? 1:Endurance","features.Stout ? 1:Toughness",' +
+      '"features.Studious ? 1:Magecraft (Hermetic)" ' +
     'Selectables=' +
       'Stout,Studious ' +
     'Languages=Colonial,Halfling',
@@ -1506,7 +1506,7 @@ LastAge.RACES = {
     'Features=' +
       '"Elfling Ability Adjustment",' +
       '"Weapon Familiarity (Atharak/Sepi)",' +
-      '"Favored Region (Aruun)",' +
+      '"Favored Region (Aruun)","Favored Region (Erethor)",' +
       'Fortunate,"Gifted Healer","Innate Magic","Keen Senses",' +
       '"Low-Light Vision","Mixed Blood",Nimble,Small ' +
     'Languages=Halfling,"High Elven","Jungle Mouth"',
@@ -1523,9 +1523,8 @@ LastAge.RACES = {
       '"Dwarrow Ability Adjustment",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",'+
       '"Favored Region (Kaladruns)",' +
-      'Darkvision,"Dodge Orcs","Mixed Blood","Natural Mountaineer",' +
-      '"Resist Poison","Resist Spells",Small,Slow,"Stone Knowledge",Sturdy ' +
-    'Selectables=' +
+      'Darkvision,"Dodge Orcs","Mixed Blood","Resist Poison","Resist Spells",' +
+      'Small,Slow,"Stone Knowledge",Sturdy Selectables=' +
       '"Natural Mountaineer",Stonecunning ' +
     'Languages="Clan Dwarven","Old Dwarven","Trader\'s Tongue"',
   'Dworg':
@@ -1570,7 +1569,7 @@ LastAge.RACES = {
       '"Favored Region (Central Erenland)",' +
       '"Bound To The Beast",Fortunate,"Gifted Healer","Innate Magic",' +
       '"Keen Senses","Low-Light Vision","Mixed Blood",Nimble,Small,' +
-      '"features.Bound To The Beast ? Mounted Combat" ' +
+      '"features.Bound To The Beast ? 1:Mounted Combat" ' +
     'Languages=Erenlander,Halfling,"Jungle Mouth"',
   'Jungle Elf':
     'Features=' +
@@ -1600,8 +1599,8 @@ LastAge.RACES = {
       '"Favored Region (Central Erenland)",' +
       '"Alert Senses","Focused Rider",Fortunate,Graceful,"Innate Magic",' +
       '"Low-Light Vision","Resist Fear","Skilled Rider",Slow,Small,' +
-      '"features.Bound To The Beast ? Mounted Combat",' +
-      '"features.Bound To The Spirits ? Magecraft (Spiritual)" ' +
+      '"features.Bound To The Beast ? 1:Mounted Combat",' +
+      '"features.Bound To The Spirits ? 1:Magecraft (Spiritual)" ' +
     'Selectables=' +
       '"Bound To The Beast","Bound To The Spirits" ' +
     'Languages=Colonial,Halfling',
@@ -1625,8 +1624,7 @@ LastAge.RACES = {
     'Features=' +
       '"Elf Ability Adjustment",' +
       '"Weapon Familiarity (Net)",' +
-      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
-      '"Weapon Proficiency (Guisarme/Ranseur/Tident)",' +
+      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow/Guisarme/Ranseur/Tident)",' +
       '"Favored Region (Erethor)",' +
       '"Favored Region (Miraleen)",' +
       '"Deep Lungs","Innate Magic","Keen Senses","Low-Light Vision",' +
@@ -1654,8 +1652,7 @@ LastAge.RACES = {
   'Wood Elf':
     'Features=' +
       '"Elf Ability Adjustment",' +
-      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
-      '"Weapon Proficiency (Longsword/Short Sword)",' +
+      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow/Longsword/Short Sword)",' +
       '"Favored Region (Caraheen)","Favored Region (Erethor)",' +
       '"Improved Innate Magic","Improved Natural Channeler","Innate Magic",' +
       '"Keen Senses","Low-Light Vision","Natural Channeler",' +
@@ -4169,7 +4166,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       'speed', '=', 'Math.floor(source / 2)'
     );
     rules.defineRule('deepLungsMultiplier',
-      'gnomeRaisedDwarrowFeatures.Deep Lungs', '=', '3'
+      'gnome-RaisedDwarrowFeatures.Deep Lungs', '=', '3'
     );
     rules.defineRule('featureNotes.mixedBlood',
       'gnome-RaisedDwarrowFeatures.Mixed Blood', '=', '"Dwarf and Gnome"'
@@ -4412,9 +4409,6 @@ LastAge.ruleNotes = function() {
     '    "Danger Sense", since "Danger Sense" requires choosing between\n' +
     '    initiative and listen/spot bonuses after level 1.\n' +
     '  </li><li>\n' +
-    '    Quilvyn treats Eranlanders as familiar with all Dornish and\n' +
-    '    Sarcosan weapons, rather than with a single one.\n' +
-    '  </li><li>\n' +
     '    Quilvyn removes the racial requirement (Elf or Halfling) from the\n' +
     '    Innate Magic feat. Since these races automatically receive this\n' +
     '    feat, enforcing the requirement would eliminate the possibility\n' +
@@ -4429,11 +4423,8 @@ LastAge.ruleNotes = function() {
     '  <li>\n' +
     '    Variable language proficiency and synergies are not reported.\n' +
     '  </li><li>\n' +
-    '    Quilvyn gives Erenlander character weapon familiarity in all\n' +
-    '    Dornish and Sarcosan weapons, rather than a choice of one.\n' +
-    '  </li><li>\n' +
-    '    Quilvyn gives Dwarf-raised Dwarrow and Dworg characters weapon\n' +
-    '    familiarity in all Dwarven weapons, rather than a choice of one.\n' +
+    '    Quilvyn treats characters who receive Weapon Familiarity in one\n' +
+    '    of a group of weapons as familiar with all weapons in the group.\n' +
     '  </li><li>\n' +
     '    Quilvyn does not report a validation error for a character with\n' +
     '    pidgin language competence in Courtier or High Elven.  Note that\n' +
