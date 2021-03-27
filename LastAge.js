@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.1.2';
+var LASTAGE_VERSION = '2.2.1.3';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -965,12 +965,12 @@ LastAge.FEATURES_ADDED = {
   // Race
   'Alert Senses':'Section=skill Note="+2 Listen/+2 Spot"',
   'Bound To The Beast':'Section=feature Note="Mounted Combat"',
-  'Bound To The Spirit':'Section=feature Note="Magecraft (Spiritual)"',
+  'Bound To The Spirits':'Section=feature Note="Magecraft (Spiritual)"',
   'Brotherhood':
     'Section=combat Note="+1 attack when fighting alongside 4+ Dorns"',
   'Cold Fortitude':'Section=save Note="+5 cold, half nonlethal damage"',
   // Deep Lungs as heroic path
-  'Dextrous':'Section=skill Note="+2 Craft (non-metal or wood)"',
+  'Dextrous Hands':'Section=skill Note="+2 Craft (non-metal or wood)"',
   'Dodge Orcs':'Section=combat Note="+1 AC vs. orc"',
   'Dorn Ability Adjustment':
     'Section=ability Note="+2 Strength/-2 Intelligence"',
@@ -1065,6 +1065,7 @@ LastAge.FEATURES_ADDED = {
   'Light Sensitivity':'Section=combat Note="-1 attack in daylight"',
   'Minor Light Sensitivity':
     'Section=combat Note="DC 15 Fortitude save in sunlight to avoid -1 attack"',
+  'Mixed Blood':'Section=feature Note="%V for special abilities and affects"',
   'Natural Channeler':'Section=magic Note="+2 Spell Energy"',
   'Natural Horseman':
     'Section=combat,skill ' +
@@ -1074,10 +1075,10 @@ LastAge.FEATURES_ADDED = {
     'Section=ability,skill ' +
     'Note="Unimpeded movement in mountainous terrain",' +
          '"+2 Climb"',
-  'Natural Preditor':'Section=skill Note="+%V Intimidate"',
+  'Natural Predator':'Section=skill Note="+%V Intimidate"',
   'Natural Riverfolk':
     'Section=skill ' +
-    'Note="+2 Perform/+2 Profession (Sailor)/+2 Swim/+2 Use Rope"',
+    'Note="+2 Perform (all)/+2 Profession (Sailor)/+2 Swim/+2 Use Rope"',
   'Natural Sailor':
     'Section=skill ' +
     'Note="+2 Craft (ship)/+2 Profession (ship)/+2 Use Rope (ship)"',
@@ -1089,7 +1090,7 @@ LastAge.FEATURES_ADDED = {
   'Natural Trader':
     'Section=skill ' +
     'Note="+4 Appraise, Bluff, Diplomacy, Forgery, Gather Information, Profession when smuggling or trading"',
-  'Night Fighter':'Section=combat Note="+1 attack in darkness"',
+  'Night Fighter':'Section=combat Note="+1 attack in complete darkness"',
   'Nimble':'Section=skill Note="+2 Climb/+2 Hide"',
   'Orc Ability Adjustment':
     'Section=ability Note="+4 Strength/-2 Intelligence/-2 Charisma"',
@@ -1485,7 +1486,9 @@ LastAge.RACES = {
       '"Weapon Familiarity (Halfling Lance)",' +
       '"Favored Region (Central Erenland)",' +
       '"Alert Senses","Dextrous Hands",Fortunate,"Gifted Healer",Graceful,' +
-      '"Innate Magic","Low-Light Vision",Slow,Small,"Resist Fear" ' +
+      '"Innate Magic","Low-Light Vision",Slow,Small,"Resist Fear",' +
+      '"features.Stout ? Endurance","features.Stout ? Toughness",' +
+      '"features.Studious ? Magecraft (Hermetic)" ' +
     'Selectables=' +
       'Stout,Studious ' +
     'Languages=Colonial,Halfling',
@@ -1499,29 +1502,13 @@ LastAge.RACES = {
       '"Dwarf Favored Weapon","Know Depth",Resilient,"Resist Poison",' +
       '"Resist Spells",Slow,Stability,"Stone Knowledge",Stonecunning ' +
     'Languages="Clan Dwarven","Old Dwarven"',
-  'Clan-Raised Dwarrow':
-    'Features=' +
-      '"Dwarrow Ability Adjustment",' +
-      '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
-      '"Favored Region (Kaladruns)",' +
-      'Darkvision,"Dodge Orcs","Resist Poison","Resist Spells",Small,Slow,' +
-      '"Stone Knowledge",Stonecunning,Sturdy ' +
-    'Languages="Clan Dwarven","Old Dwarven","Trader\'s Tongue"',
-  'Clan-Raised Dworg':
-    'Features=' +
-      '"Dworg Ability Adjustment",' +
-      '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
-      '"Favored Region (Kaladruns)",' +
-      'Darkvision,"Dworg Enmity","Minor Light Sensitivity",Rugged,' +
-      '"Resist Spells",Stonecunning ' +
-    'Languages="Clan Dwarven","Old Dwarven",Orcish',
   'Danisil-Raised Elfling':
     'Features=' +
       '"Elfling Ability Adjustment",' +
       '"Weapon Familiarity (Atharak/Sepi)",' +
       '"Favored Region (Aruun)",' +
       'Fortunate,"Gifted Healer","Innate Magic","Keen Senses",' +
-      '"Low-Light Vision",Nimble,Small ' +
+      '"Low-Light Vision","Mixed Blood",Nimble,Small ' +
     'Languages=Halfling,"High Elven","Jungle Mouth"',
   'Dorn':
     'Features=' +
@@ -1531,6 +1518,26 @@ LastAge.RACES = {
       'Brotherhood,"Cold Fortitude","Dorn Feat Bonus","Dorn Skill Bonus",' +
       'Fierce,Robust ' +
     'Languages=Erenlander,Norther',
+  'Dwarf-Raised Dwarrow':
+    'Features=' +
+      '"Dwarrow Ability Adjustment",' +
+      '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",'+
+      '"Favored Region (Kaladruns)",' +
+      'Darkvision,"Dodge Orcs","Mixed Blood","Natural Mountaineer",' +
+      '"Resist Poison","Resist Spells",Small,Slow,"Stone Knowledge",Sturdy ' +
+    'Selectables=' +
+      '"Natural Mountaineer",Stonecunning ' +
+    'Languages="Clan Dwarven","Old Dwarven","Trader\'s Tongue"',
+  'Dworg':
+    'Features=' +
+      '"Dworg Ability Adjustment",' +
+      '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
+      '"Favored Region (Kaladruns)",' +
+      'Darkvision,"Dworg Enmity","Minor Light Sensitivity","Mixed Blood",' +
+      'Rugged,"Resist Spells" ' +
+    'Selectables=' +
+      '"Natural Mountaineer",Stonecunning ' +
+    'Languages="Clan Dwarven","Old Dwarven",Orcish',
   'Erenlander':
     'Features=' +
       '"Erenlander Ability Adjustment",' +
@@ -1552,8 +1559,9 @@ LastAge.RACES = {
       '"Dwarrow Ability Adjustment",' +
       '"Weapon Familiarity (Hand Crossbow/Inutek)",' +
       '"Favored Region (Central Erenland)",' +
-      'Darkvision,"Deep Lungs","Natural Riverfolk","Natural Swimmer",' +
-      '"Resist Poison","Resist Spells",Small,Slow,"Skilled Trader",Sturdy ' +
+      'Darkvision,"Deep Lungs","Mixed Blood","Natural Riverfolk",' +
+      '"Natural Swimmer","Resist Poison","Resist Spells",Small,Slow,' +
+      '"Skilled Trader",Sturdy ' +
     'Languages="Clan Dwarven","Old Dwarven","Trader\'s Tongue",any,any',
   'Halfling-Raised Elfling':
     'Features=' +
@@ -1561,7 +1569,8 @@ LastAge.RACES = {
       '"Weapon Familiarity (Atharak/Halfling Lance)",' +
       '"Favored Region (Central Erenland)",' +
       '"Bound To The Beast",Fortunate,"Gifted Healer","Innate Magic",' +
-      '"Keen Senses","Low-Light Vision",Nimble,Small ' +
+      '"Keen Senses","Low-Light Vision","Mixed Blood",Nimble,Small,' +
+      '"features.Bound To The Beast ? Mounted Combat" ' +
     'Languages=Erenlander,Halfling,"Jungle Mouth"',
   'Jungle Elf':
     'Features=' +
@@ -1584,30 +1593,15 @@ LastAge.RACES = {
       '"Natural Mountaineer",Resilient,"Resist Poison","Resist Spells",Slow,' +
       '"Stone Knowledge" ' +
     'Languages="Clan Dwarven","Old Dwarven"',
-  'Kurgun-Raised Dwarrow':
-    'Features=' +
-      '"Dwarrow Ability Adjustment",' +
-      // Choice of one of these three weapons
-      '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",'+
-      '"Favored Region (Kaladruns)",' +
-      'Darkvision,"Dodge Orcs","Natural Mountaineer","Resist Poison",' +
-      '"Resist Spells",Small,Slow,"Stone Knowledge",Sturdy ' +
-    'Languages="Clan Dwarven","Old Dwarven","Trader\'s Tongue"',
-  'Kurgun-Raised Dworg':
-    'Features=' +
-      '"Dworg Ability Adjustment",' +
-      '"Favored Region (Kaladruns)",' +
-      '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
-      'Darkvision,"Dworg Enmity",' +
-      '"Minor Light Sensitivity","Natural Mountaineer","Resist Spells",Rugged '+
-    'Languages="Clan Dwarven","Old Dwarven",Orcish',
   'Nomadic Halfling':
     'Features=' +
       '"Halfling Ability Adjustment",' +
       '"Weapon Familiarity (Halfling Lance)",' +
       '"Favored Region (Central Erenland)",' +
       '"Alert Senses","Focused Rider",Fortunate,Graceful,"Innate Magic",' +
-      '"Low-Light Vision","Resist Fear","Skilled Rider",Slow,Small ' +
+      '"Low-Light Vision","Resist Fear","Skilled Rider",Slow,Small,' +
+      '"features.Bound To The Beast ? Mounted Combat",' +
+      '"features.Bound To The Spirits ? Magecraft (Spiritual)" ' +
     'Selectables=' +
       '"Bound To The Beast","Bound To The Spirits" ' +
     'Languages=Colonial,Halfling',
@@ -1693,7 +1687,9 @@ LastAge.SKILLS_ADDED = {
   'Knowledge (Spirits)':
     'Ability=intelligence Untrained=n Synergy="Knowledge (Nature)"',
   // Profession (Soldier) available to Leader Of Men Fighters
-  'Profession (Soldier)':'Ability=wisdom Untrained=n'
+  'Profession (Soldier)':'Ability=wisdom Untrained=n',
+  // Gnomes are +1 Profession (Sailor)
+  'Profession (Sailor)':'Ability=wisdom Untrained=n'
 };
 LastAge.SKILLS = Object.assign({}, SRD35.SKILLS, LastAge.SKILLS_ADDED);
 for(var skill in LastAge.SKILLS) {
@@ -4111,143 +4107,113 @@ LastAge.raceRulesExtra = function(rules, name) {
     name.substring(0,1).toLowerCase() + name.substring(1).replaceAll(' ', '');
   var raceLevel = prefix + 'Level';
 
-  if(name == 'Dorn') {
-
-    rules.defineRule('skillNotes.dornSkillBonus', raceLevel, '=', 'source + 3');
-
-  } else if(name.indexOf(' Dwarf') >= 0) {
-
+  if(name == 'Agrarian Halfling') {
+    rules.defineRule('selectableFeatureCount.Agrarian Halfling',
+      'race', '=', 'source == "Agrarian Halfling" ? 1 : null'
+    );
+  } else if(name == 'Danisil-Raised Elfling') {
+    rules.defineRule('featureNotes.mixedBlood',
+      'danisil-RaisedElflingFeatures.Mixed Blood', '=', '"Elf and Halfling"'
+    );
+  } else if(name == 'Clan Dwarf') {
     rules.defineRule('abilityNotes.armorSpeedAdjustment',
       'abilityNotes.dwarfArmorSpeedAdjustment', '^', '0'
     );
-    if(name == 'Clan Dwarf') {
-      rules.defineRule('skillNotes.stonecunning',
-        'clanDwarfFeatures.Stonecunning', '+=', '2'
-      );
-    }
-
-  } else if(name.indexOf(' Dwarrow') >= 0) {
-
-    if(name == 'Clan-Raised Dwarrow') {
-      rules.defineRule('skillNotes.stonecunning',
-        'clanRaisedDwarrowFeatures.Stonecunning', '+=', '2'
-      );
-    } else if(name == 'Gnome-Raised Dwarrow') {
-      rules.defineRule('deepLungsMultiplier',
-        'gnomeRaisedDwarrowFeatures.Deep Lungs', '=', '3'
-      );
-      rules.defineRule('skillNotes.deepLungs',
-        'deepLungsMultiplier', '=', null,
-        'constitution', '*', 'source'
-      );
-      rules.defineRule('abilityNotes.naturalSwimmer',
-        'speed', '=', 'Math.floor(source / 2)'
-      );
-    }
-
-  } else if(name.indexOf(' Dworg') >= 0) {
-
-    if(name == 'Clan-Raised Dworg') {
-      rules.defineRule('skillNotes.stonecunning',
-        'clanRaisedDworgFeatures.Stonecunning', '+=', '2'
-      );
-    }
-
-  } else if(name.indexOf(' Elfling') >= 0) {
-
-    if(name == 'Halfling-Raised Elfling') {
-      rules.defineRule
-        ('features.Mounted Combat', 'featureNotes.boundToTheBeast', '=', '1');
-    }
-
-  } else if(name.indexOf(' Elf') >= 0) {
-
-    if(name == 'Jungle Elf') {
-      rules.defineRule
-        ('magicNotes.innateMagic', 'magicNotes.improvedInnateMagic', '+', '1');
-      rules.defineRule
-        ('skillNotes.feralElfFeature2', 'features.Feral Elf', '=', '1');
-    } else if(name == 'Sea Elf') {
-      rules.defineRule
-        ('deepLungsMultiplier', 'seaElfFeatures.Deep Lungs', '=', '6');
-      rules.defineRule('skillNotes.deepLungs',
-        'deepLungsMultiplier', '=', null,
-        'constitution', '*', 'source'
-      );
-      rules.defineRule
-        ('abilityNotes.naturalSwimmer', 'speed', '=', 'Math.floor(source / 2)');
-    } else if(name == 'Wood Elf') {
-      rules.defineRule
-        ('magicNotes.innateMagic', 'magicNotes.improvedInnateMagic', '+', '1');
-      rules.defineRule
-        ('skillNotes.woodElfSkillBonus', raceLevel, '=', 'source');
-    }
-
+    rules.defineRule('skillNotes.stonecunning',
+      'clanDwarfFeatures.Stonecunning', '+=', '2'
+    );
+  } else if(name == 'Dorn') {
+    rules.defineRule('skillNotes.dornSkillBonus', raceLevel, '=', 'source + 3');
+  } else if(name == 'Dwarf-Raised Dwarrow') {
+    rules.defineRule('featureNotes.mixedBlood',
+      'dwarf-RaisedDwarrowFeatures.Mixed Blood', '=', '"Dwarf and Gnome"'
+    );
+    rules.defineRule('selectableFeatureCount.Dwarf-Raised Dwarrow',
+      'race', '=', 'source == "Dwarf-Raised Dwarrow" ? 1 : null'
+    );
+    rules.defineRule('skillNotes.stonecunning',
+      'dwarf-RaisedDwarrowFeatures.Stonecunning', '+=', '2'
+    );
+  } else if(name == 'Dworg') {
+    rules.defineRule('featureNotes.mixedBlood',
+      'dworgFeatures.Mixed Blood', '=', '"Dwarf and Orc"'
+    );
+    rules.defineRule('selectableFeatureCount.Dworg',
+      'race', '=', 'source == "Dworg" ? 1 : null'
+    );
+    rules.defineRule
+      ('skillNotes.stonecunning', 'dworgFeatures.Stonecunning', '+=', '2');
+  } else if(name == 'Halfling-Raised Elfling') {
+    rules.defineRule('featureNotes.mixedBlood',
+      'halfling-RaisedElflingFeatures.Mixed Blood', '=', '"Elf and Halfling"'
+    );
   } else if(name == 'Erenlander') {
-
     rules.defineRule
       ('skillNotes.erenlanderSkillBonus', raceLevel, '=', '(source + 3) * 2');
-
   } else if(name == 'Gnome') {
-
+    rules.defineRule
+      ('abilityNotes.naturalSwimmer', 'speed', '=', 'Math.floor(source / 2)');
     rules.defineRule
       ('deepLungsMultiplier', 'gnomeFeatures.Deep Lungs', '=', '3');
     rules.defineRule('skillNotes.deepLungs',
       'deepLungsMultiplier', '=', null,
       'constitution', '*', 'source'
     );
-    rules.defineRule
-      ('abilityNotes.naturalSwimmer', 'speed', '=', 'Math.floor(source / 2)');
-
-  } else if(name.indexOf(' Halfling') >= 0) {
-
-    if(name == 'Agrarian Halfling') {
-      rules.defineRule
-        ('agrarianHalflingFeatures.Endurance', 'featureNotes.stout', '=', '1');
-      rules.defineRule
-        ('agrarianHalflingFeatures.Toughness', 'featureNotes.stout', '=', '1');
-      rules.defineRule('agrarianHalflingFeatures.Magecraft (Hermetic)',
-        'featureNotes.studious', '=', '1'
-      );
-      rules.defineRule
-        ('features.Endurance', 'agrarianHalflingFeatures.Endurance', '=', '1');
-      rules.defineRule('features.Magecraft (Hermetic)',
-        'agrarianHalflingFeatures.Magecraft (Hermetic)', '=', '1'
-      );
-      rules.defineRule
-        ('features.Toughness', 'agrarianHalflingFeatures.Toughness', '=', '1');
-      rules.defineRule('selectableFeatureCount.Agrarian Halfling',
-        'race', '=', 'source == "Agrarian Halfling" ? 1 : null'
-      );
-    } else if(name == 'Nomadic Halfling') {
-      rules.defineRule('features.Magecraft (Spiritual)',
-        'nomadicHalflingFeatures.Magecraft (Spiritual)', '=', '1'
-      );
-      rules.defineRule('features.Mounted Combat',
-        'nomadicHalflingFeatures.Mounted Combat', '=', '1'
-      );
-      rules.defineRule('nomadicHalflingFeatures.Magecraft (Spiritual)',
-        'featureNotes.boundToTheSpirits', '=', '1'
-      );
-      rules.defineRule('nomadicHalflingFeatures.Mounted Combat',
-        'featureNotes.boundToTheBeast', '=', '1'
-      );
-      rules.defineRule('selectableFeatureCount.Nomadic Halfling',
-        'race', '=', 'source == "Nomadic Halfling" ? 1 : null'
-      );
+    for(var s in rules.getChoices('skills')) {
+      if(s.startsWith('Perform'))
+        rules.defineRule
+          ('skillModifier.' + s, 'skillNotes.naturalRiverfolk', '+', '2');
     }
-
-  } else if(name == 'Orc') {
-
+  } else if(name == 'Gnome-Raised Dwarrow') {
+    rules.defineRule('abilityNotes.naturalSwimmer',
+      'speed', '=', 'Math.floor(source / 2)'
+    );
+    rules.defineRule('deepLungsMultiplier',
+      'gnomeRaisedDwarrowFeatures.Deep Lungs', '=', '3'
+    );
+    rules.defineRule('featureNotes.mixedBlood',
+      'gnome-RaisedDwarrowFeatures.Mixed Blood', '=', '"Dwarf and Gnome"'
+    );
+    rules.defineRule('skillNotes.deepLungs',
+      'deepLungsMultiplier', '=', null,
+      'constitution', '*', 'source'
+    );
+  } else if(name == 'Jungle Elf') {
     rules.defineRule
-      ('skillNotes.naturalPreditor', 'strengthModifier', '=', null);
-
-  } else if(name.indexOf(' Sarcosan') >= 0) {
-
+      ('magicNotes.innateMagic', 'magicNotes.improvedInnateMagic', '+', '1');
+  } else if(name == 'Kurgun Dwarf') {
+    rules.defineRule('abilityNotes.armorSpeedAdjustment',
+      'abilityNotes.dwarfArmorSpeedAdjustment', '^', '0'
+    );
+  } else if(name == 'Nomadic Halfling') {
+    rules.defineRule('selectableFeatureCount.Nomadic Halfling',
+      'race', '=', 'source == "Nomadic Halfling" ? 1 : null'
+    );
+  } else if(name == 'Orc') {
+    rules.defineRule
+      ('skillNotes.naturalPredator', 'strengthModifier', '=', null);
+  } else if(name == 'Plains Sarcosan') {
     rules.defineRule
       ('skillNotes.sarcosanSkillBonus', raceLevel, '=', 'source + 3');
-
+  } else if(name == 'Sea Elf') {
+    rules.defineRule
+      ('abilityNotes.naturalSwimmer', 'speed', '=', 'Math.floor(source / 2)');
+    rules.defineRule
+      ('deepLungsMultiplier', 'seaElfFeatures.Deep Lungs', '=', '6');
+    rules.defineRule('skillNotes.deepLungs',
+      'deepLungsMultiplier', '=', null,
+      'constitution', '*', 'source'
+    );
+  } else if(name == 'Urban Sarcosan') {
+    rules.defineRule
+      ('skillNotes.sarcosanSkillBonus', raceLevel, '=', 'source + 3');
+  } else if(name == 'Wood Elf') {
+    rules.defineRule
+      ('magicNotes.innateMagic', 'magicNotes.improvedInnateMagic', '+', '1');
+    rules.defineRule
+      ('skillNotes.woodElfSkillBonus', raceLevel, '=', 'source');
   }
+
   // Since we inherit no races, no need to invoke basePlugin.raceRulesExtra
 
 };
@@ -4464,7 +4430,10 @@ LastAge.ruleNotes = function() {
     '    Variable language proficiency and synergies are not reported.\n' +
     '  </li><li>\n' +
     '    Quilvyn gives Erenlander character weapon familiarity in all\n' +
-    '    Dornish and Sarcosan weapons, rather than a choice of one weapon.\n' +
+    '    Dornish and Sarcosan weapons, rather than a choice of one.\n' +
+    '  </li><li>\n' +
+    '    Quilvyn gives Dwarf-raised Dwarrow and Dworg characters weapon\n' +
+    '    familiarity in all Dwarven weapons, rather than a choice of one.\n' +
     '  </li><li>\n' +
     '    Quilvyn does not report a validation error for a character with\n' +
     '    pidgin language competence in Courtier or High Elven.  Note that\n' +
