@@ -2488,7 +2488,7 @@ LastAge.WEAPONS_ADDED = {
   'Halfling Lance':'Level=3 Category=2h Damage=d8 Crit=3',
   'Icewood Longbow':'Level=3 Category=R Damage=d8 Crit=3 Range=120',
   'Inutek':'Level=3 Category=R Damage=d3 Range=20',
-  'Sarcosan Lance':'Level=3 Category=2h Damage=d8 Crit=3',
+  'Sarcosan Lance':'Level=3 Category=2h Damage=d8 Crit=3 Range=20',
   'Sepi':'Level=3 Category=Li Damage=d6 Threat=18',
   // Shard Arrow ignored--Quilvyn doesn't list ammo
   'Staghorn':'Level=3 Category=1h Damage=d6',
@@ -4329,7 +4329,9 @@ LastAge.weaponRules = function(
   LastAge.basePlugin.weaponRules(
     rules, name, profLevel, category, damage, threat, critMultiplier, range
   );
-  // No changes needed to the rules defined by base method
+  rules.defineRule('icewoodLongbowDamageModifier',
+    'combatNotes.strengthDamageAdjustment', '=', 'source * 2'
+  );
 };
 
 /*
