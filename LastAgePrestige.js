@@ -44,7 +44,7 @@ LastAgePrestige.CLASSES = {
       'Climb,Craft,"Handle Animal",Intimidate,Jump,Profession,Ride,' +
       '"Speak Language",Swim ' +
     'Features=' +
-      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency (Tower)",' +
+      '"1:Armor Proficiency (Heavy)","1:Tower Shield Proficiency",' +
       '"1:Weapon Proficiency (Martial)",' +
       '"1:Unbreakable Blade","2:Advance Ancestral Blade",' +
       '"3:Ancestral Watcher","4:Immovable Blade","5:Ancestral Advisor",' +
@@ -141,7 +141,7 @@ LastAgePrestige.CLASSES = {
       'Climb,Craft,Diplomacy,"Handle Animal",Jump,Profession,Ride,' +
       '"Speak Language",Spot,Survival,Swim ' +
     'Features=' +
-      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency (Heavy)",' +
+      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency",' +
       '"1:Weapon Proficiency (Martial)",' +
       '"1:Horse Lord","1:Special Mount","2:Mounted Maneuver","4:Spur On",' +
       '"7:Devastating Mounted Assault","7:Improved Mounted Assault",' +
@@ -220,7 +220,7 @@ LastAgePrestige.CLASSES = {
       'Concentration,Craft,"Handle Animal",Heal,Knowledge,Profession,' +
       '"Speak Language",Spellcraft,Survival ' +
     'Features=' +
-      '"1:Armor Proficiency (Medium)","1:Shield Proficiency (Heavy)",' +
+      '"1:Armor Proficiency (Medium)","1:Shield Proficiency",' +
       '"1:Weapon Proficiency (Martial)",' +
       '"1:Art Of Magic","1:Whisper Sense","2:Whisper Initiative",' +
       '"3:Fell Touch","4:Whisper Surprise","5:Tree Meld",' +

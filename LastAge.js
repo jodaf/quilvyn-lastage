@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.1.3';
+var LASTAGE_VERSION = '2.2.1.4';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -78,6 +78,8 @@ function LastAge() {
   );
   LastAge.ARMORS = Object.assign({}, LastAge.basePlugin.ARMORS);
   LastAge.CLASSES['Barbarian'] = LastAge.basePlugin.CLASSES['Barbarian'];
+  LastAge.CLASSES['Fighter'] =
+    LastAge.basePlugin.CLASSES['Fighter'] + ' ' + LastAge.FIGHTER_FEATURES;
   LastAge.CLASSES['Rogue'] = LastAge.basePlugin.CLASSES['Rogue'];
   LastAge.FAMILIARS = Object.assign({}, LastAge.basePlugin.FAMILIARS);
   LastAge.FEATS =
@@ -271,7 +273,9 @@ LastAge.FEATS_ADDED = {
     'Require="features.Spellcasting (Conjuration)"',
   'Spellcasting (Greater Evocation)':
     'Type=Channeling,Spellcasting Require="features.Spellcasting (Evocation)"',
-  // Skill Focus (Profession (Soldier)) available to Leader Of Men Fighters
+  // Skill Focus (Diplomacy) and Skill Focus (Profession (Soldier)) available
+  // to Leader Of Men Fighters
+  'Skill Focus (Diplomacy)':'Type=General',
   'Skill Focus (Profession (Soldier))':'Type=General',
   'Spell Knowledge':'Type=General Require="Sum \'features.Spellcasting\' >= 1"',
   'Thick Skull':'Type=General',
@@ -321,8 +325,7 @@ LastAge.FEATS_ADDED = {
        'features.Weapon Focus (Urutuk Hatchet)"',
   'Reinforcing':'Type=Dwarvencraft Require=features.Dwarvencraft',
   'Shield Mate':
-    'Type=Fighter ' +
-    'Require="dexterity >= 13","features.Shield Proficiency (Heavy)"',
+    'Type=Fighter Require="dexterity >= 13","features.Shield Proficiency"',
   'Tempering (Fireforged)':
     'Type=Dwarvencraft Require="features.Advanced Tempering"',
   'Tempering (Icebound)':
@@ -610,7 +613,7 @@ LastAge.FEATURES_ADDED = {
     'Section=feature Note="R30\' Detect creatures\' presence, track by smell"',
   'See Invisible':'Section=feature Note="See invisible creatures"',
   'Seer Sight':
-    'Section=magic Note="Discern ${level}-%1 history of touched object %V/dy"',
+    'Section=magic Note="Discern %{level}-%1 history of touched object %V/dy"',
   'Sense The Dead':'Section=magic Note="R%V\' <i>Detect Undead</i> at will"',
   'Shadow Jump':'Section=feature Note="R%V\' Move between shadows"',
   'Shadow Veil':'Section=skill Note="+%V Hide"',
@@ -841,7 +844,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="Counterattack, Cover Ally, Defender Stunning Fist, Devastating Strike, Rapid Strike, Retaliatory Strike, Strike And Hold, or Weapon Trap %V/dy"',
   'Defender Stunning Fist':
-    'Section=combat Note="Struck foe stunned (DC %V Fort neg)"',
+    'Section=combat Note="Stun struck foe (DC %V Fort neg)"',
   'Defensive Mastery':'Section=save Note="+%V Fortitude/+%V Reflex/+%V Will"',
   'Devastating Strike':
     'Section=combat ' +
@@ -851,7 +854,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="Two-weapon off hand penalty reduced by %V"',
   'Foe Specialty':
     'Section=skill ' +
-    'Note="Each day choose a creature type to take 10 on Knowledge checks"',
+    'Note="Take 10 on Knowledge checks about creature type chosen each day"',
   'Force Of Personality':
     'Section=magic ' +
     'Note="Inspire Confidence, Fascination, Fury, or Suggestion %V/dy"',
@@ -863,7 +866,7 @@ LastAge.FEATURES_ADDED = {
     'Section=magic ' +
     'Note="<i>Break Enchantment</i> 1/5 rd during Inspire Confidence"',
   'Greater Fury':
-    'Section=magic Note="Ally gains 2d10 hit points, +2 attack, +1 Fort"',
+    'Section=magic Note="R30\' Ally gains 2d10 HP, +2 Attack, +1 Fortitude"',
   'Hated Foe':
     'Section=combat ' +
     'Note="Additional Hunter\'s Strike vs. Master Hunter creature"',
@@ -876,26 +879,26 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="Allies enchanted for half duration, fear reduced"',
   'Improved Fury':
     'Section=magic ' +
-    'Note="+1 Initiative, attack, and damage during Ispire Fury"',
+    'Note="+1 Initiative, Attack, and Damage during Inspire Fury"',
   'Improved Woodland Stride':
     'Section=feature Note="Normal movement through enchanted terrain"',
   'Incredible Resilience':'Section=combat Note="+%V HP"',
   'Incredible Speed':'Section=ability Note="+%V Speed"',
   'Initiative Bonus':'Section=combat Note="+%V Initiative"',
-  'Insire Confidence':
+  'Inspire Confidence':
     'Section=magic ' +
     'Note="R60\' Allies +4 save vs. enchantment and fear for %V rd"',
   'Inspire Fascination':
     'Section=magic ' +
     'Note="R120\' %V creatures enthralled %2 rd (DC %1 Will neg)"',
   'Inspire Fury':
-    'Section=magic Note="R60\' Allies +1 Initiative, attack, and damage %V rd"',
+    'Section=magic Note="R60\' Allies +1 Initiative, Attack, and Damage %V rd"',
   'Instinctive Response':'Section=combat Note="Re-roll Initiative"',
   'Knowledge Specialty':
-    'Section=skill Note="Each day Choose a Knowledge Skill Focus"',
+    'Section=skill Note="+3 checks for Knowledge skill chosen each day"',
   'Lorebook':
     'Section=skill ' +
-    'Note="Study 1 minute for knowledge of situation; scan at -10"',
+    'Note="+%V check for sought info after 1 min study; scan at -10"',
   'Magecraft (Charismatic)':
     'Section=magic Note="4 spells, %V spell energy points"',
   'Magecraft (Hermetic)':
@@ -908,7 +911,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat,skill ' +
     'Note="+2 or more damage vs. selected creature type(s)",' +
          '"+2 or more Bluff, Listen, Sense Motive, Spot, Survival vs. chosen creature type(s)"',
-  'Masterful Strike':'Section=combat Note="%V unarmed damage"',
+  'Masterful Strike':'Section=combat Note="%V Unarmed damage"',
   'Mastery Of Nature':
     'Section=combat ' +
     'Note="Turn or rebuke %4d6+%1 HD of plants or animals of up to (d20+%2)/3 HD %3/dy"',
@@ -922,7 +925,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="Stunned foe blind or deaf (DC %V Fort neg)"',
   'One With The Weapon':
     'Section=combat ' +
-    'Note="Masterful Strike, Precise Strike, Stunning Fist w/chosen weapon"',
+    'Note="Masterful Strike, Precise Strike, or Stunning Fist w/chosen weapon"',
   'Overland Stride':
     'Section=feature Note="Normal movement while using Survival"',
   'Powerful Effect':'Section=combat Note="+1d6 mastery damage"',
@@ -939,13 +942,13 @@ LastAge.FEATURES_ADDED = {
     'Section=feature,magic ' +
     'Note="Scent vs. legate/outsider",' +
          '"<i>Detect Magic</i> vs. legate/outsider at will"',
-  'Practiced Skills':'Section=skill Note="+3 on %V chosen skills"',
+  'Practiced Skill':'Section=skill Note="+3 on chosen skill"',
   'Specific Effect':'Section=combat Note="Choose individuals to affect"',
   'Speed Training':'Section=combat Note="Extra move action each rd"',
   'Spell Specialty':'Section=skill Note="Each day choose a spell for +1 DC"',
   'Spontaneous Legate Spell':
     'Section=magic Note="Cast <i>Inflict</i> in place of known spell"',
-  'Strike And Hold':'Section=combat Note="Extra unarmed attack to grab foe"',
+  'Strike And Hold':'Section=combat Note="Extra Unarmed attack to grab foe"',
   'Suggestion':
     'Section=magic Note="<i>Suggestion</i> to 1 fascinated creature"',
   'Temple Dependency':
@@ -2496,6 +2499,27 @@ LastAge.WEAPONS_ADDED = {
   'Debris':'Level=0 Category=R Damage=d10 Range=30'
 };
 LastAge.WEAPONS = Object.assign({}, SRD35.WEAPONS, LastAge.WEAPONS_ADDED);
+LastAge.FIGHTER_FEATURES =
+  'SkillPoints=4 ' +
+  'Skills=' +
+    'Climb,Craft,"Handle Animal",Intimidate,Jump,"Knowledge (Shadow)",' +
+    'Profession,Ride,"Speak Language",Swim ' +
+  'Selectables=' +
+    '"features.Improviser==0/features.Leader Of Men==0/features.Survivor==0 ? 4:Adapter",' +
+    '"features.Adapter==0/features.Leader Of Men==0/features.Survivor==0 ? 4:Improviser",' +
+    '"features.Adapter==0/features.Improviser==0/features.Survivor==0 ? 4:Leader Of Men",' +
+    '"features.Adapter==0/features.Improviser==0/features.Leader Of Men==0 ? 4:Survivor",' +
+    '"features.Improviser ? 4:Improved Grapple",' +
+    '"features.Improviser ? 4:Improved Unarmed Strike",' +
+    '"features.Improviser ? 4:Improvised Weapon",' +
+    '"features.Improviser ? 4:Stunning Fist",' +
+    '"features.Leader Of Men ? 4:Iron Will",' +
+    '"features.Leader Of Men ? 4:Leadership",' +
+    '"features.Leader Of Men ? 4:Skill Focus (Diplomacy)",' +
+    '"features.Leader Of Men ? 4:Skill Focus (Profession (Soldier))",' +
+    '"features.Survivor ? 4:Combat Expertise",' +
+    '"features.Survivor ? 4:Dodge",' +
+    '"features.Survivor ? 4:Endurance"';
 LastAge.CLASSES = {
   'Barbarian':SRD35.CLASSES['Barbarian'],
   'Charismatic Channeler':
@@ -2510,9 +2534,13 @@ LastAge.CLASSES = {
       '"Speak Language",Spellcraft,' +
       'Bluff,Diplomacy,"Gather Information",Intimidate,"Sense Motive" ' +
     'Selectables=' +
-      '"3:Greater Confidence","3:Greater Fury","3:Improved Confidence",' +
-      '"3:Improved Fury","3:Inspire Confidence","3:Inspire Fascination",' +
-      '"3:Inspire Fury","3:Mass Suggestion",3:Suggestion ' +
+      '"3:Inspire Confidence","3:Inspire Fascination","3:Inspire Fury",' +
+      '"features.Inspire Confidence ? 3:Improved Confidence",' +
+      '"features.Inspire Fascination ? 3:Suggestion",' +
+      '"features.Inspire Fury ? 3:Improved Fury",' +
+      '"features.Improved Confidence ? 3:Greater Confidence",' +
+      '"features.Suggestion ? 3:Mass Suggestion",' +
+      '"features.Improved Fury ? 3:Greater Fury" ' +
     'CasterLevelArcane="levels.Charismatic Channeler" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
@@ -2529,26 +2557,19 @@ LastAge.CLASSES = {
       '"2:Defender Abilities","2:Defender Stunning Fist",' +
       '"3:Improved Grapple","4:Precise Strike" ' +
     'Selectables=' +
-       '2:Counterattack,"2:Cover Ally","2:Defensive Mastery",' +
-       '"2:Devastating Strike","2:Dodge Training","2:Flurry Attack",' +
-       '"2:Furious Grapple","2:Grappling Training","2:Incredible Resilience",' +
-       '"2:Incredible Speed","2:Offensive Training","2:One With The Weapon",' +
-       '"2:Rapid Strike","2:Retaliatory Strike","2:Speed Training",' +
-       '"2:Strike And Hold","2:Weapon Trap"',
-  'Fighter':
-    'HitDie=d10 Attack=1 SkillPoints=2 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
-    'Skills=' +
-      'Climb,Craft,"Handle Animal",Intimidate,Jump,"Knowledge (Shadow)",' +
-      'Profession,Ride,"Speak Language",Swim ' +
-    'Features=' +
-      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency (Tower)",' +
-      '"1:Weapon Proficiency (Martial)" ' +
-    'Selectables=' +
-      '4:Adapter,4:Improviser,"4:Leader Of Men",4:Survivor,' +
-      '"4:Improved Grapple","4:Improved Unarmed Strike",' +
-      '"4:Improvised Weapon","4:Stunning Fist","4:Iron Will",4:Leadership,' +
-      '"4:Skill Focus (Diplomacy)","4:Skill Focus (Profession (Soldier))",' +
-      '"4:Combat Expertise",4:Dodge,4:Endurance',
+      '"2:Defensive Mastery","2:Dodge Training","2:Flurry Attack",' +
+      '"2:Grappling Training","2:Offensive Training","2:Speed Training",' +
+      '"features.Dodge Training ? 2:Cover Ally",' +
+      '"features.Offensive Training ? 2:One With The Weapon",' +
+      '"features.Speed Training ? 2:Rapid Strike",' +
+      '"features.Grappling Training ? 2:Strike And Hold",' +
+      '"features.Dodge Training/features.Offensive Training ? 2:Counterattack",' +
+      '"features.Grappling Training/features.Offensive Training ? 2:Devastating Strike",' +
+      '"features.Grappling Training/features.Speed Training ? 2:Furious Grapple",' +
+      '"features.Dodge Training/features.Speed Training ? 2:Retaliatory Strike",' +
+      '"features.Dodge Training/features.Grappling Training ? 2:Weapon Trap",' +
+      '"6:Incredible Resilience","6:Incredible Speed"',
+  'Fighter':SRD35.CLASSES['Fighter'] + ' ' + LastAge.FIGHTER_FEATURES,
   'Hermetic Channeler':
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
@@ -2572,7 +2593,7 @@ LastAge.CLASSES = {
       '"Knowledge (Arcana)","Knowledge (Shadow)","Knowledge (Spirits)",' +
       'Profession,"Speak Language",Spellcraft ' +
     'Features=' +
-      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency (Heavy)",' +
+      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency",' +
       '"1:Weapon Proficiency (Simple)",' +
       '"1:Spontaneous Legate Spell","1:Temple Dependency","1:Turn Undead",' +
       '"3:Astirax Companion" ' +
@@ -2615,7 +2636,7 @@ LastAge.CLASSES = {
       '"3:Mastery Of Spirits","3:Mastery Of The Unnatural",' +
       '"features.Mastery Of Nature || features.Mastery Of Spirits || features.Mastery Of Nature ? 3:Powerful Effect",' +
       '"features.Mastery Of Nature || features.Mastery Of Spirits || features.Mastery Of Nature ? 3:Precise Effect",' +
-      '"features.Mastery Of Nature || features.Mastery Of Spirits || features.Mastery Of Nature ? 3:Specific Effect",' +
+      '"features.Precise Effect ? 3:Specific Effect",' +
       '"features.Mastery Of Nature || features.Mastery Of Spirits || features.Mastery Of Nature ? 3:Universal Effect" ' +
     'CasterLevelArcane="levels.Spiritual Channeler" ' +
     'SpellAbility=wisdom ' +
@@ -2628,18 +2649,28 @@ LastAge.CLASSES = {
       '"Knowledge (Geography)","Knowledge (Nature)",Listen,"Move Silently",' +
       'Profession,Ride,Search,"Speak Language",Spot,Survival,Swim,"Use Rope" ' +
     'Features=' +
-      '"1:Armor Proficiency (Medium)","1:Shield Proficiency (Heavy)",' +
+      '"1:Armor Proficiency (Medium)","1:Shield Proficiency",' +
       '"1:Weapon Proficiency (Martial)",' +
       '1:Track,"3:Danger Sense","3:Initiative Bonus","4:Hunter\'s Strike" ' +
     'Selectables=' +
-      '1:Alertness,"1:Animal Companion",1:Camouflage,"1:Danger Sense",' +
-      '1:Evasion,"1:Hated Foe","1:Hide In Plain Sight",' +
-      '"1:Hunted By The Shadow","1:Improved Evasion","1:Improved Initiative",' +
-      '"1:Improved Woodland Stride","1:Initiative Bonus",' +
-      '"1:Instinctive Response","1:Master Hunter","1:Overland Stride",' +
-      '"1:Practiced Skills","1:Quick Stride","1:Sense Dark Magic",' +
-      '"1:Slippery Mind","1:Trackless Step","1:True Aim","1:Wild Empathy",' +
-      '"1:Wilderness Trapfinding","1:Woodland Stride",1:Woodslore'
+      '1:Alertness,"1:Improved Initiative","1:Master Hunter",' +
+      '"1:Practiced Skill","1:Quick Stride","1:Wild Empathy",' +
+      '"1:Wilderness Trapfinding","1:Woodland Stride",' +
+      '"features.Wild Empathy ? 1:Animal Companion",' +
+      '"features.Master Hunter ? 1:Hated Foe",' +
+      '"features.Improved Initiative ? 1:Instinctive Response",' +
+      '"features.Quick Stride ? 1:Overland Stride",' +
+      '"features.Master Hunter ? 1:Sense Dark Magic",' +
+      '"features.Woodland Stride ? 1:Trackless Step",' +
+      '"features.Wilderness Trapfinding ? 1:Woodslore",' +
+      '"features.Practiced Skill/features.Trackless Step/skills.Hide ? 1:Camouflage",' +
+      '"features.Instinctive Response/features.Quick Stride ? 1:Evasion",' +
+      '"features.Improved Initiative/features.Sense Dark Magic ? 1:Hunted By The Shadow",' +
+      '"features.Overland Stride/features.Woodland Stride ? 1:Improved Woodland Stride",' +
+      '"features.Hated Foe/features.Practiced Skill/skills.Spot ? 1:True Aim",'+
+      '"features.Camouflage ? 1:Hide In Plain Sight",' +
+      '"features.Evasion ? 1:Improved Evasion",' +
+      '"features.Hunted By The Shadow ? 1:Slippery Mind"'
 };
 
 /* Defines rules related to character abilities. */
@@ -3016,7 +3047,9 @@ LastAge.classRulesExtra = function(rules, name) {
   if(name.endsWith(' Channeler')) {
 
     rules.defineRule('channelerLevels', classLevel, '+=', null);
-    rules.defineRule('familiarMasterLevel', 'channelerLevels', '^=', null);
+    rules.defineRule('familiarMasterLevel',
+      'channelerLevels', '^=', 'source >= 2 ? source : null'
+    );
     rules.defineRule('featCount.' + name,
       classLevel, '=', 'source >= 4 ? Math.floor((source - 1) / 3) : null'
     );
@@ -3137,6 +3170,10 @@ LastAge.classRulesExtra = function(rules, name) {
       rules.defineRule('selectableFeatureCount.Spiritual Channeler',
         classLevel, '=', 'source < 3 ? null : Math.floor(source / 3)'
       );
+      rules.defineRule('skillNotes.lorebook',
+        'levels.Hermetic Channeler', '=', null,
+        'intelligenceModifier', '+', null
+      );
       rules.defineRule('turningLevel', 'levels.Spiritual Channeler', '=', null);
     }
 
@@ -3155,6 +3192,12 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('combatNotes.defenderStunningFist',
       classLevel, '=', '10 + Math.floor(source / 2)',
       'strengthModifier', '+', null
+    );
+    rules.defineRule('combatNotes.dodgeTraining',
+      'defenderFeatures.Dodge Training', '=', null
+    );
+    rules.defineRule('combatNotes.flurryAttack',
+      'defenderFeatures.Flurry Attack', '=', null
     );
     rules.defineRule('combatNotes.incredibleResilience',
       'defenderFeatures.Incredible Resilience', '=', '3 * source'
@@ -3183,6 +3226,9 @@ LastAge.classRulesExtra = function(rules, name) {
       'features.Small', '?', null,
       'defenderUnarmedDamageMedium', '=', 'source.replace(/6/, "4")'
     );
+    rules.defineRule('saveNotes.defensiveMastery',
+      'defenderFeatures.Defensive Mastery', '=', null
+    );
     rules.defineRule('selectableFeatureCount.Defender',
       classLevel, '=',
       'source < 2 ? null : (Math.floor((source + 1) / 3) + ' +
@@ -3196,7 +3242,8 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule
       ('featCount.Fighter', classLevel, '=', '1 + Math.floor(source / 2)');
     rules.defineRule('selectableFeatureCount.Fighter',
-      classLevel, '=', 'source>=4 ? 1 + Math.floor((source+2)/6) : null'
+      classLevel, '=', 'source >= 4 ? 1 + Math.floor((source+2)/6) : null',
+      'features.Adapter', 'v', '1'
     );
     rules.defineRule('skillNotes.adapter',
       classLevel, '=',
@@ -3259,8 +3306,7 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '=', 'Math.floor(source / 4)'
     );
     rules.defineRule('combatNotes.initiativeBonus',
-      classLevel, '+=', 'source >= 3 ? 1 : null',
-      'wildlanderFeatures.Initiative Bonus', '+', null
+      classLevel, '+=', 'source < 3 ? null : Math.floor(source / 3)'
     );
     rules.defineRule('featureNotes.animalCompanion',
       'wildlanderFeatures.Animal Companion', '+=', null
@@ -3271,8 +3317,7 @@ LastAge.classRulesExtra = function(rules, name) {
       '(source < 6 ? 0 : Math.floor((source - 3) / 3))'
     );
     rules.defineRule('skillNotes.dangerSense',
-      classLevel, '+=', 'source >= 3 ? 1 : null',
-      'wildlanderFeatures.Danger Sense', '+', null
+      classLevel, '+=', 'source < 3 ? null : Math.floor(source / 3)'
     );
     if(LastAge.basePlugin == window.Pathfinder) {
       // Computation as per PRD Ranger
@@ -4362,7 +4407,7 @@ LastAge.ruleNotes = function() {
     '    distinguish from the Fighter feature); Insurgent Spy "Conceal\n' +
     '    Magic" (renamed "Conceal Aura" to distinguish from the Bane Of\n' +
     '    Legates feature); Wildlander "Skill Mastery" (renamed "Practiced\n' +
-    '    Skills" to distinguish from the Pureblood feature); Spellsoul\n' +
+    '    Skill" to distinguish from the Pureblood feature); Spellsoul\n' +
     '    "Resistance" (renamed "Improved Spell Resistance" to distinguish\n' +
     '    from other resistance features); Tactician "Coordinated Attack"\n' +
     '    (renamed "Joint Attack" to distinguish from the Wogren Rider\n' +
@@ -4402,12 +4447,9 @@ LastAge.ruleNotes = function() {
     '    Select the "Ride-By Attack", "Spirited Charge", and "Trample"\n' +
     '    selectable features otherwise.\n' +
     '  </li><li>\n' +
-    '    The selectable feature list includes "Alertness" and "Improved\n' +
-    '    Initiative" directly, instead of the Wildlander "Rapid Response"\n' +
-    '    trait that allows a choice between these two feats.  Similarly,\n' +
-    '    the selectable feature list separates "Initiative Bonus" from\n' +
-    '    "Danger Sense", since "Danger Sense" requires choosing between\n' +
-    '    initiative and listen/spot bonuses after level 1.\n' +
+    '    The selectable feature list for Wildlanders includes "Alertness"\n' +
+    '    and "Improved Initiative" directly, instead of the "Rapid Response"\n'+
+    '    trait that allows a choice between these two feats.\n' +
     '  </li><li>\n' +
     '    Quilvyn removes the racial requirement (Elf or Halfling) from the\n' +
     '    Innate Magic feat. Since these races automatically receive this\n' +
@@ -4435,6 +4477,9 @@ LastAge.ruleNotes = function() {
     '    Knowledge (Nature) and Survival class skills and gives a +2 bonus\n' +
     '    in those skills, rather than applying the bonus only if the\n' +
     '    character already has those as class skills.\n' +
+    '  </li><li>\n' +
+    '    Quilvyn gives Wildlander characters boosts in both initiative and\n' +
+    '    skills at levels 6, 9, 12, etc. instead of a choice of the two.\n' +
     '  </li>\n' +
     '</ul>\n' +
     '</p>';
