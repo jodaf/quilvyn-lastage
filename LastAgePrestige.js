@@ -474,7 +474,7 @@ LastAgePrestige.classRulesExtra = function(rules, name) {
 
   if(name == 'Ancestral Bladebearer') {
 
-    rules.defineRule('casterLevels.Ancesral Bladebearer',
+    rules.defineRule('casterLevels.Ancestral Bladebearer',
       'levels.Ancestral Bladebearer', '?', 'source >= 3',
       'level', '=', null
     );

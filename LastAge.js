@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.1.4';
+var LASTAGE_VERSION = '2.2.1.5';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -231,7 +231,7 @@ LastAge.FEATS_ADDED = {
   'Magecraft (Spiritual)':'Type=Channeling',
   'Magic Hardened':'Type=General Require="race =~ \'Dwarf|Dworg|Orc\'"',
   'Natural Healer':'Type=General',
-  'Orc Slayer':'Type=FighterGeneral',
+  'Orc Slayer':'Type=Fighter,General',
   'Quickened Donning':'Type=Fighter',
   'Ritual Magic':
     'Type=Channeling ' +
@@ -708,7 +708,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="+4 AC, dbl critical range w/in 30\' vs. giants"',
   'Greater Masterwork':
     'Section=skill ' +
-    'Note="Weapon +2 attack and +1 damage, armor and shield -1 skill penalty, +1 max dex, and -5% acane spell failure, armor don or remove in half time, light shield use with ranged weapon, other +4 DC"',
+    'Note="Weapon +2 attack and +1 damage, armor and shield -1 skill penalty, +1 max dex, and -5% arcane spell failure, armor don or remove in half time, light shield use with ranged weapon, other +4 DC"',
   'Greater Spell Focus (Greater Conjuration)':
     'Section=magic Note="+1 Spell DC (Greater Conjuration)"',
   'Greater Spell Focus (Greater Evocation)':
@@ -973,7 +973,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="+1 attack when fighting alongside 4+ Dorns"',
   'Cold Fortitude':'Section=save Note="+5 cold, half nonlethal damage"',
   // Deep Lungs as heroic path
-  'Dextrous Hands':'Section=skill Note="+2 Craft (non-metal or wood)"',
+  'Dexterous Hands':'Section=skill Note="+2 Craft (non-metal or wood)"',
   'Dodge Orcs':'Section=combat Note="+1 AC vs. orc"',
   'Dorn Ability Adjustment':
     'Section=ability Note="+2 Strength/-2 Intelligence"',
@@ -1046,7 +1046,7 @@ LastAge.FEATURES_ADDED = {
      'Note="+2 Gather Information (in cities), untrained Knowledge use regarding cities"',
   'Favored Region (Veradeen)':
      'Section=skill ' +
-     'Note="+2 Survival (within Veradeeen)/+2 Knowledge (Nature) (within Veradeeen)"',
+     'Note="+2 Survival (within Veradeen)/+2 Knowledge (Nature) (within Veradeen)"',
   'Feral Elf':
     'Section=skill Note="+2 Balance (trees)/+2 Climb (trees)/+2 Listen/+2 Search/+2 Spot/+2 Survival (within Erethor)/+2 Knowledge (Nature) (within Erethor)"',
   'Fierce':'Section=combat Note="+1 attack w/two-handed weapons"',
@@ -1488,7 +1488,7 @@ LastAge.RACES = {
       '"Halfling Ability Adjustment",' +
       '"Weapon Familiarity (Halfling Lance)",' +
       '"Favored Region (Central Erenland)",' +
-      '"Alert Senses","Dextrous Hands",Fortunate,"Gifted Healer",Graceful,' +
+      '"Alert Senses","Dexterous Hands",Fortunate,"Gifted Healer",Graceful,' +
       '"Innate Magic","Low-Light Vision",Slow,Small,"Resist Fear",' +
       '"features.Stout ? 1:Endurance","features.Stout ? 1:Toughness",' +
       '"features.Studious ? 1:Magecraft (Hermetic)" ' +
@@ -1805,7 +1805,7 @@ LastAge.SPELLS_ADDED = {
   'Fey Hearth':
     'School=Abjuration ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RS\' Creatures in 30\' radius of target fire +2 Will saves, heal 1.5xlevel HP for as long as fire lasts"',
+    'Description="R$RS\' Creatures in 30\' radius of target fire +2 Will saves, heal 1.5 x level HP for as long as fire lasts"',
   'Greater Questing Bird':
     'School=Conjuration ' +
     'Level=Ch6 ' +
@@ -3396,7 +3396,7 @@ LastAge.featRules = function(rules, name, requires, implies, types) {
 
 /*
  * Defines in #rules# the rules associated with feat #name# that cannot be
- * derived directly from the abilties passed to featRules.
+ * derived directly from the abilities passed to featRules.
  */
 LastAge.featRulesExtra = function(rules, name) {
 
@@ -4390,9 +4390,9 @@ LastAge.ruleNotes = function() {
     '    Racial origin choices (e.g., Plains/Urban Sarcosan, Clan/Kurgun\n' +
     '    Dwarf) are absorbed into the list of races.\n' +
     '  </li><li>\n' +
-    '    Quilvyn lists Greater Conjuration and Greater Evocation as separate\n' +
+    '    Quilvyn lists Greater Conjuration and Greater Evocation as separate\n'+
     '    schools and uses Conjuration and Evocation to represent the\n' +
-    '    lesser variety.  This simplfies the spell list and treats legate\n' +
+    '    lesser variety.  This simplifies the spell list and treats legate\n' +
     '    and druid spells from these schools as the lesser variety.  It\n' +
     '    also makes the Greater Spellcasting feat moot; use Spellcasting\n' +
     '    (Greater Conjuration) or Spellcasting (Greater Evocation) instead.\n' +
