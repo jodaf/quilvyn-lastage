@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.1.5';
+var LASTAGE_VERSION = '2.2.1.6';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -77,10 +77,14 @@ function LastAge() {
     {}, LastAge.basePlugin.ANIMAL_COMPANIONS, LastAge.ANIMAL_COMPANIONS_ADDED
   );
   LastAge.ARMORS = Object.assign({}, LastAge.basePlugin.ARMORS);
-  LastAge.CLASSES['Barbarian'] = LastAge.basePlugin.CLASSES['Barbarian'];
+  LastAge.CLASSES['Barbarian'] =
+    LastAge.basePlugin.CLASSES['Barbarian'] + ' ' +
+    LastAge.CLASS_FEATURES['Barbarian'];
   LastAge.CLASSES['Fighter'] =
-    LastAge.basePlugin.CLASSES['Fighter'] + ' ' + LastAge.FIGHTER_FEATURES;
-  LastAge.CLASSES['Rogue'] = LastAge.basePlugin.CLASSES['Rogue'];
+    LastAge.basePlugin.CLASSES['Fighter'] + ' ' +
+    LastAge.CLASS_FEATURES['Fighter'];
+  LastAge.CLASSES['Rogue'] =
+    LastAge.basePlugin.CLASSES['Rogue'] + ' ' + LastAge.CLASS_FEATURES['Rogue'];
   LastAge.FAMILIARS = Object.assign({}, LastAge.basePlugin.FAMILIARS);
   LastAge.FEATS =
     Object.assign({}, LastAge.basePlugin.FEATS, LastAge.FEATS_ADDED);
@@ -229,7 +233,7 @@ LastAge.FEATS_ADDED = {
   'Magecraft (Charismatic)':'Type=Channeling',
   'Magecraft (Hermetic)':'Type=Channeling',
   'Magecraft (Spiritual)':'Type=Channeling',
-  'Magic Hardened':'Type=General Require="race =~ \'Dwarf|Dworg|Orc\'"',
+  'Magic-Hardened':'Type=General Require="race =~ \'Dwarf|Dworg|Orc\'"',
   'Natural Healer':'Type=General',
   'Orc Slayer':'Type=Fighter,General',
   'Quickened Donning':'Type=Fighter',
@@ -284,7 +288,7 @@ LastAge.FEATS_ADDED = {
   // Legates w/War domain receive Weapon Focus (Longsword)
   'Weapon Focus (Longsword)':'Type=Fighter Imply="weapons.Longsword"',
   'Whispering Awareness':
-    'Type=General Require="wisdom >= 15","race =~ \'Elf\'"',
+    'Type=General Require="wisdom >= 15","race !~ \'Elf\'"',
 
   // Destiny & Shadow
   'Clear-Eyed':'Type=General Require="race == \'Erenlander\'"',
@@ -692,7 +696,8 @@ LastAge.FEATURES_ADDED = {
   'Devastating Mounted Assault':
     'Section=combat Note="Full attack after mount moves"',
   'Drive It Deep':
-    'Section=combat Note="Trade up to -%V attack for equal damage bonus"',
+    'Section=combat ' +
+    'Note="Trade up to -%V attack for equal damage bonus w/light or one-handed weapon"',
   'Dwarvencraft':'Section=feature Note="Know %V Dwarvencraft techniques"',
   'Extra Gift':
     'Section=feature Note="Use Mastery or Force Of Personality +4 times/dy"',
@@ -733,18 +738,19 @@ LastAge.FEATURES_ADDED = {
   'Innate Magic':'Section=magic Note="%V %1 spells as at-will innate ability"',
   'Knack For Charms':'Section=skill Note="+4 Craft for charm-making"',
   'Knife Thrower':
-    'Section=combat Note="+1 ranged attack and Quickdraw w/racial knife"',
+    'Section=combat ' +
+    'Note="R20\' +1 attack w/racial knife, draw as free action (move action if hidden)"',
   'Living Talisman':
     'Section=magic Note="Chosen spell costs 1 fewer spell energy to cast"',
   'Lucky':'Section=save Note="+1 from luck charms and spells"',
-  'Magic Hardened':'Section=save Note="+2 vs. spells"',
+  'Magic-Hardened':'Section=save Note="+2 vs. spells"',
   'Natural Healer':
     'Section=skill ' +
-    'Note="Successful Heal raises patient to 1 HP/triple normal healing rate"',
+    'Note="Successful Heal raises patient to 1 HP, triple normal healing rate"',
   'Orc Slayer':
     'Section=combat,skill ' +
-    'Note="+1 AC and damage vs. orcs and dworgs",' +
-         '"-4 Cha skills (orcs and dworgs)"',
+    'Note="+1 AC and melee damage vs. orcs and dworgs",' +
+         '"-4 Cha skills (orcs)"',
   'Pikeman':'Section=combat Note="Receive charge as move action"',
   'Plains Warfare':
     'Section=combat,save,skill ' +
@@ -761,8 +767,8 @@ LastAge.FEATURES_ADDED = {
   'Ritual Magic':'Section=magic Note="Learn and lead magic rituals"',
   'Sarcosan Pureblood':
     'Section=combat,skill ' +
-    'Note="+2 AC (horsed)",' +
-         '"Use Diplomacy w/horses, +2 Cha skills (horses and Sarcosans)"',
+    'Note="+2 AC (hoseback)",' +
+         '"+%{level+charismaModifier} Diplomacy (horses), +2 Cha skills (horses and Sarcosans)"',
   'Sense Nexus':'Section=magic Note="DC 15 Wis to sense nexus w/in 5 miles"',
   'Sense Power':
     'Section=magic Note="<i>Detect Magic</i> %V/dy, DC 13 Wis check w/in 20\'"',
@@ -810,7 +816,9 @@ LastAge.FEATURES_ADDED = {
     'Note="No item damage from cold, light/medium/heavy armor gives cold resistance 2/3/4"',
   'Tempering (Quick-Cooled)':
     'Section=skill Note="Increase item hardness 40%, decrease item HP 2x"',
-  'Thick Skull':'Section=save Note="DC 10 + damage save to stay at 1 HP"',
+  'Thick Skull':
+    'Section=save ' +
+    'Note="DC 10 + damage save to retain 1 HP after hit would result in 0 or negative"',
   'Touched By Magic':
     'Section=magic,save Note="+2 Spell Energy","-2 vs. spells"',
   'Trapsmith':
@@ -822,7 +830,7 @@ LastAge.FEATURES_ADDED = {
     'Section=skill ' +
     'Note="Use Gather Information to counter investigation of self, allies"',
   'Warrior Of Shadow':
-    'Section=combat Note="Substitute %V rd of +%1 damage for Turn Undead use"',
+    'Section=combat Note="Trade Turn Undead use for %V rd of +%1 damage"',
   'Well-Aimed Strike':
     'Section=combat Note="Canny Strike and Clever Fighting apply to all foes"',
   'Whirlwind Charge':
@@ -1688,6 +1696,8 @@ LastAge.SKILLS_ADDED = {
     'Ability=intelligence Untrained=n Synergy="Knowledge (Nature)"',
   // Profession (Soldier) available to Leader Of Men Fighters
   'Profession (Soldier)':'Ability=wisdom Untrained=n',
+  // Herbalist feat requires Profession (Herbalist)
+  'Profession (Herbalist)':'Ability=wisdom Untrained=n',
   // Gnomes are +1 Profession (Sailor)
   'Profession (Sailor)':'Ability=wisdom Untrained=n'
 };
@@ -2499,29 +2509,44 @@ LastAge.WEAPONS_ADDED = {
   'Debris':'Level=0 Category=R Damage=d10 Range=30'
 };
 LastAge.WEAPONS = Object.assign({}, SRD35.WEAPONS, LastAge.WEAPONS_ADDED);
-LastAge.FIGHTER_FEATURES =
-  'SkillPoints=4 ' +
-  'Skills=' +
-    'Climb,Craft,"Handle Animal",Intimidate,Jump,"Knowledge (Shadow)",' +
-    'Profession,Ride,"Speak Language",Swim ' +
-  'Selectables=' +
-    '"features.Improviser==0/features.Leader Of Men==0/features.Survivor==0 ? 4:Adapter",' +
-    '"features.Adapter==0/features.Leader Of Men==0/features.Survivor==0 ? 4:Improviser",' +
-    '"features.Adapter==0/features.Improviser==0/features.Survivor==0 ? 4:Leader Of Men",' +
-    '"features.Adapter==0/features.Improviser==0/features.Leader Of Men==0 ? 4:Survivor",' +
-    '"features.Improviser ? 4:Improved Grapple",' +
-    '"features.Improviser ? 4:Improved Unarmed Strike",' +
-    '"features.Improviser ? 4:Improvised Weapon",' +
-    '"features.Improviser ? 4:Stunning Fist",' +
-    '"features.Leader Of Men ? 4:Iron Will",' +
-    '"features.Leader Of Men ? 4:Leadership",' +
-    '"features.Leader Of Men ? 4:Skill Focus (Diplomacy)",' +
-    '"features.Leader Of Men ? 4:Skill Focus (Profession (Soldier))",' +
-    '"features.Survivor ? 4:Combat Expertise",' +
-    '"features.Survivor ? 4:Dodge",' +
-    '"features.Survivor ? 4:Endurance"';
+// Overrides of SRD3.5 class features
+LastAge.CLASS_FEATURES = {
+  'Barbarian':
+    'Skills=' +
+      'Climb,Craft,"Handle Animal",Intimidate,Jump,Listen,Profession,Ride,' +
+      '"Speak Language",Survival,Swim',
+  'Fighter':
+    'SkillPoints=4 ' +
+    'Skills=' +
+      'Climb,Craft,"Handle Animal",Intimidate,Jump,"Knowledge (Shadow)",' +
+      'Profession,Ride,"Speak Language",Swim ' +
+    'Selectables=' +
+      '"features.Improviser==0/features.Leader Of Men==0/features.Survivor==0 ? 4:Adapter",' +
+      '"features.Adapter==0/features.Leader Of Men==0/features.Survivor==0 ? 4:Improviser",' +
+      '"features.Adapter==0/features.Improviser==0/features.Survivor==0 ? 4:Leader Of Men",' +
+      '"features.Adapter==0/features.Improviser==0/features.Leader Of Men==0 ? 4:Survivor",' +
+      '"features.Improviser ? 4:Improved Grapple",' +
+      '"features.Improviser ? 4:Improved Unarmed Strike",' +
+      '"features.Improviser ? 4:Improvised Weapon",' +
+      '"features.Improviser ? 4:Stunning Fist",' +
+      '"features.Leader Of Men ? 4:Iron Will",' +
+      '"features.Leader Of Men ? 4:Leadership",' +
+      '"features.Leader Of Men ? 4:Skill Focus (Diplomacy)",' +
+      '"features.Leader Of Men ? 4:Skill Focus (Profession (Soldier))",' +
+      '"features.Survivor ? 4:Combat Expertise",' +
+      '"features.Survivor ? 4:Dodge",' +
+      '"features.Survivor ? 4:Endurance"',
+  'Rogue':
+    'Skills=' +
+      'Appraise,Balance,Bluff,Climb,Craft,"Decipher Script",Diplomacy,' +
+      '"Disable Device",Disguise,"Escape Artist",Forgery,"Gather Information",'+
+      'Hide,Intimidate,Jump,"Knowledge (Shadow)",Listen,"Move Silently",' +
+      '"Open Lock",Perform,Profession,Search,"Sense Motive","Sleight Of Hand",'+
+      '"Speak Language",Spot,Swim,Tumble,"Use Magic Device","Use Rope"'
+};
 LastAge.CLASSES = {
-  'Barbarian':SRD35.CLASSES['Barbarian'],
+  'Barbarian':
+    SRD35.CLASSES['Barbarian'] + ' ' + LastAge.CLASS_FEATURES['Barbarian'],
   'Charismatic Channeler':
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Features=' +
@@ -2569,7 +2594,7 @@ LastAge.CLASSES = {
       '"features.Dodge Training/features.Speed Training ? 2:Retaliatory Strike",' +
       '"features.Dodge Training/features.Grappling Training ? 2:Weapon Trap",' +
       '"6:Incredible Resilience","6:Incredible Speed"',
-  'Fighter':SRD35.CLASSES['Fighter'] + ' ' + LastAge.FIGHTER_FEATURES,
+  'Fighter':SRD35.CLASSES['Fighter'] + ' ' + LastAge.CLASS_FEATURES['Fighter'],
   'Hermetic Channeler':
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
@@ -2621,7 +2646,7 @@ LastAge.CLASSES = {
       'Domain7:13=1,' +
       'Domain8:15=1,' +
       'Domain9:17=1',
-  'Rogue':SRD35.CLASSES['Rogue'],
+  'Rogue':SRD35.CLASSES['Rogue'] + ' ' + LastAge.CLASS_FEATURES['Rogue'],
   'Spiritual Channeler':
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
