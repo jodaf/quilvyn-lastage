@@ -680,7 +680,7 @@ LastAge.FEATURES_ADDED = {
   'Caste Status':'Section=feature Note="Benefits of caste level"',
   'Clear-Eyed':
     'Section=feature,skill ' +
-    'Note="Half penalty for distance sight, x2 normal vision in dim light on plains",' +
+    'Note="Half distance penalty for approaching creatures, x2 normal vision in dim light on plains",' +
          '"Spot is a class skill"',
   'Clever Fighting':'Section=combat Note="+%V finesse weapon damage"',
   'Clouding':'Section=skill Note="Item half weight, thrown +10\' range"',
@@ -694,7 +694,7 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="Reduces spell energy cost of chosen spell by 1"',
   'Defiant':
     'Section=save ' +
-    'Note="Delay effect of failed Fort, Will save for 1 rd, dbl fail effect"',
+    'Note="Trade delay effect of failed Fort or Will save 1 rd for dbl effect"',
   'Devastating Mounted Assault':
     'Section=combat Note="Full attack after mount moves"',
   'Drive It Deep':
@@ -705,7 +705,7 @@ LastAge.FEATURES_ADDED = {
     'Section=feature Note="Use Mastery or Force Of Personality +4 times/dy"',
   'Fanatic':
     'Section=combat ' +
-    'Note="+1 attack, divine spell benefit within 60\' of Izrador servant"',
+    'Note="+1 attack, divine spell benefit when within 60\' of Izrador holy servant"',
   'Flexible Recovery':
     'Section=magic Note="Recover 1 spell energy per hr rest"',
   'Friendly Agent':
@@ -720,7 +720,11 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="+1 Spell DC (Greater Conjuration)"',
   'Greater Spell Focus (Greater Evocation)':
     'Section=magic Note="+1 Spell DC (Greater Evocation)"',
-  'Hardy':'Section=feature Note="Functional on half food, sleep"',
+  'Hardy':
+    'Section=feature,magic ' +
+    'Note=' +
+      '"Functional on half food, sleep",' +
+      '"Regain half energy after 4 hrs rest"',
   'Herbalist':'Section=magic Note="Create herbal concoctions"',
   'Huntsman':
     'Section=combat ' +
@@ -806,7 +810,7 @@ LastAge.FEATURES_ADDED = {
   'Stalwart':
     'Section=save Note="Delay negative HP for 1 rd, dbl heal required"',
   'Stealthy Rider':
-    'Section=companion Note="Mount use rider Hide, Move Silently"',
+    'Section=companion Note="Mount use rider Hide and Move Silently ranks"',
   'Subtle Caster':
     'Section=skill ' +
     'Note="+2 Bluff or Sleight Of Hand to disguise spell casting"',
