@@ -218,7 +218,9 @@ LastAge.FEATS_ADDED = {
     'Require=' +
       '"alignment =~ \'Good\'",' +
       '"race =~ \'Gnome|Dorn|Erenlander|Sarcosan\'"',
-  'Giant Fighter':'Type=Fighter Require="Sum \'features.Weapon Focus\' >= 1"',
+  'Giant-Fighter':
+    'Type=Fighter ' +
+    'Require="features.Dodge","Sum \'features.Weapon Focus\' >= 1"',
   'Greater Spell Focus (Greater Conjuration)':
     'Type=General Require="features.Spell Focus (Greater Conjuration)"',
   'Greater Spell Focus (Greater Evocation)':
@@ -709,7 +711,7 @@ LastAge.FEATURES_ADDED = {
   'Friendly Agent':
     'Section=skill ' +
     'Note="+4 Diplomacy (convince allegiance)/+4 Sense Motive (determine allegiance)"',
-  'Giant Fighter':
+  'Giant-Fighter':
     'Section=combat Note="+4 AC, dbl critical range w/in 30\' vs. giants"',
   'Greater Masterwork':
     'Section=skill ' +
