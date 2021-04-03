@@ -762,7 +762,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat,save,skill ' +
     'Note="+1 AC when mounted on plains",' +
          '"+1 Reflex when mounted on plains",' +
-         '"+2 Spot vs. surprise when mounted on plains"',
+         '"+2 Listen and Spot vs. surprise when mounted on plains"',
   'Power Reservoir':
     'Section=magic Note="Store +%V siphoned spell energy points"',
   'Powerful Throw':
@@ -771,7 +771,7 @@ LastAge.FEATURES_ADDED = {
   'Quickened Donning':'Section=feature Note="No penalty for hastened donning"',
   'Reinforcing':'Section=skill Note="Item +5 HP; weapon -1 attack and range"',
   'Resigned To Death':
-     'Section=save Note="+4 vs. fear, fail 1 step less intense"',
+     'Section=save Note="+4 vs. fear, 1 step less intense on failure"',
   'Ritual Magic':'Section=magic Note="Learn and lead magic rituals"',
   'Sarcosan Pureblood':
     'Section=combat,skill ' +
