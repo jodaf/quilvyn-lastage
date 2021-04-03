@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.1.6';
+var LASTAGE_VERSION = '2.2.1.7';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -674,7 +674,7 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="Dbl spell energy for first two Con points lost"',
   'Born Of Duty':
     'Section=magic ' +
-    'Note="R100\' Cry shakes undead (DC %V Will neg), Dorn +2 vs fear, enchant 1/dy"',
+    'Note="R100\' Cry leaves undead shaken (DC %V Will neg), Dorn +2 vs fear and enchantment 1/dy"',
   'Born Of The Grave':'Section=magic Note="R15\' <i>Deathwatch</i> at will"',
   'Canny Strike':'Section=combat Note="+%Vd4 finesse weapon damage"',
   'Caste Status':'Section=feature Note="Benefits of caste level"',
@@ -707,7 +707,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="+1 attack, divine spell benefit when within 60\' of Izrador holy servant"',
   'Flexible Recovery':
-    'Section=magic Note="Recover 1 spell energy per hr rest"',
+    'Section=magic Note="Recover 1 spell energy per hr rest, full after 6 hr"',
   'Friendly Agent':
     'Section=skill ' +
     'Note="+4 Diplomacy (convince allegiance)/+4 Sense Motive (determine allegiance)"',
@@ -715,7 +715,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="+4 AC, dbl critical range w/in 30\' vs. giants"',
   'Greater Masterwork':
     'Section=skill ' +
-    'Note="Weapon +2 attack and +1 damage, armor and shield -1 skill penalty, +1 max dex, and -5% arcane spell failure, armor don or remove in half time, light shield use with ranged weapon, other +4 DC"',
+    'Note="Weapon +2 attack and +1 damage; armor or shield -1 skill penalty, +1 max dex, -5% arcane spell failure, don or remove in half time, light shield use with ranged weapon; other items +4 DC"',
   'Greater Spell Focus (Greater Conjuration)':
     'Section=magic Note="+1 Spell DC (Greater Conjuration)"',
   'Greater Spell Focus (Greater Evocation)':
@@ -734,7 +734,7 @@ LastAge.FEATURES_ADDED = {
     'Note="DC 30 Concentration to recover %V spell energy per hr meditating"',
   'Improved Masterwork':
     'Section=skill ' +
-    'Note="Weapon +1 attack and damage, armor and shield -1 skill penalty and +1 max dex, other +2 DC"',
+    'Note="Weapon +1 attack and damage; armor or shield -1 skill penalty and +1 max dex; other +2 DC"',
   'Improvised Weapon':
     'Section=combat ' +
     'Note="No penalty for improvised weapon, -2 for non-proficient weapon"',
@@ -765,9 +765,11 @@ LastAge.FEATURES_ADDED = {
          '"+2 Spot vs. surprise when mounted on plains"',
   'Power Reservoir':
     'Section=magic Note="Store +%V siphoned spell energy points"',
-  'Powerful Throw':'Section=combat Note="+10 range, use Str bonus for attack"',
+  'Powerful Throw':
+    'Section=combat ' +
+    'Note="Attacks w/focused weapon +10 range and use Str instead of Dex"',
   'Quickened Donning':'Section=feature Note="No penalty for hastened donning"',
-  'Reinforcing':'Section=skill Note="Item +5 HP, weapon -1 attack and range"',
+  'Reinforcing':'Section=skill Note="Item +5 HP; weapon -1 attack and range"',
   'Resigned To Death':
      'Section=save Note="+4 vs. fear, fail 1 step less intense"',
   'Ritual Magic':'Section=magic Note="Learn and lead magic rituals"',
@@ -780,7 +782,7 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="<i>Detect Magic</i> %V/dy, DC 13 Wis check w/in 20\'"',
   'Shield Mate':
     'Section=combat ' +
-    'Note="Allies +2 AC when self fighting defensively or -2 Combat Expertise"',
+    'Note="Adjacent allies +2 AC when self fighting defensively or using -2 Combat Expertise"',
   'Slow Learner':'Section=feature Note="Replace later with another feat"',
   'Spell Focus (Greater Conjuration)':
     'Section=magic Note="+1 Spell DC (Greater Conjuration)"',
@@ -813,7 +815,7 @@ LastAge.FEATURES_ADDED = {
     'Section=companion Note="Mount use rider Hide and Move Silently ranks"',
   'Subtle Caster':
     'Section=skill ' +
-    'Note="+2 Bluff or Sleight Of Hand to disguise spell casting"',
+    'Note="+2 Bluff (disguise casting)/+2 Sleight Of Hand (disguise casting)"',
   'Tempering (Fireforged)':
     'Section=skill ' +
     'Note="No item damage from fire, light/medium/heavy armor gives fire resistance 2/3/4"',
