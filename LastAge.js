@@ -521,6 +521,8 @@ LastAge.FEATURES_ADDED = {
   'Improved Retributive Rage':
     'Section=combat ' +
     'Note="+%V damage next rd after suffering ${level*2} HP damage"',
+  'Improved Spell Penetration':
+    'Section=magic Note="+%V checks to overcome spell resistance"',
   'Improved Spellcasting':
     'Section=magic ' +
     'Note="Reduce energy cost of spells from %V chosen schools by 1"',
@@ -629,8 +631,6 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="Reduced Hide penalty for using ranged weapons"',
   'Spell Choice':
     'Section=magic Note="Use chosen %V spell as spell-like ability 1/dy"',
-  'Spell Penetration':
-    'Section=magic Note="+%V checks to overcome spell resistance"',
   'Spontaneous Spell':
     'Section=magic Note="Use any %V spell as spell-like ability 1/dy"',
   'Stonecunning':
@@ -1239,7 +1239,7 @@ LastAge.PATHS = {
     'Features=' +
       '"1:Bolster Spell","2:Bonus Spells","3:Bonus Spell Energy",' +
       '"4:Quickened Counterspelling","6:Improved Spellcasting",' +
-      '"9:Spell Penetration","19:Frightful Presence"',
+      '"9:Improved Spell Penetration","19:Frightful Presence"',
   'Earthbonded':
     'Group=Earthbonded ' +
     'Level=level ' +
@@ -3730,7 +3730,7 @@ LastAge.pathRulesExtra = function(rules, name) {
       pathLevel, '+=', 'Math.floor(source / 6)'
     );
     rules.defineRule('spellEnergy', 'magicNotes.bonusSpellEnergy', '+', null);
-    rules.defineRule('magicNotes.spellPenetration',
+    rules.defineRule('magicNotes.improvedSpellPenetration',
       pathLevel, '+=', 'Math.floor((source - 5) / 4)'
     );
     rules.defineRule('spellSlotsBonus', 'magicNotes.bonusSpells', '+', null);
