@@ -476,6 +476,7 @@ LastAge.FEATURES_ADDED = {
   'Coordinated Initiative':
     'Section=combat Note="R30\' Allies use self initiative %V/dy"',
   'Damage Reduction':'Section=combat Note="Subtract %V from damage taken"',
+  'Death Ward':'Section=save Note="Self immune death spells, death effects, energy drain, and negative energy effects"',
   'Deep Lungs':'Section=skill Note="Hold breath for %V rd"',
   'Detect Evil':'Section=magic Note="<i>Detect Evil</i> at will"',
   'Detect Outsider':'Section=magic Note="<i>Detect Outsider</i> at will"',
@@ -1308,11 +1309,10 @@ LastAge.PATHS = {
     'Features=' +
       '"1:Inspire Valor","2:Detect Evil","3:Righteous Fury","4:Smite Evil",' +
       '"5:Constitution Bonus",' +
-      '"charisma >= 12 ? 6:Lay On Hands","12:Aura Of Courage" '+
+      '"charisma >= 12 ? 6:Lay On Hands","12:Aura Of Courage","16:Death Ward" '+
     'SpellAbility=charisma ' +
     'SpellSlots=' +
-      'Guardian2:2=1,' +
-      'Guardian5:16=1',
+      'Guardian2:2=1',
   'Healer':
     'Group=Healer ' +
     'Level=level ' +
@@ -1989,7 +1989,7 @@ LastAge.SPELLS_LEVELS = {
   'Daylight':'Ch3,Faithful3,Jack3',
   'Daze':'Ch0,Jack0',
   'Daze Monster':'Ch2,Charismatic2,Jack2',
-  'Death Ward':'Ch5,Guardian5',
+  'Death Ward':'Ch5',
   'Deep Slumber':'Ch3,Feyblooded3,Jack3',
   'Delay Poison':'Ch2,Jack2',
   'Delayed Blast Fireball':'Ch7',
