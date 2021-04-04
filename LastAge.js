@@ -3752,7 +3752,7 @@ LastAge.pathRulesExtra = function(rules, name) {
       ('turningLevel', pathLevel, '+=', 'source < 4 ? null : source');
     // Override SRD35 turning frequency
     rules.defineRule('combatNotes.turnUndead.3',
-      pathLevel, 'v', 'Math.floor((source + 1) / 5)'
+      pathLevel, '=', 'Math.floor((source + 1) / 5)'
     );
 
   } else if(name == 'Fellhunter') {
