@@ -247,7 +247,7 @@ LastAgePrestige.CLASSES = {
       'Profession,Ride,"Speak Language",Spot,Survival,Swim ' +
     'Features=' +
       '"1:Armor Proficiency (Medium)","1:Weapon Proficiency (Martial)",' +
-      '"1:Coordinated Attack","1:Special Mount","3:Speed Mount",' +
+      '"1:Joint Attack","1:Special Mount","3:Speed Mount",' +
       '"5:Mounted Hide","7:Wogren Dodge","9:Wogren\'s Sight" ' +
     'Selectables=' +
       '"2:Improved Mounted Archery","2:Improved Mounted Combat",' +
@@ -284,9 +284,6 @@ LastAgePrestige.FEATURES = {
   'Conceal Magic':
     'Section=magic ' +
     'Note="Spells considered half level for purposes of astirax detection"',
-  'Coordinated Attack':
-    'Section=combat ' +
-    'Note="Rider and mount +2 attack on same target when other hits"',
   "Counter Legate's Will":
     'Section=magic Note="<i>Dispel Magic</i> vs. legates"',
   'Cover Story':
@@ -340,6 +337,9 @@ LastAgePrestige.FEATURES = {
   'Intimidating Shot':
     'Section=combat ' +
     'Note="Intimidate check after attack w/bonus of half damage"',
+  'Joint Attack':
+    'Section=combat ' +
+    'Note="Rider and mount +2 attack on same target when other hits"',
   'Leaf Reader':
     'Section=combat ' +
     'Note="DC 10 Spot check to eliminate vegetation concealment"',

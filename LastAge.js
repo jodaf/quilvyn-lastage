@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.1.8';
+var LASTAGE_VERSION = '2.2.1.9';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -424,10 +424,16 @@ LastAge.FEATURES_ADDED = {
 
   // Heroic Path
   'Ability Boost':'Section=ability Note="%V to distribute"',
-  'Ability Recovery':'Section=combat Note="Regain 1 point ability damage/hr"',
-  'Aid Another':'Section=combat Note="Aid another as a move action"',
-  'Aided Combat Bonus':'Section=combat Note="Aided ally +%V attack or AC"',
+  'Aid Another (Move)':'Section=combat Note="Aid another as a move action"',
+  'Aid Another (Combat Bonus)':
+    'Section=combat Note="Aided ally +%V attack or AC"',
   'Ambush':'Section=skill Note="Allies use self Hide for ambush"',
+  'Ambush (Extra Damage)':
+    'Section=combat ' +
+    'Note="Allies +2 damage vs. flat-footed foes on surprise and 1st melee rd"',
+  'Ambush (Quick)':'Section=skill Note="Hide allies for ambush in half time"',
+  'Ambush (Sniping)':
+    'Section=combat Note="Reduced Hide penalty for using ranged weapons"',
   'Animal Companion':
     'Section=feature Note="Special bond and abilities w/up to %V animals"',
   'Animal Friend':
@@ -437,7 +443,7 @@ LastAge.FEATURES_ADDED = {
   'Aquatic Adaptation':
     'Section=skill Note="Breathe through gills, no underwater pressure damage"',
   'Aquatic Ally':
-    'Section=magic Note="Aquatic <i>Summon Nature\'s Ally %V</i> %V/dy"',
+    'Section=magic Note="Aquatic <i>Summon Nature\'s Ally %1</i> %V/dy"',
   'Aquatic Blindsight':
     'Section=skill Note="R%V\' Detect creatures in opaque water"',
   'Aquatic Emissary':'Section=skill Note="Speak to all aquatic animals"',
@@ -445,12 +451,11 @@ LastAge.FEATURES_ADDED = {
     'Section=skill Note="Allies move in water at full speed, share oxygen"',
   'Aura Of Courage':'Section=save Note="Immune fear, +4 to allies w/in 30\'"',
   'Aura Of Warmth':'Section=magic Note="R10\' Allies +4 Fortitude vs cold"',
-  'Battle Cry':'Section=combat Note="+%V hit points until damaged %1/dy"',
+  'Battle Cry':'Section=combat Note="+%V hit points until end of battle %1/dy"',
   'Bestial Aura':
     'Section=combat,skill ' +
     'Note="Turn 2d6+%1 HD of animals of up to (d20+%2)/3 HD %3/dy",' +
          '"-10 Handle Animal, no Wild Empathy"',
-  'Big':'Section=combat,skill Note="Use Large weapons","-4 Hide"',
   'Blindsense':
      'Section=feature Note="R30\' Other senses detect unseen objects"',
   'Blindsight':
@@ -460,7 +465,8 @@ LastAge.FEATURES_ADDED = {
     'Note="Daily +%V Cha skills in Shadow or resistance interactions"',
   'Blood Of The Planes':'Section=skill Note="+%V Cha skills with outsiders"',
   'Bolster Spell':'Section=magic Note="Add 1 to DC of %V chosen spells"',
-  'Bonus Spell Energy':'Section=magic Note="+%V"',
+  'Bonus Raw Energy':'Section=magic Note="+%V"',
+  'Bonus Spell Energy':'Section=magic Note="+%V Spell Energy"',
   'Bonus Spells':'Section=magic Note="%V additional Channeler spells"',
   'Burst Of Speed':
     'Section=combat ' +
@@ -470,9 +476,11 @@ LastAge.FEATURES_ADDED = {
     'Section=save Note="No damage from cold, x1.5 damage from fire"',
   'Cold Resistance':'Section=save Note="Ignore first %V points cold damage"',
   'Combat Overview':
-    'Section=combat ' +
-    'Note="R60\' Ally avoid AOO and flat-footed, foe flat-footed %V/dy"',
+    'Section=combat Note="R60\' Ally avoid AOO or foe flat-footed %V/dy"',
   'Constitution Bonus':'Section=ability Note="+%V Constitution"',
+  'Coordinated Attack':
+    'Section=combat ' +
+    'Note="R30\' Allies attack same foe at +1/participant (max +5) %V/dy"',
   'Coordinated Initiative':
     'Section=combat Note="R30\' Allies use self initiative %V/dy"',
   'Damage Reduction':'Section=combat Note="Subtract %V from damage taken"',
@@ -495,7 +503,6 @@ LastAge.FEATURES_ADDED = {
   'Enhanced Bestial Aura':
     'Section=feature Note="R15\' Animals act negatively, cannot ride"',
   'Extended Darkvision':'Section=feature Note="+30\' b/w vision in darkness"',
-  'Extra Reach':'Section=combat Note="15\' reach"',
   'Fast Movement':'Section=ability Note="+%V Speed"',
   'Fearsome Charge':
     'Section=combat Note="+%V damage, -1 AC for every 10\' in charge"',
@@ -512,16 +519,12 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="+d10 cold damage, extra hit die on critical hit"',
   'Hide In Plain Sight':'Section=skill Note="Hide even when observed"',
   'Howling Winds':
-    'Section=magic Note="<i>Commune With Nature</i> (winds) %V/dy"',
-  'Improved Ambush':
-    'Section=combat ' +
-    'Note="Allies +2 damage vs. flat-footed foes on surprise and 1st melee rd"',
+    'Section=feature Note="Answer 1 question about surrounding %1 mi %V/dy"',
   'Improved Battle Cry':'Section=combat Note="+1 attack and damage after cry"',
   'Improved Healing':'Section=combat Note="Regain %V HP/hr"',
+  'Improved Healing (Ability Recovery)':
+    'Section=combat Note="Regain 1 point ability damage/hr"',
   'Improved Resist Spells':'Section=save Note="+%V vs. spells"',
-  'Improved Retributive Rage':
-    'Section=combat ' +
-    'Note="+%V damage next rd after suffering ${level*2} HP damage"',
   'Improved Spell Penetration':
     'Section=magic Note="+%V checks to overcome spell resistance"',
   'Improved Spellcasting':
@@ -529,9 +532,6 @@ LastAge.FEATURES_ADDED = {
     'Note="Reduce energy cost of spells from %V chosen schools by 1"',
   'Improved Stonecunning':
     'Section=skill Note="R5\' Automatic Search for concealed stone door"',
-  'Improved Untouchable':
-    'Section=combat ' +
-    'Note="No foe AOO from move, standard, and full-round actions"',
   'Increased Damage Threshold':
     'Section=combat Note="Continue fighting until -%V HP"',
   'Indefatigable':'Section=save Note="Immune %V effects"',
@@ -544,19 +544,15 @@ LastAge.FEATURES_ADDED = {
   'Intelligence Bonus':'Section=ability Note="+%V Intelligence"',
   'Intimidating Size':'Section=skill Note="+%V Intimidate"',
   'Ironborn Resilience':'Section=combat Note="Improved hit die"',
-  'Joint Attack':
-    'Section=combat ' +
-    'Note="R30\' Allies attack same foe at +1/participant (max +5) %V/dy"',
   'Language Savant':
     'Section=skill ' +
     'Note="Fluent in any language after listening for 10 minutes"',
   'Last Stand':
     'Section=combat ' +
-    'Note="1 minute of %V spell resistance, 15 damage reduction, 30 energy resistance; near death afterward %1/dy"',
+    'Note="At half HP, 1 minute of %V spell resistance, 15 damage reduction, 30 energy resistance; near death afterward %1/dy"',
   'Lay On Hands':'Section=magic Note="Harm undead or heal %V HP/dy"',
   'Leadership':'Section=feature Note="Attract followers"',
   'Luck Of Heroes':'Section=feature Note="Add %V to any d20 roll 1/dy"',
-  'Magical Darkvision':'Section=feature Note="See perfectly in any darkness"',
   'Master Adventurer':'Section=skill Note="+%V on three chosen non-Cha skills"',
   'Metamagic Aura':
     'Section=magic Note="R30\' %V others\' spells of up to level %1 %2/dy"',
@@ -596,7 +592,6 @@ LastAge.FEATURES_ADDED = {
          '"+4 Diplomacy (plants)"',
   'Power Words':
     'Section=magic Note="R60\' DC %2+spell level <i>Word of %V</i> %1/dy"',
-  'Quick Ambush':'Section=skill Note="Hide allies for ambush in half time"',
   'Quickened Counterspelling':
     'Section=magic Note="Counterspell as move action 1/rd"',
   'Rage':
@@ -605,7 +600,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="Allies not flat-footed, +4 vs. surprise %V/dy"',
   'Retributive Rage':
     'Section=combat ' +
-    'Note="+%V attack 1 rd after suffering ${level*2} HP  damage"',
+    'Note="+%V attack%1 1 rd after foe attack does %{level*2} HP damage to self"',
   'Righteous Fury':
     'Section=combat ' +
     'Note="Overcome %V points of evil foe melee damage reduction"',
@@ -613,13 +608,15 @@ LastAge.FEATURES_ADDED = {
   'Save Boost':'Section=save Note="%V to distribute"',
   'Scent':
     'Section=feature Note="R30\' Detect creatures\' presence, track by smell"',
-  'See Invisible':'Section=feature Note="See invisible creatures"',
   'Seer Sight':
     'Section=magic Note="Discern %{level}-%1 history of touched object %V/dy"',
   'Sense The Dead':
     'Section=magic Note="R%V\' +%1 <i>Detect Undead</i> check at will"',
   'Shadow Jump':'Section=feature Note="R%V\' Move between shadows"',
   'Shadow Veil':'Section=skill Note="+%V Hide"',
+  'Size Features (Big)':
+    'Section=combat,skill Note="Use Large weapons","-4 Hide"',
+  'Size Features (Extra Reach)':'Section=combat Note="15\' reach"',
   'Skill Boost':'Section=skill Note="+4 to %V chosen skills"',
   'Skill Mastery':
     'Section=skill Note="Take 10 despite distraction on %V chosen skills"',
@@ -628,10 +625,13 @@ LastAge.FEATURES_ADDED = {
     'Note="Half penalty from %V choices of Fighting Defensively, Grapple Attack, Non-proficient Weapon, Two-Weapon Fighting"',
   'Smite Evil':
     'Section=combat Note="+%1 attack, +%2 damage vs. evil foe %V/dy"',
-  'Sniping Ambush':
-    'Section=combat Note="Reduced Hide penalty for using ranged weapons"',
   'Spell Choice':
     'Section=magic Note="Use chosen %V spell as spell-like ability 1/dy"',
+  'Spirit Sight (Darkness)':
+    'Section=feature Note="+60\' b/w vision in darkness"',
+  'Spirit Sight (Invisible)':'Section=feature Note="See invisible creatures"',
+  'Spirit Sight (Magical Darkness)':
+    'Section=feature Note="See perfectly through any darkness"',
   'Spontaneous Spell':
     'Section=magic Note="Use any %V spell as spell-like ability 1/dy"',
   'Stonecunning':
@@ -657,8 +657,8 @@ LastAge.FEATURES_ADDED = {
   'Unearthly Grace (Will)':'Section=save Note="+%V Will"',
   'Unfettered':'Section=feature Note="Unimpeded movement %V rd/dy"',
   'Untapped Potential':
-    'Section=magic Note="R30\' Contribute %V points ally spells"',
-  'Untouchable':'Section=combat Note="No foe AOO from special attacks"',
+    'Section=magic Note="R30\' Contribute %V spell energy to ally spells"',
+  'Untouchable':'Section=combat Note="No foe AOO from %V"',
   'Vicious Assault':'Section=combat Note="Two claw attacks at %V each"',
   'Ward Of Life':'Section=save Note="Immune to undead %V"',
   'Wild Empathy':'Section=skill Note="+%V Diplomacy (animals)"',
@@ -1300,9 +1300,10 @@ LastAge.PATHS = {
     'Group=Giantblooded ' +
     'Level=level ' +
     'Features=' +
-      '"level < 10 ? 1:Big","2:Rock Throwing","3:Intimidating Size",' +
-      '"4:Fast Movement","5:Strength Bonus","8:Fearsome Charge",10:Large,' +
-      '"20:Extra Reach"',
+      '"level < 10 ? 1:Size Features (Big)","2:Rock Throwing",' +
+      '"3:Intimidating Size","4:Fast Movement","5:Strength Bonus",' +
+      '"8:Fearsome Charge","10:Size Features (Large)",' +
+      '"20:Size Features (Extra Reach)"',
   'Guardian':
     'Group=Guardian ' +
     'Level=level ' +
@@ -1331,7 +1332,7 @@ LastAge.PATHS = {
     'Features=' +
       '"1:Ironborn Resilience","2:Fortitude Bonus","3:Natural Armor",' +
       '"4:Improved Healing","5:Damage Reduction","6:Elemental Resistance",' +
-      '9:Indefatigable,"14:Ability Recovery"',
+      '9:Indefatigable,"14:Improved Healing (Ability Recovery)"',
   'Jack-Of-All-Trades':
     'Group=Jack-Of-All-Trades ' +
     'Level=level ' +
@@ -1349,8 +1350,8 @@ LastAge.PATHS = {
     'Level=level ' +
     'Features=' +
       '1:Mountaineer,"1:Mountain Survival",3:Ambush,"4:Rallying Cry",' +
-      '"5:Constitution Bonus","8:Improved Ambush","13:Quick Ambush",' +
-      '"18:Sniping Ambush" ' +
+      '"5:Constitution Bonus","8:Ambush (Extra Damage)","13:Ambush (Quick)",' +
+      '"18:Ambush (Sniping)" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Mountainborn1:2=1;7=2,' +
@@ -1376,17 +1377,14 @@ LastAge.PATHS = {
       '1:Northborn,"1:Wild Empathy","2:Cold Resistance","3:Battle Cry",' +
       '"4:Howling Winds","5:Constitution Bonus","6:Aura Of Warmth",' +
       '"11:Improved Battle Cry","13:Frost Weapon","16:Cold Immunity",' +
-      '"18:Greater Frost Weapon" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Northborn5:4=1;8=2;12=3',
+      '"18:Greater Frost Weapon"',
   'Painless':
     'Group=Painless ' +
     'Level=level ' +
     'Features=' +
       '1:Painless,"2:Nonlethal Damage Reduction","3:Uncaring Mind",' +
       '"4:Retributive Rage",5:Ferocity,"9:Last Stand",' +
-      '"10:Increased Damage Threshold","14:Improved Retributive Rage"',
+      '"10:Increased Damage Threshold"',
   'Pureblood':
     'Group=Pureblood ' +
     'Level=level ' +
@@ -1408,10 +1406,10 @@ LastAge.PATHS = {
       '"14:Cold Resistance","17:Aquatic Emissary","18:Assist Allies" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
-      'Seaborn2:4=1;5=2;9=3,' +
-      'Seaborn3:8=2;13=3,' +
-      'Seaborn4:12=3,' +
-      'Seaborn5:16=4,' +
+      'Seaborn2:4=1;5=2;8=1;9=2,' +
+      'Seaborn3:8=2;12=null;13=1,' +
+      'Seaborn4:12=3;16=null,' +
+      'Seaborn5:16=4;20=null,' +
       'Seaborn6:20=5',
   'Seer':
     'Group=Seer ' +
@@ -1421,9 +1419,9 @@ LastAge.PATHS = {
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Seer1:1=1,' +
-      'Seer2:2=1,' +
-      'Seer3:5=1;8=2,' +
-      'Seer4:4=1;7=2;10=3;11=4;13=5,' +
+      'Seer2:2=1;5=2,' +
+      'Seer3:4=1;8=2,' +
+      'Seer4:7=1;10=2;11=3;13=4;14=5,' +
       'Seer5:16=1;19=2,' +
       'Seer6:14=1;17=2,' +
       'Seer7:20=1',
@@ -1445,7 +1443,7 @@ LastAge.PATHS = {
     'Level=level ' +
     'Features=' +
       '"1:Untapped Potential","2:Metamagic Aura","3:Improved Resist Spells",' +
-      '"4:Bonus Spell Energy"',
+      '"4:Bonus Raw Energy"',
   'Shadow Walker':
     'Group="Shadow Walker" ' +
     'Level=level ' +
@@ -1461,13 +1459,14 @@ LastAge.PATHS = {
     'Level=level ' +
     'Features=' +
       '"2:Offensive Tactics","3:Strategic Blow","4:Skilled Warrior",' +
-      '14:Untouchable,"19:Improved Untouchable"',
+      '14:Untouchable',
   'Sunderborn':
     'Group=Sunderborn ' +
     'Level=level ' +
     'Features=' +
       '"1:Detect Outsider","2:Blood Of The Planes","4:Planar Fury",' +
-      '7:Darkvision,"13:Magical Darkvision","19:See Invisible" ' +
+      '"7:Spirit Sight (Darkness)","13:Spirit Sight (Magical Darkness)",' +
+      '"19:Spirit Sight (Invisible)" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Sunderborn1:1=1;3=2,' +
@@ -1480,9 +1479,9 @@ LastAge.PATHS = {
     'Group=Tactician ' +
     'Level=level ' +
     'Features=' +
-      '"1:Aid Another","2:Combat Overview","3:Coordinated Initiative",' +
-      '"4:Joint Attack","5:Aided Combat Bonus","13:Directed Attack",' +
-      '"18:Telling Blow","20:Perfect Assault"',
+      '"1:Aid Another (Move)","2:Combat Overview","3:Coordinated Initiative",' +
+      '"4:Coordinated Attack","5:Aid Another (Combat Bonus)",' +
+      '"13:Directed Attack","18:Telling Blow","20:Perfect Assault"',
   'Warg':
     'Group=Warg ' +
     'Level=level ' +
@@ -1763,7 +1762,7 @@ LastAge.SPELLS_ADDED = {
   'Silver Storm':
     'School=Transmutation ' +
     'Level=Ch4 ' +
-    'Description="R$RS\' Targets in cone ${Lmin15}d4 HP silver needle (Ref half)"',
+    'Description="R$RS\' Targets in cone %{Lmin15}d4 HP silver needle (Ref half)"',
   'Silver Wind':
     'School=Conjuration ' +
     'Level=Ch3,Jack3 ' +
@@ -1812,7 +1811,7 @@ LastAge.SPELLS_ADDED = {
   'Fell Forbiddance':
     'School=Abjuration ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RS\' Target ${lvl*25}\' sq area impassible to undead for $L min (Will neg for intelligent)"',
+    'Description="R$RS\' Target %{lvl*25}\' sq area impassible to undead for $L min (Will neg for intelligent)"',
   'Fey Fire':
     'School=Conjuration ' +
     'Level=Ch2,Jack2 ' +
@@ -1856,7 +1855,7 @@ LastAge.SPELLS_ADDED = {
   'Pacify':
     'School=Abjuration ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RS\' ${Math.floor(lvl/3) + 1} targets cannot attack for $Ldiv2 rd (Will neg)"',
+    'Description="R$RS\' %{Math.floor(lvl/3) + 1} targets cannot attack for $Ldiv2 rd (Will neg)"',
   "Peasant's Rest":
     'School=Conjuration ' +
     'Level=Ch1,Jack1 ' +
@@ -1957,7 +1956,7 @@ LastAge.SPELLS_LEVELS = {
   'Color Spray':'Ch1,Jack1',
   'Command Plants':'Ch4,Naturefriend4',
   'Command Undead':'Ch2,Jack2',
-  'Commune With Nature':'Ch5,Naturefriend5,Northborn5',
+  'Commune With Nature':'Ch5,Naturefriend5',
   'Commune':'Seer5',
   'Comprehend Languages':'Ch1,Jack1,Speaker1',
   'Cone Of Cold':'Ch5',
@@ -3729,7 +3728,6 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('magicNotes.improvedSpellcasting',
       pathLevel, '+=', 'Math.floor(source / 6)'
     );
-    rules.defineRule('spellEnergy', 'magicNotes.bonusSpellEnergy', '+', null);
     rules.defineRule('magicNotes.improvedSpellPenetration',
       pathLevel, '+=', 'Math.floor((source - 5) / 4)'
     );
@@ -3832,6 +3830,8 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('skillNotes.intimidatingSize',
       pathLevel, '+=', 'source>=17 ? 10 : source>=14 ? 8 : (Math.floor((source + 1) / 4) * 2)'
     );
+    rules.defineRule
+      ('features.Large', 'features.Size Features (Large)', '=', null);
     rules.defineRule('weapons.Debris', 'combatNotes.rockThrowing', '=', '1');
 
   } else if(name == 'Guardian') {
@@ -3944,17 +3944,16 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('abilityNotes.constitutionBonus',
       'northbloodedLevel', '+=', 'Math.floor(source / 5)'
     );
-    rules.defineRule('magicNotes.howlingWinds',
-      pathLevel, '+=', 'source >= 12 ? 3 : source >= 8 ? 2 : 1'
+    rules.defineRule('featureNotes.howlingWinds',
+      pathLevel, '=', 'source >= 12 ? 3 : source >= 8 ? 2 : 1'
     );
+    rules.defineRule('featureNotes.howlingWinds.1', pathLevel, '=', null);
     rules.defineRule
       ('saveNotes.coldResistance', pathLevel, '+=', 'source >= 9 ? 15 : 5');
     rules.defineRule('skillNotes.wildEmpathy', pathLevel, '+=', null);
 
   } else if(name == 'Painless') {
 
-    rules.defineRule
-      ('combatNotes.improvedRetributiveRage', pathLevel, '+=', null);
     rules.defineRule('combatNotes.increasedDamageThreshold',
       pathLevel, '+=', 'source >= 20 ? 25 : source >= 15 ? 20 : 15'
     );
@@ -3966,6 +3965,9 @@ LastAge.pathRulesExtra = function(rules, name) {
     );
     rules.defineRule('combatNotes.painless', pathLevel, '+=', null);
     rules.defineRule('combatNotes.retributiveRage', pathLevel, '+=', null);
+    rules.defineRule('combatNotes.retributiveRage.1',
+      pathLevel, '=', 'source >= 14 ? " and damage" : ""'
+    );
     rules.defineRule('saveNotes.uncaringMind',
       pathLevel, '+=', 'Math.floor((source + 2) / 5)'
     );
@@ -3980,7 +3982,16 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('featureNotes.featBonus',
       pathLevel, '+=', 'Math.floor((source + 2) / 5)'
     );
+    // Override computation of skill mastery from Rogue feature so that we can
+    // combine it with the Pureblood value.
+    rules.defineRule('rogueSkillMastery',
+      'rogueFeatures.Skill Mastery', '=', null,
+      'intelligenceModifier', '*', 'source + 3'
+    );
     rules.defineRule('skillNotes.skillMastery',
+      'rogueFeatures.Skill Mastery', '=', 'null',
+      'intelligenceModifier', '=', 'null',
+      'rogueSkillMastery', '=', null,
       pathLevel, '+=', 'Math.floor((source + 1) / 5)'
     );
     rules.defineRule('skillNotes.bloodOfKings',
@@ -4022,6 +4033,9 @@ LastAge.pathRulesExtra = function(rules, name) {
     );
     rules.defineRule
       ('magicNotes.aquaticAlly', pathLevel, '+=', 'Math.floor(source / 4)');
+    rules.defineRule('magicNotes.aquaticAlly.1',
+      pathLevel, '=', '["","II","III","IV","V","VI"][Math.floor(source / 4)]'
+    );
     rules.defineRule
       ('saveNotes.coldResistance', pathLevel, '+=', 'source >= 14 ? 5 : null');
     rules.defineRule('skillNotes.aquaticBlindsight',
@@ -4075,7 +4089,10 @@ LastAge.pathRulesExtra = function(rules, name) {
 
   } else if(name == 'Spellsoul') {
 
-    rules.defineRule('magicNotes.bonusSpellEnergy',
+    QuilvynRules.prerequisiteRules
+      (rules, 'validation', 'spellsoulHeroicPath', pathLevel,
+       ["Sum 'feats.Magecraft' == 0", "Sum 'feats.Spellcasting' == 0"]);
+    rules.defineRule('magicNotes.bonusRawEnergy',
       pathLevel, '+=', 'source >= 18 ? 8 : source >= 13 ? 6 : source >= 9 ? 4 : source >= 4 ? 2 : null'
     );
     rules.defineRule('magicNotes.metamagicAura',
@@ -4087,15 +4104,15 @@ LastAge.pathRulesExtra = function(rules, name) {
                  '.concat(source >= 17 ? ["maximize"] : [])' +
                  '.concat(source >= 20 ? ["redirect"] : []).sort().join("/")'
     );
-    rules.defineRule
-      ('magicNotes.metamagicAura.1', pathLevel, '=', 'Math.floor(source / 2)');
+    rules.defineRule('magicNotes.metamagicAura.1',
+      pathLevel, '=', 'Math.min(Math.floor(source / 2), 9)'
+    );
     rules.defineRule('magicNotes.metamagicAura.2',
       pathLevel, '=', 'source>=15 ? 4 : source>=10 ? 3 : source>=6 ? 2 : 1'
     );
     rules.defineRule('magicNotes.untappedPotential',
       'highestMagicModifier', '=', 'source + 1',
-      pathLevel, '+',
-        'source>=18 ? 8 : source>=13 ? 6 : source>=9 ? 4 : source>=4 ? 2 : 0'
+      'magicNotes.bonusRawEnergy', '+', null
     );
     rules.defineRule('saveNotes.improvedResistSpells',
       pathLevel, '=', 'source>=19 ? 5 : source>=16 ? 4 : source>=12 ? 3 : source>=7 ? 2 : source>=3 ? 1 : null'
@@ -4119,6 +4136,9 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('combatNotes.strategicBlow',
       pathLevel, '+=', 'source>=16 ? 15 : source>=12 ? 12 : source>=9 ? 9 : source>=6 ? 6 : 3'
     );
+    rules.defineRule('combatNotes.untouchable',
+      pathLevel, '=', 'source >= 19 ? "special attacks, move, standard, and full-round actions" : "special attacks"'
+    );
     rules.defineRule
       ('featCount.Steelblooded', pathLevel, '=', '1 + Math.floor(source / 5)');
 
@@ -4136,17 +4156,17 @@ LastAge.pathRulesExtra = function(rules, name) {
 
   } else if(name == 'Tactician') {
 
-    rules.defineRule('combatNotes.aidedCombatBonus',
+    rules.defineRule('combatNotes.aidAnother(CombatBonus)',
       pathLevel, '+=', 'source>=19 ? 4 : source>=14 ? 3 : source>=9 ? 2 : source>=5 ? 1 : null'
     );
     rules.defineRule('combatNotes.combatOverview',
       pathLevel, '+=', 'source>=15 ? 4 : source>=10 ? 3 : source>=6 ? 2 : 1'
     );
+    rules.defineRule('combatNotes.coordinatedAttack',
+      pathLevel, '+=', 'source>=17 ? 4 : source==16 ? 3 : Math.floor(source/4)'
+    );
     rules.defineRule('combatNotes.coordinatedInitiative',
       pathLevel, '+=', 'source>=16 ? 4 : source>=11 ? 3 : source>=7 ? 2 : 1'
-    );
-    rules.defineRule('combatNotes.jointAttack',
-      pathLevel, '+=', 'source>=17 ? 4 : source==16 ? 3 : Math.floor(source/4)'
     );
 
   } else if(name == 'Warg') {
@@ -4442,21 +4462,21 @@ LastAge.ruleNotes = function() {
     '<p>\n' +
     '<ul>\n' +
     '  <li>\n' +
-    '    Racial origin choices (e.g., Plains/Urban Sarcosan, Clan/Kurgun\n' +
-    '    Dwarf) are absorbed into the list of races.\n' +
+    '    Racial origin choices (Plains or Urban Sarcosan, Clan or Kurgun\n' +
+    '    Dwarf, etc.) are absorbed into the list of races.\n' +
     '  </li><li>\n' +
     '    Quilvyn lists Greater Conjuration and Greater Evocation as separate\n'+
     '    schools and uses Conjuration and Evocation to represent the\n' +
-    '    lesser variety.  This simplifies the spell list and treats legate\n' +
-    '    and druid spells from these schools as the lesser variety.  It\n' +
+    '    lesser variety. This simplifies the spell list and treats legate\n' +
+    '    and druid spells from these schools as the lesser variety. It\n' +
     '    also makes the Greater Spellcasting feat moot; use Spellcasting\n' +
     '    (Greater Conjuration) or Spellcasting (Greater Evocation) instead.\n' +
     '  </li><li>\n' +
     '    The rule book uses several feature names multiple times with\n' +
-    '    different effects.  For example, the Orc "Cold Resistance" feature\n' +
+    '    different effects. For example, the Orc "Cold Resistance" feature\n' +
     '    grants immunity to non-lethal damage and half damage from lethal\n' +
     '    cold, while the Northblooded and Seaborn feature of the same name\n' +
-    '    grants damage reduction.  In these cases Quilvyn uses a different\n' +
+    '    grants damage reduction. In these cases Quilvyn uses a different\n' +
     '    name for one of the features in order to remove the ambiguity.\n' +
     '    The renamed features are: Orc "Cold Resistance" (renamed\n' +
     '    "Improved Cold Fortitude" to distinguish from the Northblooded and\n' +
@@ -4464,36 +4484,26 @@ LastAge.ruleNotes = function() {
     '    distinguish from the Fighter feature); Insurgent Spy "Conceal\n' +
     '    Magic" (renamed "Conceal Aura" to distinguish from the Bane Of\n' +
     '    Legates feature); Wildlander "Skill Mastery" (renamed "Practiced\n' +
-    '    Skill" to distinguish from the Pureblood feature); Spellsoul\n' +
-    '    "Resistance" (renamed "Improved Spell Resistance" to distinguish\n' +
-    '    from other resistance features); Tactician "Coordinated Attack"\n' +
-    '    (renamed "Joint Attack" to distinguish from the Wogren Rider\n' +
-    '    feature); prestige class "Improved Spellcasting" (split into "Art\n' +
-    '    Of Magic" and bonus spells and points to distinguish from the\n' +
-    '    Dragonblooded feature); Ironborn "Incredible Resilience" (renamed\n' +
-    '    "Ironborn Resilience" to distinguish from the Defender feature).\n' +
-    '    Also, the Survival bonus granted by the Mountainborn "Mountaineer"\n' +
-    '    feature is treated as a separate feature ("Mountain Survival") for\n' +
-    '    consistency with the Dwarf "Mountaineer" feature.\n' +
+    '    Skill" to distinguish from the Pureblood and Rogue feature);\n' +
+    '    Spellsoul "Resistance" (renamed "Improved Spell Resistance" to\n' +
+    '    distinguish from other resistance features); Wogren Rider\n' +
+    '    "Coordinated Attack" (renamed "Joint Attack" to distinguish from\n' +
+    '    the Tactician feature); prestige class "Improved Spellcasting"\n' +
+    '    (split into "Art Of Magic" and bonus spells and points to\n' +
+    '    distinguish from the Dragonblooded feature); Ironborn "Incredible\n' +
+    '    Resilience" (renamed "Ironborn Resilience" to distinguish from the\n' +
+    '    Defender feature). Also, the Survival bonus granted by the\n' +
+    '    Mountainborn "Mountaineer" feature is treated as a separate\n' +
+    '    feature ("Mountain Survival") for consistency with the Dwarf\n' +
+    '    "Mountaineer" feature.\n' +
     '  </li><li>\n' +
     '    In situations where a feature has very different effects at\n' +
     '    different character levels, Quilvyn uses a different feature name\n' +
-    '    for each effect.  For example, the Giantblooded "Size Features"\n' +
-    '    feature is replaced by "Big" at level 1, "Large" at level 10,\n' +
-    '    and "Extra Reach" at level 20.  Other instances: Ironborn level\n' +
-    '    14 "Improved Healing" becomes "Ability Recovery"; Mountaineer\n' +
-    '    "Ambush" becomes "Improved Ambush", "Quick Ambush", and "Sniping\n' +
-    '    Ambush" at levels 8, 13, and 18; Painless "Retributive Rage"\n' +
-    '    becomes "Improved Retributive Rage" at level 14; Steelborn\n' +
-    '    "Untouchable" becomes "Improved Untouchable" at level 19;\n' +
-    '    Sunderborn "Spirit Sight" becomes "Darkvision", "Magical\n' +
-    '    Darkvision", and "See Invisible" at levels 7, 13, and 19;\n' +
-    '    Tactician "Aid Another" becomes "Aided Combat Bonus" at level 5;\n' +
-    '    Aradil\'s Eye "Alter Ego" becomes "Quick Alteration" and\n' +
-    '    "Nonmagical Alteration" at levels 5 and 9; Whisper Adept "Whisper\n' +
-    '    Sense" becomes "Whisper Initiative", "Whisper Surprise", "Whisper\n' +
-    '    Clairaudience", "Whisper Clairvoyance", and "Whisper Commune" at\n' +
-    '    levels 2, 4, 6, 8, and 10.\n' +
+    '    for each effect.  Aradil\'s Eye "Alter Ego" becomes\n' +
+    '    "Quick Alteration" and "Nonmagical Alteration" at levels 5 and 9;\n' +
+    '    Whisper Adept "Whisper Sense" becomes "Whisper Initiative",\n' +
+    '    "Whisper Surprise", "Whisper Clairaudience", "Whisper\n' +
+    '    Clairvoyance", and "Whisper Commune" at levels 2, 4, 6, 8, and 10.\n' +
     '  </li><li>\n' +
     '    The rule book incorrectly lists Bear\'s Endurance as a spell\n' +
     '    acquired at the level 4 Beast heroic path.  Quilvyn corrects this\n' +
@@ -4549,6 +4559,11 @@ LastAge.ruleNotes = function() {
     '  The bonuses of the Feyblooded Unearthly Grace feature rise as the\n' +
     '  character advances in level, rather than remaining fixed as specified\n'+
     '  in the rule book.\n' +
+    '  </li><li>\n' +
+    '    When randomizing heroic path spells, Quilvyn may assign spells of\n' +
+    '    equal level in the wrong order. For example, Quilvyn may give a\n' +
+    '    Seer <i>Locate Object</i> at level 2 and <i>Augury</i> at level 5,\n' +
+    '    rather than the reverse as specified in the rules.\n' +
     '  </li>\n' +
     '</ul>\n' +
     '</p>';
