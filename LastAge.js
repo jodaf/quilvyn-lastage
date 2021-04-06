@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.1.9';
+var LASTAGE_VERSION = '2.2.1.10';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -980,34 +980,30 @@ LastAge.FEATURES_ADDED = {
 
   // Race
   'Alert Senses':'Section=skill Note="+2 Listen/+2 Spot"',
+  'Bonus Innate Spell':'Section=magic Note="+1 Innate Magic spell"',
   'Bound To The Beast':'Section=feature Note="Mounted Combat"',
   'Bound To The Spirits':'Section=feature Note="Magecraft (Spiritual)"',
   'Brotherhood':
-    'Section=combat Note="+1 attack when fighting alongside 4+ Dorns"',
+    'Section=combat Note="+1 attack when fighting among 5+ Dorns"',
   'Cold Fortitude':'Section=save Note="+5 cold, half nonlethal damage"',
   // Deep Lungs as heroic path
   'Dexterous Hands':'Section=skill Note="+2 Craft (non-metal or wood)"',
-  'Dodge Orcs':'Section=combat Note="+1 AC vs. orc"',
   'Dorn Ability Adjustment':
     'Section=ability Note="+2 Strength/-2 Intelligence"',
   'Dorn Feat Bonus':'Section=feature Note="+1 Fighter Feat"',
   'Dorn Skill Bonus':'Section=skill Note="+%V Skill Points"',
-  'Double Hatchets':
-    'Section=combat Note="Half penalty fighting w/2 Urutuk hatchets"',
-  'Double Knives':
+  'Double Knife Training':
     'Section=combat Note="Half penalty fighting w/2 fighting knives"',
-  'Double Sepis':'Section=combat Note="Half penalty fighting w/2 sepi"',
+  'Double Urutuk Training':
+    'Section=combat Note="Half penalty fighting w/2 Urutuk hatchets"',
+  'Double Sepi Training':'Section=combat Note="Half penalty fighting w/2 sepi"',
   'Dwarf Ability Adjustment':
     'Section=ability Note="+2 Constitution/-2 Charisma"',
-  'Dwarf Armor Speed Adjustment':
-    'Section=ability Note="No armor speed penalty"',
-  'Dwarf Enmity':'Section=combat Note="+1 attack vs. orc"',
-  'Dwarf Favored Weapon':'Section=combat Note="+1 attack w/axes and hammers"',
+  'Dwarf Enmity':'Section=combat Note="+1 damage vs. dwarves"',
   'Dwarrow Ability Adjustment':'Section=ability Note="+2 Charisma"',
   'Dworg Ability Adjustment':
     'Section=ability ' +
     'Note="+2 Strength/+2 Constitution/-2 Intelligence/-2 Charisma"',
-  'Dworg Enmity':'Section=combat Note="+2 attack vs. orc"',
   'Elf Ability Adjustment':
     'Section=ability Note="+2 Dexterity/-2 Constitution"',
   'Elfling Ability Adjustment':
@@ -1060,29 +1056,26 @@ LastAge.FEATURES_ADDED = {
   'Favored Region (Veradeen)':
      'Section=skill ' +
      'Note="+2 Survival (within Veradeen)/+2 Knowledge (Nature) (within Veradeen)"',
+  'Favored Weapon (Axes/Hammers)':
+    'Section=combat Note="+1 attack w/axes and hammers"',
   'Feral Elf':
     'Section=skill Note="+2 Balance (trees)/+2 Climb (trees)/+2 Listen/+2 Search/+2 Spot/+2 Survival (within Erethor)/+2 Knowledge (Nature) (within Erethor)"',
-  'Fierce':'Section=combat Note="+1 attack w/two-handed weapons"',
   'Fortunate':'Section=save Note="+1 Fortitude/+1 Reflex/+1 Will"',
   'Gifted Healer':'Section=skill Note="+2 Heal"',
   'Gnome Ability Adjustment':'Section=ability Note="+4 Charisma/-2 Strength"',
   'Graceful':'Section=skill Note="+2 Climb/+2 Jump/+2 Move Silently/+2 Tumble"',
   'Halfling Ability Adjustment':
     'Section=ability Note="+2 Dexterity/-2 Strength"',
-  'Heartlander':'Section=skill Note="+4 chosen Craft or Profession"',
   'Illiteracy':
     'Section=skill Note="Must spend 2 skill points to read and write"',
-  'Improved Cold Fortitude':'Section=save Note="Immune non-lethal/half lethal"',
-  'Improved Innate Magic':'Section=magic Note="+1 Innate Magic spell"',
-  'Improved Natural Channeler':'Section=magic Note="+1 Spell Energy"',
-  'Interactive':'Section=skill Note="+2 Bluff/+2 Diplomacy/+2 Sense Motive"',
   'Keen Senses':'Section=skill Note="+2 Listen/+2 Search/+2 Spot"',
   'Know Depth':'Section=feature Note="Intuit approximate depth underground"',
   'Light Sensitivity':'Section=combat Note="-1 attack in daylight"',
   'Minor Light Sensitivity':
     'Section=combat Note="DC 15 Fortitude save in sunlight to avoid -1 attack"',
   'Mixed Blood':'Section=feature Note="%V for special abilities and affects"',
-  'Natural Channeler':'Section=magic Note="+2 Spell Energy"',
+  'Muscular':
+    'Section=ability Note="No speed penalty in heavy armor or with heavy load"',
   'Natural Horseman':
     'Section=combat,skill ' +
      'Note="+1 melee damage (horseback), half ranged penalty (horseback)",' +
@@ -1110,15 +1103,14 @@ LastAge.FEATURES_ADDED = {
   'Nimble':'Section=skill Note="+2 Climb/+2 Hide"',
   'Orc Ability Adjustment':
     'Section=ability Note="+4 Strength/-2 Intelligence/-2 Charisma"',
-  'Orc Enmity':'Section=combat Note="+1 damage vs. dwarves"',
-  'Orc Frenzy':'Section=combat Note="+1 attack when fighting among 10+ Orcs"',
+  'Orc Cold Resistance':'Section=save Note="Immune non-lethal/half lethal"',
+  'Orc Dodger':'Section=combat Note="+1 AC vs. orc"',
+  'Orc Enmity':'Section=combat Note="+%V attack vs. orcs"',
   'Quick':
     'Section=combat,save Note="+1 attack w/light weapons","+1 Reflex"',
-  'Resilient':'Section=combat Note="+2 AC"',
   'Resist Enchantment':'Section=save Note="+2 vs. enchantments"',
   'Resist Poison':'Section=save Note="+2 vs. poison"',
   'Resist Spells':'Section=magic,save Note="-2 Spell Energy","+2 vs. spells"',
-  'Robust':'Section=save Note="+1 Fortitude"',
   'Rugged':'Section=save Note="+2 Fortitude/+2 Reflex/+2 Will"',
   'Sarcosan Ability Adjustment':
     'Section=ability Note="+2 Charisma/+2 Intelligence/-2 Wisdom"',
@@ -1130,17 +1122,21 @@ LastAge.FEATURES_ADDED = {
   'Skilled Trader':
     'Section=skill ' +
     'Note="+2 Appraise, Bluff, Diplomacy, Forgery, Gather Information, Profession when smuggling or trading"',
+  'Skilled Worker':'Section=skill Note="+4 chosen Craft or Profession"',
+  'Social':'Section=skill Note="+2 Bluff/+2 Diplomacy/+2 Sense Motive"',
   'Spirit Foe':
     'Section=save,skill ' +
     'Note="+2 vs. outsiders",' +
           '"+4 Hide (nature)/+4 Move Silently (nature)"',
   'Stability':'Section=combat Note="+4 vs. Bull Rush and Trip"',
-  'Stone Knowledge':
+  'Stoneworker':
     'Section=skill Note="+2 Appraise (stone, metal)/+2 Craft (stone, metal)"',
   'Stout':'Section=feature Note="Endurance and Toughness"',
   'Studious':'Section=feature Note="Magecraft (Hermetic)"',
-  'Sturdy':'Section=combat Note="+1 AC"',
+  'Tribal Frenzy':
+    'Section=combat Note="+1 attack when fighting among 10+ Orcs"',
   'Tree Climber':'Section=skill Note="+4 Balance (trees)/+4 Climb (trees)"',
+  'Two-Handed Focus':'Section=combat Note="+1 attack using weapon two-handed"',
   'Unafraid':'Section=save Note="+2 vs. fear"',
   'Wood Elf Skill Bonus':'Section=skill Note="+%V Skill Points"',
 
@@ -1513,9 +1509,9 @@ LastAge.RACES = {
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe)",' +
       '"Favored Region (Kaladruns)",' +
       '"Favored Region (Subterranean Kaladruns)",' +
-      'Darkvision,"Dodge Orcs","Dwarf Armor Speed Adjustment","Dwarf Enmity",' +
-      '"Dwarf Favored Weapon","Know Depth",Resilient,"Resist Poison",' +
-      '"Resist Spells",Slow,Stability,"Stone Knowledge",Stonecunning ' +
+      'Darkvision,"Orc Dodger","Favored Weapon (Axes/Hammers)","Know Depth",' +
+      'Muscular,"Natural Armor","Orc Enmity","Resist Poison","Resist Spells",' +
+      'Slow,Stability,Stonecunning,Stoneworker ' +
     'Languages="Clan Dwarven","Old Dwarven"',
   'Danisil-Raised Elfling':
     'Features=' +
@@ -1531,15 +1527,16 @@ LastAge.RACES = {
       '"Weapon Familiarity (Bastard Sword/Dornish Horse Spear)",' +
       '"Favored Region (Northlands)",' +
       'Brotherhood,"Cold Fortitude","Dorn Feat Bonus","Dorn Skill Bonus",' +
-      'Fierce,Robust ' +
+      '"Fortitude Bonus","Two-Handed Focus" ' +
     'Languages=Erenlander,Norther',
   'Dwarf-Raised Dwarrow':
     'Features=' +
       '"Dwarrow Ability Adjustment",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",'+
       '"Favored Region (Kaladruns)",' +
-      'Darkvision,"Dodge Orcs","Mixed Blood","Resist Poison","Resist Spells",' +
-      'Small,Slow,"Stone Knowledge",Sturdy Selectables=' +
+      'Darkvision,"Mixed Blood","Natural Armor","Orc Dodger","Resist Poison",' +
+      '"Resist Spells",Small,Slow,Stoneworker ' +
+    'Selectables=' +
       '"Natural Mountaineer",Stonecunning ' +
     'Languages="Clan Dwarven","Old Dwarven","Trader\'s Tongue"',
   'Dworg':
@@ -1547,7 +1544,7 @@ LastAge.RACES = {
       '"Dworg Ability Adjustment",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
       '"Favored Region (Kaladruns)",' +
-      'Darkvision,"Dworg Enmity","Minor Light Sensitivity","Mixed Blood",' +
+      'Darkvision,"Minor Light Sensitivity","Mixed Blood","Orc Enmity",' +
       'Rugged,"Resist Spells" ' +
     'Selectables=' +
       '"Natural Mountaineer",Stonecunning ' +
@@ -1557,25 +1554,24 @@ LastAge.RACES = {
       '"Erenlander Ability Adjustment",' +
       '"Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)",' +
       '"Favored Region (Erenland)",' +
-      '"Erenlander Feat Bonus","Erenlander Skill Bonus",Heartlander ' +
+      '"Erenlander Feat Bonus","Erenlander Skill Bonus","Skilled Worker" ' +
     'Languages=Erenlander',
   'Gnome':
     'Features=' +
       '"Gnome Ability Adjustment",' +
       '"Weapon Familiarity (Hand Crossbow)",' +
-      '"Favored Region (Central Erenland)",' +
-      '"Favored Region (Rivers)",' +
-      '"Deep Lungs","Low-Light Vision","Natural Riverfolk","Natural Swimmer",' +
-      '"Natural Trader","Resist Spells",Robust,Slow,Small ' +
+      '"Favored Region (Central Erenland)","Favored Region (Rivers)",' +
+      '"Deep Lungs","Fortitude Bonus","Low-Light Vision","Natural Riverfolk",' +
+      '"Natural Swimmer","Natural Trader","Resist Spells",Slow,Small ' +
     'Languages="Trader\'s Tongue",any,any',
   'Gnome-Raised Dwarrow':
     'Features=' +
       '"Dwarrow Ability Adjustment",' +
       '"Weapon Familiarity (Hand Crossbow/Inutek)",' +
       '"Favored Region (Central Erenland)",' +
-      'Darkvision,"Deep Lungs","Mixed Blood","Natural Riverfolk",' +
-      '"Natural Swimmer","Resist Poison","Resist Spells",Small,Slow,' +
-      '"Skilled Trader",Sturdy ' +
+      'Darkvision,"Deep Lungs","Mixed Blood","Natural Armor",' +
+      '"Natural Riverfolk","Natural Swimmer","Resist Poison","Resist Spells",' +
+      'Small,Slow,"Skilled Trader" ' +
     'Languages="Clan Dwarven","Old Dwarven","Trader\'s Tongue",any,any',
   'Halfling-Raised Elfling':
     'Features=' +
@@ -1583,8 +1579,8 @@ LastAge.RACES = {
       '"Weapon Familiarity (Atharak/Halfling Lance)",' +
       '"Favored Region (Central Erenland)",' +
       '"Bound To The Beast",Fortunate,"Gifted Healer","Innate Magic",' +
-      '"Keen Senses","Low-Light Vision","Mixed Blood",Nimble,Small,' +
-      '"features.Bound To The Beast ? 1:Mounted Combat" ' +
+      '"Keen Senses","Low-Light Vision","Mixed Blood","Mounted Combat",' +
+      'Nimble,Small ' +
     'Languages=Erenlander,Halfling,"Jungle Mouth"',
   'Jungle Elf':
     'Features=' +
@@ -1592,8 +1588,8 @@ LastAge.RACES = {
       '"Weapon Familiarity (Sepi)",' +
       '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
       '"Favored Region (Aruun)","Favored Region (Erethor)",' +
-      '"Double Sepis","Feral Elf","Improved Innate Magic","Innate Magic",' +
-      '"Keen Senses","Low-Light Vision","Natural Channeler",' +
+      '"Bonus Innate Spell","Bonus Spell Energy","Double Sepi Training",' +
+      '"Feral Elf","Innate Magic","Keen Senses","Low-Light Vision",' +
       '"Resist Enchantment","Spirit Foe","Tree Climber" ' +
     'Languages="Jungle Mouth"',
   'Kurgun Dwarf':
@@ -1602,10 +1598,9 @@ LastAge.RACES = {
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",'+
       '"Favored Region (Kaladruns)",' +
       '"Favored Region (Surface Kaladruns)",' +
-      'Darkvision,"Double Hatchets","Dwarf Enmity",' +
-      '"Dwarf Armor Speed Adjustment","Dwarf Favored Weapon",' +
-      '"Natural Mountaineer",Resilient,"Resist Poison","Resist Spells",Slow,' +
-      '"Stone Knowledge" ' +
+      'Darkvision,"Double Urutuk Training","Favored Weapon (Axes/Hammers)",' +
+      'Muscular,"Natural Armor","Natural Mountaineer","Orc Enmity",' +
+      '"Resist Poison","Resist Spells",Slow,Stoneworker ' +
     'Languages="Clan Dwarven","Old Dwarven"',
   'Nomadic Halfling':
     'Features=' +
@@ -1624,9 +1619,8 @@ LastAge.RACES = {
       '"Orc Ability Adjustment",' +
       '"Weapon Familiarity (Vardatch)",' +
       '"Favored Region (Northern Reaches)",' +
-      'Darkvision,"Improved Cold Fortitude","Light Sensitivity",' +
-      '"Natural Predator","Night Fighter","Orc Enmity","Orc Frenzy",' +
-      '"Resist Spells" ' +
+      'Darkvision,"Dwarf Enmity","Light Sensitivity","Natural Predator",' +
+      '"Night Fighter","Orc Cold Resistance","Resist Spells","Tribal Frenzy" ' +
     'Languages="Black Tongue","Old Dwarven","High Elven",Orcish',
   'Plains Sarcosan':
     'Features=' +
@@ -1640,10 +1634,9 @@ LastAge.RACES = {
       '"Elf Ability Adjustment",' +
       '"Weapon Familiarity (Net)",' +
       '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow/Guisarme/Ranseur/Tident)",' +
-      '"Favored Region (Erethor)",' +
-      '"Favored Region (Miraleen)",' +
-      '"Deep Lungs","Innate Magic","Keen Senses","Low-Light Vision",' +
-      '"Natural Channeler","Natural Sailor","Natural Swimmer",' +
+      '"Favored Region (Erethor)","Favored Region (Miraleen)",' +
+      '"Bonus Spell Energy","Deep Lungs","Innate Magic","Keen Senses",' +
+      '"Low-Light Vision","Natural Sailor","Natural Swimmer",' +
       '"Resist Enchantment","Tree Climber" ' +
     'Languages="High Elven","Jungle Mouth"',
   'Snow Elf':
@@ -1651,27 +1644,26 @@ LastAge.RACES = {
       '"Elf Ability Adjustment",' +
       '"Weapon Familiarity (Fighting Knife)",' +
       '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
-      '"Favored Region (Erethor)",' +
-      '"Favored Region (Veradeen)",' +
-      '"Cold Fortitude","Double Knives","Innate Magic","Keen Senses",' +
-      '"Low-Light Vision","Natural Channeler","Resist Enchantment",Robust,' +
-      '"Tree Climber" ' +
+      '"Favored Region (Erethor)","Favored Region (Veradeen)",' +
+      '"Bonus Spell Energy","Cold Fortitude","Double Knife Training",' +
+      '"Fortitude Bonus","Innate Magic","Keen Senses","Low-Light Vision",' +
+      '"Resist Enchantment","Tree Climber" ' +
     'Languages="High Elven",Orcish,"Patrol Sign"',
   'Urban Sarcosan':
     'Features=' +
       '"Sarcosan Ability Adjustment",' +
       '"Weapon Familiarity (Cedeku/Sarcosan Lance)",' +
       '"Favored Region (Urban)",' +
-      'Interactive,Quick,"Sarcosan Feat Bonus","Sarcosan Skill Bonus" ' +
+      'Quick,"Sarcosan Feat Bonus","Sarcosan Skill Bonus",Social ' +
     'Languages=Colonial,Erenlander',
   'Wood Elf':
     'Features=' +
       '"Elf Ability Adjustment",' +
       '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow/Longsword/Short Sword)",' +
       '"Favored Region (Caraheen)","Favored Region (Erethor)",' +
-      '"Improved Innate Magic","Improved Natural Channeler","Innate Magic",' +
-      '"Keen Senses","Low-Light Vision","Natural Channeler",' +
-      '"Resist Enchantment","Tree Climber","Wood Elf Skill Bonus" ' +
+      '"Bonus Spell Energy","Bonus Innate Spell","Innate Magic","Keen Senses",'+
+      '"Low-Light Vision","Resist Enchantment","Tree Climber",' +
+      '"Wood Elf Skill Bonus" ' +
     'Languages="High Elven"'
 };
 LastAge.SCHOOLS = {
@@ -4225,6 +4217,8 @@ LastAge.raceRulesExtra = function(rules, name) {
   var raceLevel = prefix + 'Level';
 
   if(name == 'Agrarian Halfling') {
+    rules.defineRule
+      ('combatNotes.toughness', 'agrarianHalflingFeatures.Toughness', '+=', '3');
     rules.defineRule('selectableFeatureCount.Agrarian Halfling',
       'race', '=', 'source == "Agrarian Halfling" ? 1 : null'
     );
@@ -4233,15 +4227,18 @@ LastAge.raceRulesExtra = function(rules, name) {
       'danisil-RaisedElflingFeatures.Mixed Blood', '=', '"Elf and Halfling"'
     );
   } else if(name == 'Clan Dwarf') {
-    rules.defineRule('abilityNotes.armorSpeedAdjustment',
-      'abilityNotes.dwarfArmorSpeedAdjustment', '^', '0'
-    );
+    rules.defineRule
+      ('abilityNotes.armorSpeedAdjustment', 'abilityNotes.muscular', '^', '0');
+    rules.defineRule('combatNotes.naturalArmor', raceLevel, '+=', '2');
+    rules.defineRule('combatNotes.orcEnmity', raceLevel, '=', '1');
     rules.defineRule('skillNotes.stonecunning',
       'clanDwarfFeatures.Stonecunning', '+=', '2'
     );
   } else if(name == 'Dorn') {
+    rules.defineRule('saveNotes.fortitudeBonus', raceLevel, '=', '1');
     rules.defineRule('skillNotes.dornSkillBonus', raceLevel, '=', 'source + 3');
   } else if(name == 'Dwarf-Raised Dwarrow') {
+    rules.defineRule('combatNotes.naturalArmor', raceLevel, '+=', '1');
     rules.defineRule('featureNotes.mixedBlood',
       'dwarf-RaisedDwarrowFeatures.Mixed Blood', '=', '"Dwarf and Gnome"'
     );
@@ -4252,6 +4249,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       'dwarf-RaisedDwarrowFeatures.Stonecunning', '+=', '2'
     );
   } else if(name == 'Dworg') {
+    rules.defineRule('combatNotes.orcEnmity', raceLevel, '=', '2');
     rules.defineRule('featureNotes.mixedBlood',
       'dworgFeatures.Mixed Blood', '=', '"Dwarf and Orc"'
     );
@@ -4276,6 +4274,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       'deepLungsMultiplier', '=', null,
       'constitution', '*', 'source'
     );
+    rules.defineRule('saveNotes.fortitudeBonus', raceLevel, '=', '1');
     for(var s in rules.getChoices('skills')) {
       if(s.startsWith('Perform'))
         rules.defineRule
@@ -4285,6 +4284,7 @@ LastAge.raceRulesExtra = function(rules, name) {
     rules.defineRule('abilityNotes.naturalSwimmer',
       'speed', '=', 'Math.floor(source / 2)'
     );
+    rules.defineRule('combatNotes.naturalArmor', raceLevel, '+=', '1');
     rules.defineRule('deepLungsMultiplier',
       'gnome-RaisedDwarrowFeatures.Deep Lungs', '=', '3'
     );
@@ -4296,12 +4296,14 @@ LastAge.raceRulesExtra = function(rules, name) {
       'constitution', '*', 'source'
     );
   } else if(name == 'Jungle Elf') {
+    rules.defineRule('magicNotes.bonusSpellEnergy', raceLevel, '+=', '2');
     rules.defineRule
-      ('magicNotes.innateMagic', 'magicNotes.improvedInnateMagic', '+', '1');
+      ('magicNotes.innateMagic', 'magicNotes.bonusInnateSpell', '+', '1');
   } else if(name == 'Kurgun Dwarf') {
-    rules.defineRule('abilityNotes.armorSpeedAdjustment',
-      'abilityNotes.dwarfArmorSpeedAdjustment', '^', '0'
-    );
+    rules.defineRule
+      ('abilityNotes.armorSpeedAdjustment', 'abilityNotes.muscular', '^', '0');
+    rules.defineRule('combatNotes.naturalArmor', raceLevel, '+=', '2');
+    rules.defineRule('combatNotes.orcEnmity', raceLevel, '=', '1');
   } else if(name == 'Nomadic Halfling') {
     rules.defineRule('selectableFeatureCount.Nomadic Halfling',
       'race', '=', 'source == "Nomadic Halfling" ? 1 : null'
@@ -4313,6 +4315,7 @@ LastAge.raceRulesExtra = function(rules, name) {
     rules.defineRule
       ('skillNotes.sarcosanSkillBonus', raceLevel, '=', 'source + 3');
   } else if(name == 'Sea Elf') {
+    rules.defineRule('magicNotes.bonusSpellEnergy', raceLevel, '+=', '2');
     rules.defineRule
       ('abilityNotes.naturalSwimmer', 'speed', '=', 'Math.floor(source / 2)');
     rules.defineRule
@@ -4321,14 +4324,17 @@ LastAge.raceRulesExtra = function(rules, name) {
       'deepLungsMultiplier', '=', null,
       'constitution', '*', 'source'
     );
+  } else if(name == 'Snow Elf') {
+    rules.defineRule('magicNotes.bonusSpellEnergy', raceLevel, '+=', '2');
+    rules.defineRule('saveNotes.fortitudeBonus', raceLevel, '+=', '1');
   } else if(name == 'Urban Sarcosan') {
     rules.defineRule
       ('skillNotes.sarcosanSkillBonus', raceLevel, '=', 'source + 3');
   } else if(name == 'Wood Elf') {
+    rules.defineRule('magicNotes.bonusSpellEnergy', raceLevel, '+=', '3');
     rules.defineRule
-      ('magicNotes.innateMagic', 'magicNotes.improvedInnateMagic', '+', '1');
-    rules.defineRule
-      ('skillNotes.woodElfSkillBonus', raceLevel, '=', 'source');
+      ('magicNotes.innateMagic', 'magicNotes.bonusInnateSpell', '+', '1');
+    rules.defineRule('skillNotes.woodElfSkillBonus', raceLevel, '=', 'source');
   }
 
   // Since we inherit no races, no need to invoke basePlugin.raceRulesExtra
@@ -4473,22 +4479,17 @@ LastAge.ruleNotes = function() {
     '    (Greater Conjuration) or Spellcasting (Greater Evocation) instead.\n' +
     '  </li><li>\n' +
     '    The rule book uses several feature names multiple times with\n' +
-    '    different effects. For example, the Orc "Cold Resistance" feature\n' +
-    '    grants immunity to non-lethal damage and half damage from lethal\n' +
-    '    cold, while the Northblooded and Seaborn feature of the same name\n' +
-    '    grants damage reduction. In these cases Quilvyn uses a different\n' +
+    '    different effects. In these cases Quilvyn uses a different\n' +
     '    name for one of the features in order to remove the ambiguity.\n' +
-    '    The renamed features are: Orc "Cold Resistance" (renamed\n' +
-    '    "Improved Cold Fortitude" to distinguish from the Northblooded and\n' +
-    '    Seaborn feature); Chanceborn "Survivor" (renamed "Persistence" to\n' +
-    '    distinguish from the Fighter feature); Insurgent Spy "Conceal\n' +
-    '    Magic" (renamed "Conceal Aura" to distinguish from the Bane Of\n' +
-    '    Legates feature); Wildlander "Skill Mastery" (renamed "Practiced\n' +
-    '    Skill" to distinguish from the Pureblood and Rogue feature);\n' +
-    '    Spellsoul "Resistance" (renamed "Improved Spell Resistance" to\n' +
-    '    distinguish from other resistance features); Wogren Rider\n' +
-    '    "Coordinated Attack" (renamed "Joint Attack" to distinguish from\n' +
-    '    the Tactician feature); prestige class "Improved Spellcasting"\n' +
+    '    The renamed features are: Chanceborn "Survivor" (renamed \n' +
+    '    "Persistence" to distinguish from the Fighter feature); Insurgent\n' +
+    '    Spy "Conceal Magic" (renamed "Conceal Aura" to distinguish from\n' +
+    '    the Bane Of Legates feature); Wildlander "Skill Mastery" (renamed\n' +
+    '    "Practiced Skill" to distinguish from the Pureblood and Rogue\n' +
+    '    feature); Spellsoul "Resistance" (renamed "Improved Spell\n' +
+    '    Resistance" to distinguish from other resistance features); Wogren\n' +
+    '    Rider "Coordinated Attack" (renamed "Joint Attack" to distinguish\n' +
+    '    from the Tactician feature); prestige class "Improved Spellcasting"\n'+
     '    (split into "Art Of Magic" and bonus spells and points to\n' +
     '    distinguish from the Dragonblooded feature); Ironborn "Incredible\n' +
     '    Resilience" (renamed "Ironborn Resilience" to distinguish from the\n' +
@@ -4533,8 +4534,8 @@ LastAge.ruleNotes = function() {
     '  <li>\n' +
     '    Variable language proficiency and synergies are not reported.\n' +
     '  </li><li>\n' +
-    '    Quilvyn treats characters who receive Weapon Familiarity in one\n' +
-    '    of a group of weapons as familiar with all weapons in the group.\n' +
+    '    Quilvyn treats characters who receive Weapon Familiarity with a\n' +
+    '    choice from a set of weapons as familiar with all of those weapons.\n'+
     '  </li><li>\n' +
     '    Quilvyn does not report a validation error for a character with\n' +
     '    pidgin language competence in Courtier or High Elven.  Note that\n' +
