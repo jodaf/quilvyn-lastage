@@ -4679,7 +4679,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       'clanDwarfFeatures.Stonecunning', '+=', '2'
     );
   } else if(name == 'Dorn') {
-    rules.defineRule('saveNotes.fortitudeBonus', raceLevel, '=', '1');
+    rules.defineRule('saveNotes.fortitudeBonus', raceLevel, '+=', '1');
     rules.defineRule('skillNotes.dornSkillBonus', raceLevel, '=', 'source + 3');
   } else if(name == 'Dwarf-Raised Dwarrow') {
     rules.defineRule('combatNotes.naturalArmor', raceLevel, '+=', '1');
@@ -4718,7 +4718,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       'deepLungsMultiplier', '=', null,
       'constitution', '*', 'source'
     );
-    rules.defineRule('saveNotes.fortitudeBonus', raceLevel, '=', '1');
+    rules.defineRule('saveNotes.fortitudeBonus', raceLevel, '+=', '1');
     for(var s in rules.getChoices('skills')) {
       if(s.startsWith('Perform'))
         rules.defineRule
