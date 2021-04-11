@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.2.1';
+var LASTAGE_VERSION = '2.2.2.2';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -441,7 +441,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat,skill ' +
     'Note="Animals DC %V Will save to attack",' +
          '"+4 Handle Animal"',
-  'Ancestral Bladebearer Feat Bonus':'Section=feature Note="+%V Fighter Feat"',
+  'Ancestral Bladebearer Bonus Feats':'Section=feature Note="+%V Fighter Feat"',
   'Aquatic Adaptation':
     'Section=skill Note="Breathe through gills, no underwater pressure damage"',
   'Aquatic Ally':
@@ -514,7 +514,6 @@ LastAge.FEATURES_ADDED = {
   'Fast Movement':'Section=ability Note="+%V Speed"',
   'Fearsome Charge':
     'Section=combat Note="+%V damage, -1 AC for every 10\' in charge"',
-  'Feat Bonus':'Section=feature Note="+%V General Feat"',
   'Ferocity':'Section=combat Note="Continue fighting below 0 HP"',
   'Fey Vision':'Section=magic Note="Detect %V auras at will"',
   'Fortitude Bonus':'Section=save Note="+%V Fortitude"',
@@ -548,6 +547,7 @@ LastAge.FEATURES_ADDED = {
   'Intelligence Bonus':'Section=ability Note="+%V Intelligence"',
   'Intimidating Size':'Section=skill Note="+%V Intimidate"',
   'Ironborn Resilience':'Section=combat Note="Improved hit die"',
+  'Jack-Of-All-Trades Bonus Feats':'Section=feature Note="+%V General Feat"',
   'Language Savant':
     'Section=skill ' +
     'Note="Fluent in any language after listening for 10 minutes"',
@@ -592,6 +592,7 @@ LastAge.FEATURES_ADDED = {
          '"+4 Diplomacy (plants)"',
   'Power Words':
     'Section=magic Note="R60\' DC %2+spell level <i>Word of %V</i> %1/dy"',
+  'Pureblood Bonus Feats':'Section=feature Note="+%V General Feat"',
   'Quickened Counterspelling':
     'Section=magic Note="Counterspell as move action 1/rd"',
   'Rage':
@@ -860,7 +861,7 @@ LastAge.FEATURES_ADDED = {
   'Armor Class Bonus':'Section=combat Note="+%V AC"',
   'Art Of Magic':'Section=magic Note="+1 character level for max spell level"',
   'Astirax Companion':'Section=feature Note="Special bond/abilities"',
-  'Channeler Bonus Feats':'Section=feature Note="%V"',
+  'Channeler Bonus Feats':'Section=feature Note="%V Channeler feats"',
   'Channeler Spellcasting':'Section=feature Note="%V Spellcasting feats"',
   'Confident Effect':'Section=combat Note="+4 Mastery checks"',
   'Counterattack':'Section=combat Note="AOO on foe miss 1/rd"',
@@ -1014,7 +1015,7 @@ LastAge.FEATURES_ADDED = {
   'Dexterous Hands':'Section=skill Note="+2 Craft (non-metal or wood)"',
   'Dorn Ability Adjustment':
     'Section=ability Note="+2 Strength/-2 Intelligence"',
-  'Dorn Feat Bonus':'Section=feature Note="+1 Fighter Feat"',
+  'Dorn Extra Feat':'Section=feature Note="+1 Fighter Feat"',
   'Dorn Skill Bonus':'Section=skill Note="+%V Skill Points"',
   'Double Knife Training':
     'Section=combat Note="Half penalty fighting w/2 fighting knives"',
@@ -1033,7 +1034,7 @@ LastAge.FEATURES_ADDED = {
   'Elfling Ability Adjustment':
     'Section=ability Note="+4 Dexterity/-2 Strength/-2 Constitution"',
   'Erenlander Ability Adjustment':'Section=ability Note="+2 any/-2 any"',
-  'Erenlander Feat Bonus':'Section=feature Note="+2 General Feat"',
+  'Erenlander Extra Feats':'Section=feature Note="+2 General Feat"',
   'Erenlander Skill Bonus':'Section=skill Note="+%V Skill Points"',
   'Favored Region (Aruun)':
      'Section=skill ' +
@@ -1138,7 +1139,7 @@ LastAge.FEATURES_ADDED = {
   'Rugged':'Section=save Note="+2 Fortitude/+2 Reflex/+2 Will"',
   'Sarcosan Ability Adjustment':
     'Section=ability Note="+2 Charisma/+2 Intelligence/-2 Wisdom"',
-  'Sarcosan Feat Bonus':'Section=feature Note="+1 General Feat"',
+  'Sarcosan Extra Feat':'Section=feature Note="+1 General Feat"',
   'Sarcosan Skill Bonus':'Section=skill Note="+%V Skill Points"',
   'Skilled Rider':
     'Section=skill ' +
@@ -1183,9 +1184,9 @@ LastAge.FEATURES_ADDED = {
   'Ancestral Protector':
     'Section=magic Note="Continuous <i>Protection From Arrows</i> via weapon"',
   'Ancestral Watcher':'Section=magic Note="Weapon has continuous <i>Alarm</i>"',
-  'Armored Casting':'Section=magic Note="Reduce arcane casting penalty by %V%"',
+  'Armored Casting':'Section=magic Note="Reduce arcane spell failure by %V%"',
   'Awaken Ancestral Blade':'Section=combat Note="Weapon becomes intelligent"',
-  'Bane Of Legates Feat Bonus':'Section=feature Note="+%V Wizard Feats"',
+  'Bane Of Legates Bonus Feats':'Section=feature Note="%V Wizard Feats"',
   'Bind Astirax':
     'Section=magic ' +
     'Note="R60\' Astirax bound to current form for %V hr, destroyed if host animal killed (DC %1 Will neg)"',
@@ -1202,8 +1203,8 @@ LastAge.FEATURES_ADDED = {
   'Conceal Magic':
     'Section=magic ' +
     'Note="Spells considered half level for purposes of astirax detection"',
-  "Counter Legate's Will":
-    'Section=magic Note="<i>Dispel Magic</i> vs. legates"',
+  "Counter Izrador's Will":
+    'Section=magic Note="<i>Dispel Magic</i> to counterspell legates"',
   'Cover Story':
     'Section=skill Note="DC 20 Bluff four consecutive dy to establish alibi"',
   'Death Attack':
@@ -1228,9 +1229,11 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="+2 self or mount AC when either attacks"',
   'Fast Hands':
     'Section=combat Note="Trade -2 first rd attack for +4 Initiative"',
-  'Fell Touch':'Section=magic Note="Prevent fallen from becoming Fell or Lost"',
+  'Fell Touch':
+    'Section=magic ' +
+    'Note="Full-round action prevents fallen from becoming Fell or Lost"',
   'Find The Way':'Section=feature Note="%V"',
-  'Freerider Bonus Feats':'Section=feature Note="%V"',
+  'Freerider Bonus Feats':'Section=feature Note="%V Freerider feats"',
   'Ghost Sight':'Section=magic Note="<i>See Invisible</i> at will"',
   'Hit And Run':
     'Section=combat Note="Move away from foe after attack w/out foe AOO"',
@@ -1246,11 +1249,12 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="No penalty for additional mounted attacks"',
   'Improved Mounted Combat':
     'Section=combat Note="Mounted Combat additional %V times/rd"',
-  'Improved Ride-By Attack':'Section=combat Note="Charge in any direction"',
+  'Improved Ride-By Attack':
+    'Section=combat Note="Change direction while charging"',
   'Improved Sneak Attack Range':
     'Section=combat Note="Ranged sneak attack range +%V\'"',
   'Improved Spirited Charge':
-    'Section=combat Note="Improved Critical w/charging weapon"',
+    'Section=combat Note="x2 critical threat range w/charging weapon"',
   'Improved Trample':'Section=combat Note="No foe AOO during overrun"',
   'Information Network':
     'Section=skill ' +
@@ -1271,7 +1275,9 @@ LastAge.FEATURES_ADDED = {
   'Meticulous Aim':
     'Section=combat Note="+1 critical range for every 2 rd aiming; +%V max"',
   'Mindbond':'Section=feature Note="Telepathic link to mentor 1/dy"',
-  'Mounted Hide':'Section=skill Note="Hide while mounted"',
+  'Mounted Ability':'Section=feature Note="%V selections"',
+  'Mounted Hide':'Section=skill Note="+%V Hide while mounted"',
+  'Mounted Maneuver':'Section=feature Note="%V selections"',
   'Mystifying Speech':'Section=magic Note="DC %V <i>Modify Memory</i> %1/dy"',
   'Nature Sense':
     'Section=skill Note="Identify animals, plants, unsafe food and drink"',
@@ -1312,12 +1318,12 @@ LastAge.FEATURES_ADDED = {
     'Note="Services from Elven contacts","+%V Diplomacy (Elves, allies)"',
   'Still As Stone':'Section=skill Note="+10 Hide (exploiting Security Breach)"',
   'Strength Of The Wood':
-    'Section=magic Note="Recover 1 spell energy point/hr while inside tree"',
+    'Section=magic Note="Recover 1 spell energy point/hr during Tree Meld"',
   'Stunning Sneak Attack':
     'Section=combat Note="Sneak attack stuns foe 1 rd 3/dy (DC %V neg)"',
   'Sundered Spirit':
     'Section=magic ' +
-    'Note="Radiates 5\'-50\' <i>Antimagic Field</i> for divine magic"',
+    'Note="Radiate 5\'-50\' <i>Antimagic Field</i> for divine magic"',
   'Sweeping Strike':
     'Section=combat ' +
     'Note="Attack all threatened foes during mount move w/out foe AOO"',
@@ -1325,7 +1331,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="Gather Information gives +2 attack and damage or +4 AC vs. chosen foe"',
   'The Drop':'Section=combat Note="+%V attack and damage vs. flat-footed foe"',
-  'Tree Meld':'Section=magic Note="Merge into tree"',
+  'Tree Meld':'Section=magic Note="Merge into tree for up to %V hr"',
   'Unbreakable Blade':'Section=combat Note="Ancestral weapon cannot be harmed"',
   'Undetectable Alignment':
     'Section=magic Note="Continuous <i>Undetectable Alignment</i>"',
@@ -1335,13 +1341,15 @@ LastAge.FEATURES_ADDED = {
   'Venom Immunity':'Section=save Note="Immune to organic poisons"',
   'Wheel About':
     'Section=combat Note="May make 90 degree turn during mounted charge"',
-  "Whisper's Ward":'Section=save Note="Immune to mind-affecting effects"',
-  'Whisper Clairaudience':'Section=magic Note="<i>Clairaudience</i> w/in wood"',
-  'Whisper Clairvoyance':'Section=magic Note="<i>Clairvoyance</i> w/in wood"',
-  'Whisper Commune':'Section=magic Note="<i>Commune With Nature</i> w/in wood"',
-  'Whisper Initiative':'Section=combat Note="+2 Initiative"',
-  'Whisper Sense':'Section=feature Note="No wisdom check to sense voices"',
-  'Whisper Surprise':'Section=combat Note="Cannot be surprised"',
+  "Whisper's Ward":
+    'Section=save Note="Immune to mind-affecting effects w/in Erethor"',
+  'Whisper Sense':
+    'Section=combat,feature,magic ' +
+    'Note=' +
+      '"%V w/in Erethor",' +
+      '"Sense voices in Erethor w/out wisdom check",' +
+      '"%V w/in Erethor"',
+  'Wizard Bonus Feats':'Section=feature Note="%V Wizard Feats"',
   'Wizardcraft':
     'Section=magic Note="Prepare spells ahead of time for half energy cost"',
   'Wogren Dodge':'Section=combat Note="+2 AC during mounted move"',
@@ -1532,7 +1540,7 @@ LastAge.PATHS = {
     'Level=level ' +
     'Features=' +
       '"1:Spell Choice","2:Spontaneous Spell","3:Skill Boost",' +
-      '"4:Ability Boost","5:Save Boost","7:Feat Bonus" ' +
+      '"4:Ability Boost","5:Save Boost","7:Jack-Of-All-Trades Bonus Feats" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Jack0:1=1;2=2,' +
@@ -1582,7 +1590,7 @@ LastAge.PATHS = {
     'Group=Pureblood ' +
     'Level=level ' +
     'Features=' +
-      '"1:Master Adventurer","2:Blood Of Kings","3:Feat Bonus",' +
+      '"1:Master Adventurer","2:Blood Of Kings","3:Pureblood Bonus Feats",' +
       '"4:Skill Mastery","5:Ability Boost"',
   'Quickened':
     'Group=Quickened ' +
@@ -1614,7 +1622,7 @@ LastAge.PATHS = {
       'Seer1:1=1,' +
       'Seer2:2=1;5=2,' +
       'Seer3:4=1;8=2,' +
-      'Seer4:7=1;10=2;11=3;13=4;14=5,' +
+      'Seer4:7=1;10=2;11=3;13=4,' +
       'Seer5:16=1;19=2,' +
       'Seer6:14=1;17=2,' +
       'Seer7:20=1',
@@ -1723,7 +1731,7 @@ LastAge.RACES = {
       '"Dorn Ability Adjustment",' +
       '"Weapon Familiarity (Bastard Sword/Dornish Horse Spear)",' +
       '"Favored Region (Northlands)",' +
-      'Brotherhood,"Cold Fortitude","Dorn Feat Bonus","Dorn Skill Bonus",' +
+      'Brotherhood,"Cold Fortitude","Dorn Extra Feat","Dorn Skill Bonus",' +
       '"Fortitude Bonus","Two-Handed Focus" ' +
     'Languages=Erenlander,Norther',
   'Dwarf-Raised Dwarrow':
@@ -1751,7 +1759,7 @@ LastAge.RACES = {
       '"Erenlander Ability Adjustment",' +
       '"Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)",' +
       '"Favored Region (Erenland)",' +
-      '"Erenlander Feat Bonus","Erenlander Skill Bonus","Skilled Worker" ' +
+      '"Erenlander Extra Feats","Erenlander Skill Bonus","Skilled Worker" ' +
     'Languages=Erenlander',
   'Gnome':
     'Features=' +
@@ -1824,7 +1832,7 @@ LastAge.RACES = {
       '"Sarcosan Ability Adjustment",' +
       '"Weapon Familiarity (Cedeku/Sarcosan Lance)",' +
       '"Favored Region (Southern Erenland)",' +
-      '"Natural Horseman",Quick,"Sarcosan Feat Bonus","Sarcosan Skill Bonus" ' +
+      '"Natural Horseman",Quick,"Sarcosan Extra Feat","Sarcosan Skill Bonus" ' +
     'Languages=Colonial,Erenlander',
   'Sea Elf':
     'Features=' +
@@ -1839,7 +1847,7 @@ LastAge.RACES = {
   'Snow Elf':
     'Features=' +
       '"Elf Ability Adjustment",' +
-      '"Weapon Familiarity (Fighting Knife)",' +
+      '"Weapon Familiarity (Fighting Knife/Icewood Longbow)",' +
       '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow)",' +
       '"Favored Region (Erethor)","Favored Region (Veradeen)",' +
       '"Bonus Spell Energy","Cold Fortitude","Double Knife Training",' +
@@ -1851,7 +1859,7 @@ LastAge.RACES = {
       '"Sarcosan Ability Adjustment",' +
       '"Weapon Familiarity (Cedeku/Sarcosan Lance)",' +
       '"Favored Region (Urban)",' +
-      'Quick,"Sarcosan Feat Bonus","Sarcosan Skill Bonus",Social ' +
+      'Quick,"Sarcosan Extra Feat","Sarcosan Skill Bonus",Social ' +
     'Languages=Colonial,Erenlander',
   'Wood Elf':
     'Features=' +
@@ -2229,7 +2237,7 @@ LastAge.SPELLS_LEVELS = {
   'Fear':'Ch4',
   'Feather Fall':'Ch1,Jack1',
   'Feeblemind':'Ch5',
-  'Find The Path':'Ch6',
+  'Find The Path':'Ch6,Seer6',
   'Finger Of Death':'Ch7',
   'Fire Seeds':'Ch6',
   'Fire Shield':'Ch4',
@@ -2662,6 +2670,7 @@ LastAge.SPELLS_SCHOOLS = {
   'Whirlwind':'Greater Evocation',
   'Wind Wall':'Greater Evocation',
   // Other SRD spells w/different school
+  'Prestidigitation':'Evocation',
   'Ray Of Frost':'Conjuration',
   'Zone Of Silence':'Enchantment'
 };
@@ -2921,7 +2930,7 @@ LastAge.PRESTIGE_CLASSES = {
       '"1:Armor Proficiency (Heavy)","1:Tower Shield Proficiency",' +
       '"1:Weapon Proficiency (Martial)",' +
       '"1:Unbreakable Blade","2:Advance Ancestral Blade",' +
-      '"3:Ancestral Bladebearer Feat Bonus","3:Ancestral Watcher",' +
+      '"3:Ancestral Bladebearer Bonus Feats","3:Ancestral Watcher",' +
       '"4:Immovable Blade","5:Ancestral Advisor","7:Ancestral Guide",' +
       '"8:Unwavering Blade","9:Ancestral Protector",' +
       '"10:Awaken Ancestral Blade" ' +
@@ -2970,12 +2979,12 @@ LastAge.PRESTIGE_CLASSES = {
       '"skills.Spellcraft >= 10","spellEnergy >= 10" ' +
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
-      'Bluff,Concentration,Craft,Diplomacy,"Handle Animal",Heal,Intimidate,' +
-      'Knowledge,Profession,"Sense Motive",Spellcraft,Survival ' +
+      'Bluff,Concentration,Craft,"Gather Information","Handle Animal",' +
+      'Intimidate,Knowledge,Profession,"Sense Motive",Spellcraft,Survival ' +
     'Features=' +
       '"1:Art Of Magic","1:Improved Spellcasting","1:Resist Izrador\'s Will",' +
-      '"2:Bane Of Legates Feat Bonus","3:See Astirax",' +
-      '"4:Counter Legate\'s Will","5:Bonus Spellcasting","6:Bind Astirax",' +
+      '"2:Bane Of Legates Bonus Feats","3:See Astirax",' +
+      '"4:Counter Izrador\'s Will","5:Bonus Spellcasting","6:Bind Astirax",' +
       '"8:Conceal Magic","10:Sundered Spirit"',
   'Druid':
     'Require=' +
@@ -3035,8 +3044,8 @@ LastAge.PRESTIGE_CLASSES = {
     'Skills=' +
       'Concentration,Craft,Knowledge,Profession,"Speak Language",Spellcraft ' +
     'Features=' +
-      '"1:Art Of Magic",1:Seance,2:Spiritcraft,"2:Spirit Manipulation",' +
-      '"3:Ghost Sight","5:Spell Focus (Divination)",' +
+      '"1:Art Of Magic","1:Improved Spellcasting",1:Seance,2:Spiritcraft,' +
+      '"2:Spirit Manipulation","3:Ghost Sight","5:Spell Focus (Divination)",' +
       '"9:Spell Focus (Necromancy)"',
   'Insurgent Spy':
     'Require=' +
@@ -3098,10 +3107,9 @@ LastAge.PRESTIGE_CLASSES = {
     'Features=' +
       '"1:Armor Proficiency (Medium)","1:Shield Proficiency",' +
       '"1:Weapon Proficiency (Martial)",' +
-      '"1:Art Of Magic","1:Whisper Sense","2:Whisper Initiative",' +
-      '"3:Fell Touch","4:Whisper Surprise","5:Tree Meld",' +
-      '"6:Whisper Clairaudience","7:Strength Of The Wood",' +
-      '"8:Whisper Clairvoyance","9:Whisper\'s Ward","10:Whisper Commune"',
+      '"1:Art Of Magic","1:Improved Spellcasting","1:Whisper Sense",' +
+      '"3:Fell Touch","5:Tree Meld","7:Strength Of The Wood",' +
+      '"9:Whisper\'s Ward"',
   'Wizard':
     'Require=' +
       '"features.Magecraft (Hermetic)","Sum \'features.Spellcasting\' >= 2",' +
@@ -3111,8 +3119,8 @@ LastAge.PRESTIGE_CLASSES = {
     'Skills=' +
       'Concentration,Craft,Knowledge,Profession,"Speak Language",Spellcraft ' +
     'Features=' +
-      '"1:Art Of Magic",1:Wizardcraft,"2:Efficient Study",' +
-      '"4:Bonus Spellcasting"',
+      '"1:Art Of Magic","1:Improved Spellcasting",1:Wizardcraft,' +
+      '"2:Efficient Study","3:Wizard Bonus Feats","4:Bonus Spellcasting"',
   'Wogren Rider':
     'Require=' +
       '"features.Mounted Archery","features.Mounted Combat",' +
@@ -3123,7 +3131,7 @@ LastAge.PRESTIGE_CLASSES = {
       'Profession,Ride,"Speak Language",Spot,Survival,Swim ' +
     'Features=' +
       '"1:Armor Proficiency (Medium)","1:Weapon Proficiency (Martial)",' +
-      '"1:Joint Attack","1:Special Mount","3:Speed Mount",' +
+      '"1:Joint Attack","1:Special Mount","2:Mounted Ability","3:Speed Mount",'+
       '"5:Mounted Hide","7:Wogren Dodge","9:Wogren\'s Sight" ' +
     'Selectables=' +
       '"2:Improved Mounted Archery","2:Improved Mounted Combat",' +
@@ -3821,7 +3829,7 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('combatNotes.advanceAncestralBlade',
       classLevel, '=', 'Math.floor((source + 2) / 4)'
     );
-    rules.defineRule('featureNotes.ancestralBladebearerFeatBonus',
+    rules.defineRule('featureNotes.ancestralBladebearerBonusFeats',
       classLevel, '+=', 'Math.floor(source / 3)'
     );
     rules.defineRule('magicNotes.ancestralAdvisor',
@@ -3865,8 +3873,10 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Bane Of Legates') {
 
-    rules.defineRule('featureNotes.baneOfLegatesFeatBonus',
-      classLevel, '+=', 'Math.floor((source - 1) / 4)'
+    rules.defineRule
+      ('featCount.Wizard', 'featureNotes.baneOfLegatesBonusFeats', '+=', null);
+    rules.defineRule('featureNotes.baneOfLegatesBonusFeats',
+      classLevel, '=', 'Math.floor((source - 1) / 4)'
     );
     rules.defineRule('featureNotes.bonusSpellcasting',
       classLevel, '+=', 'Math.floor((source - 1) / 4)'
@@ -3952,8 +3962,11 @@ LastAge.classRulesExtra = function(rules, name) {
     );
     rules.defineRule
       ('featCount.Freerider', 'featureNotes.freeriderBonusFeats', '=', null);
-    rules.defineRule('selectableFeatureCount.Freerider',
+    rules.defineRule('featureNotes.mountedManeuver',
       classLevel, '=', 'Math.floor((source + 1) / 3)'
+    );
+    rules.defineRule('selectableFeatureCount.Freerider',
+      'featureNotes.mountedManeuver', '=', null
     );
 
   } else if(name == 'Haunted One') {
@@ -3989,6 +4002,7 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Smuggler') {
 
+    rules.defineRule('baseAttack', 'smugglerBaseAttackAdjustment', '+', null);
     rules.defineRule('magicNotes.disguiseContraband', classLevel, '=', null);
     rules.defineRule('magicNotes.mystifyingSpeech',
       classLevel, '=', '10 + source',
@@ -4006,6 +4020,9 @@ LastAge.classRulesExtra = function(rules, name) {
     );
     rules.defineRule("skillNotes.smuggler'sTrade",
       classLevel, '=', 'Math.floor((source + 1) / 2) * 2'
+    );
+    rules.defineRule('smugglerBaseAttackAdjustment',
+      classLevel, '=', 'source==8 || source==10 ? -1 : null'
     );
 
   } else if(name == 'Warrior Arcanist') {
@@ -4030,43 +4047,57 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Whisper Adept') {
 
-    rules.defineRule
-      ('magicNotes.whisperAdeptSpellEnergy', classLevel, '=', null);
-    rules.defineRule
-      ('magicNotes.whisperAdeptSpellsKnown', classLevel, '=', null);
-    rules.defineRule
-      ('spellEnergy', 'magicNotes.whisperAdeptSpellEnergy', '+', null);
-    rules.defineRule
-      ('spellsKnownBonus', 'magicNotes.whisperAdeptSpellsKnown', '+', null);
+    rules.defineRule('combatNotes.whisperSense',
+      classLevel, '=',
+        'source<2 ? null : source<4 ? "+2 Initiative" : ' +
+        '"+2 Initiative, cannot be surprised"'
+    );
+    rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule('magicNotes.treeMeld', classLevel, '=', null);
+    rules.defineRule('magicNotes.whisperSense',
+      classLevel, '=',
+        'source<6 ? null : source<8 ? "<i>Clairaudience</i>" : ' +
+        'source<10 ? "<i>Clairaudience</i>, <i>Clairvoyance</i>" : ' +
+        '"<i>Clairaudience</i>, <i>Clairvoyance</i>, <i>Commune With Nature</i>"'
+    );
 
   } else if(name == 'Wizard') {
 
-    rules.defineRule('featCount.Spellcasting',
+    rules.defineRule
+      ('featCount.Wizard', 'featureNotes.wizardBonusFeats', '+=', null);
+    rules.defineRule('featureNotes.bonusSpellcasting',
       classLevel, '+=', 'source<4 ? null : Math.floor((source - 1) / 3)'
     );
-    rules.defineRule
-      ('featCount.Wizard', classLevel, '+=', 'Math.floor(source / 3)');
+    rules.defineRule('featureNotes.wizardBonusFeats',
+      classLevel, '=', 'Math.floor(source / 3)'
+    );
     rules.defineRule('featureNotes.efficientStudy',
       classLevel, '=', 'Math.floor((source + 1) / 3) * 10'
     );
-    rules.defineRule('magicNotes.wizardSpellEnergy', classLevel, '=', null);
-    rules.defineRule('magicNotes.wizardSpellsKnown', classLevel, '=', null);
-    rules.defineRule
-      ('spellEnergy', 'magicNotes.wizardSpellEnergy', '+', null);
-    rules.defineRule
-      ('spellsKnownBonus', 'magicNotes.wizardSpellsKnown', '+', null);
+    rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
 
   } else if(name == 'Wogren Rider') {
 
     rules.defineRule('combatNotes.improvedMountedCombat',
       'dexterityModifier', '=', 'source > 0 ? source : 1'
     );
+    rules.defineRule('featureNotes.mountedAbility',
+      classLevel, '=', 'Math.floor(source / 2)'
+    );
     rules.defineRule
       ('features.Blindsense', "features.Wogren's Sight", '=', '1');
     rules.defineRule
       ('features.Rapid Shot', 'features.Improved Mounted Archery', '=', '1');
     rules.defineRule('selectableFeatureCount.Wogren Rider',
-      classLevel, '=', 'Math.floor(source / 2)'
+      'featureNotes.mountedAbility', '=', null
+    );
+    rules.defineRule('skillNotes.mountedHide',
+      classLevel, '=', '0',
+      'skillModifier.Hide', '+', null,
+      // Use wogren's size modifier, not character's
+      'features.Small', '+', '-4',
+      'animalCompanionStats.Size', '+',
+        'source=="S" ? 4 : source=="L" ? -4 : null'
     );
 
   } else if(LastAge.basePlugin.classRulesExtra) {
@@ -4599,8 +4630,9 @@ LastAge.pathRulesExtra = function(rules, name) {
 
   } else if(name == 'Jack-Of-All-Trades') {
 
-    rules.defineRule
-      ('featureNotes.featBonus', pathLevel, '=', 'Math.floor(source / 7)');
+    rules.defineRule('featureNotes.jack-Of-All-TradesBonusFeats',
+      pathLevel, '=', 'Math.floor(source / 7)'
+    );
     rules.defineRule('magicNotes.spellChoice',
       pathLevel, '=',
       'source>=16 ? "Jack0/Jack1/Jack2/Jack3" : ' +
@@ -4687,9 +4719,12 @@ LastAge.pathRulesExtra = function(rules, name) {
 
   } else if(name == 'Pureblood') {
 
+    QuilvynRules.prerequisiteRules
+      (rules, 'validation', 'purebloodHeroicPath', pathLevel,
+       ['race == "Erenlander"']);
     rules.defineRule
       ('abilityNotes.abilityBoost', pathLevel, '+=', 'Math.floor(source / 5)');
-    rules.defineRule('featureNotes.featBonus',
+    rules.defineRule('featureNotes.purebloodBonusFeats',
       pathLevel, '+=', 'Math.floor((source + 2) / 5)'
     );
     // Override computation of skill mastery from Rogue feature so that we can
@@ -5195,22 +5230,17 @@ LastAge.ruleNotes = function() {
     '    makes the Greater Spellcasting feat moot; use Spellcasting\n' +
     '    (Greater Conjuration) or Spellcasting (Greater Evocation) instead.\n' +
     '  </li><li>\n' +
-    '    The rule book uses several feature names multiple times with\n' +
-    '    different effects. In these cases Quilvyn uses a different\n' +
-    '    name for one of the features in order to remove the ambiguity.\n' +
-    '    The renamed features are: Wogren Rider "Coordinated Attack" \n' +
-    '    (renamed "Joint Attack" to distinguish from the Tactician feature).\n'+
+    '    The level 4 Beast spell <i>Bear\'s Endurance</i> is corrected to\n' +
+    '    <i>Bull\'s Endurance</i>.\n' +
     '  </li><li>\n' +
-    '    In situations where a feature has very different effects at\n' +
-    '    different character levels, Quilvyn uses a different feature name\n' +
-    '    for each effect. \n' +
-    '    Whisper Adept "Whisper Sense" becomes "Whisper Initiative",\n' +
-    '    "Whisper Surprise", "Whisper Clairaudience", "Whisper\n' +
-    '    Clairvoyance", and "Whisper Commune" at levels 2, 4, 6, 8, and 10.\n' +
+    '    The level 14 Seer spell <i>Divination</i> is corrected to <i>Find\n' +
+    '    The Path</i>.\n' +
     '  </li><li>\n' +
-    '    The rule book incorrectly lists Bear\'s Endurance as a spell\n' +
-    '    acquired at the level 4 Beast heroic path.  Quilvyn corrects this\n' +
-    '    to Bull\'s Endurance.\n' +
+    '    Quilvyn uses the Bane Of Legates class skill list from the\n' +
+    '    <a href="http://www.jodaf.com/dnd/Midnight/Resources/MN2E-Errata.pdf">MN2E Errata and Clarifications</a>.\n' +
+    '  </li><li>\n' +
+    '    Quilvyn renames the Wogren Rider "Coordinated Attack" feature as\n' +
+    '    "Joint Attack" to distinguish it from the Tactician feature.\n'+
     '  </li><li>\n' +
     '    The Wogren Rider selectable features "Improved Ride-By Attack",\n' +
     '    "Improved Spirited Charge", and "Improved Trample" only apply if\n' +
@@ -5239,11 +5269,6 @@ LastAge.ruleNotes = function() {
     '    Quilvyn treats characters who receive Weapon Familiarity with a\n' +
     '    choice from a set of weapons as familiar with all of those weapons.\n'+
     '  </li><li>\n' +
-    '    Quilvyn does not report a validation error for a character with\n' +
-    '    pidgin language competence in Courtier or High Elven.  Note that\n' +
-    '    the rule book violates this rule by specifying that Orcs have\n' +
-    '    pidgin competence in High Elven.\n' +
-    '  </li><li>\n' +
     '    For characters with the Naturefriend heroic path, Quilvyn makes\n' +
     '    Knowledge (Nature) and Survival class skills and gives a +2 bonus\n' +
     '    in those skills, rather than applying the bonus only if the\n' +
@@ -5256,9 +5281,9 @@ LastAge.ruleNotes = function() {
     '<p>\n' +
     '<ul>\n' +
     '  <li>\n' +
-    '  The bonuses of the Feyblooded Unearthly Grace feature rise as the\n' +
-    '  character advances in level, rather than remaining fixed as specified\n'+
-    '  in the rule book.\n' +
+    '    The bonuses of the Feyblooded Unearthly Grace feature rise as the\n' +
+    '    character advances in level, rather than remaining fixed as\n'+
+    '    specified in the rule book.\n' +
     '  </li><li>\n' +
     '    When randomizing heroic path spells, Quilvyn may assign spells of\n' +
     '    equal level in the wrong order. For example, Quilvyn may give a\n' +
