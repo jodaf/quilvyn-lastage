@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.2.3';
+var LASTAGE_VERSION = '2.2.2.4';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -1091,8 +1091,6 @@ LastAge.FEATURES_ADDED = {
   'Graceful':'Section=skill Note="+2 Climb/+2 Jump/+2 Move Silently/+2 Tumble"',
   'Halfling Ability Adjustment':
     'Section=ability Note="+2 Dexterity/-2 Strength"',
-  'Heavyweight':
-    'Section=ability Note="No speed penalty in heavy armor or with heavy load"',
   'Illiteracy':
     'Section=skill Note="Must spend 2 skill points to read and write"',
   'Keen Senses':'Section=skill Note="+2 Listen/+2 Search/+2 Spot"',
@@ -1154,6 +1152,8 @@ LastAge.FEATURES_ADDED = {
     'Note="+2 vs. outsiders",' +
           '"+4 Hide (nature)/+4 Move Silently (nature)"',
   'Stability':'Section=combat Note="+4 vs. Bull Rush and Trip"',
+  'Steady':
+    'Section=ability Note="No speed penalty in heavy armor or with heavy load"',
   'Stoneworker':
     'Section=skill Note="+2 Appraise (stone, metal)/+2 Craft (stone, metal)"',
   'Stout':'Section=feature Note="Endurance and Toughness"',
@@ -1715,8 +1715,8 @@ LastAge.RACES = {
       '"Favored Region (Kaladruns)",' +
       '"Favored Region (Subterranean Kaladruns)",' +
       'Darkvision,"Dwarf Enmity","Orc Dodger","Favored Weapon (Axes/Hammers)",'+
-      '"Know Depth",Heavyweight,"Natural Armor","Resist Poison",' +
-      '"Resist Spells",Slow,Stability,Stonecunning,Stoneworker ' +
+      '"Know Depth","Natural Armor","Resist Poison","Resist Spells",Slow,' +
+      'Stability,Steady,Stonecunning,Stoneworker ' +
     'Languages="Clan Dwarven","Old Dwarven"',
   'Danisil-Raised Elfling':
     'Features=' +
@@ -1804,8 +1804,8 @@ LastAge.RACES = {
       '"Favored Region (Kaladruns)",' +
       '"Favored Region (Surface Kaladruns)",' +
       'Darkvision,"Double Urutuk Training","Dwarf Enmity",' +
-      '"Favored Weapon (Axes/Hammers)",Heavyweight,"Natural Armor",' +
-      '"Natural Mountaineer","Resist Poison","Resist Spells",Slow,Stoneworker '+
+      '"Favored Weapon (Axes/Hammers)","Natural Armor","Natural Mountaineer",' +
+      '"Resist Poison","Resist Spells",Slow,Steady,Stoneworker '+
     'Languages="Clan Dwarven","Old Dwarven"',
   'Nomadic Halfling':
     'Features=' +
