@@ -1091,6 +1091,8 @@ LastAge.FEATURES_ADDED = {
   'Graceful':'Section=skill Note="+2 Climb/+2 Jump/+2 Move Silently/+2 Tumble"',
   'Halfling Ability Adjustment':
     'Section=ability Note="+2 Dexterity/-2 Strength"',
+  'Heavyweight':
+    'Section=ability Note="No speed penalty in heavy armor or with heavy load"',
   'Illiteracy':
     'Section=skill Note="Must spend 2 skill points to read and write"',
   'Keen Senses':'Section=skill Note="+2 Listen/+2 Search/+2 Spot"',
@@ -1099,8 +1101,6 @@ LastAge.FEATURES_ADDED = {
   'Minor Light Sensitivity':
     'Section=combat Note="DC 15 Fortitude save in sunlight to avoid -1 attack"',
   'Mixed Blood':'Section=feature Note="%V for special abilities and affects"',
-  'Muscular':
-    'Section=ability Note="No speed penalty in heavy armor or with heavy load"',
   'Natural Horseman':
     'Section=combat,skill ' +
      'Note="+1 melee damage (horseback), half ranged penalty (horseback)",' +
@@ -1715,8 +1715,8 @@ LastAge.RACES = {
       '"Favored Region (Kaladruns)",' +
       '"Favored Region (Subterranean Kaladruns)",' +
       'Darkvision,"Dwarf Enmity","Orc Dodger","Favored Weapon (Axes/Hammers)",'+
-      '"Know Depth",Muscular,"Natural Armor","Resist Poison","Resist Spells",' +
-      'Slow,Stability,Stonecunning,Stoneworker ' +
+      '"Know Depth",Heavyweight,"Natural Armor","Resist Poison",' +
+      '"Resist Spells",Slow,Stability,Stonecunning,Stoneworker ' +
     'Languages="Clan Dwarven","Old Dwarven"',
   'Danisil-Raised Elfling':
     'Features=' +
@@ -1804,7 +1804,7 @@ LastAge.RACES = {
       '"Favored Region (Kaladruns)",' +
       '"Favored Region (Surface Kaladruns)",' +
       'Darkvision,"Double Urutuk Training","Dwarf Enmity",' +
-      '"Favored Weapon (Axes/Hammers)",Muscular,"Natural Armor",' +
+      '"Favored Weapon (Axes/Hammers)",Heavyweight,"Natural Armor",' +
       '"Natural Mountaineer","Resist Poison","Resist Spells",Slow,Stoneworker '+
     'Languages="Clan Dwarven","Old Dwarven"',
   'Nomadic Halfling':
