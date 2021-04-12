@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.2.2';
+var LASTAGE_VERSION = '2.2.2.3';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -1024,7 +1024,7 @@ LastAge.FEATURES_ADDED = {
   'Double Sepi Training':'Section=combat Note="Half penalty fighting w/2 sepi"',
   'Dwarf Ability Adjustment':
     'Section=ability Note="+2 Constitution/-2 Charisma"',
-  'Dwarf Enmity':'Section=combat Note="+1 damage vs. dwarves"',
+  'Dwarf Enmity':'Section=combat Note="+%V attack vs. orcs"',
   'Dwarrow Ability Adjustment':'Section=ability Note="+2 Charisma"',
   'Dworg Ability Adjustment':
     'Section=ability ' +
@@ -1130,7 +1130,7 @@ LastAge.FEATURES_ADDED = {
     'Section=ability Note="+4 Strength/-2 Intelligence/-2 Charisma"',
   'Orc Cold Resistance':'Section=save Note="Immune non-lethal/half lethal"',
   'Orc Dodger':'Section=combat Note="+1 AC vs. orc"',
-  'Orc Enmity':'Section=combat Note="+%V attack vs. orcs"',
+  'Orc Enmity':'Section=combat Note="+1 damage vs. dwarves"',
   'Quick':
     'Section=combat,save Note="+1 attack w/light weapons","+1 Reflex"',
   'Resist Enchantment':'Section=save Note="+2 vs. enchantments"',
@@ -1714,8 +1714,8 @@ LastAge.RACES = {
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe)",' +
       '"Favored Region (Kaladruns)",' +
       '"Favored Region (Subterranean Kaladruns)",' +
-      'Darkvision,"Orc Dodger","Favored Weapon (Axes/Hammers)","Know Depth",' +
-      'Muscular,"Natural Armor","Orc Enmity","Resist Poison","Resist Spells",' +
+      'Darkvision,"Dwarf Enmity","Orc Dodger","Favored Weapon (Axes/Hammers)",'+
+      '"Know Depth",Muscular,"Natural Armor","Resist Poison","Resist Spells",' +
       'Slow,Stability,Stonecunning,Stoneworker ' +
     'Languages="Clan Dwarven","Old Dwarven"',
   'Danisil-Raised Elfling':
@@ -1749,7 +1749,7 @@ LastAge.RACES = {
       '"Dworg Ability Adjustment",' +
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",' +
       '"Favored Region (Kaladruns)",' +
-      'Darkvision,"Minor Light Sensitivity","Mixed Blood","Orc Enmity",' +
+      'Darkvision,"Dwarf Enmity","Minor Light Sensitivity","Mixed Blood",' +
       'Rugged,"Resist Spells" ' +
     'Selectables=' +
       '"Natural Mountaineer",Stonecunning ' +
@@ -1803,9 +1803,9 @@ LastAge.RACES = {
       '"Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe/Urutuk Hatchet)",'+
       '"Favored Region (Kaladruns)",' +
       '"Favored Region (Surface Kaladruns)",' +
-      'Darkvision,"Double Urutuk Training","Favored Weapon (Axes/Hammers)",' +
-      'Muscular,"Natural Armor","Natural Mountaineer","Orc Enmity",' +
-      '"Resist Poison","Resist Spells",Slow,Stoneworker ' +
+      'Darkvision,"Double Urutuk Training","Dwarf Enmity",' +
+      '"Favored Weapon (Axes/Hammers)",Muscular,"Natural Armor",' +
+      '"Natural Mountaineer","Resist Poison","Resist Spells",Slow,Stoneworker '+
     'Languages="Clan Dwarven","Old Dwarven"',
   'Nomadic Halfling':
     'Features=' +
@@ -1824,8 +1824,8 @@ LastAge.RACES = {
       '"Orc Ability Adjustment",' +
       '"Weapon Familiarity (Vardatch)",' +
       '"Favored Region (Northern Reaches)",' +
-      'Darkvision,"Dwarf Enmity","Light Sensitivity","Natural Predator",' +
-      '"Night Fighter","Orc Cold Resistance","Resist Spells","Tribal Frenzy" ' +
+      'Darkvision,"Light Sensitivity","Natural Predator","Night Fighter",' +
+      '"Orc Cold Resistance","Orc Enmity","Resist Spells","Tribal Frenzy" ' +
     'Languages="Black Tongue","Old Dwarven","High Elven",Orcish',
   'Plains Sarcosan':
     'Features=' +
@@ -4982,8 +4982,8 @@ LastAge.raceRulesExtra = function(rules, name) {
   } else if(name == 'Clan Dwarf') {
     rules.defineRule
       ('abilityNotes.armorSpeedAdjustment', 'abilityNotes.muscular', '^', '0');
+    rules.defineRule('combatNotes.dwarfEnmity', raceLevel, '=', '1');
     rules.defineRule('combatNotes.naturalArmor', raceLevel, '+=', '2');
-    rules.defineRule('combatNotes.orcEnmity', raceLevel, '=', '1');
     rules.defineRule('skillNotes.stonecunning',
       'clanDwarfFeatures.Stonecunning', '+=', '2'
     );
@@ -5002,7 +5002,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       'dwarf-RaisedDwarrowFeatures.Stonecunning', '+=', '2'
     );
   } else if(name == 'Dworg') {
-    rules.defineRule('combatNotes.orcEnmity', raceLevel, '=', '2');
+    rules.defineRule('combatNotes.dwarfEnmity', raceLevel, '=', '2');
     rules.defineRule('featureNotes.mixedBlood',
       'dworgFeatures.Mixed Blood', '=', '"Dwarf and Orc"'
     );
@@ -5055,8 +5055,8 @@ LastAge.raceRulesExtra = function(rules, name) {
   } else if(name == 'Kurgun Dwarf') {
     rules.defineRule
       ('abilityNotes.armorSpeedAdjustment', 'abilityNotes.muscular', '^', '0');
+    rules.defineRule('combatNotes.dwarfEnmity', raceLevel, '=', '1');
     rules.defineRule('combatNotes.naturalArmor', raceLevel, '+=', '2');
-    rules.defineRule('combatNotes.orcEnmity', raceLevel, '=', '1');
   } else if(name == 'Nomadic Halfling') {
     rules.defineRule('selectableFeatureCount.Nomadic Halfling',
       'race', '=', 'source == "Nomadic Halfling" ? 1 : null'
