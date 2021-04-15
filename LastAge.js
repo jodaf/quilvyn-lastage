@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.2.4';
+var LASTAGE_VERSION = '2.2.2.5';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -70,8 +70,11 @@ function LastAge() {
     'feats', 'featCount', 'sanityNotes', 'selectableFeatureCount',
     'validationNotes'
   );
-  rules.defineChoice
-    ('preset', 'race', 'heroicPath', 'levels', 'npc', 'prestige');
+  rules.defineChoice('preset',
+    'race:Race,select-one,races',
+    'heroicPath:Heroic Path,select-one,heroicPaths',
+    'levels:Class Levels,bag,levels',
+    'prestige:Prestige Levels,bag,prestiges', 'npc:NPC Levels,bag,npcs');
 
   LastAge.ALIGNMENTS = Object.assign({}, LastAge.basePlugin.ALIGNMENTS);
   LastAge.ANIMAL_COMPANIONS = Object.assign(
