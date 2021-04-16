@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.2.5';
+var LASTAGE_VERSION = '2.2.3.0';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -1188,11 +1188,15 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="Continuous <i>Protection From Arrows</i> via weapon"',
   'Ancestral Watcher':'Section=magic Note="Weapon has continuous <i>Alarm</i>"',
   'Armored Casting':'Section=magic Note="Reduce arcane spell failure by %V%"',
+  "Aryth's Blessing":
+    'Section=feature ' +
+    'Note="Spend 10 min to gain use of different heroic path feature %V/dy"',
   'Awaken Ancestral Blade':'Section=combat Note="Weapon becomes intelligent"',
   'Bane Of Legates Bonus Feats':'Section=feature Note="%V Wizard Feats"',
   'Bind Astirax':
     'Section=magic ' +
     'Note="R60\' Astirax bound to current form for %V hr, destroyed if host animal killed (DC %1 Will neg)"',
+  'Black Rot':'Section=ability Note="Detect and affected as evil"',
   'Bonus Spellcasting':'Section=feature Note="+%V Spellcasting Feat"',
   'Channeled Combat':
     'Section=magic Note="Use 1 spell energy point to gain +%V %1 for 1 rd"',
@@ -1215,6 +1219,8 @@ LastAge.FEATURES_ADDED = {
     'Note="Sneak attack after 3 rd of study causes death or paralysis d6+%1 rd (DC %V Fort neg)"',
   'Deft Dodging':
     'Section=combat Note="+4 self and mount AC on full rd mounted move"',
+  "Deny Izrador's Power":
+    'Section=magic Note="R60\' +%V <i>Dispel Magic</i> vs. Legate spell %1/dy"',
   'Disarming Shot':'Section=combat Note="Disarm via ranged touch attack"',
   'Disguise Contraband':
     'Section=magic ' +
@@ -1224,6 +1230,8 @@ LastAge.FEATURES_ADDED = {
   'Dominant Will':
     'Section=save ' +
     'Note="+%V Will vs. detection and compulsion spells to reveal activities"',
+  'Dreams Of The Land':
+    'Section=magic Note="R%V mi <i>Commune With Nature</i>%1 during sleep"',
   'Druidcraft':'Section=magic Note="Energy cost of Druid spells reduced by 1"',
   'Efficient Study':
     'Section=feature ' +
@@ -1236,6 +1244,9 @@ LastAge.FEATURES_ADDED = {
     'Section=magic ' +
     'Note="Full-round action prevents fallen from becoming Fell or Lost"',
   'Find The Way':'Section=feature Note="%V"',
+  'For The King':
+    'Section=combat ' +
+    'Note="War cry grants self +%1 attack and +1d%2 damage vs. Shadow minions, R60\' allies +%1 vs. fear %V rd/dy"',
   'Freerider Bonus Feats':'Section=feature Note="%V Freerider feats"',
   'Ghost Sight':'Section=magic Note="<i>See Invisible</i> at will"',
   'Hit And Run':
@@ -1274,6 +1285,8 @@ LastAge.FEATURES_ADDED = {
   'Master Spy':
     'Section=feature ' +
     'Note="Mindbond to known Master Spies, apprentices, and those in homeland at will"',
+  'Mediator':
+    'Section=feature Note="Shift attitude of %V creatures 1 step %1/dy"',
   'Melee Caster':'Section=magic Note="Deliver spell up to Ch%V via weapon"',
   'Meticulous Aim':
     'Section=combat Note="+1 critical range for every 2 rd aiming; +%V max"',
@@ -1284,6 +1297,7 @@ LastAge.FEATURES_ADDED = {
   'Mystifying Speech':'Section=magic Note="DC %V <i>Modify Memory</i> %1/dy"',
   'Nature Sense':
     'Section=skill Note="Identify animals, plants, unsafe food and drink"',
+  'Pale Heart':'Section=save Note="+%V vs Shadow minion spells and abilities"',
   'Ranged Sneak Attack':'Section=combat Note="R%1\' +%Vd6 Sneak Attack"',
   'Regenerative Strike':
     'Section=magic ' +
@@ -1309,6 +1323,9 @@ LastAge.FEATURES_ADDED = {
   'Spirit Manipulation':
     'Section=magic ' +
     'Note="%V chosen Divination or Necromancy spells as spell-like ability 1/dy"',
+  'Spirit Seeker':
+    'Section=magic ' +
+    'Note="+1 Spell Energy/+1 Channeler Spells (conjuration or divination)"',
   'Spiritcraft':
     'Section=magic ' +
     'Note="Divination and Necromancy spell energy cost reduced by 1"',
@@ -1342,6 +1359,9 @@ LastAge.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="Detect weapon if separated; if unconscious, weapon protects"',
   'Venom Immunity':'Section=save Note="Immune to organic poisons"',
+  "Warden's Vows":
+    'Section=feature ' +
+    'Note="Sworn to seek King\'s heirs, keep secrets, help Erenlanders in need, and kill Shadow minions"',
   'Wheel About':
     'Section=combat Note="May make 90 degree turn during mounted charge"',
   "Whisper's Ward":
@@ -1892,6 +1912,7 @@ LastAge.SKILLS_ADDED = {
   'Knowledge (Local)':
     'Ability=intelligence Untrained=n ' +
     'Synergy="Knowledge (Shadow) (bureaucracy)"',
+  'Knowledge (Local (Central Erenland))':'Ability=intelligence Untrained=n',
   'Knowledge (Nature)':
     'Ability=intelligence Untrained=n Synergy="Knowledge (Spirits)"',
   'Knowledge (Old Gods)':'Ability=intelligence Untrained=n',
@@ -2156,7 +2177,7 @@ LastAge.SPELLS_LEVELS = {
   'Color Spray':'Ch1,Jack1',
   'Command Plants':'Ch4,Naturefriend4',
   'Command Undead':'Ch2,Jack2',
-  'Commune With Nature':'Ch5,Naturefriend5',
+  'Commune With Nature':'Ch5,Naturefriend5,Warden5',
   'Commune':'Seer5',
   'Comprehend Languages':'Ch1,Jack1,Speaker1',
   'Cone Of Cold':'Ch5',
@@ -2220,7 +2241,7 @@ LastAge.SPELLS_LEVELS = {
   'Dominate Animal':'Ch3,Jack3,Naturefriend3',
   'Dominate Monster':'Ch9',
   'Dominate Person':'Ch5',
-  'Dream':'Ch5',
+  'Dream':'Ch5,Warden5',
   'Eagle\'s Splendor':'Ch2,Jack2',
   'Earthquake':'Ch8,Earthbonded8',
   'Elemental Swarm':'Ch9',
@@ -2258,7 +2279,7 @@ LastAge.SPELLS_LEVELS = {
   'Fog Cloud':'Ch2,Jack2,Seaborn2',
   'Forcecage':'Ch7',
   'Forceful Hand':'Ch6',
-  'Foresight':'Ch9',
+  'Foresight':'Ch9,Warden9',
   'Fox\'s Cunning':'Ch2,Jack2',
   'Freedom Of Movement':'Beast4,Ch4',
   'Freedom':'Ch9',
@@ -3015,7 +3036,7 @@ LastAge.PRESTIGE_CLASSES = {
       'Balance,Climb,Craft,Heal,Hide,Intimidate,Jump,Listen,"Move Silently",' +
       'Profession,Ride,Search,"Speak Language",Spot,Survival,Swim,"Use Rope" ' +
     'Features=' +
-      '"1:Armor Proficiency (Light)","1:Weapon Proficiency (Simple)",' +
+      '"1:Armor Proficiency (Light)","1:Weapon Proficiency (Martial)",' +
       '"1:Ranged Sneak Attack","2:Improved Sneak Attack Range",' +
       '"3:Meticulous Aim","4:Intimidating Shot","6:Leaf Reader",' +
       '"7:Disarming Shot","9:Close Combat Archery"',
@@ -3095,6 +3116,8 @@ LastAge.PRESTIGE_CLASSES = {
       'Climb,Concentration,Craft,Intimidate,Jump,"Knowledge (Arcana)",' +
       'Profession,Ride,"Speak Language",Spellcraft,Swim ' +
     'Features=' +
+      '"1:Armor Proficiency (Medium)","1:Shield Proficiency",' +
+      '"1:Weapon Proficiency (Martial)",' +
       '"1:Art Of Magic","1:Armored Casting","1:Channeled Combat",' +
       '"2:Improved Spellcasting","6:Melee Caster","10:Regenerative Strike"',
   'Whisper Adept':
@@ -3108,8 +3131,6 @@ LastAge.PRESTIGE_CLASSES = {
       'Concentration,Craft,"Handle Animal",Heal,Knowledge,Profession,' +
       '"Speak Language",Spellcraft,Survival ' +
     'Features=' +
-      '"1:Armor Proficiency (Medium)","1:Shield Proficiency",' +
-      '"1:Weapon Proficiency (Martial)",' +
       '"1:Art Of Magic","1:Improved Spellcasting","1:Whisper Sense",' +
       '"3:Fell Touch","5:Tree Meld","7:Strength Of The Wood",' +
       '"9:Whisper\'s Ward"',
@@ -3139,7 +3160,41 @@ LastAge.PRESTIGE_CLASSES = {
     'Selectables=' +
       '"2:Improved Mounted Archery","2:Improved Mounted Combat",' +
       '"2:Improved Ride-By Attack","2:Improved Spirited Charge",' +
-      '"2:Improved Trample","2:Ride-By Attack","2:Spirited Charge",2:Trample'
+      '"2:Improved Trample","2:Ride-By Attack","2:Spirited Charge",2:Trample',
+  // Destiny & Shadow
+  'Pale Legate':
+    'Require="skills.Knowledge (Shadow) >= 8","alignment !~ \'Evil\'" ' +
+    'HitDie=d8 Attack=1 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Bluff,Concentration,Craft,Diplomacy,Disguise,"Handle Animal",Heal,' +
+      'Hide,Intimidate,"Knowledge (Arcana)","Knowledge (Shadow)",' +
+      '"Knowledge (Spirits)",Profession,"Sense Motive","Speak Language",' +
+      'Spellcraft,Survival ' +
+    'Features=' +
+      '"1:Black Rot","1:Pale Heart","2:Shadow Speak",' +
+      '"3:Deny Izrador\'s Power","3:Sense Dark Magic","6:Detect Evil"',
+  'Warden Of Erenland':
+    'Require=' +
+      '"race =~ \'Dorn|Erenlander|Sarcosan\'",' +
+      '"baseAttack >= 6",' +
+      'features.Endurance,"features.Iron Will","features.Friendly Agent",' +
+      '"skills.Diplomacy >= 4","skills.Knowledge (History) >= 2","skills.Survival >= 4" ' +
+    'HitDie=d10 Attack=1 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
+    'Skills=' +
+      'Bluff,Climb,Diplomacy,Disguise,"Gather Information","Handle Animal",' +
+      'Heal,Hide,Intimidate,Jump,"Knowledge (Local (Central Erenland))",' +
+      '"Knowledge (Shadow)",Listen,"Move Silently","Sense Motive",Survival,' +
+      'Swim ' +
+    
+      '"1:Armor Proficiency (Medium)","1:Shield Proficiency",' +
+      '"1:Weapon Proficiency (Martial)",' +
+      '1:Mediator,"1:Spirit Seeker","1:Warden\'s Vows","2:Aryth\'s Blessing",' +
+      '"3:Dreams Of The Land","4:For The King" ' +
+    'CasterLevelArcane="levels.Warden Of Erenland" ' +
+    'SpellAbility=wisdom ' +
+    'SpellSlots=' +
+      'Warden5:3=1;6=2,' +
+      'Warden9:9=1'
 };
 
 /* Defines rules related to character abilities. */
@@ -4003,6 +4058,20 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule
       ('skillNotes.shadowSpeak', classLevel, '=', 'Math.floor(source / 2)');
 
+  } else if(name == 'Pale Legate') {
+
+    rules.defineRule("magicNotes.denyIzrador'sPower",
+      classLevel, '=', null,
+      'wisdomModifier', '+', null
+    );
+    rules.defineRule("magicNotes.denyIzrador'sPower.1",
+      classLevel, '=', 'Math.floor(source / 3)'
+    );
+    rules.defineRule
+      ('saveNotes.paleHeart', classLevel, '=', 'Math.floor((source + 2) / 3)');
+    rules.defineRule
+      ('skillNotes.shadowSpeak', classLevel, '=', 'Math.floor((source+1) / 3)');
+
   } else if(name == 'Smuggler') {
 
     rules.defineRule('baseAttack', 'smugglerBaseAttackAdjustment', '+', null);
@@ -4027,6 +4096,32 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('smugglerBaseAttackAdjustment',
       classLevel, '=', 'source==8 || source==10 ? -1 : null'
     );
+
+  } else if(name == 'Warden Of Erenland') {
+
+    rules.defineRule('combatNotes.forTheKing', classLevel, '=', null);
+    rules.defineRule('combatNotes.forTheKing.1',
+      classLevel, '=', 'Math.floor((source - 1) / 3) + 1'
+    );
+    rules.defineRule('combatNotes.forTheKing.2',
+      classLevel, '=', 'Math.floor((source - 1) / 3) * 2 + 4'
+    );
+    rules.defineRule("featureNotes.aryth'sBlessing",
+      classLevel, '=', 'Math.floor((source + 1) / 3)'
+    );
+    rules.defineRule('featureNotes.mediator', classLevel, '=', 'source * 5');
+    rules.defineRule('featureNotes.mediator.1',
+      classLevel, '=', 'Math.floor((source + 2) / 3)'
+    );
+    rules.defineRule
+      ('magicNotes.dreamsOfTheLand', classLevel, '=', 'source + 10');
+    rules.defineRule('magicNotes.dreamsOfTheLand.1',
+      classLevel, '=',
+        'source<6 ? "" : source<9 ? ", <i>Dream</i>" : ' +
+        '", <i>Dream</i>, %2 min <i>Foresight</i>"'
+    );
+    rules.defineRule
+      ('magicNotes.dreamsOfTheLand.2', classLevel, '=', 'source * 10 + 60');
 
   } else if(name == 'Warrior Arcanist') {
 
