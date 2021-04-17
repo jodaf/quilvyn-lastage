@@ -1182,10 +1182,15 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="Unlock %V additional powers of covenant weapon"',
   'Alter Ego':'Section=feature Note="Transform into %V in %1 as %2 ability"',
   'Ancestral Advisor':'Section=magic Note="<i>Augury</i> via weapon %V/dy"',
+  'Ancestral Favor':'Section=save Note="Reroll save 1/dy"',
   'Ancestral Guide':
     'Section=magic Note="R10\' <i>Detect Secret Doors</i> via weapon at will"',
   'Ancestral Protector':
     'Section=magic Note="Continuous <i>Protection From Arrows</i> via weapon"',
+  'Ancestral Recall':'Section=skill Note="+%V failed Knowledge reroll 1/dy"',
+  'Ancestral Spellcasting':
+    'Section=magic Note="+%V Spell Energy/+%V Channeler Spells (conjuration)"',
+  'Ancestral Warnings':'Section=combat Note="+2 Initiative"',
   'Ancestral Watcher':'Section=magic Note="Weapon has continuous <i>Alarm</i>"',
   'Armored Casting':'Section=magic Note="Reduce arcane spell failure by %V%"',
   "Aryth's Blessing":
@@ -1198,6 +1203,12 @@ LastAge.FEATURES_ADDED = {
     'Note="R60\' Astirax bound to current form for %V hr, destroyed if host animal killed (DC %1 Will neg)"',
   'Black Rot':'Section=ability Note="Detect and affected as evil"',
   'Bonus Spellcasting':'Section=feature Note="+%V Spellcasting Feat"',
+  'Breath Of The Vigdir':
+    'Section=magic Note="Raise a Dorn for %V wk to complete task"',
+  'Call Meruros':
+    'Section=magic Note="<i>Contingency</i> summoning of Meruros for %V rd"',
+  'Call Tadulos':
+    'Section=magic Note="<i>Contingency</i> summoning of Tadulos for %V rd"',
   'Channeled Combat':
     'Section=magic Note="Use 1 spell energy point to gain +%V %1 for 1 rd"',
   'Close Combat Archery':
@@ -1233,6 +1244,9 @@ LastAge.FEATURES_ADDED = {
   'Dreams Of The Land':
     'Section=magic Note="R%V mi <i>Commune With Nature</i>%1 during sleep"',
   'Druidcraft':'Section=magic Note="Energy cost of Druid spells reduced by 1"',
+  'Dwarven Literacy':
+    'Section=skill Note="Literate in Old Dwarven and Clan Dwarven"',
+  'Dwarven Loremaster Bonus Feats':'Section=feature Note="%V Wizard Feats"',
   'Efficient Study':
     'Section=feature ' +
     'Note="XP cost for learning spells and creating magic items reduced by %V%"',
@@ -1248,12 +1262,22 @@ LastAge.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="War cry grants self +%1 attack and +1d%2 damage vs. Shadow minions, R60\' allies +%1 vs. fear %V rd/dy"',
   'Freerider Bonus Feats':'Section=feature Note="%V Freerider feats"',
+  'Gaze Of The Meruros':
+    'Section=magic Note="Gaze casts DC %V <i>Cause Fear</i> spell 1/dy"',
   'Ghost Sight':'Section=magic Note="<i>See Invisible</i> at will"',
+  'Gift Of The Vigdir':
+    'Section=magic Note="Raise a Dorn for %V dy to complete task"',
   'Hit And Run':
     'Section=combat Note="Move away from foe after attack w/out foe AOO"',
   'Horse Lord':
     'Section=skill Note="+1 Handle Animal (horse)/+1 Ride (horseback)"',
+  'Know Thy Enemy':
+    'Section=combat,skill ' +
+    'Note="+%V damage and AC vs. %1",' +
+         '"+%V Bluff, Listen, Sense Motive, Spot, Survival vs. %1"',
   'Immovable Blade':'Section=combat Note="Cannot be involuntarily disarmed"',
+  'Impervious Mind':
+    'Section=save Note="Mental effects preventing attacks agains %V dispelled"',
   'Improved Coup De Grace':
     'Section=combat Note="Max damage from standard action coup de grace"',
   'Improved Mounted Archery':
@@ -1298,11 +1322,22 @@ LastAge.FEATURES_ADDED = {
   'Nature Sense':
     'Section=skill Note="Identify animals, plants, unsafe food and drink"',
   'Pale Heart':'Section=save Note="+%V vs Shadow minion spells and abilities"',
+  'Primal Foe':'Section=feature Note="May not associate with %V"',
   'Ranged Sneak Attack':'Section=combat Note="R%1\' +%Vd6 Sneak Attack"',
+  'Rage Of Vengeance':
+    'Section=combat ' +
+    'Note="Ally damage w/in 30\' by %V gives damage% chance of +2 Str, +2 Con, +1 Will, +1d6 damage, -2 AC, Cleave w/out limit against those foes while present"',
+  'Recharge Nexus':
+    'Section=magic ' +
+    'Note="Spend %V points of spell energy to recharge nexus 1 point"',
   'Regenerative Strike':
     'Section=magic ' +
     'Note="Recover spell energy equal to 2*weapon multiplier on critical hit"',
   "Resist Izrador's Will":'Section=save Note="+%V vs. legate magic"',
+  'Rune Magic':
+    'Section=magic Note="Carve rules to evoke up to level %V spell at R60\'"',
+  'Savvy Hunter':
+    'Section=combat Note="Trade half damage bonus vs. %V for attack bonus"',
   'Seance':
     'Section=magic ' +
     'Note="<i>Augury</i> or <i>Legend Lore</i> about past%1 via spirits %V/dy"',
@@ -1326,6 +1361,7 @@ LastAge.FEATURES_ADDED = {
   'Spirit Seeker':
     'Section=magic ' +
     'Note="+1 Spell Energy/+1 Channeler Spells (conjuration or divination)"',
+  'Spirit Speaker Bonus Feats':'Section=feature Note="%V Spirit Speaker Feats"',
   'Spiritcraft':
     'Section=magic ' +
     'Note="Divination and Necromancy spell energy cost reduced by 1"',
@@ -1341,6 +1377,9 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="Recover 1 spell energy point/hr during Tree Meld"',
   'Stunning Sneak Attack':
     'Section=combat Note="Sneak attack stuns foe 1 rd 3/dy (DC %V neg)"',
+  'Summon Ancestor':
+    'Section=magic ' +
+    'Note="Cast <i>Summon Ancestral Warrior</i> and <i>Summon Ancestral Hero</i> at 50 vp discount"',
   'Sundered Spirit':
     'Section=magic ' +
     'Note="Radiate 5\'-50\' <i>Antimagic Field</i> for divine magic"',
@@ -2112,8 +2151,25 @@ LastAge.SPELLS_ADDED = {
   'Woeful Speech':
     'School=Enchantment ' +
     'Level=Ch1,Jack1 ' +
-    'Description="R$RM\' Listeners in 30\' radius shaken, -4 vs. fear for $L rd (Will neg)"'
+    'Description="R$RM\' Listeners in 30\' radius shaken, -4 vs. fear for $L rd (Will neg)"',
 
+  // Honor & Shadow
+  'Form Of The Meruros':
+    'School=Transmutation ' +
+    'Level=Ch3 ' +
+    'Description="Touched changes to Meruros-possessed wolf w/continuous <i>Hide From Undead</i> for $L10 min"',
+  'Form Of The Tadulos':
+    'School=Transmutation ' +
+    'Level=Ch5 ' +
+    'Description="Touched changes to Tadulos-possessed raven w/continuous <i>Death Ward</i> and <i>Freedom Of Movement</i> for $L10 min"',
+  'Summon Ancestral Hero':
+    'School=Conjuration ' +
+    'Level=Ch7 ' +
+    'Description=""',
+  'Summon Ancestral Warrior':
+    'School=Conjuration ' +
+    'Level=Ch4 ' +
+    'Description="R$RS\' Bargain with spirit for service"'
 };
 LastAge.SPELLS_LEVELS = {
   'Acid Arrow':'Ch2,Jack2',
@@ -3185,7 +3241,6 @@ LastAge.PRESTIGE_CLASSES = {
       'Heal,Hide,Intimidate,Jump,"Knowledge (Local (Central Erenland))",' +
       '"Knowledge (Shadow)",Listen,"Move Silently","Sense Motive",Survival,' +
       'Swim ' +
-    
       '"1:Armor Proficiency (Medium)","1:Shield Proficiency",' +
       '"1:Weapon Proficiency (Martial)",' +
       '1:Mediator,"1:Spirit Seeker","1:Warden\'s Vows","2:Aryth\'s Blessing",' +
@@ -3194,7 +3249,60 @@ LastAge.PRESTIGE_CLASSES = {
     'SpellAbility=wisdom ' +
     'SpellSlots=' +
       'Warden5:3=1;6=2,' +
-      'Warden9:9=1'
+      'Warden9:9=1',
+  // Hammer & Shadow
+  'Ancestral Foe':
+    'Require=' +
+      '"race =~ \'Dwarf|Orc\'","baseAttack >= 6",' +
+      '"skills.Knowledge (Dungeoneering) >= 6",' +
+      'features.Diehard,"features.Master Hunter",' +
+      '"languages.Clan Dwarven",languages.Orcish ' +
+    'HitDie=d10 Attack=1 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
+    'Skills=' +
+      'Climb,Craft,"Handle Animal",Heal,Hide,Intimidate,Jump,' +
+      '"Knowledge (Dungeoneering)","Knowledge (Geography)",' +
+      '"Knowledge (Local)",Listen,"Move Silently",Search,"Speak Language",' +
+      'Spot,Survival,Swim,"Use Rope" ' +
+    'Features=' +
+      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency",' +
+      '"1:Weapon Proficiency (Martial)",' +
+      '"1:Know Thy Enemy","1:Primal Foe","1:Savvy Hunter","2:Tunnel Fighting",'+
+      '"3:Hunter\'s Strike","5:Impervious Mind","8:Rage Of Vengeance"',
+  'Dwarven Loremaster':
+    'Require=' +
+      '"race =~ \'Dwarf\'","Max \'skills.Craft\' >= 5",' +
+      '"countKnowledgeSkillsGe5 >= 2","skills.Knowledge (History) >= 9",' +
+      '"skills.Spellcraft >= 5","Sum \'features.Magecraft\' >= 1",' +
+      '"sumItemCreationFeats >= 1","Sum \'features.Spellcasting >= 1" ' +
+    'HitDie=d10 Attack=1/2 SkillPoints=6 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Appraise,Concentration,Craft,Diplomacy,Heal,Knowledge,Profession,' +
+      '"Speak Language",Spellcraft ' +
+    'Features=' +
+      '"1:Improved Spellcasting","1:Dwarven Literacy",' +
+      '"1:Tradition Gift (Lorebook)","2:Recharge Nexus","2:Rune Magic",' +
+      '"3:Dwarven Loremaster Bonus Feats"',
+  // Honor & Shadow
+  'Spirit Speaker':
+    'Require=' +
+      '"race == \'Dorn\'","baseAttack >= 5",languages.Norther,' +
+      '"skills.Knowledge (Spirits) >= 5",' +
+      '"Sum \'spells.*3 Grea\' >= 1",' +
+      '"features.Spellcasting (Conjuration)",' +
+      '"features.Spellcasting (Greater Conjuration)",' +
+      '"features.Magecraft (Spiritual)",' +
+      '"features.Armor Proficiency (Light) || features.Shield Proficiency" ' +
+    'HitDie=d8 Attack=3/4 SkillPoints=6 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Climb,Concentration,Craft,Diplomacy,Heal,Intimidate,Jump,' +
+      '"Knowledge (Arcana)","Knowledge (Spirits)",Profession,Ride,' +
+      '"Sense Motive","Speak Language",Spellcraft,Survival,Swim '+
+    'Features=' +
+      '"1:Ancestral Spellcasting","1:Summon Ancestor","2:Armored Casting",' +
+      '"2:Augment Summoning","3:Ancestral Recall",' +
+      '"Spirit Speaker Bonus Feats","4:Call Tadulos","5:Ancestral Warnings",' +
+      '"5:Gaze Of The Meruros","7:Ancestral Favor","8:Gift Of The Vigdir",' +
+      '"9:Call Meruros","10:Breath Of The Vigdir"'
 };
 
 /* Defines rules related to character abilities. */
@@ -4058,20 +4166,6 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule
       ('skillNotes.shadowSpeak', classLevel, '=', 'Math.floor(source / 2)');
 
-  } else if(name == 'Pale Legate') {
-
-    rules.defineRule("magicNotes.denyIzrador'sPower",
-      classLevel, '=', null,
-      'wisdomModifier', '+', null
-    );
-    rules.defineRule("magicNotes.denyIzrador'sPower.1",
-      classLevel, '=', 'Math.floor(source / 3)'
-    );
-    rules.defineRule
-      ('saveNotes.paleHeart', classLevel, '=', 'Math.floor((source + 2) / 3)');
-    rules.defineRule
-      ('skillNotes.shadowSpeak', classLevel, '=', 'Math.floor((source+1) / 3)');
-
   } else if(name == 'Smuggler') {
 
     rules.defineRule('baseAttack', 'smugglerBaseAttackAdjustment', '+', null);
@@ -4097,32 +4191,6 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '=', 'source==8 || source==10 ? -1 : null'
     );
 
-  } else if(name == 'Warden Of Erenland') {
-
-    rules.defineRule('combatNotes.forTheKing', classLevel, '=', null);
-    rules.defineRule('combatNotes.forTheKing.1',
-      classLevel, '=', 'Math.floor((source - 1) / 3) + 1'
-    );
-    rules.defineRule('combatNotes.forTheKing.2',
-      classLevel, '=', 'Math.floor((source - 1) / 3) * 2 + 4'
-    );
-    rules.defineRule("featureNotes.aryth'sBlessing",
-      classLevel, '=', 'Math.floor((source + 1) / 3)'
-    );
-    rules.defineRule('featureNotes.mediator', classLevel, '=', 'source * 5');
-    rules.defineRule('featureNotes.mediator.1',
-      classLevel, '=', 'Math.floor((source + 2) / 3)'
-    );
-    rules.defineRule
-      ('magicNotes.dreamsOfTheLand', classLevel, '=', 'source + 10');
-    rules.defineRule('magicNotes.dreamsOfTheLand.1',
-      classLevel, '=',
-        'source<6 ? "" : source<9 ? ", <i>Dream</i>" : ' +
-        '", <i>Dream</i>, %2 min <i>Foresight</i>"'
-    );
-    rules.defineRule
-      ('magicNotes.dreamsOfTheLand.2', classLevel, '=', 'source * 10 + 60');
-
   } else if(name == 'Warrior Arcanist') {
 
     rules.defineRule('magicNotes.arcaneSpellFailure',
@@ -4130,7 +4198,7 @@ LastAge.classRulesExtra = function(rules, name) {
       null, '^', '0'
     );
     rules.defineRule('magicNotes.armoredCasting',
-      classLevel, '=', 'Math.floor((source + 1) / 2) * 5'
+      classLevel, '+=', 'Math.floor((source + 1) / 2) * 5'
     );
     rules.defineRule
       ('magicNotes.channeledCombat', 'level', '=', 'Math.floor(source / 2)');
@@ -4197,6 +4265,125 @@ LastAge.classRulesExtra = function(rules, name) {
       'animalCompanionStats.Size', '+',
         'source=="S" ? 4 : source=="L" ? -4 : null'
     );
+
+  // Source books
+
+  } else if(name == 'Pale Legate') {
+
+    rules.defineRule("magicNotes.denyIzrador'sPower",
+      classLevel, '=', null,
+      'wisdomModifier', '+', null
+    );
+    rules.defineRule("magicNotes.denyIzrador'sPower.1",
+      classLevel, '=', 'Math.floor(source / 3)'
+    );
+    rules.defineRule
+      ('saveNotes.paleHeart', classLevel, '=', 'Math.floor((source + 2) / 3)');
+    rules.defineRule
+      ('skillNotes.shadowSpeak', classLevel, '=', 'Math.floor((source+1) / 3)');
+
+  } else if(name == 'Warden Of Erenland') {
+
+    rules.defineRule('combatNotes.forTheKing', classLevel, '=', null);
+    rules.defineRule('combatNotes.forTheKing.1',
+      classLevel, '=', 'Math.floor((source - 1) / 3) + 1'
+    );
+    rules.defineRule('combatNotes.forTheKing.2',
+      classLevel, '=', 'Math.floor((source - 1) / 3) * 2 + 4'
+    );
+    rules.defineRule("featureNotes.aryth'sBlessing",
+      classLevel, '=', 'Math.floor((source + 1) / 3)'
+    );
+    rules.defineRule('featureNotes.mediator', classLevel, '=', 'source * 5');
+    rules.defineRule('featureNotes.mediator.1',
+      classLevel, '=', 'Math.floor((source + 2) / 3)'
+    );
+    rules.defineRule
+      ('magicNotes.dreamsOfTheLand', classLevel, '=', 'source + 10');
+    rules.defineRule('magicNotes.dreamsOfTheLand.1',
+      classLevel, '=',
+        'source<6 ? "" : source<9 ? ", <i>Dream</i>" : ' +
+        '", <i>Dream</i>, %2 min <i>Foresight</i>"'
+    );
+    rules.defineRule
+      ('magicNotes.dreamsOfTheLand.2', classLevel, '=', 'source * 10 + 60');
+
+  } else if(name == 'Ancestral Foe') {
+
+    rules.defineRule('ancestralFoe',
+      'race', '=', 'source == "Orc" ? "dwarves, dwarrow, and dworgs" : "orcs and dworgs"'
+    );
+    rules.defineRule
+      ("combatNotes.hunter'sStrike", classLevel, '+=', 'source<3 ? null : 1');
+    rules.defineRule('combatNotes.knowThyEnemy',
+      classLevel, '=', 'Math.floor((source + 2) / 3)'
+    );
+    rules.defineRule('combatNotes.knowThyEnemy.1', 'ancestralFoe', '=', null);
+    rules.defineRule('combatNotes.savvyHunter', 'ancestralFoe', '=', null);
+    rules.defineRule('combatNotes.rageOfVengeance', 'ancestralFoe', '=', null);
+    rules.defineRule('saveNotes.imperviousMind', 'ancestralFoe', '=', null);
+    rules.defineRule('skillNotes.knowThyEnemy',
+      classLevel, '=', 'Math.floor((source + 2) / 3)'
+    );
+    rules.defineRule('skillNotes.knowThyEnemy.1', 'ancestralFoe', '=', null);
+    rules.defineRule('featureNotes.primalFoe', 'ancestralFoe', '=', null);
+
+  } else if(name == 'Dwarven Loremaster') {
+
+    var allSkills = rules.getChoices('skills');
+    for(var s in allSkills) {
+      if(skill.startsWith('Knowledge'))
+        rules.defineRule('countKnowledgeSkillsGe5',
+          'skills.' + s, '+=', 'source>=5 ? 1 : null'
+        );
+    }
+
+    rules.defineRule('featCount\.Wizard',
+      'featureNotes.dwarvenLoremasterBonusFeats', '+=', null
+    );
+    rules.defineRule('featureNotes.dwarvenLoremasterBonusFeats',
+      classLevel, '=', 'source<7 ? 1 : source<10 ? 2 : 3'
+    );
+    rules.defineRule
+      ('languages.Clan Dwarven', 'skillNotes.dwarvenLiteracy', '=', '1');
+    rules.defineRule
+      ('languages.Old Dwarven', 'skillNotes.dwarvenLiteracy', '=', '1');
+    rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule
+      ('magicNotes.rechargeNexus', classLevel, '=', 'source<6 ? 3 : 2');
+    rules.defineRule('magicNotes.runeMagic', classLevel, '=', 'source - 1');
+    rules.defineRule
+      ('skillNotes.traditionGift(Lorebook)', classLevel, '=', null);
+
+  } else if(name == 'Spirit Speaker') {
+
+    var allFeats = rules.getChoices('feats');
+    for(var f in allFeats) {
+      if(f == 'Extra Gift' || f == 'Spell Knowledge' ||
+         allFeats[f].match(/Metamagic/))
+        allFeats[f] = allFeats[f].replace('Type=', 'Type="Spirit Speaker",');
+    }
+
+    rules.defineRule('featCount.Spirit Speaker',
+      'featureNotes.spiritSpeakerBonusFeats', '=', null
+    );
+    rules.defineRule('featureNotes.spiritSpeakerBonusFeats',
+      classLevel, '=', 'Math.floor(source / 3)'
+    );
+    rules.defineRule
+     ('magicNotes.ancestralSpellcasting', classLevel, '+=', null);
+    rules.defineRule('magicNotes.armoredCasting',
+      classLevel, '+=', 'Math.floor(source / 2) * 5'
+    );
+    rules.defineRule('magicNotes.callMeruros', classLevel, '=', null);
+    rules.defineRule('magicNotes.callTadulos', classLevel, '=', null);
+    rules.defineRule('magicNotes.gazeOfTheMeruros',
+      classLevel, '=', '10 + source',
+      'charismaModifier', '+', null
+    );
+    rules.defineRule('magicNotes.breathOfTheVigdir', classLevel, '=', null);
+    rules.defineRule('magicNotes.giftOfTheVigdir', classLevel, '=', null);
+    rules.defineRule('skillNotes.ancestralRecall', classLevel, '=', null);
 
   } else if(LastAge.basePlugin.classRulesExtra) {
 
