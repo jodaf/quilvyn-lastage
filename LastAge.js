@@ -201,14 +201,14 @@ LastAge.FEATS_ADDED = {
   'Craft Greater Spell Talisman':
     'Type="Item Creation" ' +
     'Require=' +
-      '"Sum \'features.Magecraft\' >= 1",' +
+      '"sumMagecraftFeats >= 1",' +
       '"level >= 12",' +
       '"sumChannelingFeats >= 3"',
   'Craft Spell Talisman':
     'Type="Item Creation" ' +
     'Require=' +
-      '"Sum \'features.Magecraft\' >= 1",' +
-      '"Sum \'features.Spellcasting\' >= 1",' +
+      '"sumMagecraftFeats >= 1",' +
+      '"sumSpellcastingFeats >= 1",' +
       '"level >= 3"',
   'Devastating Mounted Assault':
     'Type=Fighter Require="features.Mounted Combat >= 1","skills.Ride >= 10"',
@@ -236,9 +236,9 @@ LastAge.FEATS_ADDED = {
   'Inconspicuous':'Type=General',
   'Knife Thrower':'Type=Fighter Require="race =~ \'Jungle Elf|Snow Elf\'"',
   'Lucky':'Type=General',
-  'Magecraft (Charismatic)':'Type=Channeling',
-  'Magecraft (Hermetic)':'Type=Channeling',
-  'Magecraft (Spiritual)':'Type=Channeling',
+  'Magecraft (Charismatic)':'Type=Channeling,Magecraft',
+  'Magecraft (Hermetic)':'Type=Channeling,Magecraft',
+  'Magecraft (Spiritual)':'Type=Channeling,Magecraft',
   'Magic-Hardened':'Type=General Require="race =~ \'Dwarf|Dworg|Orc\'"',
   'Natural Healer':'Type=General',
   'Orc Slayer':'Type=Fighter,General',
@@ -246,8 +246,7 @@ LastAge.FEATS_ADDED = {
   'Ritual Magic':
     'Type=Channeling ' +
     'Require=' +
-      '"Sum \'features.Magecraft\' >= 1",' +
-      '"Sum \'features.Spellcasting\' >= 1"',
+      '"sumMagecraftFeats >= 1","sumSpellcastingFeats >= 1"',
   'Sarcosan Pureblood':'Type=General Require="race =~ \'Sarcosan\'"',
   'Sense Nexus':'Type=General',
   'Spell Focus (Abjuration)':
@@ -287,7 +286,7 @@ LastAge.FEATS_ADDED = {
   // to Leader Of Men Fighters
   'Skill Focus (Diplomacy)':'Type=General',
   'Skill Focus (Profession (Soldier))':'Type=General',
-  'Spell Knowledge':'Type=General Require="Sum \'features.Spellcasting\' >= 1"',
+  'Spell Knowledge':'Type=General Require="sumSpellcastingFeats >= 1"',
   'Thick Skull':'Type=General',
   'Warrior Of Shadow':
     'Type=General Require="charisma >= 12","levels.Legate >= 5"',
@@ -355,22 +354,20 @@ LastAge.FEATS_ADDED = {
   // Sorcery & Shadow
   'Blood-Channeler':
     'Type=General ' +
-    'Require="constitution >= 15","Sum \'features.Magecraft\' >= 1"',
+    'Require="constitution >= 15","sumMagecraftFeats >= 1"',
   'Craft Rune Of Power':
     'Type="Item Creation" ' +
     'Require=' +
-      '"Sum \'features.Magecraft\' >= 1",' +
-      '"Sum \'features.Spellcasting\' >= 1",' +
-      '"level >= 3"',
+      '"sumMagecraftFeats >= 1","sumSpellcastingFeats >= 1","level >= 3"',
   'Flexible Recovery':
     'Type=General ' +
-    'Require="constitution >= 13","Sum \'features.Magecraft\' >= 1"',
+    'Require="constitution >= 13","sumMagecraftFeats >= 1"',
   'Improved Flexible Recovery':
     'Type=General ' +
     'Require=' +
       '"constitution >= 15",' +
       '"features.Flexible Recovery",' +
-      '"Sum \'features.Magecraft\' >= 1"',
+      '"sumMagecraftFeats >= 1"',
   'Knack For Charms':
     'Type="Item Creation" ' +
     'Require=' +
@@ -379,13 +376,13 @@ LastAge.FEATS_ADDED = {
   'Living Talisman':
     'Type=General ' +
     'Require=' +
-      '"Sum \'features.Magecraft\' >= 1",' +
-      '"Sum \'features.Spellcasting\' >= 1",' +
+      '"sumMagecraftFeats >= 1",' +
+      '"sumSpellcastingFeats >= 1",' +
       '"level >= 5",' +
       '"skills.Knowledge (Arcana) >= 6"',
-  'Power Reservoir':'Type=General Require="Sum \'features.Magecraft\' >= 1"',
+  'Power Reservoir':'Type=General Require="sumMagecraftFeats >= 1"',
   'Sense Power':'Type=General Require="wisdom >= 15"',
-  'Subtle Caster':'Type=General Require="Sum \'features.Magecraft\' >= 1"',
+  'Subtle Caster':'Type=General Require="sumMagecraftFeats >= 1"',
 
   // Star & Shadow
   'Canny Strike':
@@ -906,7 +903,7 @@ LastAge.FEATURES_ADDED = {
   'Improved Confidence':
     'Section=magic Note="Allies enchanted for half duration, fear reduced"',
   'Improved Spellcasting':
-    'Section=magic Note="+%V Spell Energy/+%V Channeler Spells"',
+    'Section=magic Note="+%V Spell Energy/+%1 Channeler Spells"',
   'Improved Fury':
     'Section=magic ' +
     'Note="+1 Initiative, Attack, and Damage during Inspire Fury"',
@@ -1196,12 +1193,19 @@ LastAge.FEATURES_ADDED = {
   "Aryth's Blessing":
     'Section=feature ' +
     'Note="Spend 10 min to gain use of different heroic path feature %V/dy"',
+  'Aura Of Winter':
+    'Section=magic Note="R20\' Set temperature and use <i>Weather</i> %V/dy"',
   'Awaken Ancestral Blade':'Section=combat Note="Weapon becomes intelligent"',
   'Bane Of Legates Bonus Feats':'Section=feature Note="%V Wizard Feats"',
   'Bind Astirax':
     'Section=magic ' +
     'Note="R60\' Astirax bound to current form for %V hr, destroyed if host animal killed (DC %1 Will neg)"',
   'Black Rot':'Section=ability Note="Detect and affected as evil"',
+  'Blood-Syphoning':
+    'Section=magic ' +
+    'Note="Spend %1 spell energy to have attack deliver <i>Vampiric Touch</i> and syphon 1d4+%V spell energy"',
+  'Blood Talisman':
+    'Section=magic Note="Reduce Blood-Syphoning spell energy cost by 1"',
   'Bonus Spellcasting':'Section=feature Note="+%V Spellcasting Feat"',
   'Breath Of The Vigdir':
     'Section=magic Note="Raise a Dorn for %V wk to complete task"',
@@ -1211,6 +1215,11 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="<i>Contingency</i> summoning of Tadulos for %V rd"',
   'Channeled Combat':
     'Section=magic Note="Use 1 spell energy point to gain +%V %1 for 1 rd"',
+  'Chosen Ground':
+    'Section=combat ' +
+    'Note="+2 attack, damage, and AC and Improved Bull Rush in 20\'x20\' area for %V hr 1/dy"',
+  'Cloak Of Snow':
+    'Section=magic Note="Personal <i>Weather</i> at will outdoors"',
   'Close Combat Archery':
     'Section=combat Note="Use bow w/out foe AOO; use arrows as light weapons"',
   'Closed Mind':
@@ -1221,13 +1230,25 @@ LastAge.FEATURES_ADDED = {
   'Conceal Magic':
     'Section=magic ' +
     'Note="Spells considered half level for purposes of astirax detection"',
+  'Control Weather':'Section=magic Note="<i>Control Weather</i> %V/dy"',
   "Counter Izrador's Will":
     'Section=magic Note="<i>Dispel Magic</i> to counterspell legates"',
   'Cover Story':
     'Section=skill Note="DC 20 Bluff four consecutive dy to establish alibi"',
+  'Dark Invitation':
+    'Section=feature,magic ' +
+    'Note=' +
+      '"Spellcasting (Greater Conjuration) feat",' +
+      '"+1 Channeler Spells (Summon Monster)"',
   'Death Attack':
     'Section=combat ' +
     'Note="Sneak attack after 3 rd of study causes death or paralysis d6+%1 rd (DC %V Fort neg)"',
+  'Death Knell':
+    'Section=magic ' +
+    'Note="<i>Death Knell</i> %V/dy also syphons 1d4 spell energy (%1 max total) for spell duration"',
+  'Deathwatch':
+    'Section=magic ' +
+    'Note="<i>Deathwatch</i> %V/dy, 1 spell energy per additional use"',
   'Deft Dodging':
     'Section=combat Note="+4 self and mount AC on full rd mounted move"',
   "Deny Izrador's Power":
@@ -1262,20 +1283,33 @@ LastAge.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="War cry grants self +%1 attack and +1d%2 damage vs. Shadow minions, R60\' allies +%1 vs. fear %V rd/dy"',
   'Freerider Bonus Feats':'Section=feature Note="%V Freerider feats"',
+  'Gardener Of Erethor Bonus Spells':
+    'Section=magic Note="+%V Channeler Spells (nature)"',
+  'Gardener Of Erethor Bonus Feats':
+    'Section=feature Note="%V Gardener Of Erethor feats"',
   'Gaze Of The Meruros':
     'Section=magic Note="Gaze casts DC %V <i>Cause Fear</i> spell 1/dy"',
   'Ghost Sight':'Section=magic Note="<i>See Invisible</i> at will"',
   'Gift Of The Vigdir':
     'Section=magic Note="Raise a Dorn for %V dy to complete task"',
+  'Ignore Armor':'Section=magic Note="Reduce arcane spell failure by %V%"',
   'Hit And Run':
     'Section=combat Note="Move away from foe after attack w/out foe AOO"',
+  'Homemaker':
+    'Section=skill ' +
+    'Note="+%V Knowledge (Nature)/+%V Profession (Gardener)/+%V Profession (Farmer)/+%V Profession (Herbalist)"',
   'Horse Lord':
     'Section=skill Note="+1 Handle Animal (horse)/+1 Ride (horseback)"',
+  'House Of Summer':
+    'Section=magic ' +
+    'Note="<i>Secure Shelter</i> protects from natural weather 1/dy"',
   'Know Thy Enemy':
     'Section=combat,skill ' +
     'Note="+%V damage and AC vs. %1",' +
          '"+%V Bluff, Listen, Sense Motive, Spot, Survival vs. %1"',
   'Immovable Blade':'Section=combat Note="Cannot be involuntarily disarmed"',
+  'Immunity To Fear':'Section=save Note="Immune all fear effects"',
+  'Imp':'Section=feature Note="Assistance from courtesan imp"',
   'Impervious Mind':
     'Section=save Note="Mental effects preventing attacks agains %V dispelled"',
   'Improved Coup De Grace':
@@ -1306,6 +1340,9 @@ LastAge.FEATURES_ADDED = {
   'Leaf Reader':
     'Section=combat ' +
     'Note="Reduce vegetation concealment miss chance by 10% for every 5 above DC 10 Spot check"',
+  'Like Snowfall':
+    'Section=magic ' +
+    'Note="Continuous <i>Pass Without Trace</i>, <i>Feather Fall</i> 3/dy"',
   'Master Spy':
     'Section=feature ' +
     'Note="Mindbond to known Master Spies, apprentices, and those in homeland at will"',
@@ -1321,6 +1358,9 @@ LastAge.FEATURES_ADDED = {
   'Mystifying Speech':'Section=magic Note="DC %V <i>Modify Memory</i> %1/dy"',
   'Nature Sense':
     'Section=skill Note="Identify animals, plants, unsafe food and drink"',
+  'Obsidian Tongue':
+    'Section=skill ' +
+    'Note="+%V Bluff, Diplomacy, Gather Information (Shadow minions)"',
   'Pale Heart':'Section=save Note="+%V vs Shadow minion spells and abilities"',
   'Primal Foe':'Section=feature Note="May not associate with %V"',
   'Ranged Sneak Attack':'Section=combat Note="R%1\' +%Vd6 Sneak Attack"',
@@ -1334,8 +1374,14 @@ LastAge.FEATURES_ADDED = {
     'Section=magic ' +
     'Note="Recover spell energy equal to 2*weapon multiplier on critical hit"',
   "Resist Izrador's Will":'Section=save Note="+%V vs. legate magic"',
+  'Respect':'Section=feature Note="Leadership (shadow minions)"',
   'Rune Magic':
     'Section=magic Note="Carve rules to evoke up to level %V spell at R60\'"',
+  'Savvy Host':
+    'Section=feature,magic ' +
+    'Note=' +
+      '"Augment Summoning feat, speak with any summoned creature",' +
+      '"+1 Channler Spells (Summon Monster)"',
   'Savvy Hunter':
     'Section=combat Note="Trade half damage bonus vs. %V for attack bonus"',
   'Seance':
@@ -1350,11 +1396,15 @@ LastAge.FEATURES_ADDED = {
   'Shadow Speak':
     'Section=skill ' +
     'Note="+%V Bluff, Diplomacy, Intimidate, Sense Motive w/Shadow minions"',
+  'Shadow-Tapping':'Section=feature Note="Access to two Izrador domains"',
   "Smuggler's Trade":
     'Section=skill ' +
     'Note="+%V or take 10 on Bluff, Disguise, Forgery, Gather Information when smuggling"',
   'Special Mount':'Section=feature Note="Companion mount w/special abilities"',
   'Speed Mount':'Section=combat Note="Dismount, mount as free action"',
+  'Spell-Syphoning':
+    'Section=magic ' +
+    'Note="Blood-siphoning transfers spell from target to self or, with grapple, allows use of target spell energy"',
   'Spirit Manipulation':
     'Section=magic ' +
     'Note="%V chosen Divination or Necromancy spells as spell-like ability 1/dy"',
@@ -1365,6 +1415,9 @@ LastAge.FEATURES_ADDED = {
   'Spiritcraft':
     'Section=magic ' +
     'Note="Divination and Necromancy spell energy cost reduced by 1"',
+  'Spiritual Link':
+    'Section=magic ' +
+    'Note="<i>Alarm</i>, +1 caster level, -1 energy cost in %V areas of up to 1/2 mi diameter"',
   'Spur On':'Section=feature Note="Dbl mount speed during charge or dbl move"',
   'Spy':
     'Section=feature ' +
@@ -1401,6 +1454,11 @@ LastAge.FEATURES_ADDED = {
   "Warden's Vows":
     'Section=feature ' +
     'Note="Sworn to seek King\'s heirs, keep secrets, help Erenlanders in need, and kill Shadow minions"',
+  'Way Of The Snow Witch':
+    'Section=magic,save ' +
+    'Note=' +
+      '"Additional automatic spells",' +
+      '"+%V vs weather and natural energy effects"',
   'Wheel About':
     'Section=combat Note="May make 90 degree turn during mounted charge"',
   "Whisper's Ward":
@@ -1415,7 +1473,8 @@ LastAge.FEATURES_ADDED = {
   'Wizardcraft':
     'Section=magic Note="Prepare spells ahead of time for half energy cost"',
   'Wogren Dodge':'Section=combat Note="+2 AC during mounted move"',
-  "Wogren's Sight":'Section=feature Note="Blindsense while mounted"'
+  "Wogren's Sight":'Section=feature Note="Blindsense while mounted"',
+  'Woodsman':'Section=skill Note="+2 Handle Animal/+2 Survival"'
 
 };
 LastAge.FEATURES = Object.assign({}, SRD35.FEATURES, LastAge.FEATURES_ADDED);
@@ -1958,12 +2017,15 @@ LastAge.SKILLS_ADDED = {
   'Knowledge (Shadow)':'Ability=intelligence Untrained=n',
   'Knowledge (Spirits)':
     'Ability=intelligence Untrained=n Synergy="Knowledge (Nature)"',
-  // Profession (Soldier) available to Leader Of Men Fighters
-  'Profession (Soldier)':'Ability=wisdom Untrained=n',
+  // Profession (Farmer) and Profession (Gardener) for Gardener Of Erethor class
+  'Profession (Farmer)':'Ability=wisdom Untrained=n',
+  'Profession (Gardener)':'Ability=wisdom Untrained=n',
   // Herbalist feat requires Profession (Herbalist)
   'Profession (Herbalist)':'Ability=wisdom Untrained=n',
   // Gnomes are +1 Profession (Sailor)
-  'Profession (Sailor)':'Ability=wisdom Untrained=n'
+  'Profession (Sailor)':'Ability=wisdom Untrained=n',
+  // Profession (Soldier) available to Leader Of Men Fighters
+  'Profession (Soldier)':'Ability=wisdom Untrained=n'
 };
 LastAge.SKILLS = Object.assign({}, SRD35.SKILLS, LastAge.SKILLS_ADDED);
 for(var skill in LastAge.SKILLS) {
@@ -2265,7 +2327,9 @@ LastAge.SPELLS_LEVELS = {
   'Daylight':'Ch3,Faithful3,Jack3',
   'Daze':'Ch0,Jack0',
   'Daze Monster':'Ch2,Charismatic2,Jack2',
+  'Death Knell':'Death2,L2,Syphon2',
   'Death Ward':'Ch5',
+  'Deathwatch':'L1,Syphon1',
   'Deep Slumber':'Ch3,Feyblooded3,Jack3',
   'Delay Poison':'Ch2,Jack2',
   'Delayed Blast Fireball':'Ch7',
@@ -2516,6 +2580,7 @@ LastAge.SPELLS_LEVELS = {
   'Protection From Spells':'Ch8',
   'Prying Eyes':'Ch5,Seer5',
   'Pyrotechnics':'Ch2,Jack2',
+  'Quench':'Ch3',
   'Rage':'Ch3,Jack3',
   'Rainbow Pattern':'Ch4,Feyblooded4',
   'Raise Dead':'Healer5',
@@ -3054,7 +3119,7 @@ LastAge.PRESTIGE_CLASSES = {
       '"8:Improved Coup De Grace","9:Still As Stone","10:Death Attack"',
   'Bane Of Legates':
     'Require=' +
-      '"features.Iron Will","Sum \'features.Magecraft\' >= 1",' +
+      '"features.Iron Will","sumMagecraftFeats >= 1",' +
       '"skills.Knowledge (Arcana) >= 13","skills.Knowledge (Shadow) >= 8",' +
       '"skills.Spellcraft >= 10","spellEnergy >= 10" ' +
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -3062,13 +3127,13 @@ LastAge.PRESTIGE_CLASSES = {
       'Bluff,Concentration,Craft,"Gather Information","Handle Animal",' +
       'Intimidate,Knowledge,Profession,"Sense Motive",Spellcraft,Survival ' +
     'Features=' +
-      '"1:Art Of Magic","1:Improved Spellcasting","1:Resist Izrador\'s Will",' +
+      '"1:Improved Spellcasting","1:Resist Izrador\'s Will",' +
       '"2:Bane Of Legates Bonus Feats","3:See Astirax",' +
       '"4:Counter Izrador\'s Will","5:Bonus Spellcasting","6:Bind Astirax",' +
       '"8:Conceal Magic","10:Sundered Spirit"',
   'Druid':
     'Require=' +
-      '"features.Magecraft (Spiritual)","Sum \'features.Spellcasting\' >= 1",' +
+      '"features.Magecraft (Spiritual)","sumSpellcastingFeats >= 1",' +
       '"features.Mastery Of Nature||features.Wild Empathy",' +
       '"skills.Knowledge (Nature) >= 8","skills.Survival >= 8" ' +
     'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
@@ -3078,9 +3143,9 @@ LastAge.PRESTIGE_CLASSES = {
       'Profession,"Speak Language",Spellcraft,Survival,Swim ' +
     'Features=' +
       '"1:Weapon Proficiency (Club/Dagger/Longbow/Shortbow/Quarterstaff)",' +
-      '"1:Art Of Magic","1:Improved Spellcasting","1:Mastery Of Nature",' +
-      '"1:Animal Companion",2:Druidcraft,"2:Nature Sense",' +
-      '"3:Commune With Nature","5:Find The Way","8:Venom Immunity"',
+      '"1:Improved Spellcasting","1:Mastery Of Nature","1:Animal Companion",' +
+      '2:Druidcraft,"2:Nature Sense","3:Commune With Nature",' +
+      '"5:Find The Way","8:Venom Immunity"',
   'Elven Raider':
     'Require=' +
       '"baseAttack >= 5","features.Point-Blank Shot","features.Rapid Shot",' +
@@ -3116,15 +3181,15 @@ LastAge.PRESTIGE_CLASSES = {
       '"2:Hit And Run","2:Wheel About"',
   'Haunted One':
     'Require=' +
-      '"Sum \'features.Magecraft\' >= 1",' +
+      '"sumMagecraftFeats >= 1",' +
       '"features.Spellcasting (Divination)",' +
-      '"features.Spellcasting (Necromancy)","skills.Knowledge (Arcana) >= 8",' +
-      '"skills.Knowledge (Spirits) >= 10" ' +
+      '"features.Spellcasting (Necromancy)",' +
+      '"skills.Knowledge (Arcana) >= 8","skills.Knowledge (Spirits) >= 10" ' +
     'HitDie=d6 Attack=3/4 SkillPoints=2 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
       'Concentration,Craft,Knowledge,Profession,"Speak Language",Spellcraft ' +
     'Features=' +
-      '"1:Art Of Magic","1:Improved Spellcasting",1:Seance,2:Spiritcraft,' +
+      '"1:Improved Spellcasting",1:Seance,2:Spiritcraft,' +
       '"2:Spirit Manipulation","3:Ghost Sight","5:Spell Focus (Divination)",' +
       '"9:Spell Focus (Necromancy)"',
   'Insurgent Spy':
@@ -3163,8 +3228,8 @@ LastAge.PRESTIGE_CLASSES = {
       'Smuggler4:3=1',
   'Warrior Arcanist':
     'Require=' +
-      '"baseAttack >= 4","Sum \'features.Magecraft\' >= 1",' +
-      '"Sum \'features.Spellcasting\' >= 1",' +
+      '"baseAttack >= 4",' +
+      '"sumMagecraftFeats >= 1","sumSpellcastingFeats >= 1",' +
       '"Sum \'features.Weapon Focus\' >= 1",' +
       '"features.Weapon Proficiency (Martial)","skills.Spellcraft >= 8" ' +
     'HitDie=d8 Attack=1 SkillPoints=2 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
@@ -3174,12 +3239,11 @@ LastAge.PRESTIGE_CLASSES = {
     'Features=' +
       '"1:Armor Proficiency (Medium)","1:Shield Proficiency",' +
       '"1:Weapon Proficiency (Martial)",' +
-      '"1:Art Of Magic","1:Armored Casting","1:Channeled Combat",' +
-      '"2:Improved Spellcasting","6:Melee Caster","10:Regenerative Strike"',
+      '"1:Armored Casting","1:Channeled Combat","2:Improved Spellcasting",' +
+      '"6:Melee Caster","10:Regenerative Strike"',
   'Whisper Adept':
     'Require=' +
-      '"Sum \'features.Magecraft\' >= 1",' +
-      '"Sum \'features.Spellcasting\' >= 2",' +
+      '"sumMagecraftFeats >= 1","sumSpellcastingFeats >= 2",' +
       '"race =~ /Elf/","skills.Knowledge (Nature) >= 8",' +
       '"skills.Knowledge (Spirits) >= 10","skills.Survival >= 8" ' +
     'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -3187,20 +3251,19 @@ LastAge.PRESTIGE_CLASSES = {
       'Concentration,Craft,"Handle Animal",Heal,Knowledge,Profession,' +
       '"Speak Language",Spellcraft,Survival ' +
     'Features=' +
-      '"1:Art Of Magic","1:Improved Spellcasting","1:Whisper Sense",' +
-      '"3:Fell Touch","5:Tree Meld","7:Strength Of The Wood",' +
-      '"9:Whisper\'s Ward"',
+      '"1:Improved Spellcasting","1:Whisper Sense","3:Fell Touch",' +
+      '"5:Tree Meld","7:Strength Of The Wood","9:Whisper\'s Ward"',
   'Wizard':
     'Require=' +
-      '"features.Magecraft (Hermetic)","Sum \'features.Spellcasting\' >= 2",' +
+      '"features.Magecraft (Hermetic)","sumSpellcastingFeats >= 2",' +
       '"skills.Knowledge (Arcana) >= 10","skills.Spellcraft >= 10",' +
       '"sumItemCreationFeats >= 1","sumMetamagicFeats >= 1" ' +
     'HitDie=d4 Attack=1/2 SkillPoints=2 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
       'Concentration,Craft,Knowledge,Profession,"Speak Language",Spellcraft ' +
     'Features=' +
-      '"1:Art Of Magic","1:Improved Spellcasting",1:Wizardcraft,' +
-      '"2:Efficient Study","3:Wizard Bonus Feats","4:Bonus Spellcasting"',
+      '"1:Improved Spellcasting",1:Wizardcraft,"2:Efficient Study",' +
+      '"3:Wizard Bonus Feats","4:Bonus Spellcasting"',
   'Wogren Rider':
     'Require=' +
       '"features.Mounted Archery","features.Mounted Combat",' +
@@ -3272,8 +3335,8 @@ LastAge.PRESTIGE_CLASSES = {
     'Require=' +
       '"race =~ \'Dwarf\'","Max \'skills.Craft\' >= 5",' +
       '"countKnowledgeSkillsGe5 >= 2","skills.Knowledge (History) >= 9",' +
-      '"skills.Spellcraft >= 5","Sum \'features.Magecraft\' >= 1",' +
-      '"sumItemCreationFeats >= 1","Sum \'features.Spellcasting >= 1" ' +
+      '"skills.Spellcraft >= 5","sumMagecraftFeats >= 1",' +
+      '"sumItemCreationFeats >= 1","sumSpellcastingFeats >= 1" ' +
     'HitDie=d10 Attack=1/2 SkillPoints=6 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
       'Appraise,Concentration,Craft,Diplomacy,Heal,Knowledge,Profession,' +
@@ -3302,7 +3365,74 @@ LastAge.PRESTIGE_CLASSES = {
       '"2:Augment Summoning","3:Ancestral Recall",' +
       '"Spirit Speaker Bonus Feats","4:Call Tadulos","5:Ancestral Warnings",' +
       '"5:Gaze Of The Meruros","7:Ancestral Favor","8:Gift Of The Vigdir",' +
-      '"9:Call Meruros","10:Breath Of The Vigdir"'
+      '"9:Call Meruros","10:Breath Of The Vigdir"',
+  // Sorcery & Shadow
+  'Collaborator':
+    'Require=' +
+      '"skills.Bluff >= 8","skills.Diplomacy >= 8","skills.Sense Motive >= 8",'+
+      '"features.Deceitful || features.Negotiator","sumMagecraftFeats >= 1",' +
+      '"alignment == \'Chaotic Neutral\' || alignment == \'Neutral\'",' +
+      '"languages.Black Tongue" ' +
+    'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Appraise,Bluff,Concentration,Diplomacy,Disguise,Forgery,' +
+      '"Gather Information",Hide,"Knowledge (History)","Knowledge (Religion)",'+
+      'Listen,"Move Silently",Perform,Profession,Search,"Sleight Of Hand",' +
+      'Spellcraft,Spot ' +
+    'Features=' +
+      '"1:Art Of Magic","1:Improved Spellcasting","1:Obsidian Tongue","2:Imp",'+
+      '"2:Immunity To Fear","4:Dark Invitation","6:Shadow-Tapping",' +
+      '"8:Savvy Host","10:Respect" ' +
+    'Selectables=' +
+      QuilvynUtils.getKeys(LastAge.PATHS).filter(x => x.match(/Domain$/)).map(x => '"6:' + x + '"').join(','),
+  'Gardener Of Erethor':
+    'Require=' +
+      '"skills.Profession (Gardener) || skills.Profession (Herbalist) || skills.Profession (Farmer)",' +
+      '"sumMagecraftFeats >= 1","features.Spellcasting (Abjuration)",' +
+      '"alignment =~ \'Lawful (Good|Neutral)|Neutral Good|^Neutral\'",' +
+      '"race =~ \'Elf\'" ' +
+    'HitDie=d6 Attack=1/2 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Climb,Concentration,Craft,Diplomacy,"Handle Animal",Heal,' +
+      '"Knowledge (Engineering)","Knowledge (Nature)",Listen,Profession,Ride,' +
+      'Spellcraft,Spot,Survival,Swim ' +
+    'Features=' +
+      '"1:Art Of Magic",1:Homemaker,"1:Improved Spellcasting",' +
+      '"2:Gardener Of Erethor Bonus Spells","2:Spiritual Link",' +
+      '"3:Gardener Of Erethor Bonus Feats",6:Woodsman,"9:Chosen Ground"',
+  'Snow Witch':
+    'Require=' +
+      '"skills.Kknowledge (Arcane) >= 4","skills.Knowledge (Nature) >= 4",' +
+      '"skills.Spellcraft >= 4", "skills.Survival >= 4",' +
+      '"features.Endurance","sumMagecraftFeats >= 1",' +
+      '"sumSpellcastingFeats >= 1",' +
+      '"alignment !~ \'Evil\'" ' +
+    'HitDie=d8 Attack=1/2 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Climb,Concentration,Craft,Heal,Hide,"Knowledge (Arcana)",' +
+      '"Knowledge (Nature)",Listen,"Move Silently",Profession,Search,' +
+      'Spellcraft,Spot,Survival,Swim ' +
+    'Features=' +
+      '"1:Art Of Magic","1:Improved Spellcasting","1:Way Of The Snow Witch",' +
+      '"2:Cold Resistance","3:Like Snowfall","4:Cloak Of Snow",' +
+      '"6:House Of Summer","7:Control Weather","9:Aura Of Winter",' +
+      '"10:Cold Immunity"',
+  'Syphon':
+    'Require=' +
+      '"baseAttack >= 8","skills.Spellcraft >= 8",' +
+      '"Sum \'features.Improved Critical\' > 0",' +
+      '"features.Weapon Proficiency (Martial) || Sum \'features.Martial Weapon Proficiency\' > 0 || Sum \'features.Exotic Weapon Proficiency\' > 0" ' +
+    'HitDie=d10 Attack=3/4 SkillPoints=2 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Climb,Concentration,Craft,Intimidate,Jump,Profession,Ride,Spellcraft,' +
+      'Swim ' +
+    'Features=' +
+      '"1:Art Of Magic","1:Death Knell","1:Deathwatch","2:Ignore Armor",' +
+      '"2:Blood-Syphoning","4:Spell-Syphoning","5:Blood Talisman" ' +
+    'SpellAbility=charisma ' +
+    'SpellSlots=' +
+      'Syphon1:1=1,' +
+      'Syphon2:1=1'
 };
 
 /* Defines rules related to character abilities. */
@@ -3372,7 +3502,6 @@ LastAge.identityRules = function(
     ('skillModifier.Speak Language', 'skillNotes.illiteracy', '+', '-2');
 
   rules.defineRule('maxSpellLevel',
-    'casterLevels.Ch', '?', null,
     'level', '=', 'source / 2',
     'magicNotes.artOfMagic', '+', '1/2'
   );
@@ -4048,6 +4177,8 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '+=', 'Math.floor((source - 1) / 4)'
     );
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule
+      ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
     rules.defineRule('magicNotes.bindAstirax', classLevel, '=', null);
     rules.defineRule('magicNotes.bindAstirax.1',
       // 15 + ability modifier; spellDifficultyClass is 10 + abilityModifier
@@ -4084,6 +4215,8 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '=', 'Math.floor(source / 3)'
     );
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule
+      ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
     rules.defineChoice('spells', "Peasant's Rest(D1 Conj)");
     rules.defineChoice('spells', 'Fey Fire(D2 Conj)');
 
@@ -4138,6 +4271,8 @@ LastAge.classRulesExtra = function(rules, name) {
   } else if(name == 'Haunted One') {
 
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule
+      ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
     rules.defineRule
       ('magicNotes.seance', classLevel, '=', 'Math.floor((source + 2) / 3)');
     rules.defineRule('magicNotes.seance.1',
@@ -4207,7 +4342,12 @@ LastAge.classRulesExtra = function(rules, name) {
         'source<4 ? "attack" : ' +
         'source<7 ? "attack or AC" : "attack, damage, or AC"'
     );
-    rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule('magicNotes.improvedSpellcasting',
+      classLevel, '+=', 'Math.floor(source / 2)'
+    );
+    rules.defineRule('magicNotes.improvedSpellcasting.1',
+      classLevel, '+=', 'Math.floor(source / 2)'
+    );
     rules.defineRule
       ('magicNotes.meleeCaster', classLevel, '=', 'Math.floor(source / 2)');
 
@@ -4219,6 +4359,8 @@ LastAge.classRulesExtra = function(rules, name) {
         '"+2 Initiative, cannot be surprised"'
     );
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule
+      ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
     rules.defineRule('magicNotes.treeMeld', classLevel, '=', null);
     rules.defineRule('magicNotes.whisperSense',
       classLevel, '=',
@@ -4241,6 +4383,8 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '=', 'Math.floor((source + 1) / 3) * 10'
     );
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule
+      ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
 
   } else if(name == 'Wogren Rider') {
 
@@ -4350,6 +4494,8 @@ LastAge.classRulesExtra = function(rules, name) {
       ('languages.Old Dwarven', 'skillNotes.dwarvenLiteracy', '=', '1');
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
     rules.defineRule
+      ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
+    rules.defineRule
       ('magicNotes.rechargeNexus', classLevel, '=', 'source<6 ? 3 : 2');
     rules.defineRule('magicNotes.runeMagic', classLevel, '=', 'source - 1');
     rules.defineRule
@@ -4373,7 +4519,7 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule
      ('magicNotes.ancestralSpellcasting', classLevel, '+=', null);
     rules.defineRule('magicNotes.armoredCasting',
-      classLevel, '+=', 'Math.floor(source / 2) * 5'
+      classLevel, '=', 'Math.floor(source / 2) * 5'
     );
     rules.defineRule('magicNotes.callMeruros', classLevel, '=', null);
     rules.defineRule('magicNotes.callTadulos', classLevel, '=', null);
@@ -4384,6 +4530,133 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('magicNotes.breathOfTheVigdir', classLevel, '=', null);
     rules.defineRule('magicNotes.giftOfTheVigdir', classLevel, '=', null);
     rules.defineRule('skillNotes.ancestralRecall', classLevel, '=', null);
+
+  } else if(name == 'Collaborator') {
+
+    rules.defineRule
+      ('casterLevels.Domain', classLevel, '=', 'source<6 ? null : source');
+    rules.defineRule('channelerSpells',
+      'magicNotes.darkInvitation', '+=', '1',
+      'magicNotes.savvyHost', '+=', '1'
+    );
+    rules.defineRule
+      ('features.Augment Summoning', 'featureNotes.savvyHost', '=', '1');
+    rules.defineRule('features.Leadership', 'featureNotes.respect', '=', '1');
+    rules.defineRule('features.Spellcasting (Greater Conjuration)',
+      'featureNotes.darkInvitation', '=', '1'
+    );
+    rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule
+      ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
+    rules.defineRule('selectableFeatureCount.Collaborator',
+      classLevel, '=', 'source<6 ? null : 2'
+    );
+    rules.defineRule('skillNotes.obsidianTongue',
+      classLevel, '=', 'Math.floor((source + 1) / 2) * 2'
+   );
+
+  } else if(name == 'Gardener Of Erethor') {
+
+    var allFeats = rules.getChoices('feats');
+    var feats = [
+      'Craft Rune Of Power', 'Empower Spell', 'Skill Focus', 'Widen Spell'
+    ];
+    for(var i = 0; i < feats.length; i++) {
+      var feat = feats[i];
+      if(feat in allFeats)
+        allFeats[feat] =
+          allFeats[feat].replace('Type=', 'Type="' + name + '",');
+    }
+
+    rules.defineRule('combatNotes.chosenGround', classLevel, '=', null);
+    rules.defineRule('featCount.Gardener Of Erethor',
+      'featureNotes.gardenerOfErethorBonusFeats', '=', null
+    );
+    rules.defineRule('featureNotes.gardenerOfErethorBonusFeats',
+      classLevel, '=', 'Math.floor((source - 1) / 2) - (source == 9 ? 1 : 0)'
+    );
+    rules.defineRule('magicNotes.gardenerOfErethorBonusSpells',
+      classLevel, '=', 'Math.floor(source / 2)'
+    );
+    rules.defineRule
+      ('magicNotes.spiritualLink', classLevel, '=', 'Math.floor(source / 2)');
+    rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule
+      ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
+    rules.defineRule('skillNotes.homemaker', classLevel, '=', null);
+
+  } else if(name == 'Snow Witch') {
+
+    var snowSpells = [
+      'Detect Magic', 'Ray Of Frost', 'Chill Touch', 'Obscuring Mist',
+      'Gust Of Wind', 'Levitate', 'Weather', 'Quench', 'Sleet Storm',
+      'Wind Wall', 'Air Walk', 'Ice Storm', 'Cone Of Cold', 'Control Winds',
+      'Freezing Sphere', 'Mislead', 'Wind Walk', 'Control Weather', 'Polar Ray',
+      'Whirlwind', 'Storm Of Vengeance'
+    ];
+    for(var i = 0; i < snowSpells.length; i++) {
+      var spell = snowSpells[i];
+      if(!(spell in LastAge.SPELLS)) {
+        console.log('Snow Witch spell "' + spell + '" missing from spell list');
+        continue;
+      }
+      var attrs = LastAge.SPELLS[spell];
+      var level = QuilvynUtils.getAttrValueArray(attrs, 'Level').filter(x => x.match(/Ch\d/))[0].replace('Ch', '');
+      var school = QuilvynUtils.getAttrValue(attrs, 'School');
+      rules.defineRule('snowSpells.' + spell,
+        'magicNotes.wayOfTheSnowWitch', '?', null,
+        'maxSpellLevel', '=', 'source >= ' + level + ' ? 1 : null'
+      );
+      rules.defineRule('spells.' + spell + '(Ch' + level + ' ' + school.substring(0, 4) + ')',
+        'snowSpells.' + spell, '=', '1'
+      );
+    }
+
+    rules.defineRule
+      ('magicNotes.auraOfWinter', classLevel, '=', 'source<10 ? 1 : 2');
+    rules.defineRule
+      ('magicNotes.controlWeather', classLevel, '=', 'source<10 ? 1 : 2');
+    rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule('magicNotes.improvedSpellcasting.1',
+      classLevel, '+=', 'Math.floor(source / 3)'
+    );
+    rules.defineRule('saveNotes.coldResistance',
+      classLevel, '=', 'Math.floor((source + 1) / 3) * 5'
+    );
+    rules.defineRule
+      ('saveNotes.wayOfTheSnowWitch', classLevel, '=', 'source<4 ? 2 : 4');
+
+  } else if(name == 'Syphon') {
+
+    rules.defineRule('magicNotes.arcaneSpellFailure',
+      'magicNotes.ignoreArmor', '+', '-source',
+      null, '^', '0'
+    );
+    rules.defineRule('magicNotes.blood-Syphoning', classLevel, '=', null);
+    rules.defineRule('magicNotes.blood-Syphoning.1',
+      classLevel, '=', '3',
+      'magicNotes.bloodTalisman', '+', '-1'
+    );
+    rules.defineRule('magicNotes.deathKnell',
+      classLevel, '=', 'source<3 ? 1 : source<5 ? 2 : 3'
+    );
+    rules.defineRule('magicNotes.deathKnell.1',
+      classLevel, '=', null,
+      'highestMagicModifier', '+', null
+    );
+    rules.defineRule('magicNotes.deathwatch',
+      classLevel, '=', 'source<3 ? 1 : source<5 ? 2 : 3'
+    );
+    rules.defineRule('magicNotes.ignoreArmor',
+      classLevel, '=', 'Math.floor(source / 2) * 10'
+    );
+    rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule('magicNotes.improvedSpellcasting.1',
+      classLevel, '+=', 'Math.floor(source / 3)'
+    );
+    rules.defineRule('spellDifficultyClass.Syphon',
+      'highestMagicModifier', '=', '10 + source'
+    );
 
   } else if(LastAge.basePlugin.classRulesExtra) {
 
@@ -5515,6 +5788,9 @@ LastAge.ruleNotes = function() {
     '    makes the Greater Spellcasting feat moot; use Spellcasting\n' +
     '    (Greater Conjuration) or Spellcasting (Greater Evocation) instead.\n' +
     '  </li><li>\n' +
+    '    Quilvyn adds <i>Quench</i> to the Channeler spell list for use by\n' +
+    '    the Snow Witch prestige class.\n' +
+    '  </li><li>\n' +
     '    The level 4 Beast spell <i>Bear\'s Endurance</i> is corrected to\n' +
     '    <i>Bull\'s Endurance</i>.\n' +
     '  </li><li>\n' +
@@ -5541,6 +5817,11 @@ LastAge.ruleNotes = function() {
     '    Innate Magic feat. Since these races automatically receive this\n' +
     '    feat, enforcing the requirement would eliminate the possibility\n' +
     '    of any character selecting the feat.\n' +
+    '  </li><li>\n' +
+    '    The <i>Sorcery And Shadow</i> source book describes the Art Of\n' +
+    '    Magic and Improved Spellcasting features differently than does the\n' +
+    '    core rulebook. Quilvyn uses the core rulebook definitions, changing\n'+
+    '    prestige class features as appropriate.\n' +
     '  </li>\n' +
     '</ul>\n' +
     '</p>\n' +
