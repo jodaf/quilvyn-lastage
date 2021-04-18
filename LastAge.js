@@ -538,6 +538,7 @@ LastAge.FEATURES_ADDED = {
   'Increased Damage Threshold':
     'Section=combat Note="Continue fighting until -%V HP"',
   'Indefatigable':'Section=save Note="Immune %V effects"',
+  'Insight':'Section=skill Note="+%V skill check 1/dy"',
   'Inspire Valor':
     'Section=feature ' +
     'Note="R30\' Allies +%V attack and fear saves for %1 rd %2/dy"',
@@ -666,6 +667,8 @@ LastAge.FEATURES_ADDED = {
   'Wild Empathy':'Section=skill Note="+%V Diplomacy (animals)"',
   'Wild Shape':'Section=magic Note="Change into creature of size %V %1/dy"',
   'Wisdom Bonus':'Section=ability Note="+%V Wisdom"',
+  'Wiser Bonus Feats':'Section=feature Note="+%V General Feat (Skill Focus)"',
+  'Wiser Skill Bonus':'Section=skill Note="+%V Skill Points"',
 
   // Feats
   'Advanced Tempering':'Section=skill Note="Increase item hardness 20%"',
@@ -1814,7 +1817,49 @@ LastAge.PATHS = {
       '"Low-Light Vision",Scent ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
-      'Warg1:4=1;7=2;12=3;17=4' // Charm Animal 2/dy; Speak w/Animals 2/dy
+      'Warg1:4=1;7=2;12=3;17=4', // Charm Animal 2/dy; Speak w/Animals 2/dy
+  // Sorcery & Shadow
+  'Blessed':
+    'Group=Blessed ' +
+    'Level=level ' +
+    'Features=' +
+      '"1:Body Of The Blessed","3:Aura Of Courage","5:Grant Protection",' +
+      '"6:Divine Grace","10:Bless Ground","14:Sanctify" ' +
+    'SpellAbility=charisma ' +
+    'SpellSlots=' +
+      'Blessed1:2=1;4=2;9=3;13=4;16=5;17=6,' + // Bless 4/dy; Protection From Evil 2/dy
+      'Blessed2:8=1;18=2,' +
+      'Blessed3:11=1,' +
+      'Blessed5:7=1;15=2;19=3,' +
+      'Blessed8:20=1',
+  'Null':
+    'Group=Null ' +
+    'Level=level ' +
+    'Features=' +
+      '"1:Sense Magic","2:Magic Resistance","3:Null Field",' +
+      '"5:Spell Resistance","9:Empowered Dispelling" ' +
+    'SpellAbility=charisma ' +
+    'SpellSlots=' +
+      'Null3:4=1;8=2;12=3,' + // Dispel Magic 3/dy
+      'Null4:17=1,' +
+      'Null6:13=1;18=2',
+  'Shadowed':
+    'Group=Shadowed ' +
+    'Level=level ' +
+    'Features=' +
+      '"1:Body Of The Shadowed",1:Darkvision,"4:Coldness Of Shadow",' +
+      '"5:Gift Of Izrador","9:Turn Undead","14:Imposing Presence",' +
+      '"19:Frightful Presence" ' +
+    'SpellAbility=charisma ' +
+    'SpellSlots=' +
+      'Shadowed1:3=1;6=2;7=3;11=4;12=5;16=6;17=7,' + // Bane 4/dy; Summon Monster I 3/dy
+      'Shadowed2:2=1;8=2;13=3;18=4', // Death Knell 3/dy
+  'Wiser':
+    'Group=Wiser ' +
+    'Level=level ' +
+    'Features=' +
+      '"1:Wiser Skill Bonus","2:Wiser Bonus Feats","4:Insight",' +
+      '"5:Intelligence Bonus"'
 };
 LastAge.RACES = {
   'Agrarian Halfling':
@@ -2239,6 +2284,7 @@ LastAge.SPELLS_LEVELS = {
   'Aid':'Chanceborn2,Charismatic2,Faithful2',
   'Air Walk':'Ch4',
   'Alarm':'Bladebearer1,Ch1,Jack1,Seer1',
+  'Align Weapon':'Blessed2',
   'Alter Self':'Ch2,Jack2',
   'Analyze Dweomer':'Ch6',
   'Animal Growth':'Ch5',
@@ -2250,7 +2296,7 @@ LastAge.SPELLS_LEVELS = {
   'Animate Plants':'Ch7',
   'Animate Rope':'Ch1,Jack1',
   'Antilife Shell':'Ch6',
-  'Antimagic Field':'Ch6',
+  'Antimagic Field':'Ch6,Null6',
   'Antipathy':'Ch8',
   'Antiplant Shell':'Ch4',
   'Arcane Eye':'Ch4,Seer4',
@@ -2261,6 +2307,7 @@ LastAge.SPELLS_LEVELS = {
   'Augury':'Bladebearer2,Seer2',
   'Awaken':'Ch5',
   'Baleful Polymorph':'Ch5',
+  'Bane':'Shadowed1',
   'Banishment':'Ch7',
   'Barkskin':'Ch2,Jack2',
   'Bear\'s Endurance':'Beast2,Ch2,Jack2',
@@ -2268,7 +2315,7 @@ LastAge.SPELLS_LEVELS = {
   'Binding':'Ch8',
   'Black Tentacles':'Ch4',
   'Bless Weapon':'Faithful1',
-  'Bless':'Faithful1',
+  'Bless':'Blessed1,Faithful1',
   'Blight':'Ch4',
   'Blindness/Deafness':'Ch2,Jack2',
   'Blur':'Ch2,Jack2,Seaborn2,Shadow2',
@@ -2327,17 +2374,17 @@ LastAge.SPELLS_LEVELS = {
   'Daylight':'Ch3,Faithful3,Jack3',
   'Daze':'Ch0,Jack0',
   'Daze Monster':'Ch2,Charismatic2,Jack2',
-  'Death Knell':'Death2,L2,Syphon2',
+  'Death Knell':'Death2,Shadowed2,Syphon2',
   'Death Ward':'Ch5',
-  'Deathwatch':'L1,Syphon1',
+  'Deathwatch':'Syphon1',
   'Deep Slumber':'Ch3,Feyblooded3,Jack3',
   'Delay Poison':'Ch2,Jack2',
   'Delayed Blast Fireball':'Ch7',
   'Demand':'Ch8',
   'Detect Animals Or Plants':'Ch1,Jack1',
   'Detect Chaos':'Ch2,Jack2',
-  'Detect Evil':'Ch2,Guardian2,Jack2',
-  'Detect Good':'Ch2,Jack2',
+  'Detect Evil':'Ch2,Guardian2,Jack2,Shadowed2',
+  'Detect Good':'Ch2,Jack2,Shadowed2',
   'Detect Law':'Ch2,Jack2',
   'Detect Magic':'Ch0,Jack0',
   'Detect Poison':'Ch0,Jack0',
@@ -2352,8 +2399,8 @@ LastAge.SPELLS_LEVELS = {
   'Disguise Self':'Ch1,Feyblooded1,Jack1',
   'Disintegrate':'Ch6',
   'Dismissal':'Ch5',
-  'Dispel Evil':'Faithful5',
-  'Dispel Magic':'Ch3,Jack3',
+  'Dispel Evil':'Blessed5,Faithful5',
+  'Dispel Magic':'Ch3,Jack3,Null3',
   'Displacement':'Ch3,Jack3,Seaborn3,Shadow3',
   'Disrupt Undead':'Ch0,Jack0',
   'Divination':'Seer4',
@@ -2419,7 +2466,7 @@ LastAge.SPELLS_LEVELS = {
   'Grasping Hand':'Ch7',
   'Grease':'Ch1,Jack1',
   'Greater Arcane Sight':'Ch7',
-  'Greater Dispel Magic':'Ch6',
+  'Greater Dispel Magic':'Ch6,Null6',
   'Greater Heroism':'Ch6,Charismatic6',
   'Greater Invisibility':'Ch4',
   'Greater Magic Fang':'Beast3,Ch3,Jack3',
@@ -2448,7 +2495,7 @@ LastAge.SPELLS_LEVELS = {
   'Hold Monster':'Ch5',
   'Hold Person':'Ch3,Jack3',
   'Hold Portal':'Ch1,Earthbonded1,Jack1',
-  'Holy Aura':'Faithful8',
+  'Holy Aura':'Blessed8,Faithful8',
   'Holy Smite':'Faithful4',
   'Horrid Wilting':'Ch8',
   'Hypnotic Pattern':'Ch2,Jack2',
@@ -2493,7 +2540,7 @@ LastAge.SPELLS_LEVELS = {
   'Mage\'s Sword':'Ch7',
   'Magic Aura':'Ch1,Feyblooded1,Jack1',
   'Magic Circle Against Chaos':'Ch3,Jack3',
-  'Magic Circle Against Evil':'Ch3,Faithful3,Jack3',
+  'Magic Circle Against Evil':'Blessed3,Ch3,Faithful3,Jack3',
   'Magic Circle Against Good':'Ch3,Jack3',
   'Magic Circle Against Law':'Ch3,Jack3',
   'Magic Fang':'Beast1,Ch1,Jack1',
@@ -2510,7 +2557,7 @@ LastAge.SPELLS_LEVELS = {
   'Mass Cat\'s Grace':'Ch6',
   'Mass Charm Monster':'Ch8',
   'Mass Cure Critical Wounds':'Ch8',
-  'Mass Cure Light Wounds':'Ch5,Healer5',
+  'Mass Cure Light Wounds':'Blessed5,Ch5,Healer5',
   'Mass Cure Moderate Wounds':'Ch6',
   'Mass Cure Serious Wounds':'Ch7',
   'Mass Eagle\'s Splendor':'Ch6',
@@ -2574,7 +2621,7 @@ LastAge.SPELLS_LEVELS = {
   'Protection From Arrows':'Bladebearer2,Ch2,Jack2',
   'Protection From Chaos':'Ch1,Jack1',
   'Protection From Energy':'Ch3,Jack3',
-  'Protection From Evil':'Ch1,Faithful1,Jack1',
+  'Protection From Evil':'Blessed1,Ch1,Faithful1,Jack1',
   'Protection From Good':'Ch1,Jack1',
   'Protection From Law':'Ch1,Jack1',
   'Protection From Spells':'Ch8',
@@ -2647,6 +2694,7 @@ LastAge.SPELLS_LEVELS = {
   'Speak With Dead':'Seer3',
   'Speak With Plants':'Ch3,Jack3,Naturefriend3',
   'Spectral Hand':'Ch2,Jack2',
+  'Spell Immunity':'Null4',
   'Spell Turning':'Ch7',
   'Spellstaff':'Ch6',
   'Spider Climb':'Ch2,Jack2',
@@ -2661,7 +2709,7 @@ LastAge.SPELLS_LEVELS = {
   'Storm Of Vengeance':'Ch9',
   'Suggestion':'Ch3,Charismatic3,Jack3',
   'Summon Instrument':'Ch0,Jack0',
-  'Summon Monster I':'Ch1,Jack1,Sunderborn1',
+  'Summon Monster I':'Ch1,Jack1,Shadowed1,Sunderborn1',
   'Summon Monster II':'Ch2,Jack2,Sunderborn2',
   'Summon Monster III':'Ch3,Jack3,Sunderborn3',
   'Summon Monster IV':'Ch4,Sunderborn4',
@@ -5490,6 +5538,22 @@ LastAge.pathRulesExtra = function(rules, name) {
       pathLevel, '=', 'source >= 16 ? 3 : source >= 9 ? 2 : 1'
     );
     rules.defineRule('skillNotes.wildEmpathy', pathLevel, '+=', null);
+
+  } else if(name == 'Wiser') {
+
+    rules.defineRule('abilityNotes.intelligenceBonus',
+      pathLevel, '+=', 'Math.floor(source / 5)'
+    );
+    rules.defineRule('skillNotes.insight',
+      pathLevel, '=', 'source<7 ? 2 : source<12 ? 4 : source<17 ? 6 : 8',
+      'intelligenceModifier', '+', null
+    );
+    rules.defineRule('featureNotes.wiserBonusFeats',
+      pathLevel, '=', 'Math.floor((source + 4) / 6) + (source == 19 ? 1 : 0)'
+    );
+    rules.defineRule('skillNotes.wiserSkillBonus',
+      pathLevel, '=', 'source<3 ? 1 : source<6 ? 2 : source<9 ? 3 : source<11 ? 4 : source<13 ? 5 : source<16 ? 6 : source<18 ? 7 : 8'
+    );
 
   } else if(LastAge.basePlugin.pathRulesExtra) {
 
