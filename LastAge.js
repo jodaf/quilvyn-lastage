@@ -1182,6 +1182,7 @@ LastAge.FEATURES_ADDED = {
   // Prestige Classes
   'Advance Ancestral Blade':
     'Section=combat Note="Unlock %V additional powers of covenant weapon"',
+  'Alchemy':'Section=skill Note="Create plains dust%V"',
   'Alter Ego':'Section=feature Note="Transform into %V in %1 as %2 ability"',
   'Ancestral Advisor':'Section=magic Note="<i>Augury</i> via weapon %V/dy"',
   'Ancestral Favor':'Section=save Note="Reroll save 1/dy"',
@@ -1206,6 +1207,11 @@ LastAge.FEATURES_ADDED = {
     'Section=magic ' +
     'Note="R60\' Astirax bound to current form for %V hr, destroyed if host animal killed (DC %1 Will neg)"',
   'Black Rot':'Section=ability Note="Detect and affected as evil"',
+  'Blade':'Section=combat Note="+%Vd8 Sneak Attack"',
+  'Blade Dance':
+    'Section=combat ' +
+    'Note="Use Canny Strike, Clever Fighting, Weapon Defense, and Well-Aimed Strike feats with falchion and greatsword"',
+  'Blade Dancer Bonus Feats':'Section=feature Note="+%V Fighter Feat"',
   'Bless Ground':
     'Section=magic ' +
     'Note="R40\' +4 vs. fear, evil shaken, <i>Fell Forbiddance</i> for %V dy"',
@@ -1230,8 +1236,16 @@ LastAge.FEATURES_ADDED = {
   'Chosen Ground':
     'Section=combat ' +
     'Note="+2 attack, damage, and AC and Improved Bull Rush in 20\'x20\' area for %V hr 1/dy"',
+  'City Is My Shield':
+    'Section=combat Note="x2 cover bonus in urban environment, min +2 cover"',
+  'City Sight':'Section=feature Note="Low-Light Vision"',
+  'City Speak':'Section=skill Note="Community with any urban dweller"',
+  'City Stance':
+    'Section=combat ' +
+    'Note="Take better of two Initiative rolls in urban environments"',
   'Cloak Of Snow':
     'Section=magic Note="Personal <i>Weather</i> at will outdoors"',
+  'Cloaked In City Shadows':'Section=skill Note="Hide in any urban terrain"',
   'Close Combat Archery':
     'Section=combat Note="Use bow w/out foe AOO; use arrows as light weapons"',
   'Closed Mind':
@@ -1244,11 +1258,15 @@ LastAge.FEATURES_ADDED = {
   'Conceal Magic':
     'Section=magic ' +
     'Note="Spells considered half level for purposes of astirax detection"',
+  'Constant Waves':
+    'Section=skill ' +
+    'Note="Take 10 on Balance, Climb, Jump, Perform (Dance), and Tumble even when distracted"',
   'Control Weather':'Section=magic Note="<i>Control Weather</i> %V/dy"',
   "Counter Izrador's Will":
     'Section=magic Note="<i>Dispel Magic</i> to counterspell legates"',
   'Cover Story':
     'Section=skill Note="DC 20 Bluff four consecutive dy to establish alibi"',
+  'Crashing Waves':'Section=combat Note="Disarm or Trap as AOO %V/rd"',
   'Dark Invitation':
     'Section=feature,magic ' +
     'Note=' +
@@ -1295,9 +1313,12 @@ LastAge.FEATURES_ADDED = {
     'Section=magic ' +
     'Note="Full-round action prevents fallen from becoming Fell or Lost"',
   'Find The Way':'Section=feature Note="%V"',
+  'Fist':'Section=feature Note="%V additional Defender abilities"',
+  'Fluid Defense':'Section=combat Note="+%V AC"',
   'For The King':
     'Section=combat ' +
     'Note="War cry grants self +%1 attack and +1d%2 damage vs. Shadow minions, R60\' allies +%1 vs. fear %V rd/dy"',
+  'Forgotten Knowledge':'Section=skill Note="+2 Decipher Script/+2 Knowledge"',
   'Freerider Bonus Feats':'Section=feature Note="%V Freerider feats"',
   'Gardener Of Erethor Bonus Spells':
     'Section=magic Note="+%V Channeler Spells (nature)"',
@@ -1313,6 +1334,8 @@ LastAge.FEATURES_ADDED = {
     'Section=magic ' +
     'Note="<i>Sanctuary</i>, then <i>Shield Of Faith</i> to chosen person %V/dy"',
   'Ignore Armor':'Section=magic Note="Reduce arcane spell failure by %V%"',
+  'Improved Vision Of The Night':'Section=feature Note=Darkvision',
+  'It Is Written In The Stars':'Section=feature Note="Force reroll 1/dy"',
   'Hit And Run':
     'Section=combat Note="Move away from foe after attack w/out foe AOO"',
   'Homemaker':
@@ -1369,6 +1392,9 @@ LastAge.FEATURES_ADDED = {
   'Magic Resistance':'Section=save Note="+%V vs. spells"',
   'Mass Cure':
     'Section=magic Note="<i>Mass Cure Light Wounds</i> centered on self %V/dy"',
+  'Master Of Fate':'Section=combat Note="Killing damage stops at -9 HP"',
+  'Master Of Tales':
+    'Section=magic Note="Use two Tales Of The Sorshef simultaneously"',
   'Master Spy':
     'Section=feature ' +
     'Note="Mindbond to known Master Spies, apprentices, and those in homeland at will"',
@@ -1382,6 +1408,8 @@ LastAge.FEATURES_ADDED = {
   'Mounted Hide':'Section=skill Note="+%V Hide while mounted"',
   'Mounted Maneuver':'Section=feature Note="%V selections"',
   'Mystifying Speech':'Section=magic Note="DC %V <i>Modify Memory</i> %1/dy"',
+  'Narrowswending':
+    'Section=ability Note="Ignore 2 sq difficult terrain, full-speed squeeze"',
   'Nature Sense':
     'Section=skill Note="Identify animals, plants, unsafe food and drink"',
   'Null Field':
@@ -1389,7 +1417,12 @@ LastAge.FEATURES_ADDED = {
   'Obsidian Tongue':
     'Section=skill ' +
     'Note="+%V Bluff, Diplomacy, Gather Information (Shadow minions)"',
+  'Omen Of The Sorshef':'Section=magic Note="<i>Augury</i> w/%V% success"',
   'Pale Heart':'Section=save Note="+%V vs Shadow minion spells and abilities"',
+  'Parables Of The Sorshef':
+    'Section=skill ' +
+    'Note="+%V Knowledge check wrt local notables, legendary items, and noteworthy places, additional +2 wrt Sorshef and Sarcosan history"',
+  'Pride Of The Soshef':'Section=save Note="Immune disease and poison"',
   'Primal Foe':'Section=feature Note="May not associate with %V"',
   'Ranged Sneak Attack':'Section=combat Note="R%1\' +%Vd6 Sneak Attack"',
   'Rage Of Vengeance':
@@ -1403,8 +1436,11 @@ LastAge.FEATURES_ADDED = {
     'Note="Recover spell energy equal to 2*weapon multiplier on critical hit"',
   "Resist Izrador's Will":'Section=save Note="+%V vs. legate magic"',
   'Respect':'Section=feature Note="Leadership (shadow minions)"',
+  'Roofjumping':'Section=skill Note="+10 Jump (rooftop), 10\' running jump"',
   'Rune Magic':
     'Section=magic Note="Carve rules to evoke up to level %V spell at R60\'"',
+  'Sahi Bonus Feats':'Section=feature Note="%V Sahi Feat"',
+  'Sahi Literacy':'Section=skill Note="Literate in Colonial and Courtier"',
   'Sanctify':
     'Section=magic Note="<i>Hallow</i> with <i>Fell Forbiddance</i> 1/dy"',
   'Savvy Host':
@@ -1460,6 +1496,8 @@ LastAge.FEATURES_ADDED = {
     'Section=feature,skill ' +
     'Note="Services from Elven contacts","+%V Diplomacy (Elves, allies)"',
   'Still As Stone':'Section=skill Note="+10 Hide (exploiting Security Breach)"',
+  'Strength Of My Ancestors':
+    'Section=feature Note="+2 ability, attack, save, or skill check %V/dy"',
   'Strength Of The Wood':
     'Section=magic Note="Recover 1 spell energy point/hr during Tree Meld"',
   'Stunning Sneak Attack':
@@ -1470,9 +1508,22 @@ LastAge.FEATURES_ADDED = {
   'Sundered Spirit':
     'Section=magic ' +
     'Note="Radiate 5\'-50\' <i>Antimagic Field</i> for divine magic"',
+  'Survival Of The Skilled':'Section=skill Note="+%V on %1 chosen skills"',
   'Sweeping Strike':
     'Section=combat ' +
     'Note="Attack all threatened foes during mount move w/out foe AOO"',
+  'Tales Of The Soshef (Agony)':
+    'Section=magic ' +
+    'Note="R60\' Foe striking ally affected by <i>Symbol Of Pain</i> (DC %2 neg, +2 if Sarcosan ally) during storytelling (%1 max) +%V rd"',
+  'Tales Of The Soshef (Determination)':
+    'Section=magic ' +
+    'Note="R60\' Allies +1 attack and save, +1d8 HP during storytelling (%1 max) +%V rd"',
+  'Tales Of The Soshef (Freedom)':
+    'Section=magic ' +
+    'Note="R60\' Allies immune paralysis, stunning, nausea, and petrification during storytelling (%1 max) +%V rd"',
+  'Tales Of The Soshef (Heart)':
+    'Section=magic ' +
+    'Note="R60\' Allies +%2 vs. fear and compulsion during storytelling (%1 max) +%V rd"',
   'Target Study':
     'Section=combat ' +
     'Note="Gather Information gives +2 attack and damage or +4 AC vs. chosen foe"',
@@ -1485,6 +1536,11 @@ LastAge.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="Detect weapon if separated; if unconscious, weapon protects"',
   'Venom Immunity':'Section=save Note="Immune to organic poisons"',
+  'Vision Of The Night':'Section=feature Note="Low-Light Vision"',
+  'Wallscaling':'Section=ability,skill ' +
+  'Note=' +
+    '"%V climb speed in urban settings",' +
+    '"+8 Climb (urban), take 10 if rushed or threatened"',
   "Warden's Vows":
     'Section=feature ' +
     'Note="Sworn to seek King\'s heirs, keep secrets, help Erenlanders in need, and kill Shadow minions"',
@@ -1493,6 +1549,8 @@ LastAge.FEATURES_ADDED = {
     'Note=' +
       '"Additional automatic spells",' +
       '"+%V vs weather and natural energy effects"',
+  'What Was Will Be Again':
+    'Section=combat Note="x2 attacks as full-round action 1/day"',
   'Wheel About':
     'Section=combat Note="May make 90 degree turn during mounted charge"',
   "Whisper's Ward":
@@ -3526,6 +3584,8 @@ LastAge.PRESTIGE_CLASSES = {
       'Balance,Bluff,Climb,Craft,"Escape Artist",Jump,Perform,Profession,' +
       'Ride,"Sense Motive",Swim,Tumble ' +
     'Features=' +
+      '"1:Armor Proficiency (Light)","Shield Proficiency",' +
+      '"1:Weapon Proficiency (Martial)",' +
       '"1:Blade Dance","1:Fluid Defense","2:Blade Dancer Bonus Feats",' +
       '"2:Constant Waves",4:Evasion,"6:Crashing Waves","8:Uncanny Dodge",' +
       '"10:What Was Will Be Again"',
@@ -3543,12 +3603,15 @@ LastAge.PRESTIGE_CLASSES = {
       'Perform,Profession,"Sense Motive","Speak Language",Spellcraft,' +
       'Survival ' +
     'Features=' +
-      '"1:Improved Spellcasting",1:Literacy,"1:Parables Of The Shorshef",' +
-      '"2:Vision Of The Night","2:Omen Of The Shorshef","3:Alchemy",' +
-      '"3:Forgotten Knowledge","3:Tales Of The Shorshef",' +
-      '"4:Sahi Bonus Feats","4:Strength Of My Ancestors",' +
-      '"6:It Is Written In The Stars","8:Improved Vision Of The Night",' +
-      '"9:Pride Of The Shorshef","10:Master Of Fate","10:Master Of Tales"',
+      '"1:Art Of Magic","1:Improved Spellcasting",1:Sahi Literacy,' +
+      '"1:Parables Of The Sorshef","2:Vision Of The Night",' +
+      '"2:Omen Of The Sorshef","3:Alchemy","3:Forgotten Knowledge",' +
+      '"3:Tales Of The Sorshef (Heart)","4:Sahi Bonus Feats",' +
+      '"4:Strength Of My Ancestors","5:Tales Of The Soshef (Determination)",' +
+      '"6:It Is Written In The Stars","7:Tales Of The Soshef (Freedom)",' +
+      '"8:Improved Vision Of The Night","9:Pride Of The Sorshef",' +
+      '"9:Tales Of The Soshef (Agony)","10:Master Of Fate",' +
+      '"10:Master Of Tales"',
   'Vigilant Defender':
     'Require=' +
       '"skills.Hide >= 8","skills.Knowledge (Local) >= 5","skills.Spot >= 5",' +
@@ -3561,10 +3624,16 @@ LastAge.PRESTIGE_CLASSES = {
       '"Knowledge (Local)",Listen,"Move Silently","Open Lock",Profession,' +
       'Search,"Sense Motive","Sleight Of Hand",Spot,Swim,Tumble,"Use Rope" ' +
     'Features=' +
-      '"1:Blade Or Fist","1:City Speak","2:Survival Of The Skilled",' +
-      '"2:Uncanny Dodge","3:Urban Mobility","4:Cloaked In City Shadows",' +
-      '"5:City Sight","5:Survival Of The Skilled","6:Improved Uncanny Dodge",' +
-      '"8:City Is My Shield","10:City Stance"'
+      '"1:Armor Proficiency (Medium)","1:Shield Proficiency",' +
+      '"1:Weapon Proficiency (Martial)",' +
+      '"levels.Defender == 0 ? 1:Blade",' +
+      '"levels.Defender > 0 ? 1:Fist",' +
+      '"1:City Speak","2:Survival Of The Skilled","2:Uncanny Dodge",' +
+      '"3:Urban Mobility","4:Cloaked In City Shadows","5:City Sight",' +
+      '"5:Survival Of The Skilled","6:Improved Uncanny Dodge",' +
+      '"8:City Is My Shield","10:City Stance" ' +
+    'Selectables=' +
+      '"3:Narrowswending","3:Roofjumping","3:Wallscaling"'
 };
 
 /* Defines rules related to character abilities. */
@@ -4788,6 +4857,113 @@ LastAge.classRulesExtra = function(rules, name) {
     );
     rules.defineRule('spellDifficultyClass.Syphon',
       'highestMagicModifier', '=', '10 + source'
+    );
+
+  } else if(name == 'Pellurian Blade Dancer') {
+
+    rules.defineRule('combatNotes.crashingWaves',
+      'dexterityModifier', '=', '1 + Math.max(source, 0)'
+    );
+    rules.defineRule('combatNotes.fluidDefense',
+      classLevel, '=', 'Math.floor((source + 1) / 2)'
+    );
+    rules.defineRule('combatNotes.whatWasWillBeAgain',
+      'dexterityModifier', '=', 'Math.max(source, 1)'
+    );
+    rules.defineRule('featureNotes.bladeDancerBonusFeats',
+      classLevel, '=', 'Math.floor(source / 2) - (source == 10 ? 1 : 0)'
+    );
+
+  } else if(name == 'Sahi') {
+
+    var allFeats = rules.getChoices('feats');
+    for(var feat in allFeats) {
+      if(allFeats[feat].match(/Item Creation/) ||
+         feat.startsWith('Spellcasting'))
+        allFeats[feat] =
+          allFeats[feat].replace('Type=', 'Type="' + name + '",');
+    }
+
+    rules.defineRule
+      ('featCount.Sahi', 'featureNotes.sahiBonusFeats', '=', null);
+    rules.defineRule('features.Darkvision',
+      'featureNotes.improvedVisionOfTheNight', '=', '1'
+    );
+    rules.defineRule('featureNotes.strengthOfMyAncestors',
+      classLevel, '+=', 'source<4 ? null : 1'
+    );
+    rules.defineRule
+      ('features.Low-Light Vision', 'featureNotes.VisionOfTheNight', '=', '1');
+    rules.defineRule('featureNotes.sahiBonusFeats',
+      classLevel, '=', 'source<8 ? 1 : source<10 ? 2 : 3'
+    );
+    rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
+    rules.defineRule
+      ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
+    rules.defineRule
+      ('magicNotes.omenOfTheSorshef', classLevel, '=', 'source + 70');
+    rules.defineRule
+      ('magicNotes.talesOfTheShoshef(Agony)', classLevel, '=', null);
+    rules.defineRule('magicNotes.talesOfTheShoshef(Agony).1',
+      'features.Tales Of The Shoshef (Agony)', '?', null,
+      'skills.Perform (Storytelling)', '=', null
+    );
+    rules.defineRule('magicNotes.talesOfTheShoshef(Agony).2',
+      'features.Tales Of The Shoshef (Agony)', '?', null,
+      'highestMagicModifier', '=', 'source + 15'
+    );
+    rules.defineRule
+      ('magicNotes.talesOfTheShoshef(Determination)', classLevel, '=', null);
+    rules.defineRule('magicNotes.talesOfTheShoshef(Determination).1',
+      'features.Tales Of The Shoshef (Determination)', '?', null,
+      'skills.Perform (Storytelling)', '=', null
+    );
+    rules.defineRule
+      ('magicNotes.talesOfTheShoshef(Freedom)', classLevel, '=', null);
+    rules.defineRule('magicNotes.talesOfTheShoshef(Freedom).1',
+      'features.Tales Of The Shoshef (Freedom)', '?', null,
+      'skills.Perform (Storytelling)', '=', null
+    );
+    rules.defineRule
+      ('magicNotes.talesOfTheShoshef(Heart)', classLevel, '=', null);
+    rules.defineRule('magicNotes.talesOfTheShoshef(Heart).1',
+      'features.Tales Of The Shoshef (Heart)', '?', null,
+      'skills.Perform (Storytelling)', '=', null
+    );
+    rules.defineRule('magicNotes.talesOfTheShoshef(Heart).2',
+      'features.Tales Of The Shoshef (Heart)', '?', null,
+      classLevel, '=', 'Math.floor(source / 2)'
+    );
+    rules.defineRule('skillNotes.alchemy',
+      classLevel, '=', 'source<5 ? "" : source<7 ? " and horse balm" : ", horse balm, and starfire"'
+    );
+    rules.defineRule('skillNotes.parablesOfTheSorshef',
+      classLevel, '=', null,
+      'wisdomModifier', '+', null
+    );
+
+  } else if(name == 'Vigilant Defender') {
+
+    rules.defineRule
+      ('abilityNotes.wallscaling', 'speed', '=', 'Math.floor(source / 2)');
+    rules.defineRule
+      ('combatNotes.blade', classLevel, '=', 'Math.floor((source + 2) / 3)');
+    rules.defineRule
+      ('combatNotes.sneakAttack', 'combatNotes.blade', '+=', null);
+    rules.defineRule
+      ('features.Low-Light Vision', 'featureNotes.citySight', '=', '1');
+    rules.defineRule
+      ('featureNotes.fist', classLevel, '=', 'Math.floor((source + 2) / 3)');
+    rules.defineRule
+      ('selectableFeatureCount.Defender', 'combatNotes.fist', '+=', null);
+    rules.defineRule('selectableFeatureCount.Vigilant Defender',
+      classLevel, '=', 'Math.floor(source / 3)'
+    );
+    rules.defineRule('skillNotes.survivalOfTheSkilled',
+      classLevel, '=', 'Math.floor(source / 2)'
+    );
+    rules.defineRule('skillNotes.survivalOfTheSkilled.1',
+      classLevel, '=', 'Math.floor((source + 1) / 3)'
     );
 
   } else if(LastAge.basePlugin.classRulesExtra) {
