@@ -451,7 +451,7 @@ LastAge.FEATURES_ADDED = {
   'Aquatic Emissary':'Section=skill Note="Speak to all aquatic animals"',
   'Assist Allies':
     'Section=skill Note="Allies move in water at full speed, share oxygen"',
-  'Aura Of Courage':'Section=save Note="Immune fear, +4 to allies w/in 30\'"',
+  'Aura Of Courage':'Section=save Note="Immune fear, +4 to allies w/in %V\'"',
   'Aura Of Warmth':'Section=magic Note="R10\' Allies +4 Fortitude vs cold"',
   'Battle Cry':'Section=combat Note="+%V hit points until end of battle %1/dy"',
   'Bestial Aura':
@@ -616,6 +616,8 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="R%V\' +%1 <i>Detect Undead</i> check at will"',
   'Shadow Jump':'Section=feature Note="R%V\' Move between shadows"',
   'Shadow Veil':'Section=skill Note="+%V Hide"',
+  'Shadowed Frightful Presence':
+    'Section=feature Note="Viewers become frightened (DC %V Will neg)"',
   'Size Features (Big)':
     'Section=combat,skill Note="Use Large weapons","-4 Hide"',
   'Size Features (Extra Reach)':'Section=combat Note="15\' reach"',
@@ -1204,11 +1206,18 @@ LastAge.FEATURES_ADDED = {
     'Section=magic ' +
     'Note="R60\' Astirax bound to current form for %V hr, destroyed if host animal killed (DC %1 Will neg)"',
   'Black Rot':'Section=ability Note="Detect and affected as evil"',
+  'Bless Ground':
+    'Section=magic ' +
+    'Note="R40\' +4 vs. fear, evil shaken, <i>Fell Forbiddance</i> for %V dy"',
   'Blood-Syphoning':
     'Section=magic ' +
     'Note="Spend %1 spell energy to have attack deliver <i>Vampiric Touch</i> and syphon 1d4+%V spell energy"',
   'Blood Talisman':
     'Section=magic Note="Reduce Blood-Syphoning spell energy cost by 1"',
+  'Body Of The Blessed':
+    'Section=feature ' +
+    'Note="Non-evil reaction improved 1 step; evil reaction hostile"',
+  'Body Of The Shadowed':'Section=ability Note="Detect and affected as evil"',
   'Bonus Spellcasting':'Section=feature Note="+%V Spellcasting Feat"',
   'Breath Of The Vigdir':
     'Section=magic Note="Raise a Dorn for %V wk to complete task"',
@@ -1227,6 +1236,8 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="Use bow w/out foe AOO; use arrows as light weapons"',
   'Closed Mind':
     'Section=save Note="Second +4 Will save against revealing spy network"',
+  'Coldness Of Shadow':
+    'Section=save Note="Immune fear, no benefit from good-aligned casters"',
   'Commune With Nature':
     'Section=magic Note="<i>Commune With Nature</i> %V/dy"',
   'Conceal Magic Aura':'Section=feature Note="Conceal %V magical auras"',
@@ -1262,6 +1273,7 @@ LastAge.FEATURES_ADDED = {
     'Note="<i>Misdirection</i> on %V\' cu of contraband %V for hr"',
   'Dismounting Cut':
     'Section=combat Note="Trip attack w/weapon to dismount opponent"',
+  'Divine Grace':'Section=save Note="+%V Will"',
   'Dominant Will':
     'Section=save ' +
     'Note="+%V Will vs. detection and compulsion spells to reveal activities"',
@@ -1271,6 +1283,7 @@ LastAge.FEATURES_ADDED = {
   'Dwarven Literacy':
     'Section=skill Note="Literate in Old Dwarven and Clan Dwarven"',
   'Dwarven Loremaster Bonus Feats':'Section=feature Note="%V Wizard Feats"',
+  'Empowered Dispelling':'Section=magic Note="+2 dispel checks"',
   'Efficient Study':
     'Section=feature ' +
     'Note="XP cost for learning spells and creating magic items reduced by %V%"',
@@ -1293,8 +1306,12 @@ LastAge.FEATURES_ADDED = {
   'Gaze Of The Meruros':
     'Section=magic Note="Gaze casts DC %V <i>Cause Fear</i> spell 1/dy"',
   'Ghost Sight':'Section=magic Note="<i>See Invisible</i> at will"',
+  'Gift Of Izrador':'Section=magic Note="Learn %V level 1 domain spells"',
   'Gift Of The Vigdir':
     'Section=magic Note="Raise a Dorn for %V dy to complete task"',
+  'Grant Protection':
+    'Section=magic ' +
+    'Note="<i>Sanctuary</i>, then <i>Shield Of Faith</i> to chosen person %V/dy"',
   'Ignore Armor':'Section=magic Note="Reduce arcane spell failure by %V%"',
   'Hit And Run':
     'Section=combat Note="Move away from foe after attack w/out foe AOO"',
@@ -1315,6 +1332,9 @@ LastAge.FEATURES_ADDED = {
   'Imp':'Section=feature Note="Assistance from courtesan imp"',
   'Impervious Mind':
     'Section=save Note="Mental effects preventing attacks agains %V dispelled"',
+  'Imposing Presence':
+    'Section=skill ' +
+    'Note="+2 Intimidate (strangers)/+2 Diplomacy (Shadow minions)"',
   'Improved Coup De Grace':
     'Section=combat Note="Max damage from standard action coup de grace"',
   'Improved Mounted Archery':
@@ -1346,6 +1366,9 @@ LastAge.FEATURES_ADDED = {
   'Like Snowfall':
     'Section=magic ' +
     'Note="Continuous <i>Pass Without Trace</i>, <i>Feather Fall</i> 3/dy"',
+  'Magic Resistance':'Section=save Note="+%V vs. spells"',
+  'Mass Cure':
+    'Section=magic Note="<i>Mass Cure Light Wounds</i> centered on self %V/dy"',
   'Master Spy':
     'Section=feature ' +
     'Note="Mindbond to known Master Spies, apprentices, and those in homeland at will"',
@@ -1361,6 +1384,8 @@ LastAge.FEATURES_ADDED = {
   'Mystifying Speech':'Section=magic Note="DC %V <i>Modify Memory</i> %1/dy"',
   'Nature Sense':
     'Section=skill Note="Identify animals, plants, unsafe food and drink"',
+  'Null Field':
+    'Section=feature Note="Conceal auras of %V magical objects on person"',
   'Obsidian Tongue':
     'Section=skill ' +
     'Note="+%V Bluff, Diplomacy, Gather Information (Shadow minions)"',
@@ -1380,6 +1405,8 @@ LastAge.FEATURES_ADDED = {
   'Respect':'Section=feature Note="Leadership (shadow minions)"',
   'Rune Magic':
     'Section=magic Note="Carve rules to evoke up to level %V spell at R60\'"',
+  'Sanctify':
+    'Section=magic Note="<i>Hallow</i> with <i>Fell Forbiddance</i> 1/dy"',
   'Savvy Host':
     'Section=feature,magic ' +
     'Note=' +
@@ -1393,6 +1420,9 @@ LastAge.FEATURES_ADDED = {
   'Security Breach':
     'Section=skill Note="Gather Information gives +%V to Bluff, Hide, and Move Silently to exploit chinks in site security"',
   'See Astirax':'Section=feature Note="See astirax as shadowy form"',
+  'Sense Magic':
+    'Section=magic,skill ' +
+    'Note="<i>Detect Magic</i> %V/dy","+%V Spellcraft"',
   'Shadow Contacts':
     'Section=skill ' +
     'Note="Gather Information check to obain %V favor from Shadow minion"',
@@ -1405,6 +1435,7 @@ LastAge.FEATURES_ADDED = {
     'Note="+%V or take 10 on Bluff, Disguise, Forgery, Gather Information when smuggling"',
   'Special Mount':'Section=feature Note="Companion mount w/special abilities"',
   'Speed Mount':'Section=combat Note="Dismount, mount as free action"',
+  'Spell Resistance':'Section=save Note="%V%"',
   'Spell-Syphoning':
     'Section=magic ' +
     'Note="Blood-siphoning transfers spell from target to self or, with grapple, allows use of target spell energy"',
@@ -1824,7 +1855,7 @@ LastAge.PATHS = {
     'Level=level ' +
     'Features=' +
       '"1:Body Of The Blessed","3:Aura Of Courage","5:Grant Protection",' +
-      '"6:Divine Grace","10:Bless Ground","14:Sanctify" ' +
+      '"6:Divine Grace","7:Mass Cure","10:Bless Ground","14:Sanctify" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Blessed1:2=1;4=2;9=3;13=4;16=5;17=6,' + // Bless 4/dy; Protection From Evil 2/dy
@@ -1849,7 +1880,7 @@ LastAge.PATHS = {
     'Features=' +
       '"1:Body Of The Shadowed",1:Darkvision,"4:Coldness Of Shadow",' +
       '"5:Gift Of Izrador","9:Turn Undead","14:Imposing Presence",' +
-      '"19:Frightful Presence" ' +
+      '"19:Shadowed Frightful Presence" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Shadowed1:3=1;6=2;7=3;11=4;12=5;16=6;17=7,' + // Bane 4/dy; Summon Monster I 3/dy
@@ -5209,6 +5240,7 @@ LastAge.pathRulesExtra = function(rules, name) {
       pathLevel, '+=', null,
       'charismaModifier', '*', null
     );
+    rules.defineRule('saveNotes.auraOfCourage', pathLevel, '=', '30');
 
   } else if(name == 'Ironborn') {
 
@@ -5538,6 +5570,58 @@ LastAge.pathRulesExtra = function(rules, name) {
       pathLevel, '=', 'source >= 16 ? 3 : source >= 9 ? 2 : 1'
     );
     rules.defineRule('skillNotes.wildEmpathy', pathLevel, '+=', null);
+
+  } else if(name == 'Blessed') {
+
+    QuilvynRules.prerequisiteRules
+      (rules, 'validation', 'blessedHeroicPath', pathLevel,
+       ["alignment =~ 'Good'"]);
+    rules.defineRule('magicNotes.blessGround', pathLevel, '=', null);
+    rules.defineRule
+      ('magicNotes.grantProtection', pathLevel, '=', 'source<12 ? 1 : 2');
+    rules.defineRule
+      ('magicNotes.massCure', pathLevel, '=', 'source<15 ? 1 : 2');
+    rules.defineRule('saveNotes.auraOfCourage', pathLevel, '=', '10');
+    rules.defineRule('saveNotes.divineGrace',
+      'charismaModifier', '=', 'source > 0 ? source : null'
+    );
+
+  } else if(name == 'Null') {
+
+    QuilvynRules.prerequisiteRules
+      (rules, 'validation', 'nullHeroicPath', pathLevel,
+       ['sumMagecraftFeats == 0', 'skills.Use Magic Device == 0',
+        'levels.Charismatic Channeler == 0','levels.Hermetic Channeler == 0',
+        'levels.Spiritual Channeler == 0']);
+    rules.defineRule('featureNotes.nullField', pathLevel, '=', null);
+    rules.defineRule
+      ('magicNotes.senseMagic', 'wisdomModifier', '=', 'source + 3');
+    rules.defineRule('saveNotes.magicResistance',
+       pathLevel, '=', 'source<7 ? 1 : source<14 ? 2 : source<19 ? 3 : 4'
+    );
+    rules.defineRule('saveNotes.spellResistance',
+       pathLevel, '=', 'Math.floor(source / 5) * 5 + 10'
+    );
+    rules.defineRule('skillNotes.senseMagic',
+      pathLevel, '=', 'Math.floor((source + 4) / 5)',
+      'wisdomModifier', '+', null,
+      'intelligenceModifier', '+', '-source'
+    );
+
+  } else if(name == 'Shadowed') {
+
+    rules.defineRule
+      ('casterLevels.Domain', pathLevel, '=', 'source<5 ? null : 1');
+    rules.defineRule('featureNotes.frightfulPresence',
+      'level', '=', '10 + Math.floor(source / 2)',
+      'charismaModifier', '+', null
+    );
+    rules.defineRule
+      ('magicNotes.giftOfIzrador', pathLevel, '=', 'Math.floor(source / 5)');
+    rules.defineRule
+      ('turningLevel', pathLevel, '+=', 'source < 4 ? null : source');
+    // Override SRD35 turning frequency
+    rules.defineRule('combatNotes.turnUndead.3', pathLevel, '=', '3');
 
   } else if(name == 'Wiser') {
 
