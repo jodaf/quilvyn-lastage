@@ -3511,7 +3511,60 @@ LastAge.PRESTIGE_CLASSES = {
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Syphon1:1=1,' +
-      'Syphon2:1=1'
+      'Syphon2:1=1',
+  // Star & Shadow
+  'Pellurian Blade Dancer':
+    'Require=' +
+      '"race =~ \'Sarcosan\'",' +
+      '"skills.Perform (Dance) >= 3","skills.Tumble >= 5",' +
+      '"features.Clever Fighting","features.Combat Expertise","features.Weapon Finesse",' +
+      '"features.Weapon Proficiency (Martial) || features.Weapon Proficiency (Falchion) || features.Weapon Proficiency (Greatsword)",' +
+      '"features.Weapon Focus (Falchion) || features.Weapon Focus (Greatsword)",' +
+      '"features.Weapon Specialization (Falchion) || features.Weapon Specialization (Greatsword)" ' +
+    'HitDie=d10 Attack=1 SkillPoints=2 Fortitude=1/2 Reflex=1/2 Will=1/3 ' +
+    'Skills=' +
+      'Balance,Bluff,Climb,Craft,"Escape Artist",Jump,Perform,Profession,' +
+      'Ride,"Sense Motive",Swim,Tumble ' +
+    'Features=' +
+      '"1:Blade Dance","1:Fluid Defense","2:Blade Dancer Bonus Feats",' +
+      '"2:Constant Waves",4:Evasion,"6:Crashing Waves","8:Uncanny Dodge",' +
+      '"10:What Was Will Be Again"',
+  'Sahi':
+    'Require=' +
+      '"race =~ \'Sarcosan\'","skills.Knowledge (Nature) >= 8",' +
+      '"skills.Perform (Storytelling) >= 5","skills.Survival >= 5",' +
+      '"features.Magecraft (Spiritual)",' +
+      '"sumMetamagicFeats > 0 || sumSpellcastingFeats > 0",' +
+      '"languages.Colonial","languages.Courier",' +
+      '"casterLevels.Spellcasting >= 2" ' +
+    'HitDie=d10 Attack=3/4 SkillPoints=2 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Concentration,Craft,"Decipher Script",Diplomacy,Heal,Knowledge,' +
+      'Perform,Profession,"Sense Motive","Speak Language",Spellcraft,' +
+      'Survival ' +
+    'Features=' +
+      '"1:Improved Spellcasting",1:Literacy,"1:Parables Of The Shorshef",' +
+      '"2:Vision Of The Night","2:Omen Of The Shorshef","3:Alchemy",' +
+      '"3:Forgotten Knowledge","3:Tales Of The Shorshef",' +
+      '"4:Sahi Bonus Feats","4:Strength Of My Ancestors",' +
+      '"6:It Is Written In The Stars","8:Improved Vision Of The Night",' +
+      '"9:Pride Of The Shorshef","10:Master Of Fate","10:Master Of Tales"',
+  'Vigilant Defender':
+    'Require=' +
+      '"skills.Hide >= 8","skills.Knowledge (Local) >= 5","skills.Spot >= 5",' +
+      'features.Alertness,features.Dodge,' +
+      '"features.Sneak Attack || selectableFeatures.Defender" ' +
+    'HitDie=d10 Attack=1 SkillPoints=6 Fortitude=1/3 Reflex=1/2 Will=1/3 ' +
+    'Skills=' +
+      'Balance,Bluff,Climb,Craft,Diplomacy,"Disable Device",Disguise,' +
+      '"Escape Artist",Forgery,"Gather Information",Hide,Intimidate,Jump,' +
+      '"Knowledge (Local)",Listen,"Move Silently","Open Lock",Profession,' +
+      'Search,"Sense Motive","Sleight Of Hand",Spot,Swim,Tumble,"Use Rope" ' +
+    'Features=' +
+      '"1:Blade Or Fist","1:City Speak","2:Survival Of The Skilled",' +
+      '"2:Uncanny Dodge","3:Urban Mobility","4:Cloaked In City Shadows",' +
+      '"5:City Sight","5:Survival Of The Skilled","6:Improved Uncanny Dodge",' +
+      '"8:City Is My Shield","10:City Stance"'
 };
 
 /* Defines rules related to character abilities. */
