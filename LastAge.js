@@ -1565,7 +1565,8 @@ LastAge.FEATURES_ADDED = {
       '"Additional automatic spells",' +
       '"+%V vs weather and natural energy effects"',
   'What Was Will Be Again':
-    'Section=combat Note="x2 attacks as full-round action 1/day"',
+    'Section=combat ' +
+    'Note="x2 attacks as full-round action w/%V 5\' steps 1/day"',
   'Wheel About':
     'Section=combat Note="May make 90 degree turn during mounted charge"',
   "Whisper's Ward":
