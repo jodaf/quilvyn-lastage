@@ -89,12 +89,11 @@ function LastAge() {
     LastAge.CLASS_FEATURES['Fighter'];
   LastAge.CLASSES['Rogue'] =
     LastAge.basePlugin.CLASSES['Rogue'] + ' ' + LastAge.CLASS_FEATURES['Rogue'];
-  LastAge.NPC_CLASSES = {
-    'Aristocrat':LastAge.basePlugin.NPC_CLASSES['Aristocrat'],
-    'Commoner':LastAge.basePlugin.NPC_CLASSES['Commoner'],
-    'Expert':LastAge.basePlugin.NPC_CLASSES['Expert'],
-    'Warrior':LastAge.basePlugin.NPC_CLASSES['Warrior']
-  };
+  LastAge.NPC_CLASSES['Aristocrat'] =
+    LastAge.basePlugin.NPC_CLASSES['Aristocrat'];
+  LastAge.NPC_CLASSES['Commoner'] = LastAge.basePlugin.NPC_CLASSES['Commoner'];
+  LastAge.NPC_CLASSES['Expert'] = LastAge.basePlugin.NPC_CLASSES['Expert'];
+  LastAge.NPC_CLASSES['Warrior'] = LastAge.basePlugin.NPC_CLASSES['Warrior'];
   LastAge.FAMILIARS = Object.assign({}, LastAge.basePlugin.FAMILIARS);
   LastAge.FEATS =
     Object.assign({}, LastAge.basePlugin.FEATS, LastAge.FEATS_ADDED);
@@ -112,6 +111,8 @@ function LastAge() {
   for(var skill in LastAge.SKILLS) {
     LastAge.SKILLS[skill] = LastAge.SKILLS[skill].replace(/Class=\S+/i, '');
   }
+  delete LastAge.SKILLS['Knowledge (Planes)'];
+  delete LastAge.SKILLS['Knowledge (Religion)'];
   LastAge.SPELLS = Object.assign({}, LastAge.SPELLS_ADDED);
   for(var s in LastAge.basePlugin.SPELLS) {
     var m = LastAge.basePlugin.SPELLS[s].match(/\b[BDW][01]|\b(C|Death|Destruction|Evil|Magic|War)[0-9]/g);
@@ -1369,7 +1370,7 @@ LastAge.FEATURES_ADDED = {
     'Section=save Note="Mental effects preventing attacks agains %V dispelled"',
   'Imposing Presence':
     'Section=skill ' +
-    'Note="+2 Intimidate (strangers)/+2 Diplomacy (Shadow minions)"',
+    'Note="+4 Intimidate (strangers)/+2 Diplomacy (Shadow minions)"',
   'Improved Coup De Grace':
     'Section=combat Note="Max damage from standard action coup de grace"',
   'Improved Mounted Archery':
@@ -1956,7 +1957,8 @@ LastAge.PATHS = {
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Shadowed1:3=1;6=2;7=3;11=4;12=5;16=6;17=7,' + // Bane 4/dy; Summon Monster I 3/dy
-      'Shadowed2:2=1;8=2;13=3;18=4', // Death Knell 3/dy
+      'Shadowed2:2=1;8=2;13=3;18=4,' + // Death Knell 3/dy
+      'Domain1:5=1;10=2;15=3;20=4',
   'Wiser':
     'Group=Wiser ' +
     'Level=level ' +
@@ -2181,6 +2183,8 @@ LastAge.SKILLS = Object.assign({}, SRD35.SKILLS, LastAge.SKILLS_ADDED);
 for(var skill in LastAge.SKILLS) {
   LastAge.SKILLS[skill] = LastAge.SKILLS[skill].replace(/Class=\S+/i, '');
 }
+delete LastAge.SKILLS['Knowledge (Planes)'];
+delete LastAge.SKILLS['Knowledge (Religion)'];
 LastAge.SPELLS_ADDED = {
 
   'Charm Repair':
@@ -3104,6 +3108,7 @@ LastAge.CLASSES = {
     'Skills=' +
       'Concentration,Craft,"Decipher Script","Handle Animal",Heal,' +
       '"Knowledge (Arcana)","Knowledge (Spirits)",Profession,Ride,Search,' +
+      '"Speak Language",Spellcraft,' +
       'Knowledge ' +
     'Features=' +
       '"1:Weapon Proficiency (Simple)",' +
@@ -3118,47 +3123,13 @@ LastAge.CLASSES = {
     'SpellAbility=intelligence ' +
     'SpellSlots=' +
       'Ch0:1=0',
-  'Legate':
-    'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
-    'Skills=' +
-      'Concentration,Craft,Diplomacy,"Handle Animal",Heal,Intimidate,' +
-      '"Knowledge (Arcana)","Knowledge (Shadow)","Knowledge (Spirits)",' +
-      'Profession,"Speak Language",Spellcraft ' +
-    'Features=' +
-      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency",' +
-      '"1:Weapon Proficiency (Simple)",' +
-      '"1:Spontaneous Legate Spell","1:Temple Dependency","1:Turn Undead",' +
-      '"3:Astirax Companion" ' +
-    'Selectables=' +
-      QuilvynUtils.getKeys(LastAge.PATHS).filter(x => x.match(/Domain$/)).map(x => '"deityDomains =~ \'' + x.replace(' Domain', '') + '\' ? 1:' + x + '"').join(',') + ' ' +
-    'CasterLevelDivine=levels.Legate ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'C0:1=3;2=4;4=5;7=6,' +
-      'C1:1=1;2=2;4=3;7=4;11=5,' +
-      'C2:3=1;4=2;6=3;9=4;13=5,' +
-      'C3:5=1;6=2;8=3;11=4;15=5,' +
-      'C4:7=1;8=2;10=3;13=4;17=5,' +
-      'C5:9=1;10=2;12=3;15=4;19=5,' +
-      'C6:11=1;12=2;14=3;17=4,' +
-      'C7:13=1;14=2;16=3;19=4,' +
-      'C8:15=1;16=2;18=3;20=4,' +
-      'C9:17=1;18=2;19=3;20=4,' +
-      'Domain1:1=1,' +
-      'Domain2:3=1,' +
-      'Domain3:5=1,' +
-      'Domain4:7=1,' +
-      'Domain5:9=1,' +
-      'Domain6:11=1,' +
-      'Domain7:13=1,' +
-      'Domain8:15=1,' +
-      'Domain9:17=1',
   'Rogue':SRD35.CLASSES['Rogue'] + ' ' + LastAge.CLASS_FEATURES['Rogue'],
   'Spiritual Channeler':
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
       'Concentration,Craft,"Decipher Script","Handle Animal",Heal,' +
       '"Knowledge (Arcana)","Knowledge (Spirits)",Profession,Ride,Search,' +
+      '"Speak Language",Spellcraft,' +
       'Diplomacy,"Knowledge (Nature)","Sense Motive",Survival,Swim ' +
     'Features=' +
       '"1:Weapon Proficiency (Simple)",' +
@@ -3207,6 +3178,41 @@ LastAge.CLASSES = {
       '"features.Hunted By The Shadow ? 1:Slippery Mind"'
 };
 LastAge.NPC_CLASSES = {
+  'Legate':
+    'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Concentration,Craft,Diplomacy,"Handle Animal",Heal,Intimidate,' +
+      '"Knowledge (Arcana)","Knowledge (Shadow)","Knowledge (Spirits)",' +
+      'Profession,"Speak Language",Spellcraft ' +
+    'Features=' +
+      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency",' +
+      '"1:Weapon Proficiency (Simple)",' +
+      '"1:Spontaneous Legate Spell","1:Temple Dependency","1:Turn Undead",' +
+      '"3:Astirax Companion" ' +
+    'Selectables=' +
+      QuilvynUtils.getKeys(LastAge.PATHS).filter(x => x.match(/Domain$/)).map(x => '"deityDomains =~ \'' + x.replace(' Domain', '') + '\' ? 1:' + x + '"').join(',') + ' ' +
+    'CasterLevelDivine=levels.Legate ' +
+    'SpellAbility=charisma ' +
+    'SpellSlots=' +
+      'C0:1=3;2=4;4=5;7=6,' +
+      'C1:1=1;2=2;4=3;7=4;11=5,' +
+      'C2:3=1;4=2;6=3;9=4;13=5,' +
+      'C3:5=1;6=2;8=3;11=4;15=5,' +
+      'C4:7=1;8=2;10=3;13=4;17=5,' +
+      'C5:9=1;10=2;12=3;15=4;19=5,' +
+      'C6:11=1;12=2;14=3;17=4,' +
+      'C7:13=1;14=2;16=3;19=4,' +
+      'C8:15=1;16=2;18=3;20=4,' +
+      'C9:17=1;18=2;19=3;20=4,' +
+      'Domain1:1=1,' +
+      'Domain2:3=1,' +
+      'Domain3:5=1,' +
+      'Domain4:7=1,' +
+      'Domain5:9=1,' +
+      'Domain6:11=1,' +
+      'Domain7:13=1,' +
+      'Domain8:15=1,' +
+      'Domain9:17=1',
   // Unclear whether any of the base rule NPC classes would apply in Midnight.
   // Certainly not the Adept class. Aristocrat, Commoner, Expert, and Warrior
   // might be applicable in certain contexts.
@@ -3277,7 +3283,7 @@ LastAge.PRESTIGE_CLASSES = {
       '"skills.Spellcraft >= 10","spellEnergy >= 10" ' +
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
-      'Bluff,Concentration,Craft,"Gather Information","Handle Animal",' +
+      'Bluff,Concentration,Craft,Diplomacy,"Handle Animal",Heal,' +
       'Intimidate,Knowledge,Profession,"Sense Motive",Spellcraft,Survival ' +
     'Features=' +
       '"1:Improved Spellcasting","1:Resist Izrador\'s Will",' +
@@ -3453,9 +3459,9 @@ LastAge.PRESTIGE_CLASSES = {
     'HitDie=d10 Attack=1 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
     'Skills=' +
       'Bluff,Climb,Diplomacy,Disguise,"Gather Information","Handle Animal",' +
-      'Heal,Hide,Intimidate,Jump,"Knowledge (Local (Central Erenland))",' +
-      '"Knowledge (Shadow)",Listen,"Move Silently","Sense Motive",Survival,' +
-      'Swim ' +
+      'Heal,Hide,Intimidate,Jump,"Knowledge (History)",' +
+      '"Knowledge (Local (Central Erenland))","Knowledge (Shadow)",Listen,' +
+      '"Move Silently","Sense Motive",Survival,Swim ' +
     'Features=' +
       '"1:Armor Proficiency (Medium)","1:Shield Proficiency",' +
       '"1:Weapon Proficiency (Martial)",' +
@@ -3530,8 +3536,9 @@ LastAge.PRESTIGE_CLASSES = {
       '"languages.Black Tongue" ' +
     'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
+      // Knowledge (Religion) => Knowledge (Shadow)
       'Appraise,Bluff,Concentration,Diplomacy,Disguise,Forgery,' +
-      '"Gather Information",Hide,"Knowledge (History)","Knowledge (Religion)",'+
+      '"Gather Information",Hide,"Knowledge (History)","Knowledge (Shadow)",'+
       'Listen,"Move Silently",Perform,Profession,Search,"Sleight Of Hand",' +
       'Spellcraft,Spot ' +
     'Features=' +
@@ -6157,7 +6164,7 @@ LastAge.choiceEditorElements = function(rules, type) {
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
 LastAge.randomizeOneAttribute = function(attributes, attribute) {
-  // TODO This ignores Collaborator domain spells
+  // TODO This ignores Collaborator and Shadowed domain spells
   if(attribute == 'spells' && !('levels.Legate' in attributes)) {
     var attrs = this.applyRules(attributes);
     var spells = LastAge.rules.getChoices('spells');
