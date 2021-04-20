@@ -201,15 +201,11 @@ LastAge.FEATS_ADDED = {
   'Craft Greater Spell Talisman':
     'Type="Item Creation" ' +
     'Require=' +
-      '"sumMagecraftFeats >= 1",' +
-      '"level >= 12",' +
-      '"sumChannelingFeats >= 3"',
+      '"sumMagecraft >= 1","level >= 12","sumChannelingFeats >= 3"',
   'Craft Spell Talisman':
     'Type="Item Creation" ' +
     'Require=' +
-      '"sumMagecraftFeats >= 1",' +
-      '"sumSpellcastingFeats >= 1",' +
-      '"level >= 3"',
+      '"sumMagecraft >= 1","sumSpellcastingFeats >= 1","level >= 3"',
   'Devastating Mounted Assault':
     'Type=Fighter Require="features.Mounted Combat >= 1","skills.Ride >= 10"',
   'Drive It Deep':'Type=Fighter Require="baseAttack >= 1"',
@@ -246,7 +242,7 @@ LastAge.FEATS_ADDED = {
   'Ritual Magic':
     'Type=Channeling ' +
     'Require=' +
-      '"sumMagecraftFeats >= 1","sumSpellcastingFeats >= 1"',
+      '"sumMagecraft >= 1","sumSpellcastingFeats >= 1"',
   'Sarcosan Pureblood':'Type=General Require="race =~ \'Sarcosan\'"',
   'Sense Nexus':'Type=General',
   'Spell Focus (Abjuration)':
@@ -294,6 +290,18 @@ LastAge.FEATS_ADDED = {
   'Weapon Focus (Longsword)':'Type=Fighter Imply="weapons.Longsword"',
   'Whispering Awareness':
     'Type=General Require="wisdom >= 15","race !~ \'Elf\'"',
+  // Freeriders can choose Weapon Focus and Weapon Specialization
+  // (Composite Longbow, Sarcosan Lance, or Scimitar)
+  'Weapon Focus (Composite Longbow)':
+    'Type=Fighter Imply="weapons.Composite Longbow"',
+  'Weapon Focus (Sarcosan Lance)':'Type=Fighter Imply="weapons.Sarcosan Lance"',
+  'Weapon Focus (Scimitar)':'Type=Fighter Imply="weapons.Scimitar"',
+  'Weapon Specialization (Composite Longbow)':
+    'Type=Fighter Require="features.Weapon Focus (Falchion)","levels.Fighter >= 4" Imply="weapons.Composite Longbow"',
+  'Weapon Specialization (Sarcosan Lance)':
+    'Type=Fighter Require="features.Weapon Focus (Falchion)","levels.Fighter >= 4" Imply="weapons.Sarcosan Lance"',
+  'Weapon Specialization (Scimitar)':
+    'Type=Fighter Require="features.Weapon Focus (Falchion)","levels.Fighter >= 4" Imply="weapons.Scimitar"',
 
   // Destiny & Shadow
   'Clear-Eyed':'Type=General Require="race == \'Erenlander\'"',
@@ -354,20 +362,18 @@ LastAge.FEATS_ADDED = {
   // Sorcery & Shadow
   'Blood-Channeler':
     'Type=General ' +
-    'Require="constitution >= 15","sumMagecraftFeats >= 1"',
+    'Require="constitution >= 15","sumMagecraft >= 1"',
   'Craft Rune Of Power':
     'Type="Item Creation" ' +
     'Require=' +
-      '"sumMagecraftFeats >= 1","sumSpellcastingFeats >= 1","level >= 3"',
+      '"sumMagecraft >= 1","sumSpellcastingFeats >= 1","level >= 3"',
   'Flexible Recovery':
     'Type=General ' +
-    'Require="constitution >= 13","sumMagecraftFeats >= 1"',
+    'Require="constitution >= 13","sumMagecraft >= 1"',
   'Improved Flexible Recovery':
     'Type=General ' +
     'Require=' +
-      '"constitution >= 15",' +
-      '"features.Flexible Recovery",' +
-      '"sumMagecraftFeats >= 1"',
+      '"constitution >= 15","features.Flexible Recovery","sumMagecraft >= 1"',
   'Knack For Charms':
     'Type="Item Creation" ' +
     'Require=' +
@@ -376,13 +382,11 @@ LastAge.FEATS_ADDED = {
   'Living Talisman':
     'Type=General ' +
     'Require=' +
-      '"sumMagecraftFeats >= 1",' +
-      '"sumSpellcastingFeats >= 1",' +
-      '"level >= 5",' +
+      '"sumMagecraft >= 1","sumSpellcastingFeats >= 1","level >= 5",' +
       '"skills.Knowledge (Arcana) >= 6"',
-  'Power Reservoir':'Type=General Require="sumMagecraftFeats >= 1"',
+  'Power Reservoir':'Type=General Require="sumMagecraft >= 1"',
   'Sense Power':'Type=General Require="wisdom >= 15"',
-  'Subtle Caster':'Type=General Require="sumMagecraftFeats >= 1"',
+  'Subtle Caster':'Type=General Require="sumMagecraft >= 1"',
 
   // Star & Shadow
   'Canny Strike':
@@ -408,6 +412,14 @@ LastAge.FEATS_ADDED = {
       '"features.Canny Strike",' +
       '"features.Clever Fighting",' +
       '"features.Weapon Finesse"',
+  // Pellurian Blade Dancer requires Weapon Focus and Specialization
+  // (Falchion or Greatsword)
+  'Weapon Focus (Falchion)':'Type=Fighter Imply="weapons.Falchion"',
+  'Weapon Focus (Greatsword)':'Type=Fighter Imply="weapons.Greatsword"',
+  'Weapon Specialization (Falchon)':
+    'Type=Fighter Require="features.Weapon Focus (Falchion)","levels.Fighter >= 4" Imply="weapons.Falchion"',
+  'Weapon Specialization (Greatsword)':
+    'Type=Fighter Require="features.Weapon Focus (Greatsword)","levels.Fighter >= 4" Imply="weapons.Greatsword"',
 
   // Steel & Shadow
   'Resigned To Death':'Type=General Require="wisdom >= 13"',
@@ -768,7 +780,7 @@ LastAge.FEATURES_ADDED = {
          '"+1 Reflex when mounted on plains",' +
          '"+2 Listen and Spot vs. surprise when mounted on plains"',
   'Power Reservoir':
-    'Section=magic Note="Store +%V siphoned spell energy points"',
+    'Section=magic Note="Store +%V syphoned spell energy points"',
   'Powerful Throw':
     'Section=combat ' +
     'Note="Attacks w/focused weapon +10 range and use Str instead of Dex"',
@@ -1115,7 +1127,7 @@ LastAge.FEATURES_ADDED = {
   'Natural Predator':'Section=skill Note="+%V Intimidate"',
   'Natural Riverfolk':
     'Section=skill ' +
-    'Note="+2 Perform (all)/+2 Profession (Sailor)/+2 Swim/+2 Use Rope"',
+    'Note="+2 Perform/+2 Profession (Sailor)/+2 Swim/+2 Use Rope"',
   'Natural Sailor':
     'Section=skill ' +
     'Note="+2 Craft (ship)/+2 Profession (ship)/+2 Use Rope (ship)"',
@@ -1239,7 +1251,7 @@ LastAge.FEATURES_ADDED = {
   'City Is My Shield':
     'Section=combat Note="x2 cover bonus in urban environment, min +2 cover"',
   'City Sight':'Section=feature Note="Low-Light Vision"',
-  'City Speak':'Section=skill Note="Community with any urban dweller"',
+  'City Speak':'Section=skill Note="Communicate with any urban dweller"',
   'City Stance':
     'Section=combat ' +
     'Note="Take better of two Initiative rolls in urban environments"',
@@ -1270,7 +1282,7 @@ LastAge.FEATURES_ADDED = {
   'Dark Invitation':
     'Section=feature,magic ' +
     'Note=' +
-      '"Spellcasting (Greater Conjuration) feat",' +
+      '"Spellcasting (Greater Conjuration)",' +
       '"+1 Channeler Spells (Summon Monster)"',
   'Death Attack':
     'Section=combat ' +
@@ -1392,7 +1404,8 @@ LastAge.FEATURES_ADDED = {
   'Magic Resistance':'Section=save Note="+%V vs. spells"',
   'Mass Cure':
     'Section=magic Note="<i>Mass Cure Light Wounds</i> centered on self %V/dy"',
-  'Master Of Fate':'Section=combat Note="Killing damage stops at -9 HP"',
+  'Master Of Fate':
+    'Section=combat Note="Killing damage to self limited to -9 HP"',
   'Master Of Tales':
     'Section=magic Note="Use two Tales Of The Sorshef simultaneously"',
   'Master Spy':
@@ -1422,7 +1435,7 @@ LastAge.FEATURES_ADDED = {
   'Parables Of The Sorshef':
     'Section=skill ' +
     'Note="+%V Knowledge check wrt local notables, legendary items, and noteworthy places, additional +2 wrt Sorshef and Sarcosan history"',
-  'Pride Of The Soshef':'Section=save Note="Immune disease and poison"',
+  'Pride Of The Sorshef':'Section=save Note="Immune disease and poison"',
   'Primal Foe':'Section=feature Note="May not associate with %V"',
   'Ranged Sneak Attack':'Section=combat Note="R%1\' +%Vd6 Sneak Attack"',
   'Rage Of Vengeance':
@@ -1474,11 +1487,11 @@ LastAge.FEATURES_ADDED = {
   'Spell Resistance':'Section=save Note="%V%"',
   'Spell-Syphoning':
     'Section=magic ' +
-    'Note="Blood-siphoning transfers spell from target to self or, with grapple, allows use of target spell energy"',
+    'Note="Blood-syphoning transfers spell from target to self or, with grapple, allows use of target spell energy"',
   'Spirit Manipulation':
     'Section=magic ' +
     'Note="%V chosen Divination or Necromancy spells as spell-like ability 1/dy"',
-  'Spirit Seeker':
+  'Spirit Speaker':
     'Section=magic ' +
     'Note="+1 Spell Energy/+1 Channeler Spells (conjuration or divination)"',
   'Spirit Speaker Bonus Feats':'Section=feature Note="%V Spirit Speaker Feats"',
@@ -1512,16 +1525,16 @@ LastAge.FEATURES_ADDED = {
   'Sweeping Strike':
     'Section=combat ' +
     'Note="Attack all threatened foes during mount move w/out foe AOO"',
-  'Tales Of The Soshef (Agony)':
+  'Tales Of The Sorshef (Agony)':
     'Section=magic ' +
     'Note="R60\' Foe striking ally affected by <i>Symbol Of Pain</i> (DC %2 neg, +2 if Sarcosan ally) during storytelling (%1 max) +%V rd"',
-  'Tales Of The Soshef (Determination)':
+  'Tales Of The Sorshef (Determination)':
     'Section=magic ' +
     'Note="R60\' Allies +1 attack and save, +1d8 HP during storytelling (%1 max) +%V rd"',
-  'Tales Of The Soshef (Freedom)':
+  'Tales Of The Sorshef (Freedom)':
     'Section=magic ' +
     'Note="R60\' Allies immune paralysis, stunning, nausea, and petrification during storytelling (%1 max) +%V rd"',
-  'Tales Of The Soshef (Heart)':
+  'Tales Of The Sorshef (Heart)':
     'Section=magic ' +
     'Note="R60\' Allies +%2 vs. fear and compulsion during storytelling (%1 max) +%V rd"',
   'Target Study':
@@ -1532,6 +1545,7 @@ LastAge.FEATURES_ADDED = {
   'Unbreakable Blade':'Section=combat Note="Ancestral weapon cannot be harmed"',
   'Undetectable Alignment':
     'Section=magic Note="Continuous <i>Undetectable Alignment</i>"',
+  'Urban Mobility':'Section=feature Note="%V selections"',
   'Unwavering Blade':
     'Section=combat ' +
     'Note="Detect weapon if separated; if unconscious, weapon protects"',
@@ -2151,6 +2165,8 @@ LastAge.SKILLS_ADDED = {
   'Knowledge (Shadow)':'Ability=intelligence Untrained=n',
   'Knowledge (Spirits)':
     'Ability=intelligence Untrained=n Synergy="Knowledge (Nature)"',
+  // Perform (Storytelling) for Sahi class
+  'Perform (Storytelling)':'Ability=charisma Class=Defemder,Rogue,Wildlander',
   // Profession (Farmer) and Profession (Gardener) for Gardener Of Erethor class
   'Profession (Farmer)':'Ability=wisdom Untrained=n',
   'Profession (Gardener)':'Ability=wisdom Untrained=n',
@@ -3256,7 +3272,7 @@ LastAge.PRESTIGE_CLASSES = {
       '"8:Improved Coup De Grace","9:Still As Stone","10:Death Attack"',
   'Bane Of Legates':
     'Require=' +
-      '"features.Iron Will","sumMagecraftFeats >= 1",' +
+      '"features.Iron Will","sumMagecraft >= 1",' +
       '"skills.Knowledge (Arcana) >= 13","skills.Knowledge (Shadow) >= 8",' +
       '"skills.Spellcraft >= 10","spellEnergy >= 10" ' +
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -3318,7 +3334,7 @@ LastAge.PRESTIGE_CLASSES = {
       '"2:Hit And Run","2:Wheel About"',
   'Haunted One':
     'Require=' +
-      '"sumMagecraftFeats >= 1",' +
+      '"sumMagecraft >= 1",' +
       '"features.Spellcasting (Divination)",' +
       '"features.Spellcasting (Necromancy)",' +
       '"skills.Knowledge (Arcana) >= 8","skills.Knowledge (Spirits) >= 10" ' +
@@ -3365,8 +3381,7 @@ LastAge.PRESTIGE_CLASSES = {
       'Smuggler4:3=1',
   'Warrior Arcanist':
     'Require=' +
-      '"baseAttack >= 4",' +
-      '"sumMagecraftFeats >= 1","sumSpellcastingFeats >= 1",' +
+      '"baseAttack >= 4","sumMagecraft >= 1","sumSpellcastingFeats >= 1",' +
       '"Sum \'features.Weapon Focus\' >= 1",' +
       '"features.Weapon Proficiency (Martial)","skills.Spellcraft >= 8" ' +
     'HitDie=d8 Attack=1 SkillPoints=2 Fortitude=1/2 Reflex=1/3 Will=1/3 ' +
@@ -3380,7 +3395,7 @@ LastAge.PRESTIGE_CLASSES = {
       '"6:Melee Caster","10:Regenerative Strike"',
   'Whisper Adept':
     'Require=' +
-      '"sumMagecraftFeats >= 1","sumSpellcastingFeats >= 2",' +
+      '"sumMagecraft >= 1","sumSpellcastingFeats >= 2",' +
       '"race =~ /Elf/","skills.Knowledge (Nature) >= 8",' +
       '"skills.Knowledge (Spirits) >= 10","skills.Survival >= 8" ' +
     'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -3441,10 +3456,11 @@ LastAge.PRESTIGE_CLASSES = {
       'Heal,Hide,Intimidate,Jump,"Knowledge (Local (Central Erenland))",' +
       '"Knowledge (Shadow)",Listen,"Move Silently","Sense Motive",Survival,' +
       'Swim ' +
+    'Features=' +
       '"1:Armor Proficiency (Medium)","1:Shield Proficiency",' +
       '"1:Weapon Proficiency (Martial)",' +
-      '1:Mediator,"1:Spirit Seeker","1:Warden\'s Vows","2:Aryth\'s Blessing",' +
-      '"3:Dreams Of The Land","4:For The King" ' +
+      '1:Mediator,"1:Spirit Speaker","1:Warden\'s Vows",' +
+      '"2:Aryth\'s Blessing","3:Dreams Of The Land","4:For The King" ' +
     'CasterLevelArcane="levels.Warden Of Erenland" ' +
     'SpellAbility=wisdom ' +
     'SpellSlots=' +
@@ -3472,8 +3488,10 @@ LastAge.PRESTIGE_CLASSES = {
     'Require=' +
       '"race =~ \'Dwarf\'","Max \'skills.Craft\' >= 5",' +
       '"countKnowledgeSkillsGe5 >= 2","skills.Knowledge (History) >= 9",' +
-      '"skills.Spellcraft >= 5","sumMagecraftFeats >= 1",' +
-      '"sumItemCreationFeats >= 1","sumSpellcastingFeats >= 1" ' +
+      '"skills.Spellcraft >= 5",' +
+      '"features.Magecraft (Charismatic) || features.Magecraft (Hermetic) || features.Magecraft (Spiritual)",' +
+      '"features.Touched By Magic","sumItemCreationFeats >= 1",' +
+      '"sumSpellcastingFeats >= 1" ' +
     'HitDie=d10 Attack=1/2 SkillPoints=6 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
       'Appraise,Concentration,Craft,Diplomacy,Heal,Knowledge,Profession,' +
@@ -3507,7 +3525,7 @@ LastAge.PRESTIGE_CLASSES = {
   'Collaborator':
     'Require=' +
       '"skills.Bluff >= 8","skills.Diplomacy >= 8","skills.Sense Motive >= 8",'+
-      '"features.Deceitful || features.Negotiator","sumMagecraftFeats >= 1",' +
+      '"features.Deceitful || features.Negotiator","sumMagecraft >= 1",' +
       '"alignment == \'Chaotic Neutral\' || alignment == \'Neutral\'",' +
       '"languages.Black Tongue" ' +
     'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
@@ -3521,11 +3539,18 @@ LastAge.PRESTIGE_CLASSES = {
       '"2:Immunity To Fear","4:Dark Invitation","6:Shadow-Tapping",' +
       '"8:Savvy Host","10:Respect" ' +
     'Selectables=' +
-      QuilvynUtils.getKeys(LastAge.PATHS).filter(x => x.match(/Domain$/)).map(x => '"6:' + x + '"').join(','),
+      QuilvynUtils.getKeys(LastAge.PATHS).filter(x => x.match(/Domain$/)).map(x => '"6:' + x + '"').join(',') + ' ' +
+    'SpellSlots=' +
+      'Domain1:1=1,' +
+      'Domain2:3=1,' +
+      'Domain3:5=1,' +
+      'Domain4:7=1,' +
+      'Domain5:9=1 ',
   'Gardener Of Erethor':
     'Require=' +
       '"skills.Profession (Gardener) || skills.Profession (Herbalist) || skills.Profession (Farmer)",' +
-      '"sumMagecraftFeats >= 1","features.Spellcasting (Abjuration)",' +
+      '"features.Magecraft (Charismatic) || features.Magecraft (Hermetic) || features.Magecraft (Spiritual)",' +
+      '"features.Spellcasting (Abjuration)",' +
       '"alignment =~ \'Lawful (Good|Neutral)|Neutral Good|^Neutral\'",' +
       '"race =~ \'Elf\'" ' +
     'HitDie=d6 Attack=1/2 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
@@ -3541,8 +3566,7 @@ LastAge.PRESTIGE_CLASSES = {
     'Require=' +
       '"skills.Kknowledge (Arcane) >= 4","skills.Knowledge (Nature) >= 4",' +
       '"skills.Spellcraft >= 4", "skills.Survival >= 4",' +
-      '"features.Endurance","sumMagecraftFeats >= 1",' +
-      '"sumSpellcastingFeats >= 1",' +
+      '"features.Endurance","sumMagecraft >= 1","sumSpellcastingFeats >= 1",' +
       '"alignment !~ \'Evil\'" ' +
     'HitDie=d8 Attack=1/2 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
@@ -3584,8 +3608,7 @@ LastAge.PRESTIGE_CLASSES = {
       'Balance,Bluff,Climb,Craft,"Escape Artist",Jump,Perform,Profession,' +
       'Ride,"Sense Motive",Swim,Tumble ' +
     'Features=' +
-      '"1:Armor Proficiency (Light)","Shield Proficiency",' +
-      '"1:Weapon Proficiency (Martial)",' +
+      '"1:Armor Proficiency (Light)","1:Weapon Proficiency (Martial)",' +
       '"1:Blade Dance","1:Fluid Defense","2:Blade Dancer Bonus Feats",' +
       '"2:Constant Waves",4:Evasion,"6:Crashing Waves","8:Uncanny Dodge",' +
       '"10:What Was Will Be Again"',
@@ -3603,14 +3626,14 @@ LastAge.PRESTIGE_CLASSES = {
       'Perform,Profession,"Sense Motive","Speak Language",Spellcraft,' +
       'Survival ' +
     'Features=' +
-      '"1:Art Of Magic","1:Improved Spellcasting",1:Sahi Literacy,' +
+      '"1:Art Of Magic","1:Improved Spellcasting","1:Sahi Literacy",' +
       '"1:Parables Of The Sorshef","2:Vision Of The Night",' +
       '"2:Omen Of The Sorshef","3:Alchemy","3:Forgotten Knowledge",' +
       '"3:Tales Of The Sorshef (Heart)","4:Sahi Bonus Feats",' +
-      '"4:Strength Of My Ancestors","5:Tales Of The Soshef (Determination)",' +
-      '"6:It Is Written In The Stars","7:Tales Of The Soshef (Freedom)",' +
+      '"4:Strength Of My Ancestors","5:Tales Of The Sorshef (Determination)",' +
+      '"6:It Is Written In The Stars","7:Tales Of The Sorshef (Freedom)",' +
       '"8:Improved Vision Of The Night","9:Pride Of The Sorshef",' +
-      '"9:Tales Of The Soshef (Agony)","10:Master Of Fate",' +
+      '"9:Tales Of The Sorshef (Agony)","10:Master Of Fate",' +
       '"10:Master Of Tales"',
   'Vigilant Defender':
     'Require=' +
@@ -3741,6 +3764,11 @@ LastAge.talentRules = function(
   LastAge.basePlugin.talentRules
     (rules, feats, features, goodies, languages, skills);
   // No changes needed to the rules defined by base method
+  rules.defineRule('sumMagecraft',
+    'features.Magecraft (Charismatic)', '+=', null,
+    'features.Magecraft (Hermetic)', '+=', null,
+    'features.Magecraft (Spiritual)', '+=', null
+  );
 };
 
 /*
@@ -4615,6 +4643,9 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Pale Legate') {
 
+    rules.defineRule('featureNotes.senseDarkMagic',
+      'features.Master Hunter', '?', null
+    );
     rules.defineRule("magicNotes.denyIzrador'sPower",
       classLevel, '=', null,
       'wisdomModifier', '+', null
@@ -4629,6 +4660,7 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Warden Of Erenland') {
 
+    rules.defineRule('channelerSpells', 'magicNotes.spiritSpeaker', '+', '1');
     rules.defineRule('combatNotes.forTheKing', classLevel, '=', null);
     rules.defineRule('combatNotes.forTheKing.1',
       classLevel, '=', 'Math.floor((source - 1) / 3) + 1'
@@ -4677,7 +4709,7 @@ LastAge.classRulesExtra = function(rules, name) {
 
     var allSkills = rules.getChoices('skills');
     for(var s in allSkills) {
-      if(skill.startsWith('Knowledge'))
+      if(s.startsWith('Knowledge'))
         rules.defineRule('countKnowledgeSkillsGe5',
           'skills.' + s, '+=', 'source>=5 ? 1 : null'
         );
@@ -4689,10 +4721,6 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('featureNotes.dwarvenLoremasterBonusFeats',
       classLevel, '=', 'source<7 ? 1 : source<10 ? 2 : 3'
     );
-    rules.defineRule
-      ('languages.Clan Dwarven', 'skillNotes.dwarvenLiteracy', '=', '1');
-    rules.defineRule
-      ('languages.Old Dwarven', 'skillNotes.dwarvenLiteracy', '=', '1');
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
     rules.defineRule
       ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
@@ -4711,6 +4739,8 @@ LastAge.classRulesExtra = function(rules, name) {
         allFeats[f] = allFeats[f].replace('Type=', 'Type="Spirit Speaker",');
     }
 
+    rules.defineRule
+      ('channelerSpells', 'magicNotes.ancestralSpellcasting', '+', null);
     rules.defineRule('featCount.Spirit Speaker',
       'featureNotes.spiritSpeakerBonusFeats', '=', null
     );
@@ -4769,6 +4799,8 @@ LastAge.classRulesExtra = function(rules, name) {
           allFeats[feat].replace('Type=', 'Type="' + name + '",');
     }
 
+    rules.defineRule
+      ('channelerSpells', 'magicNotes.gardenerOfErethorBonusSpells', '+', null);
     rules.defineRule('combatNotes.chosenGround', classLevel, '=', null);
     rules.defineRule('featCount.Gardener Of Erethor',
       'featureNotes.gardenerOfErethorBonusFeats', '=', null
@@ -4877,11 +4909,15 @@ LastAge.classRulesExtra = function(rules, name) {
   } else if(name == 'Sahi') {
 
     var allFeats = rules.getChoices('feats');
-    for(var feat in allFeats) {
-      if(allFeats[feat].match(/Item Creation/) ||
-         feat.startsWith('Spellcasting'))
-        allFeats[feat] =
-          allFeats[feat].replace('Type=', 'Type="' + name + '",');
+    for(var f in allFeats) {
+      if(allFeats[f].match(/Item Creation/) || f.startsWith('Spellcasting'))
+        allFeats[f] = allFeats[f].replace('Type=', 'Type="' + name + '",');
+    }
+    var allSkills = rules.getChoices('skills');
+    for(var s in allSkills) {
+      if(s.startsWith('Knowledge'))
+        rules.defineRule
+          ('skillModifier.' + s, 'skillNotes.forgottenKnowledge', '+', '2');
     }
 
     rules.defineRule
@@ -4889,6 +4925,8 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('features.Darkvision',
       'featureNotes.improvedVisionOfTheNight', '=', '1'
     );
+    rules.defineRule
+      ('features.Low-Light Vision', 'featureNotes.visionOfTheNight', '=', '1');
     rules.defineRule('featureNotes.strengthOfMyAncestors',
       classLevel, '+=', 'source<4 ? null : 1'
     );
@@ -4903,35 +4941,35 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule
       ('magicNotes.omenOfTheSorshef', classLevel, '=', 'source + 70');
     rules.defineRule
-      ('magicNotes.talesOfTheShoshef(Agony)', classLevel, '=', null);
-    rules.defineRule('magicNotes.talesOfTheShoshef(Agony).1',
-      'features.Tales Of The Shoshef (Agony)', '?', null,
+      ('magicNotes.talesOfTheSorshef(Agony)', classLevel, '=', null);
+    rules.defineRule('magicNotes.talesOfTheSorshef(Agony).1',
+      'features.Tales Of The Sorshef (Agony)', '?', null,
       'skills.Perform (Storytelling)', '=', null
     );
-    rules.defineRule('magicNotes.talesOfTheShoshef(Agony).2',
-      'features.Tales Of The Shoshef (Agony)', '?', null,
+    rules.defineRule('magicNotes.talesOfTheSorshef(Agony).2',
+      'features.Tales Of The Sorshef (Agony)', '?', null,
       'highestMagicModifier', '=', 'source + 15'
     );
     rules.defineRule
-      ('magicNotes.talesOfTheShoshef(Determination)', classLevel, '=', null);
-    rules.defineRule('magicNotes.talesOfTheShoshef(Determination).1',
-      'features.Tales Of The Shoshef (Determination)', '?', null,
+      ('magicNotes.talesOfTheSorshef(Determination)', classLevel, '=', null);
+    rules.defineRule('magicNotes.talesOfTheSorshef(Determination).1',
+      'features.Tales Of The Sorshef (Determination)', '?', null,
       'skills.Perform (Storytelling)', '=', null
     );
     rules.defineRule
-      ('magicNotes.talesOfTheShoshef(Freedom)', classLevel, '=', null);
-    rules.defineRule('magicNotes.talesOfTheShoshef(Freedom).1',
-      'features.Tales Of The Shoshef (Freedom)', '?', null,
+      ('magicNotes.talesOfTheSorshef(Freedom)', classLevel, '=', null);
+    rules.defineRule('magicNotes.talesOfTheSorshef(Freedom).1',
+      'features.Tales Of The Sorshef (Freedom)', '?', null,
       'skills.Perform (Storytelling)', '=', null
     );
     rules.defineRule
-      ('magicNotes.talesOfTheShoshef(Heart)', classLevel, '=', null);
-    rules.defineRule('magicNotes.talesOfTheShoshef(Heart).1',
-      'features.Tales Of The Shoshef (Heart)', '?', null,
+      ('magicNotes.talesOfTheSorshef(Heart)', classLevel, '=', null);
+    rules.defineRule('magicNotes.talesOfTheSorshef(Heart).1',
+      'features.Tales Of The Sorshef (Heart)', '?', null,
       'skills.Perform (Storytelling)', '=', null
     );
-    rules.defineRule('magicNotes.talesOfTheShoshef(Heart).2',
-      'features.Tales Of The Shoshef (Heart)', '?', null,
+    rules.defineRule('magicNotes.talesOfTheSorshef(Heart).2',
+      'features.Tales Of The Sorshef (Heart)', '?', null,
       classLevel, '=', 'Math.floor(source / 2)'
     );
     rules.defineRule('skillNotes.alchemy',
@@ -4948,6 +4986,10 @@ LastAge.classRulesExtra = function(rules, name) {
       ('abilityNotes.wallscaling', 'speed', '=', 'Math.floor(source / 2)');
     rules.defineRule
       ('combatNotes.blade', classLevel, '=', 'Math.floor((source + 2) / 3)');
+    rules.defineRule('combatNotes.improvedUncannyDodge',
+      classLevel, '+=', 'source<6 ? null : source',
+      '', '+', '4'
+    );
     rules.defineRule
       ('combatNotes.sneakAttack', 'combatNotes.blade', '+=', null);
     rules.defineRule
@@ -4955,9 +4997,11 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule
       ('featureNotes.fist', classLevel, '=', 'Math.floor((source + 2) / 3)');
     rules.defineRule
-      ('selectableFeatureCount.Defender', 'combatNotes.fist', '+=', null);
+      ('featureNotes.urbanMobility', classLevel, '=', 'Math.floor(source / 3)');
+    rules.defineRule
+      ('selectableFeatureCount.Defender', 'featureNotes.fist', '+=', null);
     rules.defineRule('selectableFeatureCount.Vigilant Defender',
-      classLevel, '=', 'Math.floor(source / 3)'
+      'featureNotes.urbanMobility', '=', null
     );
     rules.defineRule('skillNotes.survivalOfTheSkilled',
       classLevel, '=', 'Math.floor(source / 2)'
@@ -5819,7 +5863,7 @@ LastAge.pathRulesExtra = function(rules, name) {
 
     QuilvynRules.prerequisiteRules
       (rules, 'validation', 'nullHeroicPath', pathLevel,
-       ['sumMagecraftFeats == 0', 'skills.Use Magic Device == 0',
+       ['sumMagecraft == 0', 'skills.Use Magic Device == 0',
         'levels.Charismatic Channeler == 0','levels.Hermetic Channeler == 0',
         'levels.Spiritual Channeler == 0']);
     rules.defineRule('featureNotes.nullField', pathLevel, '=', null);
@@ -5841,7 +5885,7 @@ LastAge.pathRulesExtra = function(rules, name) {
 
     rules.defineRule
       ('casterLevels.Domain', pathLevel, '=', 'source<5 ? null : 1');
-    rules.defineRule('featureNotes.frightfulPresence',
+    rules.defineRule('featureNotes.shadowedFrightfulPresence',
       'level', '=', '10 + Math.floor(source / 2)',
       'charismaModifier', '+', null
     );
@@ -6113,6 +6157,7 @@ LastAge.choiceEditorElements = function(rules, type) {
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
 LastAge.randomizeOneAttribute = function(attributes, attribute) {
+  // TODO This ignores Collaborator domain spells
   if(attribute == 'spells' && !('levels.Legate' in attributes)) {
     var attrs = this.applyRules(attributes);
     var spells = LastAge.rules.getChoices('spells');
