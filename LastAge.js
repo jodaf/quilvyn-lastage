@@ -5967,7 +5967,7 @@ LastAge.raceRulesExtra = function(rules, name) {
     );
   } else if(name == 'Clan Dwarf') {
     rules.defineRule
-      ('abilityNotes.armorSpeedAdjustment', 'abilityNotes.muscular', '^', '0');
+      ('abilityNotes.armorSpeedAdjustment', 'abilityNotes.steady', '^', '0');
     rules.defineRule('combatNotes.dwarfEnmity', raceLevel, '=', '1');
     rules.defineRule('combatNotes.naturalArmor', raceLevel, '+=', '2');
     rules.defineRule('skillNotes.stonecunning',
@@ -6040,7 +6040,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       ('magicNotes.innateMagic', 'magicNotes.bonusInnateSpell', '+', '1');
   } else if(name == 'Kurgun Dwarf') {
     rules.defineRule
-      ('abilityNotes.armorSpeedAdjustment', 'abilityNotes.muscular', '^', '0');
+      ('abilityNotes.armorSpeedAdjustment', 'abilityNotes.steady', '^', '0');
     rules.defineRule('combatNotes.dwarfEnmity', raceLevel, '=', '1');
     rules.defineRule('combatNotes.naturalArmor', raceLevel, '+=', '2');
   } else if(name == 'Nomadic Halfling') {
