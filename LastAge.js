@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.3.0';
+var LASTAGE_VERSION = '2.2.3.1';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -3749,7 +3749,7 @@ LastAge.identityRules = function(
   rules.defineSheetElement('Deity');
   rules.defineSheetElement('Deity Alignment');
   rules.defineEditorElement
-    ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'experience');
+    ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'alignment');
   rules.defineSheetElement('Heroic Path', 'Alignment');
   rules.defineSheetElement('Spell Energy', 'Spell Slots');
 
