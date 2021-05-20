@@ -18,7 +18,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.3.1';
+var LASTAGE_VERSION = '2.2.3.2';
 
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
@@ -26,18 +26,20 @@ var LASTAGE_VERSION = '2.2.3.1';
  * of the rule book; raceRules for character races, weaponRules for weapons,
  * etc. These member methods can be called independently in order to use a
  * subset of the LastAge rules. Similarly, the constant fields of LastAge
- * (FEATS_ADDED, RACES, etc.) can be manipulated to modify the choices.
+ * (FEATS_ADDED, RACES, etc.) can be manipulated to modify the choices. If
+ * #baseRules# contains "Pathfinder", the Pathfinder plugin is used as the
+ * basis for the LastAge rule set; otherwise, the SRD35 plugin is used.
  */
-function LastAge() {
+function LastAge(baseRules) {
 
   if(window.SRD35 == null) {
     alert('The LastAge module requires use of the SRD35 module');
     return;
   }
 
-  if(window.Pathfinder == null || Pathfinder.SRD35_SKILL_MAP == null) {
-    LastAge.USE_PATHFINDER = false;
-  }
+  LastAge.USE_PATHFINDER =
+    window.Pathfinder != null && Pathfinder.SRD35_SKILL_MAP &&
+    baseRules != null && baseRules.includes('Pathfinder');
   LastAge.basePlugin = LastAge.USE_PATHFINDER ? Pathfinder : SRD35;
 
   var rules = new QuilvynRules
