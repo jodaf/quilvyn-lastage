@@ -149,7 +149,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.2.3.2';
+LastAge.VERSION = '2.2.3.3';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -281,30 +281,12 @@ LastAge.FEATS_ADDED = {
     'Require="features.Spellcasting (Conjuration)"',
   'Spellcasting (Greater Evocation)':
     'Type=Channeling,Spellcasting Require="features.Spellcasting (Evocation)"',
-  // Skill Focus (Diplomacy) and Skill Focus (Profession (Soldier)) available
-  // to Leader Of Men Fighters
-  'Skill Focus (Diplomacy)':'Type=General',
-  'Skill Focus (Profession (Soldier))':'Type=General',
   'Spell Knowledge':'Type=General Require="sumSpellcastingFeats >= 1"',
   'Thick Skull':'Type=General',
   'Warrior Of Shadow':
     'Type=General Require="charisma >= 12","levels.Legate >= 5"',
-  // Legates w/War domain receive Weapon Focus (Longsword)
-  'Weapon Focus (Longsword)':'Type=Fighter Imply="weapons.Longsword"',
   'Whispering Awareness':
     'Type=General Require="wisdom >= 15","race !~ \'Elf\'"',
-  // Freeriders can choose Weapon Focus and Weapon Specialization
-  // (Composite Longbow, Sarcosan Lance, or Scimitar)
-  'Weapon Focus (Composite Longbow)':
-    'Type=Fighter Imply="weapons.Composite Longbow"',
-  'Weapon Focus (Sarcosan Lance)':'Type=Fighter Imply="weapons.Sarcosan Lance"',
-  'Weapon Focus (Scimitar)':'Type=Fighter Imply="weapons.Scimitar"',
-  'Weapon Specialization (Composite Longbow)':
-    'Type=Fighter Require="features.Weapon Focus (Falchion)","levels.Fighter >= 4" Imply="weapons.Composite Longbow"',
-  'Weapon Specialization (Sarcosan Lance)':
-    'Type=Fighter Require="features.Weapon Focus (Falchion)","levels.Fighter >= 4" Imply="weapons.Sarcosan Lance"',
-  'Weapon Specialization (Scimitar)':
-    'Type=Fighter Require="features.Weapon Focus (Falchion)","levels.Fighter >= 4" Imply="weapons.Scimitar"',
 
   // Destiny & Shadow
   'Clear-Eyed':'Type=General Require="race == \'Erenlander\'"',
@@ -415,14 +397,6 @@ LastAge.FEATS_ADDED = {
       '"features.Canny Strike",' +
       '"features.Clever Fighting",' +
       '"features.Weapon Finesse"',
-  // Pellurian Blade Dancer requires Weapon Focus and Specialization
-  // (Falchion or Greatsword)
-  'Weapon Focus (Falchion)':'Type=Fighter Imply="weapons.Falchion"',
-  'Weapon Focus (Greatsword)':'Type=Fighter Imply="weapons.Greatsword"',
-  'Weapon Specialization (Falchon)':
-    'Type=Fighter Require="features.Weapon Focus (Falchion)","levels.Fighter >= 4" Imply="weapons.Falchion"',
-  'Weapon Specialization (Greatsword)':
-    'Type=Fighter Require="features.Weapon Focus (Greatsword)","levels.Fighter >= 4" Imply="weapons.Greatsword"',
 
   // Steel & Shadow
   'Resigned To Death':'Type=General Require="wisdom >= 13"',
@@ -2155,8 +2129,7 @@ LastAge.SCHOOLS = {
   'Greater Evocation':'',
   'Illusion':'',
   'Necromancy':'',
-  'Transmutation':'',
-  'Universal':''
+  'Transmutation':''
 };
 LastAge.SHIELDS = Object.assign({}, SRD35.SHIELDS);
 LastAge.SKILLS_ADDED = {
@@ -3921,7 +3894,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     var description = QuilvynUtils.getAttrValue(attrs, 'Description');
     var groupLevels = QuilvynUtils.getAttrValueArray(attrs, 'Level');
     var school = QuilvynUtils.getAttrValue(attrs, 'School');
-    var schoolAbbr = school.substring(0, 4);
+    var schoolAbbr = (school || 'Universal').substring(0, 4);
     for(var i = 0; i < groupLevels.length; i++) {
       var matchInfo = groupLevels[i].match(/^(\D+)(\d+)$/);
       if(!matchInfo) {
