@@ -18,8 +18,6 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 /*jshint esversion: 6 */
 "use strict";
 
-var LASTAGE_VERSION = '2.2.3.2';
-
 /*
  * This module loads the rules from the Midnight Second Edition core rule book.
  * The LastAge function contains methods that load rules for particular parts
@@ -43,7 +41,7 @@ function LastAge(baseRules) {
   LastAge.basePlugin = LastAge.USE_PATHFINDER ? Pathfinder : SRD35;
 
   var rules = new QuilvynRules
-    ('Last Age' + (LastAge.USE_PATHFINDER ? ' - PF' : ''), LASTAGE_VERSION);
+    ('Last Age' + (LastAge.USE_PATHFINDER ? ' - PF' : ''), LastAge.VERSION);
   LastAge.rules = rules;
 
   LastAge.CHOICES = LastAge.basePlugin.CHOICES.concat(LastAge.CHOICES_ADDED);
@@ -150,6 +148,8 @@ function LastAge(baseRules) {
   Quilvyn.addRuleSet(rules);
 
 }
+
+LastAge.VERSION = '2.2.3.2';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -6198,14 +6198,14 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
 
 /* Returns an array of plugins upon which this one depends. */
 LastAge.getPlugins = function() {
-  return [LastAge.basePlugin].concat(LastAge.basePlugin.rules.getPlugins());
+  return [LastAge.basePlugin].concat(LastAge.basePlugin.getPlugins());
 };
 
 /* Returns HTML body content for user notes associated with this rule set. */
 LastAge.ruleNotes = function() {
   return '' +
     '<h2>LastAge Quilvyn Plugin Notes</h2>\n' +
-    'LastAge Quilvyn Plugin Version ' + LASTAGE_VERSION + '\n' +
+    'LastAge Quilvyn Plugin Version ' + LastAge.VERSION + '\n' +
     '\n' +
     '<h3>Usage Notes</h3>\n' +
     '<p>\n' +
