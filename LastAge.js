@@ -149,7 +149,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.2.3.3';
+LastAge.VERSION = '2.2.3.4';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -224,10 +224,6 @@ LastAge.FEATS_ADDED = {
   'Giant-Fighter':
     'Type=Fighter ' +
     'Require="features.Dodge","Sum \'features.Weapon Focus\' >= 1"',
-  'Greater Spell Focus (Greater Conjuration)':
-    'Type=General Require="features.Spell Focus (Greater Conjuration)"',
-  'Greater Spell Focus (Greater Evocation)':
-    'Type=General Require="features.Spell Focus (Greater Evocation)"',
   'Herbalist':
     'Type="Item Creation" Require="skills.Profession (Herbalist) >= 4"',
   'Improvised Weapon':'Type=Fighter',
@@ -248,26 +244,8 @@ LastAge.FEATS_ADDED = {
       '"sumMagecraft >= 1","sumSpellcastingFeats >= 1"',
   'Sarcosan Pureblood':'Type=General Require="race =~ \'Sarcosan\'"',
   'Sense Nexus':'Type=General',
-  'Spell Focus (Abjuration)':
-    'Type=General Require="features.Spellcasting (Abjuration)"',
-  'Spell Focus (Conjuration)':
-    'Type=General Require="features.Spellcasting (Conjuration)"',
-  'Spell Focus (Divination)':
-    'Type=General Require="features.Spellcasting (Divination)"',
-  'Spell Focus (Enchantment)':
-    'Type=General Require="features.Spellcasting (Enchantment)"',
-  'Spell Focus (Evocation)':
-    'Type=General Require="features.Spellcasting (Evocation)"',
-  'Spell Focus (Greater Conjuration)':
-    'Type=General Require="features.Spellcasting (Conjuration)"',
-  'Spell Focus (Greater Evocation)':
-    'Type=General Require="features.Spellcasting (Evocation)"',
-  'Spell Focus (Illusion)':
-    'Type=General Require="features.Spellcasting (Illusion)"',
-  'Spell Focus (Necromancy)':
-    'Type=General Require="features.Spellcasting (Necromancy)"',
-  'Spell Focus (Transmutation)':
-    'Type=General Require="features.Spellcasting (Transmutation)"',
+  'Spell Focus (%school)':
+    'Type=General Require="features.Spellcasting (%school)"',
   'Spellcasting (Abjuration)':'Type=Channeling,Spellcasting',
   'Spellcasting (Conjuration)':'Type=Channeling,Spellcasting',
   'Spellcasting (Divination)':'Type=Channeling,Spellcasting',
@@ -709,10 +687,6 @@ LastAge.FEATURES_ADDED = {
   'Greater Masterwork':
     'Section=skill ' +
     'Note="Weapon +2 attack and +1 damage; armor or shield -1 skill penalty, +1 max dex, -5% arcane spell failure, don or remove in half time, light shield use with ranged weapon; other items +4 DC"',
-  'Greater Spell Focus (Greater Conjuration)':
-    'Section=magic Note="+1 Spell DC (Greater Conjuration)"',
-  'Greater Spell Focus (Greater Evocation)':
-    'Section=magic Note="+1 Spell DC (Greater Evocation)"',
   'Hardy':
     'Section=feature,magic ' +
     'Note=' +
@@ -768,7 +742,7 @@ LastAge.FEATURES_ADDED = {
   'Ritual Magic':'Section=magic Note="Learn and lead magic rituals"',
   'Sarcosan Pureblood':
     'Section=combat,skill ' +
-    'Note="+2 AC (hoseback)",' +
+    'Note="+2 AC (horseback)",' +
          '"+%{level+charismaModifier} Diplomacy (horses), +2 Cha skills (horses and Sarcosans)"',
   'Sense Nexus':'Section=magic Note="DC 15 Wis to sense nexus w/in 5 miles"',
   'Sense Power':
@@ -777,41 +751,9 @@ LastAge.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="Adjacent allies +2 AC when self fighting defensively or using -2 Combat Expertise"',
   'Slow Learner':'Section=feature Note="Replace later with another feat"',
-  'Spell Focus (Greater Conjuration)':
-    'Section=magic Note="+1 Spell DC (Greater Conjuration)"',
-  'Spell Focus (Greater Evocation)':
-    'Section=magic Note="+1 Spell DC (Greater Evocation)"',
   'Spell Knowledge':'Section=magic Note="+2 Channeler Spells"',
-  'Spellcasting (Abjuration)':
-    'Section=magic ' +
-    'Note="Learn 1 Channeler Abjuration spell; may learn more"',
-  'Spellcasting (Conjuration)':
-    'Section=magic ' +
-    'Note="Learn 1 Channeler Conjuration spell; may learn more"',
-  'Spellcasting (Divination)':
-    'Section=magic ' +
-    'Note="Learn 1 Channeler Divination spell; may learn more"',
-  'Spellcasting (Enchantment)':
-    'Section=magic ' +
-    'Note="Learn 1 Channeler Enchantment spell; may learn more"',
-  'Spellcasting (Evocation)':
-    'Section=magic ' +
-    'Note="Learn 1 Channeler Evocation spell; may learn more"',
-  'Spellcasting (Illusion)':
-    'Section=magic ' +
-    'Note="Learn 1 Channeler Illusion spell; may learn more"',
-  'Spellcasting (Necromancy)':
-    'Section=magic ' +
-    'Note="Learn 1 Channeler Necromancy spell; may learn more"',
-  'Spellcasting (Transmutation)':
-    'Section=magic ' +
-    'Note="Learn 1 Channeler Transmutation spell; may learn more"',
-  'Spellcasting (Greater Conjuration)':
-    'Section=magic ' +
-    'Note="Learn 1 Channeler Greater Conjuration spell; may learn more"',
-  'Spellcasting (Greater Evocation)':
-    'Section=magic ' +
-    'Note="Learn 1 Channeler Greater Evocation spell; may learn more"',
+  'Spellcasting (%school)':
+    'Section=magic Note="Learn 1 Channeler %school spell; may learn more"',
   'Stalwart':
     'Section=save Note="Delay negative HP for 1 rd, dbl heal required"',
   'Stealthy Rider':
@@ -920,11 +862,11 @@ LastAge.FEATURES_ADDED = {
     'Section=skill Note="+3 checks for Knowledge skill chosen each day"',
   'Literate':'Section=skill Note="+%V Language Count"',
   'Magecraft (Charismatic)':
-    'Section=magic Note="3 B0 spells, 1 B1 spell, %V Spell Energy"',
+    'Section=magic Note="Learn 3 B0 and 1 B1 spells, %V Spell Energy"',
   'Magecraft (Hermetic)':
-    'Section=magic Note="3 W0 spells, 1 W1 spell, %V Spell Energy"',
+    'Section=magic Note="Learn 3 W0 and 1 W1 spells, %V Spell Energy"',
   'Magecraft (Spiritual)':
-    'Section=magic Note="3 D0 spells, 1 D1 spell, %V Spell Energy"',
+    'Section=magic Note="Learn 3 D0 and 1 D1 spells, %V Spell Energy"',
   'Mass Suggestion':
     'Section=magic Note="<i>Suggestion</i> to %V fascinated creatures"',
   'Master Hunter':
