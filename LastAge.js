@@ -4205,7 +4205,7 @@ LastAge.classRulesExtra = function(rules, name) {
       '12:Companion Evasion', '18:Companion Empathy'
     ];
     QuilvynRules.featureListRules
-      (rules, features, 'Animal Companion', classLevel, false);
+      (rules, features, 'Animal Companion', 'astiraxMasterLevel', false);
     rules.defineRule('companionNotes.enhancedSense',
       classLevel, '=', 'source < 15 ? 5 : 10'
     );
@@ -4217,6 +4217,10 @@ LastAge.classRulesExtra = function(rules, name) {
     );
     rules.defineRule('animalCompanionStats.Int',
      classLevel, '+', 'Math.floor(source / 3) - 1'
+    );
+    rules.defineRule('astiraxMasterLevel',
+      'hasCompanion', '?', null,
+      'levels.Legate', '=', null
     );
 
   } else if(name == 'Wildlander') {
