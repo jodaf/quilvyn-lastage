@@ -2217,7 +2217,7 @@ LastAge.SPELLS_ADDED = {
   'Greater Questing Bird':
     'School=Conjuration ' +
     'Level=Ch6 ' +
-    'Description="Self temporarily learn spell le level 6"',
+    'Description="Self temporarily learn spell up to level 6"',
   'Inspiration':
     'School=Enchantment ' +
     'Level=Ch1,Jack1 ' +
@@ -2261,7 +2261,7 @@ LastAge.SPELLS_ADDED = {
   'Questing Bird':
     'School=Conjuration ' +
     'Level=Ch3,Jack3 ' +
-    'Description="Self temporarily learn spell le level 3"',
+    'Description="Self temporarily learn spell up to level 3"',
   "Scryer's Mark":
     'School=Divination ' +
     'Level=Ch2,Jack2 ' +
