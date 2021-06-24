@@ -8,21 +8,21 @@
 var attributes = {
   "_path":"ztest/lastage/heroic/null 20", 
   "alignment":"Neutral Good", "armor":"None", "charisma":11, "constitution":9, "dexterity":11, 
-  "experience":199766, "feats.Combat Expertise":1, "feats.Craft Wondrous Item":1, 
-  "feats.Drive It Deep":1, "feats.Improved Disarm":1, "feats.Improved Initiative":1, 
-  "feats.Improved Shield Bash":1, "feats.Improvised Weapon":1, "feats.Iron Will":1, 
-  "feats.Magecraft (Spiritual)":1, "feats.Negotiator":1, "feats.Orc Slayer":1, "feats.Pikeman":1, 
-  "feats.Quick Draw":1, "feats.Quickened Donning":1, "feats.Simple Weapon Proficiency":1, 
-  "feats.Spell Penetration":1, "feats.Spellcasting (Abjuration)":1, "feats.Survivor":1, 
-  "feats.Tunnel Fighting":1, "gender":"Male", "heroicPath":"Null", "hitPoints":124, "intelligence":16, 
-  "languages.Black Tongue":1, "languages.High Elven":1, "levels.Fighter":20, "name":"Heroic-Null 20", 
-  "race":"Dorn", "selectableFeatures.Fighter - Iron Will":1, 
-  "selectableFeatures.Fighter - Leader Of Men":1, "selectableFeatures.Fighter - Leadership":1, 
-  "selectableFeatures.Fighter - Skill Focus (Profession (Soldier))":1, "shield":"Heavy Wooden", "skills.Climb":11, "skills.Craft (Weapons)":23, 
-  "skills.Disable Device":1, "skills.Handle Animal":21, "skills.Intimidate":23, 
-  "skills.Knowledge (Shadow)":11, "skills.Perform (Keyboard)":11, "skills.Profession (Soldier)":1, 
-  "skills.Profession (Tanner)":23, "skills.Sense Motive":1, "skills.Spellcraft":1, "skills.Survival":11, 
-  "skills.Use Rope":23, "spells.Antimagic Field(Null6 Abju)":1, "spells.Dispel Magic(Null3 Abju)":1, 
+  "experience":199766, "feats.Combat Expertise":1, "feats.Drive It Deep":1, 
+  "feats.Improved Critical (Trident)":1, "feats.Improved Disarm":1, "feats.Improved Initiative":1, 
+  "feats.Improved Shield Bash":1, "feats.Improvised Weapon":1, "feats.Inconspicuous":1, "feats.Iron Will":1, 
+  "feats.Martial Weapon Proficiency (Trident)":1, "feats.Negotiator":1, "feats.Orc Slayer":1, "feats.Pikeman":1, 
+  "feats.Point-Blank Shot":1, "feats.Quick Draw":1, "feats.Quickened Donning":1, 
+  "feats.Simple Weapon Proficiency":1, "feats.Survivor":1, "feats.Tunnel Fighting":1, "gender":"Male", 
+  "heroicPath":"Null", "hitPoints":124, "intelligence":16, "languages.Black Tongue":1, 
+  "languages.High Elven":1, "levels.Fighter":20, "name":"Heroic-Null 20", "race":"Dorn", 
+  "selectableFeatures.Fighter - Iron Will":1, "selectableFeatures.Fighter - Leader Of Men":1, 
+  "selectableFeatures.Fighter - Leadership":1, "selectableFeatures.Fighter - Skill Focus (Profession (Soldier))":1, 
+  "shield":"Heavy Wooden", "skills.Climb":11, "skills.Craft (Weapons)":23, "skills.Disable Device":1, 
+  "skills.Handle Animal":21, "skills.Intimidate":23, "skills.Knowledge (Shadow)":11, 
+  "skills.Perform (Keyboard)":11, "skills.Profession (Soldier)":1, "skills.Profession (Tanner)":23, 
+  "skills.Sense Motive":1, "skills.Spellcraft":1, "skills.Survival":11, "skills.Use Rope":23, 
+  "spells.Antimagic Field(Null6 Abju)":1, "spells.Dispel Magic(Null3 Abju)":1, 
   "spells.Greater Dispel Magic(Null6 Abju)":1, "spells.Spell Immunity(Null4 Abju)":1, "strength":10, 
   "weapons.Heavy Pick":1, "weapons.Throwing Axe":1, "weapons.Trident":1, "wisdom":17
 };
@@ -83,7 +83,7 @@ var attributes = {
     </tr><tr align="center">
       <td>      <table id="FeatLists" width="100%">
       <tr align="center">
-        <td><b>Feats</b>: Combat Expertise; Craft Wondrous Item; Drive It Deep; Improved Disarm; Improved Initiative; Improved Shield Bash; Improvised Weapon; Iron Will; Magecraft (Spiritual); Negotiator; Orc Slayer; Pikeman; Quick Draw; Quickened Donning; Simple Weapon Proficiency; Spell Penetration; Spellcasting (Abjuration); Survivor; Tunnel Fighting</td>
+        <td><b>Feats</b>: Combat Expertise; Drive It Deep; Improved Critical (Trident); Improved Disarm; Improved Initiative; Improved Shield Bash; Improvised Weapon; Inconspicuous; Iron Will; Martial Weapon Proficiency (Trident); Negotiator; Orc Slayer; Pikeman; Point-Blank Shot; Quick Draw; Quickened Donning; Simple Weapon Proficiency; Survivor; Tunnel Fighting</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Null Features</b>: Empowered Dispelling; Magic Resistance; Null Field; Sense Magic; Spell Resistance</td>
         <td><b>Fighter Features</b>: Armor Proficiency (Heavy); Iron Will; Leader Of Men; Leadership; Shield Proficiency; Skill Focus (Profession (Soldier)); Tower Shield Proficiency; Weapon Proficiency (Martial)</td>
@@ -159,6 +159,8 @@ var attributes = {
       </tr><tr align="center">
         <td>Favored Region (Northlands): Knowledge (Local (Northlands)) is a class skill/+2 Survival (within Northlands)/+2 Knowledge (Nature) (within Northlands)</td>
       </tr><tr align="center">
+        <td>Inconspicuous: +2 Bluff (shadow)/+2 Diplomacy (shadow)/+2 Hide (shadow)/+2 Sense Motive (shadow)</td>
+      </tr><tr align="center">
         <td>Orc Slayer: -4 Cha skills (orcs)</td>
       </tr></table>
 </td>
@@ -193,13 +195,15 @@ var attributes = {
       <tr align="center">
         <td><b>Armor</b>: None</td>
         <td><b>Shield</b>: Heavy Wooden</td>
-        <td><b>Weapons</b>: Heavy Pick: 1 (+21 d6+1 x4@20); Throwing Axe: 1 (+21 d6+1 x2@20 R10'); Trident: 1 (+21 d8+1 x2@20 R10'); Unarmed: 1 (+21 d3+1 x2@20)</td>
+        <td><b>Weapons</b>: Heavy Pick: 1 (+21 d6+1 x4@20); Throwing Axe: 1 (+21 d6+1 x2@20 R10'); Trident: 1 (+21 d8+1 x2@19 R10'); Unarmed: 1 (+21 d3+1 x2@20)</td>
       </tr></table>
 </td>
     </tr><tr align="center">
       <td><b>Combat Notes</b>:       <table id="Combat Notes" width="100%">
       <tr align="center">
         <td><i>Constitution Hit Points Adjustment: -20</i></td>
+      </tr><tr align="center">
+        <td><i>Improved Critical (Trident): x2 Trident Threat Range</i></td>
       </tr><tr align="center">
         <td><i>Improved Initiative: +4 Initiative</i></td>
       </tr><tr align="center">
@@ -222,6 +226,8 @@ var attributes = {
         <td>Orc Slayer: +1 AC and melee damage vs. orcs and dworgs</td>
       </tr><tr align="center">
         <td>Pikeman: Receive charge as move action</td>
+      </tr><tr align="center">
+        <td>Point-Blank Shot: +1 ranged attack and damage w/in 30'</td>
       </tr><tr align="center">
         <td>Quick Draw: Draw weapon as free action</td>
       </tr><tr align="center">
@@ -261,9 +267,8 @@ var attributes = {
     <tr align="center">
       <td>      <table id="SpellStats" width="100%">
       <tr align="center">
-        <td><b>Spell Energy</b>: 3</td>
-        <td><b>Spell Slots</b>: D0: 3; D1: 1; Null3: 3; Null4: 1; Null6: 2</td>
-        <td><b>Spell DC</b>: Ch: 13; D: 13; Null: 10</td>
+        <td><b>Spell Slots</b>: Null3: 3; Null4: 1; Null6: 2</td>
+        <td><b>Spell DC</b>: Null: 10</td>
       </tr></table>
 </td>
     </tr></table>
@@ -277,37 +282,15 @@ var attributes = {
     </tr><tr align="left">
       <td>Greater Dispel Magic (Null6 Abju): R300' d20+20 vs. 11+caster level cancels 5 spells or effects or all w/in 20' radius</td>
     </tr><tr align="left">
-      <td>Prestidigitation (Ch0 Evoc): R10' Perform minor tricks for 1 hr</td>
-    </tr><tr align="left">
       <td>Spell Immunity (Null4 Abju): Touched immune to 5 spells up to 4th level for 200 min</td>
     </tr></table>
 </td>
   </tr><tr align="center">
     <td><b>Magic Notes</b>:     <table id="Magic Notes" width="100%">
     <tr align="center">
-      <td><i>Magecraft (Spiritual): Learn 3 D0 and 1 D1 spells, 3 Spell Energy</i></td>
-    </tr><tr align="center">
-      <td><i>Spellcasting (Abjuration): Learn 1 Channeler Abjuration spell; may learn more</i></td>
-    </tr><tr align="center">
-      <td>Arcane Spell Failure: 15%</td>
-    </tr><tr align="center">
-      <td>Craft Wondrous Item: Create and mend miscellaneous magic items</td>
-    </tr><tr align="center">
       <td>Empowered Dispelling: +2 dispel checks</td>
     </tr><tr align="center">
       <td>Sense Magic: <i>Detect Magic</i> 6/dy</td>
-    </tr><tr align="center">
-      <td>Spell Penetration: +2 checks to overcome spell resistance</td>
-    </tr></table>
-</td>
-  </tr></table>
-</td>
-</tr><tr align="center">
-  <td><b>Notes</b><br/>  <table id="Notes Area" width="100%">
-  <tr align="center">
-    <td>    <table id="ValidationPart" width="100%">
-    <tr align="center">
-      <td><b>Validation Notes</b>: Null Heroic Path: Requires sumMagecraft == 0/skills.Use Magic Device == 0/levels.Charismatic Channeler == 0/levels.Hermetic Channeler == 0/levels.Spiritual Channeler == 0</td>
     </tr></table>
 </td>
   </tr></table>

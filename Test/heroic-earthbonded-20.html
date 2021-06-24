@@ -16,7 +16,8 @@ var attributes = {
   "feats.Two-Weapon Defense":1, "feats.Two-Weapon Fighting":1, "gender":"Male", "heroicPath":"Earthbonded", 
   "hitPoints":105, "intelligence":12, "languages.Colonial":1, "levels.Fighter":20, 
   "name":"Heroic-Earthbonded 20", "race":"Clan Dwarf", "selectableFeatures.Fighter - Combat Expertise":1, 
-  "selectableFeatures.Fighter - Improvised Weapon":1, "shield":"Buckler", "skills.Climb":9, "skills.Craft (Weapons)":2, 
+  "selectableFeatures.Fighter - Dodge":1, "selectableFeatures.Fighter - Endurance":1, 
+  "selectableFeatures.Fighter - Survivor":1, "shield":"Buckler", "skills.Climb":9, "skills.Craft (Weapons)":2, 
   "skills.Diplomacy":11, "skills.Handle Animal":23, "skills.Hide":11, 
   "skills.Profession (Herbalist)":2, "skills.Ride":11, "skills.Swim":23, "skills.Use Magic Device":23, 
   "spells.Arcane Mark(W0 Univ)":1, "spells.Earthquake(Earthbonded8 Grea)":1, "spells.Flare(W0 Evoc)":1, 
@@ -97,7 +98,7 @@ var attributes = {
         <td><b>Feats</b>: Armor Proficiency (Light); Dodge; Improved Grapple; Improved Initiative; Improved Shield Bash; Improved Unarmed Strike; Improviser; Magecraft (Hermetic); Power Reservoir; Quickened Donning; Run; Shield Mate; Spellcasting (Abjuration); Survivor; Trapsmith; Tunnel Fighting; Two-Weapon Defense; Two-Weapon Fighting</td>
         <td><b>Clan Dwarf Features</b>: Darkvision; Dwarf Ability Adjustment; Dwarf Enmity; Favored Region (Kaladruns); Favored Region (Subterranean Kaladruns); Favored Weapon (Axes/Hammers); Know Depth; Natural Armor; Orc Dodger; Resist Poison; Resist Spells; Slow; Stability; Steady; Stonecunning; Stoneworker; Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe)</td>
         <td><b>Earthbonded Features</b>: Blindsense; Blindsight; Extended Darkvision; Improved Stonecunning; Natural Armor; Stonecunning; Tremorsense</td>
-        <td><b>Fighter Features</b>: Armor Proficiency (Heavy); Combat Expertise; Improvised Weapon; Shield Proficiency; Tower Shield Proficiency; Weapon Proficiency (Martial)</td>
+        <td><b>Fighter Features</b>: Armor Proficiency (Heavy); Combat Expertise; Dodge; Endurance; Shield Proficiency; Survivor; Tower Shield Proficiency; Weapon Proficiency (Martial)</td>
       </tr></table>
 </td>
     </tr><tr align="center">
@@ -238,8 +239,6 @@ var attributes = {
       </tr><tr align="center">
         <td>Improved Unarmed Strike: No AOO on Unarmed attack, may deal lethal damage</td>
       </tr><tr align="center">
-        <td>Improvised Weapon: No penalty for improvised weapon, -2 for non-proficient weapon</td>
-      </tr><tr align="center">
         <td>Orc Dodger: +1 AC vs. orc</td>
       </tr><tr align="center">
         <td>Shield Mate: Adjacent allies +2 AC when self fighting defensively or using -2 Combat Expertise</td>
@@ -263,6 +262,8 @@ var attributes = {
         <td><i>Dexterity Reflex Adjustment: +2</i></td>
       </tr><tr align="center">
         <td><i>Wisdom Will Adjustment: +1</i></td>
+      </tr><tr align="center">
+        <td>Endurance: +4 extended physical action</td>
       </tr><tr align="center">
         <td>Resist Poison: +2 vs. poison</td>
       </tr><tr align="center">
@@ -335,24 +336,6 @@ var attributes = {
       <td>Arcane Spell Failure: 10%</td>
     </tr><tr align="center">
       <td>Power Reservoir: Store +1 syphoned spell energy points</td>
-    </tr></table>
-</td>
-  </tr></table>
-</td>
-</tr><tr align="center">
-  <td><b>Notes</b><br/>  <table id="Notes Area" width="100%">
-  <tr align="center">
-    <td>    <table id="ValidationPart" width="100%">
-    <tr align="center">
-      <td><b>Validation Notes</b>:       <table id="Validation Notes" width="100%">
-      <tr align="center">
-        <td>Fighter-Combat Expertise Selectable Feature: Requires features.Survivor/levels.Fighter >= 4</td>
-      </tr><tr align="center">
-        <td>Fighter-Improvised Weapon Selectable Feature: Requires features.Improviser/levels.Fighter >= 4</td>
-      </tr><tr align="center">
-        <td>Selectable Feature Allocation: 4 available vs. 2 allocated</td>
-      </tr></table>
-</td>
     </tr></table>
 </td>
   </tr></table>

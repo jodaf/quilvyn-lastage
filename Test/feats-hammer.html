@@ -12,9 +12,9 @@ var attributes = {
   "feats.Greater Masterwork":1, "feats.Improved Masterwork":1, "feats.Power Attack":1, 
   "feats.Powerful Throw":1, "feats.Reinforcing":1, "feats.Shield Mate":1, 
   "feats.Tempering (Fireforged)":1, "feats.Tempering (Icebound)":1, "feats.Tempering (Quick-Cooled)":1, 
-  "feats.Touched By Magic":1, "feats.Trapsmith":1, "feats.Tunnel Fighting":1, "gender":"Male", 
-  "heroicPath":"Beast", "hitPoints":64, "intelligence":13, "languages.Halfling":1, 
-  "levels.Fighter":10, "name":"Feats-Hammer", "race":"Clan Dwarf", 
+  "feats.Touched By Magic":1, "feats.Trapsmith":1, "feats.Tunnel Fighting":1, 
+  "feats.Weapon Focus (Light Hammer)":1, "gender":"Male", "heroicPath":"Beast", "hitPoints":64, "intelligence":13, 
+  "languages.Halfling":1, "levels.Fighter":10, "name":"Feats-Hammer", "race":"Clan Dwarf", 
   "selectableFeatures.Beast - Low-Light Vision":1, "selectableFeatures.Fighter - Iron Will":1, 
   "selectableFeatures.Fighter - Leader Of Men":1, "selectableFeatures.Fighter - Skill Focus (Diplomacy)":1, 
   "shield":"Heavy Wooden", "skills.Climb":3, "skills.Concentration":2, "skills.Craft (Armor)":10, 
@@ -92,7 +92,7 @@ var attributes = {
     </tr><tr align="center">
       <td>      <table id="FeatLists" width="100%">
       <tr align="center">
-        <td><b>Feats</b>: Advanced Tempering; Clouding; Dwarvencraft; Greater Masterwork; Improved Masterwork; Power Attack; Powerful Throw; Reinforcing; Shield Mate; Tempering (Fireforged); Tempering (Icebound); Tempering (Quick-Cooled); Touched By Magic; Trapsmith; Tunnel Fighting</td>
+        <td><b>Feats</b>: Advanced Tempering; Clouding; Dwarvencraft; Greater Masterwork; Improved Masterwork; Power Attack; Powerful Throw; Reinforcing; Shield Mate; Tempering (Fireforged); Tempering (Icebound); Tempering (Quick-Cooled); Touched By Magic; Trapsmith; Tunnel Fighting; Weapon Focus (Light Hammer)</td>
         <td><b>Clan Dwarf Features</b>: Darkvision; Dwarf Ability Adjustment; Dwarf Enmity; Favored Region (Kaladruns); Favored Region (Subterranean Kaladruns); Favored Weapon (Axes/Hammers); Know Depth; Natural Armor; Orc Dodger; Resist Poison; Resist Spells; Slow; Stability; Steady; Stonecunning; Stoneworker; Weapon Familiarity (Dwarven Urgosh/Dwarven Waraxe)</td>
         <td><b>Beast Features</b>: Ability Boost; Bestial Aura; Low-Light Vision; Rage; Vicious Assault</td>
         <td><b>Fighter Features</b>: Armor Proficiency (Heavy); Iron Will; Leader Of Men; Shield Proficiency; Skill Focus (Diplomacy); Tower Shield Proficiency; Weapon Proficiency (Martial)</td>
@@ -218,7 +218,7 @@ var attributes = {
       <tr align="center">
         <td><b>Armor</b>: Hide</td>
         <td><b>Shield</b>: Heavy Wooden</td>
-        <td><b>Weapons</b>: Light Hammer: 1 (+12 d4+2 x2@20 R20'); Light Mace: 1 (+12 d6+2 x2@20); Short Sword: 1 (+12 d6+2 x2@19); Unarmed: 1 (+12 d3+2 x2@20)</td>
+        <td><b>Weapons</b>: Light Hammer: 1 (+13 d4+2 x2@20 R20'); Light Mace: 1 (+12 d6+2 x2@20); Short Sword: 1 (+12 d6+2 x2@19); Unarmed: 1 (+12 d3+2 x2@20)</td>
       </tr></table>
 </td>
     </tr><tr align="center">
@@ -235,6 +235,8 @@ var attributes = {
         <td><i>Strength Attack Adjustment: +2</i></td>
       </tr><tr align="center">
         <td><i>Strength Damage Adjustment: +2</i></td>
+      </tr><tr align="center">
+        <td><i>Weapon Focus (Light Hammer): +1 Light Hammer Attack Modifier</i></td>
       </tr><tr align="center">
         <td>Bestial Aura: Turn 2d6+10 HD of animals of up to (d20+20)/3 HD 3/dy</td>
       </tr><tr align="center">
@@ -323,7 +325,7 @@ var attributes = {
   <tr align="center">
     <td>    <table id="ValidationPart" width="100%">
     <tr align="center">
-      <td><b>Validation Notes</b>: Powerful Throw Feat: Requires strength >= 13/features.Power Attack/features.Weapon Focus (Light Hammer) || features.Weapon Focus (Thowing Axe) || features.Weapon Focus (Urutuk Hatchet)</td>
+      <td><b>Validation Notes</b>: Feat Allocation: 15 available vs. 16 allocated</td>
     </tr></table>
 </td>
   </tr></table>
