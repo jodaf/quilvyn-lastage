@@ -149,7 +149,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.2.3.4';
+LastAge.VERSION = '2.2.3.5';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -3110,7 +3110,7 @@ LastAge.NPC_CLASSES = {
     'Selectables=' +
       QuilvynUtils.getKeys(LastAge.PATHS).filter(x => x.match(/Domain$/)).map(x => '"deityDomains =~ \'' + x.replace(' Domain', '') + '\' ? 1:' + x + '"').join(',') + ' ' +
     'CasterLevelDivine=levels.Legate ' +
-    'SpellAbility=charisma ' +
+    'SpellAbility=wisdom ' +
     'SpellSlots=' +
       'C0:1=3;2=4;4=5;7=6,' +
       'C1:1=1;2=2;4=3;7=4;11=5,' +
