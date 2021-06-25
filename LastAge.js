@@ -5754,7 +5754,7 @@ LastAge.pathRulesExtra = function(rules, name) {
       pathLevel, '=', 'source >= 15 ? 3 : source >= 8 ? 2 : 1'
     );
     rules.defineRule('selectableFeatureCount.Warg',
-      pathLevel, '=', 'source >= 16 ? 3 : source >= 9 ? 2 : 1'
+      pathLevel, '=', 'source >= 16 ? 2 : source >= 9 ? 1 : null'
     );
     rules.defineRule('skillNotes.wildEmpathy', pathLevel, '+=', null);
 
