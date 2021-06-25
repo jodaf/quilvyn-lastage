@@ -149,7 +149,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.2.3.5';
+LastAge.VERSION = '2.2.3.6';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -2272,7 +2272,7 @@ LastAge.SPELLS_ADDED = {
     'Description="R$RS\' Compel 3 correct answers from target fell w/in $L min (Will neg)"',
   'Weather':
     'School=Conjuration ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2,Jack2,Snow2 ' +
     'Description="R$RM\' 60\' radius, 30\' high cylinder of rain or snow"',
   'Willful Stand':
     'School=Abjuration ' +
@@ -2309,7 +2309,7 @@ LastAge.SPELLS_LEVELS = {
   'Acid Arrow':'Ch2,Jack2',
   'Acid Fog':'Ch6',
   'Aid':'Chanceborn2,Charismatic2,Faithful2',
-  'Air Walk':'Ch4',
+  'Air Walk':'Ch4,Snow4',
   'Alarm':'Bladebearer1,Ch1,Jack1,Seer1',
   'Align Weapon':'Blessed2',
   'Alter Self':'Ch2,Jack2',
@@ -2360,7 +2360,7 @@ LastAge.SPELLS_LEVELS = {
   'Charm Monster':'Ch4,Charismatic4',
   'Charm Person':'Ch1,Charismatic1,Jack1',
   'Chill Metal':'Ch2,Jack2',
-  'Chill Touch':'Ch1,Jack1',
+  'Chill Touch':'Ch1,Jack1,Snow1',
   'Circle Of Death':'Ch6',
   'Clairaudience/Clairvoyance':'Ch3,Jack3,Seer3',
   'Clenched Fist':'Ch8',
@@ -2372,7 +2372,7 @@ LastAge.SPELLS_LEVELS = {
   'Commune With Nature':'Ch5,Naturefriend5,Warden5',
   'Commune':'Seer5',
   'Comprehend Languages':'Ch1,Jack1,Speaker1',
-  'Cone Of Cold':'Ch5',
+  'Cone Of Cold':'Ch5,Snow5',
   'Confusion':'Ch4',
   'Consecrate':'Faithful2',
   'Contact Other Plane':'Ch5',
@@ -2382,8 +2382,8 @@ LastAge.SPELLS_LEVELS = {
   'Control Plants':'Ch8',
   'Control Undead':'Ch7',
   'Control Water':'Ch4',
-  'Control Weather':'Ch7',
-  'Control Winds':'Ch5',
+  'Control Weather':'Ch7,Snow7',
+  'Control Winds':'Ch5,Snow5',
   'Create Greater Undead':'Ch8',
   'Create Undead':'Ch6',
   'Create Water':'Ch0,Jack0',
@@ -2413,7 +2413,7 @@ LastAge.SPELLS_LEVELS = {
   'Detect Evil':'Ch2,Guardian2,Jack2,Shadowed2',
   'Detect Good':'Ch2,Jack2,Shadowed2',
   'Detect Law':'Ch2,Jack2',
-  'Detect Magic':'Ch0,Jack0',
+  'Detect Magic':'Ch0,Jack0,Snow0',
   'Detect Poison':'Ch0,Jack0',
   'Detect Scrying':'Ch4',
   'Detect Secret Doors':'Bladebearer1,Ch1,Jack1',
@@ -2477,7 +2477,7 @@ LastAge.SPELLS_LEVELS = {
   'Fox\'s Cunning':'Ch2,Jack2',
   'Freedom Of Movement':'Beast4,Ch4',
   'Freedom':'Ch9',
-  'Freezing Sphere':'Ch6',
+  'Freezing Sphere':'Ch6,Snow6',
   'Gaseous Form':'Ch3,Jack3',
   'Gate':'Ch9',
   'Geas/Quest':'Ch6',
@@ -2507,7 +2507,7 @@ LastAge.SPELLS_LEVELS = {
   'Greater Shout':'Ch8,Speaker8',
   'Guards And Wards':'Ch6',
   'Guidance':'Ch0,Jack0',
-  'Gust Of Wind':'Ch2,Jack2,Naturefriend2',
+  'Gust Of Wind':'Ch2,Jack2,Naturefriend2,Snow2',
   'Hallow':'Ch5',
   'Hallucinatory Terrain':'Ch4',
   'Halt Undead':'Ch3,Jack3',
@@ -2527,7 +2527,7 @@ LastAge.SPELLS_LEVELS = {
   'Horrid Wilting':'Ch8',
   'Hypnotic Pattern':'Ch2,Jack2',
   'Hypnotism':'Ch1,Charismatic1,Jack1',
-  'Ice Storm':'Ch4,Naturefriend4',
+  'Ice Storm':'Ch4,Naturefriend4,Snow4',
   'Identify':'Ch1,Jack1',
   'Illusory Script':'Ch3,Jack3',
   'Illusory Wall':'Ch4',
@@ -2551,7 +2551,7 @@ LastAge.SPELLS_LEVELS = {
   'Lesser Globe Of Invulnerability':'Ch4',
   'Lesser Planar Binding':'Ch5',
   'Lesser Restoration':'Ch2,Healer2,Jack2',
-  'Levitate':'Ch2,Jack2',
+  'Levitate':'Ch2,Jack2,Snow2',
   'Light':'Ch0,Jack0',
   'Lightning Bolt':'Ch3,Jack3',
   'Liveoak':'Ch6',
@@ -2607,7 +2607,7 @@ LastAge.SPELLS_LEVELS = {
   'Mirage Arcana':'Ch5',
   'Mirror Image':'Ch2,Jack2',
   'Misdirection':'Ch2,Jack2,Smuggler2',
-  'Mislead':'Ch6,Feyblooded6',
+  'Mislead':'Ch6,Feyblooded6,Snow6',
   'Mnemonic Enhancer':'Ch4',
   'Modify Memory':'Ch4,Smuggler4',
   'Moment Of Prescience':'Ch8',
@@ -2617,7 +2617,7 @@ LastAge.SPELLS_LEVELS = {
   'Nightmare':'Ch5',
   'Nondetection':'Ch3,Feyblooded3,Jack3',
   'Obscure Object':'Ch2,Jack2',
-  'Obscuring Mist':'Ch1,Jack1,Naturefriend1',
+  'Obscuring Mist':'Ch1,Jack1,Naturefriend1,Snow1',
   'Open/Close':'Ch0,Jack0',
   'Overland Flight':'Ch5',
   'Owl\'s Wisdom':'Ch2,Jack2',
@@ -2631,7 +2631,7 @@ LastAge.SPELLS_LEVELS = {
   'Planar Binding':'Ch6',
   'Plant Growth':'Ch3,Jack3',
   'Poison':'Ch3,Jack3',
-  'Polar Ray':'Ch8',
+  'Polar Ray':'Ch8,Snow8',
   'Polymorph':'Ch4',
   'Polymorph Any Object':'Ch8',
   'Power Word Blind':'Ch7',
@@ -2654,13 +2654,13 @@ LastAge.SPELLS_LEVELS = {
   'Protection From Spells':'Ch8',
   'Prying Eyes':'Ch5,Seer5',
   'Pyrotechnics':'Ch2,Jack2',
-  'Quench':'Ch3',
+  'Quench':'Ch3,Snow3',
   'Rage':'Ch3,Jack3',
   'Rainbow Pattern':'Ch4,Feyblooded4',
   'Raise Dead':'Healer5',
   'Ray Of Enfeeblement':'Ch1,Jack1',
   'Ray Of Exhaustion':'Ch3,Jack3',
-  'Ray Of Frost':'Ch0,Jack0',
+  'Ray Of Frost':'Ch0,Jack0,Snow0',
   'Read Magic':'Ch0,Jack0',
   'Reduce Animal':'Ch2,Jack2',
   'Reduce Person':'Ch1,Jack1',
@@ -2709,7 +2709,7 @@ LastAge.SPELLS_LEVELS = {
   'Silent Image':'Ch1,Jack1',
   'Simulacrum':'Ch7',
   'Sleep':'Ch1,Jack1',
-  'Sleet Storm':'Ch3,Jack3,Naturefriend3',
+  'Sleet Storm':'Ch3,Jack3,Naturefriend3,Snow3',
   'Slow':'Ch3,Jack3',
   'Snare':'Ch3,Jack3',
   'Soften Earth And Stone':'Ch2,Earthbonded2,Jack2',
@@ -2733,7 +2733,7 @@ LastAge.SPELLS_LEVELS = {
   'Stone Tell':'Ch6,Earthbonded6,Mountainborn6',
   'Stone To Flesh':'Ch6',
   'Stoneskin':'Ch4,Earthbonded4',
-  'Storm Of Vengeance':'Ch9',
+  'Storm Of Vengeance':'Ch9,Snow9',
   'Suggestion':'Ch3,Charismatic3,Jack3',
   'Summon Instrument':'Ch0,Jack0',
   'Summon Monster I':'Ch1,Jack1,Shadowed1,Sunderborn1',
@@ -2807,10 +2807,10 @@ LastAge.SPELLS_LEVELS = {
   'Waves Of Fatigue':'Ch5',
   'Web':'Ch2,Jack2',
   'Weird':'Ch9',
-  'Whirlwind':'Ch8',
+  'Whirlwind':'Ch8,Snow8',
   'Whispering Wind':'Ch2,Jack2,Speaker2',
-  'Wind Walk':'Ch7',
-  'Wind Wall':'Ch3,Jack3',
+  'Wind Walk':'Ch7,Snow6',
+  'Wind Wall':'Ch3,Jack3,Snow3',
   'Wood Shape':'Ch2,Jack2,Naturefriend2',
   'Zone Of Silence':'Ch4'
 };
@@ -3502,7 +3502,19 @@ LastAge.PRESTIGE_CLASSES = {
       '"1:Art Of Magic","1:Improved Spellcasting","1:Way Of The Snow Witch",' +
       '"2:Cold Resistance","3:Like Snowfall","4:Cloak Of Snow",' +
       '"6:House Of Summer","7:Control Weather","9:Aura Of Winter",' +
-      '"10:Cold Immunity"',
+      '"10:Cold Immunity" ' +
+    'SpellAbility=intelligence ' +
+    'SpellSlots=' +
+      'Snow0:1=2,' +
+      'Snow1:2=2,' +
+      'Snow2:3=3,' +
+      'Snow3:4=2,' +
+      'Snow4:5=2,' +
+      'Snow5:6=2,' +
+      'Snow6:7=3,' +
+      'Snow7:8=1,' +
+      'Snow8:9=2,' +
+      'Snow9:10=1',
   'Syphon':
     'Require=' +
       '"baseAttack >= 8","skills.Spellcraft >= 8",' +
@@ -4350,15 +4362,13 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Druid') {
 
-    // TODO Mastery of Nature value are likely off if the character doesn't
-    // have the Spiritual Channeler feature.
     rules.defineRule
-      ('combatNotes.masteryOfNature.1', 'druidTurningLevel', '+', null);
+      ('combatNotes.masteryOfNature.1', 'druidTurningLevel', '+=', null);
     rules.defineRule
-      ('combatNotes.masteryOfNature.2', 'druidTurningLevel', '+', 'source * 3');
+      ('combatNotes.masteryOfNature.2', 'druidTurningLevel', '+=', 'source * 3');
     rules.defineRule('companionMasterLevel', classLevel, '+=', null);
     rules.defineRule('druidTurningLevel',
-      classLevel, '+=', 'source / 2',
+      classLevel, '+=', 'Math.floor(source / 2)',
       'selectableFeatures.Spiritual Channeler - Mastery Of Spirits', '*', '2'
     );
     rules.defineRule('featureNotes.findTheWay',
@@ -4748,31 +4758,6 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('skillNotes.homemaker', classLevel, '=', null);
 
   } else if(name == 'Snow Witch') {
-
-    var snowSpells = [
-      'Detect Magic', 'Ray Of Frost', 'Chill Touch', 'Obscuring Mist',
-      'Gust Of Wind', 'Levitate', 'Weather', 'Quench', 'Sleet Storm',
-      'Wind Wall', 'Air Walk', 'Ice Storm', 'Cone Of Cold', 'Control Winds',
-      'Freezing Sphere', 'Mislead', 'Wind Walk', 'Control Weather', 'Polar Ray',
-      'Whirlwind', 'Storm Of Vengeance'
-    ];
-    for(var i = 0; i < snowSpells.length; i++) {
-      var spell = snowSpells[i];
-      if(!(spell in LastAge.SPELLS)) {
-        console.log('Snow Witch spell "' + spell + '" missing from spell list');
-        continue;
-      }
-      var attrs = LastAge.SPELLS[spell];
-      var level = QuilvynUtils.getAttrValueArray(attrs, 'Level').filter(x => x.match(/Ch\d/))[0].replace('Ch', '');
-      var school = QuilvynUtils.getAttrValue(attrs, 'School');
-      rules.defineRule('snowSpells.' + spell,
-        'magicNotes.wayOfTheSnowWitch', '?', null,
-        'maxSpellLevel', '=', 'source >= ' + level + ' ? 1 : null'
-      );
-      rules.defineRule('spells.' + spell + '(Ch' + level + ' ' + school.substring(0, 4) + ')',
-        'snowSpells.' + spell, '=', '1'
-      );
-    }
 
     rules.defineRule
       ('magicNotes.auraOfWinter', classLevel, '=', 'source<10 ? 1 : 2');
