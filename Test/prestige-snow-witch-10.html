@@ -20,14 +20,21 @@ var attributes = {
   "skills.Hide":4, "skills.Kknowledge (Arcane)":4, "skills.Knowledge (Nature)":4, 
   "skills.Knowledge (Shadow)":9, "skills.Move Silently":1, "skills.Perform (Oratory)":18, 
   "skills.Profession (Herbalist)":18, "skills.Sense Motive":2, "skills.Spellcraft":4, "skills.Swim":6, 
-  "skills.Use Magic Device":2, "spells.Bane(Shadowed1 Ench)":1, "spells.Daze Monster(Ch2 Ench)":1, 
-  "spells.Death Knell(Shadowed2 Necr)":1, "spells.Detect Evil(Shadowed2 Divi)":1, 
-  "spells.Detect Good(Shadowed2 Divi)":1, "spells.Good Hope(Ch3 Ench)":1, "spells.Hide From Animals(D1 Abju)":1, 
-  "spells.Joyful Speech(Ch1 Ench)":1, "spells.Know Direction(D0 Divi)":1, "spells.Light(Ch0 Evoc)":1, 
+  "skills.Use Magic Device":2, "spells.Air Walk(Snow4 Tran)":1, "spells.Bane(Shadowed1 Ench)":1, 
+  "spells.Chill Touch(Snow1 Necr)":1, "spells.Cone Of Cold(Snow5 Grea)":1, "spells.Control Weather(Snow7 Tran)":1, 
+  "spells.Control Winds(Snow5 Tran)":1, "spells.Daze Monster(Ch2 Ench)":1, "spells.Death Knell(Shadowed2 Necr)":1, 
+  "spells.Detect Evil(Shadowed2 Divi)":1, "spells.Detect Good(Shadowed2 Divi)":1, "spells.Detect Magic(Snow0 Divi)":1, 
+  "spells.Freezing Sphere(Snow6 Grea)":1, "spells.Good Hope(Ch3 Ench)":1, "spells.Gust Of Wind(Snow2 Grea)":1, 
+  "spells.Hide From Animals(D1 Abju)":1, "spells.Ice Storm(Snow4 Grea)":1, "spells.Joyful Speech(Ch1 Ench)":1, 
+  "spells.Know Direction(D0 Divi)":1, "spells.Levitate(Snow2 Tran)":1, "spells.Light(Ch0 Evoc)":1, 
   "spells.Light(D0 Evoc)":1, "spells.Lullaby(Ch0 Ench)":1, "spells.Mending(D0 Tran)":1, 
-  "spells.Prismatic Spray(Ch7 Evoc)":1, "spells.Shout(Ch4 Evoc)":1, "spells.Summon Monster I(Shadowed1 Grea)":1, 
-  "spells.Sympathy(Ch8 Ench)":1, "spells.Withering Speech(Ch2 Ench)":1, "strength":14, 
-  "weapons.Light Crossbow":1, "weapons.Punching Dagger":1, "weapons.Tack Whip":1, "wisdom":9
+  "spells.Mislead(Snow6 Illu)":1, "spells.Obscuring Mist(Snow1 Conj)":1, "spells.Polar Ray(Snow8 Grea)":1, 
+  "spells.Prismatic Spray(Ch7 Evoc)":1, "spells.Ray Of Frost(Snow0 Conj)":1, "spells.Shout(Ch4 Evoc)":1, 
+  "spells.Sleet Storm(Snow3 Conj)":1, "spells.Storm Of Vengeance(Snow9 Grea)":1, 
+  "spells.Summon Monster I(Shadowed1 Grea)":1, "spells.Sympathy(Ch8 Ench)":1, "spells.Weather(Snow2 Conj)":1, 
+  "spells.Whirlwind(Snow8 Grea)":1, "spells.Wind Walk(Snow6 Tran)":1, "spells.Wind Wall(Snow3 Grea)":1, 
+  "spells.Withering Speech(Ch2 Ench)":1, "strength":14, "weapons.Light Crossbow":1, "weapons.Punching Dagger":1, 
+  "weapons.Tack Whip":1, "wisdom":9
 };
   </script>
 </head>
@@ -270,8 +277,8 @@ var attributes = {
       <td>      <table id="SpellStats" width="100%">
       <tr align="center">
         <td><b>Spell Energy</b>: 14</td>
-        <td><b>Spell Slots</b>: Ch8: 13; D0: 3; D1: 1; Domain1: 3; Shadowed1: 5; Shadowed2: 3</td>
-        <td><b>Spell DC</b>: Ch: 9; D: 9; Domain: 12; Shadowed: 12</td>
+        <td><b>Spell Slots</b>: Ch8: 13; D0: 3; D1: 1; Domain1: 3; Shadowed1: 5; Shadowed2: 3; Snow0: 2; Snow1: 3; Snow2: 3; Snow3: 2; Snow4: 2; Snow5: 2; Snow6: 3; Snow7: 1; Snow8: 2; Snow9: 1</td>
+        <td><b>Spell DC</b>: Ch: 9; D: 9; Domain: 12; Shadowed: 12; Snow: 11</td>
       </tr></table>
 </td>
     </tr></table>
@@ -279,17 +286,17 @@ var attributes = {
   </tr><tr align="center">
     <td><b>Spells</b>:     <table id="Spells" width="100%">
     <tr align="left">
-      <td>Air Walk (Ch4 Tran): Touched walks on air for 150 min</td>
+      <td>Air Walk (Snow4 Tran): Touched walks on air for 100 min</td>
     </tr><tr align="left">
       <td>Bane (Shadowed1 Ench): Enemies w/in 50' -1 attack and fear saves for 15 min (DC 13 Will neg)</td>
     </tr><tr align="left">
-      <td>Chill Touch (Ch1 Necr): 15 touched 1d6 HP negative energy (DC 10 Will neg), 1 Str (DC 10 Fort neg, undead flee 1d4+15 rd)</td>
+      <td>Chill Touch (Snow1 Necr): 10 touched 1d6 HP negative energy (DC 12 Will neg), 1 Str (DC 12 Fort neg, undead flee 1d4+10 rd)</td>
     </tr><tr align="left">
-      <td>Cone Of Cold (Ch5 Grea): R60' cone 15d6 HP (DC 14 Ref half)</td>
+      <td>Cone Of Cold (Snow5 Grea): R60' cone 10d6 HP (DC 16 Ref half)</td>
     </tr><tr align="left">
-      <td>Control Weather (Ch7 Tran): Create seasonal weather in 2 mi radius for 4d12 hr</td>
+      <td>Control Weather (Snow7 Tran): Create seasonal weather in 2 mi radius for 4d12 hr</td>
     </tr><tr align="left">
-      <td>Control Winds (Ch5 Tran): R600' Changes wind direction and speed in 600'x40' cylinder for 150 min</td>
+      <td>Control Winds (Snow5 Tran): R400' Changes wind direction and speed in 400'x40' cylinder for 100 min</td>
     </tr><tr align="left">
       <td>Daze Monster (Ch2 Ench): R250' Creature target w/up to 6 HD lose next action (DC 11 Will neg)</td>
     </tr><tr align="left">
@@ -299,23 +306,23 @@ var attributes = {
     </tr><tr align="left">
       <td>Detect Good (Shadowed2 Divi): R60' cone info on good auras for 150 min</td>
     </tr><tr align="left">
-      <td>Detect Magic (Ch0 Divi): R60' cone info on magical auras for 15 min</td>
+      <td>Detect Magic (Snow0 Divi): R60' cone info on magical auras for 10 min</td>
     </tr><tr align="left">
-      <td>Freezing Sphere (Ch6 Grea): R1000' Burst 15d6 HP in 40' radius (DC 15 Ref half)</td>
+      <td>Freezing Sphere (Snow6 Grea): R800' Burst 10d6 HP in 40' radius (DC 17 Ref half)</td>
     </tr><tr align="left">
       <td>Good Hope (Ch3 Ench): 15 targets +2 attack, damage, saves, and checks for 15 min</td>
     </tr><tr align="left">
-      <td>Gust Of Wind (Ch2 Grea): 60' gust affects medium or smaller creatures (DC 11 Fort neg)</td>
+      <td>Gust Of Wind (Snow2 Grea): 60' gust affects medium or smaller creatures (DC 13 Fort neg)</td>
     </tr><tr align="left">
       <td>Hide From Animals (D1 Abju): 15 touched imperceptible to animals for 150 min</td>
     </tr><tr align="left">
-      <td>Ice Storm (Ch4 Grea): R1000' Hail in 40' cylinder 3d6 HP bludgeoning, 2d6 HP cold, -4 Perception for 15 rd</td>
+      <td>Ice Storm (Snow4 Grea): R800' Hail in 40' cylinder 3d6 HP bludgeoning, 2d6 HP cold, -4 Perception for 10 rd</td>
     </tr><tr align="left">
       <td>Joyful Speech (Ch1 Ench): R250' Listeners in 30' radius improve reaction, unshaken, +4 vs. fear for 15 rd (DC 10 Will neg)</td>
     </tr><tr align="left">
       <td>Know Direction (D0 Divi): Self determine north</td>
     </tr><tr align="left">
-      <td>Levitate (Ch2 Tran): R60' Move willing target up or down 20' for 15 min</td>
+      <td>Levitate (Snow2 Tran): R50' Move willing target up or down 20' for 10 min</td>
     </tr><tr align="left">
       <td>Light (Ch0 Evoc): Touched gives torchlight for 150 min</td>
     </tr><tr align="left">
@@ -325,35 +332,35 @@ var attributes = {
     </tr><tr align="left">
       <td>Mending (D0 Tran): R10' Repairs 1d4 HP to 15-lb object</td>
     </tr><tr align="left">
-      <td>Mislead (Ch6 Illu): R60' Self invisible 15 rd, false double (DC 15 Will disbelieve) conc + 3 rd</td>
+      <td>Mislead (Snow6 Illu): R50' Self invisible 10 rd, false double (DC 17 Will disbelieve) conc + 3 rd</td>
     </tr><tr align="left">
-      <td>Obscuring Mist (Ch1 Conj): 20'-radius fog around self obscures vision for 15 min</td>
+      <td>Obscuring Mist (Snow1 Conj): 20'-radius fog around self obscures vision for 10 min</td>
     </tr><tr align="left">
-      <td>Polar Ray (Ch8 Grea): R250' Ranged touch 15d6 HP and 1d4 Dex</td>
+      <td>Polar Ray (Snow8 Grea): R200' Ranged touch 10d6 HP and 1d4 Dex</td>
     </tr><tr align="left">
       <td>Prestidigitation (Ch0 Evoc): R10' Perform minor tricks for 1 hr</td>
     </tr><tr align="left">
       <td>Prismatic Spray (Ch7 Evoc): R60' cone Blinds target w/up to 8 HD 2d4 rd, other effects</td>
     </tr><tr align="left">
-      <td>Quench (Ch3 Tran): R250' Extinguish fire, dispel fire magic, or 10d6 HP to fire creatures in 15 20' cu (DC 12 Will neg)</td>
-    </tr><tr align="left">
-      <td>Ray Of Frost (Ch0 Conj): R60' Ranged touch 1d3 HP</td>
+      <td>Ray Of Frost (Snow0 Conj): R50' Ranged touch 1d3 HP</td>
     </tr><tr align="left">
       <td>Shout (Ch4 Evoc): R30' cone 5d6 HP, deafened 2d6 rd (DC 13 Will half damage only)</td>
     </tr><tr align="left">
-      <td>Sleet Storm (Ch3 Conj): R1000' Blinding sleet in 40' area, creatures DC 10 Acrobatics to move for 15 rd</td>
+      <td>Sleet Storm (Snow3 Conj): R800' Blinding sleet in 40' area, creatures DC 10 Acrobatics to move for 10 rd</td>
+    </tr><tr align="left">
+      <td>Storm Of Vengeance (Snow9 Grea): R800' 360' radius storm deafen 1d4x10 min (DC 20 Fort neg), then rain acid 1d6 HP, then 6 bolts lightning 10d6 (DC 20 Ref half), then hail 5d6 HP, then dark 6 rd</td>
     </tr><tr align="left">
       <td>Summon Monster I (Shadowed1 Grea): R60' 1 1st-level creature appears, fights foes for 15 rd</td>
     </tr><tr align="left">
       <td>Sympathy (Ch8 Ench): Named kind or alignment creatures drawn to 150' cube for 30 hr (DC 17 Will neg)</td>
     </tr><tr align="left">
-      <td>Weather (Ch2 Conj): R250' 60' radius, 30' high cylinder of rain or snow</td>
+      <td>Weather (Snow2 Conj): R200' 60' radius, 30' high cylinder of rain or snow</td>
     </tr><tr align="left">
-      <td>Whirlwind (Ch8 Grea): R1000' 10'-radius wind 1d8 HP/rd for 15 rd (DC 17 Ref neg)</td>
+      <td>Whirlwind (Snow8 Grea): R800' 10'-radius wind 1d8 HP/rd for 10 rd (DC 19 Ref neg)</td>
     </tr><tr align="left">
-      <td>Wind Walk (Ch7 Tran): Self + 5 touched vaporize and move 60 mph for 15 hr</td>
+      <td>Wind Walk (Snow6 Tran): Self + 3 touched vaporize and move 60 mph for 10 hr</td>
     </tr><tr align="left">
-      <td>Wind Wall (Ch3 Grea): R250' 150'x5' curtain of air scatters objects, deflects arrows and bolts for 15 rd</td>
+      <td>Wind Wall (Snow3 Grea): R200' 100'x5' curtain of air scatters objects, deflects arrows and bolts for 10 rd</td>
     </tr><tr align="left">
       <td>Withering Speech (Ch2 Ench): R60' Target 1 Wis, 1 Cha damage/min for conc</td>
     </tr></table>
@@ -369,13 +376,13 @@ var attributes = {
     </tr><tr align="center">
       <td><i>Improved Spellcasting: +10 Spell Energy/+3 Channeler Spells</i></td>
     </tr><tr align="center">
+      <td><i>Intelligence Spell Bonus: 1/0/0/0</i></td>
+    </tr><tr align="center">
       <td><i>Magecraft (Spiritual): Learn 3 D0 and 1 D1 spells, -1 Spell Energy</i></td>
     </tr><tr align="center">
       <td><i>Spellcasting (Enchantment): Learn 1 Channeler Enchantment spell; may learn more</i></td>
     </tr><tr align="center">
       <td><i>Spellcasting (Evocation): Learn 1 Channeler Evocation spell; may learn more</i></td>
-    </tr><tr align="center">
-      <td><i>Way Of The Snow Witch: Additional automatic spells</i></td>
     </tr><tr align="center">
       <td>Aura Of Winter: R20' Set temperature and use <i>Weather</i> 2/dy</td>
     </tr><tr align="center">
@@ -394,6 +401,8 @@ var attributes = {
       <td>Scribe Scroll: Create scroll of any known spell</td>
     </tr><tr align="center">
       <td>Tradition Gift (Master Of Two Worlds): Ability to control animals, plants, constructs and/or spirits</td>
+    </tr><tr align="center">
+      <td>Way Of The Snow Witch: Additional automatic spells</td>
     </tr></table>
 </td>
   </tr></table>

@@ -25,8 +25,9 @@ var attributes = {
   "skills.Profession (Soldier)":2, "skills.Ride":2, "skills.Search":2, "skills.Sense Motive":2, 
   "skills.Sleight Of Hand":2, "skills.Speak Language":2, "skills.Spellcraft":2, "skills.Spot":2, 
   "skills.Survival":2, "skills.Swim":2, "skills.Tumble":2, "skills.Use Magic Device":2, 
-  "skills.Use Rope":2, "strength":8, "weapons.Battleaxe":1, "weapons.Composite Longbow":1, 
-  "weapons.Scythe":1, "wisdom":9
+  "skills.Use Rope":2, "spells.Detect Magic(Snow0 Divi)":1, "spells.Ray Of Frost(Snow0 Conj)":1, 
+  "strength":8, "weapons.Battleaxe":1, "weapons.Composite Longbow":1, "weapons.Scythe":1, 
+  "wisdom":9
 };
   </script>
 </head>
@@ -269,15 +270,22 @@ var attributes = {
 </tr><tr align="center">
   <td><b>Magic</b><br/>  <table id="Magic" width="100%">
   <tr align="center">
+    <td>    <table id="SpellPart" width="100%">
+    <tr align="center">
+      <td>      <table id="SpellStats" width="100%">
+      <tr align="center">
+        <td><b>Spell Slots</b>: Snow0: 2</td>
+        <td><b>Spell DC</b>: Snow: 11</td>
+      </tr></table>
+</td>
+    </tr></table>
+</td>
+  </tr><tr align="center">
     <td><b>Spells</b>:     <table id="Spells" width="100%">
     <tr align="left">
-      <td>Chill Touch (Ch1 Necr): %1 touched 1d6 HP negative energy (DC %3 Will neg), 1 Str (DC %3 Fort neg, undead flee 1d4+%2 rd)</td>
+      <td>Detect Magic (Snow0 Divi): R60' cone info on magical auras for 1 min</td>
     </tr><tr align="left">
-      <td>Detect Magic (Ch0 Divi): R60' cone info on magical auras for %1 min</td>
-    </tr><tr align="left">
-      <td>Obscuring Mist (Ch1 Conj): 20'-radius fog around self obscures vision for %1 min</td>
-    </tr><tr align="left">
-      <td>Ray Of Frost (Ch0 Conj): R%1' Ranged touch 1d3 HP</td>
+      <td>Ray Of Frost (Snow0 Conj): R25' Ranged touch 1d3 HP</td>
     </tr></table>
 </td>
   </tr><tr align="center">
@@ -287,7 +295,7 @@ var attributes = {
     </tr><tr align="center">
       <td><i>Improved Spellcasting: +1 Spell Energy/+0 Channeler Spells</i></td>
     </tr><tr align="center">
-      <td><i>Way Of The Snow Witch: Additional automatic spells</i></td>
+      <td>Way Of The Snow Witch: Additional automatic spells</td>
     </tr></table>
 </td>
   </tr></table>
