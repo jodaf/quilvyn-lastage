@@ -390,6 +390,10 @@ LastAge.FEATS_ADDED = {
 LastAge.FEATS = Object.assign({}, SRD35.FEATS, LastAge.FEATS_ADDED);
 LastAge.FEATURES_ADDED = {
 
+  // Override of 3.5 Magic Domain feature
+  'Arcane Adept':
+    'Section=magic Note="Use magic device as W%{levels.Legate//2>?1}"',
+
   // Heroic Path
   'Ability Boost':'Section=ability Note="%V to distribute"',
   'Aid Another (Move)':'Section=combat Note="Aid another as a move action"',
