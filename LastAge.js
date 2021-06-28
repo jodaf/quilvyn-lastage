@@ -149,7 +149,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.2.3.6';
+LastAge.VERSION = '2.2.3.7';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -1119,17 +1119,18 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="Unlock %V additional powers of covenant weapon"',
   'Alchemy':'Section=skill Note="Create plains dust%V"',
   'Alter Ego':'Section=feature Note="Transform into %V in %1 as %2 ability"',
-  'Ancestral Advisor':'Section=magic Note="<i>Augury</i> via weapon %V/dy"',
+  'Ancestral Advisor':
+    'Section=magic Note="Blade predicts weal/woe action outcome %V/dy"',
   'Ancestral Favor':'Section=save Note="Reroll save 1/dy"',
-  'Ancestral Guide':
-    'Section=magic Note="R10\' <i>Detect Secret Doors</i> via weapon at will"',
-  'Ancestral Protector':
-    'Section=magic Note="Continuous <i>Protection From Arrows</i> via weapon"',
+  'Ancestral Guide':'Section=magic Note="R10\' Blade hums near secret doors"',
+  'Ancestral Protector':'Section=magic Note="Blade swats away missiles"',
   'Ancestral Recall':'Section=skill Note="+%V failed Knowledge reroll 1/dy"',
   'Ancestral Spellcasting':
     'Section=magic Note="+%V Spell Energy/+%V Channeler Spells (conjuration)"',
   'Ancestral Warnings':'Section=combat Note="+2 Initiative"',
-  'Ancestral Watcher':'Section=magic Note="Weapon has continuous <i>Alarm</i>"',
+  'Ancestral Watcher':
+    'Section=magic ' +
+    'Note="Mental or audible alarm when creature comes w/in 20\' of weapon"',
   'Armored Casting':'Section=magic Note="Reduce arcane spell failure by %V%"',
   "Aryth's Blessing":
     'Section=feature ' +
@@ -1212,10 +1213,10 @@ LastAge.FEATURES_ADDED = {
     'Note="Sneak attack after 3 rd of study causes death or paralysis d6+%1 rd (DC %V Fort neg)"',
   'Death Knell':
     'Section=magic ' +
-    'Note="<i>Death Knell</i> %V/dy also syphons 1d4 spell energy (%1 max total) for spell duration"',
+    'Note="Touched w/negative HP dies, giving 1d8 HP, +2 Str, +1 caster level, 1d4 spell energy (%1 max) for 10*target HD min (DC %2 Will neg) %V/dy"',
   'Deathwatch':
     'Section=magic ' +
-    'Note="<i>Deathwatch</i> %V/dy, 1 spell energy per additional use"',
+    'Note="R30\' cone Reveals state of targets for %1 min %V/dy, 1 spell energy per additional use"',
   'Deft Dodging':
     'Section=combat Note="+4 self and mount AC on full rd mounted move"',
   "Deny Izrador's Power":
@@ -1223,15 +1224,20 @@ LastAge.FEATURES_ADDED = {
   'Disarming Shot':'Section=combat Note="Disarm via ranged touch attack"',
   'Disguise Contraband':
     'Section=magic ' +
-    'Note="<i>Misdirection</i> on %V\' cu of contraband %V for hr"',
+    'Note="Divination and detection on %V\' cu of contraband fails %V for hr"',
   'Dismounting Cut':
     'Section=combat Note="Trip attack w/weapon to dismount opponent"',
   'Divine Grace':'Section=save Note="+%V Will"',
   'Dominant Will':
     'Section=save ' +
     'Note="+%V Will vs. detection and compulsion spells to reveal activities"',
-  'Dreams Of The Land':
-    'Section=magic Note="R%V mi <i>Commune With Nature</i>%1 during sleep"',
+  'Dreams Of The Land (Commune)':
+    'Section=magic Note="R%V mi learn facts about surrounding area"',
+  'Dreams Of The Land (Dream)':
+    'Section=magic Note="Send message to sleeping ally"',
+  'Dreams Of The Land (Foresight)':
+    'Section=magic ' +
+    'Note="Warnings provide +2 AC, +2 Reflex, no surprise, flat-footed for %V hr"',
   'Druidcraft':'Section=magic Note="Energy cost of Druid spells reduced by 1"',
   'Dwarven Literacy':
     'Section=skill Note="Literate in Old Dwarven and Clan Dwarven"',
@@ -1343,7 +1349,9 @@ LastAge.FEATURES_ADDED = {
   'Mounted Ability':'Section=feature Note="%V selections"',
   'Mounted Hide':'Section=skill Note="+%V Hide while mounted"',
   'Mounted Maneuver':'Section=feature Note="%V selections"',
-  'Mystifying Speech':'Section=magic Note="DC %V <i>Modify Memory</i> %1/dy"',
+  'Mystifying Speech':
+    'Section=magic ' +
+    'Note="Change 5 min of memory of %1 listeners (DC %2 Will neg) %V/dy"',
   'Narrowswending':
     'Section=ability Note="Ignore 2 sq difficult terrain, full-speed squeeze"',
   'Nature Sense':
@@ -2276,7 +2284,7 @@ LastAge.SPELLS_ADDED = {
     'Description="R$RS\' Compel 3 correct answers from target fell w/in $L min (Will neg)"',
   'Weather':
     'School=Conjuration ' +
-    'Level=Ch2,Jack2,Snow2 ' +
+    'Level=Ch2,Jack2 ' +
     'Description="R$RM\' 60\' radius, 30\' high cylinder of rain or snow"',
   'Willful Stand':
     'School=Abjuration ' +
@@ -2313,8 +2321,8 @@ LastAge.SPELLS_LEVELS = {
   'Acid Arrow':'Ch2,Jack2',
   'Acid Fog':'Ch6',
   'Aid':'Chanceborn2,Charismatic2,Faithful2',
-  'Air Walk':'Ch4,Snow4',
-  'Alarm':'Bladebearer1,Ch1,Jack1,Seer1',
+  'Air Walk':'Ch4',
+  'Alarm':'Ch1,Jack1,Seer1',
   'Align Weapon':'Blessed2',
   'Alter Self':'Ch2,Jack2',
   'Analyze Dweomer':'Ch6',
@@ -2335,7 +2343,7 @@ LastAge.SPELLS_LEVELS = {
   'Arcane Sight':'Ch3,Jack3',
   'Astral Projection':'Ch9',
   'Atonement':'Ch5',
-  'Augury':'Bladebearer2,Seer2',
+  'Augury':'Seer2',
   'Awaken':'Ch5',
   'Baleful Polymorph':'Ch5',
   'Bane':'Shadowed1',
@@ -2364,7 +2372,7 @@ LastAge.SPELLS_LEVELS = {
   'Charm Monster':'Ch4,Charismatic4',
   'Charm Person':'Ch1,Charismatic1,Jack1',
   'Chill Metal':'Ch2,Jack2',
-  'Chill Touch':'Ch1,Jack1,Snow1',
+  'Chill Touch':'Ch1,Jack1',
   'Circle Of Death':'Ch6',
   'Clairaudience/Clairvoyance':'Ch3,Jack3,Seer3',
   'Clenched Fist':'Ch8',
@@ -2373,10 +2381,10 @@ LastAge.SPELLS_LEVELS = {
   'Color Spray':'Ch1,Jack1',
   'Command Plants':'Ch4,Naturefriend4',
   'Command Undead':'Ch2,Jack2',
-  'Commune With Nature':'Ch5,Naturefriend5,Warden5',
+  'Commune With Nature':'Ch5,Naturefriend5',
   'Commune':'Seer5',
   'Comprehend Languages':'Ch1,Jack1,Speaker1',
-  'Cone Of Cold':'Ch5,Snow5',
+  'Cone Of Cold':'Ch5',
   'Confusion':'Ch4',
   'Consecrate':'Faithful2',
   'Contact Other Plane':'Ch5',
@@ -2386,8 +2394,8 @@ LastAge.SPELLS_LEVELS = {
   'Control Plants':'Ch8',
   'Control Undead':'Ch7',
   'Control Water':'Ch4',
-  'Control Weather':'Ch7,Snow7',
-  'Control Winds':'Ch5,Snow5',
+  'Control Weather':'Ch7',
+  'Control Winds':'Ch5',
   'Create Greater Undead':'Ch8',
   'Create Undead':'Ch6',
   'Create Water':'Ch0,Jack0',
@@ -2405,9 +2413,8 @@ LastAge.SPELLS_LEVELS = {
   'Daylight':'Ch3,Faithful3,Jack3',
   'Daze':'Ch0,Jack0',
   'Daze Monster':'Ch2,Charismatic2,Jack2',
-  'Death Knell':'Death2,Shadowed2,Syphon2',
+  'Death Knell':'Death2,Shadowed2',
   'Death Ward':'Ch5',
-  'Deathwatch':'Syphon1',
   'Deep Slumber':'Ch3,Feyblooded3,Jack3',
   'Delay Poison':'Ch2,Jack2',
   'Delayed Blast Fireball':'Ch7',
@@ -2417,10 +2424,10 @@ LastAge.SPELLS_LEVELS = {
   'Detect Evil':'Ch2,Guardian2,Jack2,Shadowed2',
   'Detect Good':'Ch2,Jack2,Shadowed2',
   'Detect Law':'Ch2,Jack2',
-  'Detect Magic':'Ch0,Jack0,Snow0',
+  'Detect Magic':'Ch0,Jack0',
   'Detect Poison':'Ch0,Jack0',
   'Detect Scrying':'Ch4',
-  'Detect Secret Doors':'Bladebearer1,Ch1,Jack1',
+  'Detect Secret Doors':'Ch1,Jack1',
   'Detect Snares And Pits':'Ch1,Jack1',
   'Detect Thoughts':'Ch2,Jack2',
   'Detect Undead':'Ch1,Fellhunter1,Jack1',
@@ -2439,7 +2446,7 @@ LastAge.SPELLS_LEVELS = {
   'Dominate Animal':'Ch3,Jack3,Naturefriend3',
   'Dominate Monster':'Ch9',
   'Dominate Person':'Ch5',
-  'Dream':'Ch5,Warden5',
+  'Dream':'Ch5',
   'Eagle\'s Splendor':'Ch2,Jack2',
   'Earthquake':'Ch8,Earthbonded8',
   'Elemental Swarm':'Ch9',
@@ -2477,11 +2484,11 @@ LastAge.SPELLS_LEVELS = {
   'Fog Cloud':'Ch2,Jack2,Seaborn2',
   'Forcecage':'Ch7',
   'Forceful Hand':'Ch6',
-  'Foresight':'Ch9,Warden9',
+  'Foresight':'Ch9',
   'Fox\'s Cunning':'Ch2,Jack2',
   'Freedom Of Movement':'Beast4,Ch4',
   'Freedom':'Ch9',
-  'Freezing Sphere':'Ch6,Snow6',
+  'Freezing Sphere':'Ch6',
   'Gaseous Form':'Ch3,Jack3',
   'Gate':'Ch9',
   'Geas/Quest':'Ch6',
@@ -2511,7 +2518,7 @@ LastAge.SPELLS_LEVELS = {
   'Greater Shout':'Ch8,Speaker8',
   'Guards And Wards':'Ch6',
   'Guidance':'Ch0,Jack0',
-  'Gust Of Wind':'Ch2,Jack2,Naturefriend2,Snow2',
+  'Gust Of Wind':'Ch2,Jack2,Naturefriend2',
   'Hallow':'Ch5',
   'Hallucinatory Terrain':'Ch4',
   'Halt Undead':'Ch3,Jack3',
@@ -2531,7 +2538,7 @@ LastAge.SPELLS_LEVELS = {
   'Horrid Wilting':'Ch8',
   'Hypnotic Pattern':'Ch2,Jack2',
   'Hypnotism':'Ch1,Charismatic1,Jack1',
-  'Ice Storm':'Ch4,Naturefriend4,Snow4',
+  'Ice Storm':'Ch4,Naturefriend4',
   'Identify':'Ch1,Jack1',
   'Illusory Script':'Ch3,Jack3',
   'Illusory Wall':'Ch4',
@@ -2555,7 +2562,7 @@ LastAge.SPELLS_LEVELS = {
   'Lesser Globe Of Invulnerability':'Ch4',
   'Lesser Planar Binding':'Ch5',
   'Lesser Restoration':'Ch2,Healer2,Jack2',
-  'Levitate':'Ch2,Jack2,Snow2',
+  'Levitate':'Ch2,Jack2',
   'Light':'Ch0,Jack0',
   'Lightning Bolt':'Ch3,Jack3',
   'Liveoak':'Ch6',
@@ -2610,10 +2617,10 @@ LastAge.SPELLS_LEVELS = {
   'Minor Image':'Ch2,Jack2',
   'Mirage Arcana':'Ch5',
   'Mirror Image':'Ch2,Jack2',
-  'Misdirection':'Ch2,Jack2,Smuggler2',
-  'Mislead':'Ch6,Feyblooded6,Snow6',
+  'Misdirection':'Ch2,Jack2',
+  'Mislead':'Ch6,Feyblooded6',
   'Mnemonic Enhancer':'Ch4',
-  'Modify Memory':'Ch4,Smuggler4',
+  'Modify Memory':'Ch4',
   'Moment Of Prescience':'Ch8',
   'Mount':'Ch1,Jack1',
   'Move Earth':'Ch6,Earthbonded6',
@@ -2621,7 +2628,7 @@ LastAge.SPELLS_LEVELS = {
   'Nightmare':'Ch5',
   'Nondetection':'Ch3,Feyblooded3,Jack3',
   'Obscure Object':'Ch2,Jack2',
-  'Obscuring Mist':'Ch1,Jack1,Naturefriend1,Snow1',
+  'Obscuring Mist':'Ch1,Jack1,Naturefriend1',
   'Open/Close':'Ch0,Jack0',
   'Overland Flight':'Ch5',
   'Owl\'s Wisdom':'Ch2,Jack2',
@@ -2635,7 +2642,7 @@ LastAge.SPELLS_LEVELS = {
   'Planar Binding':'Ch6',
   'Plant Growth':'Ch3,Jack3',
   'Poison':'Ch3,Jack3',
-  'Polar Ray':'Ch8,Snow8',
+  'Polar Ray':'Ch8',
   'Polymorph':'Ch4',
   'Polymorph Any Object':'Ch8',
   'Power Word Blind':'Ch7',
@@ -2649,7 +2656,7 @@ LastAge.SPELLS_LEVELS = {
   'Produce Flame':'Ch1,Jack1',
   'Programmed Image':'Ch6',
   'Project Image':'Ch7',
-  'Protection From Arrows':'Bladebearer2,Ch2,Jack2',
+  'Protection From Arrows':'Ch2,Jack2',
   'Protection From Chaos':'Ch1,Jack1',
   'Protection From Energy':'Ch3,Jack3',
   'Protection From Evil':'Blessed1,Ch1,Faithful1,Jack1',
@@ -2658,13 +2665,13 @@ LastAge.SPELLS_LEVELS = {
   'Protection From Spells':'Ch8',
   'Prying Eyes':'Ch5,Seer5',
   'Pyrotechnics':'Ch2,Jack2',
-  'Quench':'Ch3,Snow3',
+  'Quench':'Ch3',
   'Rage':'Ch3,Jack3',
   'Rainbow Pattern':'Ch4,Feyblooded4',
   'Raise Dead':'Healer5',
   'Ray Of Enfeeblement':'Ch1,Jack1',
   'Ray Of Exhaustion':'Ch3,Jack3',
-  'Ray Of Frost':'Ch0,Jack0,Snow0',
+  'Ray Of Frost':'Ch0,Jack0',
   'Read Magic':'Ch0,Jack0',
   'Reduce Animal':'Ch2,Jack2',
   'Reduce Person':'Ch1,Jack1',
@@ -2713,7 +2720,7 @@ LastAge.SPELLS_LEVELS = {
   'Silent Image':'Ch1,Jack1',
   'Simulacrum':'Ch7',
   'Sleep':'Ch1,Jack1',
-  'Sleet Storm':'Ch3,Jack3,Naturefriend3,Snow3',
+  'Sleet Storm':'Ch3,Jack3,Naturefriend3',
   'Slow':'Ch3,Jack3',
   'Snare':'Ch3,Jack3',
   'Soften Earth And Stone':'Ch2,Earthbonded2,Jack2',
@@ -2737,7 +2744,7 @@ LastAge.SPELLS_LEVELS = {
   'Stone Tell':'Ch6,Earthbonded6,Mountainborn6',
   'Stone To Flesh':'Ch6',
   'Stoneskin':'Ch4,Earthbonded4',
-  'Storm Of Vengeance':'Ch9,Snow9',
+  'Storm Of Vengeance':'Ch9',
   'Suggestion':'Ch3,Charismatic3,Jack3',
   'Summon Instrument':'Ch0,Jack0',
   'Summon Monster I':'Ch1,Jack1,Shadowed1,Sunderborn1',
@@ -2811,10 +2818,10 @@ LastAge.SPELLS_LEVELS = {
   'Waves Of Fatigue':'Ch5',
   'Web':'Ch2,Jack2',
   'Weird':'Ch9',
-  'Whirlwind':'Ch8,Snow8',
+  'Whirlwind':'Ch8',
   'Whispering Wind':'Ch2,Jack2,Speaker2',
-  'Wind Walk':'Ch7,Snow6',
-  'Wind Wall':'Ch3,Jack3,Snow3',
+  'Wind Walk':'Ch6',
+  'Wind Wall':'Ch3,Jack3',
   'Wood Shape':'Ch2,Jack2,Naturefriend2',
   'Zone Of Silence':'Ch4'
 };
@@ -3159,12 +3166,7 @@ LastAge.PRESTIGE_CLASSES = {
       '"3:Ancestral Bladebearer Bonus Feats","3:Ancestral Watcher",' +
       '"4:Immovable Blade","5:Ancestral Advisor","7:Ancestral Guide",' +
       '"8:Unwavering Blade","9:Ancestral Protector",' +
-      '"10:Awaken Ancestral Blade" ' +
-    'CasterLevelArcane="levels.Ancestral Bladebearer" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Bladebearer1:3=1;7=2,' +
-      'Bladebearer2:5=1;9=2',
+      '"10:Awaken Ancestral Blade"',
   "Aradil's Eye":
     'Require=' +
       'features.Inconspicuous,"race == \'Wood Elf\'","skills.Bluff >= 8",' +
@@ -3301,12 +3303,7 @@ LastAge.PRESTIGE_CLASSES = {
       'Swim,Tumble,"Use Magic Device","Use Rope" ' +
     'Features=' +
       '"1:Smuggler\'s Trade","2:Dominant Will","3:Mystifying Speech",' +
-      '"4:Information Network","5:Disguise Contraband","10:Slippery Mind" ' +
-    'CasterLevelArcane=levels.Smuggler ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Smuggler2:5=1,' +
-      'Smuggler4:3=1',
+      '"4:Information Network","5:Disguise Contraband","10:Slippery Mind"',
   'Warrior Arcanist':
     'Require=' +
       '"baseAttack >= 4","sumMagecraft >= 1","sumSpellcastingFeats >= 1",' +
@@ -3388,12 +3385,9 @@ LastAge.PRESTIGE_CLASSES = {
       '"1:Armor Proficiency (Medium)","1:Shield Proficiency",' +
       '"1:Weapon Proficiency (Martial)",' +
       '1:Mediator,"1:Spirit Speaker","1:Warden\'s Vows",' +
-      '"2:Aryth\'s Blessing","3:Dreams Of The Land","4:For The King" ' +
-    'CasterLevelArcane="levels.Warden Of Erenland" ' +
-    'SpellAbility=wisdom ' +
-    'SpellSlots=' +
-      'Warden5:3=1;6=2,' +
-      'Warden9:9=1',
+      '"2:Aryth\'s Blessing","3:Dreams Of The Land (Commune)",' +
+      '"4:For The King","6:Dreams Of The Land (Dream)",' +
+      '"9:Dreams Of The Land (Foresight)"',
   // Hammer & Shadow
   'Ancestral Foe':
     'Require=' +
@@ -3493,7 +3487,7 @@ LastAge.PRESTIGE_CLASSES = {
       '"3:Gardener Of Erethor Bonus Feats",6:Woodsman,"9:Chosen Ground"',
   'Snow Witch':
     'Require=' +
-      '"skills.Kknowledge (Arcane) >= 4","skills.Knowledge (Nature) >= 4",' +
+      '"skills.Knowledge (Arcana) >= 4","skills.Knowledge (Nature) >= 4",' +
       '"skills.Spellcraft >= 4", "skills.Survival >= 4",' +
       '"features.Endurance","sumMagecraft >= 1","sumSpellcastingFeats >= 1",' +
       '"alignment !~ \'Evil\'" ' +
@@ -3506,19 +3500,7 @@ LastAge.PRESTIGE_CLASSES = {
       '"1:Art Of Magic","1:Improved Spellcasting","1:Way Of The Snow Witch",' +
       '"2:Cold Resistance","3:Like Snowfall","4:Cloak Of Snow",' +
       '"6:House Of Summer","7:Control Weather","9:Aura Of Winter",' +
-      '"10:Cold Immunity" ' +
-    'SpellAbility=intelligence ' +
-    'SpellSlots=' +
-      'Snow0:1=2,' +
-      'Snow1:2=2,' +
-      'Snow2:3=3,' +
-      'Snow3:4=2,' +
-      'Snow4:5=2,' +
-      'Snow5:6=2,' +
-      'Snow6:7=3,' +
-      'Snow7:8=1,' +
-      'Snow8:9=2,' +
-      'Snow9:10=1',
+      '"10:Cold Immunity"',
   'Syphon':
     'Require=' +
       '"baseAttack >= 8","skills.Spellcraft >= 8",' +
@@ -3530,11 +3512,7 @@ LastAge.PRESTIGE_CLASSES = {
       'Swim ' +
     'Features=' +
       '"1:Art Of Magic","1:Death Knell","1:Deathwatch","2:Ignore Armor",' +
-      '"2:Blood-Syphoning","4:Spell-Syphoning","5:Blood Talisman" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Syphon1:1=1,' +
-      'Syphon2:1=1',
+      '"2:Blood-Syphoning","4:Spell-Syphoning","5:Blood Talisman"',
   // Star & Shadow
   'Pellurian Blade Dancer':
     'Require=' +
@@ -4477,13 +4455,16 @@ LastAge.classRulesExtra = function(rules, name) {
 
     rules.defineRule('baseAttack', 'smugglerBaseAttackAdjustment', '+', null);
     rules.defineRule('magicNotes.disguiseContraband', classLevel, '=', null);
-    rules.defineRule('magicNotes.mystifyingSpeech',
-      classLevel, '=', '10 + source',
-      'charismaModifier', '+', null
-    );
+    rules.defineRule
+      ('magicNotes.mystifyingSpeech', classLevel, '=', 'source>=7 ? 2 : 1');
     rules.defineRule('magicNotes.mystifyingSpeech.1',
       'features.Mystifying Speech', '?', null,
-      classLevel, '=', 'source >= 7 ? 2 : 1'
+      classLevel, '=', null
+    );
+    rules.defineRule('magicNotes.mystifyingSpeech.2',
+      'features.Mystifying Speech', '?', null,
+      classLevel, '=', '10 + source',
+      'charismaModifier', '+', null
     );
     rules.defineRule('saveNotes.dominantWill',
       classLevel, '=', 'source >= 6 ? 4 : 2'
@@ -4619,14 +4600,11 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '=', 'Math.floor((source + 2) / 3)'
     );
     rules.defineRule
-      ('magicNotes.dreamsOfTheLand', classLevel, '=', 'source + 10');
-    rules.defineRule('magicNotes.dreamsOfTheLand.1',
-      classLevel, '=',
-        'source<6 ? "" : source<9 ? ", <i>Dream</i>" : ' +
-        '", <i>Dream</i>, %2 min <i>Foresight</i>"'
-    );
+      ('magicNotes.dreamsOfTheLand(Commune)', classLevel, '=', 'source + 10');
     rules.defineRule
       ('magicNotes.dreamsOfTheLand.2', classLevel, '=', 'source * 10 + 60');
+    rules.defineRule
+      ('magicNotes.dreamsOfTheLand(Foresight)', classLevel, '=', null);
 
   } else if(name == 'Ancestral Foe') {
 
@@ -4763,6 +4741,33 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Snow Witch') {
 
+    var allSpells = rules.getChoices('spells');
+    var snowSpells = {
+      'Detect Magic':0, 'Ray Of Frost':0,
+      'Chill Touch':1, 'Obscuring Mist':1,
+      'Gust Of Wind':2, 'Levitate':2, 'Weather':2,
+      'Quench':3, 'Sleet Storm':3, 'Wind Wall':3,
+      'Air Walk':4, 'Ice Storm':4,
+      'Cone Of Cold':5, 'Control Winds':5,
+      'Freezing Sphere':6, 'Mislead':6, 'Wind Walk':6,
+      'Control Weather':7,
+      'Polar Ray':8, 'Whirlwind':8,
+      'Storm Of Vengeance':9
+    };
+    for(var spell in snowSpells) {
+      var keys =
+        QuilvynUtils.getKeys(allSpells, spell + '\\(Ch' + snowSpells[spell]);
+      if(keys.length != 1) {
+        console.log('Missing Show Witch spell "' + spell + '"');
+        continue;
+      }
+      rules.defineRule('snowWitchSpells.' + keys[0],
+        classLevel, '?', null,
+        'maxSpellLevel', '=', 'source >= ' + snowSpells[spell] + ' ? 1 : null'
+      );
+      rules.defineRule
+        ('spells.' + keys[0], 'snowWitchSpells.' + keys[0], '=', null);
+    }
     rules.defineRule
       ('magicNotes.auraOfWinter', classLevel, '=', 'source<10 ? 1 : 2');
     rules.defineRule
@@ -4795,18 +4800,20 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '=', null,
       'highestMagicModifier', '+', null
     );
+    rules.defineRule('magicNotes.deathKnell.2',
+      'features.Death Knell', '?', null,
+      'highestMagicModifier', '=', '12 + source'
+    );
     rules.defineRule('magicNotes.deathwatch',
       classLevel, '=', 'source<3 ? 1 : source<5 ? 2 : 3'
     );
+    rules.defineRule('magicNotes.deathwatch.1', classLevel, '=', 'source * 10');
     rules.defineRule('magicNotes.ignoreArmor',
       classLevel, '=', 'Math.floor(source / 2) * 10'
     );
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
     rules.defineRule('magicNotes.improvedSpellcasting.1',
       classLevel, '+=', 'Math.floor(source / 3)'
-    );
-    rules.defineRule('spellDifficultyClass.Syphon',
-      'highestMagicModifier', '=', '10 + source'
     );
 
   } else if(name == 'Pellurian Blade Dancer') {
