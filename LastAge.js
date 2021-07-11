@@ -149,7 +149,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.2.3.7';
+LastAge.VERSION = '2.2.3.8';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -2956,21 +2956,19 @@ LastAge.CLASS_FEATURES = {
       'Climb,Craft,"Handle Animal",Intimidate,Jump,"Knowledge (Shadow)",' +
       'Profession,Ride,"Speak Language",Swim ' +
     'Selectables=' +
-      '"features.Improviser==0/features.Leader Of Men==0/features.Survivor==0 ? 4:Adapter",' +
-      '"features.Adapter==0/features.Leader Of Men==0/features.Survivor==0 ? 4:Improviser",' +
-      '"features.Adapter==0/features.Improviser==0/features.Survivor==0 ? 4:Leader Of Men",' +
-      '"features.Adapter==0/features.Improviser==0/features.Leader Of Men==0 ? 4:Survivor",' +
-      '"features.Improviser ? 4:Improved Grapple",' +
-      '"features.Improviser ? 4:Improved Unarmed Strike",' +
-      '"features.Improviser ? 4:Improvised Weapon",' +
-      '"features.Improviser ? 4:Stunning Fist",' +
-      '"features.Leader Of Men ? 4:Iron Will",' +
-      '"features.Leader Of Men ? 4:Leadership",' +
-      '"features.Leader Of Men ? 4:Skill Focus (Diplomacy)",' +
-      '"features.Leader Of Men ? 4:Skill Focus (Profession (Soldier))",' +
-      '"features.Survivor ? 4:Combat Expertise",' +
-      '"features.Survivor ? 4:Dodge",' +
-      '"features.Survivor ? 4:Endurance"',
+      '"4:Adapter:Warrior\'s Way","4:Improviser:Warrior\'s Way",' +
+      '"4:Leader Of Men:Warrior\'s Way","4:Survivor:Warrior\'s Way",' +
+      '"4:Improved Grapple:Improviser Feat",' +
+      '"4:Improved Unarmed Strike:Improviser Feat",' +
+      '"4:Improvised Weapon:Improviser Feat",' +
+      '"4:Stunning Fist:Improviser Feat",' +
+      '"4:Iron Will:Leader Of Men Feat",' +
+      '"4:Leadership:Leader Of Men Feat",' +
+      '"4:Skill Focus (Diplomacy):Leader Of Men Feat",' +
+      '"4:Skill Focus (Profession (Soldier)):Leader Of Men Feat",' +
+      '"4:Combat Expertise:Survivor Feat",' +
+      '"4:Dodge:Survivor Feat",' +
+      '"4:Endurance:Survivor Feat"',
   'Rogue':
     'Skills=' +
       'Appraise,Balance,Bluff,Climb,Craft,"Decipher Script",Diplomacy,' +
@@ -4161,9 +4159,20 @@ LastAge.classRulesExtra = function(rules, name) {
 
     rules.defineRule
       ('featCount.Fighter', classLevel, '=', '1 + Math.floor(source / 2)');
-    rules.defineRule('selectableFeatureCount.Fighter',
-      classLevel, '=', 'source >= 4 ? 1 + Math.floor((source+2)/6) : null',
-      'features.Adapter', 'v', '1'
+    rules.defineRule("selectableFeatureCount.Fighter (Warrior's Way)",
+      classLevel, '=', 'source >= 4 ? 1 : null'
+    );
+    rules.defineRule('selectableFeatureCount.Fighter (Improviser Feat)',
+      'features.Improviser', '?', null,
+      classLevel, '=', 'source >= 4 ? Math.floor((source + 2) / 6) : null'
+    );
+    rules.defineRule('selectableFeatureCount.Fighter (Leader Of Men Feat)',
+      'features.Leader Of Men', '?', null,
+      classLevel, '=', 'source >= 4 ? Math.floor((source + 2) / 6) : null'
+    );
+    rules.defineRule('selectableFeatureCount.Fighter (Survivor Feat)',
+      'features.Survivor', '?', null,
+      classLevel, '=', 'source >= 4 ? Math.floor((source + 2) / 6) : null'
     );
     rules.defineRule('skillNotes.adapter',
       classLevel, '=',
