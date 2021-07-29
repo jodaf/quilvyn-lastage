@@ -41,7 +41,7 @@ function LastAge(baseRules) {
   LastAge.basePlugin = LastAge.USE_PATHFINDER ? Pathfinder : SRD35;
 
   var rules = new QuilvynRules
-    ('Last Age' + (LastAge.USE_PATHFINDER ? ' - PF' : ''), LastAge.VERSION);
+    ('Last Age - ' + (LastAge.USE_PATHFINDER ? 'PF' : 'SRD'), LastAge.VERSION);
   LastAge.rules = rules;
 
   LastAge.CHOICES = LastAge.basePlugin.CHOICES.concat(LastAge.CHOICES_ADDED);
