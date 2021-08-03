@@ -38,15 +38,15 @@ function LastAge(baseRules) {
   LastAge.USE_PATHFINDER =
     window.Pathfinder != null && Pathfinder.SRD35_SKILL_MAP &&
     baseRules != null && baseRules.includes('Pathfinder');
-  LastAge.basePlugin = LastAge.USE_PATHFINDER ? Pathfinder : SRD35;
 
   var rules = new QuilvynRules(
     'Last Age - ' + (LastAge.USE_PATHFINDER ? 'Pathfinder 1E' : 'D&D v3.5'),
     LastAge.VERSION
   );
+  rules.basePlugin = LastAge.USE_PATHFINDER ? Pathfinder : SRD35;
   LastAge.rules = rules;
 
-  LastAge.CHOICES = LastAge.basePlugin.CHOICES.concat(LastAge.CHOICES_ADDED);
+  LastAge.CHOICES = rules.basePlugin.CHOICES.concat(LastAge.CHOICES_ADDED);
   rules.defineChoice('choices', LastAge.CHOICES);
   rules.choiceEditorElements = LastAge.choiceEditorElements;
   rules.choiceRules = LastAge.choiceRules;
@@ -56,13 +56,13 @@ function LastAge(baseRules) {
   rules.makeValid = SRD35.makeValid;
   rules.randomizeOneAttribute = LastAge.randomizeOneAttribute;
   LastAge.RANDOMIZABLE_ATTRIBUTES =
-    LastAge.basePlugin.RANDOMIZABLE_ATTRIBUTES.concat
+    rules.basePlugin.RANDOMIZABLE_ATTRIBUTES.concat
     (LastAge.RANDOMIZABLE_ATTRIBUTES_ADDED);
   rules.defineChoice('random', LastAge.RANDOMIZABLE_ATTRIBUTES);
   delete rules.getChoices('random').deity;
   rules.ruleNotes = LastAge.ruleNotes;
 
-  if(LastAge.basePlugin == window.Pathfinder) {
+  if(rules.basePlugin == window.Pathfinder) {
     SRD35.ABBREVIATIONS['CMB'] = 'Combat Maneuver Bonus';
     SRD35.ABBREVIATIONS['CMD'] = 'Combat Maneuver Defense';
   }
@@ -78,49 +78,49 @@ function LastAge(baseRules) {
     'levels:Class Levels,bag,levels',
     'prestige:Prestige Levels,bag,prestiges', 'npc:NPC Levels,bag,npcs');
 
-  LastAge.ALIGNMENTS = Object.assign({}, LastAge.basePlugin.ALIGNMENTS);
+  LastAge.ALIGNMENTS = Object.assign({}, rules.basePlugin.ALIGNMENTS);
   LastAge.ANIMAL_COMPANIONS = Object.assign(
-    {}, LastAge.basePlugin.ANIMAL_COMPANIONS, LastAge.ANIMAL_COMPANIONS_ADDED
+    {}, rules.basePlugin.ANIMAL_COMPANIONS, LastAge.ANIMAL_COMPANIONS_ADDED
   );
-  LastAge.ARMORS = Object.assign({}, LastAge.basePlugin.ARMORS);
+  LastAge.ARMORS = Object.assign({}, rules.basePlugin.ARMORS);
   LastAge.CLASSES['Barbarian'] =
-    LastAge.basePlugin.CLASSES['Barbarian'] + ' ' +
+    rules.basePlugin.CLASSES['Barbarian'] + ' ' +
     LastAge.CLASS_FEATURES['Barbarian'];
   LastAge.CLASSES['Fighter'] =
-    LastAge.basePlugin.CLASSES['Fighter'] + ' ' +
+    rules.basePlugin.CLASSES['Fighter'] + ' ' +
     LastAge.CLASS_FEATURES['Fighter'];
   LastAge.CLASSES['Rogue'] =
-    LastAge.basePlugin.CLASSES['Rogue'] + ' ' + LastAge.CLASS_FEATURES['Rogue'];
+    rules.basePlugin.CLASSES['Rogue'] + ' ' + LastAge.CLASS_FEATURES['Rogue'];
   LastAge.NPC_CLASSES['Aristocrat'] =
-    LastAge.basePlugin.NPC_CLASSES['Aristocrat'];
-  LastAge.NPC_CLASSES['Commoner'] = LastAge.basePlugin.NPC_CLASSES['Commoner'];
-  LastAge.NPC_CLASSES['Expert'] = LastAge.basePlugin.NPC_CLASSES['Expert'];
-  LastAge.NPC_CLASSES['Warrior'] = LastAge.basePlugin.NPC_CLASSES['Warrior'];
-  LastAge.FAMILIARS = Object.assign({}, LastAge.basePlugin.FAMILIARS);
+    rules.basePlugin.NPC_CLASSES['Aristocrat'];
+  LastAge.NPC_CLASSES['Commoner'] = rules.basePlugin.NPC_CLASSES['Commoner'];
+  LastAge.NPC_CLASSES['Expert'] = rules.basePlugin.NPC_CLASSES['Expert'];
+  LastAge.NPC_CLASSES['Warrior'] = rules.basePlugin.NPC_CLASSES['Warrior'];
+  LastAge.FAMILIARS = Object.assign({}, rules.basePlugin.FAMILIARS);
   LastAge.FEATS =
-    Object.assign({}, LastAge.basePlugin.FEATS, LastAge.FEATS_ADDED);
+    Object.assign({}, rules.basePlugin.FEATS, LastAge.FEATS_ADDED);
   LastAge.FEATURES =
-    Object.assign({}, LastAge.basePlugin.FEATURES, LastAge.FEATURES_ADDED);
-  LastAge.GOODIES = Object.assign({}, LastAge.basePlugin.GOODIES);
+    Object.assign({}, rules.basePlugin.FEATURES, LastAge.FEATURES_ADDED);
+  LastAge.GOODIES = Object.assign({}, rules.basePlugin.GOODIES);
   for(var path in LastAge.PATHS) {
-    if(LastAge.basePlugin.PATHS[path])
+    if(rules.basePlugin.PATHS[path])
       LastAge.PATHS[path] =
-        LastAge.basePlugin.PATHS[path].replaceAll('Cleric', 'Legate');
+        rules.basePlugin.PATHS[path].replaceAll('Cleric', 'Legate');
   }
-  LastAge.SHIELDS = Object.assign({}, LastAge.basePlugin.SHIELDS);
+  LastAge.SHIELDS = Object.assign({}, rules.basePlugin.SHIELDS);
   LastAge.SKILLS =
-    Object.assign({}, LastAge.basePlugin.SKILLS, LastAge.SKILLS_ADDED);
+    Object.assign({}, rules.basePlugin.SKILLS, LastAge.SKILLS_ADDED);
   for(var skill in LastAge.SKILLS) {
     LastAge.SKILLS[skill] = LastAge.SKILLS[skill].replace(/Class=\S+/i, '');
   }
   delete LastAge.SKILLS['Knowledge (Planes)'];
   delete LastAge.SKILLS['Knowledge (Religion)'];
   LastAge.SPELLS = Object.assign({}, LastAge.SPELLS_ADDED);
-  for(var s in LastAge.basePlugin.SPELLS) {
-    var m = LastAge.basePlugin.SPELLS[s].match(/\b[BDW][01]|\b(C|Death|Destruction|Evil|Magic|War)[0-9]/g);
+  for(var s in rules.basePlugin.SPELLS) {
+    var m = rules.basePlugin.SPELLS[s].match(/\b[BDW][01]|\b(C|Death|Destruction|Evil|Magic|War)[0-9]/g);
     if(m == null && !(s in LastAge.SPELLS_LEVELS))
       continue;
-    var spellAttrs = LastAge.basePlugin.SPELLS[s] + ' Level=';
+    var spellAttrs = rules.basePlugin.SPELLS[s] + ' Level=';
     if(m == null)
       spellAttrs += LastAge.SPELLS_LEVELS[s];
     else if(s in LastAge.SPELLS_LEVELS)
@@ -132,7 +132,7 @@ function LastAge(baseRules) {
     LastAge.SPELLS[s] = spellAttrs;
   }
   LastAge.WEAPONS =
-    Object.assign({}, LastAge.basePlugin.WEAPONS, LastAge.WEAPONS_ADDED);
+    Object.assign({}, rules.basePlugin.WEAPONS, LastAge.WEAPONS_ADDED);
 
   LastAge.abilityRules(rules);
   LastAge.aideRules(rules, LastAge.ANIMAL_COMPANIONS, LastAge.FAMILIARS);
@@ -151,7 +151,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.2.3.8';
+LastAge.VERSION = '2.2.3.9';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -3580,14 +3580,14 @@ LastAge.PRESTIGE_CLASSES = {
 
 /* Defines rules related to character abilities. */
 LastAge.abilityRules = function(rules) {
-  LastAge.basePlugin.abilityRules(rules);
+  rules.basePlugin.abilityRules(rules);
   // No changes needed to the rules defined by base method
 };
 
 /* Defines rules related to animal companions and familiars. */
 LastAge.aideRules = function(rules, companions, familiars) {
 
-  LastAge.basePlugin.aideRules(rules, companions, familiars);
+  rules.basePlugin.aideRules(rules, companions, familiars);
 
   // For the purpose of companion stat computation, define companionMasterLevel
   // in terms of the number of times the Animal Companion is selected
@@ -3620,7 +3620,7 @@ LastAge.aideRules = function(rules, companions, familiars) {
 
 /* Defines rules related to combat. */
 LastAge.combatRules = function(rules, armors, shields, weapons) {
-  LastAge.basePlugin.combatRules(rules, armors, shields, weapons);
+  rules.basePlugin.combatRules(rules, armors, shields, weapons);
   // No changes needed to the rules defined by base method
 };
 
@@ -3629,7 +3629,7 @@ LastAge.identityRules = function(
   rules, alignments, classes, deities, paths, races, prestigeClasses, npcClasses
 ) {
 
-  if(LastAge.basePlugin == window.Pathfinder)
+  if(rules.basePlugin == window.Pathfinder)
     Pathfinder.identityRules(
       rules, alignments, classes, deities, {}, paths, races,
       Pathfinder.TRACKS, Pathfinder.TRAITS, prestigeClasses, npcClasses
@@ -3668,7 +3668,7 @@ LastAge.identityRules = function(
 
 /* Defines rules related to magic use. */
 LastAge.magicRules = function(rules, schools, spells) {
-  LastAge.basePlugin.magicRules(rules, schools, spells);
+  rules.basePlugin.magicRules(rules, schools, spells);
   rules.defineRule('highestMagicModifier',
     'charismaModifier', '=', null,
     'intelligenceModifier', '^', null,
@@ -3680,7 +3680,7 @@ LastAge.magicRules = function(rules, schools, spells) {
 LastAge.talentRules = function(
   rules, feats, features, goodies, languages, skills
 ) {
-  LastAge.basePlugin.talentRules
+  rules.basePlugin.talentRules
     (rules, feats, features, goodies, languages, skills);
   // No changes needed to the rules defined by base method
   rules.defineRule('sumMagecraft',
@@ -3807,8 +3807,8 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     LastAge.schoolRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Features')
     );
-    if(LastAge.basePlugin.schoolRulesExtra)
-      LastAge.basePlugin.schoolRulesExtra(rules, name);
+    if(rules.basePlugin.schoolRulesExtra)
+      rules.basePlugin.schoolRulesExtra(rules, name);
   } else if(type == 'Shield')
     LastAge.shieldRules(rules, name,
       QuilvynUtils.getAttrValue(attrs, 'AC'),
@@ -3824,8 +3824,8 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'Class'),
       QuilvynUtils.getAttrValueArray(attrs, 'Synergies')
     );
-    if(LastAge.basePlugin.skillRulesExtra)
-      LastAge.basePlugin.skillRulesExtra(rules, name);
+    if(rules.basePlugin.skillRulesExtra)
+      rules.basePlugin.skillRulesExtra(rules, name);
   } else if(type == 'Spell') {
     var description = QuilvynUtils.getAttrValue(attrs, 'Description');
     var groupLevels = QuilvynUtils.getAttrValueArray(attrs, 'Level');
@@ -3882,7 +3882,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
 
 /* Defines in #rules# the rules associated with alignment #name#. */
 LastAge.alignmentRules = function(rules, name) {
-  LastAge.basePlugin.alignmentRules(rules, name);
+  rules.basePlugin.alignmentRules(rules, name);
   // No changes needed to the rules defined by base method
 };
 
@@ -3896,7 +3896,7 @@ LastAge.alignmentRules = function(rules, name) {
 LastAge.armorRules = function(
   rules, name, ac, weight, maxDex, skillPenalty, spellFail
 ) {
-  LastAge.basePlugin.armorRules
+  rules.basePlugin.armorRules
     (rules, name, ac, weight, maxDex, skillPenalty, spellFail);
   // No changes needed to the rules defined by base method
 };
@@ -3924,7 +3924,7 @@ LastAge.classRules = function(
   saveWill, skills, features, selectables, languages, casterLevelArcane,
   casterLevelDivine, spellAbility, spellSlots
 ) {
-  if(LastAge.basePlugin == window.Pathfinder) {
+  if(rules.basePlugin == window.Pathfinder) {
     for(var i = 0; i < requires.length; i++) {
       for(var skill in Pathfinder.SRD35_SKILL_MAP) {
         requires[i] =
@@ -3941,7 +3941,7 @@ LastAge.classRules = function(
         skills[i] = Pathfinder.SRD35_SKILL_MAP[skill];
     }
   }
-  LastAge.basePlugin.classRules(
+  rules.basePlugin.classRules(
     rules, name, requires, hitDie, attack, skillPoints, saveFort, saveRef,
     saveWill, skills, features, selectables, languages, casterLevelArcane,
     casterLevelDivine, spellAbility, spellSlots
@@ -4267,7 +4267,7 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('skillNotes.wildlanderSkillMastery',
       'wildlanderFeatures.Wildlander Skill Mastery', '=', null
     );
-    if(LastAge.basePlugin == window.Pathfinder) {
+    if(rules.basePlugin == window.Pathfinder) {
       // Computation as per PRD Ranger
       rules.defineRule('skillNotes.track',
         classLevel, '+=', 'Math.max(1, Math.floor(source / 2))'
@@ -4946,9 +4946,9 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '=', 'Math.floor((source + 1) / 3)'
     );
 
-  } else if(LastAge.basePlugin.classRulesExtra) {
+  } else if(rules.basePlugin.classRulesExtra) {
 
-    LastAge.basePlugin.classRulesExtra(rules, name);
+    rules.basePlugin.classRulesExtra(rules, name);
 
   }
 
@@ -4965,7 +4965,7 @@ LastAge.companionRules = function(
   rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, size,
   level
 ) {
-  LastAge.basePlugin.companionRules(
+  rules.basePlugin.companionRules(
     rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, size,
     level
   );
@@ -4978,7 +4978,7 @@ LastAge.companionRules = function(
  * domains and favored weapons.
  */
 LastAge.deityRules = function(rules, name, alignment, domains, weapons) {
-  LastAge.basePlugin.deityRules(rules, name, alignment, domains, weapons);
+  rules.basePlugin.deityRules(rules, name, alignment, domains, weapons);
   // No changes needed to the rules defined by base method
 };
 
@@ -4993,7 +4993,7 @@ LastAge.familiarRules = function(
   rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, size,
   level
 ) {
-  LastAge.basePlugin.familiarRules(
+  rules.basePlugin.familiarRules(
     rules, name, str, dex, con, intel, wis, cha, hd, ac, attack, damage, size,
     level
   );
@@ -5006,7 +5006,7 @@ LastAge.familiarRules = function(
  * lists the categories of the feat.
  */
 LastAge.featRules = function(rules, name, requires, implies, types) {
-  LastAge.basePlugin.featRules(rules, name, requires, implies, types);
+  rules.basePlugin.featRules(rules, name, requires, implies, types);
   // No changes needed to the rules defined by SRD35 method
 };
 
@@ -5129,8 +5129,8 @@ LastAge.featRulesExtra = function(rules, name) {
       'dexterityModifier', '=', null,
       'strengthModifier', '+', '-source'
     );
-  } else if(LastAge.basePlugin.featRulesExtra) {
-    LastAge.basePlugin.featRulesExtra(rules, name);
+  } else if(rules.basePlugin.featRulesExtra) {
+    rules.basePlugin.featRulesExtra(rules, name);
   }
 
 };
@@ -5141,7 +5141,7 @@ LastAge.featRulesExtra = function(rules, name) {
  * the two must have the same number of elements.
  */
 LastAge.featureRules = function(rules, name, sections, notes) {
-  if(LastAge.basePlugin == window.Pathfinder) {
+  if(rules.basePlugin == window.Pathfinder) {
     for(var i = 0; i < sections.length; i++) {
       if(sections[i] != 'skill')
         continue;
@@ -5159,7 +5159,7 @@ LastAge.featureRules = function(rules, name, sections, notes) {
       notes[i] = note;
     }
   }
-  LastAge.basePlugin.featureRules(rules, name, sections, notes);
+  rules.basePlugin.featureRules(rules, name, sections, notes);
   // No changes needed to the rules defined by base method
 };
 
@@ -5178,14 +5178,14 @@ LastAge.featureRules = function(rules, name, sections, notes) {
 LastAge.goodyRules = function(
   rules, name, pattern, effect, value, attributes, sections, notes
 ) {
-  LastAge.basePlugin.goodyRules
+  rules.basePlugin.goodyRules
     (rules, name, pattern, effect, value, attributes, sections, notes);
   // No changes needed to the rules defined by base method
 };
 
 /* Defines in #rules# the rules associated with language #name#. */
 LastAge.languageRules = function(rules, name) {
-  LastAge.basePlugin.languageRules(rules, name);
+  rules.basePlugin.languageRules(rules, name);
   // No changes needed to the rules defined by base method
 };
 
@@ -5201,13 +5201,13 @@ LastAge.pathRules = function(
   rules, name, group, levelAttr, features, selectables, spellAbility,
   spellSlots
 ) {
-  if(LastAge.basePlugin == window.Pathfinder)
-    LastAge.basePlugin.pathRules(
+  if(rules.basePlugin == window.Pathfinder)
+    rules.basePlugin.pathRules(
       rules, name, group, levelAttr, features, selectables, [], [],
       spellAbility, spellSlots
     );
   else
-    LastAge.basePlugin.pathRules(
+    rules.basePlugin.pathRules(
       rules, name, group, levelAttr, features, selectables, spellAbility,
       spellSlots
     );
@@ -5848,9 +5848,9 @@ LastAge.pathRulesExtra = function(rules, name) {
       pathLevel, '=', 'source<3 ? 1 : source<6 ? 2 : source<9 ? 3 : source<11 ? 4 : source<13 ? 5 : source<16 ? 6 : source<18 ? 7 : 8'
     );
 
-  } else if(LastAge.basePlugin.pathRulesExtra) {
+  } else if(rules.basePlugin.pathRulesExtra) {
 
-    LastAge.basePlugin.pathRulesExtra(rules, name);
+    rules.basePlugin.pathRulesExtra(rules, name);
 
   }
 
@@ -5868,7 +5868,7 @@ LastAge.raceRules = function(
   rules, name, requires, features, selectables, languages, spellAbility,
   spellSlots
 ) {
-  LastAge.basePlugin.raceRules
+  rules.basePlugin.raceRules
     (rules, name, requires, features, selectables, languages, spellAbility,
      spellSlots);
   // No changes needed to the rules defined by base method
@@ -6014,7 +6014,7 @@ LastAge.raceRulesExtra = function(rules, name) {
  * grants the list of #features#.
  */
 LastAge.schoolRules = function(rules, name, features) {
-  LastAge.basePlugin.schoolRules(rules, name, features);
+  rules.basePlugin.schoolRules(rules, name, features);
   // No changes needed to the rules defined by base method
 };
 
@@ -6027,7 +6027,7 @@ LastAge.schoolRules = function(rules, name, features) {
 LastAge.shieldRules = function(
   rules, name, ac, profLevel, skillFail, spellFail
 ) {
-  LastAge.basePlugin.shieldRules
+  rules.basePlugin.shieldRules
     (rules, name, ac, profLevel, skillFail, spellFail);
   // No changes needed to the rules defined by base method
 };
@@ -6044,7 +6044,7 @@ LastAge.shieldRules = function(
 LastAge.skillRules = function(
   rules, name, ability, untrained, classes, synergies
 ) {
-  LastAge.basePlugin.skillRules
+  rules.basePlugin.skillRules
     (rules, name, ability, untrained, classes, synergies);
   // No changes needed to the rules defined by base method
 };
@@ -6058,7 +6058,7 @@ LastAge.skillRules = function(
 LastAge.spellRules = function(
   rules, name, school, casterGroup, level, description, domainSpell
 ) {
-  LastAge.basePlugin.spellRules
+  rules.basePlugin.spellRules
     (rules, name, school, casterGroup, level, description, domainSpell);
   // No changes needed to the rules defined by base method
 };
@@ -6075,7 +6075,7 @@ LastAge.spellRules = function(
 LastAge.weaponRules = function(
   rules, name, profLevel, category, damage, threat, critMultiplier, range
 ) {
-  LastAge.basePlugin.weaponRules(
+  rules.basePlugin.weaponRules(
     rules, name, profLevel, category, damage, threat, critMultiplier, range
   );
   rules.defineRule('icewoodLongbowDamageModifier',
@@ -6088,7 +6088,7 @@ LastAge.weaponRules = function(
  * item to #rules#.
  */
 LastAge.choiceEditorElements = function(rules, type) {
-  return LastAge.basePlugin.choiceEditorElements(rules, type);
+  return rules.basePlugin.choiceEditorElements(rules, type);
 };
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
@@ -6118,13 +6118,13 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
       }
     }
   } else {
-    LastAge.basePlugin.randomizeOneAttribute.apply(this, [attributes, attribute]);
+    this.basePlugin.randomizeOneAttribute.apply(this, [attributes, attribute]);
   }
 };
 
 /* Returns an array of plugins upon which this one depends. */
 LastAge.getPlugins = function() {
-  return [LastAge.basePlugin].concat(LastAge.basePlugin.getPlugins());
+  return [this.basePlugin].concat(this.basePlugin.getPlugins());
 };
 
 /* Returns HTML body content for user notes associated with this rule set. */
