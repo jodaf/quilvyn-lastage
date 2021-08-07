@@ -40,7 +40,7 @@ function LastAge(baseRules) {
     baseRules != null && baseRules.includes('Pathfinder');
 
   var rules = new QuilvynRules(
-    'Last Age - ' + (LastAge.USE_PATHFINDER ? 'Pathfinder 1E' : 'D&D v3.5'),
+    'Midnight - ' + (LastAge.USE_PATHFINDER ? 'Pathfinder 1E' : 'D&D v3.5'),
     LastAge.VERSION
   );
   rules.basePlugin = LastAge.USE_PATHFINDER ? Pathfinder : SRD35;
@@ -151,7 +151,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.2.3.9';
+LastAge.VERSION = '2.2.3.10';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -278,6 +278,32 @@ LastAge.FEATS_ADDED = {
   'Slow Learner':'Type=General Require="race == \'Erenlander\'"',
   'Stalwart':'Type=General Require="race == \'Erenlander\'",features.Defiant',
   'Stealthy Rider':'Type=General Require="skills.Ride >= 1"',
+
+  // Fury of Shadow
+  "Aruun's Bounty":
+    'Type="Item Creation" ' +
+    'Require="features.Brew Potion","sumItemCreationFeats >= 3"',
+  'Greater Draw On Earth Power':
+    'Type=General ' +
+    'Require=' +
+      '"wisdom >= 17",' +
+      'skills.Concentration,' +
+      '"features.Lesser Draw On Earth Power"',
+  'Lesser Draw On Earth Power':
+    'Type=General ' +
+    'Require=' +
+      '"wisdom >= 15",' +
+      'skills.Concentration,' +
+      '"features.Minor Draw On Earth Power"',
+  'Minor Draw On Earth Power':
+    'Type=General ' +
+    'Require="wisdom >= 13",skills.Concentration',
+  'Sister Trained':
+    'Type=Metamagic ' +
+    'Require="gender == \'Female\'",casterLevelArcane,"sumMetamagicFeats >= 3"',
+  'Swamp Taught':'Type=Metamagic Require="race =~ \'Elf\'"',
+  'Willow Schooled':'Type="Item Creation" Require="sumItemCreationFeats >= 3"',
+  'Witch Sight':'Type=Metamagic Require="features.Spell Focus (Divination)"',
 
   // Hammer & Shadow
   'Advanced Tempering':'Type=Dwarvencraft Require=features.Dwarvencraft',
@@ -647,6 +673,7 @@ LastAge.FEATURES_ADDED = {
 
   // Feats
   'Advanced Tempering':'Section=skill Note="Increase item hardness 20%"',
+  "Aruun's Bounty":'Section=magic Note="Potions brewed in Aruun cost half XP"',
   'Blood-Channeler':
     'Section=magic Note="Dbl spell energy for first two Con points lost"',
   'Born Of Duty':
@@ -690,6 +717,8 @@ LastAge.FEATURES_ADDED = {
     'Note="+4 Diplomacy (convince allegiance)/+4 Sense Motive (determine allegiance)"',
   'Giant-Fighter':
     'Section=combat Note="+4 AC, dbl critical range w/in 30\' vs. giants"',
+  'Greater Draw On Earth Power':
+    'Section=magic Note="Draw %V Spell Energy from nearby ancient monolith"',
   'Greater Masterwork':
     'Section=skill ' +
     'Note="Weapon +2 attack and +1 damage; armor or shield -1 skill penalty, +1 max dex, -5% arcane spell failure, don or remove in half time, light shield use with ranged weapon; other items +4 DC"',
@@ -719,10 +748,15 @@ LastAge.FEATURES_ADDED = {
   'Knife Thrower':
     'Section=combat ' +
     'Note="R20\' +1 attack w/racial knife, draw as free action (move action if hidden)"',
+  'Lesser Draw On Earth Power':
+    'Section=magic ' +
+    'Note="Draw %V Spell Energy from nearby menhir, dolmen, or tumuli"',
   'Living Talisman':
     'Section=magic Note="Chosen spell costs 1 fewer spell energy to cast"',
   'Lucky':'Section=save Note="+1 from luck charms and spells"',
   'Magic-Hardened':'Section=save Note="+2 vs. spells"',
+  'Minor Draw On Earth Power':
+    'Section=magic Note="Draw %V Spell Energy from nearby menhir or dolmen"',
   'Natural Healer':
     'Section=skill ' +
     'Note="Heal raises patient to 1 HP, triple normal healing rate"',
@@ -756,6 +790,7 @@ LastAge.FEATURES_ADDED = {
   'Shield Mate':
     'Section=combat ' +
     'Note="Adjacent allies +2 AC when self fighting defensively or using -2 Combat Expertise"',
+  'Sister Trained':'Section=magic Note="Use any metamagic feat for dbl cost"',
   'Slow Learner':'Section=feature Note="Replace later with another feat"',
   'Spell Knowledge':'Section=magic Note="+2 Channeler Spells"',
   'Spellcasting (%school)':
@@ -767,6 +802,9 @@ LastAge.FEATURES_ADDED = {
   'Subtle Caster':
     'Section=skill ' +
     'Note="+2 Bluff (disguise casting)/+2 Sleight Of Hand (disguise casting)"',
+  'Swamp Taught':
+    'Section=magic ' +
+    'Note="Spend 1 Spell Energy for +%V knowledge check from Whisper"',
   'Tempering (Fireforged)':
     'Section=skill ' +
     'Note="No item damage from fire, light/medium/heavy armor gives fire resistance 2/3/4"',
@@ -796,6 +834,10 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="Attack all adjacent foes after charge"',
   'Whispering Awareness':
     'Section=feature Note="DC 12 Wis to hear Whispering Wood"',
+  'Willow Schooled':'Section=magic Note="Recreate legendary magic item"',
+  'Witch Sight':
+    'Section=magic ' +
+    'Note="Use water for divination focus in Erethor at half cost"',
 
   // Class
   'Adapter':
@@ -1205,6 +1247,8 @@ LastAge.FEATURES_ADDED = {
   'Cover Story':
     'Section=skill Note="DC 20 Bluff four consecutive dy to establish alibi"',
   'Crashing Waves':'Section=combat Note="Disarm or Trap as AOO %V/rd"',
+  'Cuts Like Ice':
+    'Section=feature Note="Greater Weapon Focus (Fighting Knife)%V"',
   'Dark Invitation':
     'Section=feature,magic ' +
     'Note=' +
@@ -1223,6 +1267,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="+4 self and mount AC on full rd mounted move"',
   "Deny Izrador's Power":
     'Section=magic Note="R60\' +%V <i>Dispel Magic</i> vs. Legate spell %1/dy"',
+  'Destiny Marked':'Section=feature Note="%V"',
   'Disarming Shot':'Section=combat Note="Disarm via ranged touch attack"',
   'Disguise Contraband':
     'Section=magic ' +
@@ -1278,6 +1323,8 @@ LastAge.FEATURES_ADDED = {
     'Note="<i>Sanctuary</i>, then <i>Shield Of Faith</i> to chosen person %V/dy"',
   'Ignore Armor':'Section=magic Note="Reduce arcane spell failure by %V%"',
   'Improved Vision Of The Night':'Section=feature Note=Darkvision',
+  'Inspiring Leader':
+    'Section=combat Note="R60\' Allies +%V attack while self fighting"',
   'It Is Written In The Stars':'Section=feature Note="Force reroll 1/dy"',
   'Hit And Run':
     'Section=combat Note="Move away from foe after attack w/out foe AOO"',
@@ -1364,6 +1411,9 @@ LastAge.FEATURES_ADDED = {
     'Section=skill ' +
     'Note="+%V Bluff, Diplomacy, Gather Information (Shadow minions)"',
   'Omen Of The Sorshef':'Section=magic Note="<i>Augury</i> w/%V% success"',
+  'Pale As Snow':
+    'Section=combat,skill ' +
+    'Note="Foe %V% miss chance in snow","+4 Hide and untrackable in snow"',
   'Pale Heart':'Section=save Note="+%V vs Shadow minion spells and abilities"',
   'Parables Of The Sorshef':
     'Section=skill ' +
@@ -1374,6 +1424,9 @@ LastAge.FEATURES_ADDED = {
   'Rage Of Vengeance':
     'Section=combat ' +
     'Note="Ally damage w/in 30\' by %V gives damage% chance of +2 Str, +2 Con, +1 Will, +1d6 damage, -2 AC, Cleave w/out limit against those foes while present"',
+  'Razor Sharp':
+    'Section=combat ' +
+    'Note="Daily ritual keeps fighting knife keen (dbl threat range)"',
   'Recharge Nexus':
     'Section=magic ' +
     'Note="Spend %V points of spell energy to recharge nexus 1 point"',
@@ -1412,6 +1465,8 @@ LastAge.FEATURES_ADDED = {
     'Section=skill ' +
     'Note="+%V Bluff, Diplomacy, Intimidate, Sense Motive w/Shadow minions"',
   'Shadow-Tapping':'Section=feature Note="Access to two Izrador domains"',
+  'Silent Killer':
+    'Section=skill Note="+4 Move Silently (forests and mountains)"',
   "Smuggler's Trade":
     'Section=skill ' +
     'Note="+%V or take 10 on Bluff, Disguise, Forgery, Gather Information when smuggling"',
@@ -1484,10 +1539,11 @@ LastAge.FEATURES_ADDED = {
     'Note="Detect weapon if separated; if unconscious, weapon protects"',
   'Venom Immunity':'Section=save Note="Immune to organic poisons"',
   'Vision Of The Night':'Section=feature Note="Low-Light Vision"',
-  'Wallscaling':'Section=ability,skill ' +
-  'Note=' +
-    '"%V climb speed in urban settings",' +
-    '"+8 Climb (urban), take 10 if rushed or threatened"',
+  'Wallscaling':
+    'Section=ability,skill ' +
+    'Note=' +
+      '"%V climb speed in urban settings",' +
+      '"+8 Climb (urban), take 10 if rushed or threatened"',
   "Warden's Vows":
     'Section=feature ' +
     'Note="Sworn to seek King\'s heirs, keep secrets, help Erenlanders in need, and kill Shadow minions"',
@@ -1514,7 +1570,9 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="Prepare spells ahead of time for half energy cost"',
   'Wogren Dodge':'Section=combat Note="+2 AC during mounted move"',
   "Wogren's Sight":'Section=feature Note="Blindsense while mounted"',
-  'Woodsman':'Section=skill Note="+2 Handle Animal/+2 Survival"'
+  'Woodsman':'Section=skill Note="+2 Handle Animal/+2 Survival"',
+  "Xione's Herald":
+    'Section=combat Note="R30\' Foes panicked 10 rd (DC %V Will shaken 1 rd)"'
 
 };
 LastAge.FEATURES = Object.assign({}, SRD35.FEATURES, LastAge.FEATURES_ADDED);
@@ -2093,6 +2151,7 @@ LastAge.SKILLS_ADDED = {
     'Ability=intelligence Untrained=n ' +
     'Synergy="Knowledge (Shadow) (bureaucracy)"',
   'Knowledge (Local (Central Erenland))':'Ability=intelligence Untrained=n',
+  'Knowledge (Local (Veradeen))':'Ability=intelligence Untrained=n',
   'Knowledge (Nature)':
     'Ability=intelligence Untrained=n Synergy="Knowledge (Spirits)"',
   'Knowledge (Old Gods)':'Ability=intelligence Untrained=n',
@@ -3388,6 +3447,24 @@ LastAge.PRESTIGE_CLASSES = {
       '"2:Aryth\'s Blessing","3:Dreams Of The Land (Commune)",' +
       '"4:For The King","6:Dreams Of The Land (Dream)",' +
       '"9:Dreams Of The Land (Foresight)"',
+  // Fury of Shadow
+  'Erunsil Blood':
+    'Require=' +
+      '"race == \'Snow Elf\'","baseAttack >= 5",' +
+      '"skills.Hide >= 8","skills.Move Silently >= 8","skills.Survival >= 8",' +
+      '"features.Quick Draw","features.Track",' +
+      '"features.Weapon Focus (Fighting Knife)" ' +
+    'HitDie=d8 Attack=1 SkillPoints=6 Fortitude=1/2 Reflex=1/2 Will=1/3 ' +
+    'Skills=' +
+      'Balance,Climb,Craft,"Handle Animal",Heal,Hide,Jump,' +
+      '"Knowledge (Local (Veradeen))",Listen,"Move Silently",Search,Spot,' +
+      'Survival,Swim,"Use Rope" ' +
+      'Features=' +
+        '"1:Armor Proficiency (Light)",' +
+        '"1:Weapon Proficiency (Martial)",' +
+        '"1:Silent Killer","2:Cuts Like Ice","3:Destiny Marked",' +
+        '"4:Pale As Snow","6:Inspiring Leader","7:Razor Sharp",' +
+        '"10:Xione\'s Herald"',
   // Hammer & Shadow
   'Ancestral Foe':
     'Require=' +
@@ -4946,6 +5023,44 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '=', 'Math.floor((source + 1) / 3)'
     );
 
+  } else if(name == 'Erunsil Blood') {
+
+    rules.defineRule
+      ('combatNotes.inspiringLeader', classLevel, '=', 'source>=9 ? 3 : 2');
+    rules.defineRule
+      ('combatNotes.paleAsSnow', classLevel, '=', 'source>=8 ? 15 : null');
+    rules.defineRule
+      ("combatNotes.xione'sHerald", 'charismaModifier', '=', '15 + source');
+    rules.defineRule('featureNotes.cutsLikeIce',
+      '', '=', '" and Weapon Specialization (Fighting Knife)"',
+      'feats.Weapon Specialization (Fighting Knife)', '=', '" and Greater Weapon Specialization (Fighting Knife)"',
+      classLevel, '=', 'source < 5 ? "" : null'
+    );
+    rules.defineRule('featureNotes.destinyMarked',
+      '', '=', '"Leadership"',
+      'feats.Leadership', '=', '"+4 Leadership"'
+    );
+    rules.defineRule('features.Greater Weapon Focus (Fighting Knife)',
+      'featureNotes.cutsLikeIce', '=', '1'
+    );
+    rules.defineRule
+      ('features.Leadership', 'featureNotes.destinyMarked', '=', '1');
+    rules.defineRule('features.Weapon Specialization (Fighting Knife)',
+      'featureNotes.cutsLikeIce', '=', '1'
+    );
+    rules.defineRule('features.Greater Weapon Specialization (Fighting Knife)',
+      'featureNotes.cutsLikeIce', '=', 'source.match(/Greater/) ? 1 : null'
+    );
+    rules.defineRule
+      ('fightingKnifeThreatRange', 'combatNotes.razorSharp', '*', '2');
+    // The EB class has an unusual progression for Fort and Ref saves
+    rules.defineRule('classFortitudeBonus',
+      classLevel, '+', 'Math.floor(source / 2) + 1 - (source==8 || source==10 ? 1 : 0)'
+    );
+    rules.defineRule('classReflexBonus',
+      classLevel, '+', 'Math.floor((source + 1) / 2) - (source==5 || source==7 || source==9 ? 1 : 0)'
+    );
+
   } else if(rules.basePlugin.classRulesExtra) {
 
     rules.basePlugin.classRulesExtra(rules, name);
@@ -5128,6 +5243,27 @@ LastAge.featRulesExtra = function(rules, name) {
     rules.defineRule('combatNotes.cleverFighting',
       'dexterityModifier', '=', null,
       'strengthModifier', '+', '-source'
+    );
+  } else if(name == 'Greater Draw On Earth Power') {
+    rules.defineRule('magicNotes.greaterDrawOnEarthPower',
+      'wisdomModifier', '=', '3 * source'
+    );
+  } else if(name == 'Lesser Draw On Earth Power') {
+    rules.defineRule('magicNotes.lesserDrawOnEarthPower',
+      'wisdomModifier', '=', '2 * source'
+    );
+  } else if(name == 'Minor Draw On Earth Power') {
+    rules.defineRule
+      ('magicNotes.minorDrawOnEarthPower', 'wisdomModifier', '=', null);
+  } else if(name == 'Swamp Taught') {
+    rules.defineRule('magicNotes.swampTaught',
+      'level', '=', null,
+      'magicNotes.swampTaught.1', '+', null
+    );
+    rules.defineRule('magicNotes.swampTaught.1',
+      'features.Swamp Taught', '?', null,
+      'intelligenceModifier', '=', null,
+      'wisdomModifier', '^', null
     );
   } else if(rules.basePlugin.featRulesExtra) {
     rules.basePlugin.featRulesExtra(rules, name);
