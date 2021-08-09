@@ -6270,7 +6270,6 @@ LastAge.ruleNotes = function() {
     'LastAge Quilvyn Plugin Version ' + LastAge.VERSION + '\n' +
     '\n' +
     '<h3>Usage Notes</h3>\n' +
-    '<p>\n' +
     '<ul>\n' +
     '  <li>\n' +
     '    Racial origin choices (Plains or Urban Sarcosan, Clan or Kurgun\n' +
@@ -6318,10 +6317,8 @@ LastAge.ruleNotes = function() {
     '    prestige class features as appropriate.\n' +
     '  </li>\n' +
     '</ul>\n' +
-    '</p>\n' +
     '\n' +
     '<h3>Limitations</h3>\n' +
-    '<p>\n' +
     '<ul>\n' +
     '  <li>\n' +
     '    Variable language proficiency and synergies are not reported.\n' +
@@ -6335,10 +6332,8 @@ LastAge.ruleNotes = function() {
     '    character already has those as class skills.\n' +
     '  </li>\n' +
     '</ul>\n' +
-    '</p>\n' +
     '\n' +
     '<h3>Known Bugs</h3>\n' +
-    '<p>\n' +
     '<ul>\n' +
     '  <li>\n' +
     '    The bonuses of the Feyblooded Unearthly Grace feature rise as the\n' +
@@ -6353,6 +6348,5 @@ LastAge.ruleNotes = function() {
     '    Quilvyn gives Wildlander characters boosts in both initiative and\n' +
     '    skills at levels 6, 9, 12, etc. instead of a choice of the two.\n' +
     '  </li>\n' +
-    '</ul>\n' +
-    '</p>';
+    '</ul>\n';
 };
