@@ -5,7 +5,7 @@ Copyright 2000 Wizards of the Coast, Inc ("Wizards"). All Rights Reserved.
 
 1. Definitions: (a)"Contributors" means the copyright and/or trademark owners
 who have contributed Open Game Content; (b)"Derivative Material" means
-copyrighted material including derivative works and translations (including 
+copyrighted material including derivative works and translations (including
 into other computer languages), potation, modification, correction, addition,
 extension, upgrade, improvement, compilation, abridgment or other form in which
 an existing work may be recast, transformed or adapted; (c) "Distribute" means
@@ -50,7 +50,7 @@ license with the exact terms of this License to Use, the Open Game Content.
 
 5.Representation of Authority to Contribute: If You are contributing original
 material as Open Game Content, You represent that Your Contributions are Your
-original creation and/or You have sufficient rights to grant the rights 
+original creation and/or You have sufficient rights to grant the rights
 conveyed by this License.
 
 6.Notice of License Copyright: You must update the COPYRIGHT NOTICE portion of
@@ -61,7 +61,7 @@ any original Open Game Content you Distribute.
 
 7. Use of Product Identity: You agree not to Use any Product Identity,
 including as an indication as to compatibility, except as expressly licensed in
-another, independent Agreement with the owner of each element of that Product 
+another, independent Agreement with the owner of each element of that Product
 Identity. You agree not to indicate compatibility or co-adaptability with any
 Trademark or Registered Trademark in conjunction with a work containing Open
 Game Content except as expressly licensed in another, independent Agreement
@@ -101,30 +101,31 @@ License.
 such provision shall be reformed only to the extent necessary to make it
 enforceable.
 
-15 COPYRIGHT NOTICE 
+15 COPYRIGHT NOTICE
 Open Game License v 1.0 Copyright 2000, Wizards of the Coast, Inc.
 
 System Reference Document Copyright 2000-2003, Wizards of the Coast, Inc.;
 Authors Jonathan Tweet, Monte Cook, Skip Williams, Rich Baker, Andy Collins,
 David Noonan, Rich Redman, Bruce R. Cordell, John D. Rateliff, Thomas Reid,
-James Wyatt, based on original material by E. Gary Gygax and Dave Arneson. 
-Midnight Copyright 2003, Fantasy Flight Publishing, Inc.
-Midnight 2nd Edition Copyright 2005, Fantasy Flight Publishing, Inc.
+James Wyatt, based on original material by E. Gary Gygax and Dave Arneson.
+
+Pathfinder Roleplaying Game Reference Document. © 2011, Paizo Publishing, LLC;
+Author: Paizo Publishing, LLC.
+
+MIDNIGHT 2ND EDITION Copyright 2005, Fantasy Flight Publishing, Inc.
 Against the Shadow Copyright 2003, Fantasy Flight Publishing, Inc.
 Crown of Shadow Copyright 2003, Fantasy Flight Publishing, Inc.
 Minions of the Shadow Copyright 2003, Fantasy Flight Publishing, Inc.
-City of Shadow Copyright 2004, Fantasy Flight Publishing, Inc.
-Sorcery and Shadow Copyright 2004, Fantasy Flight Publishing, Inc.
-Fury of Shadow Copyright 2004, Fantasy Flight Publishing, Inc.
+City of Shadow Copyright 2003, Fantasy Flight Publishing, Inc.
+Sorcery and Shadow Copyright 2003, Fantasy Flight Publishing, Inc.
+Under the Shadow Copyright 2004, Fantasy Flight Publishing, Inc.
 Forge of Shadow Copyright 2004, Fantasy Flight Publishing, Inc.
-Under the Shadow Copyright 2005, Fantasy Flight Publishing, Inc.
-Tome of Sorrows Copyright 2003, Shadowkind Publishing.
-Open Game Content from The Tide of Years Copyright 2001, Michelle A. Brown Nephew
-Into the Garden of Good and Evil Copyright 2004, Sodality LLC
+Fury of Shadow Copyright 2004, Fantasy Flight Publishing, Inc.
 Steel and Shadow Copyright 2004, Fantasy Flight Publishing, Inc.
 Heart of Shadow Copyright 2005, Fantasy Flight Publishing, Inc.
 Star and Shadow Copyright 2005, Fantasy Flight Publishing, Inc.
 Hammer and Shadow Copyright 2005, Fantasy Flight Publishing, Inc.
-Legends of Shadow Copyright 2006, Fantasy Flight Publishing, Inc.
 Hand of Shadow Copyright 2006, Fantasy Flight Publishing, Inc.
+Legends of Shadow Copyright 2006, Fantasy Flight Publishing, Inc.
+Destiny and Shadow Copyright 2006, Fantasy Flight Publishing, Inc.
 Honor and Shadow Copyright 2007, Fantasy Flight Publishing, Inc.

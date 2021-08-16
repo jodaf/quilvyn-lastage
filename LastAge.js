@@ -40,7 +40,7 @@ function LastAge(baseRules) {
     baseRules != null && baseRules.includes('Pathfinder');
 
   var rules = new QuilvynRules(
-    'Midnight - ' + (LastAge.USE_PATHFINDER ? 'Pathfinder 1E' : 'D&D v3.5'),
+    'Midnight - ' + (LastAge.USE_PATHFINDER ? 'Pathfinder 1E' : 'SRD v3.5'),
     LastAge.VERSION
   );
   rules.basePlugin = LastAge.USE_PATHFINDER ? Pathfinder : SRD35;
@@ -6268,7 +6268,62 @@ LastAge.ruleNotes = function() {
   return '' +
     '<h2>LastAge Quilvyn Plugin Notes</h2>\n' +
     'LastAge Quilvyn Plugin Version ' + LastAge.VERSION + '\n' +
-    '\n' +
+    '<p>\n' +
+    'Quilvyn\'s Midnight Campaign Setting rule set uses Open Game Content ' +
+    'released by Fantasy Flight Publishing, Inc. under the Open Game ' +
+    'License. Copyright 2003-2007, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'System Reference Document material is Open Game Content released by ' +
+    'Wizards of the Coast under the Open Game License. System Reference ' +
+    'Document Copyright 2000-2003, Wizards of the Coast, Inc.; Authors ' +
+    'Jonathan Tweet, Monte Cook, Skip Williams, Rich Baker, Andy Collins, ' +
+    'David Noonan, Rich Redman, Bruce R. Cordell, John D. Rateliff, Thomas ' +
+    'Reid, James Wyatt, based on original material by E. Gary Gygax and Dave ' +
+    'Arneson.\n' +
+    '</p><p>\n' +
+    'Pathfinder Roleplaying Game Reference Document. © 2011, Paizo ' +
+    'Publishing, LLC; Author: Paizo Publishing, LLC.\n' +
+    '</p><p>\n' +
+    'Open Game License v 1.0a Copyright 2000, Wizards of the Coast, LLC. You ' +
+    'should have received a copy of the Open Game License with this program; ' +
+    'if not, you can obtain one from ' +
+    'https://media.wizards.com/2016/downloads/SRD-OGL_V1.1.pdf. ' +
+    '<a href="plugins/ogl-lastage.txt">Click here</a> to see the license.<br/>\n'+
+    '</p><p>\n' +
+    'MIDNIGHT 2ND EDITION Copyright 2005, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Against the Shadow Copyright 2003, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Crown of Shadow Copyright 2003, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Minions of the Shadow Copyright 2003, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'City of Shadow Copyright 2003, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Sorcery and Shadow Copyright 2003, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Under the Shadow Copyright 2004, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Forge of Shadow Copyright 2004, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Fury of Shadow Copyright 2004, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Steel and Shadow Copyright 2004, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Heart of Shadow Copyright 2005, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Star and Shadow Copyright 2005, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Hammer and Shadow Copyright 2005, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Hand of Shadow Copyright 2006, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Legends of Shadow Copyright 2006, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Destiny and Shadow Copyright 2006, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Honor and Shadow Copyright 2007, Fantasy Flight Publishing, Inc.\n' +
+    '</p>\n' +
     '<h3>Usage Notes</h3>\n' +
     '<ul>\n' +
     '  <li>\n' +
