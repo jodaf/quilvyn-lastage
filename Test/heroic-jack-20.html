@@ -157,6 +157,7 @@ var attributes = {
         <td><b>Hit Points</b>: 167</td>
         <td><b>Initiative</b>: 0</td>
         <td><b>Armor Class</b>: 14</td>
+        <td><b>Damage Reduction</b>: 5/-</td>
         <td><b>Attacks Per Round</b>: 4</td>
         <td><b>Base/Melee/Ranged Attack</b>: 20/24/20</td>
       </tr></table>
@@ -182,6 +183,8 @@ var attributes = {
       <tr style="text-align:center">
         <td><i>Constitution Hit Points Adjustment: +20</i></td>
       </tr><tr style="text-align:center">
+        <td><i>Damage Reduction: DR 5/-</i></td>
+      </tr><tr style="text-align:center">
         <td><i>Strength Attack Adjustment: +4</i></td>
       </tr><tr style="text-align:center">
         <td><i>Strength Damage Adjustment: +4</i></td>
@@ -189,8 +192,6 @@ var attributes = {
         <td><i>Two-handed Weapon With Buckler Penalty: -1 attack and AC</i></td>
       </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
-      </tr><tr style="text-align:center">
-        <td>Damage Reduction: Subtract 5 from damage taken</td>
       </tr><tr style="text-align:center">
         <td>Greater Rage: +6 Str, +6 Con, +3 Will during rage</td>
       </tr><tr style="text-align:center">
@@ -212,7 +213,11 @@ var attributes = {
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
-      <td><b>Save</b>: Fortitude: 14; Reflex: 6; Will: 9</td>
+      <td>      <table id="SavesAndResistance" style="width:100%">
+      <tr style="text-align:center">
+        <td><b>Save</b>: Fortitude: 14; Reflex: 6; Will: 9</td>
+      </tr></table>
+</td>
     </tr><tr style="text-align:center">
       <td><b>Save Notes</b>:       <table id="SaveNotes" style="width:100%">
       <tr style="text-align:center">
@@ -226,7 +231,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
       </tr><tr style="text-align:center">
-        <td>Indomitable Will: +4 enchantment resistance during rage</td>
+        <td>Indomitable Will: +4 vs. enchantment during rage</td>
       </tr><tr style="text-align:center">
         <td>Save Boost: 3 to distribute</td>
       </tr><tr style="text-align:center">

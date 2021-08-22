@@ -177,6 +177,7 @@ var attributes = {
         <td><b>Hit Points</b>: 164</td>
         <td><b>Initiative</b>: -1</td>
         <td><b>Armor Class</b>: 12</td>
+        <td><b>Damage Reduction</b>: 5/-</td>
         <td><b>Attacks Per Round</b>: 4</td>
         <td><b>Base/Melee/Ranged Attack</b>: 20/20/19</td>
       </tr></table>
@@ -202,6 +203,8 @@ var attributes = {
       <tr style="text-align:center">
         <td><i>Constitution Hit Points Adjustment: +20</i></td>
       </tr><tr style="text-align:center">
+        <td><i>Damage Reduction: DR 5/-</i></td>
+      </tr><tr style="text-align:center">
         <td><i>Dexterity Armor Class Adjustment: -1</i></td>
       </tr><tr style="text-align:center">
         <td><i>Dexterity Attack Adjustment: -1</i></td>
@@ -209,8 +212,6 @@ var attributes = {
         <td><i>Toughness: +3 HP</i></td>
       </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
-      </tr><tr style="text-align:center">
-        <td>Damage Reduction: Subtract 5 from damage taken</td>
       </tr><tr style="text-align:center">
         <td>Ferocity: Continue fighting below 0 HP</td>
       </tr><tr style="text-align:center">
@@ -232,7 +233,11 @@ var attributes = {
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
-      <td><b>Save</b>: Fortitude: 14; Reflex: 5; Will: 7</td>
+      <td>      <table id="SavesAndResistance" style="width:100%">
+      <tr style="text-align:center">
+        <td><b>Save</b>: Fortitude: 14; Reflex: 5; Will: 7</td>
+      </tr></table>
+</td>
     </tr><tr style="text-align:center">
       <td><b>Save Notes</b>:       <table id="SaveNotes" style="width:100%">
       <tr style="text-align:center">
@@ -246,7 +251,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
       </tr><tr style="text-align:center">
-        <td>Indomitable Will: +4 enchantment resistance during rage</td>
+        <td>Indomitable Will: +4 vs. enchantment during rage</td>
       </tr><tr style="text-align:center">
         <td>Lucky: +1 from luck charms and spells</td>
       </tr><tr style="text-align:center">
