@@ -1,5 +1,5 @@
 /*
-Copyright 2021, James J. Hayes
+Copyrigh/ 2021, James J. Hayes
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -193,7 +193,7 @@ LastAge.ANIMAL_COMPANIONS =
 LastAge.ARMORS = Object.assign({}, SRD35.ARMORS);
 LastAge.DEITIES = {
   'None':'',
-  'Izrador':
+  'BBEG':
     'Alignment=NE ' +
     'Weapon=Longsword ' +
     'Domain=Death,Destruction,Evil,Magic,War'
@@ -478,7 +478,7 @@ LastAge.FEATURES_ADDED = {
   'Charisma Bonus':'Section=ability Note="+%V Charisma"',
   'Cold Immunity':
     'Section=save Note="No damage from cold, x1.5 damage from fire"',
-  'Cold Resistance':'Section=save Note="Ignore first %V points cold damage"',
+  'Cold Resistance':'Section=save Note="Resistance %V to cold"',
   'Combat Overview':
     'Section=combat Note="R60\' Ally avoid AOO or foe flat-footed %V/dy"',
   'Constitution Bonus':'Section=ability Note="+%V Constitution"',
@@ -487,7 +487,7 @@ LastAge.FEATURES_ADDED = {
     'Note="R30\' Allies attack same foe at +1/participant (max +5) %V/dy"',
   'Coordinated Initiative':
     'Section=combat Note="R30\' Allies use self initiative %V/dy"',
-  'Damage Reduction':'Section=combat Note="Subtract %V from damage taken"',
+  'Damage Reduction':'Section=combat Note="DR %V/-"',
   'Death Ward':'Section=save Note="Self immune death spells, death effects, energy drain, and negative energy effects"',
   'Deep Lungs':'Section=skill Note="Hold breath for %V rd"',
   'Detect Evil':'Section=magic Note="<i>Detect Evil</i> at will"',
@@ -501,12 +501,13 @@ LastAge.FEATURES_ADDED = {
     'Section=ability,skill Note="+%V\' Swim","+8 Swim (hazards)"',
   'Dragonblooded Improved Spellcasting':
     'Section=magic ' +
-    'Note="Reduce energy cost of spells from %V chosen schools by 1"',
+    'Note="Reduce spell energy cost of spells from %V chosen schools by 1"',
   'Elemental Friend':
     'Section=combat,skill ' +
     'Note="Elementals DC %V Will save to attack",' +
          '"+4 Diplomacy (elementals)"',
-  'Elemental Resistance':'Section=save Note="%V vs. %1"',
+  'Elemental Resistance':
+    'Section=save Note="Resistance %V to acid, cold, electricity, and fire"',
   'Enhanced Bestial Aura':
     'Section=feature Note="R15\' Animals act negatively, cannot ride"',
   'Extended Darkvision':'Section=feature Note="+30\' b/w vision in darkness"',
@@ -553,7 +554,7 @@ LastAge.FEATURES_ADDED = {
     'Note="Fluent in any language after listening for 10 minutes"',
   'Last Stand':
     'Section=combat ' +
-    'Note="At half HP, 1 minute of %V spell resistance, 15 damage reduction, 30 energy resistance; near death afterward %1/dy"',
+    'Note="At half HP, 1 min of spell resistance %V, DR 15/-, resistence 30 to acid, cold, electricity, and fire; near death afterward %1/dy"',
   'Lay On Hands':'Section=magic Note="Harm undead or heal %V HP/dy"',
   'Leadership':'Section=feature Note="Attract followers"',
   'Luck Of Heroes':'Section=feature Note="Add %V to any d20 roll 1/dy"',
@@ -569,8 +570,7 @@ LastAge.FEATURES_ADDED = {
     'Section=skill ' +
     'Note="Knowledge (Nature) is a class skill/Survival is a class skill/+2 Knowledge (Nature)/+2 Survival"',
   'Natural Leader':'Section=feature Note=" +%V Leadership score"',
-  'Nonlethal Damage Reduction':
-    'Section=combat Note="Ignore first %V points of non-lethal damage"',
+  'Nonlethal Damage Reduction':'Section=combat Note="DR %V/- non-lethal"',
   'Northborn':
     'Section=save,skill ' +
     'Note="Immune to non-lethal cold/exposure",' +
@@ -709,7 +709,7 @@ LastAge.FEATURES_ADDED = {
     'Section=feature Note="Use Mastery or Force Of Personality +4 times/dy"',
   'Fanatic':
     'Section=combat ' +
-    'Note="+1 attack, divine spell benefit when within 60\' of Izrador holy servant"',
+    'Note="+1 attack, divine spell benefit when within 60\' of Shadow holy servant"',
   'Flexible Recovery':
     'Section=magic Note="Recover 1 spell energy per hr rest, full after 6 hr"',
   'Friendly Agent':
@@ -718,7 +718,7 @@ LastAge.FEATURES_ADDED = {
   'Giant-Fighter':
     'Section=combat Note="+4 AC, dbl critical range w/in 30\' vs. giants"',
   'Greater Draw On Earth Power':
-    'Section=magic Note="Draw %V Spell Energy from nearby ancient monolith"',
+    'Section=magic Note="Draw %V spell energy from nearby ancient monolith"',
   'Greater Masterwork':
     'Section=skill ' +
     'Note="Weapon +2 attack and +1 damage; armor or shield -1 skill penalty, +1 max dex, -5% arcane spell failure, don or remove in half time, light shield use with ranged weapon; other items +4 DC"',
@@ -726,7 +726,7 @@ LastAge.FEATURES_ADDED = {
     'Section=feature,magic ' +
     'Note=' +
       '"Functional on half food, sleep",' +
-      '"Regain half energy after 4 hrs rest"',
+      '"Regain half spell energy after 4 hrs rest"',
   'Herbalist':'Section=magic Note="Create herbal concoctions"',
   'Huntsman':
     'Section=combat ' +
@@ -750,13 +750,13 @@ LastAge.FEATURES_ADDED = {
     'Note="R20\' +1 attack w/racial knife, draw as free action (move action if hidden)"',
   'Lesser Draw On Earth Power':
     'Section=magic ' +
-    'Note="Draw %V Spell Energy from nearby menhir, dolmen, or tumuli"',
+    'Note="Draw %V spell energy from nearby menhir, dolmen, or tumuli"',
   'Living Talisman':
     'Section=magic Note="Chosen spell costs 1 fewer spell energy to cast"',
   'Lucky':'Section=save Note="+1 from luck charms and spells"',
   'Magic-Hardened':'Section=save Note="+2 vs. spells"',
   'Minor Draw On Earth Power':
-    'Section=magic Note="Draw %V Spell Energy from nearby menhir or dolmen"',
+    'Section=magic Note="Draw %V spell energy from nearby menhir or dolmen"',
   'Natural Healer':
     'Section=skill ' +
     'Note="Heal raises patient to 1 HP, triple normal healing rate"',
@@ -804,7 +804,7 @@ LastAge.FEATURES_ADDED = {
     'Note="+2 Bluff (disguise casting)/+2 Sleight Of Hand (disguise casting)"',
   'Swamp Taught':
     'Section=magic ' +
-    'Note="Spend 1 Spell Energy for +%V knowledge check from Whisper"',
+    'Note="Spend 1 spell energy for +%V knowledge check from Whisper"',
   'Tempering (Fireforged)':
     'Section=skill ' +
     'Note="No item damage from fire, light/medium/heavy armor gives fire resistance 2/3/4"',
@@ -1285,7 +1285,8 @@ LastAge.FEATURES_ADDED = {
   'Dreams Of The Land (Foresight)':
     'Section=magic ' +
     'Note="Warnings provide +2 AC, +2 Reflex, no surprise, flat-footed for %V hr"',
-  'Druidcraft':'Section=magic Note="Energy cost of Druid spells reduced by 1"',
+  'Druidcraft':
+    'Section=magic Note="Spell energy cost of Druid spells reduced by 1"',
   'Dwarven Literacy':
     'Section=skill Note="Literate in Old Dwarven and Clan Dwarven"',
   'Dwarven Loremaster Bonus Feats':'Section=feature Note="%V Wizard Feats"',
@@ -1464,7 +1465,7 @@ LastAge.FEATURES_ADDED = {
   'Shadow Speak':
     'Section=skill ' +
     'Note="+%V Bluff, Diplomacy, Intimidate, Sense Motive w/Shadow minions"',
-  'Shadow-Tapping':'Section=feature Note="Access to two Izrador domains"',
+  'Shadow-Tapping':'Section=feature Note="Access to two domains"',
   'Silent Killer':
     'Section=skill Note="+4 Move Silently (forests and mountains)"',
   "Smuggler's Trade":
@@ -1472,7 +1473,7 @@ LastAge.FEATURES_ADDED = {
     'Note="+%V or take 10 on Bluff, Disguise, Forgery, Gather Information when smuggling"',
   'Special Mount':'Section=feature Note="Companion mount w/special abilities"',
   'Speed Mount':'Section=combat Note="Dismount, mount as free action"',
-  'Spell Resistance':'Section=save Note="%V%"',
+  'Spell Resistance':'Section=save Note="Spell Resistance %V"',
   'Spell-Syphoning':
     'Section=magic ' +
     'Note="Blood-syphoning transfers spell from target to self or, with grapple, allows use of target spell energy"',
@@ -1485,7 +1486,7 @@ LastAge.FEATURES_ADDED = {
   'Spirit Speaker Bonus Feats':'Section=feature Note="%V Spirit Speaker Feats"',
   'Spiritcraft':
     'Section=magic ' +
-    'Note="Divination and Necromancy spell energy cost reduced by 1"',
+    'Note="Spell energy cost of divination and necromancy spells reduced by 1"',
   'Spiritual Link':
     'Section=magic ' +
     'Note="<i>Alarm</i>, +1 caster level, -1 energy cost in %V areas of up to 1/2 mi diameter"',
@@ -4277,7 +4278,7 @@ LastAge.classRulesExtra = function(rules, name) {
       'turningLevel', '=', '3',
       'charismaModifier', '+', null
     );
-    rules.defineRule('deity', classLevel, '=', '"Izrador"');
+    rules.defineRule('deity', classLevel, '=', '"BBEG"');
     rules.defineRule
       ('selectableFeatureCount.Legate', classLevel, '=', '2');
     rules.defineRule('turningLevel', classLevel, '+=', null);
@@ -4865,7 +4866,7 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '+=', 'Math.floor(source / 3)'
     );
     rules.defineRule('saveNotes.coldResistance',
-      classLevel, '=', 'Math.floor((source + 1) / 3) * 5'
+      classLevel, '^=', 'source>= 10 ? Infinity : Math.floor((source+1)/3) * 5'
     );
     rules.defineRule
       ('saveNotes.wayOfTheSnowWitch', classLevel, '=', 'source<4 ? 2 : 4');
@@ -5598,11 +5599,18 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('combatNotes.naturalArmor',
       pathLevel, '+=', 'Math.floor((source + 2) / 5)'
     );
+    rules.defineRule
+      ('damageReduction.-', 'combatNotes.damageReduction', '^=', null);
+    rules.defineRule
+      ('resistance.Acid', 'saveNotes.elementalResistance', '^=', null);
+    rules.defineRule
+      ('resistance.Cold', 'saveNotes.elementalResistance', '^=', null);
+    rules.defineRule
+      ('resistance.Electricity', 'saveNotes.elementalResistance', '^=', null);
+    rules.defineRule
+      ('resistance.Fire', 'saveNotes.elementalResistance', '^=', null);
     rules.defineRule('saveNotes.elementalResistance',
-      pathLevel, '+=', 'Math.floor((source - 1) / 5) * 3'
-    );
-    rules.defineRule('saveNotes.elementalResistance.1',
-      pathLevel, '=', 'source >= 6 ? "acid, cold, electricity, and fire" : null'
+      pathLevel, '^=', 'Math.floor((source - 1) / 5) * 3'
     );
     rules.defineRule('saveNotes.fortitudeBonus',
       pathLevel, '+=', 'Math.floor((source + 3) / 5)'
@@ -5673,8 +5681,10 @@ LastAge.pathRulesExtra = function(rules, name) {
       pathLevel, '=', 'source >= 12 ? 3 : source >= 8 ? 2 : 1'
     );
     rules.defineRule('featureNotes.howlingWinds.1', pathLevel, '=', null);
-    rules.defineRule
-      ('saveNotes.coldResistance', pathLevel, '+=', 'source >= 9 ? 15 : 5');
+    rules.defineRule('resistance.Cold', 'saveNotes.coldResistance', '^=', null);
+    rules.defineRule('saveNotes.coldResistance',
+      pathLevel, '^=', 'source>=16 ? Infinity : source>=9 ? 15 : 5'
+    );
     rules.defineRule('skillNotes.wildEmpathy', pathLevel, '+=', null);
 
   } else if(name == 'Painless') {
@@ -5764,8 +5774,9 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('magicNotes.aquaticAlly.1',
       pathLevel, '=', '["","II","III","IV","V","VI"][Math.floor(source / 4)]'
     );
+    rules.defineRule('resistance.Cold', 'saveNotes.coldResistance', '^=', null);
     rules.defineRule
-      ('saveNotes.coldResistance', pathLevel, '+=', 'source >= 14 ? 5 : null');
+      ('saveNotes.coldResistance', pathLevel, '^=', 'source>=14 ? 5 : null');
     rules.defineRule('skillNotes.aquaticBlindsight',
       pathLevel, '+=', 'Math.floor((source + 5) / 8) * 30'
     );
@@ -5952,6 +5963,8 @@ LastAge.pathRulesExtra = function(rules, name) {
       'wisdomModifier', '+', null,
       'intelligenceModifier', '+', '-source'
     );
+    rules.defineRule
+      ('spellResistance', 'saveNotes.spellResistance', '^=', null);
 
   } else if(name == 'Shadowed') {
 
