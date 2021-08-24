@@ -5591,7 +5591,7 @@ LastAge.pathRulesExtra = function(rules, name) {
   } else if(name == 'Ironborn') {
 
     rules.defineRule('combatNotes.damageReduction',
-      pathLevel, '+=', 'Math.floor(source / 5)'
+      pathLevel, '^=', 'Math.floor(source / 5)'
     );
     rules.defineRule('combatNotes.improvedHealing',
       pathLevel, '+=', 'Math.floor(source / 2)'
