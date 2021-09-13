@@ -17,12 +17,12 @@ subdirectory within the Quilvyn installation directory, then append the
 following lines to the file plugins/plugins.js:
 
     RULESETS['Midnight Campaign Setting using SRD v3.5 rules'] = {
-      url:'LastAge.js',
+      url:'plugins/LastAge.js',
       group:'v3.5',
       require:'v3.5 (SRD only)'
     };
     RULESETS['Midnight Campaign Setting using Pathfinder 1E rules'] = {
-      url:'LastAge.js',
+      url:'plugins/LastAge.js',
       group:'Pathfinder 1E',
       require:'Pathfinder 1E'
     };
