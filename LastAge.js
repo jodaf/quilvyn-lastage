@@ -2220,7 +2220,7 @@ LastAge.SPELLS_ADDED = {
   'Detect Astirax':
     'School=Divination ' +
     'Level=Ch1,Jack1 ' +
-    'Description="R$RL\' quarter circle Info on astiraxes for $L10 min"',
+    'Description="R$RL\' quarter circle info on astiraxes for $L10 min"',
   'Detect Outsider':
     'School=Divination ' +
     'Level=Sunderborn1 ' +
@@ -2228,7 +2228,7 @@ LastAge.SPELLS_ADDED = {
   'Disguise Ally':
     'School=Illusion ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Change touched appearance, +10 disguise for $L10 min (Will disbelieve)"',
+    'Description="Change willing touched appearance, +10 disguise for $L10 min (Will disbelieve)"',
   'Disguise Weapon':
     'School=Illusion ' +
     'Level=Ch1,Jack1 ' +
@@ -2248,19 +2248,19 @@ LastAge.SPELLS_ADDED = {
   'Lifetrap':
     'School=Transmutation ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RM\' Undead in 50\' radius tangled for $L rd, 3d6 HP (Ref neg)"',
+    'Description="R$RM\' Undead in 50\' radius tangled for $L rd, 3d6 HP (Ref half speed, no damage)"',
   "Nature's Revelation":
     'School=Transmutation ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RS Plants and animals in 30\' radius reveal creatures"',
+    'Description="R$RS\' Plants and animals in 30\' radius reveal hidden and invisible creatures"',
   'Nexus Fuel':
     'School=Necromancy ' +
     'Level=Ch5 ' +
-    'Description="Sacrifice boosts nexus recovery rate"',
+    'Description="Sacrifice boosts nexus recovery rate 1 point/HD"',
   'Silver Blood':
     'School=Transmutation ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Caster\'s blood damages astiraxes for 1 hr"',
+    'Description="Self blood damages astiraxes for 1 hr"',
   'Silver Storm':
     'School=Transmutation ' +
     'Level=Ch4 ' +
@@ -2268,11 +2268,11 @@ LastAge.SPELLS_ADDED = {
   'Silver Wind':
     'School=Conjuration ' +
     'Level=Ch3,Jack3 ' +
-    'Description="R$RM\' Targets in 20\' circle 1d6/rd for $L rd (Will neg)"',
+    'Description="R$RM\' Targets in 10\' radius glow, blinded (Will neg), 1d6 HP/rd for $L rd"',
   'Stone Soup':
     'School=Transmutation ' +
     'Level=Ch1,Jack1 ' +
-    'Description="Buried stone creates broth"',
+    'Description="Stone buried 1 hr creates nourishing broth for $L creatures"',
   // Sorcery and Shadow
   'Arcane Impotence':
     'School=Abjuration ' +
@@ -2289,15 +2289,15 @@ LastAge.SPELLS_ADDED = {
   'Bestow Spell':
     'School=Evocation ' +
     'Level=Ch4 ' +
-    'Description="Touched convey spell (Will neg)"',
+    'Description="Touched convey spell"',
   'Bleed Power':
     'School="Greater Evocation" ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Successful foe attack on self causes 1d6 HP to attacker for $L10 min"',
+    'Description="Successful foe attacks on self causes 1d6 HP to up to $L attackers for $L10 min"',
   'Boil Blood':
     'School=Transmutation ' +
     'Level=C3 ' +
-    'Description="R$RS\' Target 1d8 HP for conc + 1 rd (Fort half)"',
+    'Description="R$RS\' Target 1d8 HP for $L rd or conc + 1 rd (Fort half)"',
   'Burial':
     'School=Transmutation ' +
     'Level=Ch1,Jack1 ' +
@@ -2305,19 +2305,19 @@ LastAge.SPELLS_ADDED = {
   'Channel Might':
     'School=Evocation ' +
     'Level=Ch1,Jack1 ' +
-    'Description="Touched next hit does maximum+$L HP w/in $L rd (Will neg)"',
+    'Description="Touched next hit does maximum+$L HP w/in $L rd"',
   'Confer Power':
     'School=Transmutation ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Transfer spell energy to nearby casters for $L rd"',
+    'Description="Transfer spell energy to adjacent casters for $L rd or conc + 1 rd"',
   'Fell Forbiddance':
     'School=Abjuration ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RS\' Target $L25\' sq area impassible to undead for $L min (Will neg for intelligent)"',
+    'Description="R$RS\' Target $L 5\' sq area impassible to undead for $L min (Will neg for intelligent)"',
   'Fey Fire':
     'School=Conjuration ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Touched point invisible 5\' radius fire that warms and heals 1 HP for $L hr"',
+    'Description="Touched point invisible 5\' radius fire that warms, heals 1 HP and all nonlethal for $L hr"',
   'Fey Hearth':
     'School=Abjuration ' +
     'Level=Ch2,Jack2 ' +
@@ -2337,7 +2337,7 @@ LastAge.SPELLS_ADDED = {
   'Joyful Speech':
     'School=Enchantment ' +
     'Level=Ch1,Jack1 ' +
-    'Description="R$RM\' Listeners in 30\' radius improve reaction, unshaken, +4 vs. fear for $L rd (Will neg)"',
+    'Description="R$RM\' Listeners in 15\' radius improve reaction, unshaken, +4 vs. fear for $L rd"',
   'Know The Name':
     'School=Divination ' +
     'Level=Ch1,Jack1 ' +
@@ -2345,19 +2345,19 @@ LastAge.SPELLS_ADDED = {
   'Lie':
     'School=Transmutation ' +
     'Level=Ch1,Jack1 ' +
-    'Description="+10 Bluff on next lie"',
+    'Description="Self +10 Bluff on next lie"',
   'Magic Circle Against Shadow':
     'School=Abjuration ' +
     'Level=Ch5 ' +
-    'Description="10\' radius from touched +2 AC, +2 saves, extra save vs. mental control, no contact vs. Izrador agents for $L10 min (Will neg)"',
+    'Description="10\' radius from touched +2 AC, +2 saves, supresses mental control, no contact and bar entry (SR neg) by Shadow agents for $L10 min"',
   'Memorial':
     'School=Divination ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Touched $L10\' radius replays previous/next $L min to next passerby"',
+    'Description="Touched $L10\' radius replays previous or next $L min to next passerby"',
   'Pacify':
     'School=Abjuration ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RS\' ${Math.floor(lvl/3) + 1} targets cannot attack for $Ldiv2 rd (Will neg)"',
+    'Description="R$RS\' ${Math.floor(lvl/3) + 1} targets in 15\' radius cannot attack for $Ldiv2 rd (Will neg)"',
   "Peasant's Rest":
     'School=Conjuration ' +
     'Level=Ch1,Jack1 ' +
@@ -2373,7 +2373,7 @@ LastAge.SPELLS_ADDED = {
   "Scryer's Mark":
     'School=Divination ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Touched -4 Will vs. scrying (Will neg)"',
+    'Description="Touched -4 Will vs. self scrying (Will neg)"',
   'Speak With Fell':
     'School=Necromancy ' +
     'Level=C3 ' +
@@ -2393,7 +2393,7 @@ LastAge.SPELLS_ADDED = {
   'Woeful Speech':
     'School=Enchantment ' +
     'Level=Ch1,Jack1 ' +
-    'Description="R$RM\' Listeners in 30\' radius shaken, -4 vs. fear for $L rd (Will neg)"',
+    'Description="R$RM\' Listeners in 30\' radius shaken, -2 vs. fear for $L rd (Will neg)"',
 
   // Honor & Shadow
   'Form Of The Meruros':
