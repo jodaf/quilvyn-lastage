@@ -2216,19 +2216,19 @@ LastAge.SPELLS_ADDED = {
   'Charm Repair':
     'School=Transmutation ' +
     'Level=Ch3,Jack3 ' +
-    'Description="Touched minor or lesser charm restored to use"',
+    'Description="Restores touched minor or lesser charm"',
   'Detect Astirax':
     'School=Divination ' +
     'Level=Ch1,Jack1 ' +
-    'Description="R$RL\' quarter circle info on astiraxes for $L10 min"',
+    'Description="R$RL\' quarter circle gives self info on astiraxes for $L10 min"',
   'Detect Outsider':
     'School=Divination ' +
     'Level=Sunderborn1 ' +
-    'Description="R60\' cone info on outsiders for $L10 min"',
+    'Description="R60\' cone gives self info on outsiders for $L10 min"',
   'Disguise Ally':
     'School=Illusion ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Change willing touched appearance, +10 disguise for $L10 min (Will disbelieve)"',
+    'Description="Willing touched changes appearance, gains +10 Disguise for $L10 min (Will disbelieve)"',
   'Disguise Weapon':
     'School=Illusion ' +
     'Level=Ch1,Jack1 ' +
@@ -2236,7 +2236,7 @@ LastAge.SPELLS_ADDED = {
   'Far Whisper':
     'School=Divination ' +
     'Level=Ch1,Jack1 ' +
-    'Description="+4 checks to hear Whispering Wood w/in $L10 miles for $L min"',
+    'Description="Self gains +4 checks to hear Whispering Wood w/in $L10 miles for $L min"',
   'Greenshield':
     'School=Illusion ' +
     'Level=Ch2,Jack2 ' +
@@ -2244,11 +2244,11 @@ LastAge.SPELLS_ADDED = {
   'Halfling Burrow':
     'School=Transmutation ' +
     'Level=Ch3,Jack3 ' +
-    'Description="Hidden hole holds $L small creatures for $L hr"',
+    'Description="Creates hidden hole that can hold $L small creatures for $L hr"',
   'Lifetrap':
     'School=Transmutation ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RM\' Undead in 50\' radius tangled for $L rd, 3d6 HP (Ref half speed, no damage)"',
+    'Description="R$RM\' Immobilizes undead in 50\' radius for $L rd and inflicts 3d6 HP (Ref half Speed, no damage)"',
   "Nature's Revelation":
     'School=Transmutation ' +
     'Level=Ch2,Jack2 ' +
@@ -2264,11 +2264,11 @@ LastAge.SPELLS_ADDED = {
   'Silver Storm':
     'School=Transmutation ' +
     'Level=Ch4 ' +
-    'Description="R$RS\' Targets in cone ${Lmin15}d4 HP silver needle (Ref half)"',
+    'Description="R$RS\' Targets in cone suffer ${Lmin15}d4 HP (Ref half)"',
   'Silver Wind':
     'School=Conjuration ' +
     'Level=Ch3,Jack3 ' +
-    'Description="R$RM\' Targets in 10\' radius glow, blinded (Will neg), 1d6 HP/rd for $L rd"',
+    'Description="R$RM\' Targets in 10\' radius glow, suffer blindness (Will neg) and 1d6 HP/rd for $L rd"',
   'Stone Soup':
     'School=Transmutation ' +
     'Level=Ch1,Jack1 ' +
@@ -2277,27 +2277,27 @@ LastAge.SPELLS_ADDED = {
   'Arcane Impotence':
     'School=Abjuration ' +
     'Level=Ch3,Jack3 ' +
-    'Description="R$RM\' Target Channeler must use $Ldiv2 spell energy to cast w/in $L rd (Will $Ldiv2 rd)"',
+    'Description="R$RM\' Target Channeler must use $Ldiv2 Spell Energy to cast for next $L rd (Will $Ldiv2 rd)"',
   'Arcane Interference':
     'School=Abjuration ' +
     'Level=Ch5 ' +
-    'Description="Spells require added $Ldiv2 energy to affect 10\' radius of touched for $L min (Will neg)"',
+    'Description="Spells require additional $Ldiv2 Spell Energy to affect 10\' radius of touched for $L min (Will neg)"',
   'Assist':
     'School=Enchantment ' +
     'Level=Ch1,Jack1 ' +
-    'Description="R$RS\' Targets in 30\' radius +2 skill checks for conc + 1 rd"',
+    'Description="R$RS\' Targets in 30\' radius gain +2 skill checks for conc + 1 rd"',
   'Bestow Spell':
     'School=Evocation ' +
     'Level=Ch4 ' +
-    'Description="Touched convey spell"',
+    'Description="Touched conveys spell"',
   'Bleed Power':
     'School="Greater Evocation" ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Successful foe attacks on self causes 1d6 HP to up to $L attackers for $L10 min"',
+    'Description="Successful foe attacks on self inflict 1d6 HP each on up to $L attackers for $L10 min"',
   'Boil Blood':
     'School=Transmutation ' +
     'Level=C3 ' +
-    'Description="R$RS\' Target 1d8 HP for $L rd or conc + 1 rd (Fort half)"',
+    'Description="R$RS\' Target suffers 1d8 HP for $L rd or conc + 1 rd (Fort half)"',
   'Burial':
     'School=Transmutation ' +
     'Level=Ch1,Jack1 ' +
@@ -2305,51 +2305,51 @@ LastAge.SPELLS_ADDED = {
   'Channel Might':
     'School=Evocation ' +
     'Level=Ch1,Jack1 ' +
-    'Description="Touched next hit does maximum+$L HP w/in $L rd"',
+    'Description="Next successful melee attack by touched w/in $L rd inflicts maximum+$L HP"',
   'Confer Power':
     'School=Transmutation ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Transfer spell energy to adjacent casters for $L rd or conc + 1 rd"',
+    'Description="Transfers spell energy to adjacent casters for $L rd or conc + 1 rd"',
   'Fell Forbiddance':
     'School=Abjuration ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RS\' Target $L 5\' sq area impassible to undead for $L min (Will neg for intelligent)"',
+    'Description="R$RS\' $L 5\' sq area becomes impassible to undead for $L min (Will neg for intelligent)"',
   'Fey Fire':
     'School=Conjuration ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Touched point invisible 5\' radius fire that warms, heals 1 HP and all nonlethal for $L hr"',
+    'Description="Touched point contains invisible 5\' radius fire that warms and heals 1 HP and all nonlethal damage for $L hr"',
   'Fey Hearth':
     'School=Abjuration ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RS\' Creatures in 30\' radius of target fire +2 Will saves, heal 1.5 x level HP for as long as fire lasts"',
+    'Description="R$RS\' Creatures in 30\' radius of target fire gain +2 Will saves and heal 1.5 x level HP for as long as fire lasts"',
   'Greater Questing Bird':
     'School=Conjuration ' +
     'Level=Ch6 ' +
-    'Description="Self temporarily learn spell up to level 6"',
+    'Description="Self temporarily learns up to 6th level spell"',
   'Inspiration':
     'School=Enchantment ' +
     'Level=Ch1,Jack1 ' +
-    'Description="Touched +10 one Craft check"',
+    'Description="Touched gains +10 on one Craft check"',
   'Inspirational Might':
     'School=Enchantment ' +
     'Level=Ch5 ' +
-    'Description="R$RS\' 4 allies in 30\' radius +2d10 HP, +2 attack, +1 Fortitude save for $Ldiv2 rd"',
+    'Description="R$RS\' 4 allies in 30\' radius gain +2d10 temporary HP, +2 attack, +1 Fort for $Ldiv2 rd"',
   'Joyful Speech':
     'School=Enchantment ' +
     'Level=Ch1,Jack1 ' +
-    'Description="R$RM\' Listeners in 15\' radius improve reaction, unshaken, +4 vs. fear for $L rd"',
+    'Description="R$RM\' Listeners in 15\' radius improve reaction to self, are unshaken, and gain +4 vs. fear for $L rd"',
   'Know The Name':
     'School=Divination ' +
     'Level=Ch1,Jack1 ' +
-    'Description="Discover name(s) of touched (Will neg)"',
+    'Description="Self learns name(s) of touched (Will neg)"',
   'Lie':
     'School=Transmutation ' +
     'Level=Ch1,Jack1 ' +
-    'Description="Self +10 Bluff on next lie"',
+    'Description="Self gains +10 Bluff on next lie"',
   'Magic Circle Against Shadow':
     'School=Abjuration ' +
     'Level=Ch5 ' +
-    'Description="10\' radius from touched +2 AC, +2 saves, supresses mental control, no contact and bar entry (SR neg) by Shadow agents for $L10 min"',
+    'Description="10\' radius from touched gives +2 AC and saves, supresses mental control, bars contact and entry (SR neg) by Shadow agents for $L10 min"',
   'Memorial':
     'School=Divination ' +
     'Level=Ch2,Jack2 ' +
@@ -2365,23 +2365,23 @@ LastAge.SPELLS_ADDED = {
   'Phantom Edge':
     'School=Transmutation ' +
     'Level=Ch1,Jack1 ' +
-    'Description="Touched weapon different type for $L min (Will neg)"',
+    'Description="Touched weapon attacks as different type for $L min (Will neg)"',
   'Questing Bird':
     'School=Conjuration ' +
     'Level=Ch3,Jack3 ' +
-    'Description="Self temporarily learn spell up to level 3"',
+    'Description="Self temporarily learns up to 3rd level spell"',
   "Scryer's Mark":
     'School=Divination ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Touched -4 Will vs. self scrying (Will neg)"',
+    'Description="Touched suffers -4 Will vs. self scrying (Will neg)"',
   'Speak With Fell':
     'School=Necromancy ' +
     'Level=C3 ' +
-    'Description="R$RS\' Compel 3 correct answers from target fell w/in $L min (Will neg)"',
+    'Description="R$RS\' Compels 3 correct answers from target fell w/in $L min (Will neg)"',
   'Weather':
     'School=Conjuration ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RM\' 60\' radius, 30\' high cylinder of rain or snow"',
+    'Description="R$RM\' Creates 60\' radius, 30\' high cylinder of rain or snow"',
   'Willful Stand':
     'School=Abjuration ' +
     'Level=Ch3,Jack3 ' +
@@ -2389,11 +2389,11 @@ LastAge.SPELLS_ADDED = {
   'Withering Speech':
     'School=Enchantment ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RS\' Target 1 Wis, 1 Cha damage/min for conc"',
+    'Description="R$RS\' Target suffers -1 Wisdom and Charisma/min for conc"',
   'Woeful Speech':
     'School=Enchantment ' +
     'Level=Ch1,Jack1 ' +
-    'Description="R$RM\' Listeners in 30\' radius shaken, -2 vs. fear for $L rd (Will neg)"',
+    'Description="R$RM\' Listeners in 30\' radius become shaken, suffer -2 vs. fear for $L rd (Will neg)"',
 
   // Honor & Shadow
   'Form Of The Meruros':
@@ -2407,11 +2407,11 @@ LastAge.SPELLS_ADDED = {
   'Summon Ancestral Hero':
     'School=Conjuration ' +
     'Level=Ch7 ' +
-    'Description="R$RS\' Bargain with Dornish spirit for service"',
+    'Description="R$RS\' Self bargains with Dornish spirit for service"',
   'Summon Ancestral Warrior':
     'School=Conjuration ' +
     'Level=Ch4 ' +
-    'Description="R$RS\' Bargain with Dornish spirit for service"'
+    'Description="R$RS\' Self bargains with Dornish spirit for service"'
 };
 LastAge.SPELLS_LEVELS = {
   'Acid Arrow':'Ch2,Jack2',
@@ -6465,7 +6465,7 @@ LastAge.ruleNotes = function() {
     '  </li><li>\n' +
     '    For Pale Legates, Quilvyn retains the base attack and save bonuses\n' +
     '    derived from levels in the Legate class. Other Legate features are\n' +
-    '    cancelled by the Gone Pale feature.\n' +
+    '    canceled by the Gone Pale feature.\n' +
     '  </li>\n' +
     '</ul>\n' +
     '\n' +
