@@ -1087,6 +1087,7 @@ LastAge.FEATURES_ADDED = {
      'Note="+2 Survival (within Veradeen)/+2 Knowledge (Nature) (within Veradeen)"',
   'Favored Weapon (Axes/Hammers)':
     'Section=combat Note="+1 attack w/axes and hammers"',
+  'Fearlessness':'Section=save Note="+2 vs. fear"',
   'Feral Elf':
     'Section=skill Note="+2 Balance (trees)/+2 Climb (trees)/+2 Listen/+2 Search/+2 Spot/+2 Survival (within Erethor)/+2 Knowledge (Nature) (within Erethor)"',
   'Fortunate':'Section=save Note="+1 Fortitude/+1 Reflex/+1 Will"',
@@ -1166,7 +1167,6 @@ LastAge.FEATURES_ADDED = {
   'Stout':'Section=feature Note="Endurance and Toughness"',
   'Studious':'Section=feature Note="Magecraft (Hermetic)"',
   'Two-Handed Focus':'Section=combat Note="+1 attack using weapon two-handed"',
-  'Unafraid':'Section=save Note="+2 vs. fear"',
   'Wood Elf Skill Bonus':'Section=skill Note="+%V Skill Points"',
 
   // Animal Companions
@@ -1997,9 +1997,8 @@ LastAge.RACES = {
       '"Halfling Ability Adjustment",' +
       '"Weapon Familiarity (Halfling Lance)",' +
       '"Favored Region (Central Erenland)",' +
-      '"Dexterous Hands","Dexterous Healer",Fortunate,Graceful,' +
+      '"Dexterous Hands","Dexterous Healer",Fearlessness,Fortunate,Graceful,' +
       '"Innate Magic","Keen Senses","Low-Light Vision",Slow,Small,' +
-      '"Resist Fear",' +
       '"featureNotes.stout ? 1:Endurance",' +
       '"featureNotes.stout ? 1:Toughness",' +
       '"featureNotes.studious ? 1:Magecraft (Hermetic)" ' +
@@ -2109,8 +2108,8 @@ LastAge.RACES = {
       '"Halfling Ability Adjustment",' +
       '"Weapon Familiarity (Halfling Lance)",' +
       '"Favored Region (Central Erenland)",' +
-      'Fortunate,Graceful,"Innate Magic","Keen Senses","Low-Light Vision",' +
-      '"Resist Fear","Skilled Rider",Slow,Small,' +
+      'Fearlessness,Fortunate,Graceful,"Innate Magic","Keen Senses",' +
+      '"Low-Light Vision","Skilled Rider",Slow,Small,' +
       '"featureNotes.boundToTheBeast ? 1:Mounted Combat",' +
       '"featureNotes.boundToTheSpirits ? 1:Magecraft (Spiritual)" ' +
     'Selectables=' +
