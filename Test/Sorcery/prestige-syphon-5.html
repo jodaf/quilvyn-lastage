@@ -7,19 +7,20 @@
   <script>
 var attributes = {
   "_path":"ztest/lastage-sorcery/prestige/syphon 5", 
-  "alignment":"Chaotic Good", "armor":"Chainmail", "charisma":11, 
+  "alignment":"Chaotic Good", "armor":"Chainmail", "charisma":14, 
   "constitution":17, "dexterity":12, "experience":51494, 
   "feats.Improved Critical (Heavy Mace)":1, "feats.Magecraft (Charismatic)":1, 
-  "feats.Martial Weapon Proficiency (Falchion)":1, "feats.Skill Focus (Disable Device)":1, "gender":"Male", 
+  "feats.Martial Weapon Proficiency (Falchion)":1, "feats.Spellcasting (Abjuration)":1, "gender":"Male", 
   "heroicPath":"Quickened", "hitPoints":64, "intelligence":15, "languages.Halfling":1, 
   "languages.Jungle Mouth":1, "languages.Old Dwarven":1, "languages.Patrol Sign":1, 
   "languages.Trader's Tongue":1, "levels.Barbarian":5, "name":"Prestige-Syphon 5", "prestige.Syphon":5, 
   "race":"Dorn", "shield":"Buckler", "skills.Appraise":6, "skills.Climb":8, 
   "skills.Craft (Armor)":13, "skills.Disable Device":13, "skills.Handle Animal":6, 
   "skills.Knowledge (Shadow)":2, "skills.Perform (Keyboard)":6, "skills.Profession (Sailor)":6, 
-  "skills.Speak Language":6, "skills.Spellcraft":8, "spells.Air Walk(Ch4 Tran)":1, 
-  "spells.Haste(Ch3 Tran)":1, "strength":10, "weapons.Falchion":1, "weapons.Heavy Crossbow":1, 
-  "weapons.Heavy Mace":1, "weapons.Sling":1, "weapons.Warhammer":1, "wisdom":12
+  "skills.Speak Language":6, "skills.Spellcraft":8, "spells.Arcane Impotence(Ch3 Abju)":1, 
+  "spells.Lullaby(B0 Ench)":1, "spells.Mending(B0 Tran)":1, "spells.Message(B0 Tran)":1, 
+  "spells.Protection From Good(Ch1 Abju)":1, "spells.Silent Image(B1 Illu)":1, "strength":10, "weapons.Falchion":1, 
+  "weapons.Heavy Crossbow":1, "weapons.Heavy Mace":1, "weapons.Sling":1, "weapons.Warhammer":1, "wisdom":12
 };
   </script>
 </head>
@@ -37,7 +38,7 @@ var attributes = {
       <td><b>Constitution</b>: 17 (3)</td>
       <td><b>Intelligence</b>: 13 (1)</td>
       <td><b>Wisdom</b>: 12 (1)</td>
-      <td><b>Charisma</b>: 11 (0)</td>
+      <td><b>Charisma</b>: 14 (2)</td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
@@ -83,7 +84,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Improved Critical (Heavy Mace); Magecraft (Charismatic); Martial Weapon Proficiency (Falchion); Skill Focus (Disable Device)</td>
+        <td><b>Feats</b>: Improved Critical (Heavy Mace); Magecraft (Charismatic); Martial Weapon Proficiency (Falchion); Spellcasting (Abjuration)</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Quickened Features</b>: Armor Class Bonus; Burst Of Speed; Dexterity Bonus; Fast Movement; Initiative Bonus</td>
         <td><b>Syphon Features</b>: Art Of Magic; Blood Talisman; Blood-Syphoning; Death Knell; Deathwatch; Ignore Armor; Spell-Syphoning</td>
@@ -105,7 +106,7 @@ var attributes = {
       <col style="width:34%"/>
       <tr style="text-align:left">
         <td>Appraise: (int;cc) 6 (4)</td>
-        <td>Handle Animal: (cha) 6 (6)</td>
+        <td>Handle Animal: (cha) 6 (8)</td>
         <td>Speak Language: () 6 (4)</td>
       </tr><tr style="text-align:left">
         <td>Climb: (str) 8 (3)</td>
@@ -113,10 +114,10 @@ var attributes = {
         <td>Spellcraft: (int) 8 (9)</td>
       </tr><tr style="text-align:left">
         <td>Craft (Armor): (int) 13 (14)</td>
-        <td>Perform (Keyboard): (cha;cc) 6 (3)</td>
+        <td>Perform (Keyboard): (cha;cc) 6 (5)</td>
         <td></td>
       </tr><tr style="text-align:left">
-        <td>Disable Device: (int;cc) 13 (10.5)</td>
+        <td>Disable Device: (int;cc) 13 (7.5)</td>
         <td>Profession (Sailor): (wis) 6 (7)</td>
         <td></td>
       </tr></table>
@@ -137,8 +138,6 @@ var attributes = {
         <td><i>Intelligence Language Adjustment: +1</i></td>
       </tr><tr style="text-align:center">
         <td><i>Intelligence Skill Points Adjustment: +13</i></td>
-      </tr><tr style="text-align:center">
-        <td><i>Skill Focus (Disable Device): +3 Disable Device</i></td>
       </tr><tr style="text-align:center">
         <td>Favored Region (Northlands): Knowledge (Local (Northlands)) is a class skill/+2 Survival (within Northlands)/+2 Knowledge (Nature) (within Northlands)</td>
       </tr></table>
@@ -244,9 +243,9 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="SpellStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Spell Energy</b>: 0</td>
-        <td><b>Spell Slots</b>: B0: 3; B1: 1</td>
-        <td><b>Spell DC</b>: B: 10</td>
+        <td><b>Spell Energy</b>: 2</td>
+        <td><b>Spell Slots</b>: B0: 3; B1: 1; Ch5: 2</td>
+        <td><b>Spell DC</b>: B: 12; Ch: 11</td>
       </tr></table>
 </td>
     </tr></table>
@@ -254,11 +253,19 @@ var attributes = {
   </tr><tr style="text-align:center">
     <td><b>Spells</b>:     <table id="Spells" style="width:100%">
     <tr style="text-align:left">
-      <td>Air Walk (Ch4 Tran): Touched walks on air for %1 min</td>
+      <td>Arcane Impotence (Ch3 Abju): R200' Target Channeler must use 5 Spell Energy to cast for next 10 rd (DC 14 Will 5 rd)</td>
     </tr><tr style="text-align:left">
-      <td>Haste (Ch3 Tran): R%1' %2 targets in 15' radius gain extra attack, +1 attack, AC, and Reflex, and +30' Speed for %3 rd</td>
+      <td>Lullaby (B0 Ench): R200' Creatures in 10' radius suffer -5 Listen and Spot, -2 Will vs. sleep for conc + 10 rd (DC 12 Will neg)</td>
+    </tr><tr style="text-align:left">
+      <td>Mending (B0 Tran): R10' Repairs minor damage to 1 lb object</td>
+    </tr><tr style="text-align:left">
+      <td>Message (B0 Tran): R200' 10 targets hold 100-min whispered dialogue</td>
     </tr><tr style="text-align:left">
       <td>Prestidigitation (Ch0 Evoc): R10' Self performs minor tricks for 1 hr</td>
+    </tr><tr style="text-align:left">
+      <td>Protection From Good (Ch1 Abju): Touched gains +2 AC and saves, suppresses mental control, and bars contact by nonevil summoned creatures for 10 min</td>
+    </tr><tr style="text-align:left">
+      <td>Silent Image (B1 Illu): R800' Creates 14 10' cu visual illusion (DC 13 Will disbelieve) for conc</td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
@@ -270,9 +277,15 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td><i>Ignore Armor: Reduce arcane spell failure by 20%</i></td>
     </tr><tr style="text-align:center">
+      <td><i>Magecraft (Charismatic): Learn 3 B0 and 1 B1 spells, 2 Spell Energy</i></td>
+    </tr><tr style="text-align:center">
+      <td><i>Spellcasting (Abjuration): Learn 1 Channeler Abjuration spell; may learn more</i></td>
+    </tr><tr style="text-align:center">
+      <td>Arcane Spell Failure: 15%</td>
+    </tr><tr style="text-align:center">
       <td>Blood-Syphoning: Spend 2 spell energy to have attack deliver <i>Vampiric Touch</i> and syphon 1d4+5 spell energy</td>
     </tr><tr style="text-align:center">
-      <td>Death Knell: Touched w/negative HP dies, self gain 1d8 HP, +2 Str, +1 caster level, 1d4 spell energy (6 max) for 10*target HD min (DC 13 Will neg) 3/dy</td>
+      <td>Death Knell: Touched w/negative HP dies, self gain 1d8 HP, +2 Str, +1 caster level, 1d4 spell energy (7 max) for 10*target HD min (DC 14 Will neg) 3/dy</td>
     </tr><tr style="text-align:center">
       <td>Deathwatch: R30' cone Reveals HP state of targets for 50 min 3/dy, 1 spell energy per additional use</td>
     </tr><tr style="text-align:center">
