@@ -8,8 +8,8 @@
 var attributes = {
   "_path":"ztest/lastage-sorcery/skills/snow witch", 
   "alignment":"Neutral", "armor":"Leather", "charisma":14, "constitution":14, 
-  "dexterity":14, "experience":448, "feats.Agile":1, "feats.Armor Proficiency (Light)":1, 
-  "feats.Skill Focus (Survival)":1, "gender":"Male", "heroicPath":"None", "hitPoints":12, "intelligence":12, 
+  "dexterity":14, "experience":448, "feats.Agile":1, "feats.Magecraft (Charismatic)":1, 
+  "feats.Spellcasting (Necromancy)":1, "gender":"Male", "heroicPath":"None", "hitPoints":12, "intelligence":12, 
   "name":"Skills-Snow Witch", "prestige.Snow Witch":1, "race":"Erenlander", "shield":"None", 
   "skills.Appraise":2, "skills.Balance":2, "skills.Bluff":2, "skills.Climb":2, 
   "skills.Concentration":2, "skills.Craft (Alchemy)":2, "skills.Decipher Script":2, 
@@ -80,7 +80,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Agile; Armor Proficiency (Light); Skill Focus (Survival)</td>
+        <td><b>Feats</b>: Agile; Magecraft (Charismatic); Spellcasting (Necromancy)</td>
         <td><b>Erenlander Features</b>: Erenlander Ability Adjustment; Erenlander Extra Feats; Erenlander Skill Bonus; Favored Region (Erenland); Skilled Worker; Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)</td>
         <td><b>Snow Witch Features</b>: Art Of Magic; Improved Spellcasting; Way Of The Snow Witch</td>
       </tr></table>
@@ -145,7 +145,7 @@ var attributes = {
       </tr><tr style="text-align:left">
         <td>Forgery: (int;cc) 2 (2)</td>
         <td>Knowledge (Shadow): (int;cc) 2 (2)</td>
-        <td>Survival: (wis) 2 (4)</td>
+        <td>Survival: (wis) 2 (1)</td>
       </tr><tr style="text-align:left">
         <td>Gather Information: (cha;cc) 2 (3)</td>
         <td>Knowledge (Spirits): (int;cc) 2 (2)</td>
@@ -183,8 +183,6 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Intelligence Skill Points Adjustment: +4</i></td>
       </tr><tr style="text-align:center">
-        <td><i>Skill Focus (Survival): +3 Survival</i></td>
-      </tr><tr style="text-align:center">
         <td>Favored Region (Erenland): Knowledge (Local (Erenland)) is a class skill/+2 Survival (within Erenland)/+2 Knowledge (Nature) (within Erenland)</td>
       </tr><tr style="text-align:center">
         <td>Skilled Worker: +4 chosen Craft or Profession</td>
@@ -211,7 +209,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="Proficiencies" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Armor Proficiency</b>: Light</td>
+        <td><b>Armor Proficiency</b>: None</td>
         <td><b>Shield Proficiency</b>: None</td>
         <td><b>Weapon Proficiency</b>: Limited</td>
       </tr></table>
@@ -269,15 +267,29 @@ var attributes = {
 </tr><tr style="text-align:center">
   <td style="border:1px solid black"><b>Magic</b><br/>  <table id="Magic" style="width:100%">
   <tr style="text-align:center">
+    <td>    <table id="SpellPart" style="width:100%">
+    <tr style="text-align:center">
+      <td>      <table id="SpellStats" style="width:100%">
+      <tr style="text-align:center">
+        <td><b>Spell Energy</b>: 3</td>
+        <td><b>Spell Slots</b>: B0: 3; B1: 1; Ch1: 1</td>
+        <td><b>Spell DC</b>: B: 12; Ch: 9</td>
+      </tr></table>
+</td>
+    </tr></table>
+</td>
+  </tr><tr style="text-align:center">
     <td><b>Spells</b>:     <table id="Spells" style="width:100%">
     <tr style="text-align:left">
-      <td>Chill Touch (Ch1 Necr): %1 touched living suffer 1d6 HP and -1 Strength (DC %3 Fort neg) or undead flee for 1d4+%2 rd (DC %3 Will neg)</td>
+      <td>Chill Touch (Ch1 Necr): 1 touched living suffer 1d6 HP and -1 Strength (DC 10 Fort neg) or undead flee for 1d4+1 rd (DC 10 Will neg)</td>
     </tr><tr style="text-align:left">
-      <td>Detect Magic (Ch0 Divi): R60' Cone gives self info on magical auras for conc or %1 min</td>
+      <td>Detect Magic (Ch0 Divi): R60' Cone gives self info on magical auras for conc or 1 min</td>
     </tr><tr style="text-align:left">
-      <td>Obscuring Mist (Ch1 Conj): Fog in 20' radius obscures vision for %1 min</td>
+      <td>Obscuring Mist (Ch1 Conj): Fog in 20' radius obscures vision for 1 min</td>
     </tr><tr style="text-align:left">
-      <td>Ray Of Frost (Ch0 Conj): R%1' Ranged touch inflicts 1d3 HP</td>
+      <td>Prestidigitation (Ch0 Evoc): R10' Self performs minor tricks for 1 hr</td>
+    </tr><tr style="text-align:left">
+      <td>Ray Of Frost (Ch0 Conj): R25' Ranged touch inflicts 1d3 HP</td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
@@ -286,6 +298,12 @@ var attributes = {
       <td><i>Art Of Magic: +1 character level for max spell level</i></td>
     </tr><tr style="text-align:center">
       <td><i>Improved Spellcasting: +1 Spell Energy/+0 Channeler Spells</i></td>
+    </tr><tr style="text-align:center">
+      <td><i>Magecraft (Charismatic): Learn 3 B0 and 1 B1 spells, 2 Spell Energy</i></td>
+    </tr><tr style="text-align:center">
+      <td><i>Spellcasting (Necromancy): Learn 1 Channeler Necromancy spell; may learn more</i></td>
+    </tr><tr style="text-align:center">
+      <td>Arcane Spell Failure: 10%</td>
     </tr><tr style="text-align:center">
       <td>Way Of The Snow Witch: Additional automatic spells</td>
     </tr></table>
