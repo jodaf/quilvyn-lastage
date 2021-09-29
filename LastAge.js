@@ -2219,11 +2219,11 @@ LastAge.SPELLS_ADDED = {
   'Detect Astirax':
     'School=Divination ' +
     'Level=Ch1,Jack1 ' +
-    'Description="R$RL\' quarter circle gives self info on astiraxes for $L10 min"',
+    'Description="R$RL\' Quarter circle gives self info on astiraxes for $L10 min"',
   'Detect Outsider':
     'School=Divination ' +
     'Level=Sunderborn1 ' +
-    'Description="R60\' cone gives self info on outsiders for $L10 min"',
+    'Description="R60\' Cone gives self info on outsiders for $L10 min"',
   'Disguise Ally':
     'School=Illusion ' +
     'Level=Ch2,Jack2 ' +
@@ -2263,11 +2263,11 @@ LastAge.SPELLS_ADDED = {
   'Silver Storm':
     'School=Transmutation ' +
     'Level=Ch4 ' +
-    'Description="R$RS\' Targets in cone suffer ${Lmin15}d4 HP (Ref half)"',
+    'Description="R$RS\' Cone inflicts ${Lmin15}d4 HP (Ref half)"',
   'Silver Wind':
     'School=Conjuration ' +
     'Level=Ch3,Jack3 ' +
-    'Description="R$RM\' Targets in 10\' radius glow, suffer blindness (Will neg) and 1d6 HP/rd for $L rd"',
+    'Description="R$RM\' Creatures in 10\' radius glow, suffer blindness (Will neg) and 1d6 HP/rd for $L rd"',
   'Stone Soup':
     'School=Transmutation ' +
     'Level=Ch1,Jack1 ' +
@@ -2292,7 +2292,7 @@ LastAge.SPELLS_ADDED = {
   'Bleed Power':
     'School="Greater Evocation" ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Successful foe attacks on self inflict 1d6 HP each on up to $L attackers for $L10 min"',
+    'Description="Successful attacks on self inflict 1d6 HP each on up to $L attackers for $L10 min"',
   'Boil Blood':
     'School=Transmutation ' +
     'Level=C3 ' +
@@ -2308,7 +2308,7 @@ LastAge.SPELLS_ADDED = {
   'Confer Power':
     'School=Transmutation ' +
     'Level=Ch2,Jack2 ' +
-    'Description="Transfers spell energy to adjacent casters for $L rd or conc + 1 rd"',
+    'Description="Transfers self spell energy to adjacent casters for $L rd or conc + 1 rd"',
   'Fell Forbiddance':
     'School=Abjuration ' +
     'Level=Ch2,Jack2 ' +
