@@ -151,7 +151,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.3.1.0';
+LastAge.VERSION = '2.3.1.1';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -1275,6 +1275,7 @@ LastAge.FEATURES_ADDED = {
   'Cover Story':
     'Section=skill Note="DC 20 Bluff four consecutive dy to establish alibi"',
   'Crashing Waves':'Section=combat Note="Disarm or Trap as AOO %V/rd"',
+  'Cure Wounds':'Section=magic Note="Cast <i>Cure %V Wounds</i> 3/dy"',
   'Cuts Like Ice':
     'Section=feature Note="Greater Weapon Focus (Fighting Knife)%V"',
   'Dark Invitation':
@@ -1296,6 +1297,7 @@ LastAge.FEATURES_ADDED = {
   "Deny Izrador's Power":
     'Section=magic Note="R60\' +%V <i>Dispel Magic</i> vs. Legate spell %1/dy"',
   'Destiny Marked':'Section=feature Note="%V"',
+  'Destroy Undead':'Section=combat Note="Turn Undead as level %V"',
   'Disarming Shot':'Section=combat Note="Disarm via ranged touch attack"',
   'Disguise Contraband':
     'Section=magic ' +
@@ -1352,6 +1354,7 @@ LastAge.FEATURES_ADDED = {
   'Grant Protection':
     'Section=magic ' +
     'Note="<i>Sanctuary</i>, then <i>Shield Of Faith</i> to chosen person %V/dy"',
+  'Heal':'Section=magic Note="Cast <i>Heal</i> 1/dy"',
   'Ignore Armor':'Section=magic Note="Reduce arcane spell failure by %V%"',
   'Improved Vision Of The Night':'Section=feature Note=Darkvision',
   'Inspiring Leader':
@@ -3453,6 +3456,21 @@ LastAge.PRESTIGE_CLASSES = {
       '"2:Improved Mounted Archery","2:Improved Mounted Combat",' +
       '"2:Improved Ride-By Attack","2:Improved Spirited Charge",' +
       '"2:Improved Trample","2:Ride-By Attack","2:Spirited Charge",2:Trample',
+  // City of Shadow
+  'Lightbearer':
+    'Require=' +
+      '"alignment =~ \'Good\'","skills.Knowledge (History) >= 8",' +
+      'features.Leadership ' +
+    'HitDie=d10 Attack=3/4 SkillPoints=6 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Appraise,Concentration,Craft,"Decipher Script",Diplomacy,Disguise,' +
+      '"Gather Information",Heal,Hide,Knowledge,Profession,Search,' +
+      '"Sense Motive",Survival ' +
+    'Features=' +
+      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency",' +
+      '"1:Weapon Proficiency (Martial)",' +
+      '"1:Cure Wounds","2:Smite Evil","4:Turn Undead","8:Destroy Undead",' +
+      '10:Heal',
   // Destiny & Shadow
   'Pale Legate':
     'Require="skills.Knowledge (Shadow) >= 8","alignment !~ \'Evil\'" ' +
@@ -4710,6 +4728,28 @@ LastAge.classRulesExtra = function(rules, name) {
 
   // Source books
 
+  } else if(name == 'Lightbearer') {
+
+    rules.defineRule
+      ('combatNotes.destroyUndead', classLevel, '=', 'source * 2');
+    rules.defineRule('combatNotes.smiteEvil',
+      classLevel, '+=', 'source>=10 ? 3 : source>=6 ? 2 : source>=2 ? 1 : null'
+    );
+    rules.defineRule
+      ('combatNotes.smiteEvil.1', 'lightbearerSmiteAttackBonus', '^=', null);
+    rules.defineRule('combatNotes.smiteEvil.2', classLevel, '=', null);
+    rules.defineRule('lightbearerSmiteAttackBonus',
+      'lightbearerFeatures.Smite Evil', '?', null,
+      'wisdomModifier', '=', 'Math.max(source, 0)'
+    );
+    rules.defineRule('magicNotes.cureWounds',
+      classLevel, '=', 'source<3 ? "Minor" : source<5 ? "Light" : source<7 ? "Moderate" : source<9 ? "Serious" : "Critical"'
+    );
+    rules.defineRule('turningLevel',
+      classLevel, '^=', 'source>=4 ? source-3 : null',
+      'combatNotes.destroyUndead', '^=', null
+    );
+
   } else if(name == 'Pale Legate') {
 
     // Negate Legate features
@@ -5641,6 +5681,10 @@ LastAge.pathRulesExtra = function(rules, name) {
 
   } else if(name == 'Guardian') {
 
+    rules.defineRule('guardianSmiteAttackBonus',
+      'guardianFeatures.Smite Evil', '?', null,
+      'charismaModifier', '=', 'Math.max(source, 0)'
+    );
     rules.defineRule('abilityNotes.constitutionBonus',
       'guardianLevel', '+=', 'Math.floor(source / 5)'
     );
@@ -5650,9 +5694,8 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('combatNotes.smiteEvil',
       pathLevel, '+=', 'source>=18 ? 4 : source>=14 ? 3 : source>=8 ? 2 : 1'
     );
-    rules.defineRule('combatNotes.smiteEvil.1',
-      'charismaModifier', '=', 'Math.max(source, 0)'
-    );
+    rules.defineRule
+      ('combatNotes.smiteEvil.1', 'guardianSmiteAttackBonus', '^=', null);
     rules.defineRule('combatNotes.smiteEvil.2', pathLevel, '=', null);
     rules.defineRule
       ('featureNotes.inspireValor', pathLevel, '=', 'source >= 13 ? 2 : 1');
@@ -6411,6 +6454,9 @@ LastAge.ruleNotes = function() {
     '    For Pale Legates, Quilvyn retains the base attack and save bonuses\n' +
     '    derived from levels in the Legate class. Other Legate features are\n' +
     '    canceled by the Gone Pale feature.\n' +
+    '  </li><li>\n' +
+    '    Quilvyn uses charisma instead of wisdom to calculate the Turn\n' +
+    '    Undead abilities of the Lightbearer prestige class\n' +
     '  </li>\n' +
     '</ul>\n' +
     '\n' +
