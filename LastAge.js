@@ -16,6 +16,8 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 */
 
 /*jshint esversion: 6 */
+/* jshint forin: false */
+/* globals Quilvyn, QuilvynRules, QuilvynUtils, SRD35, Pathfinder */
 "use strict";
 
 /*
@@ -151,7 +153,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.3.1.1';
+LastAge.VERSION = '2.3.1.2';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -868,7 +870,13 @@ LastAge.FEATURES_ADDED = {
   'Defensive Mastery':'Section=save Note="+%V Fortitude/+%V Reflex/+%V Will"',
   'Devastating Strike':
     'Section=combat Note="Bull Rush stunned opponent as free action w/no AOO"',
+  'Divine Enhancement':
+    'Section=combat ' +
+    'Note="Expend spell for spell level bonus to attack and damage %1/dy"',
   'Dodge Training':'Section=combat Note="+%V AC"',
+  'Drain Vitality':
+    'Section=magic ' +
+    'Note="<i>Inflict</i> spell restores equal amount of HP to self"',
   'Flurry Attack':
     'Section=combat Note="Two-weapon off hand penalty reduced by %V"',
   'Foe Specialty':
@@ -902,6 +910,9 @@ LastAge.FEATURES_ADDED = {
     'Note="+1 Initiative, Attack, and Damage during Inspire Fury"',
   'Improved Woodland Stride':
     'Section=feature Note="Normal movement through enchanted terrain"',
+  'Increase Morale':
+    'Section=combat ' +
+    'Note="R60\' Allies dispel fear, +%V next attack and damage, and +%1 AC for 1 rd 1/dy"',
   'Incredible Resilience':'Section=combat Note="+%V HP"',
   'Incredible Speed':'Section=ability Note="+%V Speed"',
   'Incredible Speed Or Resilience':'Section=feature Note="%V selections"',
@@ -918,6 +929,7 @@ LastAge.FEATURES_ADDED = {
   'Instinctive Response':'Section=combat Note="Re-roll Initiative"',
   'Knowledge Specialty':
     'Section=skill Note="+3 checks for Knowledge skill chosen each day"',
+  'Legate Martial Bonus Feats':'Section=feature Note="%V Legate Martial Feats"',
   'Literate':'Section=skill Note="+%V Language Count"',
   'Magecraft (Charismatic)':
     'Section=magic Note="Learn 3 B0 and 1 B1 spells, %V Spell Energy"',
@@ -965,6 +977,7 @@ LastAge.FEATURES_ADDED = {
          '"<i>Detect Magic</i> vs. legate or outsider at will"',
   'Sense Dark Magic (Legate)':
     'Section=magic Note="<i>Detect Magic</i> vs. legate at will"',
+  'Speak With Dead':'Section=magic Note="Cast <i>Speak With Dead</i> %V/dy"',
   'Specific Effect':'Section=combat Note="Choose individuals to affect"',
   'Speed Training':'Section=combat Note="Extra move action each rd"',
   'Spell Specialty':'Section=skill Note="Each day choose a spell for +1 DC"',
@@ -974,6 +987,9 @@ LastAge.FEATURES_ADDED = {
   'Suggestion':
     'Section=magic ' +
     'Note="<i>Suggestion</i> to 1 fascinated creature (DC %V Will neg)"',
+  'Tactical Insight':
+    'Section=combat ' +
+    'Note="R60\' Self and allies +%V attack and AC against chosen foe w/in 30\' after 1 rd of study"',
   'Temple Dependency':
     'Section=magic Note="Must participate at temple to receive spells"',
   'Tradition Gift (Force Of Personality)':
@@ -1206,6 +1222,8 @@ LastAge.FEATURES_ADDED = {
     'Note="Spend 10 min to gain use of different heroic path feature %V/dy"',
   'Aura Of Winter':
     'Section=magic Note="R20\' Set temperature and use <i>Weather</i> %V/dy"',
+  'Authority Of Izrador':
+    'Section=skill Note="+%V Diplomacy/+%V Gather Informtaion/+%V Intimidate"',
   'Awaken Ancestral Blade':'Section=combat Note="Weapon becomes intelligent"',
   'Bane Of Legates Bonus Feats':'Section=feature Note="%V Wizard Feats"',
   'Bind Astirax':
@@ -1354,9 +1372,13 @@ LastAge.FEATURES_ADDED = {
   'Grant Protection':
     'Section=magic ' +
     'Note="<i>Sanctuary</i>, then <i>Shield Of Faith</i> to chosen person %V/dy"',
+  'Harrower Bonus Feats':'Section=feature Note="%V Harrower Feats"',
   'Heal':'Section=magic Note="Cast <i>Heal</i> 1/dy"',
   'Ignore Armor':'Section=magic Note="Reduce arcane spell failure by %V%"',
   'Improved Vision Of The Night':'Section=feature Note=Darkvision',
+  'Inspire Fanaticism':
+    'Section=feature ' +
+    'Note="Followers in sight gain +%V attack, Will, Diplomacy, and Intimidate"',
   'Inspiring Leader':
     'Section=combat Note="R60\' Allies +%V attack while self fighting"',
   'It Is Written In The Stars':'Section=feature Note="Force reroll 1/dy"',
@@ -3471,6 +3493,35 @@ LastAge.PRESTIGE_CLASSES = {
       '"1:Weapon Proficiency (Martial)",' +
       '"1:Cure Wounds","2:Smite Evil","4:Turn Undead","8:Destroy Undead",' +
       '10:Heal',
+  // CoS web supplement
+  'Harrower':
+    'Require=' +
+      '"alignment == \'Lawful Evil\'","skills.Diplomacy >= 8",' +
+      '"skills.Gather Information >= 4","skills.Intimidate >= 8",' +
+      '"features.Iron Will","features.Leadership","levels.Legate" ' +
+    'HitDie=d8 Attack=3/4 SkillPoints=2 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Bluff,Concentration,Craft,Diplomacy,"Gather Information",Heal,' +
+      'Intimidate,"Knowledge (Arcana)","Knowledge (History)",' +
+      '"Knowledge (Shadow)",Profession,"Sense Motive",Spellcraft ' +
+    'Features=' +
+      '"1:Authority Of Izrador","1:Caster Level Bonus",' +
+      '"2:Inspire Fanaticism","3:Speak With Dead","3:Harrower Bonus Feats"',
+  'Legate Martial':
+    'Require=' +
+      '"alignment == \'Lawful Evil\'","skills.Concentration >= 8",' +
+      '"skills.Intimidate >= 8","skills.Profession (Soldier) >= 8",' +
+      '"features.Leadership","levels.Legate" ' +
+    'HitDie=d10 Attack=1 SkillPoints=2 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Concentration,Craft,Diplomacy,Heal,Intimidate,"Knowledge (Arcana)",' +
+      '"Knowledge (History)","Knowledge (Shadow)",Profession,Spellcraft ' +
+    'Features=' +
+      '"1:Armor Proficiency (Heavy)","1:Shield Proficiency",' +
+      '"1:Weapon Proficiency (Martial)",' +
+      '"1:Tactical Insight","2:Caster Level Bonus",' +
+      '"2:Legate Martial Bonus Feats","3:Increase Morale",' +
+      '"4:Divine Enhancement","8:Drain Vitality"',
   // Destiny & Shadow
   'Pale Legate':
     'Require="skills.Knowledge (Shadow) >= 8","alignment !~ \'Evil\'" ' +
@@ -4087,6 +4138,7 @@ LastAge.classRules = function(
  */
 LastAge.classRulesExtra = function(rules, name) {
 
+  var allFeats, classFeats, feat, i;
   var classLevel = 'levels.' + name;
 
   if(name.endsWith(' Channeler')) {
@@ -4113,10 +4165,10 @@ LastAge.classRulesExtra = function(rules, name) {
       ('magicNotes.bonusSpells', 'channelerLevels', '+=', '(source - 1) * 2');
     // No-op to get featureNotes.channelerBonusFeats in italics
     rules.defineRule('noop', 'featureNotes.channelerBonusFeats', '+', 'null');
-    var allFeats = rules.getChoices('feats');
+    allFeats = rules.getChoices('feats');
 
     if(name == 'Charismatic Channeler') {
-      for(var feat in allFeats) {
+      for(feat in allFeats) {
         if(feat == 'Extra Gift' || feat == 'Spell Knowledge' ||
            feat.startsWith('Spell Focus') ||
            feat.startsWith('Greater Spell Focus')) {
@@ -4146,7 +4198,7 @@ LastAge.classRulesExtra = function(rules, name) {
         classLevel, '=', 'source < 3 ? null : Math.floor(source / 3)'
       );
     } else if(name == 'Hermetic Channeler') {
-      for(var feat in allFeats) {
+      for(feat in allFeats) {
         if(feat == 'Spell Knowledge' ||
            allFeats[feat].indexOf('Item Creation') >= 0 ||
            allFeats[feat].indexOf('Metamagic') >= 0) {
@@ -4168,7 +4220,7 @@ LastAge.classRulesExtra = function(rules, name) {
         'intelligenceModifier', '+', null
       );
     } else if(name == 'Spiritual Channeler') {
-      for(var feat in allFeats) {
+      for(feat in allFeats) {
         if(feat == 'Extra Gift' || feat == 'Spell Knowledge' ||
            allFeats[feat].indexOf('Item Creation') >= 0) {
           allFeats[feat] =
@@ -4406,7 +4458,7 @@ LastAge.classRulesExtra = function(rules, name) {
       'features.Wildlander Skill Mastery', '+=', null
     );
     rules.defineRule('selectableFeatureCount.Wildlander',
-      'featureNotes.wildlanderTraits', '+=', null,
+      'featureNotes.wildlanderTraits', '+=', null
     );
     rules.defineRule('skillNotes.dangerSense',
       classLevel, '=', 'source < 3 ? null : Math.floor(source / 3)'
@@ -4549,8 +4601,8 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Freerider') {
 
-    var allFeats = rules.getChoices('feats');
-    var feats = [
+    allFeats = rules.getChoices('feats');
+    classFeats = [
       'Mounted Archery', 'Sarcosan Pureblood', 'Skill Focus (Ride)',
       'Trample', 'Weapon Focus (Composite Longbow)',
       'Weapon Focus (Sarcosan Lance)', 'Weapon Focus (Scimitar)',
@@ -4558,8 +4610,8 @@ LastAge.classRulesExtra = function(rules, name) {
       'Weapon Specialization (Sarcosan Lance)',
       'Weapon Specialization (Scimitar)'
     ];
-    for(var i = 0; i < feats.length; i++) {
-      var feat = feats[i];
+    for(i = 0; i < classFeats.length; i++) {
+      feat = classFeats[i];
       if(feat in allFeats)
         allFeats[feat] =
           allFeats[feat].replace('Type=', 'Type="' + name + '",');
@@ -4750,6 +4802,72 @@ LastAge.classRulesExtra = function(rules, name) {
       'combatNotes.destroyUndead', '^=', null
     );
 
+  } else if(name == 'Harrower') {
+
+    allFeats = rules.getChoices('feats');
+    classFeats = ['Investigator', 'Negotiator', 'Persuasive'];
+    for(i = 0; i < classFeats.length; i++) {
+      feat = classFeats[i];
+      if(feat in allFeats)
+        allFeats[feat] =
+          allFeats[feat].replace('Type=', 'Type="' + name + '",');
+    }
+    rules.defineRule
+      ('featCount.Harrower', 'featureNotes.harrowerBonusFeats', '=', null);
+    rules.defineRule('featureNotes.harrowerBonusFeats',
+      classLevel, '=', 'Math.floor(source / 3)'
+    );
+    rules.defineRule('featureNotes.inspireFanaticism',
+      classLevel, '=', 'Math.floor((source + 1) / 3)'
+    );
+    rules.defineRule('magicNotes.casterLevelBonus', classLevel, '+=', null);
+    rules.defineRule
+      ('magicNotes.speakWithDead', classLevel, '=', 'Math.floor(source / 3)');
+    rules.defineRule('skillNotes.authorityOfIzrador',
+      classLevel, '=', 'Math.floor((source + 2) / 3)'
+    );
+
+  } else if(name == 'Legate Martial') {
+
+    allFeats = rules.getChoices('feats');
+    classFeats = [
+      'Cleave', 'Combat Casting', 'Combat Reflexes', 'Great Cleave',
+      'Improved Two-Weapon Fighting', 'Mounted Combat', 'Ride-By Attack',
+      'Spirited Charge', 'Trample', 'Weapon Finesse'
+    ];
+    for(feat in allFeats) {
+      if(feat.match(/^(Greater Weapon Focus|Greater Weapon Specialization|Weapon Focus)/))
+        classFeats.push(feat);
+    }
+    for(i = 0; i < classFeats.length; i++) {
+      feat = classFeats[i];
+      if(feat in allFeats)
+        allFeats[feat] =
+          allFeats[feat].replace('Type=', 'Type="' + name + '",');
+    }
+    rules.defineRule('combatNotes.divineEnhancement.1',
+      'features.Divine Enhancement', '?', null,
+      classLevel, '=', 'Math.floor((source - 1) / 3)',
+      'charismaModifier', '+', null
+    );
+    rules.defineRule('combatNotes.increaseMorale', classLevel, '=', null);
+    rules.defineRule('combatNotes.increaseMorale.1',
+      'features.Increase Morale', '?', null,
+      'charismaModifier', '=', null
+    );
+    rules.defineRule('combatNotes.tacticalInsight',
+      classLevel, '=', 'Math.floor((source + 3) / 4)'
+    );
+    rules.defineRule('featCount.Legate Martial',
+      'featureNotes.legateMartialBonusFeats', '=', null
+    );
+    rules.defineRule('featureNotes.legateMartialBonusFeats',
+      classLevel, '=', 'Math.floor((source + 2) / 4)'
+    );
+    rules.defineRule('magicNotes.casterLevelBonus',
+      classLevel, '+=', 'Math.floor(source / 2)'
+    );
+
   } else if(name == 'Pale Legate') {
 
     // Negate Legate features
@@ -4860,11 +4978,12 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Spirit Speaker') {
 
-    var allFeats = rules.getChoices('feats');
-    for(var f in allFeats) {
-      if(f == 'Extra Gift' || f == 'Spell Knowledge' ||
-         allFeats[f].match(/Metamagic/))
-        allFeats[f] = allFeats[f].replace('Type=', 'Type="Spirit Speaker",');
+    allFeats = rules.getChoices('feats');
+    for(feat in allFeats) {
+      if(feat == 'Extra Gift' || feat == 'Spell Knowledge' ||
+         allFeats[feat].match(/Metamagic/))
+        allFeats[feat] =
+          allFeats[feat].replace('Type=', 'Type="' + name + '",');
     }
 
     rules.defineRule
@@ -4916,12 +5035,12 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Gardener Of Erethor') {
 
-    var allFeats = rules.getChoices('feats');
-    var feats = [
+    allFeats = rules.getChoices('feats');
+    classFeats = [
       'Craft Rune Of Power', 'Empower Spell', 'Skill Focus', 'Widen Spell'
     ];
-    for(var i = 0; i < feats.length; i++) {
-      var feat = feats[i];
+    for(i = 0; i < classFeats.length; i++) {
+      feat = classFeats[i];
       if(feat in allFeats)
         allFeats[feat] =
           allFeats[feat].replace('Type=', 'Type="' + name + '",');
@@ -5040,10 +5159,12 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Sahi') {
 
-    var allFeats = rules.getChoices('feats');
-    for(var f in allFeats) {
-      if(allFeats[f].match(/Item Creation/) || f.startsWith('Spellcasting'))
-        allFeats[f] = allFeats[f].replace('Type=', 'Type="' + name + '",');
+    allFeats = rules.getChoices('feats');
+    for(feat in allFeats) {
+      if(allFeats[feat].match(/Item Creation/) ||
+         feat.startsWith('Spellcasting'))
+        allFeats[feat] =
+          allFeats[feat].replace('Type=', 'Type="' + name + '",');
     }
     var allSkills = rules.getChoices('skills');
     for(var s in allSkills) {
@@ -5314,7 +5435,7 @@ LastAge.featRulesExtra = function(rules, name) {
       ('casterLevels.' + spellCode, 'casterLevels.' + name, '=', null);
     rules.defineRule('spellDifficultyClass.' + spellCode,
       'casterLevels.' + spellCode, '?', null,
-      ability + 'Modifier', '=', '10 + source',
+      ability + 'Modifier', '=', '10 + source'
     );
     rules.defineRule('spells.Prestidigitation(Ch0 Evoc)', note, '=', '1');
   } else if((matchInfo = name.match(/^Spellcasting\s\((.*)\)/)) != null) {
