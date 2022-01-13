@@ -1223,7 +1223,7 @@ LastAge.FEATURES_ADDED = {
   'Aura Of Winter':
     'Section=magic Note="R20\' Set temperature and use <i>Weather</i> %V/dy"',
   'Authority Of Izrador':
-    'Section=skill Note="+%V Diplomacy/+%V Gather Informtaion/+%V Intimidate"',
+    'Section=skill Note="+%V Diplomacy/+%V Gather Information/+%V Intimidate"',
   'Awaken Ancestral Blade':'Section=combat Note="Weapon becomes intelligent"',
   'Bane Of Legates Bonus Feats':'Section=feature Note="%V Wizard Feats"',
   'Bind Astirax':
