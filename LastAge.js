@@ -153,7 +153,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.3.1.2';
+LastAge.VERSION = '2.3.1.3';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -2381,7 +2381,7 @@ LastAge.SPELLS_ADDED = {
   'Pacify':
     'School=Abjuration ' +
     'Level=Ch2,Jack2 ' +
-    'Description="R$RS\' ${Math.floor(lvl/3) + 1} targets in 15\' radius cannot attack for $Ldiv2 rd (Will neg)"',
+    'Description="R$RS\' ${lvl//3+1} targets in 15\' radius cannot attack for $Ldiv2 rd (Will neg)"',
   "Peasant's Rest":
     'School=Conjuration ' +
     'Level=Ch1,Jack1 ' +
