@@ -153,7 +153,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.3.1.3';
+LastAge.VERSION = '2.3.1.4';
 
 // LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
 // the LastAge function will instead use rules taken from the Pathfinder plugin.
@@ -2237,6 +2237,9 @@ delete LastAge.SKILLS['Knowledge (Planes)'];
 delete LastAge.SKILLS['Knowledge (Religion)'];
 LastAge.SPELLS_ADDED = {
 
+  // NOTE: It's unclear which of these spells might be available in potion/oil
+  // form. Given the problematic nature of magic items in Midnight, the
+  // question is probably moot.
   'Charm Repair':
     'School=Transmutation ' +
     'Level=Ch3,Jack3 ' +
@@ -2436,6 +2439,7 @@ LastAge.SPELLS_ADDED = {
     'School=Conjuration ' +
     'Level=Ch4 ' +
     'Description="R$RS\' Self bargains with Dornish spirit for service"'
+
 };
 LastAge.SPELLS_LEVELS = {
   'Acid Arrow':'Ch2,Jack2',
@@ -4012,6 +4016,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
   } else if(type == 'Spell') {
     var description = QuilvynUtils.getAttrValue(attrs, 'Description');
     var groupLevels = QuilvynUtils.getAttrValueArray(attrs, 'Level');
+    var liquids = QuilvynUtils.getAttrValueArray(attrs, 'Liquid');
     var school = QuilvynUtils.getAttrValue(attrs, 'School');
     var schoolAbbr = (school || 'Universal').substring(0, 4);
     for(var i = 0; i < groupLevels.length; i++) {
@@ -4026,7 +4031,8 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       // TODO indicate domain spells in attributes?
       var domainSpell = LastAge.PATHS[group + ' Domain'] != null;
       LastAge.spellRules
-        (rules, fullName, school, group, level, description, domainSpell);
+        (rules, fullName, school, group, level, description, domainSpell,
+         liquids);
       rules.addChoice('spells', fullName, attrs);
     }
   } else if(type == 'Track')
@@ -6447,10 +6453,11 @@ LastAge.skillRules = function(
  * Defines in #rules# the rules associated with spell #name#, which is from
  * magic school #school#. #casterGroup# and #level# are used to compute any
  * saving throw value required by the spell. #description# is a concise
- * description of the spell's effects.
+ * description of the spell's effects. #liquids# lists any liquid forms via
+ * which the spell can be applied.
  */
 LastAge.spellRules = function(
-  rules, name, school, casterGroup, level, description, domainSpell
+  rules, name, school, casterGroup, level, description, domainSpell, liquids
 ) {
   rules.basePlugin.spellRules
     (rules, name, school, casterGroup, level, description, domainSpell);
