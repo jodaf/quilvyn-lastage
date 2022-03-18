@@ -37,15 +37,15 @@ function LastAge(baseRules) {
     return;
   }
 
-  LastAge.USE_PATHFINDER =
+  var usePathfinder =
     window.Pathfinder != null && Pathfinder.SRD35_SKILL_MAP != null &&
     baseRules != null && baseRules.includes('Pathfinder');
 
   var rules = new QuilvynRules(
-    'Midnight - ' + (LastAge.USE_PATHFINDER ? 'Pathfinder 1E' : 'SRD v3.5'),
+    'Midnight - ' + (usePathfinder ? 'Pathfinder 1E' : 'SRD v3.5'),
     LastAge.VERSION
   );
-  rules.basePlugin = LastAge.USE_PATHFINDER ? Pathfinder : SRD35;
+  rules.basePlugin = usePathfinder ? Pathfinder : SRD35;
   LastAge.rules = rules;
 
   LastAge.CHOICES = rules.basePlugin.CHOICES.concat(LastAge.CHOICES_ADDED);
@@ -64,7 +64,7 @@ function LastAge(baseRules) {
   delete rules.getChoices('random').deity;
   rules.ruleNotes = LastAge.ruleNotes;
 
-  if(rules.basePlugin == window.Pathfinder) {
+  if(usePathfinder) {
     SRD35.ABBREVIATIONS['CMB'] = 'Combat Maneuver Bonus';
     SRD35.ABBREVIATIONS['CMD'] = 'Combat Maneuver Defense';
   }
@@ -153,11 +153,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.3.1.4';
-
-// LastAge uses SRD35 as its default base ruleset. If USE_PATHFINDER is true,
-// the LastAge function will instead use rules taken from the Pathfinder plugin.
-LastAge.USE_PATHFINDER = false;
+LastAge.VERSION = '2.3.1.5';
 
 LastAge.CHOICES_ADDED = [];
 LastAge.CHOICES = SRD35.CHOICES.concat(LastAge.CHOICES_ADDED);
@@ -2004,6 +2000,10 @@ LastAge.PATHS = {
       '"1:Body Of The Shadowed",1:Darkvision,"4:Coldness Of Shadow",' +
       '"5:Gift Of Izrador","9:Turn Undead","14:Imposing Presence",' +
       '"19:Shadowed Frightful Presence" ' +
+    'Selectables=' +
+      // Have to hard-code these domains, since PATHS is not yet defined
+      '"Death Domain","Destruction Domain","Evil Domain","Magic Domain",' +
+      '"War Domain" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Shadowed1:3=1;6=2;7=3;11=4;12=5;16=6;17=7,' + // Bane 4/dy; Summon Monster I 3/dy
@@ -2343,7 +2343,7 @@ LastAge.SPELLS_ADDED = {
     'Description="R$RS\' $L 5\' sq area becomes impassible to undead for $L min (Will neg for intelligent)"',
   'Fey Fire':
     'School=Conjuration ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2,D2,Jack2 ' +
     'Description="Touched point contains invisible 5\' radius fire that warms and heals 1 HP and all nonlethal damage for $L hr"',
   'Fey Hearth':
     'School=Abjuration ' +
@@ -2387,7 +2387,7 @@ LastAge.SPELLS_ADDED = {
     'Description="R$RS\' ${lvl//3+1} targets in 15\' radius cannot attack for $Ldiv2 rd (Will neg)"',
   "Peasant's Rest":
     'School=Conjuration ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1,D1,Jack1 ' +
     'Description="Touched gets 8 hrs rest from 4 hrs sleep"',
   'Phantom Edge':
     'School=Transmutation ' +
@@ -4586,8 +4586,6 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
     rules.defineRule
       ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
-    rules.defineChoice('spells', "Peasant's Rest(D1 Conj)");
-    rules.defineChoice('spells', 'Fey Fire(D2 Conj)');
 
   } else if(name == 'Elven Raider') {
 
@@ -6234,6 +6232,9 @@ LastAge.pathRulesExtra = function(rules, name) {
     );
     rules.defineRule
       ('magicNotes.giftOfIzrador', pathLevel, '=', 'Math.floor(source / 5)');
+    rules.defineRule('selectableFeatureCount.Shadowed',
+      'magicNotes.giftOfIzrador', '=', null
+    );
     rules.defineRule
       ('turningLevel', pathLevel, '+=', 'source < 4 ? null : source');
     // Override SRD35 turning frequency
@@ -6494,19 +6495,24 @@ LastAge.choiceEditorElements = function(rules, type) {
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
 LastAge.randomizeOneAttribute = function(attributes, attribute) {
-  // TODO This ignores Collaborator and Shadowed domain spells
-  if(attribute == 'spells' && !('levels.Legate' in attributes)) {
+  if(attribute == 'spells') {
+    // For Channelers, pick only from spells for which the character has the
+    // corresponding Spellcasting feature and distribute the spells among
+    // those of the maximum allowed spell level and lower.
     var attrs = this.applyRules(attributes);
-    var spells = LastAge.rules.getChoices('spells');
+    var spells = this.getChoices('spells');
     for(var attr in attrs) {
       var matchInfo = attr.match(/^spellSlots\.([A-Z][A-Za-z]*)([0-9])$/);
       if(!matchInfo)
         continue;
-      var abbr = matchInfo[1];
+      var group = matchInfo[1];
       var level = matchInfo[2];
+      if(group == 'Domain')
+        group = '(' + QuilvynUtils.getKeys(attrs, /^features.*Domain$/).map(x => x.replace(/features.| Domain/g, '')).join('|') + ')';
       var magecraftSchools = QuilvynUtils.getKeys(attrs, /^features.Spellcasting/).map(x =>  x.replace(/.*\(|\).*/g, '').substring(0, 4)); 
-      var spellPat = new RegExp
-        ('\\(' + abbr + (abbr == 'Ch' ? '[0-' + level + '] (' + magecraftSchools.join('|') + ')' : level));
+      var spellPat = group == 'Ch' ?
+        new RegExp('\\(Ch[0-' + level + '] ('+magecraftSchools.join('|')+')') :
+        new RegExp('\\(' + group + level);
       var knownAlready = new Set(QuilvynUtils.getKeys(attrs, spellPat));
       var choices =
         QuilvynUtils.getKeys(spells, spellPat).filter(x=>!knownAlready.has(x));
