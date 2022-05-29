@@ -70,25 +70,23 @@ function MidnightLegacy() {
     Object.assign({}, basePlugin.FEATURES, MidnightLegacy.FEATURES_ADDED);
   MidnightLegacy.PATHS =
     Object.assign({}, basePlugin.PATHS, MidnightLegacy.PATHS_ADDED);
-  MidnightLegacy.RACES =
-    Object.assign({}, basePlugin.RACES, MidnightLegacy.RACES_ADDED);
   MidnightLegacy.SPELLS =
     Object.assign({}, basePlugin.SPELLS, MidnightLegacy.SPELLS_ADDED);
   MidnightLegacy.WEAPONS =
     Object.assign({}, basePlugin.WEAPONS, MidnightLegacy.WEAPONS_ADDED);
 
-  SRD5E.abilityRules(rules);
-  SRD5E.combatRules
+  MidnightLegacy.abilityRules(rules);
+  MidnightLegacy.combatRules
     (rules, basePlugin.ARMORS, basePlugin.SHIELDS, MidnightLegacy.WEAPONS);
-  SRD5E.magicRules(rules, basePlugin.SCHOOLS, MidnightLegacy.SPELLS);
-  SRD5E.identityRules(
+  MidnightLegacy.magicRules(rules, basePlugin.SCHOOLS, MidnightLegacy.SPELLS);
+  MidnightLegacy.identityRules(
     rules, basePlugin.ALIGNMENTS, MidnightLegacy.BACKGROUNDS,
     MidnightLegacy.CLASSES, MidnightLegacy.DEITIES, MidnightLegacy.PATHS,
     MidnightLegacy.RACES
   );
-  SRD5E.talentRules
+  MidnightLegacy.talentRules
     (rules, MidnightLegacy.FEATS, MidnightLegacy.FEATURES, SRD5E.GOODIES,
-     SRD5E.LANGUAGES, SRD5E.SKILLS, basePlugin.TOOLS);
+     MidnightLegacy.LANGUAGES, SRD5E.SKILLS, basePlugin.TOOLS);
 
   if(window.Tasha != null)
     Tasha('Tasha', rules);
@@ -140,11 +138,15 @@ MidnightLegacy.BACKGROUNDS_ADDED = {
       'Survivalist ' +
     'Languages="Trader\'s Tongue",any'
 };
+MidnightLegacy.CLASSES = Object.assign({}, SRD5E.CLASSES);
+delete MidnightLegacy.CLASSES.Monk;
+delete MidnightLegacy.CLASSES.Warlock;
 MidnightLegacy.DEITIES = {
   'Izrador':
     'Alignment=CE Domain="Keeper Of Obsidian","Soldier Legate","Witch Taker"'
 };
 MidnightLegacy.FEATS_ADDED = {
+
   'Battlefield Healer':'Type=General',
   'Brawler':'Type=General',
   'Captor':'Type=General',
@@ -160,7 +162,118 @@ MidnightLegacy.FEATS_ADDED = {
   'Shieldwall Soldier':'Type=General',
   'Subtle Spellcaster':'Type=General',
   'Suspicious':'Type=General',
-  'Unremarkable':'Type=General'
+  'Unremarkable':'Type=General',
+
+  'Lurk':'Type=General,Heroic Require="heroicPath == \'Avenger\'"',
+  'Silencing Strike':
+    'Type=General,Heroic Require="level >= 4",features.Lurk',
+  'Study The Target':
+    'Type=General,Heroic Require="level >= 8","features.Silencing Strike"',
+  'Deadly Strike':
+    'Type=General,Heroic Require="level >= 12","features.Study The Target"',
+  'Unseen Lurker':
+    'Type=General,Heroic Require="level >= 16","features.Deadly Strike"',
+  'Wild Resilience':'Type=General,Heroic Require="heroicPath == \'Beastborn\'"',
+  'Vicious Assault':
+    'Type=General,Heroic Require="level >= 4","features.Wild Resilience"',
+  'Pack Alpha':
+    'Type=General,Heroic Require="level >= 8","features.Vicious Assault"',
+  'Wild Sense':
+    'Type=General,Heroic Require="level >= 12","features.Pack Alpha"',
+  'Apex Predator':
+    'Type=General,Heroic Require="level >= 16","features.Wild Sense"',
+  'Inspiring Faith':'Type=General,Heroic Require="heroicPath == \'Believer\'"',
+  'Courage Of Your Convictions':
+    'Type=General,Heroic Require="level >= 4","features.Inspiring Faith"',
+  'Bulwark Of Faith':
+    'Type=General,Heroic ' +
+    'Require="level >= 8","features.Courage Of Your Convictions"',
+  'Holy Terror':
+    'Type=General,Heroic Require="level >= 12","features.Bulwark Of Faith"',
+  'Strength Of Faith':
+    'Type=General,Heroic Require="level >= 16","features.Holy Terror"',
+  'Channeled Magic':'Type=General,Heroic Require="heroicPath == \'Channeler\'"',
+  'Masterful Focus':
+    'Type=General,Heroic Require="level >= 4","features.Channeled Magic"',
+  'Mind Within The Weave':
+    'Type=General,Heroic Require="level >= 8","features.Masterful Focus"',
+  'The Eye Opens':
+    'Type=General,Heroic ' +
+    'Require="level >= 12","features.Mind Within The Weave"',
+  'The Channeling':
+    'Type=General,Heroic Require="level >= 16","features.The Eye Opens"',
+  'Conduit':'Type=General,Heroic Require="heroicPath == \'Dragonblooded\'"',
+  'Pure Magic':'Type=General,Heroic Require="level >= 4",features.Conduit',
+  'Intimidating Presence':
+    'Type=General,Heroic Require="level >= 8","features.Pure Magic"',
+  'Fireheart':
+    'Type=General,Heroic ' +
+    'Require="level >= 12","features.Intimidating Presence"',
+  'Raging Fury':'Type=General,Heroic Require="level >= 16",features.Fireheart',
+  'One With The Earth':
+    'Type=General,Heroic Require="heroicPath == \'Earthblooded\'"',
+  'Nexus Affinity':
+    'Type=General,Heroic Require="level >= 4","features.One With The Earth"',
+  'Avatar Of Aryth':
+    'Type=General,Heroic Require="level >= 8","features.Nexus Affinity"',
+  'Rooted':
+    'Type=General,Heroic Require="level >= 12","features.Avatar Of Aryth"',
+  'Nexus Guardian':'Type=General,Heroic Require="level >= 16",features.Rooted',
+  'Guard':'Type=General,Heroic Require="heroicPath == \'Guardian\'"',
+  'Crucial Strike':'Type=General,Heroic Require="level >= 4",features.Guard',
+  'Tactical Direction':
+    'Type=General,Heroic Require="level >= 8","features.Crucial Strike"',
+  'Warding Presence':
+    'Type=General,Heroic Require="level >= 12","features.Tactical Direction"',
+  'For Victory!':
+    'Type=General,Heroic Require="level >= 16","features.Warding Precence"',
+  'Hard To Kill':'Type=General,Heroic Require="heroicPath == \'Ironborn\'"',
+  'Tough As Iron':
+    'Type=General,Heroic Require="level >= 4","features.Hard To Kill"',
+  'Indefatigable':
+    'Type=General,Heroic Require="level >= 8","features.Tough As Iron"',
+  'Quick Recovery':
+    'Type=General,Heroic Require="level >= 12",features.Indefatigable',
+  'Unbroken':
+    'Type=General,Heroic Require="level >= 16","features.Quick Recovery"',
+  'Folk Medicine':'Type=General,Heroic Require="heroicPath == \'Preserver\'"',
+  'Resourceful':
+    'Type=General,Heroic Require="level >= 4","features.Folk Medicine"',
+  'Skilled Healer':
+    'Type=General,Heroic Require="level >= 8",features.Resourceful',
+  'Acts Of Service':
+    'Type=General,Heroic Require="level >= 12","features.Skilled Healer"',
+  'Reassuring Presence':
+    'Type=General,Heroic Require="level >= 16","features.Acts Of Service"',
+  'Well-Spoken':'Type=General,Heroic Require="heroicPath == \'Speaker\'"',
+  'Crowd Rouser':
+    'Type=General,Heroic Require="level >= 4",features.Well-Spoken',
+  'Rallying Cry':
+    'Type=General,Heroic Require="level >= 8","features.Crowd Rouser"',
+  'Scathing Rebuke':
+    'Type=General,Heroic Require="level >= 12","features.Rallying Cry"',
+  'Changed To The Core':
+    'Type=General,Heroic Require="level >= 16","features.Scathing Rebuke"',
+  'Fallen Sense':'Type=General,Heroic Require="heroicPath == \'Sunderborn\'"',
+  'Sundered Blood':
+    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+  'Sundered Fury':
+    'Type=General,Heroic Require="level >= 8","features.Sundered Blood"',
+  'Ethereal Presence':
+    'Type=General,Heroic Require="level >= 12","features.Sundered Fury"',
+  'Sundered Form':
+    'Type=General,Heroic Require="level >= 12","features.Ethereal Presence"',
+  'Natural Bond':'Type=General,Heroic Require="heroicPath == \'Wildblooded\'"',
+  'Wild Companion':
+    'Type=General,Heroic Require="level >= 4","features.Natural Bond"',
+  'Pack Fighter':
+    'Type=General,Heroic Require="level >= 8","features.Wild Companion"',
+  'Friends Until The End':
+    'Type=General,Heroic Require="level >= 12","features.Pack Fighter"',
+  'The Wild Hunt':
+    'Type=General,Heroic ' +
+    'Require="level >= 16","features.Friends Until The End"'
+
 };
 MidnightLegacy.FEATURES_ADDED = {
 
@@ -188,8 +301,69 @@ MidnightLegacy.FEATURES_ADDED = {
   'Suspicious':'Section=feature Note="FILL"',
   'Unremarkable':'Section=feature Note="FILL"',
 
+  // Heroic Paths
+  'Acts Of Service':'Section=feature Note="FILL"',
+  'Apex Predator':'Section=feature Note="FILL"',
+  'Avatar Of Aryth':'Section=feature Note="FILL"',
+  'Bulwark Of Faith':'Section=feature Note="FILL"',
+  'Changed To The Core':'Section=feature Note="FILL"',
+  'Channeled Magic':'Section=feature Note="FILL"',
+  'Conduit':'Section=feature Note="FILL"',
+  'Courage Of Your Convictions':'Section=feature Note="FILL"',
+  'Crowd Rouser':'Section=feature Note="FILL"',
+  'Crucial Strike':'Section=feature Note="FILL"',
+  'Deadly Strike':'Section=feature Note="FILL"',
+  'Ethereal Presence':'Section=feature Note="FILL"',
+  'Fallen Sense':'Section=feature Note="FILL"',
+  'Fireheart':'Section=feature Note="FILL"',
+  'Folk Medicine':'Section=feature Note="FILL"',
+  'For Victory!':'Section=feature Note="FILL"',
+  'Friends Until The End':'Section=feature Note="FILL"',
+  'Guard':'Section=feature Note="FILL"',
+  'Hard To Kill':'Section=feature Note="FILL"',
+  'Holy Terror':'Section=feature Note="FILL"',
+  'Indefatigable':'Section=feature Note="FILL"',
+  'Inspiring Faith':'Section=feature Note="FILL"',
+  'Intimidating Presence':'Section=feature Note="FILL"',
+  'Lurk':'Section=feature Note="FILL"',
+  'Masterful Focus':'Section=feature Note="FILL"',
+  'Mind Within The Weave':'Section=feature Note="FILL"',
+  'Natural Bond':'Section=feature Note="FILL"',
+  'Nexus Affinity':'Section=feature Note="FILL"',
+  'Nexus Guardian':'Section=feature Note="FILL"',
+  'One With The Earth':'Section=feature Note="FILL"',
+  'Pack Alpha':'Section=feature Note="FILL"',
+  'Pack Fighter':'Section=feature Note="FILL"',
+  'Pure Magic':'Section=feature Note="FILL"',
+  'Quick Recovery':'Section=feature Note="FILL"',
+  'Raging Fury':'Section=feature Note="FILL"',
+  'Rallying Cry':'Section=feature Note="FILL"',
+  'Reassuring Presence':'Section=feature Note="FILL"',
+  'Resourceful':'Section=feature Note="FILL"',
+  'Rooted':'Section=feature Note="FILL"',
+  'Scathing Rebuke':'Section=feature Note="FILL"',
+  'Silencing Strike':'Section=feature Note="FILL"',
+  'Skilled Healer':'Section=feature Note="FILL"',
+  'Strength Of Faith':'Section=feature Note="FILL"',
+  'Study The Target':'Section=feature Note="FILL"',
+  'Sundered Blood':'Section=feature Note="FILL"',
+  'Sundered Form':'Section=feature Note="FILL"',
+  'Sundered Fury':'Section=feature Note="FILL"',
+  'Tactical Direction':'Section=feature Note="FILL"',
+  'The Channeling':'Section=feature Note="FILL"',
+  'The Eye Opens':'Section=feature Note="FILL"',
+  'The Wild Hunt':'Section=feature Note="FILL"',
+  'Tough As Iron':'Section=feature Note="FILL"',
+  'Unbroken':'Section=feature Note="FILL"',
+  'Unseen Lurker':'Section=feature Note="FILL"',
+  'Vicious Assault':'Section=feature Note="FILL"',
+  'Warding Presence':'Section=feature Note="FILL"',
+  'Well-Spoken':'Section=feature Note="FILL"',
+  'Wild Companion':'Section=feature Note="FILL"',
+  'Wild Resilience':'Section=feature Note="FILL"',
+  'Wild Sense':'Section=feature Note="FILL"',
+
   // Paths
-  'Astirax Servant':'Section=feature Note="FILL"',
   'Astirax Servant':'Section=feature Note="FILL"',
   'Aura Of Darkness':'Section=feature Note="FILL"',
   'Bestial Astirax Servant':'Section=feature Note="FILL"',
@@ -207,58 +381,88 @@ MidnightLegacy.FEATURES_ADDED = {
   'Potent Spellcasting':'Section=feature Note="FILL"',
 
   // Races
-  'Animal Bond':'Section=feature Note="FILL"',
-  'Born Of The Sea':'Section=feature Note="FILL"',
+  // SRD5E defines Darkvision, Dwarven Resilience, Dwarven Toughness,
+  // Fey Ancestry, Halfling Nimbleness, Lucky Halfling, Slow, and Trance
+  'Animal Bond':
+    'Section=skill Note="Adv to control, persuade, or communicate w/animals"',
+  'Born Of The Sea':
+    'Section=ability,skill ' +
+    'Note="Use bonus action for 1 hr water breathing",' +
+         '"Tool Proficiency (Water Vehicles)"',
   'Canansil Ability Adjustment':
-    'Section=feature Note="+2 Dexterity/+1 Charisma"',
-  'Caransil Weapon Training':'Section=feature Note="FILL"',
-  'Child Of The North':'Section=feature Note="FILL"',
-  'Clan Dwarf Ability Adjustment':'Section=feature Note="+2 Constitution"',
-  'Clan Warrior Training':'Section=feature Note="FILL"',
-  'Danisil Ability Adjustment':
-    'Section=feature Note="+2 Dexterity/+1 Intelligence"',
-  'Danisil Weapon Training':'Section=feature Note="FILL"',
-  'Darkvision':'Section=feature Note="FILL"',
-  'Dorn Ability Adjustment':'Section=feature Note="+1 Strength/+1 any two"',
-  'Dwarven Resilience':'Section=feature Note="FILL"',
-  'Dwarven Toughness':'Section=feature Note="FILL"',
+    'Section=ability Note="+2 Dexterity/+1 Charisma"',
+  'Caransil Elf Weapon Training':
+    'Section=combat Note="Weapon Proficiency (Longbow/Longsword)"',
+  'Child Of The North':'Section=save Note="Adv vs. extreme cold"',
+  'Clan Dwarf Ability Adjustment':'Section=ability Note="+2 Constitution"',
+  'Clan Warrior Training':
+    'Section=combat ' +
+    'Note="Weapon Proficiency (Battleaxe/Warhammer)/Armor Proficiency (Medium)"',
+  'Danisil Elf Ability Adjustment':
+    'Section=ability Note="+2 Dexterity/+1 Intelligence"',
+  'Danisil Elf Weapon Training':
+    'Section=combat Note="Weapon Proficiency (Scimitar/Shortbow)"',
+  'Dorn Ability Adjustment':'Section=ability Note="+1 Strength/+1 any two"',
   'Enslaved Halfling Ability Adjustment':
-    'Section=feature Note="+2 Dexterity/+1 Constitution"',
-  'Erenlander Ability Adjustment':'Section=feature Note="+1 any two"',
-  'Erunsil Ability Adjustment':
-    'Section=feature Note="+2 Dexterity/+1 Strength"',
-  'Erunsil Weapon Training':'Section=feature Note="FILL"',
-  'Fast':'Section=feature Note="FILL"',
-  'Ferocity':'Section=feature Note="FILL"',
-  'Fey Ancestry':'Section=feature Note="FILL"',
+    'Section=ability Note="+2 Dexterity/+1 Constitution"',
+  'Erenlander Ability Adjustment':'Section=ability Note="+1 any two"',
+  'Erunsil Elf Ability Adjustment':
+    'Section=ability Note="+2 Dexterity/+1 Strength"',
+  'Erunsil Elf Weapon Training':
+    'Section=combat Note="Weapon Proficiency (Erunsil Fighting Knife/Longbow)"',
+  'Fast':'Section=ability Note="+5 Speed"',
+  'Ferocity':'Section=combat Note="+2 Str-based melee damage"',
   'Gnome Ability Adjustment':
-    'Section=feature Note="+2 Intelligence/+1 Charisma"',
-  'Gnomish Cunning':'Section=feature Note="FILL"',
-  'Halfling Magic':'Section=feature Note="FILL"',
-  'Halfling Nimbleness':'Section=feature Note="FILL"',
-  'Human Feat Bonus':'Section=feature Note="FILL"',
-  'Innate Magic Scholar':'Section=feature Note="FILL"',
-  'Innate Magic User':'Section=feature Note="FILL"',
-  'Kurgun Ability Adjustment':
-    'Section=feature Note="+2 Constitution/+2 Wisdom"',
-  'Kurgun Warrior Training':'Section=feature Note="FILL"',
-  'Lucky':'Section=feature Note="FILL"',
-  'Militant Culture':'Section=feature Note="FILL"',
-  'Miransil Ability Adjustment':'Section=feature Note="+2 Dexterity/+1 Wisdom"',
-  'Miransil Weapon Training':'Section=feature Note="FILL"',
+    'Section=ability Note="+2 Intelligence/+1 Charisma"',
+  'Gnomish Cunning':SRD5E.FEATURES['Gnome Cunning'],
+  'Halfling Magic':
+    'Section=magic Note="Know <i>Mending</i> and <i>Prestidigitation<i>"',
+  'Human Feat Bonus':'Section=feature Note="+1 General Feat"',
+  'Innate Magic Scholar':'Section=magic Note="Know 2 Wizard cantrips"',
+  'Innate Magic User':'Section=magic Note="Know 1 Sorcerer cantrip"',
+  'Kurgun Dwarf Ability Adjustment':
+    'Section=ability Note="+2 Constitution/+2 Wisdom"',
+  'Kurgun Dwarf Warrior Training':
+    'Section=combat ' +
+    'Note="Weapon Proficiency (Handaxe/Shortbow/Spear)/Armor Proficiency (Medium)"',
+  'Militant Culture':
+    'Section=combat ' +
+    'Note="Weapon Proficiency (Battleaxe/Greataxe/Longbow/Spear)"',
+  'Miransil Elf Ability Adjustment':
+    'Section=ability Note="+2 Dexterity/+1 Wisdom"',
+  'Miransil Elf Weapon Training':
+    'Section=combat Note="Weapon Proficiency (Javelin/Trident)"',
   'Nomadic Halfling Ability Adjustment':
-    'Section=feature Note="+2 Dexterity/+1 Wisdom"',
-  'Orc Ability Adjustment':'Section=feature Note="+2 Constitution/+2 Strength"',
-  'Riverfolk':'Section=feature Note="FILL"',
+    'Section=ability Note="+2 Dexterity/+1 Wisdom"',
+  'Orc Ability Adjustment':'Section=ability Note="+2 Constitution/+2 Strength"',
+  'Riverfolk':
+    'Section=skill ' +
+    'Note="Skill Proficiency (Athletics/Insight/Persuasion)/Tool Proficiency (Water Vehicles)"',
   'Sarcosan Ability Adjustment':
-    'Section=feature Note="+1 Dexterity/+1 any two"',
-  'Slow':'Section=feature Note="FILL"',
-  'Stonmaster\'s Cunning':'Section=feature Note="FILL"',
-  'Trance':'Section=feature Note="FILL"',
-  'Troubled Dreams':'Section=feature Note="FILL"',
-  'Unexpected Blow':'Section=feature Note="FILL"',
-  'Wraith Of The North':'Section=feature Note="FILL"'
+    'Section=ability Note="+1 Dexterity/+1 any two"',
+  'Stonemaster\'s Cunning':
+    'Section=skill ' +
+    'Note="Adv on stonework origin and underground direction and construction"',
+  'Troubled Dreams':'Section=combat Note="Long rest recovers 1 fewer hit die"',
+  'Unexpected Blow':
+    'Section=combat Note="May reroll 1 damage die from unexpected attack"',
+  'Wraith Of The North':
+    'Section=skill Note="Hide in nature when lightly obscured"'
 
+};
+MidnightLegacy.FEATURES =
+  Object.assign({}, SRD5E.FEATURES, MidnightLegacy.FEATURES_ADDED);
+MidnightLegacy.LANGUAGES = {
+  'Clan Dialect':'',
+  'Colonial':'',
+  'Erenlander':'',
+  'Halfling':'',
+  'High Elven':'',
+  'Norther':'',
+  'Old Dwarven':'',
+  'Orcish':'',
+  'Shadow Tongue':'',
+  "Trader's Tongue":''
 };
 MidnightLegacy.PATHS_ADDED = {
   'Keeper Of Obsidian Domain':
@@ -305,94 +509,146 @@ MidnightLegacy.PATHS_ADDED = {
       '"2:Detect Thoughts,Ray Of Enfeeblement",' +
       '"3:Bind/Banish Astirax,Counterspell",' +
       '"4:Confusion,Freedom Of Movement",' +
-      '"5:Scrying,Dominate Person"'
+      '"5:Scrying,Dominate Person"',
+  'Avenger':
+    'Group=Avenger ' +
+    'Level=level',
+  'Beastborn':
+    'Group=Beastborn ' +
+    'Level=level',
+  'Believer':
+    'Group=Believer ' +
+    'Level=level',
+  'Channeler':
+    'Group=Channeler ' +
+    'Level=level',
+  'Dragonblooded':
+    'Group=Dragonblooded ' +
+    'Level=level',
+  'Earthblooded':
+    'Group=Earthblooded ' +
+    'Level=level',
+  'Guardian':
+    'Group=Guardian ' +
+    'Level=level',
+  'Ironborn':
+    'Group=Ironborn ' +
+    'Level=level',
+  'None':
+    'Group=None ' +
+    'Level=level',
+  'Preserver':
+    'Group=Preserver ' +
+    'Level=level',
+  'Speaker':
+    'Group=Speaker ' +
+    'Level=level',
+  'Sunderborn':
+    'Group=Sunderborn ' +
+    'Level=level',
+  'Wildblooded':
+    'Group=Wildblooded ' +
+    'Level=level'
 };
-MidnightLegacy.RACES_ADDED = {
-  'Caransil':
+MidnightLegacy.RACES = {
+  'Caransil Elf':
     'Features=' +
       '"Skill Proficiency (Perception/Stealth)",' +
+      '"Language (High Elven/Erenlander/Choose 1 from Trader\'s Tongue/Old Dwarven/Orcish)",' +
       '"Canansil Ability Adjustment",' +
-      '"Caransil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
+      '"Caransil Elf Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
       '"Innate Magic User",Trance ' +
-    'Languages=Erenlander,"High Elven","Old Dwarven",Orcish,"Trader\'s Tongue"',
+    'Languages=Erenlander,"High Elven",any"',
   'Clan Dwarf':
     'Features=' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
+      '"Languages (Clan Dialect/Old Dwarven/Choose 1 from Trader\'s Tongue, Orcish)",' +
       '"Clan Dwarf Ability Adjustment",' +
       '"Clan Warrior Training",Darkvision,"Dwarven Resilience",' +
-      '"Dwarven Toughness",Slow,"Stonmaster\'s Cunning" ' +
-    'Languages="Clan Dialect","Old Dwarven","Trader\'s Tongue",Orcish',
-  'Danisil':
+      '"Dwarven Toughness",Slow,"Stonemaster\'s Cunning" ' +
+    'Languages="Clan Dialect","Old Dwarven",any',
+  'Danisil Elf':
     'Features=' +
       '"Skill Proficiency (History)",' +
-      '"Danisil Ability Adjustment",' +
-      '"Danisil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
+      '"Language (High Elven/Choose 1 from Sylvan, Halfling)",' +
+      '"Danisil Elf Ability Adjustment",' +
+      '"Danisil Elf Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
       '"Innate Magic Scholar",Trance ' +
-    'Languages=Halfling,"High Elven",Sylvan',
-  'Dorn':
+    'Languages="High Elven",any',
+  'Dorn Human':
     'Features=' +
       '"Skill Proficiency (Survival/Choose 1 from any)",' +
+      '"Languages (Eranlander, Norther, choose 1 from any)",' +
       '"Dorn Ability Adjustment",' +
       '"Human Feat Bonus" ' +
     'Languages=Erenlander,Norther,any',
   'Enslaved Halfling':
     'Features=' +
+      '"Language (Erenlander/Halfling/Choose 1 from Orcish, Trader\'s Tongue)",' +
       '"Enslaved Halfling Ability Adjustment",' +
-      '"Halfling Magic","Halfling Nimbleness",Lucky,Slow,"Unexpected Blow" ' +
-    'Languages=Erenlander,Halfling,Orcish,"Trader\'s Tongue"',
-  'Erenlander':
+      '"Halfling Magic","Halfling Nimbleness","Lucky Halfling",Slow,' +
+      '"Unexpected Blow" ' +
+    'Languages=Erenlander,Halfling,any"',
+  'Erenlander Human':
     'Features=' +
       '"Skill Proficiency (Choose 3 from any)",' +
       '"Tool Proficiency (Land Vehicles/Choose 1 from any Artisan)",' +
+      '"Language (Erenlander/Choose 1 from any)",' +
       '"Erenlander Ability Adjustment",' +
       '"Human Feat Bonus",' +
     'Languages=Erenlander,any',
-  'Erunsil':
+  'Erunsil Elf':
     'Features=' +
       '"Skill Proficiency (Survival)",' +
-      '"Erunsil Ability Adjustment",' +
-      '"Erunsil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
+      '"Language (High Elven/Orcish/Trader\'s Tongue)",' +
+      '"Erunsil Elf Ability Adjustment",' +
+      '"Erunsil Elf Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
       'Trance,"Wraith Of The North" ' +
     'Languages="High Elven",Orcish,"Trader\'s Tongue"',
   'Gnome':
     'Features=' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
+      '"Language (Erenlander/Trader\'s Tongue/Choose 2 from any)",' +
       '"Gnome Ability Adjustment",' +
       'Darkvision,"Gnomish Cunning",Riverfolk,Slow ' +
-    'Languages=Eranlander,"Trader\'s Tongue",any,any',
-  'Kurgun':
+    'Languages=Erenlander,"Trader\'s Tongue",any,any',
+  'Kurgun Dwarf':
     'Features=' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
-      '"Kurgun Ability Adjustment",' +
-      '"Kurgun Warrior Training",Darkvision,"Dwarven Resilience",Slow '  +
+      '"Languages (Clan Dialect/Old Dwarven/Choose 1 from Trader\'s Tongue, Orcish)",' +
+      '"Kurgun Dwarf Ability Adjustment",' +
+      '"Kurgun Dwarf Warrior Training",Darkvision,"Dwarven Resilience",Slow '  +
     'Languages="Clan Dialect","Old Dwarven","Trader\'s Tongue",Orcish',
-  'Miransil':
+  'Miransil Elf':
     'Features=' +
       '"Skill Proficiency (Athletics/Insight)",' +
-      '"Miransil Ability Adjustment",' +
-      '"Miransil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
+      '"Language (High Elven/Colonial/Trader\'s Tongue)",' +
+      '"Miransil Elf Ability Adjustment",' +
+      '"Miransil Elf Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
       'Trance,"Born Of The Sea" ' +
     'Languages="High Elven",Colonial,"Trader\'s Tongue"',
   'Nomadic Halfling':
     'Features=' +
+      '"Language (Erenlander/Halfling/Choose 1 from Orcish, Trader\'s Tongue)",' +
       '"Nomadic Halfling Ability Adjustment",' +
-      '"Halfling Magic","Halfling Nimbleness",Lucky,Slow,"Animal Bond" ' +
-    'Languages=Erenlander,Halfling,Orcish,"Trader\'s Tongue"',
+      '"Halfling Magic","Halfling Nimbleness","Lucky Halfling",Slow,' +
+      '"Animal Bond" ' +
+    'Languages=Erenlander,Halfling,any"',
   'Orc':
     'Features=' +
+      '"Language (Orcish/Shadow Tongue/Choose 2 from any)",' +
       '"Orc Ability Adjustment",' +
       '"Child Of The North",Darkvision,Ferocity,"Militant Culture",' +
       '"Troubled Dreams" ' +
     'Languages=Orcish,"Shadow Tongue",any,any',
-  'Sarcosan':
+  'Sarcosan Human':
     'Features=' +
       '"Skill Proficiency (Choose 1 from Animal Handling, History/Choose 1 from any)",' +
+      '"Language (Erenlander/Colonial/Choose 1 from any)",' +
       '"Sarcosan Ability Adjustment",' +
       '"Human Feat Bonus" ' +
     'Languages=Erenlander,Colonial,any',
 };
-MidnightLegacy.RACES =
-  Object.assign({}, SRD5E.RACES, MidnightLegacy.RACES_ADDED);
 MidnightLegacy.SPELLS_ADDED = {
   'Bind/Banish Astirax':
     'School=Divination ' +
@@ -444,6 +700,50 @@ MidnightLegacy.WEAPONS_ADDED = {
   'Vardatch':SRD5E.WEAPONS.Battleaxe
 };
 
+/* Defines the rules related to character abilities. */
+MidnightLegacy.abilityRules = function(rules) {
+  SRD5E.abilityRules(rules);
+  // No changes needed to the rules defined by base method
+};
+
+/* Defines the rules related to combat. */
+MidnightLegacy.combatRules = function(rules, armors, shields, weapons) {
+  SRD5E.combatRules(rules, armors, shields, weapons);
+  // No changes needed to the rules defined by base method
+};
+
+/* Defines rules related to basic character identity. */
+MidnightLegacy.identityRules = function(
+  rules, alignments, backgrounds, classes, deities, paths, races
+) {
+  SRD5E.identityRules
+    (rules, alignments, backgrounds, classes, deities, paths, races);
+  // Remove Deity from editor and sheet; add heroic path
+  delete rules.getChoices('random').deity;
+  rules.defineEditorElement('deity');
+  rules.defineSheetElement('Deity');
+  rules.defineSheetElement('Deity Alignment');
+  rules.defineEditorElement
+    ('heroicPath', 'Heroic Path', 'select-one', 'heroicPaths', 'alignment');
+  rules.defineSheetElement('Heroic Path', 'Alignment');
+};
+
+/* Defines rules related to magic use. */
+MidnightLegacy.magicRules = function(rules, schools, spells) {
+  SRD5E.magicRules(rules, schools, spells);
+  // No changes needed to the rules defined by base method
+};
+
+/* Defines rules related to character aptitudes. */
+MidnightLegacy.talentRules = function(
+  rules, feats, features, goodies, languages, skills, tools
+) {
+  SRD5E.talentRules(rules, feats, features, goodies, languages, skills, tools);
+  // No changes needed to the rules defined by base method
+  rules.defineRule
+    ('featCount.Heroic', 'heroicPath', '=', 'source == "None" ? null : 1');
+};
+
 /*
  * Adds #name# as a possible user #type# choice and parses #attrs# to add rules
  * related to selecting that choice.
@@ -451,201 +751,52 @@ MidnightLegacy.WEAPONS_ADDED = {
 MidnightLegacy.choiceRules = function(rules, type, name, attrs) {
   var basePlugin = window.PHB5E != null ? PHB5E : SRD5E;
   basePlugin.choiceRules(rules, type, name, attrs);
-  if(type == 'Feat')
-    MidnightLegacy.featRulesExtra(rules, name);
+  if(type == 'Class')
+    MidnightLegacy.classRulesExtra(rules, name);
   else if(type == 'Path')
     MidnightLegacy.pathRulesExtra(rules, name);
   else if(type == 'Race')
     MidnightLegacy.raceRulesExtra(rules, name);
+  if(type == 'Path' && !name.includes('Domain'))
+    rules.addChoice('heroicPaths', name, attrs);
 };
 
 /*
- * Defines in #rules# the rules associated with feat #name# that cannot be
- * derived directly from the attributes passed to featRules.
+ * Defines in #rules# the rules associated with class #name# that cannot be
+ * derived directly from the abilities passed to classRules.
  */
-MidnightLegacy.featRulesExtra = function(rules, name) {
-  if(name == 'Svirfneblin Magic') {
-    SRD5E.featureSpells(
-      rules, 'Svirfneblin Magic', 'W', 'level',
-      ['Disguise Self,Blur,Blindness/Deafness,Nondetection']
-    );
-  }
+MidnightLegacy.classRulesExtra = function(rules, name) {
+  var classLevel = 'levels.' + name;
+  if(name == 'Cleric')
+    rules.defineRule('deity', classLevel, '=', '"Izrador"');
 };
 
 /*
- * Defines in #rules# the rules associated with path #name# that cannot be
- * derived directly from the attributes passed to pathRules.
+ * Defines in #rules# the rules associated with heroic path #name# that cannot
+ * be derived directly from the abilities passed to heroicPathRules.
  */
 MidnightLegacy.pathRulesExtra = function(rules, name) {
-
-  var pathLevel =
-    name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') +
-    'Level';
-
-  if(name == 'Arcana Domain') {
-    rules.defineRule
-      ('combatNotes.arcaneAbjuration', 'spellDifficultyClass.C', '=', null);
-    rules.defineRule('combatNotes.arcaneAbjuration.1',
-      'features.Arcane Abjuration', '?', null,
-      pathLevel, '=', 'source>=5 ? ", banish up to CR " + (source<8 ? "1/2" : source>=17 ? 4 : Math.floor((source - 5) / 3)) : ""'
-    );
-    rules.defineRule('spellSlots.W0', 'magicNotes.arcaneInitiate', '+=', '2');
-    rules.defineRule('spellSlots.W6', 'magicNotes.arcaneMastery', '+=', '1');
-    rules.defineRule('spellSlots.W7', 'magicNotes.arcaneMastery', '+=', '1');
-    rules.defineRule('spellSlots.W8', 'magicNotes.arcaneMastery', '+=', '1');
-    rules.defineRule('spellSlots.W9', 'magicNotes.arcaneMastery', '+=', '1');
-    rules.defineRule('casterLevels.W', 'casterLevels.Arcana', '^=', null);
-  } else if(name == 'Bladesinging') {
-    // Copied from Tasha's
-    // Have to hard-code these proficiencies, since featureRules only handles
-    // notes w/a single type of granted proficiency
-    rules.defineRule
-      ('armorProficiency.Light', 'combatNotes.trainingInWarAndSong', '=', '1');
-    rules.defineRule
-      ('weaponChoiceCount', 'combatNotes.trainingInWarAndSong', '+=', '1');
-    rules.defineRule('combatNotes.bladesong',
-      'intelligenceModifier', '=', 'Math.max(source, 1)'
-    );
-    rules.defineRule('combatNotes.songOfVictory',
-      'intelligenceModifier', '=', 'Math.max(source, 1)'
-    );
-    rules.defineRule('combatNotes.extraAttack', pathLevel, '+=', '1');
-    rules.defineRule('magicNotes.bladesong',
-      'intelligenceModifier', '=', 'Math.max(source, 1)'
-    );
-  } else if(name == 'Mastermind') {
-    // Have to hard-code these proficiencies, since featureRules only handles
-    // notes w/a single type of granted proficiency
-    rules.defineRule
-      ('toolProficiency.Disguise Kit', 'skillNotes.masterOfIntrigue', '=', '1');
-    rules.defineRule
-      ('toolProficiency.Forgery Kit', 'skillNotes.masterOfIntrigue', '=', '1');
-    rules.defineRule
-      ('toolChoiceCount', 'skillNotes.masterOfIntrigue', '+=', '1');
-  } else if(name == 'Oath Of The Crown') {
-    rules.defineRule('combatNotes.championChallenge',
-      'spellDifficultyClass.P', '=', null
-    );
-    rules.defineRule('magicNotes.turnTheTide',
-      'charismaModifier', '=', 'Math.max(source, 1)'
-    );
-  } else if(name == 'Path Of The Battlerager') {
-    rules.defineRule('combatNotes.battleragerArmor.1',
-      'features.Battlerager Armor', '?', null,
-      'strengthModifier', '=', null
-    );
-    rules.defineRule('combatNotes.recklessAbandon',
-      'constitutionModifier', '=', 'Math.max(source, 1)'
-    );
-  } else if(name == 'Path Of The Totem Warrior (Elk)') {
-    rules.defineRule
-      ('combatNotes.elkTotemicAttunement', 'strengthModifier', '=', null);
-    rules.defineRule('combatNotes.elkTotemicAttunement.1',
-      'features.Elk Totemic Attunement', '?', null,
-      'strengthModifier', '=', '8 + source',
-      'proficiencyBonus', '+', null
-    );
-  } else if(name == 'Purple Dragon Knight') {
-    rules.defineRule
-      ('combatNotes.inspiringSurge', pathLevel, '=', 'source>=18 ? 2 : 1');
-    rules.defineRule('combatNotes.rallyingCry', pathLevel, '=', null);
-    rules.defineRule('featureNotes.royalEnvoy.1',
-      'features.Royal Envoy', '?', null,
-      'proficiencyBonus', '=', null
-    );
-    rules.defineRule
-      ('skills.Persuasion', 'featureNotes.royalEnvoy.1', '+', null);
-  } else if(name == 'Storm Sorcery') {
-    // Copied from Xanathar
-    rules.defineRule("combatNotes.storm'sFury", pathLevel, '=', null);
-    rules.defineRule("combatNotes.storm'sFury.1",
-      "features.Storm's Fury", '?', null,
-      'spellDifficultyClass.S', '=', null
-    );
-    rules.defineRule('languageCount', 'skillNotes.windSpeaker', '+', '5');
-    rules.defineRule('languages.Aquan', 'skillNotes.windSpeaker', '=', '1');
-    rules.defineRule('languages.Auran', 'skillNotes.windSpeaker', '=', '1');
-    rules.defineRule('languages.Ignan', 'skillNotes.windSpeaker', '=', '1');
-    rules.defineRule
-      ('languages.Primordial', 'skillNotes.windSpeaker', '=', '1');
-    rules.defineRule('languages.Terran', 'skillNotes.windSpeaker', '=', '1');
-    rules.defineRule
-      ('magicNotes.heartOfTheStorm', pathLevel, '=', 'Math.floor(source / 2)');
-    rules.defineRule
-      ('magicNotes.windSoul', 'charismaModifier', '=', '3 + source');
-  } else if(name == 'Swashbuckler') {
-    // Copied from Xanathar
-    rules.defineRule('combatNotes.rakishAudacity.1',
-      'features.Rakish Audacity', '?', null,
-      'charismaModifier', '=', null
-    );
-    // Dummy rule to italicize combatNotes.rakishAudacity
-    rules.defineRule('initiative', 'combatNotes.rakishAudacity', '+', '0');
-  } else if(name == 'The Undying') {
-    rules.defineRule
-      ('combatNotes.amongTheDead', 'spellDifficultyClass.K', '=', null);
-    rules.defineRule('combatNotes.defyDeath',
-      'constitutionModifier', '=', 'Math.max(source, 1)'
-    );
-    rules.defineRule('combatNotes.indestructibleLife', pathLevel, '=', null);
-    rules.defineRule('magicNotes.defyDeath',
-      'constitutionModifier', '=', 'Math.max(source, 1)'
-    );
-    SRD5E.featureSpells
-      (rules, 'Among The Dead', 'K', pathLevel, ['Spare The Dying']);
-  } else if(name == 'Way Of The Long Death') {
-    rules.defineRule('combatNotes.hourOfReaping', 'kiSaveDC', '=', null);
-    rules.defineRule('combatNotes.touchOfDeath',
-      pathLevel, '=', null,
-      'wisdomModifier', '+', null,
-      '', '^', '1'
-    );
-    rules.defineRule('combatNotes.touchOfTheLongDeath', 'kiSaveDC', '=', null);
-  } else if(name == 'Way Of The Sun Soul') {
-    // Copied from Xanathar
-    rules.defineRule('combatNotes.radiantSunBolt',
-      'proficiencyBonus', '=', null,
-      'dexterityModifier', '+', null
-    );
-    rules.defineRule('combatNotes.radiantSunBolt.1',
-      'features.Radiant Sun Bolt', '?', null,
-      'combatNotes.martialArts', '=', null
-    );
-    rules.defineRule('combatNotes.radiantSunBolt.2',
-      'features.Radiant Sun Bolt', '?', null,
-      'dexterityModifier', '=', null
-    );
-    rules.defineRule
-      ('combatNotes.sunShield', 'wisdomModifier', '=', 'source + 5');
-    rules.defineRule
-      ('magicNotes.searingArcStrike', pathLevel, '=', 'Math.floor(source / 2)');
-    rules.defineRule('magicNotes.searingSunburst', 'kiSaveDC', '=', null);
-    SRD5E.featureSpells
-     (rules, 'Searing Arc Strike', 'W', pathLevel, ['Burning Hands']);
+  if(!name.match(/Domain/)) {
+    rules.defineRule('features.' + name, 'heroicPath', '=', 'source == "' + name + '" ? 1 : null');
+    rules.defineSheetElement(name + ' Features', 'Feats+', null, '; ');
+    rules.defineChoice('extras', name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') + 'Features');
   }
-
 };
 
 /*
- * Defines in #rules# the rules associated with path #name# that cannot be
- * derived directly from the attributes passed to raceRules.
+ * Defines in #rules# the rules associated with race #name# that cannot be
+ * derived directly from the abilities passed to raceRules.
  */
 MidnightLegacy.raceRulesExtra = function(rules, name) {
-
-  var raceLevel =
-    name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') +
-    'Level';
-
-  if(name == 'Gray Dwarf') {
-    rules.defineRule('magicNotes.duergarMagic.1',
-      'features.Duergar Magic', '?', null,
-      raceLevel, '=', 'source>=5 ? " and <i>Invisibility</i>" : ""'
-    );
-    SRD5E.featureSpells(
-      rules, 'Duergar Magic', 'W', 'level', ['Enlarge/Reduce', '5:Invisibility']
-    );
-  }
-
+  if(name == 'Caransil Elf')
+    rules.defineRule
+      ('spellSlots.S0', 'magicNotes.innateMagicalUser', '+=', '1');
+  else if(name == 'Clan Dwarf')
+    rules.defineRule
+      ('combatNotes.dwarvenToughness', 'level', '=', 'source + 2');
+  else if(name == 'Danisil Elf')
+    rules.defineRule
+      ('spellSlots.W0', 'magicNotes.innateMagicalScholar', '+=', '2');
 };
 
 /* Returns an array of plugins upon which this one depends. */
