@@ -106,6 +106,14 @@ function MidnightLegacy() {
 MidnightLegacy.VERSION = '2.3.1.0';
 
 MidnightLegacy.BACKGROUNDS_ADDED = {
+  'Deserter':
+    'Equipment=' +
+       '"Uniform With Insignia","Sturdy Boots",Bedroll,Backpack,' +
+       '"1 Week\'s Rations" ' +
+    'Features=' +
+      '"Skill Proficiency (Athletics/Perception)",' +
+      '"Weapon Proficiency (Choose 1 from any Martial)",' +
+      '"Old Veteran"',
   'Former Slave':
     'Equipment=' +
        '"Common Clothes","50\' Rope","Basic Tool","Pair Of Shackles" ' + 
@@ -159,7 +167,9 @@ MidnightLegacy.FEATS_ADDED = {
   'Polyglot':'Type=General',
   'Scavenger':'Type=General',
   'Seamaster':'Type=General',
-  'Shieldwall Soldier':'Type=General',
+  'Shieldwall Soldier':
+    'Type=General ' +
+    'Require="features.Armor Proficiency (Medium)","constitution >= 13"',
   'Subtle Spellcaster':'Type=General',
   'Suspicious':'Type=General',
   'Unremarkable':'Type=General',
@@ -226,7 +236,7 @@ MidnightLegacy.FEATS_ADDED = {
   'Warding Presence':
     'Type=General,Heroic Require="level >= 12","features.Tactical Direction"',
   'For Victory!':
-    'Type=General,Heroic Require="level >= 16","features.Warding Precence"',
+    'Type=General,Heroic Require="level >= 16","features.Warding Presence"',
   'Hard To Kill':'Type=General,Heroic Require="heroicPath == \'Ironborn\'"',
   'Tough As Iron':
     'Type=General,Heroic Require="level >= 4","features.Hard To Kill"',
@@ -278,28 +288,76 @@ MidnightLegacy.FEATS_ADDED = {
 MidnightLegacy.FEATURES_ADDED = {
 
   // Backgrounds
-  'Knowledge Of The Enemy':'Section=feature Note="FILL"',
-  'Sympathetic Ally':'Section=feature Note="FILL"',
-  'Military Rank':'Section=feature Note="FILL"',
-  'Survivalist':'Section=feature Note="FILL"',
+  'Knowledge Of The Enemy':
+    'Section=feature ' +
+    'Note="Know basics of Shadow military organization; can get messages to slaves undetected"',
+  'Military Rank':
+    'Section=feature Note="Comrades and soldiers show respect and deference"',
+  'Old Veteran':
+    'Section=feature Note="Know how to infiltrate military orders"',
+  'Survivalist':
+    'Section=skill ' +
+    'Note="Can detect presence of hostile creatures and blighted lands, find shelter from weather"',
+  'Sympathetic Ally':
+     'Section=feature ' +
+     'Note="Receives support and info from contact in occupied lands"',
 
   // Feats
-  'Battlefield Healer':'Section=feature Note="FILL"',
-  'Brawler':'Section=feature Note="FILL"',
-  'Captor':'Section=feature Note="FILL"',
-  'Fellhunter':'Section=feature Note="FILL"',
-  'Harrier':'Section=feature Note="FILL"',
-  'Improvised Fighter':'Section=feature Note="FILL"',
-  'Knife Fighter':'Section=feature Note="FILL"',
-  'Learned':'Section=feature Note="FILL"',
-  'Paranoid':'Section=feature Note="FILL"',
-  'Polyglot':'Section=feature Note="FILL"',
-  'Scavenger':'Section=feature Note="FILL"',
-  'Seamaster':'Section=feature Note="FILL"',
-  'Shieldwall Soldier':'Section=feature Note="FILL"',
-  'Subtle Spellcaster':'Section=feature Note="FILL"',
-  'Suspicious':'Section=feature Note="FILL"',
-  'Unremarkable':'Section=feature Note="FILL"',
+  'Battlefield Healer':
+    'Section=combat,skill ' +
+    'Note="Allies regain extra Hit Die from long rest",' +
+         '"DC 15 Int with healer\'s kit stabilizes and restores 3 HP"',
+  'Brawler':
+    'Section=combat ' +
+    'Note="Unarmed strike does d4 damage, gives bonus action for second strike, grapple, or knock prone"',
+  'Captor':
+    'Section=ability,combat ' +
+    'Note="+1 Strength",' +
+         '"Adv on Athletics to grapple when unseen; grapple silently; move at full speed while grappling"',
+  'Fellhunter':
+    'Section=skill ' +
+    'Note="DC 12 Religion gives Adv on saves and inflicts Disadv on undead for 1 min 1/long rest"',
+  'Harrier':
+    'Section=combat ' +
+    'Note="Mounted move negates foe OA causes successful attacks to knock prone"',
+  'Improvised Fighter':
+    'Section=combat ' +
+    'Note="Weapon Proficiency (Improvised)/Improvised weapon damage increased to 1d6"',
+  'Knife Fighter':
+    'Section=ability,combat ' +
+    'Note="+1 Dexterity",' +
+         '"Dagger crits on 18; crit hit inflicts Disadv on combat for 1 rd"',
+  'Learned':
+    'Section=skill ' +
+    'Note="+1 Language Count/Can read and write/Skill Proficiency (Choose 1 from History, Religion)"',
+  'Paranoid':
+    'Section=combat ' +
+    'Note="Cannot be surprised when asleep/Automatic Dodge in first round"',
+  'Polyglot':
+    'Section=skill ' +
+    'Note="General language understanding after 1 dy, DC 15 Int to learn after 1 wk"',
+  'Scavenger':
+    'Section=ability,skill ' +
+    'Note="Ability Boost (Choose 1 from Intelligence, Wisdom)",' +
+         '"DC 15 Perception to recover all ammo; DC 12 Investigation to scavenge weapon or armor materials"',
+  'Seamaster':
+    'Section=ability,feature,skill ' +
+    'Note="Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
+         '"Increase speed of commanded ship by 2 MPH, climb rope at full speed",' +
+         '"No Disadv to pilot ship through storm"',
+  'Shieldwall Soldier':
+    'Section=combat Note="R5\' Ally +1 AC, +2 if self has shield"',
+  'Subtle Spellcaster':
+    'Section=magic,skill ' +
+    'Note="Cast 2 chosen level 1 spells 1/long rest",' +
+         '"Sleight Of Hand vs. passive Perception to cast spells unnoticed"',
+  'Suspicious':
+    'Section=ability,skill ' +
+    'Note="+1 Intelligence",' +
+         '"Skill Proficiency (Insight)/Dbl proficiency for Insight and passive Perception/DC 20 Investigation to note flaws in story detail"',
+  'Unremarkable':
+    'Section=ability,feature ' +
+    'Note="+1 Wisdom","Run through crowds unnoticed/Foe passive Perception to notice self reduced to 12"',
 
   // Heroic Paths
   'Acts Of Service':'Section=feature Note="FILL"',
@@ -389,7 +447,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,skill ' +
     'Note="Use bonus action for 1 hr water breathing",' +
          '"Tool Proficiency (Water Vehicles)"',
-  'Canansil Ability Adjustment':
+  'Caransil Ability Adjustment':
     'Section=ability Note="+2 Dexterity/+1 Charisma"',
   'Caransil Elf Weapon Training':
     'Section=combat Note="Weapon Proficiency (Longbow/Longsword)"',
@@ -555,7 +613,7 @@ MidnightLegacy.RACES = {
     'Features=' +
       '"Skill Proficiency (Perception/Stealth)",' +
       '"Language (High Elven/Erenlander/Choose 1 from Trader\'s Tongue/Old Dwarven/Orcish)",' +
-      '"Canansil Ability Adjustment",' +
+      '"Caransil Ability Adjustment",' +
       '"Caransil Elf Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
       '"Innate Magic User",Trance ' +
     'Languages=Erenlander,"High Elven",any"',
@@ -578,7 +636,7 @@ MidnightLegacy.RACES = {
   'Dorn Human':
     'Features=' +
       '"Skill Proficiency (Survival/Choose 1 from any)",' +
-      '"Languages (Eranlander, Norther, choose 1 from any)",' +
+      '"Languages (Erenlander, Norther, choose 1 from any)",' +
       '"Dorn Ability Adjustment",' +
       '"Human Feat Bonus" ' +
     'Languages=Erenlander,Norther,any',
