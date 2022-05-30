@@ -72,6 +72,10 @@ function MidnightLegacy() {
     Object.assign({}, basePlugin.PATHS, MidnightLegacy.PATHS_ADDED);
   MidnightLegacy.SPELLS =
     Object.assign({}, basePlugin.SPELLS, MidnightLegacy.SPELLS_ADDED);
+  for(var s in MidnightLegacy.SPELLS) {
+    if(MidnightLegacy.SPELLS[s] == null)
+      delete MidnightLegacy.SPELLS[s];
+  }
   MidnightLegacy.WEAPONS =
     Object.assign({}, basePlugin.WEAPONS, MidnightLegacy.WEAPONS_ADDED);
 
@@ -146,6 +150,8 @@ MidnightLegacy.BACKGROUNDS_ADDED = {
       'Survivalist ' +
     'Languages="Trader\'s Tongue",any'
 };
+MidnightLegacy.BACKGROUNDS =
+  Object.assign({}, SRD5E.BACKGROUNDS, MidnightLegacy.BACKGROUNDS_ADDED);
 MidnightLegacy.CLASSES = Object.assign({}, SRD5E.CLASSES);
 delete MidnightLegacy.CLASSES.Monk;
 delete MidnightLegacy.CLASSES.Warlock;
@@ -285,6 +291,8 @@ MidnightLegacy.FEATS_ADDED = {
     'Require="level >= 16","features.Friends Until The End"'
 
 };
+MidnightLegacy.FEATS =
+  Object.assign({}, SRD5E.FEATS, MidnightLegacy.FEATS_ADDED);
 MidnightLegacy.FEATURES_ADDED = {
 
   // Backgrounds
@@ -608,6 +616,8 @@ MidnightLegacy.PATHS_ADDED = {
     'Group=Wildblooded ' +
     'Level=level'
 };
+MidnightLegacy.PATHS =
+  Object.assign({}, SRD5E.PATHS, MidnightLegacy.PATHS_ADDED);
 MidnightLegacy.RACES = {
   'Caransil Elf':
     'Features=' +
@@ -616,7 +626,7 @@ MidnightLegacy.RACES = {
       '"Caransil Ability Adjustment",' +
       '"Caransil Elf Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
       '"Innate Magic User",Trance ' +
-    'Languages=Erenlander,"High Elven",any"',
+    'Languages=Erenlander,"High Elven",any',
   'Clan Dwarf':
     'Features=' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
@@ -646,7 +656,7 @@ MidnightLegacy.RACES = {
       '"Enslaved Halfling Ability Adjustment",' +
       '"Halfling Magic","Halfling Nimbleness","Lucky Halfling",Slow,' +
       '"Unexpected Blow" ' +
-    'Languages=Erenlander,Halfling,any"',
+    'Languages=Erenlander,Halfling,any',
   'Erenlander Human':
     'Features=' +
       '"Skill Proficiency (Choose 3 from any)",' +
@@ -691,7 +701,7 @@ MidnightLegacy.RACES = {
       '"Nomadic Halfling Ability Adjustment",' +
       '"Halfling Magic","Halfling Nimbleness","Lucky Halfling",Slow,' +
       '"Animal Bond" ' +
-    'Languages=Erenlander,Halfling,any"',
+    'Languages=Erenlander,Halfling,any',
   'Orc':
     'Features=' +
       '"Language (Orcish/Shadow Tongue/Choose 2 from any)",' +
@@ -711,40 +721,78 @@ MidnightLegacy.SPELLS_ADDED = {
   'Bind/Banish Astirax':
     'School=Divination ' +
     'Level=C3,D3,P3 ' +
-    'Description="FILL"',
+    'Description=' +
+      '"R200\' Self detect astiraxes, R10\' bind to commands for 1 yr or inflict 4d12 HP radiant (Wis neg)"',
   'Disguise Ally':
     'School=Illusion ' +
     'Level=B2,S2,W2 ' +
-    'Description="FILL"',
+    'Description=' +
+      '"R100\' Willing target altered in appearance for conc or 1 hr or until out of range"',
   'Greenshield':
     'School=Abjuration ' +
     'Level=D2 ' +
-    'Description="FILL"',
+    'Description="Vegetation in 20\' radius allows only allies to pass"',
   'Heed The Whisper':
     'School=Divination ' +
     'Level=D1,R1 ' +
-    'Description="FILL"',
+    'Description=' +
+      '"While w/in 1 mile of Erethor, self detects hostile creatures for 8 hr"',
   'Lifetrap':
     'School=Transmutation ' +
     'Level=D1,R1 ' +
-    'Description="FILL"',
+    'Description=' +
+      '"R150\' Target creature restrained (Str neg) for conc or 1 min; undead suffers 1d12/tn at end"',
   "Nature's Revelation":
     'School=Transmutation ' +
     'Level=D2,R2 ' +
-    'Description="FILL"',
+    'Description=' +
+      '"R120\' Plants and animals identify hidden creatures for conc or 1 min"',
   'Silver Blood':
     'School=Abjuration ' +
     'Level=B1,S1,W1 ' +
-    'Description="FILL"',
+    'Description=' +
+      '"Self suffer 1d4 HP to create silver ammo, warding line, or astirax barrier for 1 hr"',
   'Silver Storm':
     'School=Transmutation ' +
     'Level=S5,W5 ' +
-    'Description="FILL"',
+    'Description=' +
+      '"70\' cone of silver needles inflicts 10d4 piercing (Dex half)"',
   'Silver Wind':
     'School=Conjuration ' +
     'Level=S4,W4 ' +
-    'Description="FILL"'
+    'Description=' +
+      '"R200\' 40\' sphere reveals creatures, inflicts stun on vulnerable (Con neg)"',
+  // Removed
+  'Astral Projection':null,
+  'Augury':null,
+  'Banishment':null,
+  'Blink':null,
+  'Commune':null,
+  'Conjure Celestial':null,
+  'Contact Other Plane':null,
+  'Creation':null,
+  'Demiplane':null,
+  'Dimension Door':null,
+  'Divination':null,
+  'Etherealness':null,
+  'Forbiddance':null,
+  'Gate':null,
+  'Magnificient Mansion':null,
+  'Maze':null,
+  'Planar Ally':null,
+  'Planar Binding':null,
+  'Plane Shift':null,
+  'Rope Trick':null,
+  'Secret Chest':null,
+  'Teleport':null,
+  'Wish':null
 };
+MidnightLegacy.SPELLS =
+  Object.assign({}, SRD5E.SPELLS, MidnightLegacy.SPELLS_ADDED);
+for(var s in MidnightLegacy.SPELLS) {
+  if(MidnightLegacy.SPELLS[s] == null)
+    delete MidnightLegacy.SPELLS[s];
+}
 MidnightLegacy.WEAPONS_ADDED = {
   'Atharak':SRD5E.WEAPONS.Whip,
   'Cedeku':SRD5E.WEAPONS.Scimitar,
@@ -757,6 +805,8 @@ MidnightLegacy.WEAPONS_ADDED = {
   'Urutuk':SRD5E.WEAPONS.Handaxe,
   'Vardatch':SRD5E.WEAPONS.Battleaxe
 };
+MidnightLegacy.WEAPONS =
+  Object.assign({}, SRD5E.WEAPONS, MidnightLegacy.WEAPONS_ADDED);
 
 /* Defines the rules related to character abilities. */
 MidnightLegacy.abilityRules = function(rules) {
@@ -815,7 +865,7 @@ MidnightLegacy.choiceRules = function(rules, type, name, attrs) {
     MidnightLegacy.pathRulesExtra(rules, name);
   else if(type == 'Race')
     MidnightLegacy.raceRulesExtra(rules, name);
-  if(type == 'Path' && !name.includes('Domain'))
+  if(type == 'Path' && attrs.includes('Group=' + name))
     rules.addChoice('heroicPaths', name, attrs);
 };
 
