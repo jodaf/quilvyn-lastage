@@ -369,7 +369,11 @@ MidnightLegacy.FEATURES_ADDED = {
 
   // Heroic Paths
   'Acts Of Service':'Section=feature Note="FILL"',
-  'Apex Predator':'Section=feature Note="FILL"',
+  'Apex Predator':
+    'Section=ability,combat,feature ' +
+    'Note="+2 Strength",' +
+         '"+20 Hit Points/Unarmed strike inflicts 1d8 damage",' +
+         '"Pack Alpha affects all creatures"',
   'Avatar Of Aryth':'Section=feature Note="FILL"',
   'Bulwark Of Faith':'Section=feature Note="FILL"',
   'Changed To The Core':'Section=feature Note="FILL"',
@@ -378,7 +382,8 @@ MidnightLegacy.FEATURES_ADDED = {
   'Courage Of Your Convictions':'Section=feature Note="FILL"',
   'Crowd Rouser':'Section=feature Note="FILL"',
   'Crucial Strike':'Section=feature Note="FILL"',
-  'Deadly Strike':'Section=feature Note="FILL"',
+  'Deadly Strike':
+    'Section=combat Note="May automatically crit on strike w/Adv 1/short rest"',
   'Ethereal Presence':'Section=feature Note="FILL"',
   'Fallen Sense':'Section=feature Note="FILL"',
   'Fireheart':'Section=feature Note="FILL"',
@@ -391,14 +396,19 @@ MidnightLegacy.FEATURES_ADDED = {
   'Indefatigable':'Section=feature Note="FILL"',
   'Inspiring Faith':'Section=feature Note="FILL"',
   'Intimidating Presence':'Section=feature Note="FILL"',
-  'Lurk':'Section=feature Note="FILL"',
+  'Lurk':
+    'Section=skill ' +
+    'Note="Make make Stealth vs. passive Perception to become unnoticed"',
   'Masterful Focus':'Section=feature Note="FILL"',
   'Mind Within The Weave':'Section=feature Note="FILL"',
   'Natural Bond':'Section=feature Note="FILL"',
   'Nexus Affinity':'Section=feature Note="FILL"',
   'Nexus Guardian':'Section=feature Note="FILL"',
   'One With The Earth':'Section=feature Note="FILL"',
-  'Pack Alpha':'Section=feature Note="FILL"',
+  'Pack Alpha':
+    'Section=feature,skill ' +
+    'Note="May frighten beasts in 30\' radius (DC %{8+proficiencyBonus+strengthModifier} Wis neg)",' +
+         '"Adv Animal Handling (predatory beasts)"',
   'Pack Fighter':'Section=feature Note="FILL"',
   'Pure Magic':'Section=feature Note="FILL"',
   'Quick Recovery':'Section=feature Note="FILL"',
@@ -408,10 +418,15 @@ MidnightLegacy.FEATURES_ADDED = {
   'Resourceful':'Section=feature Note="FILL"',
   'Rooted':'Section=feature Note="FILL"',
   'Scathing Rebuke':'Section=feature Note="FILL"',
-  'Silencing Strike':'Section=feature Note="FILL"',
+  'Silencing Strike':
+    'Section=combat ' +
+    'Note="Melee hit silences target for 1 min (DC %{8+proficiencyBonus+intelligenceModifier} Con neg) 1/short rest"',
   'Skilled Healer':'Section=feature Note="FILL"',
   'Strength Of Faith':'Section=feature Note="FILL"',
-  'Study The Target':'Section=feature Note="FILL"',
+  'Study The Target':
+    'Section=ability,skill ' +
+    'Note="+1 Dexterity",' +
+         '"8 hr observation and research plus DC 10+HD Investigation check gives Adv on Deception and Stealth to gain access to target"',
   'Sundered Blood':'Section=feature Note="FILL"',
   'Sundered Form':'Section=feature Note="FILL"',
   'Sundered Fury':'Section=feature Note="FILL"',
@@ -421,30 +436,62 @@ MidnightLegacy.FEATURES_ADDED = {
   'The Wild Hunt':'Section=feature Note="FILL"',
   'Tough As Iron':'Section=feature Note="FILL"',
   'Unbroken':'Section=feature Note="FILL"',
-  'Unseen Lurker':'Section=feature Note="FILL"',
-  'Vicious Assault':'Section=feature Note="FILL"',
+  'Unseen Lurker':
+    'Section=ability,skill ' +
+    'Note="Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
+         '"Invisible during Lurk; may Lurk during combat"',
+  'Vicious Assault':
+    'Section=ability,combat ' +
+    'Note="+1 Strength",' +
+          '"Unarmed strike inflicats 1d6 HP; gain bonus second unarmed strike"',
   'Warding Presence':'Section=feature Note="FILL"',
   'Well-Spoken':'Section=feature Note="FILL"',
   'Wild Companion':'Section=feature Note="FILL"',
-  'Wild Resilience':'Section=feature Note="FILL"',
-  'Wild Sense':'Section=feature Note="FILL"',
+  'Wild Resilience':
+    'Section=ability,save ' +
+    'Note="+1 Constitution","May reroll Str, Dex, or Con save 1/long rest"',
+  'Wild Sense':
+    'Section=feature Note="Have Darkvision; Can sense invisible foes"',
 
   // Paths
-  'Astirax Servant':'Section=feature Note="FILL"',
-  'Aura Of Darkness':'Section=feature Note="FILL"',
-  'Bestial Astirax Servant':'Section=feature Note="FILL"',
-  'Dark Warrior':'Section=feature Note="FILL"',
-  "Dark God's Blessing":'Section=feature Note="FILL"',
-  'Dire Bodyguard':'Section=feature Note="FILL"',
-  'Dominate Undead':'Section=feature Note="FILL"',
-  'Dread Avatar':'Section=feature Note="FILL"',
-  'Ferocious Blow':'Section=feature Note="FILL"',
-  'Impervious To Magic':'Section=feature Note="FILL"',
-  'Improved Astirax Bond':'Section=feature Note="FILL"',
-  'Mage Hunter':'Section=feature Note="FILL"',
-  'Master Mage Hunter':'Section=feature Note="FILL"',
-  'Necromantic Arts':'Section=feature Note="FILL"',
-  'Potent Spellcasting':'Section=feature Note="FILL"',
+  'Astirax Servant':
+    'Section=feature ' +
+    'Note="R%{level<10?\\"100\'\\":\\"1 mile\\"} May communicate telepathically w/bound astirax"',
+  'Aura Of Darkness':
+    'Section=feature ' +
+    'Note="Creates 20\' radius of darkness that others cannot see through"',
+  'Bestial Astirax Servant':
+    'Section=feature ' +
+    'Note="R100\' May communicate telepathically w/bound astirax; astirax can possess large creature"',
+  'Dark Warrior':
+    'Section=feature Note="Extra attack %{wisdomModifier>?1}/long rest"',
+  "Dark God's Blessing":
+    'Section=combat Note="Self regains %{level<10?2:4}d6 HP from killing"',
+  'Dire Bodyguard':
+    'Section=feature ' +
+    'Note="Foe Disadv on attacks on others w/in 5\'; self can use reaction for melee attack"',
+  'Dominate Undead':
+    'Section=combat ' +
+    'Note="R30\' Use Channel Energy to control undead (Wis neg) for 1 hr"',
+  'Dread Avatar':
+    'Section=save ' +
+    'Note="Resistance to bludeoning, piercing, and slashing damage and nonmagical weapons; immunity to radiant damage"',
+  'Ferocious Blow':
+    'Section=feature ' +
+    'Note="Use Channel Divinity for +2d6 HP thunder; medium foe pushed 10\' and knocked prone"',
+  'Impervious To Magic':
+     'Section=magic ' +
+     'Note="Use Reaction to cast <i>Counterspell</i> w/out using spell slot"',
+  'Improved Astirax Bond':
+    'Section=feature ' +
+    'Note="Astirax gains +%{proficiencyBonus} AC, attack, and damage; may extend scent magic to 1 mile for 1 min 1/dy"',
+  'Mage Hunter':
+    'Section=combat ' +
+    'Note="R%V\' Use Channel Divinity to inflict Disadv on target caster concentration and Adv on saves vs. target\'s spells for 1 min"',
+  'Master Mage Hunter':'Section=combat Note="Extends Mage Hunter effect"',
+  'Necromantic Arts':'Section=magic Note="Know <i>Chill Touch</i>"',
+  'Potent Spellcasting':
+    'Section=magic Note="+%{wisdomModifier} Cleric cantrip damage"',
 
   // Races
   // SRD5E defines Darkvision, Dwarven Resilience, Dwarven Toughness,
@@ -865,8 +912,12 @@ MidnightLegacy.choiceRules = function(rules, type, name, attrs) {
     MidnightLegacy.pathRulesExtra(rules, name);
   else if(type == 'Race')
     MidnightLegacy.raceRulesExtra(rules, name);
-  if(type == 'Path' && attrs.includes('Group=' + name))
+  if(type == 'Path' && attrs.includes('Group=' + name)) {
     rules.addChoice('heroicPaths', name, attrs);
+    rules.defineRule('features.' + name, 'heroicPath', '=', 'source == "' + name + '" ? 1 : null');
+    rules.defineSheetElement(name + ' Features', 'Feats+', null, '; ');
+    rules.defineChoice('extras', name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') + 'Features');
+  }
 };
 
 /*
@@ -884,10 +935,11 @@ MidnightLegacy.classRulesExtra = function(rules, name) {
  * be derived directly from the abilities passed to heroicPathRules.
  */
 MidnightLegacy.pathRulesExtra = function(rules, name) {
-  if(!name.match(/Domain/)) {
-    rules.defineRule('features.' + name, 'heroicPath', '=', 'source == "' + name + '" ? 1 : null');
-    rules.defineSheetElement(name + ' Features', 'Feats+', null, '; ');
-    rules.defineChoice('extras', name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') + 'Features');
+  if(name == 'Beastborn') {
+    rules.defineRule('features.Darkvision', 'featureNotes.wildSense', '=', '1');
+  } else if(name == 'Witch Taker Domain') {
+    rules.defineRule
+      ('combatNotes.mageHunter', 'levels.Cleric', '=', 'source<8 ? 30 : 60');
   }
 };
 
