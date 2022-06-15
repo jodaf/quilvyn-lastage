@@ -368,61 +368,131 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="+1 Wisdom","Run through crowds unnoticed/Foe passive Perception to notice self reduced to 12"',
 
   // Heroic Paths
-  'Acts Of Service':'Section=feature Note="FILL"',
+  'Acts Of Service':
+    'Section=ability,combat,skill ' +
+    'Note="Ability Boost (Choose 1 from Strength, Wisdom)",' +
+         '"Foes suffer Disadv attacking adjacent incapacitated allies; self gains Adv on attacks",' +
+         '"May spend 2 uses of Healer\'s Kit to reduce exhaustion, or restore ability or HP maximum"',
   'Apex Predator':
     'Section=ability,combat,feature ' +
     'Note="+2 Strength",' +
          '"+20 Hit Points/Unarmed strike inflicts 1d8 damage",' +
          '"Pack Alpha affects all creatures"',
-  'Avatar Of Aryth':'Section=feature Note="FILL"',
-  'Bulwark Of Faith':'Section=feature Note="FILL"',
-  'Changed To The Core':'Section=feature Note="FILL"',
-  'Channeled Magic':'Section=feature Note="FILL"',
-  'Conduit':'Section=feature Note="FILL"',
-  'Courage Of Your Convictions':'Section=feature Note="FILL"',
-  'Crowd Rouser':'Section=feature Note="FILL"',
-  'Crucial Strike':'Section=feature Note="FILL"',
+  'Avatar Of Aryth':'Section=magic Note="Summon earth elemental 1/long rest"',
+  'Bulwark Of Faith':
+    'Section=ability,save ' +
+    'Note="Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
+         '"Adv vs. spells of celestials, fiends, undead, and Shadow agents"',
+  'Changed To The Core':
+    'Section=combat ' +
+    'Note="R50\' Persuasion vs. Insight causes target foe to flee (%{level//2+1}+ HD) or switch sides 1/long rest"',
+  'Channeled Magic':'Section=magic Note="%V additional %1 spell slot"',
+  'Conduit':'Section=magic Note="Know 2 Sorcerer cantrips"',
+  'Courage Of Your Convictions':
+    'Section=combat ' +
+    'Note="R50\' Use inspiration and bonus action to remove condition from self and allies"',
+  'Crowd Rouser':
+    'Section=magic ' +
+    'Note="R50\' May charm and convince listeners (DC %{8+charismaModifier+proficiencyBonus} Wis neg) for 1 wk 1/short rest"',
+  'Crucial Strike':
+    'Section=ability,combat ' +
+    'Note="+1 Charisma",' +
+         '"Use reaction to give ally additional attack with +%{proficiencyBonus} damage"',
   'Deadly Strike':
     'Section=combat Note="May automatically crit on strike w/Adv 1/short rest"',
   'Ethereal Presence':'Section=feature Note="FILL"',
   'Fallen Sense':'Section=feature Note="FILL"',
-  'Fireheart':'Section=feature Note="FILL"',
-  'Folk Medicine':'Section=feature Note="FILL"',
-  'For Victory!':'Section=feature Note="FILL"',
+  'Fireheart':
+    'Section=magic,save ' +
+    'Note="May reroll fire spell damage","Resistance to fire damage"',
+  'Folk Medicine':
+    'Section=skill ' +
+    'Note="Restore 1d6+%{wisdomModifier} per use of Healer\'s Kit"',
+  'For Victory!':
+    'Section=ability,combat ' +
+    'Note="+1 Charisma",' +
+         '"R30\' DC 15 Charisma gives allies +%{proficiencyBonus} attack and damage for 1 min 1/long rest"',
   'Friends Until The End':'Section=feature Note="FILL"',
-  'Guard':'Section=feature Note="FILL"',
-  'Hard To Kill':'Section=feature Note="FILL"',
-  'Holy Terror':'Section=feature Note="FILL"',
-  'Indefatigable':'Section=feature Note="FILL"',
-  'Inspiring Faith':'Section=feature Note="FILL"',
-  'Intimidating Presence':'Section=feature Note="FILL"',
+  'Guard':
+    'Section=combat ' +
+    'Note="Use bonus action to give adjacent ally +1 AC (+2 with shield)"',
+  'Hard To Kill':
+    'Section=save Note="Death save on roll of 6; 16 restores 1 HP"',
+  'Holy Terror':
+    'Section=combat ' +
+    'Note="R30\' Use inspiration and bonus action to turn foes (DC %{8+wisdomModifier+proficiencyBonus} Wisdom neg) for 1 min"',
+  'Indefatigable':
+    'Section=ability,feature ' +
+    'Note="Ability Boost (Choose 1 from Constitution, Strength)/No Disadv on Con or Str checks due to exhaustion",' +
+         '"DC 15 Constitution check to dbl exhaustion recovery"',
+  'Inspiring Faith':'Section=feature Note="Gain inspiration after short rest"',
+  'Intimidating Presence':'Section=ability,magic ' +
+    'Note="+1 Charisma",' +
+         '"R30\' Casting spell frightens foes (Wis neg)"',
   'Lurk':
     'Section=skill ' +
-    'Note="Make make Stealth vs. passive Perception to become unnoticed"',
-  'Masterful Focus':'Section=feature Note="FILL"',
-  'Mind Within The Weave':'Section=feature Note="FILL"',
+    'Note="Make Stealth vs. passive Perception to become unnoticed"',
+  'Masterful Focus':
+    'Section=ability,save ' +
+    'Note="Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
+         '"+%{proficiencyBonus} concentration to maintain spell"',
+  'Mind Within The Weave':
+    'Section=magic ' +
+    'Note="May simultaneously maintain concentration on two spells"',
   'Natural Bond':'Section=feature Note="FILL"',
-  'Nexus Affinity':'Section=feature Note="FILL"',
-  'Nexus Guardian':'Section=feature Note="FILL"',
-  'One With The Earth':'Section=feature Note="FILL"',
+  'Nexus Affinity':
+    'Section=ability,feature,skill ' +
+    'Note="+1 Wisdom",' +
+         '"+1d6 ability, attack, and save w/in 1 mile of a power nexus or black mirror",' +
+         '"DC 16 Insight to detect power nexus or black mirror w/in 5 miles"',
+  'Nexus Guardian':
+    'Section=feature ' +
+    'Note="May attune to nexus, which grants remote charge use, teleportation to nexus, agelessness, and reincarnation"',
+  'One With The Earth':
+    'Section=feature,skill ' +
+    'Note="Know north, direction of water and geologic features w/in 5 miles, direction of buildings w/in 1 mile",' +
+         '"Skill Proficiency (Perception/Survival)"',
   'Pack Alpha':
     'Section=feature,skill ' +
     'Note="May frighten beasts in 30\' radius (DC %{8+proficiencyBonus+strengthModifier} Wis neg)",' +
          '"Adv Animal Handling (predatory beasts)"',
   'Pack Fighter':'Section=feature Note="FILL"',
-  'Pure Magic':'Section=feature Note="FILL"',
-  'Quick Recovery':'Section=feature Note="FILL"',
-  'Raging Fury':'Section=feature Note="FILL"',
-  'Rallying Cry':'Section=feature Note="FILL"',
-  'Reassuring Presence':'Section=feature Note="FILL"',
-  'Resourceful':'Section=feature Note="FILL"',
-  'Rooted':'Section=feature Note="FILL"',
-  'Scathing Rebuke':'Section=feature Note="FILL"',
+  'Pure Magic':'Section=magic Note="+%V spell attack and save DC"',
+  'Quick Recovery':
+    'Section=ability,combat ' +
+    'Note="+1 Constitution",' +
+         '"May trade 1 level of exhaustion to recover hit dice, adding %{constitutionModifier} to each"',
+  'Raging Fury':
+    'Section=magic ' +
+    'Note="Increased Pure Magic effects/May cast 1 action spell as bonus action"',
+  'Rallying Cry':
+    'Section=ability,combat ' +
+    'Note="+1 Charisma",' +
+         '"R50\' DC 15 Persuasion gives allies %{level} temporary HP 1/long rest"',
+  'Reassuring Presence':
+    'Section=ability,combat ' +
+    'Note="Ability Boost (Choose 1 from Charisma, Wisdom)",' +
+         '"R60\' 6 allies gain %{level} temporary HP at start of combat"',
+  'Resourceful':
+    'Section=ability,skill ' +
+    'Note="+1 Wisdom","Long rest restores 1d6+1 uses of Healer\'s Kit"',
+  'Rooted':
+    'Section=ability,combat ' +
+    'Note="+1 Constitution",' +
+         '"Cannot be moved or kocked prone/Adv on grappling"',
+  'Scathing Rebuke':
+    'Section=combat ' +
+    'Note="$50\' Intimidation vs. Insight stuns target 3/long rest"',
   'Silencing Strike':
     'Section=combat ' +
     'Note="Melee hit silences target for 1 min (DC %{8+proficiencyBonus+intelligenceModifier} Con neg) 1/short rest"',
-  'Skilled Healer':'Section=feature Note="FILL"',
-  'Strength Of Faith':'Section=feature Note="FILL"',
+  'Skilled Healer':
+    'Section=skill ' +
+    'Note="May spend 1 Healer\'s Kit use to remove blindness, deafness, paralysis, or poison or to give Adv on next save vs. disease"',
+  'Strength Of Faith':
+    'Section=ability,save ' +
+    'Note="Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
+         '"R30\' Apply successful Charisma, Intelligence, or Wisdom save to self and 1 ally"',
   'Study The Target':
     'Section=ability,skill ' +
     'Note="+1 Dexterity",' +
@@ -430,12 +500,22 @@ MidnightLegacy.FEATURES_ADDED = {
   'Sundered Blood':'Section=feature Note="FILL"',
   'Sundered Form':'Section=feature Note="FILL"',
   'Sundered Fury':'Section=feature Note="FILL"',
-  'Tactical Direction':'Section=feature Note="FILL"',
-  'The Channeling':'Section=feature Note="FILL"',
-  'The Eye Opens':'Section=feature Note="FILL"',
+  'Tactical Direction':
+    'Section=feature ' +
+    'Note="Trade Initiative 1 to give each ally a bonus action on first turn"',
+  'The Channeling':
+    'Section=magic ' +
+    'Note="May spend level 1 slot to change spell damage type, level 2 slot to reroll 1 or 2 on spell damage die, or level 3 slot to give three spell targets Disadv on spell save"',
+  'The Eye Opens':
+    'Section=ability,magic ' +
+    'Note="+1 Wisdom",' +
+         '"May cast <i>True Seeing</i> 3/long rest"',
   'The Wild Hunt':'Section=feature Note="FILL"',
-  'Tough As Iron':'Section=feature Note="FILL"',
-  'Unbroken':'Section=feature Note="FILL"',
+  'Tough As Iron':
+    'Section=combat ' +
+    'Note="May reduce damage by %{(level/3+1)<?6} for 10 min; gain 1 level of exhaustion afterward"',
+  'Unbroken':
+    'Section=combat Note="Trade 1 level of exhaustion to avoid attack damage"',
   'Unseen Lurker':
     'Section=ability,skill ' +
     'Note="Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
@@ -444,8 +524,13 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,combat ' +
     'Note="+1 Strength",' +
           '"Unarmed strike inflicats 1d6 HP; gain bonus second unarmed strike"',
-  'Warding Presence':'Section=feature Note="FILL"',
-  'Well-Spoken':'Section=feature Note="FILL"',
+  'Warding Presence':
+    'Section=combat ' +
+    'Note="Adjacent foes suffer half speed, Disadv on attacks on others"',
+  'Well-Spoken':
+    'Section=feature,skill ' +
+    'Note="Dbl skill proficiency on %V choices from Deception, Intimidation, Persuasion",' +
+         '"Skill Proficiency (Deception/Intimidation/Persuasion)"',
   'Wild Companion':'Section=feature Note="FILL"',
   'Wild Resilience':
     'Section=ability,save ' +
@@ -937,6 +1022,43 @@ MidnightLegacy.classRulesExtra = function(rules, name) {
 MidnightLegacy.pathRulesExtra = function(rules, name) {
   if(name == 'Beastborn') {
     rules.defineRule('features.Darkvision', 'featureNotes.wildSense', '=', '1');
+  } else if(name == 'Channeler') {
+    rules.defineRule
+      ('magicNotes.channeledMagic', 'level', '=', 'source<10 ? 1 : 2');
+    ['B', 'C', 'D', 'P', 'R', 'S', 'W'].forEach(spellGroup => {
+      [0, 1, 2, 3, 4, 5, 6].forEach(spellLevel => {
+        var slot = spellGroup + spellLevel;
+        var sorter = spellLevel + spellGroup;
+        rules.defineRule
+          ('highestSpellSlot', 'spellSlots.' + slot, '^=', '"' + sorter + '"');
+        rules.defineRule('magicNotes.channeledMagic.1',
+          'highestSpellSlot', '=', 'source.charAt(1) + source.charAt(0)'
+        );
+        // TODO 2 if level >= 10
+        rules.defineRule('spellSlots.' + slot,
+          'magicNotes.channeledMagic.1', '+', 'source == "' + slot + '" ? 1 : null'
+        );
+      });
+    });
+  } else if(name == 'Dragonblooded') {
+    rules.defineRule('casterLevels.Dragonblooded',
+      'heroicPath', '?', 'source == "Dragonblooded"',
+      'level', '=', null
+    );
+    rules.defineRule('casterLevel.S', 'casterLevels.Dragonblooded', '^=', null);
+    rules.defineRule('magicNotes.pureMagic',
+      '', '=', '1',
+      'magicNotes.ragingFury', '+', '1'
+    );
+    rules.defineRule
+      ('spellAttackModifier.S', 'magicNotes.pureMagic', '+', null);
+    rules.defineRule
+      ('spellDifficultyClass.S', 'magicNotes.pureMagic', '+', null);
+    rules.defineRule('spellSlots.S0', 'magicNotes.conduit', '+=', '2');
+  } else if(name == 'Speaker') {
+    rules.defineRule('featureNotes.well-Spoken',
+      'level', '=', 'Math.min(Math.floor(source / 5), 3)'
+    );
   } else if(name == 'Witch Taker Domain') {
     rules.defineRule
       ('combatNotes.mageHunter', 'levels.Cleric', '=', 'source<8 ? 30 : 60');
