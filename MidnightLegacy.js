@@ -313,7 +313,7 @@ MidnightLegacy.FEATURES_ADDED = {
   // Feats
   'Battlefield Healer':
     'Section=combat,skill ' +
-    'Note="Allies regain extra Hit Die from long rest",' +
+    'Note="Allies regain extra HD from long rest",' +
          '"DC 15 Int with healer\'s kit stabilizes and restores 3 HP"',
   'Brawler':
     'Section=combat ' +
@@ -400,8 +400,12 @@ MidnightLegacy.FEATURES_ADDED = {
          '"Use reaction to give ally additional attack with +%{proficiencyBonus} damage"',
   'Deadly Strike':
     'Section=combat Note="May automatically crit on strike w/Adv 1/short rest"',
-  'Ethereal Presence':'Section=feature Note="FILL"',
-  'Fallen Sense':'Section=feature Note="FILL"',
+  'Ethereal Presence':'Section=magic Note="Spend 1 HD for 1 min etherealnes"',
+  'Fallen Sense':
+    'Section=ability,feature,magic ' +
+    'Note="Ability Boost (Choose 1 from any)",' +
+         '"Communicate with outsider for conc or 1 hr",' +
+         '"R60\' Detect location and type of Fallen"',
   'Fireheart':
     'Section=magic,save ' +
     'Note="May reroll fire spell damage","Resistance to fire damage"',
@@ -412,7 +416,11 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,combat ' +
     'Note="+1 Charisma",' +
          '"R30\' DC 15 Charisma gives allies +%{proficiencyBonus} attack and damage for 1 min 1/long rest"',
-  'Friends Until The End':'Section=feature Note="FILL"',
+  'Friends Until The End':
+    'Section=ability,combat,feature ' +
+    'Note="Ability Boost (Choose 1 from Dexitery, Strength)",' +
+         '"Make take damage for Animal Companion if adjacent",' +
+         '"Animal Companion guards self when incapacitated"',
   'Guard':
     'Section=combat ' +
     'Note="Use bonus action to give adjacent ally +1 AC (+2 with shield)"',
@@ -439,7 +447,9 @@ MidnightLegacy.FEATURES_ADDED = {
   'Mind Within The Weave':
     'Section=magic ' +
     'Note="May simultaneously maintain concentration on two spells"',
-  'Natural Bond':'Section=feature Note="FILL"',
+  'Natural Bond':
+    'Section=feature ' +
+    'Note="Animals treat self as a friend (DC %{8+proficiencyBonus+wisdomModifier} Wis neg)"',
   'Nexus Affinity':
     'Section=ability,feature,skill ' +
     'Note="+1 Wisdom",' +
@@ -456,7 +466,10 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=feature,skill ' +
     'Note="May frighten beasts in 30\' radius (DC %{8+proficiencyBonus+strengthModifier} Wis neg)",' +
          '"Adv Animal Handling (predatory beasts)"',
-  'Pack Fighter':'Section=feature Note="FILL"',
+  'Pack Fighter':
+    'Section=ability,combat ' +
+    'Note="+1 Wisdom",' +
+         '"Animal Companion can attack at same time as self if adjacent"',
   'Pure Magic':'Section=magic Note="+%V spell attack and save DC"',
   'Quick Recovery':
     'Section=ability,combat ' +
@@ -479,7 +492,7 @@ MidnightLegacy.FEATURES_ADDED = {
   'Rooted':
     'Section=ability,combat ' +
     'Note="+1 Constitution",' +
-         '"Cannot be moved or kocked prone/Adv on grappling"',
+         '"Cannot be moved or knocked prone/Adv on grappling"',
   'Scathing Rebuke':
     'Section=combat ' +
     'Note="$50\' Intimidation vs. Insight stuns target 3/long rest"',
@@ -497,9 +510,15 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,skill ' +
     'Note="+1 Dexterity",' +
          '"8 hr observation and research plus DC 10+HD Investigation check gives Adv on Deception and Stealth to gain access to target"',
-  'Sundered Blood':'Section=feature Note="FILL"',
-  'Sundered Form':'Section=feature Note="FILL"',
-  'Sundered Fury':'Section=feature Note="FILL"',
+  'Sundered Blood':
+    'Section=save ' +
+    'Note="%{level<12\'Resistance\':\'Immunity\'} to chosen damage type"',
+  'Sundered Form':
+    'Section=magic Note="Spend 8 HD to assume Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and 30\' radius that inflicts 10 HP damage"',
+  'Sundered Fury':
+    'Section=ability,combat ' +
+    'Note="Ability Boost (Choose 1 from any)",' +
+          '"Spend 1 HD for 2 HD damage w/weapon or spell"',
   'Tactical Direction':
     'Section=feature ' +
     'Note="Trade Initiative 1 to give each ally a bonus action on first turn"',
@@ -510,7 +529,9 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,magic ' +
     'Note="+1 Wisdom",' +
          '"May cast <i>True Seeing</i> 3/long rest"',
-  'The Wild Hunt':'Section=feature Note="FILL"',
+  'The Wild Hunt':
+    'Section=magic ' +
+    'Note="May summon 1 CR 4, 2 CR 2, or 4 CR 1 to assist for 10 min"',
   'Tough As Iron':
     'Section=combat ' +
     'Note="May reduce damage by %{(level/3+1)<?6} for 10 min; gain 1 level of exhaustion afterward"',
@@ -523,7 +544,7 @@ MidnightLegacy.FEATURES_ADDED = {
   'Vicious Assault':
     'Section=ability,combat ' +
     'Note="+1 Strength",' +
-          '"Unarmed strike inflicats 1d6 HP; gain bonus second unarmed strike"',
+          '"Unarmed strike inflicts 1d6 HP; gain bonus second unarmed strike"',
   'Warding Presence':
     'Section=combat ' +
     'Note="Adjacent foes suffer half speed, Disadv on attacks on others"',
@@ -531,7 +552,9 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=feature,skill ' +
     'Note="Dbl skill proficiency on %V choices from Deception, Intimidation, Persuasion",' +
          '"Skill Proficiency (Deception/Intimidation/Persuasion)"',
-  'Wild Companion':'Section=feature Note="FILL"',
+  'Wild Companion':
+    'Section=feature ' +
+    'Note="CR 1 companion gains +{proficiencyBonus} AC, attack, damage, and proficient skills and saves; HP increases to %{level*4}"',
   'Wild Resilience':
     'Section=ability,save ' +
     'Note="+1 Constitution","May reroll Str, Dex, or Con save 1/long rest"',
@@ -560,7 +583,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="R30\' Use Channel Energy to control undead (Wis neg) for 1 hr"',
   'Dread Avatar':
     'Section=save ' +
-    'Note="Resistance to bludeoning, piercing, and slashing damage and nonmagical weapons; immunity to radiant damage"',
+    'Note="Resistance to bludgeoning, piercing, and slashing damage and nonmagical weapons; immunity to radiant damage"',
   'Ferocious Blow':
     'Section=feature ' +
     'Note="Use Channel Divinity for +2d6 HP thunder; medium foe pushed 10\' and knocked prone"',
@@ -909,7 +932,7 @@ MidnightLegacy.SPELLS_ADDED = {
   'Etherealness':null,
   'Forbiddance':null,
   'Gate':null,
-  'Magnificient Mansion':null,
+  'Magnificent Mansion':null,
   'Maze':null,
   'Planar Ally':null,
   'Planar Binding':null,
