@@ -37,7 +37,7 @@ function MidnightLegacy() {
 
   var basePlugin = window.PHB5E != null ? PHB5E : SRD5E;
 
-  var rules = new QuilvynRules('Midnight Legacy', MidnightLegacy.VERSION);
+  var rules = new QuilvynRules('Midnight 5E', MidnightLegacy.VERSION);
   MidnightLegacy.rules = rules;
 
   rules.defineChoice('choices', SRD5E.CHOICES);
@@ -220,11 +220,11 @@ MidnightLegacy.FEATS_ADDED = {
     'Type=General,Heroic Require="level >= 16","features.The Eye Opens"',
   'Conduit':'Type=General,Heroic Require="heroicPath == \'Dragonblooded\'"',
   'Pure Magic':'Type=General,Heroic Require="level >= 4",features.Conduit',
-  'Intimidating Presence':
+  'Intimidating Presence (Dragonblooded)':
     'Type=General,Heroic Require="level >= 8","features.Pure Magic"',
   'Fireheart':
     'Type=General,Heroic ' +
-    'Require="level >= 12","features.Intimidating Presence"',
+    'Require="level >= 12","features.Intimidating Presence (Dragonblooded)"',
   'Raging Fury':'Type=General,Heroic Require="level >= 16",features.Fireheart',
   'One With The Earth':
     'Type=General,Heroic Require="heroicPath == \'Earthblooded\'"',
@@ -346,11 +346,11 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="General language understanding after 1 dy, DC 15 Int to learn after 1 wk"',
   'Scavenger':
     'Section=ability,skill ' +
-    'Note="Ability Boost (Choose 1 from Intelligence, Wisdom)",' +
+    'Note="+1 Intelligence or Wisdom",' +
          '"DC 15 Perception to recover all ammo; DC 12 Investigation to scavenge weapon or armor materials"',
   'Seamaster':
     'Section=ability,feature,skill ' +
-    'Note="Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
+    'Note="+1 Dexterity or Wisdom",' +
          '"Increase speed of commanded ship by 2 MPH, climb rope at full speed",' +
          '"No Disadv to pilot ship through storm"',
   'Shieldwall Soldier':
@@ -370,7 +370,7 @@ MidnightLegacy.FEATURES_ADDED = {
   // Heroic Paths
   'Acts Of Service':
     'Section=ability,combat,skill ' +
-    'Note="Ability Boost (Choose 1 from Strength, Wisdom)",' +
+    'Note="+1 Strength or Wisdom",' +
          '"Foes suffer Disadv attacking adjacent incapacitated allies; self gains Adv on attacks",' +
          '"May spend 2 uses of Healer\'s Kit to reduce exhaustion, or restore ability or HP maximum"',
   'Apex Predator':
@@ -381,7 +381,7 @@ MidnightLegacy.FEATURES_ADDED = {
   'Avatar Of Aryth':'Section=magic Note="Summon earth elemental 1/long rest"',
   'Bulwark Of Faith':
     'Section=ability,save ' +
-    'Note="Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
+    'Note="+1 Charisma, Intelligence, or Wisdom",' +
          '"Adv vs. spells of celestials, fiends, undead, and Shadow agents"',
   'Changed To The Core':
     'Section=combat ' +
@@ -403,7 +403,7 @@ MidnightLegacy.FEATURES_ADDED = {
   'Ethereal Presence':'Section=magic Note="Spend 1 HD for 1 min etherealnes"',
   'Fallen Sense':
     'Section=ability,feature,magic ' +
-    'Note="Ability Boost (Choose 1 from any)",' +
+    'Note="+1 any",' +
          '"Communicate with outsider for conc or 1 hr",' +
          '"R60\' Detect location and type of Fallen"',
   'Fireheart':
@@ -418,7 +418,7 @@ MidnightLegacy.FEATURES_ADDED = {
          '"R30\' DC 15 Charisma gives allies +%{proficiencyBonus} attack and damage for 1 min 1/long rest"',
   'Friends Until The End':
     'Section=ability,combat,feature ' +
-    'Note="Ability Boost (Choose 1 from Dexitery, Strength)",' +
+    'Note="+1 Dexitery or Strength",' +
          '"Make take damage for Animal Companion if adjacent",' +
          '"Animal Companion guards self when incapacitated"',
   'Guard':
@@ -431,10 +431,10 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="R30\' Use inspiration and bonus action to turn foes (DC %{8+wisdomModifier+proficiencyBonus} Wisdom neg) for 1 min"',
   'Indefatigable':
     'Section=ability,feature ' +
-    'Note="Ability Boost (Choose 1 from Constitution, Strength)/No Disadv on Con or Str checks due to exhaustion",' +
+    'Note="+1 Constitution or Strength/No Disadv on Con or Str checks due to exhaustion",' +
          '"DC 15 Constitution check to dbl exhaustion recovery"',
   'Inspiring Faith':'Section=feature Note="Gain inspiration after short rest"',
-  'Intimidating Presence':'Section=ability,magic ' +
+  'Intimidating Presence (Dragonblooded)':'Section=ability,magic ' +
     'Note="+1 Charisma",' +
          '"R30\' Casting spell frightens foes (Wis neg)"',
   'Lurk':
@@ -442,7 +442,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Make Stealth vs. passive Perception to become unnoticed"',
   'Masterful Focus':
     'Section=ability,save ' +
-    'Note="Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
+    'Note="+1 Charisma, Intelligence, or Wisdom",' +
          '"+%{proficiencyBonus} concentration to maintain spell"',
   'Mind Within The Weave':
     'Section=magic ' +
@@ -484,7 +484,7 @@ MidnightLegacy.FEATURES_ADDED = {
          '"R50\' DC 15 Persuasion gives allies %{level} temporary HP 1/long rest"',
   'Reassuring Presence':
     'Section=ability,combat ' +
-    'Note="Ability Boost (Choose 1 from Charisma, Wisdom)",' +
+    'Note="+1 Charisma or Wisdom",' +
          '"R60\' 6 allies gain %{level} temporary HP at start of combat"',
   'Resourceful':
     'Section=ability,skill ' +
@@ -504,7 +504,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="May spend 1 Healer\'s Kit use to remove blindness, deafness, paralysis, or poison or to give Adv on next save vs. disease"',
   'Strength Of Faith':
     'Section=ability,save ' +
-    'Note="Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
+    'Note="+1 Charisma, Intelligence, or Wisdom",' +
          '"R30\' Apply successful Charisma, Intelligence, or Wisdom save to self and 1 ally"',
   'Study The Target':
     'Section=ability,skill ' +
@@ -517,7 +517,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=magic Note="Spend 8 HD to assume Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and 30\' radius that inflicts 10 HP damage"',
   'Sundered Fury':
     'Section=ability,combat ' +
-    'Note="Ability Boost (Choose 1 from any)",' +
+    'Note="+1 any",' +
           '"Spend 1 HD for 2 HD damage w/weapon or spell"',
   'Tactical Direction':
     'Section=feature ' +
@@ -539,7 +539,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=combat Note="Trade 1 level of exhaustion to avoid attack damage"',
   'Unseen Lurker':
     'Section=ability,skill ' +
-    'Note="Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
+    'Note="+1 Dexterity or Wisdom",' +
          '"Invisible during Lurk; may Lurk during combat"',
   'Vicious Assault':
     'Section=ability,combat ' +
@@ -817,8 +817,7 @@ MidnightLegacy.RACES = {
       '"Skill Proficiency (Choose 3 from any)",' +
       '"Tool Proficiency (Land Vehicles/Choose 1 from any Artisan)",' +
       '"Language (Erenlander/Choose 1 from any)",' +
-      '"Erenlander Ability Adjustment",' +
-      '"Human Feat Bonus",' +
+      '"Erenlander Ability Adjustment","Human Feat Bonus" ' +
     'Languages=Erenlander,any',
   'Erunsil Elf':
     'Features=' +
@@ -1016,6 +1015,8 @@ MidnightLegacy.choiceRules = function(rules, type, name, attrs) {
   basePlugin.choiceRules(rules, type, name, attrs);
   if(type == 'Class')
     MidnightLegacy.classRulesExtra(rules, name);
+  else if(type == 'Feat')
+    MidnightLegacy.featRulesExtra(rules, name);
   else if(type == 'Path')
     MidnightLegacy.pathRulesExtra(rules, name);
   else if(type == 'Race')
@@ -1039,12 +1040,31 @@ MidnightLegacy.classRulesExtra = function(rules, name) {
 };
 
 /*
+ * Defines in #rules# the rules associated with feat #name# that cannot be
+ * derived directly from the attributes passed to featRules.
+ */
+MidnightLegacy.featRulesExtra = function(rules, name) {
+  if(name == 'Scavenger') {
+    rules.defineRule('abilityBoosts', 'abilityNotes.scavenger', '+=', '1');
+  } else if(name == 'Seamaster') {
+    rules.defineRule('abilityBoosts', 'abilityNotes.seamaster', '+=', '1');
+  }
+};
+
+/*
  * Defines in #rules# the rules associated with heroic path #name# that cannot
  * be derived directly from the abilities passed to heroicPathRules.
  */
 MidnightLegacy.pathRulesExtra = function(rules, name) {
-  if(name == 'Beastborn') {
+  if(name == 'Avenger') {
+    rules.defineRule('abilityBoosts', 'abilityNotes.unseenLurker', '+=', '1');
+  } else if(name == 'Beastborn') {
     rules.defineRule('features.Darkvision', 'featureNotes.wildSense', '=', '1');
+  } else if(name == 'Believer') {
+    rules.defineRule('abilityBoosts',
+      'abilityNotes.bulwarkOfFaith', '+=', '1',
+      'abilityNotes.strengthOfFaith', '+=', '1'
+    );
   } else if(name == 'Channeler') {
     rules.defineRule
       ('magicNotes.channeledMagic', 'level', '=', 'source<10 ? 1 : 2');
@@ -1063,6 +1083,7 @@ MidnightLegacy.pathRulesExtra = function(rules, name) {
         );
       });
     });
+    rules.defineRule('abilityBoosts', 'abilityNotes.masterfulFocus', '+=', '1');
   } else if(name == 'Dragonblooded') {
     rules.defineRule('casterLevels.Dragonblooded',
       'heroicPath', '?', 'source == "Dragonblooded"',
@@ -1078,10 +1099,25 @@ MidnightLegacy.pathRulesExtra = function(rules, name) {
     rules.defineRule
       ('spellDifficultyClass.S', 'magicNotes.pureMagic', '+', null);
     rules.defineRule('spellSlots.S0', 'magicNotes.conduit', '+=', '2');
+  } else if(name == 'Ironborn') {
+    rules.defineRule('abilityBoosts', 'abilityNotes.indefatigable', '+=', '1');
+  } else if(name == 'Preserver') {
+    rules.defineRule('abilityBoosts',
+      'abilityNotes.actsOfService', '+=', '1',
+      'abilityNotes.reassuringPresence', '+=', '1'
+    );
   } else if(name == 'Speaker') {
     rules.defineRule('featureNotes.well-Spoken',
       'level', '=', 'Math.min(Math.floor(source / 5), 3)'
     );
+  } else if(name == 'Sunderborn') {
+    rules.defineRule('abilityBoosts',
+      'abilityNotes.fallenSense', '+=', '1',
+      'abilityNotes.sunderedFury', '+=', '1'
+    );
+  } else if(name == 'Wildblooded') {
+    rules.defineRule
+      ('abilityBoosts', 'abilityNotes.friendsUntilTheEnd', '+=', '1');
   } else if(name == 'Witch Taker Domain') {
     rules.defineRule
       ('combatNotes.mageHunter', 'levels.Cleric', '=', 'source<8 ? 30 : 60');
@@ -1093,6 +1129,9 @@ MidnightLegacy.pathRulesExtra = function(rules, name) {
  * derived directly from the abilities passed to raceRules.
  */
 MidnightLegacy.raceRulesExtra = function(rules, name) {
+  var raceLevel =
+    name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') +
+    'Level';
   if(name == 'Caransil Elf')
     rules.defineRule
       ('spellSlots.S0', 'magicNotes.innateMagicalUser', '+=', '1');
@@ -1102,6 +1141,15 @@ MidnightLegacy.raceRulesExtra = function(rules, name) {
   else if(name == 'Danisil Elf')
     rules.defineRule
       ('spellSlots.W0', 'magicNotes.innateMagicalScholar', '+=', '2');
+  else if(name == 'Dorn Human')
+    rules.defineRule
+      ('abilityBoosts', 'abilityNotes.dornAbilityAdjustment', '+=', '2');
+  else if(name == 'Erenlander Human')
+    rules.defineRule
+      ('abilityBoosts', 'abilityNotes.erenlanderAbilityAdjustment', '+=', '2');
+  else if(name == 'Sarcosan Human')
+    rules.defineRule
+      ('abilityBoosts', 'abilityNotes.sarcosanAbilityAdjustment', '+=', '2');
 };
 
 /* Returns an array of plugins upon which this one depends. */
