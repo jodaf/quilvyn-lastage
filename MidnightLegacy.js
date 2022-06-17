@@ -435,7 +435,8 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Ability Boost (Choose 1 from Constitution, Strength)/No Disadv on Con or Str checks due to exhaustion",' +
          '"DC 15 Constitution check to dbl exhaustion recovery"',
   'Inspiring Faith':'Section=feature Note="Gain inspiration after short rest"',
-  'Intimidating Presence (Dragonblooded)':'Section=ability,magic ' +
+  'Intimidating Presence (Dragonblooded)':
+    'Section=ability,magic ' +
     'Note="+1 Charisma",' +
          '"R30\' Casting spell frightens foes (Wis neg)"',
   'Lurk':
@@ -489,7 +490,8 @@ MidnightLegacy.FEATURES_ADDED = {
          '"R60\' 6 allies gain %{level} temporary HP at start of combat"',
   'Resourceful':
     'Section=ability,skill ' +
-    'Note="+1 Wisdom","Long rest restores 1d6+1 uses of Healer\'s Kit"',
+    'Note="+1 Wisdom",' +
+         '"Long rest restores 1d6+1 uses of Healer\'s Kit"',
   'Rooted':
     'Section=ability,combat ' +
     'Note="+1 Constitution",' +
@@ -558,7 +560,8 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="CR 1 companion gains +{proficiencyBonus} AC, attack, damage, and proficient skills and saves; HP increases to %{level*4}"',
   'Wild Resilience':
     'Section=ability,save ' +
-    'Note="+1 Constitution","May reroll Str, Dex, or Con save 1/long rest"',
+    'Note="+1 Constitution",' +
+         '"May reroll Str, Dex, or Con save 1/long rest"',
   'Wild Sense':
     'Section=feature Note="Have Darkvision; Can sense invisible foes"',
 
@@ -629,7 +632,7 @@ MidnightLegacy.FEATURES_ADDED = {
   'Enslaved Halfling Ability Adjustment':
     'Section=ability Note="+2 Dexterity/+1 Constitution"',
   'Erenlander Ability Adjustment':
-    'Section=ability Note="Ability Boost(Choose 2 from any)"',
+    'Section=ability Note="Ability Boost (Choose 2 from any)"',
   'Erunsil Elf Ability Adjustment':
     'Section=ability Note="+2 Dexterity/+1 Strength"',
   'Erunsil Elf Weapon Training':
