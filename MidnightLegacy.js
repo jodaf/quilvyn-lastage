@@ -64,12 +64,21 @@ function MidnightLegacy() {
 
   MidnightLegacy.BACKGROUNDS =
     Object.assign({}, basePlugin.BACKGROUNDS, MidnightLegacy.BACKGROUNDS_ADDED);
+  MidnightLegacy.CLASSES = Object.assign({}, basePlugin.CLASSES);
+  MidnightLegacy.CLASSES.Cleric +=
+    ' Selectables="1:' + QuilvynUtils.getKeys(MidnightLegacy.PATHS_ADDED, /Domain/i).join(':Divine Domain","1:') + ':Divine Domain"';
+  console.log(MidnightLegacy.CLASSES.Cleric);
+  delete MidnightLegacy.CLASSES.Monk;
+  delete MidnightLegacy.CLASSES.Warlock;
   MidnightLegacy.FEATS =
     Object.assign({}, basePlugin.FEATS, MidnightLegacy.FEATS_ADDED);
   MidnightLegacy.FEATURES =
     Object.assign({}, basePlugin.FEATURES, MidnightLegacy.FEATURES_ADDED);
-  MidnightLegacy.PATHS =
-    Object.assign({}, basePlugin.PATHS, MidnightLegacy.PATHS_ADDED);
+  MidnightLegacy.PATHS = Object.assign({}, MidnightLegacy.PATHS_ADDED);
+  for(var p in basePlugin.PATHS) {
+    if(!basePlugin.PATHS[p].match(/Group=(Cleric|Monk|Warlock)/i))
+      MidnightLegacy.PATHS[p] = basePlugin.PATHS[p];
+  }
   MidnightLegacy.SPELLS =
     Object.assign({}, basePlugin.SPELLS, MidnightLegacy.SPELLS_ADDED);
   for(var s in MidnightLegacy.SPELLS) {
@@ -77,20 +86,20 @@ function MidnightLegacy() {
       delete MidnightLegacy.SPELLS[s];
   }
   MidnightLegacy.WEAPONS =
-    Object.assign({}, basePlugin.WEAPONS, MidnightLegacy.WEAPONS_ADDED);
+    Object.assign({}, SRD5E.WEAPONS, MidnightLegacy.WEAPONS_ADDED);
 
   MidnightLegacy.abilityRules(rules);
   MidnightLegacy.combatRules
-    (rules, basePlugin.ARMORS, basePlugin.SHIELDS, MidnightLegacy.WEAPONS);
-  MidnightLegacy.magicRules(rules, basePlugin.SCHOOLS, MidnightLegacy.SPELLS);
+    (rules, SRD5E.ARMORS, SRD5E.SHIELDS, MidnightLegacy.WEAPONS);
+  MidnightLegacy.magicRules(rules, SRD5E.SCHOOLS, MidnightLegacy.SPELLS);
   MidnightLegacy.identityRules(
-    rules, basePlugin.ALIGNMENTS, MidnightLegacy.BACKGROUNDS,
+    rules, SRD5E.ALIGNMENTS, MidnightLegacy.BACKGROUNDS,
     MidnightLegacy.CLASSES, MidnightLegacy.DEITIES, MidnightLegacy.PATHS,
     MidnightLegacy.RACES
   );
   MidnightLegacy.talentRules
     (rules, MidnightLegacy.FEATS, MidnightLegacy.FEATURES, SRD5E.GOODIES,
-     MidnightLegacy.LANGUAGES, SRD5E.SKILLS, basePlugin.TOOLS);
+     MidnightLegacy.LANGUAGES, SRD5E.SKILLS, SRD5E.TOOLS);
 
   if(window.Tasha != null)
     Tasha('Tasha', rules);
@@ -157,7 +166,8 @@ delete MidnightLegacy.CLASSES.Monk;
 delete MidnightLegacy.CLASSES.Warlock;
 MidnightLegacy.DEITIES = {
   'Izrador':
-    'Alignment=CE Domain="Keeper Of Obsidian","Soldier Legate","Witch Taker"'
+    'Alignment=NE ' +
+    'Domain="Keeper Of Obsidian","Soldier Legate","Witch Taker"'
 };
 MidnightLegacy.FEATS_ADDED = {
 
@@ -616,7 +626,7 @@ MidnightLegacy.FEATURES_ADDED = {
          '"Tool Proficiency (Water Vehicles)"',
   'Caransil Ability Adjustment':
     'Section=ability Note="+2 Dexterity/+1 Charisma"',
-  'Caransil Elf Weapon Training':
+  'Caransil Weapon Training':
     'Section=combat Note="Weapon Proficiency (Longbow/Longsword)"',
   'Child Of The North':'Section=save Note="Adv vs. extreme cold"',
   'Clan Dwarf Ability Adjustment':'Section=ability Note="+2 Constitution"',
@@ -625,7 +635,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Weapon Proficiency (Battleaxe/Warhammer)/Armor Proficiency (Medium)"',
   'Danisil Elf Ability Adjustment':
     'Section=ability Note="+2 Dexterity/+1 Intelligence"',
-  'Danisil Elf Weapon Training':
+  'Danisil Weapon Training':
     'Section=combat Note="Weapon Proficiency (Scimitar/Shortbow)"',
   'Dorn Ability Adjustment':
     'Section=ability Note="+1 Strength/Ability Boost (Choose 2 from any)"',
@@ -635,7 +645,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability Note="Ability Boost (Choose 2 from any)"',
   'Erunsil Elf Ability Adjustment':
     'Section=ability Note="+2 Dexterity/+1 Strength"',
-  'Erunsil Elf Weapon Training':
+  'Erunsil Weapon Training':
     'Section=combat Note="Weapon Proficiency (Erunsil Fighting Knife/Longbow)"',
   'Fast':'Section=ability Note="+5 Speed"',
   'Ferocity':'Section=combat Note="+2 Str-based melee damage"',
@@ -649,7 +659,7 @@ MidnightLegacy.FEATURES_ADDED = {
   'Innate Magic User':'Section=magic Note="Know 1 Sorcerer cantrip"',
   'Kurgun Dwarf Ability Adjustment':
     'Section=ability Note="+2 Constitution/+2 Wisdom"',
-  'Kurgun Dwarf Warrior Training':
+  'Kurgun Warrior Training':
     'Section=combat ' +
     'Note="Weapon Proficiency (Handaxe/Shortbow/Spear)/Armor Proficiency (Medium)"',
   'Militant Culture':
@@ -657,7 +667,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Weapon Proficiency (Battleaxe/Greataxe/Longbow/Spear)"',
   'Miransil Elf Ability Adjustment':
     'Section=ability Note="+2 Dexterity/+1 Wisdom"',
-  'Miransil Elf Weapon Training':
+  'Miransil Weapon Training':
     'Section=combat Note="Weapon Proficiency (Javelin/Trident)"',
   'Nomadic Halfling Ability Adjustment':
     'Section=ability Note="+2 Dexterity/+1 Wisdom"',
@@ -693,7 +703,7 @@ MidnightLegacy.LANGUAGES = {
 };
 MidnightLegacy.PATHS_ADDED = {
   'Keeper Of Obsidian Domain':
-    'Group=Legate Level=levels.Legate ' +
+    'Group=Cleric Level=levels.Cleric ' +
     'Features=' +
       '"1:Dark God\'s Blessing",' +
       '"1:Necromantic Arts",' +
@@ -708,7 +718,7 @@ MidnightLegacy.PATHS_ADDED = {
       '"4:Blight,Phantasmal Killer",' +
       '"5:Cloudkill,Contagion"',
   'Soldier Legate Domain':
-    'Group=Legate Level=levels.Legate ' +
+    'Group=Cleric Level=levels.Cleric ' +
     'Features=' +
       '"1:Weapon Proficiency (Martial)",' +
       '"1:Dark Warrior",' +
@@ -723,7 +733,7 @@ MidnightLegacy.PATHS_ADDED = {
       '"4:Banishment,Stoneskin",' +
       '"5:Cone Of Cold,Hold Monster"',
   'Witch Taker Domain':
-    'Group=Legate Level=levels.Legate ' +
+    'Group=Cleric Level=levels.Cleric ' +
     'Features=' +
       '"1:Weapon Proficiency (Halberd/Longsword/Rapier/Shortsword)",' +
       '"1:Astirax Servant",' +
@@ -777,21 +787,26 @@ MidnightLegacy.PATHS_ADDED = {
     'Group=Wildblooded ' +
     'Level=level'
 };
-MidnightLegacy.PATHS =
-  Object.assign({}, SRD5E.PATHS, MidnightLegacy.PATHS_ADDED);
+MidnightLegacy.PATHS = Object.assign({}, MidnightLegacy.PATHS_ADDED);
+for(var p in SRD5E.PATHS) {
+  if(!SRD5E.PATHS[p].match(/Group=(Cleric|Monk|Warlock)/i))
+    MidnightLegacy.PATHS[p] = SRD5E.PATHS[p];
+}
+MidnightLegacy.CLASSES.Cleric +=
+  ' Selectables="1:' + QuilvynUtils.getKeys(MidnightLegacy.PATHS_ADDED, /Domain/i).join(':Divine Domain","1:') + ':Divine Domain"';
 MidnightLegacy.RACES = {
   'Caransil Elf':
     'Features=' +
       '"Skill Proficiency (Perception/Stealth)",' +
-      '"Language (High Elven/Erenlander/Choose 1 from Trader\'s Tongue/Old Dwarven/Orcish)",' +
+      '"Language (High Elven/Erenlander/Choose 1 from Trader\'s Tongue, Old Dwarven, Orcish)",' +
       '"Caransil Ability Adjustment",' +
-      '"Caransil Elf Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
+      '"Caransil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
       '"Innate Magic User",Trance ' +
     'Languages=Erenlander,"High Elven",any',
   'Clan Dwarf':
     'Features=' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
-      '"Languages (Clan Dialect/Old Dwarven/Choose 1 from Trader\'s Tongue, Orcish)",' +
+      '"Languages (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
       '"Clan Dwarf Ability Adjustment",' +
       '"Clan Warrior Training",Darkvision,"Dwarven Resilience",' +
       '"Dwarven Toughness",Slow,"Stonemaster\'s Cunning" ' +
@@ -801,7 +816,7 @@ MidnightLegacy.RACES = {
       '"Skill Proficiency (History)",' +
       '"Language (High Elven/Choose 1 from Sylvan, Halfling)",' +
       '"Danisil Elf Ability Adjustment",' +
-      '"Danisil Elf Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
+      '"Danisil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
       '"Innate Magic Scholar",Trance ' +
     'Languages="High Elven",any',
   'Dorn Human':
@@ -830,7 +845,7 @@ MidnightLegacy.RACES = {
       '"Skill Proficiency (Survival)",' +
       '"Language (High Elven/Orcish/Trader\'s Tongue)",' +
       '"Erunsil Elf Ability Adjustment",' +
-      '"Erunsil Elf Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
+      '"Erunsil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
       'Trance,"Wraith Of The North" ' +
     'Languages="High Elven",Orcish,"Trader\'s Tongue"',
   'Gnome':
@@ -843,16 +858,16 @@ MidnightLegacy.RACES = {
   'Kurgun Dwarf':
     'Features=' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
-      '"Languages (Clan Dialect/Old Dwarven/Choose 1 from Trader\'s Tongue, Orcish)",' +
+      '"Languages (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
       '"Kurgun Dwarf Ability Adjustment",' +
-      '"Kurgun Dwarf Warrior Training",Darkvision,"Dwarven Resilience",Slow '  +
-    'Languages="Clan Dialect","Old Dwarven","Trader\'s Tongue",Orcish',
+      '"Kurgun Warrior Training",Darkvision,"Dwarven Resilience",Slow '  +
+    'Languages="Clan Dialect","Old Dwarven",any',
   'Miransil Elf':
     'Features=' +
       '"Skill Proficiency (Athletics/Insight)",' +
       '"Language (High Elven/Colonial/Trader\'s Tongue)",' +
       '"Miransil Elf Ability Adjustment",' +
-      '"Miransil Elf Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
+      '"Miransil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
       'Trance,"Born Of The Sea" ' +
     'Languages="High Elven",Colonial,"Trader\'s Tongue"',
   'Nomadic Halfling':
@@ -1112,13 +1127,12 @@ MidnightLegacy.raceRulesExtra = function(rules, name) {
     'Level';
   if(name == 'Caransil Elf')
     rules.defineRule
-      ('spellSlots.S0', 'magicNotes.innateMagicalUser', '+=', '1');
+      ('spellSlots.S0', 'magicNotes.innateMagicUser', '+=', '1');
   else if(name == 'Clan Dwarf')
-    rules.defineRule
-      ('combatNotes.dwarvenToughness', 'level', '=', 'source + 2');
+    rules.defineRule('combatNotes.dwarvenToughness', raceLevel, '+', '2');
   else if(name == 'Danisil Elf')
     rules.defineRule
-      ('spellSlots.W0', 'magicNotes.innateMagicalScholar', '+=', '2');
+      ('spellSlots.W0', 'magicNotes.innateMagicScholar', '+=', '2');
 };
 
 /* Returns an array of plugins upon which this one depends. */
