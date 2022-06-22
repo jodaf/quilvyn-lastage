@@ -67,7 +67,6 @@ function MidnightLegacy() {
   MidnightLegacy.CLASSES = Object.assign({}, basePlugin.CLASSES);
   MidnightLegacy.CLASSES.Cleric +=
     ' Selectables="1:' + QuilvynUtils.getKeys(MidnightLegacy.PATHS_ADDED, /Domain/i).join(':Divine Domain","1:') + ':Divine Domain"';
-  console.log(MidnightLegacy.CLASSES.Cleric);
   delete MidnightLegacy.CLASSES.Monk;
   delete MidnightLegacy.CLASSES.Warlock;
   MidnightLegacy.FEATS =
