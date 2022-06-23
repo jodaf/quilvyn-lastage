@@ -382,35 +382,36 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,combat,skill ' +
     'Note="Ability Boost (Choose 1 from Strength, Wisdom)",' +
          '"Foes suffer Disadv attacking adjacent incapacitated allies; self gains Adv on attacks",' +
-         '"May spend 2 uses of Healer\'s Kit to reduce exhaustion, or restore ability or HP maximum"',
+         '"May spend 2 uses of Healer\'s Kit to reduce exhaustion or to restore ability or HP maximum"',
   'Apex Predator':
     'Section=ability,combat,feature ' +
     'Note="+2 Strength",' +
          '"+20 Hit Points/Unarmed strike inflicts 1d8 damage",' +
          '"Pack Alpha affects all creatures"',
-  'Avatar Of Aryth':'Section=magic Note="Summon earth elemental 1/long rest"',
+  'Avatar Of Aryth':
+    'Section=magic Note="Summon friendly earth elemental 1/long rest"',
   'Bulwark Of Faith':
     'Section=ability,save ' +
     'Note="Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
          '"Adv vs. spells of celestials, fiends, undead, and Shadow agents"',
   'Changed To The Core':
     'Section=combat ' +
-    'Note="R50\' Persuasion vs. Insight causes target foe to flee (%{level//2+1}+ HD) or switch sides 1/long rest"',
+    'Note="R50\' Successful Persuasion vs. Insight causes target foe to flee (%{level//2+1}+ HD) or switch sides 1/long rest"',
   'Channeled Magic':'Section=magic Note="%V additional %1 spell slot"',
   'Conduit':'Section=magic Note="Know 2 Sorcerer cantrips"',
   'Courage Of Your Convictions':
     'Section=combat ' +
-    'Note="R50\' Use inspiration and bonus action to remove condition from self and allies"',
+    'Note="R50\' Use inspiration and bonus action to remove charmed, frightened, paralyzed, or stunned from self and allies"',
   'Crowd Rouser':
     'Section=magic ' +
     'Note="R50\' May charm and convince listeners (DC %{8+charismaModifier+proficiencyBonus} Wis neg) for 1 wk 1/short rest"',
   'Crucial Strike':
     'Section=ability,combat ' +
     'Note="+1 Charisma",' +
-         '"Use reaction to give ally additional attack with +%{proficiencyBonus} damage"',
+         '"Use Reaction to give ally additional attack with +%{proficiencyBonus} damage"',
   'Deadly Strike':
-    'Section=combat Note="May automatically crit on strike w/Adv 1/short rest"',
-  'Ethereal Presence':'Section=magic Note="Spend 1 HD for 1 min etherealnes"',
+    'Section=combat Note="May automatically crit on successful melee attack w/Adv 1/short rest"',
+  'Ethereal Presence':'Section=magic Note="Spend 1 HD for 1 min etherealness"',
   'Fallen Sense':
     'Section=ability,feature,magic ' +
     'Note="Ability Boost (Choose 1 from any)",' +
@@ -429,20 +430,20 @@ MidnightLegacy.FEATURES_ADDED = {
   'Friends Until The End':
     'Section=ability,combat,feature ' +
     'Note="Ability Boost (Choose 1 from Dexterity, Strength)",' +
-         '"Make take damage for Animal Companion if adjacent",' +
+         '"Make take damage for adjacent Animal Companion",' +
          '"Animal Companion guards self when incapacitated"',
   'Guard':
     'Section=combat ' +
     'Note="Use bonus action to give adjacent ally +1 AC (+2 with shield)"',
   'Hard To Kill':
-    'Section=save Note="Death save on roll of 6; 16 restores 1 HP"',
+    'Section=save Note="Death save succeeds on roll of 6; 16 restores 1 HP"',
   'Holy Terror':
     'Section=combat ' +
-    'Note="R30\' Use inspiration and bonus action to turn foes (DC %{8+wisdomModifier+proficiencyBonus} Wisdom neg) for 1 min"',
+    'Note="R30\' Use inspiration to turn foes (DC %{8+wisdomModifier+proficiencyBonus} Wisdom neg) for 1 min"',
   'Indefatigable':
     'Section=ability,feature ' +
     'Note="Ability Boost (Choose 1 from Constitution, Strength)/No Disadv on Con or Str checks due to exhaustion",' +
-         '"DC 15 Constitution check to dbl exhaustion recovery"',
+         '"Successful DC 15 Constitution check doubles exhaustion recovery"',
   'Inspiring Faith':'Section=feature Note="Gain inspiration after short rest"',
   'Intimidating Presence (Dragonblooded)':
     'Section=ability,magic ' +
@@ -464,7 +465,7 @@ MidnightLegacy.FEATURES_ADDED = {
   'Nexus Affinity':
     'Section=ability,feature,skill ' +
     'Note="+1 Wisdom",' +
-         '"+1d6 ability, attack, and save w/in 1 mile of a power nexus or black mirror",' +
+         '"+1d6 ability, attack, and save w/in 1 mile of a power nexus or black mirror 3/long rest",' +
          '"DC 16 Insight to detect power nexus or black mirror w/in 5 miles"',
   'Nexus Guardian':
     'Section=feature ' +
@@ -480,19 +481,19 @@ MidnightLegacy.FEATURES_ADDED = {
   'Pack Fighter':
     'Section=ability,combat ' +
     'Note="+1 Wisdom",' +
-         '"Animal Companion can attack at same time as self if adjacent"',
+         '"Adjacent Animal Companion can attack at same time as self"',
   'Pure Magic':'Section=magic Note="+%V spell attack and save DC"',
   'Quick Recovery':
     'Section=ability,combat ' +
     'Note="+1 Constitution",' +
-         '"May trade 1 level of exhaustion to recover hit dice, adding %{constitutionModifier} to each"',
+         '"May suffer 1 level of exhaustion to recover hit dice, adding %{constitutionModifier} to each"',
   'Raging Fury':
     'Section=magic ' +
-    'Note="Increased Pure Magic effects/May cast 1 action spell as bonus action"',
+    'Note="Increased Pure Magic effects/May cast 1 action spell as a bonus action"',
   'Rallying Cry':
     'Section=ability,combat ' +
     'Note="+1 Charisma",' +
-         '"R50\' DC 15 Persuasion gives allies %{level} temporary HP 1/long rest"',
+         '"R50\' Successful DC 15 Persuasion gives allies %{level} temporary HP 1/long rest"',
   'Reassuring Presence':
     'Section=ability,combat ' +
     'Note="Ability Boost (Choose 1 from Charisma, Wisdom)",' +
@@ -507,7 +508,7 @@ MidnightLegacy.FEATURES_ADDED = {
          '"Cannot be moved or knocked prone/Adv on grappling"',
   'Scathing Rebuke':
     'Section=combat ' +
-    'Note="$50\' Intimidation vs. Insight stuns target 3/long rest"',
+    'Note="R50\' Successful Intimidation vs. Insight stuns target for 1 min 3/long rest"',
   'Silencing Strike':
     'Section=combat ' +
     'Note="Melee hit silences target for 1 min (DC %{8+proficiencyBonus+intelligenceModifier} Con neg) 1/short rest"',
@@ -517,23 +518,23 @@ MidnightLegacy.FEATURES_ADDED = {
   'Strength Of Faith':
     'Section=ability,save ' +
     'Note="Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
-         '"R30\' Apply successful Charisma, Intelligence, or Wisdom save to self and 1 ally"',
+         '"R30\' successful Charisma, Intelligence, or Wisdom save gives inspiration to self or ally"',
   'Study The Target':
     'Section=ability,skill ' +
-    'Note="+1 Dexterity",' +
-         '"8 hr observation and research plus DC 10+HD Investigation check gives Adv on Deception and Stealth to gain access to target"',
+    'Note="Ability Boost (Choose 1 from Dexterity, Intelligence)",' +
+         '"8 hr observation and research plus DC 10+HD Investigation gives Adv on Deception and Stealth to gain access to target"',
   'Sundered Blood':
     'Section=save ' +
-    'Note="%{level<12\'Resistance\':\'Immunity\'} to chosen damage type"',
+    'Note="%{level<12?\'Resistance\':\'Immunity\'} to chosen damage type"',
   'Sundered Form':
-    'Section=magic Note="Spend 8 HD to assume Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and 30\' radius that inflicts 10 HP damage"',
+    'Section=magic Note="Spend 8 HD to assume Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and 30\' radius that inflicts 10 HP damage on foes"',
   'Sundered Fury':
     'Section=ability,combat ' +
     'Note="Ability Boost (Choose 1 from any)",' +
           '"Spend 1 HD for 2 HD damage w/weapon or spell"',
   'Tactical Direction':
     'Section=feature ' +
-    'Note="Trade Initiative 1 to give each ally a bonus action on first turn"',
+    'Note="Take Initiative 1 to give each ally a bonus attack, Dash, or Disengage on first turn"',
   'The Channeling':
     'Section=magic ' +
     'Note="May spend level 1 slot to change spell damage type, level 2 slot to reroll 1 or 2 on spell damage die, or level 3 slot to give three spell targets Disadv on spell save"',
@@ -546,9 +547,10 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="May summon 1 CR 4, 2 CR 2, or 4 CR 1 to assist for 10 min"',
   'Tough As Iron':
     'Section=combat ' +
-    'Note="May reduce damage by %{(level/3+1)<?6} for 10 min; gain 1 level of exhaustion afterward"',
+    'Note="May reduce damage by %{(level/3+1)<?6} for 10 min; suffer 1 level of exhaustion afterward"',
   'Unbroken':
-    'Section=combat Note="Trade 1 level of exhaustion to avoid attack damage"',
+    'Section=combat ' +
+    'Note="Suffer 1 level of exhaustion to negate attack damage"',
   'Unseen Lurker':
     'Section=ability,skill ' +
     'Note="Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
@@ -556,23 +558,23 @@ MidnightLegacy.FEATURES_ADDED = {
   'Vicious Assault':
     'Section=ability,combat ' +
     'Note="+1 Strength",' +
-          '"Unarmed strike inflicts 1d6 HP; gain bonus second unarmed strike"',
+          '"Unarmed strike inflicts 1d6 HP; may use bonus action for second unarmed strike"',
   'Warding Presence':
     'Section=combat ' +
-    'Note="Adjacent foes suffer half speed, Disadv on attacks on others"',
+    'Note="Adjacent foes suffer half speed and Disadv on attacks on others"',
   'Well-Spoken':
     'Section=feature,skill ' +
     'Note="Dbl skill proficiency on %V choices from Deception, Intimidation, Persuasion",' +
          '"Skill Proficiency (Deception/Intimidation/Persuasion)"',
   'Wild Companion':
     'Section=feature ' +
-    'Note="CR 1 companion gains +{proficiencyBonus} AC, attack, damage, and proficient skills and saves; HP increases to %{level*4}"',
+    'Note="CR 1 companion gains +%{proficiencyBonus} AC, attack, damage, and proficient skills and saves; HP increases to %{level*4}"',
   'Wild Resilience':
     'Section=ability,save ' +
     'Note="+1 Constitution",' +
-         '"May reroll Str, Dex, or Con save 1/long rest"',
+         '"May reroll Str, Dex, or Con save %V/long rest"',
   'Wild Sense':
-    'Section=feature Note="Have Darkvision; Can sense invisible foes"',
+    'Section=feature Note="Have Darkvision; can sense invisible foes"',
 
   // Paths
   'Astirax Servant':
@@ -590,7 +592,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=combat Note="Self regains %{level<10?2:4}d6 HP from killing"',
   'Dire Bodyguard':
     'Section=feature ' +
-    'Note="Foe Disadv on attacks on others w/in 5\'; self can use reaction for melee attack"',
+    'Note="Foe Disadv on attacks on others w/in 5\'; self can use Reaction for melee attack"',
   'Dominate Undead':
     'Section=combat ' +
     'Note="R30\' Use Channel Energy to control undead (Wis neg) for 1 hr"',
@@ -1073,6 +1075,13 @@ MidnightLegacy.featRulesExtra = function(rules, name) {
 MidnightLegacy.pathRulesExtra = function(rules, name) {
   if(name == 'Beastborn') {
     rules.defineRule('features.Darkvision', 'featureNotes.wildSense', '=', '1');
+    rules.defineRule('saveNotes.wildResilience',
+      'level', '=', 'source<9 ? 1 : source<18 ? 2 : 3'
+    );
+    rules.defineRule('weapons.Unarmed.2',
+      'combatNotes.viciousAssault', '^', '"1d6"',
+      'combatNotes.apexPredator', '^', '"1d8"'
+    );
   } else if(name == 'Channeler') {
     rules.defineRule
       ('magicNotes.channeledMagic', 'level', '=', 'source<10 ? 1 : 2');
@@ -1083,13 +1092,15 @@ MidnightLegacy.pathRulesExtra = function(rules, name) {
         rules.defineRule
           ('highestSpellSlot', 'spellSlots.' + slot, '^=', '"' + sorter + '"');
         rules.defineRule('magicNotes.channeledMagic.1',
-          'features.channeledMagic.1', '?', null,
+          'features.Channeled Magic', '?', null,
           'highestSpellSlot', '=', 'source.charAt(1) + source.charAt(0)'
         );
-        // TODO 2 if level >= 10
-        rules.defineRule('spellSlots.' + slot,
-          'magicNotes.channeledMagic.1', '+', 'source == "' + slot + '" ? 1 : null'
+        rules.defineRule('channeledSlots.' + slot,
+          'magicNotes.channeledMagic.1', '?', 'source == "' + slot + '"',
+          'magicNotes.channeledMagic', '=', null
         );
+        rules.defineRule
+          ('spellSlots.' + slot, 'channeledSlots.' + slot, '+', null);
       });
     });
   } else if(name == 'Dragonblooded') {
