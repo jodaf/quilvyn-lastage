@@ -616,12 +616,12 @@ MidnightLegacy.FEATURES_ADDED = {
 
   // Races
   // SRD5E defines Darkvision, Dwarven Resilience, Dwarven Toughness,
-  // Fey Ancestry, Halfling Nimbleness, Lucky Halfling, Slow, and Trance
+  // Fey Ancestry, Halfling Nimbleness, Lucky Halfling, Slow, Steady, and Trance
   'Animal Bond':
     'Section=skill Note="Adv to control, persuade, or communicate w/animals"',
   'Born Of The Sea':
     'Section=ability,skill ' +
-    'Note="Use bonus action for 1 hr water breathing",' +
+    'Note="Use bonus action for 1 hr water breathing 1/short rest",' +
          '"Tool Proficiency (Water Vehicles)"',
   'Caransil Ability Adjustment':
     'Section=ability Note="+2 Dexterity/+1 Charisma"',
@@ -647,15 +647,15 @@ MidnightLegacy.FEATURES_ADDED = {
   'Erunsil Weapon Training':
     'Section=combat Note="Weapon Proficiency (Erunsil Fighting Knife/Longbow)"',
   'Fast':'Section=ability Note="+5 Speed"',
-  'Ferocity':'Section=combat Note="+2 Str-based melee damage"',
+  'Ferocity':'Section=combat Note="+2 Str melee damage"',
   'Gnome Ability Adjustment':
     'Section=ability Note="+2 Intelligence/+1 Charisma"',
   'Gnomish Cunning':SRD5E.FEATURES['Gnome Cunning'],
   'Halfling Magic':
     'Section=magic Note="Know <i>Mending</i> and <i>Prestidigitation<i>"',
   'Human Feat Bonus':'Section=feature Note="+1 General Feat"',
-  'Innate Magic Scholar':'Section=magic Note="Know 2 Wizard cantrips"',
   'Innate Magic User':'Section=magic Note="Know 1 Sorcerer cantrip"',
+  'Innate Magical Scholar':'Section=magic Note="Know 2 Wizard cantrips"',
   'Kurgun Dwarf Ability Adjustment':
     'Section=ability Note="+2 Constitution/+2 Wisdom"',
   'Kurgun Warrior Training':
@@ -808,7 +808,7 @@ MidnightLegacy.RACES = {
       '"Languages (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
       '"Clan Dwarf Ability Adjustment",' +
       '"Clan Warrior Training",Darkvision,"Dwarven Resilience",' +
-      '"Dwarven Toughness",Slow,"Stonemaster\'s Cunning" ' +
+      '"Dwarven Toughness",Slow,Steady,"Stonemaster\'s Cunning" ' +
     'Languages="Clan Dialect","Old Dwarven",any',
   'Danisil Elf':
     'Features=' +
@@ -816,7 +816,7 @@ MidnightLegacy.RACES = {
       '"Language (High Elven/Choose 1 from Sylvan, Halfling)",' +
       '"Danisil Elf Ability Adjustment",' +
       '"Danisil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
-      '"Innate Magic Scholar",Trance ' +
+      '"Innate Magical Scholar",Trance ' +
     'Languages="High Elven",any',
   'Dorn Human':
     'Features=' +
@@ -829,7 +829,7 @@ MidnightLegacy.RACES = {
     'Features=' +
       '"Language (Erenlander/Halfling/Choose 1 from Orcish, Trader\'s Tongue)",' +
       '"Enslaved Halfling Ability Adjustment",' +
-      '"Halfling Magic","Halfling Nimbleness","Lucky Halfling",Slow,' +
+      '"Halfling Magic","Halfling Nimbleness","Lucky Halfling",Slow,Small,' +
       '"Unexpected Blow" ' +
     'Languages=Erenlander,Halfling,any',
   'Erenlander Human':
@@ -852,14 +852,14 @@ MidnightLegacy.RACES = {
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
       '"Language (Erenlander/Trader\'s Tongue/Choose 2 from any)",' +
       '"Gnome Ability Adjustment",' +
-      'Darkvision,"Gnomish Cunning",Riverfolk,Slow ' +
+      'Darkvision,"Gnomish Cunning",Riverfolk,Slow,Small ' +
     'Languages=Erenlander,"Trader\'s Tongue",any,any',
   'Kurgun Dwarf':
     'Features=' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
       '"Languages (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
       '"Kurgun Dwarf Ability Adjustment",' +
-      '"Kurgun Warrior Training",Darkvision,"Dwarven Resilience",Slow '  +
+      '"Kurgun Warrior Training",Darkvision,"Dwarven Resilience",Slow,Steady '  +
     'Languages="Clan Dialect","Old Dwarven",any',
   'Miransil Elf':
     'Features=' +
@@ -873,7 +873,7 @@ MidnightLegacy.RACES = {
     'Features=' +
       '"Language (Erenlander/Halfling/Choose 1 from Orcish, Trader\'s Tongue)",' +
       '"Nomadic Halfling Ability Adjustment",' +
-      '"Halfling Magic","Halfling Nimbleness","Lucky Halfling",Slow,' +
+      '"Halfling Magic","Halfling Nimbleness","Lucky Halfling",Slow,Small,' +
       '"Animal Bond" ' +
     'Languages=Erenlander,Halfling,any',
   'Orc':
@@ -1083,6 +1083,7 @@ MidnightLegacy.pathRulesExtra = function(rules, name) {
         rules.defineRule
           ('highestSpellSlot', 'spellSlots.' + slot, '^=', '"' + sorter + '"');
         rules.defineRule('magicNotes.channeledMagic.1',
+          'features.channeledMagic.1', '?', null,
           'highestSpellSlot', '=', 'source.charAt(1) + source.charAt(0)'
         );
         // TODO 2 if level >= 10
@@ -1127,11 +1128,49 @@ MidnightLegacy.raceRulesExtra = function(rules, name) {
   if(name == 'Caransil Elf')
     rules.defineRule
       ('spellSlots.S0', 'magicNotes.innateMagicUser', '+=', '1');
-  else if(name == 'Clan Dwarf')
+  else if(name == 'Clan Dwarf') {
     rules.defineRule('combatNotes.dwarvenToughness', raceLevel, '+', '2');
-  else if(name == 'Danisil Elf')
+    // The Clan Warrior Training note isn't formatted in a way that allows
+    // featureRules to auto-generate rules
+    rules.defineRule('armorProficiency.Medium',
+      'combatNotes.clanWarriorTraining', '=', '1'
+    );
+    rules.defineRule('weaponProficiency.Battleaxe',
+      'combatNotes.clanWarriorTraining', '=', '1'
+    );
+    rules.defineRule('weaponProficiency.Warhammer',
+      'combatNotes.clanWarriorTraining', '=', '1'
+    );
+  } else if(name == 'Danisil Elf') {
     rules.defineRule
-      ('spellSlots.W0', 'magicNotes.innateMagicScholar', '+=', '2');
+      ('spellSlots.W0', 'magicNotes.innateMagicalScholar', '+=', '2');
+  } else if(name == 'Gnome') {
+    // The Riverfolk note isn't formatted in a way that allows
+    // featureRules to auto-generate rules
+    rules.defineRule
+      ('skillProficiency.Athletics', 'skillNotes.riverfolk', '=', '1');
+    rules.defineRule
+      ('skillProficiency.Insight', 'skillNotes.riverfolk', '=', '1');
+    rules.defineRule
+      ('skillProficiency.Persuasion', 'skillNotes.riverfolk', '=', '1');
+    rules.defineRule
+      ('toolProficiency.Water Vehicles', 'skillNotes.riverfolk', '=', '1');
+  } else if(name == 'Kurgun Dwarf') {
+    // The Kurgun Warrior Training note isn't formatted in a way that allows
+    // featureRules to auto-generate rules
+    rules.defineRule('armorProficiency.Medium',
+      'combatNotes.kurgunWarriorTraining', '=', '1'
+    );
+    rules.defineRule('weaponProficiency.Handaxe',
+      'combatNotes.kurgunWarriorTraining', '=', '1'
+    );
+    rules.defineRule('weaponProficiency.Spear',
+      'combatNotes.kurgunWarriorTraining', '=', '1'
+    );
+    rules.defineRule('weaponProficiency.Shortbow',
+      'combatNotes.kurgunWarriorTraining', '=', '1'
+    );
+  }
 };
 
 /* Returns an array of plugins upon which this one depends. */
