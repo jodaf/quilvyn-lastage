@@ -154,6 +154,7 @@ MidnightLegacy.BACKGROUNDS_ADDED = {
       'Staff,"Traveler\'s Clothes",Backpack,"2 Weeks\' Rations",' +
       '"Hunting Trap" '+
     'Features=' +
+      '"Language (Trader\'s Tongue/Choose 1 from any)",' +
       '"Skill Proficiency (Perception/Survival)",' +
       'Survivalist ' +
     'Languages="Trader\'s Tongue",any'
@@ -184,7 +185,7 @@ MidnightLegacy.FEATS_ADDED = {
   'Seamaster':'Type=General',
   'Shieldwall Soldier':
     'Type=General ' +
-    'Require="features.Armor Proficiency (Medium)","constitution >= 13"',
+    'Require="features.Armor Proficiency (Medium) || features.Armor Proficiency (Heavy)","constitution >= 13"',
   'Subtle Spellcaster':'Type=General',
   'Suspicious':'Type=General',
   'Unremarkable':'Type=General',
@@ -309,15 +310,15 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=feature ' +
     'Note="Know basics of Shadow military organization; can get messages to slaves undetected"',
   'Military Rank':
-    'Section=feature Note="Comrades and soldiers show respect and deference"',
+    'Section=feature Note="Receive respect and deference from fellow soldiers"',
   'Old Veteran':
-    'Section=feature Note="Know how to infiltrate military orders"',
+    'Section=feature Note="Know how to infiltrate military organizations"',
   'Survivalist':
     'Section=skill ' +
-    'Note="Can detect presence of hostile creatures and blighted lands, find shelter from weather"',
+    'Note="Can find shelter from weather and detect presence of hostile creatures and blighted lands"',
   'Sympathetic Ally':
      'Section=feature ' +
-     'Note="Receives support and info from contact in occupied lands"',
+     'Note="Receive support and info from contact in occupied lands"',
 
   // Feats
   'Battlefield Healer':
