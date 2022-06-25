@@ -583,37 +583,37 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="R%{level<10?\\"100\'\\":\\"1 mile\\"} May communicate telepathically w/bound astirax"',
   'Aura Of Darkness':
     'Section=feature ' +
-    'Note="Creates 20\' radius of darkness that others cannot see through"',
+    'Note="May create 20\' radius of darkness that others cannot see through for 1 min"',
   'Bestial Astirax Servant':
     'Section=feature ' +
-    'Note="R100\' May communicate telepathically w/bound astirax; astirax can possess large creature"',
+    'Note="R100\' May communicate telepathically w/bound astirax; astirax can possess Large creature"',
   'Dark Warrior':
-    'Section=feature Note="Extra attack %{wisdomModifier>?1}/long rest"',
+    'Section=feature ' +
+    'Note="Additional attack as bonus action %{wisdomModifier>?1}/long rest"',
   "Dark God's Blessing":
     'Section=combat Note="Self regains %{level<10?2:4}d6 HP from killing"',
   'Dire Bodyguard':
     'Section=feature ' +
-    'Note="Foe Disadv on attacks on others w/in 5\'; self can use Reaction for melee attack"',
+    'Note="R5\' Foe attacks on others have Disadv and self can use Reaction for melee attack"',
   'Dominate Undead':
     'Section=combat ' +
     'Note="R30\' Use Channel Energy to control undead (Wis neg) for 1 hr"',
   'Dread Avatar':
     'Section=save ' +
-    'Note="Resistance to bludgeoning, piercing, and slashing damage and nonmagical weapons; immunity to radiant damage"',
+    'Note="Resistance to nonmagical bludgeoning, piercing, and slashing damage/Immunity to radiant damage"',
   'Ferocious Blow':
     'Section=feature ' +
     'Note="Use Channel Divinity for +2d6 HP thunder; medium foe pushed 10\' and knocked prone"',
   'Impervious To Magic':
-     'Section=magic ' +
-     'Note="Use Reaction to cast <i>Counterspell</i> w/out using spell slot"',
+     'Section=magic Note="Use Reaction to cast <i>Counterspell</i>"',
   'Improved Astirax Bond':
     'Section=feature ' +
     'Note="Astirax gains +%{proficiencyBonus} AC, attack, and damage; may extend scent magic to 1 mile for 1 min 1/dy"',
   'Mage Hunter':
     'Section=combat ' +
-    'Note="R%V\' Use Channel Divinity to inflict Disadv on target caster concentration and Adv on saves vs. target\'s spells for 1 min"',
+    'Note="R%V\' Use Channel Divinity to inflict Disadv on target caster concentration and Adv on saves vs. target\'s spells (Wis neg) for 1 min"',
   'Master Mage Hunter':'Section=combat Note="Extends Mage Hunter effect"',
-  'Necromantic Arts':'Section=magic Note="Know <i>Chill Touch</i>"',
+  'Necromantic Arts':'Section=magic Note="Know <i>Chill Touch</i> cantrip"',
   'Potent Spellcasting':
     'Section=magic Note="+%{wisdomModifier} Cleric cantrip damage"',
 
@@ -732,7 +732,7 @@ MidnightLegacy.PATHS_ADDED = {
       '"1:Bane,Hellish Rebuke",' +
       '"2:Magic Weapon,Darkvision",' +
       '"3:Haste,Vampiric Touch",' +
-      '"4:Banishment,Stoneskin",' +
+      '"4:Stoneskin",' + // Banishment is on the dropped spell list
       '"5:Cone Of Cold,Hold Monster"',
   'Witch Taker Domain':
     'Group=Cleric Level=levels.Cleric ' +
@@ -899,12 +899,12 @@ MidnightLegacy.SPELLS_ADDED = {
     'School=Divination ' +
     'Level=C3,D3,P3 ' +
     'Description=' +
-      '"R200\' Self detect astiraxes, R10\' bind to commands for 1 yr or inflict 4d12 HP radiant (Wis neg)"',
+      '"R200\' Self senses astiraxes, R10\' may control for 1 yr or inflict 4d12 HP radiant (Wis neg)"',
   'Disguise Ally':
     'School=Illusion ' +
     'Level=B2,S2,W2 ' +
     'Description=' +
-      '"R100\' Willing target altered in appearance for conc or 1 hr or until out of range"',
+      '"R100\' Alters appearance of willing target and clothing while w/in range for conc or 1 hr"',
   'Greenshield':
     'School=Abjuration ' +
     'Level=D2 ' +
@@ -913,27 +913,27 @@ MidnightLegacy.SPELLS_ADDED = {
     'School=Divination ' +
     'Level=D1,R1 ' +
     'Description=' +
-      '"While w/in 1 mile of Erethor, self detects hostile creatures for 8 hr"',
+      '"R300\' Self senses creatures while w/in 1 mile of Erethor for 8 hr"',
   'Lifetrap':
     'School=Transmutation ' +
     'Level=D1,R1 ' +
     'Description=' +
-      '"R150\' Target creature restrained (Str neg) for conc or 1 min; undead suffers 1d12/tn at end"',
+      '"R150\' Target creature restrained (Str neg) for conc or 1 min; undead suffers 1d12 HP/tn radiant at end"',
   "Nature's Revelation":
     'School=Transmutation ' +
     'Level=D2,R2 ' +
     'Description=' +
-      '"R120\' Plants and animals identify hidden creatures for conc or 1 min"',
+      '"R120\' Plants and animals indicate location of hidden creatures for conc or 1 min"',
   'Silver Blood':
     'School=Abjuration ' +
-    'Level=B1,S1,W1 ' +
+    'Level=B2,S2,W2 ' +
     'Description=' +
-      '"Self suffer 1d4 HP to create silver ammo, warding line, or astirax barrier for 1 hr"',
+      '"Self suffers 1d4 HP to create silver ammo, warding line, or astirax barrier for 1 hr"',
   'Silver Storm':
     'School=Transmutation ' +
     'Level=S5,W5 ' +
     'Description=' +
-      '"70\' cone of silver needles inflicts 10d4 piercing (Dex half)"',
+      '"70\' cone of silver needles inflicts 10d4 piercing (10d8 if vulnerable; Dex half)"',
   'Silver Wind':
     'School=Conjuration ' +
     'Level=S4,W4 ' +
@@ -1132,8 +1132,10 @@ MidnightLegacy.pathRulesExtra = function(rules, name) {
       'level', '=', 'Math.min(Math.floor(source / 5), 3)'
     );
   } else if(name == 'Witch Taker Domain') {
-    rules.defineRule
-      ('combatNotes.mageHunter', 'levels.Cleric', '=', 'source<8 ? 30 : 60');
+    rules.defineRule('combatNotes.mageHunter',
+      'levels.Cleric', '=', '30',
+      'combatNotes.masterMageHunter', '+', '30'
+    );
   }
 };
 
