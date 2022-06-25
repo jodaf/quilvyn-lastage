@@ -324,23 +324,23 @@ MidnightLegacy.FEATURES_ADDED = {
   'Battlefield Healer':
     'Section=combat,skill ' +
     'Note="Allies regain extra HD from long rest",' +
-         '"DC 15 Int with healer\'s kit stabilizes and restores 3 HP"',
+         '"Successful DC 15 Medicine with healer\'s kit brings 0 HP to 3 HP"',
   'Brawler':
     'Section=combat ' +
-    'Note="Unarmed strike does d4 damage, gives bonus action for second strike, grapple, or knock prone"',
+    'Note="Unarmed strike inflicts d4 damage; may use bonus action for second strike, grapple, or knock prone"',
   'Captor':
     'Section=ability,combat ' +
     'Note="+1 Strength",' +
-         '"Adv on Athletics to grapple when unseen; grapple silently; move at full speed while grappling"',
+         '"Adv on Athletics to grapple when unseen; grapple silently; move at full speed w/out OA while grappling"',
   'Fellhunter':
     'Section=skill ' +
-    'Note="DC 12 Religion gives Adv on saves and inflicts Disadv on undead for 1 min 1/long rest"',
+    'Note="Successful DC 12 Religion gives self Adv on saves vs. undead and inflicts Disadv on undead targets\' saves for 1 min 1/long rest"',
   'Harrier':
     'Section=combat ' +
-    'Note="Mounted move negates foe OA causes successful attacks to knock prone"',
+    'Note="Mounted 30\' move negates foe OA and causes successful melee attacks to knock prone"',
   'Improvised Fighter':
     'Section=combat ' +
-    'Note="Weapon Proficiency (Improvised)/Improvised weapon damage increased to 1d6"',
+    'Note="Weapon Proficiency (Improvised)/Improvised weapon damage increased to 1d6/May destroy improvised weapon for +1 damage die"',
   'Knife Fighter':
     'Section=ability,combat ' +
     'Note="+1 Dexterity",' +
@@ -353,30 +353,30 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Cannot be surprised when asleep/Automatic Dodge in first round"',
   'Polyglot':
     'Section=skill ' +
-    'Note="General language understanding after 1 dy, DC 15 Int to learn after 1 wk"',
+    'Note="Gain general language understanding after listening for 1 dy; successful DC 15 Int after 1 wk gives fluency"',
   'Scavenger':
     'Section=ability,skill ' +
     'Note="Ability Boost (Choose 1 from Intelligence, Wisdom)",' +
-         '"DC 15 Perception to recover all ammo; DC 12 Investigation to scavenge weapon or armor materials"',
+         '"Successful DC 15 Perception recovers all spent ammo/Successful DC 12 Investigation scavenges weapon or armor materials"',
   'Seamaster':
     'Section=ability,feature,skill ' +
-    'Note="Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
-         '"Increase speed of commanded ship by 2 MPH, climb rope at full speed",' +
+    'Note="Ability Boost (Choose 1 from Dexterity, Wisdom)/Climb rope at full speed",' +
+         '"Increase speed of commanded ship by 2 MPH",' +
          '"No Disadv to pilot ship through storm"',
   'Shieldwall Soldier':
-    'Section=combat Note="R5\' Ally +1 AC, +2 if self has shield"',
+    'Section=combat Note="R5\' Allies gain +1 AC (+2 if self holding shield)"',
   'Subtle Spellcaster':
     'Section=magic,skill ' +
     'Note="Cast 2 chosen level 1 spells 1/long rest",' +
-         '"Sleight Of Hand vs. passive Perception to cast spells unnoticed"',
+         '"Successful Sleight Of Hand vs. passive Perception casts spells unnoticed"',
   'Suspicious':
     'Section=ability,skill ' +
     'Note="+1 Intelligence",' +
-         '"Skill Proficiency (Insight)/Dbl proficiency for Insight and passive Perception/DC 20 Investigation to note flaws in story detail"',
+         '"Skill Proficiency (Insight)/+%V Insight/+%V passive Perception/Successful DC 20 Investigation notes flaws in story detail"',
   'Unremarkable':
     'Section=ability,feature ' +
     'Note="+1 Wisdom",' +
-         '"Run through crowds unnoticed/Foe passive Perception to notice self reduced to 12"',
+         '"May run through crowds unnoticed/Foe passive Perception to notice self reduced to 12"',
 
   // Heroic Paths
   'Acts Of Service':
@@ -1067,6 +1067,14 @@ MidnightLegacy.classRulesExtra = function(rules, name) {
  * derived directly from the attributes passed to featRules.
  */
 MidnightLegacy.featRulesExtra = function(rules, name) {
+  if(name == 'Brawler') {
+    rules.defineRule('weapons.Unarmed.2', 'combatNotes.brawler', '^', '"1d4"');
+  } else if(name == 'Suspicious') {
+    rules.defineRule('skillNotes.suspicious', 'proficiencyBonus', '=', null);
+    rules.defineRule
+      ('skillProficiency.Insight', 'skillNotes.suspicious', '=', '1');
+    rules.defineRule('skills.Insight', 'skillNotes.suspicious', '+', null);
+  }
 };
 
 /*
