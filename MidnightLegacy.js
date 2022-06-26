@@ -37,7 +37,7 @@ function MidnightLegacy() {
 
   var basePlugin = window.PHB5E != null ? PHB5E : SRD5E;
 
-  var rules = new QuilvynRules('Midnight 5E', MidnightLegacy.VERSION);
+  var rules = new QuilvynRules('Midnight Legacy', MidnightLegacy.VERSION);
   MidnightLegacy.rules = rules;
 
   rules.defineChoice('choices', SRD5E.CHOICES);
@@ -732,7 +732,7 @@ MidnightLegacy.PATHS_ADDED = {
       '"1:Bane,Hellish Rebuke",' +
       '"2:Magic Weapon,Darkvision",' +
       '"3:Haste,Vampiric Touch",' +
-      '"4:Stoneskin",' + // Banishment is on the dropped spell list
+      '"4:Banishment,Stoneskin",' +
       '"5:Cone Of Cold,Hold Monster"',
   'Witch Taker Domain':
     'Group=Cleric Level=levels.Cleric ' +
@@ -1218,19 +1218,39 @@ MidnightLegacy.ruleNotes = function() {
   return '' +
     '<h2>Midnight Legacy Quilvyn Plugin Notes</h2>\n' +
     'Midnight Legacy Quilvyn Plugin Version ' + MidnightLegacy.VERSION + '\n' +
-    '<p>\n' +
-    'There are no known bugs, limitations, or usage notes specific to the Midnight Legacy Rule Set.\n' +
     '</p>\n' +
+    '<h3>Usage Notes</h3>\n' +
+    '<ul>\n' +
+    '  <li>\n' +
+    '    Quilvyn makes available the expanded options, feats, spells, etc.\n' +
+    "    from the Player's Handbook if the D&amp;D 5E rule set is loaded.\n" +
+    '  </li><li>\n' +
+    '    Racial origin choices (Dorn, Erenlander, or Sarcosan Human; Clan\n' +
+    '    or Kurgun Dwarf, etc.) are absorbed into the list of races.\n' +
+    '  </li><li>\n' +
+    '    Quilvyn drops the spell <i>Banishment</i> from the list of domain\n' +
+    '    spells for the Soldier Legate class option, since that spell is\n' +
+    "    included in the rule book's list of spells that do not exist in Midnight.\n" +
+    '    The same is true for some spells from some class options from the\n' +
+    "    SRD (e.g., <i>Divination</i> from Druid's Circle Of the Land).\n" +
+    '  </li>\n' +
+    '</ul>\n' +
     '<h3>Copyrights and Licensing</h3>\n' +
     '<p>\n' +
-    'Quilvyn\'s Midnight Legacy rule set is unofficial Fan Content permitted ' +
-    'under Wizards of the Coast\'s ' +
-    '<a href="https://company.wizards.com/en/legal/fancontentpolicy">Fan Content Policy</a>.\n' +
+    "Quilvyn\'s Midnight Rule Set uses Open Game Content " +
+    'released by Edge Studio under the Open Game ' +
+    'License. Copyright 2021, Edge Studio under license of Fantasy Flight' +
+    'Games. Authors: Greg Benage and Robert Vaughn.\n' +
     '</p><p>\n' +
-    'Quilvyn is not approved or endorsed by Wizards of the Coast. Portions ' +
-    'of the materials used are property of Wizards of the Coast. ©Wizards of ' +
-    'the Coast LLC.\n' +
+    'Quilvyn is not approved or endorsed by Edge Studio. Portions ' +
+    'of the materials used are property of Edge Studio. © Edge Studio.\n' +
     '</p><p>\n' +
-    'Dungeons & Dragons Player\'s Handbook © 2014 Wizards of the Coast LLC.\n' +
+    'Open Game License v 1.0a Copyright 2000, Wizards of the Coast, LLC. You ' +
+    'should have received a copy of the Open Game License with this program; ' +
+    'if not, you can obtain one from ' +
+    'https://media.wizards.com/2016/downloads/SRD-OGL_V1.1.pdf. ' +
+    '<a href="plugins/ogl-midnightlegacy.txt">Click here</a> to see the license.<br/>\n'+
+    '</p><p>\n' +
+    'Midnight : Legacy of Darkness © 2021 Edge Studio.\n' +
     '</p>\n';
 };
