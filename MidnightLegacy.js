@@ -611,7 +611,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Astirax gains +%{proficiencyBonus} AC, attack, and damage; may extend scent magic to 1 mile for 1 min 1/dy"',
   'Mage Hunter':
     'Section=combat ' +
-    'Note="R%V\' Use Channel Divinity to inflict Disadv on target caster concentration and Adv on saves vs. target\'s spells (Wis neg) for 1 min"',
+    'Note="R%V\' Use Channel Divinity to inflict Disadv on concentration of %1 and Adv on saves vs. spells of %1 (Wis neg) for 1 min"',
   'Master Mage Hunter':'Section=combat Note="Extends Mage Hunter effect"',
   'Necromantic Arts':'Section=magic Note="Know <i>Chill Touch</i> cantrip"',
   'Potent Spellcasting':
@@ -1135,6 +1135,11 @@ MidnightLegacy.pathRulesExtra = function(rules, name) {
     rules.defineRule('combatNotes.mageHunter',
       'levels.Cleric', '=', '30',
       'combatNotes.masterMageHunter', '+', '30'
+    );
+    rules.defineRule('combatNotes.mageHunter.1',
+      'features.Mage Hunter', '?', null,
+      'levels.Cleric', '=', '"target caster"',
+      'combatNotes.masterMageHunter', '=', '"all casters"'
     );
   }
 };
