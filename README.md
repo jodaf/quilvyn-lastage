@@ -2,7 +2,9 @@
 
 The quilvyn-lastage package bundles modules that extend Quilvyn to work with
 Fantasy Flight's Midnight campaign setting, applying the rules of the
-<a href="https://www.drivethrurpg.com/product/2718/Midnight-2nd-Edition-Core-Rulebook">2nd edition Core Rulebook</a>.
+<a href="https://www.drivethrurpg.com/product/2718/Midnight-2nd-Edition-Core-Rulebook">2nd edition Core Rulebook</a>
+and the
+<a href="https://www.drivethrurpg.com/product/369174/MIDNIGHT--Legacy-of-Darkness?src=hottest">Midnight Legacy of Shady</a> rule book.
 
 ### Requirements
 
@@ -26,6 +28,12 @@ following lines to the file plugins/plugins.js:
       group:'Pathfinder 1E',
       require:'Pathfinder.js'
     };
+    RULESETS['Midnight Legacy of Darkness Campain Setting using SRD 5E rules'] = {
+      url:'plugins/MidnightLegacy.js',
+      group:'5E',
+      require:'SRD5E.js'
+    };
+
 
 ### Usage
 
