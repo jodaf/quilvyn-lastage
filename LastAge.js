@@ -153,7 +153,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.3.1.5';
+LastAge.VERSION = '2.3.2.0';
 
 LastAge.CHOICES_ADDED = [];
 LastAge.CHOICES = SRD35.CHOICES.concat(LastAge.CHOICES_ADDED);

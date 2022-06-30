@@ -115,7 +115,7 @@ function MidnightLegacy() {
 
 }
 
-MidnightLegacy.VERSION = '2.3.1.0';
+MidnightLegacy.VERSION = '2.3.2.0';
 
 MidnightLegacy.BACKGROUNDS_ADDED = {
   'Deserter':
