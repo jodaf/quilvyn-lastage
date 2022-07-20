@@ -156,8 +156,7 @@ MidnightLegacy.BACKGROUNDS_ADDED = {
     'Features=' +
       '"Language (Trader\'s Tongue/Choose 1 from any)",' +
       '"Skill Proficiency (Perception/Survival)",' +
-      'Survivalist ' +
-    'Languages="Trader\'s Tongue",any'
+      'Survivalist'
 };
 MidnightLegacy.BACKGROUNDS =
   Object.assign({}, SRD5E.BACKGROUNDS, MidnightLegacy.BACKGROUNDS_ADDED);
@@ -347,7 +346,7 @@ MidnightLegacy.FEATURES_ADDED = {
          '"Dagger crits on 18; crit hit inflicts Disadv on combat for 1 rd"',
   'Learned':
     'Section=skill ' +
-    'Note="+1 Language Count/Can read and write/Skill Proficiency (Choose 1 from History, Religion)"',
+    'Note="Language (Choose 1 from any)/Can read and write/Skill Proficiency (Choose 1 from History, Religion)"',
   'Paranoid':
     'Section=combat ' +
     'Note="Cannot be surprised when asleep/Automatic Dodge in first round"',
@@ -803,96 +802,83 @@ MidnightLegacy.RACES = {
       '"Language (High Elven/Erenlander/Choose 1 from Trader\'s Tongue, Old Dwarven, Orcish)",' +
       '"Caransil Ability Adjustment",' +
       '"Caransil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
-      '"Innate Magic User",Trance ' +
-    'Languages=Erenlander,"High Elven",any',
+      '"Innate Magic User",Trance',
   'Clan Dwarf':
     'Features=' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
       '"Languages (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
       '"Clan Dwarf Ability Adjustment",' +
       '"Clan Warrior Training",Darkvision,"Dwarven Resilience",' +
-      '"Dwarven Toughness",Slow,Steady,"Stonemaster\'s Cunning" ' +
-    'Languages="Clan Dialect","Old Dwarven",any',
+      '"Dwarven Toughness",Slow,Steady,"Stonemaster\'s Cunning"',
   'Danisil Elf':
     'Features=' +
       '"Skill Proficiency (History)",' +
       '"Language (High Elven/Choose 1 from Sylvan, Halfling)",' +
       '"Danisil Elf Ability Adjustment",' +
       '"Danisil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
-      '"Innate Magical Scholar",Trance ' +
-    'Languages="High Elven",any',
+      '"Innate Magical Scholar",Trance',
   'Dorn Human':
     'Features=' +
       '"Skill Proficiency (Survival/Choose 1 from any)",' +
       '"Languages (Erenlander, Norther, choose 1 from any)",' +
       '"Dorn Ability Adjustment",' +
-      '"Human Feat Bonus" ' +
-    'Languages=Erenlander,Norther,any',
+      '"Human Feat Bonus"',
   'Enslaved Halfling':
     'Features=' +
       '"Language (Erenlander/Halfling/Choose 1 from Orcish, Trader\'s Tongue)",' +
       '"Enslaved Halfling Ability Adjustment",' +
       '"Halfling Magic","Halfling Nimbleness","Lucky Halfling",Slow,Small,' +
-      '"Unexpected Blow" ' +
-    'Languages=Erenlander,Halfling,any',
+      '"Unexpected Blow"',
   'Erenlander Human':
     'Features=' +
       '"Skill Proficiency (Choose 3 from any)",' +
       '"Tool Proficiency (Land Vehicles/Choose 1 from any Artisan)",' +
       '"Language (Erenlander/Choose 1 from any)",' +
-      '"Erenlander Ability Adjustment","Human Feat Bonus" ' +
-    'Languages=Erenlander,any',
+      '"Erenlander Ability Adjustment","Human Feat Bonus"',
   'Erunsil Elf':
     'Features=' +
       '"Skill Proficiency (Survival)",' +
       '"Language (High Elven/Orcish/Trader\'s Tongue)",' +
       '"Erunsil Elf Ability Adjustment",' +
       '"Erunsil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
-      'Trance,"Wraith Of The North" ' +
-    'Languages="High Elven",Orcish,"Trader\'s Tongue"',
+      'Trance,"Wraith Of The North"',
   'Gnome':
     'Features=' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
       '"Language (Erenlander/Trader\'s Tongue/Choose 2 from any)",' +
       '"Gnome Ability Adjustment",' +
-      'Darkvision,"Gnomish Cunning",Riverfolk,Slow,Small ' +
-    'Languages=Erenlander,"Trader\'s Tongue",any,any',
+      'Darkvision,"Gnomish Cunning",Riverfolk,Slow,Small',
   'Kurgun Dwarf':
     'Features=' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
       '"Languages (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
       '"Kurgun Dwarf Ability Adjustment",' +
-      '"Kurgun Warrior Training",Darkvision,"Dwarven Resilience",Slow,Steady '  +
-    'Languages="Clan Dialect","Old Dwarven",any',
+      '"Kurgun Warrior Training",Darkvision,"Dwarven Resilience",Slow,Steady',
   'Miransil Elf':
     'Features=' +
       '"Skill Proficiency (Athletics/Insight)",' +
       '"Language (High Elven/Colonial/Trader\'s Tongue)",' +
       '"Miransil Elf Ability Adjustment",' +
       '"Miransil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
-      'Trance,"Born Of The Sea" ' +
-    'Languages="High Elven",Colonial,"Trader\'s Tongue"',
+      'Trance,"Born Of The Sea"',
   'Nomadic Halfling':
     'Features=' +
       '"Language (Erenlander/Halfling/Choose 1 from Orcish, Trader\'s Tongue)",' +
       '"Nomadic Halfling Ability Adjustment",' +
       '"Halfling Magic","Halfling Nimbleness","Lucky Halfling",Slow,Small,' +
-      '"Animal Bond" ' +
-    'Languages=Erenlander,Halfling,any',
+      '"Animal Bond"',
   'Orc':
     'Features=' +
       '"Language (Orcish/Shadow Tongue/Choose 2 from any)",' +
       '"Orc Ability Adjustment",' +
       '"Child Of The North",Darkvision,Ferocity,"Militant Culture",' +
-      '"Troubled Dreams" ' +
-    'Languages=Orcish,"Shadow Tongue",any,any',
+      '"Troubled Dreams"',
   'Sarcosan Human':
     'Features=' +
       '"Skill Proficiency (Choose 1 from Animal Handling, History/Choose 1 from any)",' +
       '"Language (Erenlander/Colonial/Choose 1 from any)",' +
       '"Sarcosan Ability Adjustment",' +
-      '"Human Feat Bonus" ' +
-    'Languages=Erenlander,Colonial,any',
+      '"Human Feat Bonus"'
 };
 MidnightLegacy.SPELLS_ADDED = {
   'Bind/Banish Astirax':
