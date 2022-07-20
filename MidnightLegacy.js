@@ -693,13 +693,16 @@ MidnightLegacy.FEATURES =
 MidnightLegacy.LANGUAGES = {
   'Clan Dialect':'',
   'Colonial':'',
+  'Courtier':'',
   'Erenlander':'',
   'Halfling':'',
   'High Elven':'',
   'Norther':'',
   'Old Dwarven':'',
   'Orcish':'',
+  'Patrol Sign':'',
   'Shadow Tongue':'',
+  'Sylvan':'',
   "Trader's Tongue":''
 };
 MidnightLegacy.PATHS_ADDED = {
@@ -806,7 +809,7 @@ MidnightLegacy.RACES = {
   'Clan Dwarf':
     'Features=' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
-      '"Languages (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
+      '"Language (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
       '"Clan Dwarf Ability Adjustment",' +
       '"Clan Warrior Training",Darkvision,"Dwarven Resilience",' +
       '"Dwarven Toughness",Slow,Steady,"Stonemaster\'s Cunning"',
@@ -820,7 +823,7 @@ MidnightLegacy.RACES = {
   'Dorn Human':
     'Features=' +
       '"Skill Proficiency (Survival/Choose 1 from any)",' +
-      '"Languages (Erenlander, Norther, choose 1 from any)",' +
+      '"Language (Erenlander/Norther/Choose 1 from any)",' +
       '"Dorn Ability Adjustment",' +
       '"Human Feat Bonus"',
   'Enslaved Halfling':
@@ -851,7 +854,7 @@ MidnightLegacy.RACES = {
   'Kurgun Dwarf':
     'Features=' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
-      '"Languages (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
+      '"Language (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
       '"Kurgun Dwarf Ability Adjustment",' +
       '"Kurgun Warrior Training",Darkvision,"Dwarven Resilience",Slow,Steady',
   'Miransil Elf':
