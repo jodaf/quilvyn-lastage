@@ -53,7 +53,7 @@ function LastAge(baseRules) {
   rules.choiceEditorElements = LastAge.choiceEditorElements;
   rules.choiceRules = LastAge.choiceRules;
   rules.editorElements = SRD35.initialEditorElements();
-  rules.getFormats = SRD35.getFormats;
+  rules.getFormats = rules.basePlugin.getFormats || SRD35.getFormats;
   rules.getPlugins = LastAge.getPlugins;
   rules.makeValid = SRD35.makeValid;
   rules.randomizeOneAttribute = LastAge.randomizeOneAttribute;
@@ -153,7 +153,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.3.2.0';
+LastAge.VERSION = '2.3.2.1';
 
 LastAge.CHOICES_ADDED = [];
 LastAge.CHOICES = SRD35.CHOICES.concat(LastAge.CHOICES_ADDED);
