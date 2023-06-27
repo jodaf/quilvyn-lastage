@@ -2442,7 +2442,7 @@ LastAge.SPELLS_ADDED = {
   'Magic Circle Against Shadow':
     'School=Abjuration ' +
     'Level=Ch5 ' +
-    'Description="10\' radius from touched gives +2 AC and saves, supresses mental control, bars contact and entry (SR neg) by Shadow agents for $L10 min"',
+    'Description="10\' radius from touched gives +2 AC and saves, suppresses mental control, bars contact and entry (SR neg) by Shadow agents for $L10 min"',
   'Memorial':
     'School=Divination ' +
     'Level=Ch2,Jack2 ' +
@@ -4532,7 +4532,7 @@ LastAge.classRulesExtra = function(rules, name) {
       'wildlanderFeatures.Quick Stride', '=', '10 * source'
     );
     rules.defineRule('casterLevels.Wildlander',
-      'wilderlanderFeatures.Sense Dark Magic', '?', null,
+      'wildlanderFeatures.Sense Dark Magic', '?', null,
       'level', '=', null
     );
     rules.defineRule("combatNotes.hunter'sStrike",
