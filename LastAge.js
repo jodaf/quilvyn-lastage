@@ -37,11 +37,11 @@ function LastAge(baseRules) {
     return;
   }
 
-  var usePathfinder =
+  let usePathfinder =
     window.Pathfinder != null && Pathfinder.SRD35_SKILL_MAP != null &&
     baseRules != null && baseRules.includes('Pathfinder');
 
-  var rules = new QuilvynRules(
+  let rules = new QuilvynRules(
     'Midnight - ' + (usePathfinder ? 'Pathfinder 1E' : 'SRD v3.5'),
     LastAge.VERSION
   );
@@ -65,8 +65,8 @@ function LastAge(baseRules) {
   rules.ruleNotes = LastAge.ruleNotes;
 
   if(usePathfinder) {
-    SRD35.ABBREVIATIONS['CMB'] = 'Combat Maneuver Bonus';
-    SRD35.ABBREVIATIONS['CMD'] = 'Combat Maneuver Defense';
+    SRD35.ABBREVIATIONS.CMB = 'Combat Maneuver Bonus';
+    SRD35.ABBREVIATIONS.CMD = 'Combat Maneuver Defense';
   }
 
   SRD35.createViewers(rules, SRD35.VIEWERS);
@@ -85,26 +85,26 @@ function LastAge(baseRules) {
     {}, rules.basePlugin.ANIMAL_COMPANIONS, LastAge.ANIMAL_COMPANIONS_ADDED
   );
   LastAge.ARMORS = Object.assign({}, rules.basePlugin.ARMORS);
-  LastAge.CLASSES['Barbarian'] =
-    rules.basePlugin.CLASSES['Barbarian'] + ' ' +
-    LastAge.CLASS_FEATURES['Barbarian'];
-  LastAge.CLASSES['Fighter'] =
-    rules.basePlugin.CLASSES['Fighter'] + ' ' +
-    LastAge.CLASS_FEATURES['Fighter'];
-  LastAge.CLASSES['Rogue'] =
-    rules.basePlugin.CLASSES['Rogue'] + ' ' + LastAge.CLASS_FEATURES['Rogue'];
-  LastAge.NPC_CLASSES['Aristocrat'] =
-    rules.basePlugin.NPC_CLASSES['Aristocrat'];
-  LastAge.NPC_CLASSES['Commoner'] = rules.basePlugin.NPC_CLASSES['Commoner'];
-  LastAge.NPC_CLASSES['Expert'] = rules.basePlugin.NPC_CLASSES['Expert'];
-  LastAge.NPC_CLASSES['Warrior'] = rules.basePlugin.NPC_CLASSES['Warrior'];
+  LastAge.CLASSES.Barbarian =
+    rules.basePlugin.CLASSES.Barbarian + ' ' +
+    LastAge.CLASS_FEATURES.Barbarian;
+  LastAge.CLASSES.Fighter =
+    rules.basePlugin.CLASSES.Fighter + ' ' +
+    LastAge.CLASS_FEATURES.Fighter;
+  LastAge.CLASSES.Rogue =
+    rules.basePlugin.CLASSES.Rogue + ' ' + LastAge.CLASS_FEATURES.Rogue;
+  LastAge.NPC_CLASSES.Aristocrat =
+    rules.basePlugin.NPC_CLASSES.Aristocrat;
+  LastAge.NPC_CLASSES.Commoner = rules.basePlugin.NPC_CLASSES.Commoner;
+  LastAge.NPC_CLASSES.Expert = rules.basePlugin.NPC_CLASSES.Expert;
+  LastAge.NPC_CLASSES.Warrior = rules.basePlugin.NPC_CLASSES.Warrior;
   LastAge.FAMILIARS = Object.assign({}, rules.basePlugin.FAMILIARS);
   LastAge.FEATS =
     Object.assign({}, rules.basePlugin.FEATS, LastAge.FEATS_ADDED);
   LastAge.FEATURES =
     Object.assign({}, rules.basePlugin.FEATURES, LastAge.FEATURES_ADDED);
   LastAge.GOODIES = Object.assign({}, rules.basePlugin.GOODIES);
-  for(var path in LastAge.PATHS) {
+  for(let path in LastAge.PATHS) {
     if(rules.basePlugin.PATHS[path])
       LastAge.PATHS[path] =
         rules.basePlugin.PATHS[path].replaceAll('Cleric', 'Legate');
@@ -112,17 +112,17 @@ function LastAge(baseRules) {
   LastAge.SHIELDS = Object.assign({}, rules.basePlugin.SHIELDS);
   LastAge.SKILLS =
     Object.assign({}, rules.basePlugin.SKILLS, LastAge.SKILLS_ADDED);
-  for(var skill in LastAge.SKILLS) {
+  for(let skill in LastAge.SKILLS) {
     LastAge.SKILLS[skill] = LastAge.SKILLS[skill].replace(/Class=\S+/i, '');
   }
   delete LastAge.SKILLS['Knowledge (Planes)'];
   delete LastAge.SKILLS['Knowledge (Religion)'];
   LastAge.SPELLS = Object.assign({}, LastAge.SPELLS_ADDED);
-  for(var s in rules.basePlugin.SPELLS) {
-    var m = rules.basePlugin.SPELLS[s].match(/\b[BDW][01]|\b(C|Death|Destruction|Evil|Magic|War)[0-9]/g);
+  for(let s in rules.basePlugin.SPELLS) {
+    let m = rules.basePlugin.SPELLS[s].match(/\b[BDW][01]|\b(C|Death|Destruction|Evil|Magic|War)[0-9]/g);
     if(m == null && !(s in LastAge.SPELLS_LEVELS))
       continue;
-    var spellAttrs = rules.basePlugin.SPELLS[s] + ' Level=';
+    let spellAttrs = rules.basePlugin.SPELLS[s] + ' Level=';
     if(m == null)
       spellAttrs += LastAge.SPELLS_LEVELS[s];
     else if(s in LastAge.SPELLS_LEVELS)
@@ -153,7 +153,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.3.2.2';
+LastAge.VERSION = '2.3.2.3';
 
 LastAge.CHOICES_ADDED = [];
 LastAge.CHOICES = SRD35.CHOICES.concat(LastAge.CHOICES_ADDED);
@@ -410,7 +410,20 @@ LastAge.FEATS_ADDED = {
       '"strength >= 15",' +
       '"baseAttack >= 6",' +
       '"features.Cleave",' +
-      '"features.Power Attack"'
+      '"features.Power Attack"',
+
+  // Under the Shadow
+  'Fallen Courtier':'Type=General',
+  'Legate Of The Bluff':
+    'Type=General Require="levels.Legate >= 3","charisma >= 12"',
+  'Shadow Cipher':
+    'Type=General ' +
+    'Require=' +
+      '"features.Fallen Courtier",' +
+      '"skills.Decipher Script >= 2",' +
+      '"languages.Black Tongue"',
+  'Shadow Killer':
+    'Type=General Require="features.Fallen Courtier","sneakAttack >= 1"'
 
 };
 LastAge.FEATS = Object.assign({}, SRD35.FEATS, LastAge.FEATS_ADDED);
@@ -709,6 +722,12 @@ LastAge.FEATURES_ADDED = {
   'Dwarvencraft':'Section=feature Note="Know %V Dwarvencraft techniques"',
   'Extra Gift':
     'Section=feature Note="Use Mastery or Force Of Personality +4 times/dy"',
+  'Fallen Courtier':
+    'Section=feature,save,skill ' +
+    'Note=' +
+      '"May attempt to find Baden cache or safehouse",' +
+      '"+2 to resist betraying Fallen Court",' +
+      '"+2 Sense Motive (determine allegiance)/+2 to resist betraying Fallen Court"',
   'Fanatic':
     'Section=combat ' +
     'Note="+1 attack, divine spell benefit when within 60\' of Shadow holy servant"',
@@ -750,6 +769,9 @@ LastAge.FEATURES_ADDED = {
   'Knife Thrower':
     'Section=combat ' +
     'Note="R20\' +1 ranged attack w/racial knife, draw as free action (move action if hidden)"',
+  'Legate Of The Bluff':
+    'Section=skill ' +
+    'Note="May make DC 10 Gather Information and Diplomacy checks to find district resident and call in a lesser favor 1/dy; DC 25 for a greater favor %{charismaModifier}/month"',
   'Lesser Draw On Earth Power':
     'Section=magic ' +
     'Note="Draw %V spell energy/dy from nearby menhir, dolmen, or tumuli"',
@@ -791,6 +813,11 @@ LastAge.FEATURES_ADDED = {
   'Sense Nexus':'Section=magic Note="DC 15 Wis to sense nexus w/in 5 miles"',
   'Sense Power':
     'Section=magic Note="<i>Detect Magic</i> %V/dy, DC 13 Wis check w/in 20\'"',
+  'Shadow Cipher':
+    'Section=skill ' +
+    'Note="May take 10 or take 20 on Decipher Script (Shadow documents)"',
+  'Shadow Killer':
+    'Section=combat Note="Sneak attack on Shadow servant inflicts +1d6 HP"',
   'Shield Mate':
     'Section=combat ' +
     'Note="Adjacent allies +2 AC when self fighting defensively or using -2 Combat Expertise"',
@@ -1346,11 +1373,22 @@ LastAge.FEATURES_ADDED = {
     'Section=magic ' +
     'Note="Full-round action prevents fallen from becoming Fell or Lost"',
   'Find The Way':'Section=feature Note="%V"',
+  'Fires Of Acceptance':
+    'Section=skill Note="Allies ignore negative Vision effects"',
+  'Fires Of Conviction':
+    'Section=skill ' +
+    'Note="Vision targets w/%{alignment} alignment gain additional +%V benefits"',
+  'Fires Of Destruction':
+    'Section=skill ' +
+    'Note="Vision targets w/%1 alignment suffer additional -%V penalties"',
   'Fist':'Section=feature Note="%V additional Defender abilities"',
   'Fluid Defense':'Section=combat Note="+%V AC"',
   'For The King':
     'Section=combat ' +
     'Note="War cry grants self +%1 attack and +1d%2 damage vs. Shadow minions, R60\' allies +%1 vs. fear %V rd/dy"',
+  'Forged In Dreams':
+    'Section=skill ' +
+    'Note="R60\' May spend 1 Vision use to make target friendly (DC %{10+levels.Visionary+charismaModifier} Will neg) for %{charismaModifier} hr"',
   'Forgotten Knowledge':'Section=skill Note="+2 Decipher Script/+2 Knowledge"',
   'Freerider Bonus Feats':'Section=feature Note="%V Freerider feats"',
   'Gardener Of Erethor Bonus Spells':
@@ -1368,6 +1406,8 @@ LastAge.FEATURES_ADDED = {
   'Grant Protection':
     'Section=magic ' +
     'Note="<i>Sanctuary</i>, then <i>Shield Of Faith</i> to chosen person %V/dy"',
+  'Guiding Light':
+    'Section=feature Note="+%{((levels.Visionary-1)//2)*2} Leadership score"',
   'Harrower Bonus Feats':'Section=feature Note="%V Harrower Feats"',
   'Heal':'Section=magic Note="Cast <i>Heal</i> 1/dy"',
   'Ignore Armor':'Section=magic Note="Reduce arcane spell failure by %V%"',
@@ -1423,9 +1463,21 @@ LastAge.FEATURES_ADDED = {
   'Intimidating Shot':
     'Section=combat ' +
     'Note="Intimidate check after attack w/bonus of half damage"',
+  'Kindle Hearts':
+    'Section=skill ' +
+    'Note="R60\' May spend 1 Vision use to give target +%{charismaModifier} save vs. morale effect or penalty reduction"',
+  'Kindle Minds':
+    'Section=skill ' +
+    'Note="R60\' May spend 1 Vision use to give target +%{charismaModifier} save vs. fear or to reduce fear by 1 step"',
+  'Kindle Spirits':
+    'Section=skill ' +
+    'Note="R60\' May spend 1 Vision use to give target +%{charismaModifier} save vs. compulsion"',
   'Leaf Reader':
     'Section=combat ' +
     'Note="Reduce vegetation concealment miss chance by 10% for every 5 above DC 10 Spot check"',
+  'Light The World':
+    'Section=skill ' +
+    'Note="May spend 1 vision use to reroll attack, save, or skill check"',
   'Like Snowfall':
     'Section=magic ' +
     'Note="Continuous <i>Pass Without Trace</i>, <i>Feather Fall</i> 3/dy"',
@@ -1457,6 +1509,18 @@ LastAge.FEATURES_ADDED = {
     'Section=skill Note="Identify animals, plants, unsafe food and drink"',
   'Null Field':
     'Section=feature Note="Conceal auras of %V magical objects on person"',
+  'Oathbinder':
+    'Section=skill ' +
+    'Note="May spend 1 Vision use to know direction, distance, health, and mental state of oathbound target"',
+  'Oathholder':
+    'Section=skill ' +
+    'Note="May spend 1 Vision use to allow oathbound target to use self Fortitude or Will save base modifier; failure also affects self"',
+  'Oathkeeper':
+    'Section=skill ' +
+    'Note="May spend 1 Vision use to command oathbound target (DC %{10+levels.Visionary+charismaModifier} Will neg) for %{charismaModifier} min and give level checks to dispel control effects"',
+  'Oathmaker':
+    'Section=skill ' +
+    'Note="May spend 1 Vision use to use <i>Scrying</i> effects on oathbound target"',
   'Obsidian Tongue':
     'Section=skill ' +
     'Note="+%V Bluff, Diplomacy, Gather Information (Shadow minions)"',
@@ -1591,7 +1655,9 @@ LastAge.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="Detect weapon if separated; if unconscious, weapon protects"',
   'Venom Immunity':'Section=save Note="Immune to organic poisons"',
+  'Vision':'Section=skill Note="R60\' May use Perform to give %{levels.Visionary} targets +1 per shared alignment component to attacks, level and skill checks, and saves and inflict -1 per opposed alignment component to AC and damage while performing (%{levels.Visionary} min max) + %{charismaModifier} rd %{levels.Visionary}/dy"',
   'Vision Of The Night':'Section=feature Note="Low-Light Vision"',
+  "Vision's Gifts":'Section=feature Note="%V selections"',
   'Wallscaling':
     'Section=ability,skill ' +
     'Note=' +
@@ -2230,7 +2296,7 @@ LastAge.SKILLS_ADDED = {
   'Profession (Soldier)':'Ability=wisdom Untrained=n'
 };
 LastAge.SKILLS = Object.assign({}, SRD35.SKILLS, LastAge.SKILLS_ADDED);
-for(var skill in LastAge.SKILLS) {
+for(let skill in LastAge.SKILLS) {
   LastAge.SKILLS[skill] = LastAge.SKILLS[skill].replace(/Class=\S+/i, '');
 }
 delete LastAge.SKILLS['Knowledge (Planes)'];
@@ -2376,7 +2442,7 @@ LastAge.SPELLS_ADDED = {
   'Magic Circle Against Shadow':
     'School=Abjuration ' +
     'Level=Ch5 ' +
-    'Description="10\' radius from touched gives +2 AC and saves, supresses mental control, bars contact and entry (SR neg) by Shadow agents for $L10 min"',
+    'Description="10\' radius from touched gives +2 AC and saves, suppresses mental control, bars contact and entry (SR neg) by Shadow agents for $L10 min"',
   'Memorial':
     'School=Divination ' +
     'Level=Ch2,Jack2 ' +
@@ -3030,11 +3096,11 @@ LastAge.SPELLS_SCHOOLS = {
   'Zone Of Silence':'Enchantment'
 };
 LastAge.SPELLS = Object.assign({}, LastAge.SPELLS_ADDED);
-for(var s in SRD35.SPELLS) {
-  var m = SRD35.SPELLS[s].match(/\b[BD][01]|\b(C|Death|Destruction|Evil|Magic|War)[0-9]/g);
+for(let s in SRD35.SPELLS) {
+  let m = SRD35.SPELLS[s].match(/\b[BD][01]|\b(C|Death|Destruction|Evil|Magic|War)[0-9]/g);
   if(m == null && !(s in LastAge.SPELLS_LEVELS))
     continue;
-  var spellAttrs = SRD35.SPELLS[s] + ' Level=';
+  let spellAttrs = SRD35.SPELLS[s] + ' Level=';
   if(m == null)
     spellAttrs += LastAge.SPELLS_LEVELS[s];
   else if(s in LastAge.SPELLS_LEVELS)
@@ -3103,7 +3169,7 @@ LastAge.CLASS_FEATURES = {
 };
 LastAge.CLASSES = {
   'Barbarian':
-    SRD35.CLASSES['Barbarian'] + ' ' + LastAge.CLASS_FEATURES['Barbarian'],
+    SRD35.CLASSES.Barbarian + ' ' + LastAge.CLASS_FEATURES.Barbarian,
   'Charismatic Channeler':
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Features=' +
@@ -3154,7 +3220,7 @@ LastAge.CLASSES = {
       '"features.Dodge Training/features.Speed Training ? 2:Retaliatory Strike",' +
       '"features.Dodge Training/features.Grappling Training ? 2:Weapon Trap",' +
       '"6:Incredible Resilience","6:Incredible Speed"',
-  'Fighter':SRD35.CLASSES['Fighter'] + ' ' + LastAge.CLASS_FEATURES['Fighter'],
+  'Fighter':SRD35.CLASSES.Fighter + ' ' + LastAge.CLASS_FEATURES.Fighter,
   'Hermetic Channeler':
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
@@ -3175,7 +3241,7 @@ LastAge.CLASSES = {
     'SpellAbility=intelligence ' +
     'SpellSlots=' +
       'Ch0:1=0',
-  'Rogue':SRD35.CLASSES['Rogue'] + ' ' + LastAge.CLASS_FEATURES['Rogue'],
+  'Rogue':SRD35.CLASSES.Rogue + ' ' + LastAge.CLASS_FEATURES.Rogue,
   'Spiritual Channeler':
     'HitDie=d6 Attack=3/4 SkillPoints=4 Fortitude=1/3 Reflex=1/3 Will=1/2 ' +
     'Skills=' +
@@ -3268,10 +3334,10 @@ LastAge.NPC_CLASSES = {
   // Unclear whether any of the base rule NPC classes would apply in Midnight.
   // Certainly not the Adept class. Aristocrat, Commoner, Expert, and Warrior
   // might be applicable in certain contexts.
-  'Aristocrat':SRD35.NPC_CLASSES['Aristocrat'],
-  'Commoner':SRD35.NPC_CLASSES['Commoner'],
-  'Expert':SRD35.NPC_CLASSES['Expert'],
-  'Warrior':SRD35.NPC_CLASSES['Warrior']
+  'Aristocrat':SRD35.NPC_CLASSES.Aristocrat,
+  'Commoner':SRD35.NPC_CLASSES.Commoner,
+  'Expert':SRD35.NPC_CLASSES.Expert,
+  'Warrior':SRD35.NPC_CLASSES.Warrior
 };
 LastAge.PRESTIGE_CLASSES = {
   'Ancestral Bladebearer':
@@ -3762,7 +3828,33 @@ LastAge.PRESTIGE_CLASSES = {
       '"5:Survival Of The Skilled","6:Improved Uncanny Dodge",' +
       '"8:City Is My Shield","10:City Stance" ' +
     'Selectables=' +
-      '"3:Narrowswending","3:Roofjumping","3:Wallscaling"'
+      '"3:Narrowswending","3:Roofjumping","3:Wallscaling"',
+  // Under the Shadow
+  'Visionary':
+    'Require=' +
+      '"charismaSkillsGe10 >= 3",features.Leadership ' +
+    'HitDie=d8 Attack=3/4 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
+    'Skills=' +
+      'Appraise,Bluff,Craft,"Decipher Script",Diplomacy,Disguise,' +
+      '"Gather Information","Handle Animal",Intimidate,' +
+      '"Knowledge (Geography)",Perform,Profession,"Sense Motive",' +
+      '"Speak Language" ' +
+    'Features=' +
+      '1:Vision,"1:Vision\'s Gifts","3:Guiding Light" ' +
+    'Selectables=' +
+      '"1:Fires Of Acceptance:Vision\'s Gift",' +
+      '"1:Fires Of Conviction:Vision\'s Gift",' +
+      '"1:Fires Of Destruction:Vision\'s Gift",' +
+      '"features.Fires Of Acceptance/features.Fires Of Conviction/features.Fires Of Destruction ? 1:Forged In Dreams:Vision\'s Gift",' +
+      '"1:Kindle Hearts:Vision\'s Gift",' +
+      '"1:Kindle Minds:Vision\'s Gift",' +
+      '"1:Kindle Spirits:Vision\'s Gift",' +
+      '"features.Kindle Hearts/features.Kindle Minds/features.Kindle Spirits ? 1:Light The World:Vision\'s Gift",' +
+      '"1:Oathbinder:Vision\'s Gift",' +
+      '"features.Oathbinder ? 1:Oathholder:Vision\'s Gift",' +
+      '"features.Oathbinder ? 1:Oathkeeper:Vision\'s Gift",' +
+      '"features.Oathbinder/features.Oathholder/features.Oathkeeper ? 1:Oathmaker:Vision\'s Gift"'
+  
 };
 
 /* Defines rules related to character abilities. */
@@ -3783,14 +3875,14 @@ LastAge.aideRules = function(rules, companions, familiars) {
   );
 
   // MN companion feature set and levels differ from base rules
-  var features = [
+  let features = [
     '1:Devotion', '3:Magical Beast', '6:Companion Evasion', '9:Improved Speed',
     '12:Empathic Link'
   ];
   QuilvynRules.featureListRules
     (rules, features, 'Animal Companion', 'companionMasterLevel', false);
   features = ['Link', 'Share Spells', 'Multiattack', 'Improved Evasion'];
-  for(var i = 0; i < features.length; i++)
+  for(let i = 0; i < features.length; i++)
     // Disable
     rules.defineRule
       ('animalCompanionFeatures.' + features[i], 'companionMasterLevel', '=', 'null');
@@ -3835,7 +3927,7 @@ LastAge.identityRules = function(
     'level', '=', 'source / 2',
     'magicNotes.artOfMagic', '+', '1/2'
   );
-  for(var i = 0; i < 10; i++) {
+  for(let i = 0; i < 10; i++) {
     rules.defineRule('spellSlots.Ch' + i,
       'maxSpellLevel', '?', 'Math.floor(source) == ' + i,
       'channelerSpells', '=', null
@@ -4002,7 +4094,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'Spell')
     );
   else if(type == 'Skill') {
-    var untrained = QuilvynUtils.getAttrValue(attrs, 'Untrained');
+    let untrained = QuilvynUtils.getAttrValue(attrs, 'Untrained');
     LastAge.skillRules(rules, name,
       QuilvynUtils.getAttrValue(attrs, 'Ability'),
       untrained != 'n' && untrained != 'N',
@@ -4012,22 +4104,22 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     if(rules.basePlugin.skillRulesExtra)
       rules.basePlugin.skillRulesExtra(rules, name);
   } else if(type == 'Spell') {
-    var description = QuilvynUtils.getAttrValue(attrs, 'Description');
-    var groupLevels = QuilvynUtils.getAttrValueArray(attrs, 'Level');
-    var liquids = QuilvynUtils.getAttrValueArray(attrs, 'Liquid');
-    var school = QuilvynUtils.getAttrValue(attrs, 'School');
-    var schoolAbbr = (school || 'Universal').substring(0, 4);
-    for(var i = 0; i < groupLevels.length; i++) {
-      var matchInfo = groupLevels[i].match(/^(\D+)(\d+)$/);
+    let description = QuilvynUtils.getAttrValue(attrs, 'Description');
+    let groupLevels = QuilvynUtils.getAttrValueArray(attrs, 'Level');
+    let liquids = QuilvynUtils.getAttrValueArray(attrs, 'Liquid');
+    let school = QuilvynUtils.getAttrValue(attrs, 'School');
+    let schoolAbbr = (school || 'Universal').substring(0, 4);
+    for(let i = 0; i < groupLevels.length; i++) {
+      let matchInfo = groupLevels[i].match(/^(\D+)(\d+)$/);
       if(!matchInfo) {
         console.log('Bad level "' + groupLevels[i] + '" for spell ' + name);
         continue;
       }
-      var group = matchInfo[1];
-      var level = matchInfo[2] * 1;
-      var fullName = name + '(' + group + level + ' ' + schoolAbbr + ')';
+      let group = matchInfo[1];
+      let level = matchInfo[2] * 1;
+      let fullName = name + '(' + group + level + ' ' + schoolAbbr + ')';
       // TODO indicate domain spells in attributes?
-      var domainSpell = LastAge.PATHS[group + ' Domain'] != null;
+      let domainSpell = LastAge.PATHS[group + ' Domain'] != null;
       LastAge.spellRules
         (rules, fullName, school, group, level, description, domainSpell,
          liquids);
@@ -4112,14 +4204,14 @@ LastAge.classRules = function(
   casterLevelDivine, spellAbility, spellSlots
 ) {
   if(rules.basePlugin == window.Pathfinder) {
-    for(var i = 0; i < requires.length; i++) {
-      for(var skill in Pathfinder.SRD35_SKILL_MAP) {
+    for(let i = 0; i < requires.length; i++) {
+      for(let skill in Pathfinder.SRD35_SKILL_MAP) {
         requires[i] =
           requires[i].replaceAll(skill, Pathfinder.SRD35_SKILL_MAP[skill]);
       }
     }
-    for(var i = skills.length - 1; i >= 0; i--) {
-      var skill = skills[i];
+    for(let i = skills.length - 1; i >= 0; i--) {
+      let skill = skills[i];
       if(!(skill in Pathfinder.SRD35_SKILL_MAP))
         continue;
       if(Pathfinder.SRD35_SKILL_MAP[skill] == '')
@@ -4142,8 +4234,8 @@ LastAge.classRules = function(
  */
 LastAge.classRulesExtra = function(rules, name) {
 
-  var allFeats, classFeats, feat, i;
-  var classLevel = 'levels.' + name;
+  let allFeats, classFeats, feat, i;
+  let classLevel = 'levels.' + name;
 
   if(name.endsWith(' Channeler')) {
 
@@ -4411,7 +4503,7 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('legateTurningLevel', classLevel, '=', null);
     rules.defineRule('turningLevel', 'legateTurningLevel', '+=', null);
     // Use animal companion stats and features for astirax abilities
-    var features = [
+    let features = [
       '3:Empathic Link', '6:Telepathy', '9:Enhanced Sense',
       '12:Companion Evasion', '18:Companion Empathy'
     ];
@@ -4440,7 +4532,7 @@ LastAge.classRulesExtra = function(rules, name) {
       'wildlanderFeatures.Quick Stride', '=', '10 * source'
     );
     rules.defineRule('casterLevels.Wildlander',
-      'wilderlanderFeatures.Sense Dark Magic', '?', null,
+      'wildlanderFeatures.Sense Dark Magic', '?', null,
       'level', '=', null
     );
     rules.defineRule("combatNotes.hunter'sStrike",
@@ -4877,8 +4969,8 @@ LastAge.classRulesExtra = function(rules, name) {
       'levels.Legate', '=', '1',
       'featureNotes.gonePale', 'v', '0'
     );
-    var legateFeatures =
-      QuilvynUtils.getAttrValueArray(LastAge.NPC_CLASSES['Legate'], 'Features');
+    let legateFeatures =
+      QuilvynUtils.getAttrValueArray(LastAge.NPC_CLASSES.Legate, 'Features');
     legateFeatures.forEach(f => {
       f = f.replace(/^[0-9]*:/, '');
       rules.defineRule('legateFeatures.' + f, 'notPaleLegate', '?', null);
@@ -4955,8 +5047,8 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Dwarven Loremaster') {
 
-    var allSkills = rules.getChoices('skills');
-    for(var s in allSkills) {
+    let allSkills = rules.getChoices('skills');
+    for(let s in allSkills) {
       if(s.startsWith('Knowledge'))
         rules.defineRule('countKnowledgeSkillsGe5',
           'skills.' + s, '+=', 'source>=5 ? 1 : null'
@@ -5069,8 +5161,8 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Snow Witch') {
 
-    var allSpells = rules.getChoices('spells');
-    var snowSpells = {
+    let allSpells = rules.getChoices('spells');
+    let snowSpells = {
       'Detect Magic':0, 'Ray Of Frost':0,
       'Chill Touch':1, 'Obscuring Mist':1,
       'Gust Of Wind':2, 'Levitate':2, 'Weather':2,
@@ -5082,8 +5174,8 @@ LastAge.classRulesExtra = function(rules, name) {
       'Polar Ray':8, 'Whirlwind':8,
       'Storm Of Vengeance':9
     };
-    for(var spell in snowSpells) {
-      var keys =
+    for(let spell in snowSpells) {
+      let keys =
         QuilvynUtils.getKeys(allSpells, spell + '\\(Ch' + snowSpells[spell]);
       if(keys.length != 1) {
         console.log('Missing Show Witch spell "' + spell + '"');
@@ -5168,8 +5260,8 @@ LastAge.classRulesExtra = function(rules, name) {
         allFeats[feat] =
           allFeats[feat].replace('Type=', 'Type="' + name + '",');
     }
-    var allSkills = rules.getChoices('skills');
-    for(var s in allSkills) {
+    let allSkills = rules.getChoices('skills');
+    for(let s in allSkills) {
       if(s.startsWith('Knowledge'))
         rules.defineRule
           ('skillModifier.' + s, 'skillNotes.forgottenKnowledge', '+', '2');
@@ -5303,6 +5395,33 @@ LastAge.classRulesExtra = function(rules, name) {
       classLevel, '+', 'Math.floor((source + 1) / 2) - (source==5 || source==7 || source==9 ? 1 : 0)'
     );
 
+  } else if(name == 'Visionary') {
+
+    let allSkills = rules.getChoices('skills');
+    for(let s in allSkills) {
+      if(allSkills[s].includes('charisma'))
+        rules.defineRule
+          ('charismaSkillsGe10', 'skills.' + s, '+=', 'source>=10 ? 1 : null');
+    }
+    rules.defineRule("featureNotes.vision'sGifts",
+      classLevel, '=', '1 + Math.floor(source / 2)'
+    );
+    rules.defineRule("selectableFeatureCount.Visionary (Vision's Gift)",
+      "featureNotes.vision'sGifts", '=', null
+    );
+    rules.defineRule('skillNotes.firesOfConviction',
+      'visionaryFeatures.Fires Of Conviction', '=', null
+    );
+    rules.defineRule('skillNotes.firesOfDestruction',
+      'visionaryFeatures.Fires Of Destruction', '=', null
+    );
+    rules.defineRule('skillNotes.firesOfDestruction.1',
+      'alignment', '=',
+        'source.match(/Neutral/) ? "N/A" : ' +
+        '{"Chaotic Good":"Lawful Evil", "Chaotic Evil":"Lawful Good", ' +
+         '"Lawful Good":"Chaotic Evil", "Lawful Evil":"Chaotic Good"}[source]'
+    );
+
   } else if(rules.basePlugin.classRulesExtra) {
 
     rules.basePlugin.classRulesExtra(rules, name);
@@ -5373,7 +5492,7 @@ LastAge.featRules = function(rules, name, requires, implies, types) {
  */
 LastAge.featRulesExtra = function(rules, name) {
 
-  var matchInfo;
+  let matchInfo;
 
   if(name == 'Drive It Deep') {
     rules.defineRule('combatNotes.driveItDeep', 'baseAttack', '=', null);
@@ -5418,13 +5537,13 @@ LastAge.featRulesExtra = function(rules, name) {
     rules.defineRule('casterLevels.D', 'casterLevels.innateD', '=', null);
     rules.defineRule('casterLevels.W', 'casterLevels.innateW', '=', null);
   } else if((matchInfo = name.match(/^Magecraft\s\((.*)\)/)) != null) {
-    var tradition = matchInfo[1];
-    var note = 'magicNotes.magecraft(' + tradition + ')';
-    var ability = tradition == 'Charismatic' ? 'charisma' :
+    let tradition = matchInfo[1];
+    let note = 'magicNotes.magecraft(' + tradition + ')';
+    let ability = tradition == 'Charismatic' ? 'charisma' :
                   tradition == 'Hermetic' ? 'intelligence' : 'wisdom';
-    var spellClass = tradition == 'Charismatic' ? 'Bard' :
+    let spellClass = tradition == 'Charismatic' ? 'Bard' :
                      tradition == 'Hermetic' ? 'Wizard' : 'Druid';
-    var spellCode = spellClass.substring(0, 1);
+    let spellCode = spellClass.substring(0, 1);
     rules.defineRule(note, ability + 'Modifier', '=', null);
     rules.defineRule('spellEnergy', note, '+=', null);
     rules.defineRule('spellSlots.' + spellCode + '0', note, '+=', '3');
@@ -5441,7 +5560,7 @@ LastAge.featRulesExtra = function(rules, name) {
     );
     rules.defineRule('spells.Prestidigitation(Ch0 Evoc)', note, '=', '1');
   } else if((matchInfo = name.match(/^Spellcasting\s\((.*)\)/)) != null) {
-    var note = 'magicNotes.spellcasting('+matchInfo[1].replaceAll(' ', '')+')';
+    let note = 'magicNotes.spellcasting('+matchInfo[1].replaceAll(' ', '')+')';
     rules.defineRule('channelerSpells', note, '+=', '1');
     rules.defineRule
       ('spellcastingFeatureCount', /^features.Spellcasting/, '+=', '1');
@@ -5520,14 +5639,14 @@ LastAge.featRulesExtra = function(rules, name) {
  */
 LastAge.featureRules = function(rules, name, sections, notes) {
   if(rules.basePlugin == window.Pathfinder) {
-    for(var i = 0; i < sections.length; i++) {
+    for(let i = 0; i < sections.length; i++) {
       if(sections[i] != 'skill')
         continue;
-      var note = notes[i];
-      for(var skill in Pathfinder.SRD35_SKILL_MAP) {
+      let note = notes[i];
+      for(let skill in Pathfinder.SRD35_SKILL_MAP) {
         if(note.indexOf(skill) < 0)
           continue;
-        var pfSkill = Pathfinder.SRD35_SKILL_MAP[skill];
+        let pfSkill = Pathfinder.SRD35_SKILL_MAP[skill];
         if(pfSkill == '' || note.indexOf(pfSkill) >= 0) {
           note = note.replace(new RegExp('[,/]?[^,/:]*' + skill + '[^,/]*', 'g'), '');
         } else {
@@ -5602,7 +5721,7 @@ LastAge.pathRules = function(
  */
 LastAge.pathRulesExtra = function(rules, name) {
 
-  var pathLevel =
+  let pathLevel =
     name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') + 'Level';
 
   if(name == 'Beast') {
@@ -6103,8 +6222,8 @@ LastAge.pathRulesExtra = function(rules, name) {
 
   } else if(name == 'Steelblooded') {
 
-    var allFeats = rules.getChoices('feats');
-    for(var feat in allFeats) {
+    let allFeats = rules.getChoices('feats');
+    for(let feat in allFeats) {
       if(feat.match(/Weapon\s(Focus|Proficiency|Specialization)\s\(/)) {
         allFeats[feat] =
           allFeats[feat].replace('Type=', 'Type="Steelblooded",');
@@ -6281,9 +6400,9 @@ LastAge.raceRules = function(
  */
 LastAge.raceRulesExtra = function(rules, name) {
 
-  var prefix =
+  let prefix =
     name.substring(0,1).toLowerCase() + name.substring(1).replaceAll(' ', '');
-  var raceLevel = prefix + 'Level';
+  let raceLevel = prefix + 'Level';
 
   if(name == 'Agrarian Halfling') {
     rules.defineRule
@@ -6340,7 +6459,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       'constitution', '*', 'source'
     );
     rules.defineRule('saveNotes.fortitudeBonus', raceLevel, '+=', '1');
-    for(var s in rules.getChoices('skills')) {
+    for(let s in rules.getChoices('skills')) {
       if(s.startsWith('Perform'))
         rules.defineRule
           ('skillModifier.' + s, 'skillNotes.naturalRiverfolk', '+', '2');
@@ -6492,27 +6611,27 @@ LastAge.randomizeOneAttribute = function(attributes, attribute) {
     // For Channelers, pick only from spells for which the character has the
     // corresponding Spellcasting feature and distribute the spells among
     // those of the maximum allowed spell level and lower.
-    var attrs = this.applyRules(attributes);
-    var spells = this.getChoices('spells');
-    for(var attr in attrs) {
-      var matchInfo = attr.match(/^spellSlots\.([A-Z][A-Za-z]*)([0-9])$/);
+    let attrs = this.applyRules(attributes);
+    let spells = this.getChoices('spells');
+    for(let attr in attrs) {
+      let matchInfo = attr.match(/^spellSlots\.([A-Z][A-Za-z]*)([0-9])$/);
       if(!matchInfo)
         continue;
-      var group = matchInfo[1];
-      var level = matchInfo[2];
+      let group = matchInfo[1];
+      let level = matchInfo[2];
       if(group == 'Domain')
         group = '(' + QuilvynUtils.getKeys(attrs, /^features.*Domain$/).map(x => x.replace(/features.| Domain/g, '')).join('|') + ')';
-      var magecraftSchools = QuilvynUtils.getKeys(attrs, /^features.Spellcasting/).map(x =>  x.replace(/.*\(|\).*/g, '').substring(0, 4)); 
-      var spellPat = group == 'Ch' ?
+      let magecraftSchools = QuilvynUtils.getKeys(attrs, /^features.Spellcasting/).map(x =>  x.replace(/.*\(|\).*/g, '').substring(0, 4)); 
+      let spellPat = group == 'Ch' ?
         new RegExp('\\(Ch[0-' + level + '] ('+magecraftSchools.join('|')+')') :
         new RegExp('\\(' + group + level);
-      var knownAlready = new Set(QuilvynUtils.getKeys(attrs, spellPat));
-      var choices =
+      let knownAlready = new Set(QuilvynUtils.getKeys(attrs, spellPat));
+      let choices =
         QuilvynUtils.getKeys(spells, spellPat).filter(x=>!knownAlready.has(x));
-      for(var leftToPick = attrs[attr] - knownAlready.size;
+      for(let leftToPick = attrs[attr] - knownAlready.size;
           leftToPick > 0 && choices.length > 0;
           leftToPick--) {
-        var index = QuilvynUtils.random(0, choices.length - 1);
+        let index = QuilvynUtils.random(0, choices.length - 1);
         attributes['spells.' + choices[index]] = 1;
         choices.splice(index, 1);
       }
