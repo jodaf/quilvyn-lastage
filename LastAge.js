@@ -96,6 +96,18 @@ function LastAge(baseRules) {
   LastAge.NPC_CLASSES.Aristocrat =
     rules.basePlugin.NPC_CLASSES.Aristocrat;
   LastAge.NPC_CLASSES.Commoner = rules.basePlugin.NPC_CLASSES.Commoner;
+  // TODO
+  // If basePlugin is Pathfinder, replace Legate domain features with
+  //  '"clericDomainFeatures.Death ? 1:Bleeding Touch",' +
+  //  '"clericDomainFeatures.Death ? 8:Death\'s Embrace",' +
+  //  '"clericDomainFeatures.Destruction ? 1:Destructive Smite",' +
+  //  '"clericDomainFeatures.Destruction ? 8:Destructive Aura",' +
+  //  '"clericDomainFeatures.Evil ? 1:Touch Of Evil",' +
+  //  '"clericDomainFeatures.Evil ? 8:Scythe Of Evil",' +
+  //  '"clericDomainFeatures.Magic ? 1:Hand Of The Acolyte",' +
+  //  '"clericDomainFeatures.Magic ? 8:Dispelling Touch",' +
+  //  '"clericDomainFeatures.War ? 1:Battle Rage",' +
+  //  '"clericDomainFeatures.War ? 8:Weapon Master",' +
   LastAge.NPC_CLASSES.Expert = rules.basePlugin.NPC_CLASSES.Expert;
   LastAge.NPC_CLASSES.Warrior = rules.basePlugin.NPC_CLASSES.Warrior;
   LastAge.FAMILIARS = Object.assign({}, rules.basePlugin.FAMILIARS);
@@ -104,11 +116,6 @@ function LastAge(baseRules) {
   LastAge.FEATURES =
     Object.assign({}, rules.basePlugin.FEATURES, LastAge.FEATURES_ADDED);
   LastAge.GOODIES = Object.assign({}, rules.basePlugin.GOODIES);
-  for(let path in LastAge.PATHS) {
-    if(rules.basePlugin.PATHS[path])
-      LastAge.PATHS[path] =
-        rules.basePlugin.PATHS[path].replaceAll('Cleric', 'Legate');
-  }
   LastAge.SHIELDS = Object.assign({}, rules.basePlugin.SHIELDS);
   LastAge.SKILLS =
     Object.assign({}, rules.basePlugin.SKILLS, LastAge.SKILLS_ADDED);
@@ -153,7 +160,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.3.2.3';
+LastAge.VERSION = '2.3.2.4';
 
 LastAge.CHOICES_ADDED = [];
 LastAge.CHOICES = SRD35.CHOICES.concat(LastAge.CHOICES_ADDED);
@@ -1728,11 +1735,6 @@ LastAge.LANGUAGES = {
     ''
 };
 LastAge.PATHS = {
-  'Death Domain':SRD35.PATHS['Death Domain'].replaceAll('Cleric', 'Legate'),
-  'Destruction Domain':SRD35.PATHS['Destruction Domain'].replaceAll('Cleric', 'Legate'),
-  'Evil Domain':SRD35.PATHS['Evil Domain'].replaceAll('Cleric', 'Legate'),
-  'Magic Domain':SRD35.PATHS['Magic Domain'].replaceAll('Cleric', 'Legate'),
-  'War Domain':SRD35.PATHS['War Domain'].replaceAll('Cleric', 'Legate'),
   'None':
     'Group=None ' +
     'Level=level',
@@ -1947,9 +1949,9 @@ LastAge.PATHS = {
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Seaborn2:4=1;5=2;8=1;9=2,' +
-      'Seaborn3:8=2;12=null;13=1,' +
-      'Seaborn4:12=3;16=null,' +
-      'Seaborn5:16=4;20=null,' +
+      'Seaborn3:8=2;12=0;13=1,' +
+      'Seaborn4:12=3;16=0,' +
+      'Seaborn5:16=4;20=0,' +
       'Seaborn6:20=5',
   'Seer':
     'Group=Seer ' +
@@ -2065,11 +2067,18 @@ LastAge.PATHS = {
     'Features=' +
       '"1:Body Of The Shadowed",1:Darkvision,"4:Coldness Of Shadow",' +
       '"5:Gift Of Izrador","9:Turn Undead","14:Imposing Presence",' +
-      '"19:Shadowed Frightful Presence" ' +
+      '"19:Shadowed Frightful Presence",' +
+      '"features.Death Domain ? Deadly Touch",' +
+      '"features.Destruction Domain ? Smite",' +
+      '"features.Evil Domain ? Empowered Evil",' +
+      '"features.Magic Domain ? Arcane Adept",' +
+      '"features.War Domain ? Weapon Of War" ' +
     'Selectables=' +
-      // Have to hard-code these domains, since PATHS is not yet defined
-      '"Death Domain","Destruction Domain","Evil Domain","Magic Domain",' +
-      '"War Domain" ' +
+      '"5:Death Domain:Domain",' +
+      '"5:Destruction Domain:Domain",' +
+      '"5:Evil Domain:Domain",' +
+      '"5:Magic Domain:Domain",' +
+      '"5:War Domain:Domain" ' +
     'SpellAbility=charisma ' +
     'SpellSlots=' +
       'Shadowed1:3=1;6=2;7=3;11=4;12=5;16=6;17=7,' + // Bane 4/dy; Summon Monster I 3/dy
@@ -3306,9 +3315,18 @@ LastAge.NPC_CLASSES = {
       '"1:Armor Proficiency (Heavy)","1:Shield Proficiency",' +
       '"1:Weapon Proficiency (Simple)",' +
       '"1:Spontaneous Legate Spell","1:Temple Dependency","1:Turn Undead",' +
-      '"3:Astirax Companion" ' +
+      '"3:Astirax Companion",' +
+      '"features.Death Domain ? 1:Deadly Touch",' +
+      '"features.Destruction Domain ? 1:Smite",' +
+      '"features.Evil Domain ? 1:Empowered Evil",' +
+      '"features.Magic Domain ? 1:Arcane Adept",' +
+      '"features.War Domain ? 1:Weapon Of War" ' +
     'Selectables=' +
-      QuilvynUtils.getKeys(LastAge.PATHS).filter(x => x.match(/Domain$/)).map(x => '"deityDomains =~ \'' + x.replace(' Domain', '') + '\' ? 1:' + x + '"').join(',') + ' ' +
+      '"1:Death Domain:Domain",' +
+      '"1:Destruction Domain:Domain",' +
+      '"1:Evil Domain:Domain",' +
+      '"1:Magic Domain:Domain",' +
+      '"1:War Domain:Domain" ' +
     'CasterLevelDivine=levels.Legate ' +
     'SpellAbility=wisdom ' +
     'SpellSlots=' +
@@ -3713,9 +3731,18 @@ LastAge.PRESTIGE_CLASSES = {
     'Features=' +
       '"1:Art Of Magic","1:Improved Spellcasting","1:Obsidian Tongue","2:Imp",'+
       '"2:Immunity To Fear","4:Dark Invitation","6:Shadow-Tapping",' +
-      '"8:Savvy Host","10:Respect" ' +
+      '"8:Savvy Host","10:Respect",' +
+      '"features.Death Domain ? Deadly Touch",' +
+      '"features.Destruction Domain ? Smite",' +
+      '"features.Evil Domain ? Empowered Evil",' +
+      '"features.Magic Domain ? Arcane Adept",' +
+      '"features.War Domain ? Weapon Of War" ' +
     'Selectables=' +
-      QuilvynUtils.getKeys(LastAge.PATHS).filter(x => x.match(/Domain$/)).map(x => '"6:' + x + '"').join(',') + ' ' +
+      '"1:Death Domain:Domain",' +
+      '"1:Destruction Domain:Domain",' +
+      '"1:Evil Domain:Domain",' +
+      '"1:Magic Domain:Domain",' +
+      '"1:War Domain:Domain" ' +
     'SpellSlots=' +
       'Domain1:1=1,' +
       'Domain2:3=1,' +
@@ -3741,7 +3768,7 @@ LastAge.PRESTIGE_CLASSES = {
   'Snow Witch':
     'Require=' +
       '"skills.Knowledge (Arcana) >= 4","skills.Knowledge (Nature) >= 4",' +
-      '"skills.Spellcraft >= 4", "skills.Survival >= 4",' +
+      '"skills.Spellcraft >= 4","skills.Survival >= 4",' +
       '"features.Endurance","sumMagecraft >= 1","sumSpellcastingFeats >= 1",' +
       '"alignment !~ \'Evil\'" ' +
     'HitDie=d8 Attack=1/2 SkillPoints=4 Fortitude=1/2 Reflex=1/3 Will=1/2 ' +
@@ -3999,7 +4026,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'Skill'),
       QuilvynUtils.getAttrValue(attrs, 'Spell')
     );
-  else if(type == 'Class' || type == 'Npc' || type == 'Prestige') {
+  else if(type == 'Class' || type.match(/^npc$/i) || type == 'Prestige') {
     LastAge.classRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Require'),
       QuilvynUtils.getAttrValue(attrs, 'HitDie'),
@@ -4118,8 +4145,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       let group = matchInfo[1];
       let level = matchInfo[2] * 1;
       let fullName = name + '(' + group + level + ' ' + schoolAbbr + ')';
-      // TODO indicate domain spells in attributes?
-      let domainSpell = LastAge.PATHS[group + ' Domain'] != null;
+      let domainSpell = LastAge.NPC_CLASSES.Legate.includes(group + ' Domain');
       LastAge.spellRules
         (rules, fullName, school, group, level, description, domainSpell,
          liquids);
@@ -4497,7 +4523,7 @@ LastAge.classRulesExtra = function(rules, name) {
     );
     rules.defineRule('deity', classLevel, '=', '"BBEG"');
     rules.defineRule
-      ('selectableFeatureCount.Legate', classLevel, '=', '2');
+      ('selectableFeatureCount.Legate (Domain)', classLevel, '=', '2');
     // Calculate the effect of legate level on turning level in two steps so
     // that Gone Pale can negate it.
     rules.defineRule('legateTurningLevel', classLevel, '=', null);
@@ -4979,7 +5005,7 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('legateTurningLevel', 'notPaleLegate', '?', null);
     // Add Pale Legate features
     rules.defineRule
-      ('selectableFeatureCount.Legate', 'notPaleLegate', '?', null);
+      ('selectableFeatureCount.Legate (Domain)', 'notPaleLegate', '?', null);
     rules.defineRule('featureNotes.senseDarkMagic',
       'features.Master Hunter', '?', null
     );
@@ -5120,7 +5146,7 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
     rules.defineRule
       ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
-    rules.defineRule('selectableFeatureCount.Collaborator',
+    rules.defineRule('selectableFeatureCount.Collaborator (Domain)',
       classLevel, '=', 'source<6 ? null : 2'
     );
     rules.defineRule('skillNotes.obsidianTongue',
@@ -6349,7 +6375,7 @@ LastAge.pathRulesExtra = function(rules, name) {
     );
     rules.defineRule
       ('magicNotes.giftOfIzrador', pathLevel, '=', 'Math.floor(source / 5)');
-    rules.defineRule('selectableFeatureCount.Shadowed',
+    rules.defineRule('selectableFeatureCount.Shadowed (Domain)',
       'magicNotes.giftOfIzrador', '=', null
     );
     rules.defineRule
