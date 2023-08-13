@@ -4551,6 +4551,18 @@ LastAge.classRulesExtra = function(rules, name) {
       'hasCompanion', '?', null,
       'levels.Legate', '=', null
     );
+    for(let s in rules.getChoices('selectableFeatures')) {
+      if(s.match(/Legate - .* Domain/)) {
+        let domain = s.replace('Legate - ', '').replace(' Domain', '');
+        rules.defineRule('legateDomainLevels.' + domain,
+          'legateFeatures.' + domain + ' Domain', '?', null,
+          'levels.Legate', '=', null
+        );
+        rules.defineRule('casterLevels.' + domain,
+          'legateDomainLevels.' + domain, '^=', null
+        );
+      }
+    }
 
   } else if(name == 'Wildlander') {
 
@@ -5151,7 +5163,19 @@ LastAge.classRulesExtra = function(rules, name) {
     );
     rules.defineRule('skillNotes.obsidianTongue',
       classLevel, '=', 'Math.floor((source + 1) / 2) * 2'
-   );
+    );
+    for(let s in rules.getChoices('selectableFeatures')) {
+      if(s.match(/Collaborator - .* Domain/)) {
+        let domain = s.replace('Collaborator - ', '').replace(' Domain', '');
+        rules.defineRule('collaboratorDomainLevels.' + domain,
+          'collaboratorFeatures.' + domain + ' Domain', '?', null,
+          'levels.Collaborator', '=', null
+        );
+        rules.defineRule('casterLevels.' + domain,
+          'collaboratorDomainLevels.' + domain, '^=', null
+        );
+      }
+    }
 
   } else if(name == 'Gardener Of Erethor') {
 
@@ -6382,6 +6406,18 @@ LastAge.pathRulesExtra = function(rules, name) {
       ('turningLevel', pathLevel, '+=', 'source < 4 ? null : source');
     // Override SRD35 turning frequency
     rules.defineRule('combatNotes.turnUndead.3', pathLevel, '=', '3');
+    for(let s in rules.getChoices('selectableFeatures')) {
+      if(s.match(/Shadowed - .* Domain/)) {
+        let domain = s.replace('Shadowed - ', '').replace(' Domain', '');
+        rules.defineRule('shadowedDomainLevels.' + domain,
+          'shadowedFeatures.' + domain + ' Domain', '?', null,
+          pathLevel, '=', null
+        );
+        rules.defineRule('casterLevels.' + domain,
+          'shadowedDomainLevels.' + domain, '^=', null
+        );
+      }
+    }
 
   } else if(name == 'Wiser') {
 
