@@ -198,7 +198,7 @@ LastAge.ANIMAL_COMPANIONS =
 LastAge.ARMORS = Object.assign({}, SRD35.ARMORS);
 LastAge.DEITIES = {
   'None':'',
-  'BBEG':
+  'Izrador':
     'Alignment=NE ' +
     'Weapon=Longsword ' +
     'Domain=Death,Destruction,Evil,Magic,War'
@@ -2068,11 +2068,11 @@ LastAge.PATHS = {
       '"1:Body Of The Shadowed",1:Darkvision,"4:Coldness Of Shadow",' +
       '"5:Gift Of Izrador","9:Turn Undead","14:Imposing Presence",' +
       '"19:Shadowed Frightful Presence",' +
-      '"features.Death Domain ? Deadly Touch",' +
-      '"features.Destruction Domain ? Smite",' +
-      '"features.Evil Domain ? Empowered Evil",' +
-      '"features.Magic Domain ? Arcane Adept",' +
-      '"features.War Domain ? Weapon Of War" ' +
+      '"shadowedFeatures.Death Domain ? 1:Deadly Touch",' +
+      '"shadowedFeatures.Destruction Domain ? 1:Smite",' +
+      '"shadowedFeatures.Evil Domain ? 1:Empowered Evil",' +
+      '"shadowedFeatures.Magic Domain ? 1:Arcane Adept",' +
+      '"shadowedFeatures.War Domain ? 1:Weapon Of War" ' +
     'Selectables=' +
       '"5:Death Domain:Domain",' +
       '"5:Destruction Domain:Domain",' +
@@ -3316,11 +3316,11 @@ LastAge.NPC_CLASSES = {
       '"1:Weapon Proficiency (Simple)",' +
       '"1:Spontaneous Legate Spell","1:Temple Dependency","1:Turn Undead",' +
       '"3:Astirax Companion",' +
-      '"features.Death Domain ? 1:Deadly Touch",' +
-      '"features.Destruction Domain ? 1:Smite",' +
-      '"features.Evil Domain ? 1:Empowered Evil",' +
-      '"features.Magic Domain ? 1:Arcane Adept",' +
-      '"features.War Domain ? 1:Weapon Of War" ' +
+      '"legateFeatures.Death Domain ? 1:Deadly Touch",' +
+      '"legateFeatures.Destruction Domain ? 1:Smite",' +
+      '"legateFeatures.Evil Domain ? 1:Empowered Evil",' +
+      '"legateFeatures.Magic Domain ? 1:Arcane Adept",' +
+      '"legateFeatures.War Domain ? 1:Weapon Of War" ' +
     'Selectables=' +
       '"1:Death Domain:Domain",' +
       '"1:Destruction Domain:Domain",' +
@@ -3732,11 +3732,11 @@ LastAge.PRESTIGE_CLASSES = {
       '"1:Art Of Magic","1:Improved Spellcasting","1:Obsidian Tongue","2:Imp",'+
       '"2:Immunity To Fear","4:Dark Invitation","6:Shadow-Tapping",' +
       '"8:Savvy Host","10:Respect",' +
-      '"features.Death Domain ? Deadly Touch",' +
-      '"features.Destruction Domain ? Smite",' +
-      '"features.Evil Domain ? Empowered Evil",' +
-      '"features.Magic Domain ? Arcane Adept",' +
-      '"features.War Domain ? Weapon Of War" ' +
+      '"collaboratorFeatures.Death Domain ? 1:Deadly Touch",' +
+      '"collaboratorFeatures.Destruction Domain ? 1:Smite",' +
+      '"collaboratorFeatures.Evil Domain ? 1:Empowered Evil",' +
+      '"collaboratorFeatures.Magic Domain ? 1:Arcane Adept",' +
+      '"collaboratorFeatures.War Domain ? 1:Weapon Of War" ' +
     'Selectables=' +
       '"1:Death Domain:Domain",' +
       '"1:Destruction Domain:Domain",' +
@@ -4521,7 +4521,7 @@ LastAge.classRulesExtra = function(rules, name) {
       'turningLevel', '=', '3',
       'charismaModifier', '+', null
     );
-    rules.defineRule('deity', classLevel, '=', '"BBEG"');
+    rules.defineRule('deity', classLevel, '=', '"Izrador"');
     rules.defineRule
       ('selectableFeatureCount.Legate (Domain)', classLevel, '=', '2');
     // Calculate the effect of legate level on turning level in two steps so
@@ -5149,6 +5149,7 @@ LastAge.classRulesExtra = function(rules, name) {
       'magicNotes.darkInvitation', '+=', '1',
       'magicNotes.savvyHost', '+=', '1'
     );
+    rules.defineRule('deity', classLevel, '=', '"Izrador"');
     rules.defineRule
       ('features.Augment Summoning', 'featureNotes.savvyHost', '=', '1');
     rules.defineRule('features.Leadership', 'featureNotes.respect', '=', '1');
@@ -5449,7 +5450,7 @@ LastAge.classRulesExtra = function(rules, name) {
 
     let allSkills = rules.getChoices('skills');
     for(let s in allSkills) {
-      if(allSkills[s].includes('charisma'))
+      if(allSkills[s].match(/charisma/i))
         rules.defineRule
           ('charismaSkillsGe10', 'skills.' + s, '+=', 'source>=10 ? 1 : null');
     }
@@ -6393,6 +6394,7 @@ LastAge.pathRulesExtra = function(rules, name) {
 
     rules.defineRule
       ('casterLevels.Domain', pathLevel, '=', 'source<5 ? null : 1');
+    rules.defineRule('deity', pathLevel, '=', '"Izrador"');
     rules.defineRule('featureNotes.shadowedFrightfulPresence',
       'level', '=', '10 + Math.floor(source / 2)',
       'charismaModifier', '+', null
