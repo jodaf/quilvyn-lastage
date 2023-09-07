@@ -160,7 +160,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.3.2.4';
+LastAge.VERSION = '2.3.2.5';
 
 LastAge.CHOICES_ADDED = [];
 LastAge.CHOICES = SRD35.CHOICES.concat(LastAge.CHOICES_ADDED);
@@ -438,7 +438,8 @@ LastAge.FEATURES_ADDED = {
 
   // Override of 3.5 Magic Domain feature
   'Arcane Adept':
-    'Section=magic Note="Use magic device as W%{levels.Legate//2>?1}"',
+    'Section=magic ' +
+    'Note="Use magic device as W%{(levels.Legate||shadowedLevel)//2>?1}"',
 
   // Heroic Path
   'Ability Boost':'Section=ability Note="%V to distribute"',
@@ -3121,26 +3122,24 @@ for(let s in SRD35.SPELLS) {
   LastAge.SPELLS[s] = spellAttrs;
 }
 LastAge.WEAPONS_ADDED = {
-  'Atharak':'Level=3 Category=2h Damage=d6',
-  'Cedeku':'Level=3 Category=Li Damage=d6 Threat=19',
-  'Crafted Vardatch':'Level=3 Category=1h Damage=d10 Threat=19',
-  'Dornish Horse Spear':'Level=3 Category=2h Damage=d10 Crit=3',
-  "Farmer's Rope":'Level=1 Category=Li Damage=d2',
-  'Fighting Knife':'Level=3 Category=Li Damage=d6 Threat=19 Crit=3',
-  'Great Sling':'Level=1 Category=R Damage=d6 Range=60',
-  'Greater Vardatch':'Level=3 Category=2h Damage=2d8',
-  'Halfling Lance':'Level=3 Category=2h Damage=d8 Crit=3',
-  'Icewood Longbow':'Level=3 Category=R Damage=d8 Crit=3 Range=120',
-  'Inutek':'Level=3 Category=R Damage=d3 Range=20',
-  'Sarcosan Lance':'Level=3 Category=2h Damage=d8 Crit=3 Range=20',
-  'Sepi':'Level=3 Category=Li Damage=d6 Threat=18',
+  'Atharak':'Level=Exotic Category=Two-Handed Damage=d6',
+  'Cedeku':'Level=Exotic Category=Light Damage=d6 Threat=19',
+  'Crafted Vardatch':'Level=Exotic Category=One-Handed Damage=d10 Threat=19',
+  'Dornish Horse Spear':'Level=Exotic Category=Two-Handed Damage=d10 Crit=3',
+  "Farmer's Rope":'Level=Simple Category=Light Damage=d2',
+  'Fighting Knife':'Level=Exotic Category=Light Damage=d6 Threat=19 Crit=3',
+  'Great Sling':'Level=Simple Category=Ranged Damage=d6 Range=60',
+  'Greater Vardatch':'Level=Exotic Category=Two-Handed Damage=2d8',
+  'Halfling Lance':'Level=Exotic Category=Two-Handed Damage=d8 Crit=3',
+  'Icewood Longbow':'Level=Exotic Category=Ranged Damage=d8 Crit=3 Range=120',
+  'Inutek':'Level=Exotic Category=Ranged Damage=d3 Range=20',
+  'Sarcosan Lance':'Level=Exotic Category=Two-Handed Damage=d8 Crit=3 Range=20',
+  'Sepi':'Level=Exotic Category=Light Damage=d6 Threat=18',
   // Shard Arrow ignored--Quilvyn doesn't list ammo
-  'Staghorn':'Level=3 Category=1h Damage=d6',
-  'Tack Whip':'Level=1 Category=Li Damage=d4',
-  'Urutuk Hatchet':'Level=3 Category=1h Damage=d8 Crit=3 Range=20',
-  'Vardatch':'Level=3 Category=1h Damage=d12',
-  // Debris for Giantblooded heroic path
-  'Debris':'Level=0 Category=R Damage=d10 Range=30'
+  'Staghorn':'Level=Exotic Category=One-Handed Damage=d6',
+  'Tack Whip':'Level=Simple Category=Light Damage=d4',
+  'Urutuk Hatchet':'Level=Exotic Category=One-Handed Damage=d8 Crit=3 Range=20',
+  'Vardatch':'Level=Exotic Category=One-Handed Damage=d12'
 };
 LastAge.WEAPONS = Object.assign({}, SRD35.WEAPONS, LastAge.WEAPONS_ADDED);
 // Overrides of SRD3.5 class features
@@ -5961,16 +5960,17 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('combatNotes.rockThrowing',
       pathLevel, '^=', 'source>=19?120 : source>=13?90 : source>=6?60 : 30'
     );
-    rules.defineRule('debrisDamageDice',
-      pathLevel, '=', 'source >= 16 ? "2d8" : source >= 9 ? "2d6" : null'
-    );
-    rules.defineRule('debrisRange', 'combatNotes.rockThrowing', '^=', null);
     rules.defineRule('skillNotes.intimidatingSize',
       pathLevel, '+=', 'source>=17 ? 10 : source>=14 ? 8 : (Math.floor((source + 1) / 4) * 2)'
     );
     rules.defineRule
       ('features.Large', 'features.Size Features (Large)', '=', null);
+    LastAge.weaponRules(rules, 'Debris', 'Simple', 'Ranged', 'd10', 20, 2, 30);
     rules.defineRule('weapons.Debris', 'combatNotes.rockThrowing', '=', '1');
+    rules.defineRule('debrisDamageDice',
+      pathLevel, '=', 'source >= 16 ? "2d8" : source >= 9 ? "2d6" : null'
+    );
+    rules.defineRule('debrisRange', 'combatNotes.rockThrowing', '^=', null);
 
   } else if(name == 'Guardian') {
 
