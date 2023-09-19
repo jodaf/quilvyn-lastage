@@ -1,5 +1,5 @@
 /*
-Copyright 2021, James J. Hayes
+Copyright 2023, James J. Hayes
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -45,6 +45,7 @@ function LastAge(baseRules) {
     'Midnight - ' + (usePathfinder ? 'Pathfinder 1E' : 'SRD v3.5'),
     LastAge.VERSION
   );
+  rules.plugin = LastAge;
   rules.basePlugin = usePathfinder ? Pathfinder : SRD35;
   LastAge.rules = rules;
 
@@ -52,6 +53,7 @@ function LastAge(baseRules) {
   rules.defineChoice('choices', LastAge.CHOICES);
   rules.choiceEditorElements = LastAge.choiceEditorElements;
   rules.choiceRules = LastAge.choiceRules;
+  rules.removeChoice = SRD35.removeChoice;
   rules.editorElements = SRD35.initialEditorElements();
   rules.getFormats = rules.basePlugin.getFormats || SRD35.getFormats;
   rules.getPlugins = LastAge.getPlugins;
@@ -62,6 +64,7 @@ function LastAge(baseRules) {
     (LastAge.RANDOMIZABLE_ATTRIBUTES_ADDED);
   rules.defineChoice('random', LastAge.RANDOMIZABLE_ATTRIBUTES);
   delete rules.getChoices('random').deity;
+  rules.getChoices = SRD35.getChoices;
   rules.ruleNotes = LastAge.ruleNotes;
 
   if(usePathfinder) {
@@ -152,17 +155,18 @@ function LastAge(baseRules) {
     (rules, LastAge.FEATS, LastAge.FEATURES, LastAge.GOODIES,
      LastAge.LANGUAGES, LastAge.SKILLS);
   LastAge.identityRules(
-    rules, LastAge.ALIGNMENTS, LastAge.CLASSES, LastAge.DEITIES, LastAge.PATHS,
-    LastAge.RACES, LastAge.PRESTIGE_CLASSES, LastAge.NPC_CLASSES
+    rules, LastAge.ALIGNMENTS, LastAge.CLASSES, LastAge.DEITIES,
+    LastAge.HEROIC_PATHS, LastAge.RACES, LastAge.PRESTIGE_CLASSES,
+    LastAge.NPC_CLASSES
   );
 
   Quilvyn.addRuleSet(rules);
 
 }
 
-LastAge.VERSION = '2.3.2.5';
+LastAge.VERSION = '2.4.1.0';
 
-LastAge.CHOICES_ADDED = [];
+LastAge.CHOICES_ADDED = ['Heroic Path'];
 LastAge.CHOICES = SRD35.CHOICES.concat(LastAge.CHOICES_ADDED);
 LastAge.RANDOMIZABLE_ATTRIBUTES_ADDED = ['heroicPath'];
 LastAge.RANDOMIZABLE_ATTRIBUTES =
@@ -253,19 +257,20 @@ LastAge.FEATS_ADDED = {
   'Sense Nexus':'Type=General',
   'Spell Focus (%school)':
     'Type=General Require="features.Spellcasting (%school)"',
-  'Spellcasting (Abjuration)':'Type=Channeling,Spellcasting',
-  'Spellcasting (Conjuration)':'Type=Channeling,Spellcasting',
-  'Spellcasting (Divination)':'Type=Channeling,Spellcasting',
-  'Spellcasting (Enchantment)':'Type=Channeling,Spellcasting',
-  'Spellcasting (Evocation)':'Type=Channeling,Spellcasting',
-  'Spellcasting (Illusion)':'Type=Channeling,Spellcasting',
-  'Spellcasting (Necromancy)':'Type=Channeling,Spellcasting',
-  'Spellcasting (Transmutation)':'Type=Channeling,Spellcasting',
+  'Spellcasting (Abjuration)':'Type=Channeling,Spellcasting Require=sumMagecraft',
+  'Spellcasting (Conjuration)':'Type=Channeling,Spellcasting Require=sumMagecraft',
+  'Spellcasting (Divination)':'Type=Channeling,Spellcasting Require=sumMagecraft',
+  'Spellcasting (Enchantment)':'Type=Channeling,Spellcasting Require=sumMagecraft',
+  'Spellcasting (Evocation)':'Type=Channeling,Spellcasting Require=sumMagecraft',
+  'Spellcasting (Illusion)':'Type=Channeling,Spellcasting Require=sumMagecraft',
+  'Spellcasting (Necromancy)':'Type=Channeling,Spellcasting Require=sumMagecraft',
+  'Spellcasting (Transmutation)':'Type=Channeling,Spellcasting Require=sumMagecraft',
   'Spellcasting (Greater Conjuration)':
     'Type=Channeling,Spellcasting ' +
-    'Require="features.Spellcasting (Conjuration)"',
+    'Require="features.Spellcasting (Conjuration)",sumMagecraft',
   'Spellcasting (Greater Evocation)':
-    'Type=Channeling,Spellcasting Require="features.Spellcasting (Evocation)"',
+    'Type=Channeling,Spellcasting ' +
+    'Require="features.Spellcasting (Evocation)",sumMagecraft',
   'Spell Knowledge':'Type=General Require="sumSpellcastingFeats >= 1"',
   'Thick Skull':'Type=General',
   'Warrior Of Shadow':
@@ -439,297 +444,554 @@ LastAge.FEATURES_ADDED = {
   // Override of 3.5 Magic Domain feature
   'Arcane Adept':
     'Section=magic ' +
-    'Note="Use magic device as W%{(levels.Legate||shadowedLevel)//2>?1}"',
+    'Note="May use a magic device as Ch%{(levels.Legate||shadowedLevel)//2>?1}"',
 
   // Heroic Path
   'Ability Boost':'Section=ability Note="%V to distribute"',
-  'Aid Another (Move)':'Section=combat Note="Aid another as a move action"',
+  'Aid Another (Move)':'Section=combat Note="May aid another as a move action"',
   'Aid Another (Combat Bonus)':
     'Section=combat Note="Aided ally +%V attack or AC"',
-  'Ambush':'Section=skill Note="Allies use self Hide for ambush"',
+  'Ambush':'Section=skill Note="Allies may use self Hide for an ambush"',
   'Ambush (Extra Damage)':
     'Section=combat ' +
-    'Note="Allies R30\' +2 damage vs. flat-footed foes on surprise and 1st melee rd"',
-  'Ambush (Quick)':'Section=skill Note="Hide allies for ambush in half time"',
+    'Note="R30\' Allies gain +2 damage vs. flat-footed foes on surprise and 1st melee rd"',
+  'Ambush (Quick)':
+    'Section=skill Note="Hiding allies for an ambush takes half normal time"',
   'Ambush (Sniping)':
-    'Section=combat Note="Reduced Hide penalty for using ranged weapons"',
+    'Section=combat Note="Reduces Hide penalty for using ranged weapons"',
   'Animal Companion':
     'Section=feature Note="Special bond and abilities w/up to %V animals"',
   'Animal Friend':
     'Section=combat,skill ' +
-    'Note="Animals DC %V Will save to attack",' +
+    'Note="Animals require a successful DC %V Will to attack self",' +
          '"+4 Handle Animal"',
   'Ancestral Bladebearer Bonus Feats':'Section=feature Note="+%V Fighter Feat"',
   'Aquatic Adaptation':
-    'Section=skill Note="Breathe through gills, no underwater pressure damage"',
+    'Section=save,skill ' +
+    'Note=' +
+      '"Suffers no underwater pressure damage",' +
+      '"May breathe through gills"',
   'Aquatic Ally':
-    'Section=magic Note="Aquatic <i>Summon Nature\'s Ally %1</i> %V/dy"',
+    'Section=magic ' +
+    'Note="May use aquatic <i>Summon Nature\'s Ally %1</i> %V/dy"',
   'Aquatic Blindsight':
-    'Section=skill Note="R%V\' Detect creatures in opaque water"',
-  'Aquatic Emissary':'Section=skill Note="Speak to all aquatic animals"',
+    'Section=skill Note="R%V\' Detects creatures in opaque water"',
+  'Aquatic Emissary':'Section=skill Note="May speak to all aquatic animals"',
   'Assist Allies':
-    'Section=skill Note="Allies move in water at full speed, share oxygen"',
-  'Aura Of Courage':'Section=save Note="Immune fear, R%V\' +4 to allies"',
-  'Aura Of Warmth':'Section=magic Note="R10\' Allies +4 Fortitude vs cold"',
-  'Battle Cry':'Section=combat Note="+%V hit points until end of battle %1/dy"',
+    'Section=skill ' +
+    'Note="May allow allies to move in water at full speed and to hold their breath 5x longer"',
+  'Aura Of Courage':
+    'Section=save Note="Immune to fear/R%V\' allies +4 vs. fear"',
+  'Aura Of Warmth':
+    'Section=magic Note="R10\' Allies gain +4 Fortitude vs. cold"',
+  'Battle Cry':'Section=combat Note="+%V HP until end of battle %1/dy"',
+  'Beast':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Magic Fang</i>%{level>=13 ? \' 2/dy\' : \'\'}' +
+      '%{level>=4 ? \\", <i>Bear\'s Endurance</i>\\" : \'\'}%{level>=13 ? \' 1/dy\' : \'\'}' +
+      '%{level>=8 ? \', <i>Greater Magic Fang</i>\' : \'\'}%{level>=18 ? \' 2/dy\' : level>=13 ? \' 1/dy\' : \'\'}' +
+      '%{level>=9 ? \\", <i>Cat\'s Grace</i>\\" : \'\'}%{level>=13 ? \' 1/dy\' : \'\'}' +
+      '%{level>=14 ? \\", <i>Bull\'s Strength</i> 1/dy\\" : \'\'}' +
+      '%{level>=19 ? \', <i>Freedom Of Movement</i> 1/dy\' : \'\'}' +
+      '%{level<13 ? \' 1/dy\' : \'\'}"',
   'Bestial Aura':
-    'Section=combat,skill ' +
-    'Note="Turn 2d6+%1 HD of animals of up to (d20+%2)/3 HD %3/dy",' +
-         '"-10 Handle Animal, no Wild Empathy"',
-  'Blindsense':
-     'Section=feature Note="R30\' Other senses detect unseen objects"',
+    'Section=combat,skill,skill ' +
+    'Note=' +
+      '"May turn 2d6+%1 HD of animals of up to (d20+%2)/3 HD %3/dy",' +
+      '"-10 Handle Animal",' +
+      '"Cannot use Wild Empathy"',
+  'Blessed':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Bless</i>%{level<9 ? \'\' : level<13 ? \' 2/dy\' : level<17 ? \' 3/dy\' : \' 4/dy\'}' +
+      '%{level>=4 ? \', <i>Protection From Evil</i>\' : \'\'}%{level<9 ? \'\' : level<16 ? \' 1/dy\' : \' 2/dy\'}' +
+      '%{level>=8 ? \', <i>Align Weapon</i>\' : \'\'}{%level<9 ? \'\' : level<18 ? \' 1/dy\' : \' 2/dy\'}' +
+      '%{level>=11 ? \', <i>Magic Circle Against Evil</i> 1/dy\' : \'\'}' +
+      '%{level>=19 ? \', <i>Dispel Evil</i> 1/dy\' : \'\'}' +
+      '%{level>=20 ? \', <i>Holy Aura</i> 1/dy\' : \'\'}' +
+      '%{level<9 ? \' 1/dy\' : \'\'}"',
+  // Blindsense as SRD35
   'Blindsight':
-    'Section=feature Note="R30\' Other senses compensate for loss of vision"',
+    'Section=feature Note="R30\' Can maneuver and fight w/out vision"',
   'Blood Of Kings':
     'Section=skill ' +
-    'Note="Daily +%V Cha skills in Shadow or resistance interactions"',
-  'Blood Of The Planes':'Section=skill Note="+%V Cha skills with outsiders"',
-  'Bolster Spell':'Section=magic Note="Add 1 to DC of %V chosen spells"',
+    'Note="Choice of +%V Charisma skills in Shadow or resistance interactions each day"',
+  'Blood Of The Planes':
+    'Section=skill Note="+%V Charisma skills with outsiders"',
+  'Bolster Spell':'Section=magic Note="+1 DC on %V chosen spells"',
   'Bonus Raw Energy':'Section=magic Note="+%V"',
   'Bonus Spell Energy':'Section=magic Note="+%V Spell Energy"',
   'Bonus Spells':'Section=magic Note="+%V Channeler Spells"',
   'Burst Of Speed':
     'Section=combat ' +
-    'Note="Extra attack or move action for %V rd %1/dy; fatigued afterward"',
+    'Note="Gains extra attack or move action for %V rd %1/dy; fatigued afterward"',
+  'Chanceborn':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Resistance</i>' +
+      '%{level>=7 ? \', <i>True Strike</i>\' : \'\'}' +
+      '%{level>=12 ? \', <i>Aid</i>\' : \'\'}' +
+      '%{level>=17 ? \', <i>Prayer</i>\' : \'\'}' +
+      ' 1/dy"',
   'Chanceborn Survivor':
     'Section=feature ' +
-    'Note="Defensive Roll, Evasion, Slippery Mind, or Uncanny Dodge %V/dy"',
+    'Note="May use Defensive Roll, Evasion, Slippery Mind, or Uncanny Dodge %V/dy"',
+  'Charismatic':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Charm Person</i>' +
+      '%{level>=2 ? \', <i>Remove Fear</i>\' : \'\'}' +
+      '%{level>=3 ? \', <i>Hypnotism</i>\' : \'\'}' +
+      '%{level>=7 ? \', <i>Aid</i>\' : \'\'}' +
+      '%{level>=8 ? \', <i>Daze Monster</i>\' : \'\'}' +
+      '%{level>=11 ? \', <i>Heroism</i>\' : \'\'}' +
+      '%{level>=13 ? \', <i>Charm Monster</i>\' : \'\'}' +
+      '%{level>=16 ? \', <i>Suggestion</i>\' : \'\'}' +
+      '%{level>=17 ? \', <i>Greater Heroism</i>\' : \'\'}' +
+      ' 1/dy"',
   'Charisma Bonus':'Section=ability Note="+%V Charisma"',
   'Cold Immunity':
-    'Section=save Note="No damage from cold, x1.5 damage from fire"',
+    'Section=save Note="Suffers no damage from cold, x1.5 damage from fire"',
   'Cold Resistance':'Section=save Note="Resistance %V to cold"',
   'Combat Overview':
-    'Section=combat Note="R60\' Ally avoid AOO or foe flat-footed %V/dy"',
+    'Section=combat ' +
+    'Note="R60\' May allow ally to avoid AOO or make foe flat-footed %V/dy"',
   'Constitution Bonus':'Section=ability Note="+%V Constitution"',
   'Coordinated Attack':
     'Section=combat ' +
-    'Note="R30\' Allies attack same foe at +1/participant (max +5) %V/dy"',
+    'Note="R30\' May allow all allies to attack the same foe at +1 per ally (max +5) %V/dy"',
   'Coordinated Initiative':
-    'Section=combat Note="R30\' Allies use self initiative %V/dy"',
-  'Damage Reduction':'Section=combat Note="DR %V/-"',
-  'Death Ward':'Section=save Note="Self immune death spells, death effects, energy drain, and negative energy effects"',
-  'Deep Lungs':'Section=skill Note="Hold breath for %V rd"',
-  'Detect Evil':'Section=magic Note="<i>Detect Evil</i> at will"',
-  'Detect Outsider':'Section=magic Note="<i>Detect Outsider</i> at will"',
+    'Section=combat Note="R30\' Allies may use self Initiative %V/dy"',
+  // Damage Reduction as SRD35
+  'Death Ward':
+    'Section=save ' +
+    'Note="Immune to death spells, death effects, energy drain, and negative energy effects"',
+  'Deep Lungs':'Section=skill Note="May hold breath for %V rd"',
+  // Detect Evil as SRD35
+  'Detect Outsider':
+    'Section=magic Note="May use <i>Detect Outsider</i> effects at will"',
   'Dexterity Bonus':'Section=ability Note="+%V Dexterity"',
   'Directed Attack':
-    'Section=combat Note="R30\' Ally add half self base attack 1/dy"',
+    'Section=combat Note="R30\' May give ally +%{baseAttack//2} attack 1/dy"',
   'Disrupting Attack':
-    'Section=combat Note="Undead destroyed %1/dy (DC %V Will neg)"',
+    'Section=combat Note="May destroy undead %1/dy (DC %V Will neg)"',
   "Dolphin's Grace":
     'Section=ability,skill Note="+%V\' Swim","+8 Swim (hazards)"',
   'Dragonblooded Improved Spellcasting':
     'Section=magic ' +
-    'Note="Reduce spell energy cost of spells from %V chosen schools by 1"',
+    'Note="Reduces spell energy cost of spells from %V chosen schools by 1"',
+  'Earthbonded':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Hold Portal</i>' +
+      '%{level>=5 ? \', <i>Soften Earth And Stone</i>\' : \'\'}' +
+      '%{level>=6 ? \', <i>Make Whole</i>\' : \'\'}' +
+      '%{level>=7 ? \', <i>Spike Stones</i>\' : \'\'}' +
+      '%{level>=9 ? \', <i>Stone Shape</i>\' : \'\'}' +
+      '%{level>=11 ? \', <i>Meld Into Stone</i>\' : \'\'}' +
+      '%{level>=13 ? \', <i>Transmute Rock To Mud</i>\' : \'\'}' +
+      '%{level>=14 ? \', <i>Stoneskin</i>\' : \'\'}' +
+      '%{level>=15 ? \', <i>Move Earth</i>\' : \'\'}' +
+      '%{level>=17 ? \', <i>Stone Tell</i>\' : \'\'}' +
+      '%{level>=19 ? \', <i>Earthquake</i>\' : \'\'}' +
+      ' 1/dy"',
   'Elemental Friend':
     'Section=combat,skill ' +
-    'Note="Elementals DC %V Will save to attack",' +
-         '"+4 Diplomacy (elementals)"',
+    'Note=' +
+      '"Elementals require a successful DC %V Will to attack self",' +
+      '"+4 Diplomacy (elementals)"',
   'Elemental Resistance':
     'Section=save Note="Resistance %V to acid, cold, electricity, and fire"',
   'Enhanced Bestial Aura':
-    'Section=feature Note="R15\' Animals act negatively, cannot ride"',
+    'Section=feature Note="R15\' Animals react negatively/Cannot ride"',
   'Extended Darkvision':'Section=feature Note="+30\' b/w vision in darkness"',
+  'Faithful':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Bless</i>' +
+      '%{level>=2 ? \', <i>Protection From Evil</i>\' : \'\'}' +
+      '%{level>=3 ? \', <i>Divine Favor</i>\' : \'\'}' +
+      '%{level>=6 ? \', <i>Aid</i>\' : \'\'}' +
+      '%{level>=7 ? \', <i>Bless Weapon</i>\' : \'\'}' +
+      '%{level>=8 ? \', <i>Consecrate</i>\' : \'\'}' +
+      '%{level>=11 ? \', <i>Daylight</i>\' : \'\'}' +
+      '%{level>=12 ? \', <i>Magic Circle Against Evil</i>\' : \'\'}' +
+      '%{level>=13 ? \', <i>Prayer</i>\' : \'\'}' +
+      '%{level>=16 ? \', <i>Holy Smite</i>\' : \'\'}' +
+      '%{level>=17 ? \', <i>Dispel Evil</i>\' : \'\'}' +
+      '%{level>=19 ? \', <i>Holy Aura</i>\' : \'\'}' +
+      ' 1/dy"',
   'Fast Movement':'Section=ability Note="+%V Speed"',
   'Fearsome Charge':
-    'Section=combat Note="Trade -1 AC for +%V damage per 10\' in charge"',
-  'Ferocity':'Section=combat Note="Continue fighting below 0 HP"',
-  'Fey Vision':'Section=magic Note="Detect %V auras at will"',
+    'Section=combat Note="May suffer -1 AC for +%V damage per 10\' in charge"',
+  'Ferocity':'Section=combat Note="May continue fighting below 0 HP"',
+  'Fey Vision':'Section=magic Note="May detect %V auras at will"',
+  'Feyblooded':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Disguise Self</i>' +
+      '%{level>=3 ? \', <i>Ventriloquism</i>\' : \'\'}' +
+      '%{level>=5 ? \', <i>Magic Aura</i>\' : \'\'}' +
+      '%{level>=6 ? \', <i>Invisibility</i>\' : \'\'}' +
+      '%{level>=9 ? \', <i>Nondetection</i>\' : \'\'}' +
+      '%{level>=10 ? \', <i>Glibness</i>\' : \'\'}' +
+      '%{level>=11 ? \', <i>Deep Slumber</i>\' : \'\'}' +
+      '%{level>=14 ? \', <i>False Vision</i>\' : \'\'}' +
+      '%{level>=15 ? \', <i>Rainbow Pattern</i>\' : \'\'}' +
+      '%{level>=17 ? \', <i>Mislead</i>\' : \'\'}' +
+      '%{level>=18 ? \', <i>Seeming</i>\' : \'\'}' +
+      ' 1/dy"',
   'Fortitude Bonus':'Section=save Note="+%V Fortitude"',
   'Frightful Presence':
     'Section=magic ' +
-    'Note="R10\' Casting panics or shakes foes of lesser level 4d6 rd (DC %V Will neg)"',
-  'Frost Weapon':
-    'Section=combat Note="+1d6 cold damage on hit for %V rd %1/dy"',
+    'Note="R10\' Casting panics or shakes foes of lesser level (DC %V Will neg) for 4d6 rd"',
+  'Frost Weapon':'Section=combat Note="Inflicts +1d6 HP cold for %V rd %1/dy"',
   'Greater Frost Weapon':
-    'Section=combat Note="+1d10 cold damage, extra hit die on critical hit"',
-  'Hide In Plain Sight':'Section=skill Note="Hide even when observed"',
+    'Section=combat Note="Inflicts +1d10 HP cold, crit +1 multiplier"',
+  // Hide In Plain Sight as SRD35
+  'Guardian':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Detect Evil</i>' +
+      '%{level>=16 ? \', <i>Death Ward</i>\' : \'\'}' +
+      ' at will"',
+  'Healer':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Cure Light Wounds</i>%{level<3 ? \'\' : \' 2/dy\'}' +
+      '%{level>=2 ? \', <i>Lesser Restoration</i>\' : \'\'}%{level<3 ? \'\' : \' 1/dy\'}' +
+      '%{level>=4 ? \', <i>Cure Moderate Wounds</i>\' : \'\'}%{level<4 ? \'\' : level<6 ? \' 1/dy\' : \' 2/dy\'}' +
+      '%{level>=5 ? \', <i>Remove Disease</i> 1/dy\' : \'\'}' +
+      '%{level>=7 ? \', <i>Cure Serious Wounds</i>\' : \'\'}%{level<7 ? \'\' : level<9 ? \' 1/dy\' : \' 2/dy\'}' +
+      '%{level>=8 ? \', <i>Remove Blindness/Deafness</i> 1/dy\' : \'\'}' +
+      '%{level>=10 ? \', <i>Cure Critical Wounds</i>\' : \'\'}%{level<10 ? \'\' : level<12 ? \' 1/dy\' : \' 2/dy\'}' +
+      '%{level>=11 ? \', <i>Neutalize Poison</i> 1/dy\' : \'\'}' +
+      '%{level>=13 ? \', <i>Mass Cure Light Wounds</i>\' : \'\'}%{level<13 ? \'\' : level<15 ? \' 1/dy\' : \' 2/dy\'}' +
+      '%{level>=14? \', <i>Restoration</i>\' : \'\'}%{level<14 ? \'\' : level<17 ? \' 1/dy\' : \' 2/dy\'}' +
+      '%{level>=18 ? \', <i>Heal</i> 1/dy\' : \'\'}' +
+      '%{level>=19 ? \', <i>Regenerate</i> 1/dy\' : \'\'}' +
+      '%{level>=20 ? \', <i>Raise Dead</i> 1/dy\' : \'\'}' +
+      '%{level<3 ? \' 1/dy\' : \'\'}"',
   'Howling Winds':
-    'Section=feature Note="Answer %V questions about surrounding %1 miles %V/dy"',
+    'Section=feature ' +
+    'Note="Gains answers to %V questions about surrounding %1 miles %V/dy"',
   'Improved Battle Cry':'Section=combat Note="+1 attack and damage after cry"',
-  'Improved Healing':'Section=combat Note="Regain %V HP/hr"',
+  'Improved Healing':'Section=combat Note="Regains %V HP/hr"',
   'Improved Healing (Ability Recovery)':
-    'Section=combat Note="Regain 1 point ability damage/hr"',
-  'Improved Spell Penetration':
-    'Section=magic Note="+%V checks to overcome spell resistance"',
+    'Section=combat Note="Regains 1 point of ability damage/hr"',
+  'Improved Spell Penetration':'Section=magic Note="+%V to overcome SR"',
   'Improved Stonecunning':
-    'Section=skill Note="R5\' Automatic Search for concealed stone door"',
+    'Section=skill ' +
+    'Note="R5\' Makes automatic Search for concealed stone doors"',
   'Increased Damage Threshold':
-    'Section=combat Note="Continue fighting until -%V HP"',
-  'Indefatigable':'Section=save Note="Immune %V effects"',
+    'Section=combat Note="May continue fighting until -%V HP"',
+  'Indefatigable':'Section=save Note="Immune to %V effects"',
   'Insight':'Section=skill Note="+%V skill check 1/dy"',
   'Inspire Valor':
     'Section=feature ' +
-    'Note="R30\' Allies +%V attack and fear saves for %1 rd %2/dy"',
+    'Note="R30\' Allies gain +%V attack and fear saves for %1 rd %2/dy"',
   'Inspiring Oration':
-    'Section=magic ' +
-    'Note="R60\' Speech applies spell-like ability to allies %V/dy"',
+    'Section=magic Note="R60\' May apply spell-like ability to allies %V/dy"',
   'Intelligence Bonus':'Section=ability Note="+%V Intelligence"',
   'Intimidating Size':'Section=skill Note="+%V Intimidate"',
-  'Ironborn Resilience':'Section=combat Note="Improved hit die"',
+  'Incredible Resilience (Ironborn)':'Section=combat Note="+1 hit die step"',
   'Jack-Of-All-Trades Bonus Feats':'Section=feature Note="+%V General Feat"',
   'Language Savant':
     'Section=skill ' +
-    'Note="Fluent in any language after listening for 10 minutes"',
+    'Note="Becomes fluent in any language after listening for 10 minutes"',
   'Last Stand':
     'Section=combat ' +
-    'Note="At half HP, 1 min of spell resistance %V, DR 15/-, resistance 30 to acid, cold, electricity, and fire; near death afterward %1/dy"',
-  'Lay On Hands':'Section=magic Note="Harm undead or heal %V HP/dy"',
-  'Leadership':'Section=feature Note="Attract followers"',
-  'Luck Of Heroes':'Section=feature Note="Add %V to any d20 roll 1/dy"',
-  'Master Adventurer':'Section=skill Note="+%V on three chosen non-Cha skills"',
+    'Note="At half HP, may gain 1 min of SR %V, DR 15/-, resistance 30 to acid, cold, electricity, and fire, but suffer near death afterward, %1/dy"',
+  'Lay On Hands':'Section=magic Note="May harm undead or heal %V HP/dy"',
+  // Leadership as SRD35
+  'Luck Of Heroes':'Section=feature Note="May add %V to any d20 roll 1/dy"',
+  'Master Adventurer':
+    'Section=skill Note="+%V three chosen non-Charisma skills"',
   'Metamagic Aura':
     'Section=magic Note="R30\' %V others\' spells of up to level %1 %2/dy"',
   'Miss Chance':'Section=combat Note="%V% chance of foe miss"',
+  'Mountainborn':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Endure Elements</i>' +
+      '%{level>=7 ? \', <i>Pass Without Trace</i>\' : \'\'}' +
+      '%{level>=12 ? \', <i>Meld Into Stone</i>\' : \'\'}' +
+      '%{level>=17 ? \', <i>Stone Tell</i>\' : \'\'}' +
+      ' 1/dy"',
   'Mountaineer':
-    'Section=skill ' +
-    'Note="+%V Balance/+%V Climb/+%V Jump/+%V Survival (mountains)"',
-  'Natural Armor':'Section=combat Note="+%V AC"',
+    'Section=skill,skill ' +
+    'Note=' +
+      '"+%V Balance/+%V Climb/+%V Jump",' +
+      '"+%V Survival (mountains)"',
+  // Natural Armor as SRD35
   'Natural Bond':
     'Section=skill ' +
     'Note="Knowledge (Nature) is a class skill/Survival is a class skill/+2 Knowledge (Nature)/+2 Survival"',
   'Natural Channeler':'Section=magic Note="+%V Spell Energy"',
   'Natural Leader':'Section=feature Note=" +%V Leadership score"',
+  'Naturefriend':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Calm Animals</i>' +
+      '%{level>=3 ? \', <i>Entangle</i>\' : \'\'}' +
+      '%{level>=4 ? \', <i>Obsuring Mist</i>\' : \'\'}' +
+      '%{level>=6 ? \', <i>Animal Messenger</i>\' : \'\'}' +
+      '%{level>=7 ? \', <i>Wood Shape</i>\' : \'\'}' +
+      '%{level>=8 ? \', <i>Gust Of Wind</i>\' : \'\'}' +
+      '%{level>=9 ? \', <i>Speak With Animals</i>\' : \'\'}' +
+      '%{level>=11 ? \', <i>Speak With Plants</i>\' : \'\'}' +
+      '%{level>=12 ? \', <i>Call Lightning</i>\' : \'\'}' +
+      '%{level>=13 ? \', <i>Dominate Animal</i>\' : \'\'}' +
+      '%{level>=14 ? \', <i>Spike Growth</i>\' : \'\'}' +
+      '%{level>=16 ? \', <i>Sleet Storm</i>\' : \'\'}' +
+      '%{level>=17 ? \\", <i>Summon Nature\'s Ally IV</i>\\" : \'\'}' +
+      '%{level>=18 ? \', <i>Command Plants</i>\' : \'\'}' +
+      '%{level>=19 ? \', <i>Ice Storm</i>\' : \'\'}' +
+      ' 1/dy"',
   'Nonlethal Damage Reduction':'Section=combat Note="DR %V/- non-lethal"',
   'Northborn':
     'Section=save,skill ' +
-    'Note="Immune to non-lethal cold/exposure",' +
+    'Note="Immune to non-lethal cold and exposure",' +
          '"+2 Survival (cold)/+2 Wild Empathy (cold natives)"',
+  'Null':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Dispel Magic</i>%{level<8 ? \'\' : level<12 ? \' 2/dy\' : \' 3/dy\'}' +
+      '%{level>=13 ? \', <i>Greater Dispel Magic</i> 1/dy\' : \'\'}' +
+      '%{level>=17 ? \', <i>Spell Immunity</i> 1/dy\' : \'\'}' +
+      '%{level>=18 ? \', <i>Antimagic Field</i> 1/dy\' : \'\'}' +
+      '%{level<8 ? \' 1/dy\' : \'\'}"',
   'Offensive Tactics':
     'Section=combat ' +
-    'Note="+%V to first attack or all damage when using full attack action"',
-  'One With Nature':'Section=magic Note="<i>Commune With Nature</i> at will"',
+    'Note="+%V to first attack or all damage when using a full-attack action"',
+  'One With Nature':
+    'Section=magic Note="May use <i>Commune With Nature</i> effects at will"',
   'Painless':
     'Section=combat,save Note="+%V HP","+%V vs. pain effects"',
-  'Planar Fury':
-    'Section=combat Note="+2 Str and Con, +1 Will, -1 AC for %V rd %1/dy"',
   'Perfect Assault':
-    'Section=combat Note="R30\' Allies threaten critical on any hit 1/dy"',
-  'Persuasive Speaker':'Section=skill Note="+%V verbal Cha skills"',
+    'Section=combat ' +
+    'Note="R30\' May allow allies to threaten crit on any hit 1/dy"',
+  'Persuasive Speaker':'Section=skill Note="+%V verbal Charisma skills"',
+  'Planar Fury':
+    'Section=combat ' +
+    'Note="May gain +2 Strength, +2 Constitution, and +1 Will and suffer -1 AC for %V rd %1/dy"',
   'Plant Friend':
     'Section=combat,skill ' +
-    'Note="Plants DC %V Will save to attack",' +
+    'Note="Plants require a succuessful DC %V Will to attack self",' +
          '"+4 Diplomacy (plants)"',
   'Power Words':
-    'Section=magic Note="R60\' DC %2+spell level <i>Word of %V</i> %1/dy"',
+    'Section=magic ' +
+    'Note="R60\' May use DC %2+spell level <i>Word of %V</i> %1/dy"',
   'Pureblood Bonus Feats':'Section=feature Note="+%V General Feat"',
   'Quickened Counterspelling':
-    'Section=magic Note="Counterspell as move action 1/rd"',
-  'Rage':
-    'Section=combat Note="+4 Str, +4 Con, +2 Will, -2 AC for %V rd %1/dy"',
+    'Section=magic Note="May counterspell as a move action 1/rd"',
+  // Rage as SRD35
   'Rallying Cry':
-    'Section=combat Note="Allies not flat-footed, +4 vs. surprise %V/dy"',
+    'Section=combat ' +
+    'Note="May make allies not flat-footed and give +4 vs. surprise %V/dy"',
   'Retributive Rage':
     'Section=combat ' +
-    'Note="+%V attack%1 1 rd after foe attack does %{level*2} HP damage to self"',
-  'Righteous Fury':
-    'Section=combat ' +
-    'Note="Overcome %V points of evil foe melee damage reduction"',
-  'Rock Throwing':'Section=combat Note="Use debris as R%V\' ranged weapon"',
+    'Note="+%V attack%1 for 1 rd after foe attack inflicts %{level*2} HP to self"',
+  'Righteous Fury':'Section=combat Note="Ignores %V points of evil foe DR"',
+  'Rock Throwing':'Section=combat Note="May use debris as R%V\' ranged weapon"',
   'Save Boost':'Section=save Note="%V to distribute"',
   'Scent':
-    'Section=feature Note="R30\' Detect creatures\' presence, track by smell"',
+    'Section=feature Note="R30\' May detect creatures and track by smell"',
+  'Seaborn':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      "<i>Summon Nature's Ally %{level<8 ? 'II' : level<12 ? 'III 2/dy' : level<16 ? 'IV 3/dy' : level<20 ? 'V 4/dy' : 'VI 5/dy'}" +
+      '%{level>=5 ? \', <i>Blur</i>\' : \'\'}%{level<8 ? \'\' : \' 1/dy\'}' +
+      '%{level>=9 ? \', <i>Fog Cloud</i> 1/dy\' : \'\'}' +
+      '%{level>=13 ? \', <i>Displacement</i> 1/dy\' : \'\'}' +
+      '%{level<8 ? \' 1/dy\' : \'\'}"',
+  'Seer':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Alarm</i>' +
+      '%{level>=2 ? \', <i>Augury</i>\' : \'\'}' +
+      '%{level>=4 ? \', <i>Clairaudience/Clairvoyance</i>\' : \'\'}' +
+      '%{level>=5 ? \', <i>Locate Object</i>\' : \'\'}' +
+      '%{level>=7 ? \', <i>Locate Creature</i>\' : \'\'}' +
+      '%{level>=8 ? \', <i>Speak With Dead</i>\' : \'\'}' +
+      '%{level>=10 ? \', <i>Divination</i>\' : \'\'}' +
+      '%{level>=11 ? \', <i>Scrying</i>\' : \'\'}' +
+      '%{level>=13 ? \', <i>Arcane Eye</i>\' : \'\'}' +
+      '%{level>=14 ? \', <i>Find The Path</i>\' : \'\'}' +
+      '%{level>=16 ? \', <i>Prying Eyes</i>\' : \'\'}' +
+      '%{level>=17 ? \', <i>Legend Lore</i>\' : \'\'}' +
+      '%{level>=19 ? \', <i>Commune</i>\' : \'\'}' +
+      '%{level>=20 ? \', <i>Vision</i>\' : \'\'}' +
+      ' 1/dy"',
   'Seer Sight':
-    'Section=magic Note="Discern %{level}-%1 history of touched object %V/dy"',
+    'Section=magic ' +
+    'Note="May discern %{level}-%1 history of touched object %V/dy"',
   'Sense The Dead':
     'Section=magic ' +
-    'Note="R%V\' +%1 <i>Detect Undead</i> check (DC 10 + undead HD) at will"',
-  'Shadow Jump':'Section=feature Note="R%V\' Move between shadows"',
+    'Note="R%V\' May use +%1 <i>Detect Undead</i> effects (DC 10 + undead HD) at will"',
+  'Shadow Jump':'Section=feature Note="May teleport %V\' between shadows"',
   'Shadow Veil':'Section=skill Note="+%V Hide"',
+  'Shadow Walker':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Expeditious Retreat</i>%{level>=13 ? \' 2/dy\' : \'\'}' +
+      '%{level>=5 ? \', <i>Blur</i>\' : \'\'}%{level>=15 ? \' 2/dy\' level>=13 ? \' 1/dy\' : \'\'}' +
+      '%{level>=7 ? \', <i>Undetectable Alignment</i>\' : \'\'}%{level>=17 ? \' 2/dy\' level>=13 ? \' 1/dy\' : \'\'}' +
+      '%{level>=9 ? \', <i>Displacement</i>\' : \'\'}%{level>=19 ? \' 2/dy\' level>=13 ? \' 1/dy\' : \'\'}' +
+      '%{level<13 ? \' 1/dy\' : \'\'}"',
+  'Shadowed':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Detect Good</i>%{level<7 ? \'\' : \' 1/dy\'}' +
+      ', <i>Detect Evil</i>%{level<7 ? \'\' : \' 1/dy\'}' +
+      '%{level>=3 ? \', <i>Bane</i>\' : \'\'}%{level<7 ? \'\' : level<11 ? \' 2/dy\' : level<17 ? \' 3/dy\' : \' 4/dy\'}' +
+      '%{level>=6 ? \', <i>Summon Monster I</i>\' : \'\'}%{level<7 ? \'\' : level<12 ? \' 1/dy\' : level<16 ? \' 2/dy\' : \' 3/dy\'}' +
+      '%{level>=8 ? \', <i>Death Knell</i>\' : \'\'}%{level<13 ? \' 1/dy\' : level<18 ? \' 2/dy\' : \' 3/dy\'}' +
+      '%{level<7 ? \' 1/dy\' : \'\'}"',
   'Shadowed Frightful Presence':
-    'Section=feature Note="Viewers become frightened (DC %V Will neg)"',
+    'Section=feature Note="Frightens viewers (DC %V Will neg)"',
   'Size Features (Big)':
-    'Section=combat,skill Note="Use Large weapons","-4 Hide"',
-  'Size Features (Extra Reach)':'Section=combat Note="15\' reach"',
+    'Section=combat,skill Note="May use Large weapons","-4 Hide"',
+  'Size Features (Extra Reach)':'Section=combat Note="Has 15\' reach"',
   'Skill Boost':'Section=skill Note="+4 to %V chosen skills"',
-  'Skill Mastery':
-    'Section=skill Note="Take 10 despite distraction on %V chosen skills"',
+  // Skill Mastery as SRD35
   'Skilled Warrior':
     'Section=combat ' +
-    'Note="Half penalty from %V choices of Fighting Defensively, Grapple Attack, Non-proficient Weapon, Two-Weapon Fighting"',
-  'Smite Evil':
-    'Section=combat Note="+%1 attack, +%2 damage vs. evil foe %V/dy"',
+    'Note="Suffers half penalty from %V choices of Fighting Defensively, Grapple, non-proficient Weapons, and Two-Weapon Fighting"',
+  // Smite Evil as SRD35
+  'Speaker':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Comprehend Languages</i>' +
+      '%{level>=4 ? \', <i>Whispering Wind</i>\' : \'\'}' +
+      '%{level>=8 ? \', <i>Tongues</i>\' : \'\'}' +
+      '%{level>=12 ? \', <i>Shout</i>\' : \'\'}' +
+      '%{level>=18 ? \', <i>Greater Shout</i>\' : \'\'}' +
+      ' 1/dy"',
   'Spell Choice':
-    'Section=magic Note="Use chosen %V spell as spell-like ability 1/dy"',
+    'Section=magic Note="May use chosen %V spell as a spell-like ability 1/dy"',
   'Spellsoul Resistance':'Section=save Note="+%V vs. spells"',
   'Spirit Sight (Darkness)':
     'Section=feature Note="+60\' b/w vision in darkness"',
-  'Spirit Sight (Invisible)':'Section=feature Note="See invisible creatures"',
+  'Spirit Sight (Invisible)':
+    'Section=feature Note="Can see invisible creatures"',
   'Spirit Sight (Magical Darkness)':
-    'Section=feature Note="See perfectly through any darkness"',
+    'Section=feature Note="Can see clearly through any darkness"',
   'Spontaneous Spell':
-    'Section=magic Note="Use any %V spell as spell-like ability 1/dy"',
+    'Section=magic Note="May use any %V spell as a spell-like ability 1/dy"',
   'Steelblooded Bonus Feats':'Section=feature Note="%V selections"',
   'Stonecunning':
     'Section=feature,skill ' +
-    'Note="Intuit approximate depth underground",' +
-         '"+%V Search involving stone or metal, automatic check w/in 10\'"',
-  'Strategic Blow':
-    'Section=combat Note="Overcome %V points of foe damage reduction"',
+    'Note="May determine approximate depth underground",' +
+         '"+%V Search (stone or metal), automatic check w/in 10\'"',
+  'Strategic Blow':'Section=combat Note="Ignores %V points of foe DR"',
   'Strength Bonus':'Section=ability Note="+%V Strength"',
-  'Take Ten':'Section=feature Note="Take 10 on any d20 roll 1/dy"',
-  'Take Twenty':'Section=feature Note="Take 20 on any d20 roll 1/dy"',
-  'Telling Blow':'Section=combat Note="R30\' Allies re-roll damage 1/dy"',
-  'Touch Of The Living':'Section=combat Note="+%V melee damage vs. undead"',
-  'Tremorsense':
-    'Section=feature Note="R30\' Detect creatures in contact w/ground"',
-  'Turn Undead':
-    'Section=combat ' +
-    'Note="Turn (good) or rebuke (evil) 2d6+%1 HD of undead creatures of up to (d20+%2)/3 HD %3/dy"',
+  'Sunderborn':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Summon Monster I</i>' +
+      '%{level>=6 ? \', <i>Summon Monster II</i>\' : \'\'}' +
+      '%{level>=9 ? \', <i>Summon Monster III</i>\' : \'\'}' +
+      '%{level>=12 ? \', <i>Summon Monster IV</i>\' : \'\'}' +
+      '%{level>=15 ? \', <i>Summon Monster V</i>\' : \'\'}' +
+      '%{level>=18 ? \', <i>Summon Monster VI</i>\' : \'\'}' +
+      ' 1/dy"',
+  'Take Ten':'Section=feature Note="May take 10 on any d20 roll 1/dy"',
+  'Take Twenty':'Section=feature Note="May take 20 on any d20 roll 1/dy"',
+  'Telling Blow':
+    'Section=combat Note="R30\' May allow allies to re-roll damage 1/dy"',
+  'Touch Of The Living':
+    'Section=combat Note="Inflicts +%V HP w/melee weapon vs. undead"',
+  // Tremorsense as SRD35
+  // Turn Undead as SRD35
   'Uncaring Mind':'Section=save Note="+%V Will vs. enchantment"',
   'Unearthly Grace (AC)':'Section=combat Note="+%V AC"',
   'Unearthly Grace (Dexterity)':'Section=ability Note="+%V Dexterity checks"',
   'Unearthly Grace (Fortitude)':'Section=save Note="+%V Fortitude"',
   'Unearthly Grace (Reflex)':'Section=save Note="+%V Reflex"',
   'Unearthly Grace (Will)':'Section=save Note="+%V Will"',
-  'Unfettered':'Section=feature Note="Unimpeded movement for %V rd/dy"',
+  'Unfettered':
+    'Section=feature Note="May ignore restrictions on movement for %V rd/dy"',
   'Untapped Potential':
-    'Section=magic Note="R30\' Contribute %V spell energy to ally spells"',
-  'Untouchable':'Section=combat Note="No foe AOO from %V"',
-  'Vicious Assault':'Section=combat Note="Two claw attacks at 1%V each"',
+    'Section=magic Note="R30\' May contribute %V spell energy to ally spells"',
+  'Untouchable':'Section=combat Note="Special attacks%1 provoke no AOO"',
+  'Vicious Assault':
+    'Section=combat Note="May make two claw attacks that inflict 1d%V each"',
   'Ward Of Life':'Section=save Note="Immune to undead %V"',
-  'Wild Empathy':'Section=skill Note="+%V Diplomacy (animals)"',
-  'Wild Shape':'Section=magic Note="Change into creature of size %V %1/dy"',
+  'Warg':
+    'Section=magic ' +
+    'Note=' +
+      '"May use ' +
+      '<i>Charm Animal</i>%{level>=12 ? \' 2/dy\' : \'\'}' +
+      '%{level>=7 ? \', <i>Speak With Animals</i>\' : \'\'}%{level>=12 ? \' 2/dy\' : level>=12 ? \' 1/dy\' : \'\'}' +
+      '%{level<12 ? \' 1/dy\' : \'\'}"',
+  // Wild Empathy as SRD35
+  // Wild Shape as SRD35
   'Wisdom Bonus':'Section=ability Note="+%V Wisdom"',
   'Wiser Bonus Feats':'Section=feature Note="+%V General Feat (Skill Focus)"',
   'Wiser Skill Bonus':'Section=skill Note="+%V Skill Points"',
 
   // Feats
-  'Advanced Tempering':'Section=skill Note="Increase item hardness 20%"',
+  'Advanced Tempering':'Section=skill Note="Increases item hardness 20%"',
   "Aruun's Bounty":'Section=magic Note="Potions brewed in Aruun cost half XP"',
   'Blood-Channeler':
-    'Section=magic Note="Dbl spell energy for first two Con points lost"',
+    'Section=magic ' +
+    'Note="Gains dbl spell energy for first two Constitution points lost"',
   'Born Of Duty':
     'Section=magic ' +
-    'Note="R100\' Cry leaves undead shaken (DC %V Will neg), Dorn +2 vs fear and enchantment 1/dy"',
-  'Born Of The Grave':'Section=magic Note="R15\' <i>Deathwatch</i> at will"',
-  'Canny Strike':'Section=combat Note="+%Vd4 finesse weapon damage"',
-  'Caste Status':'Section=feature Note="Benefits of caste level"',
+    'Note="R100\' Cry inflicts shaken on undead (DC %V Will neg) and gives Dorn +2 vs. fear and enchantment 1/dy"',
+  'Born Of The Grave':
+    'Section=magic Note="R15\' May use <i>Deathwatch</i> effects at will"',
+  'Canny Strike':'Section=combat Note="+%Vd4 HP w/finesse weapon"',
+  'Caste Status':'Section=feature Note="Gains benefits of caste level"',
   'Clear-Eyed':
     'Section=feature,skill ' +
-    'Note="Half distance penalty for approaching creatures, x2 normal vision in dim light on plains",' +
-         '"Spot is a class skill"',
-  'Clever Fighting':'Section=combat Note="+%V finesse weapon damage"',
-  'Clouding':'Section=skill Note="Item half weight, thrown +10\' range"',
+    'Note=' +
+      '"Suffers half distance penalty for approaching creatures/x2 normal vision in dim light when on plains",' +
+      '"Spot is a class skill"',
+  'Clever Fighting':'Section=combat Note="+%V HP w/finesse weapon"',
+  'Clouding':
+    'Section=skill ' +
+    'Note="Item has half normal weight; thrown item has +10\' range"',
   'Craft Charm':
-    'Section=magic Note="Use Craft to create single-use magic item"',
+    'Section=magic Note="May use Craft to create a single-use magic item"',
   'Craft Greater Spell Talisman':
     'Section=magic ' +
     'Note="Talisman reduces spell energy cost of chosen school spells by 1"',
-  'Craft Rune Of Power':'Section=magic Note="Imbue rune w/any known spell"',
+  'Craft Rune Of Power':'Section=magic Note="May imbue rune w/any known spell"',
   'Craft Spell Talisman':
     'Section=magic Note="Reduces spell energy cost of chosen spell by 1"',
   'Defiant':
     'Section=save ' +
-    'Note="Trade 1 rd delayed effect of failed Fort or Will save for dbl effect"',
+    'Note="May delay effect of failed Fort or Will save 1 rd and suffer dbl effect"',
   'Devastating Mounted Assault':
-    'Section=combat Note="Full attack after mount move"',
+    'Section=combat Note="May make a full attack after mount moves"',
   'Drive It Deep':
     'Section=combat ' +
-    'Note="Trade up to -%V attack for equal damage bonus w/light or one-handed weapon"',
-  'Dwarvencraft':'Section=feature Note="Know %V Dwarvencraft techniques"',
+    'Note="May suffer up to -%V attack for equal damage bonus w/a light or one-handed weapon"',
+  'Dwarvencraft':'Section=feature Note="Knows %V Dwarvencraft techniques"',
   'Extra Gift':
-    'Section=feature Note="Use Mastery or Force Of Personality +4 times/dy"',
+    'Section=feature ' +
+    'Note="May use Mastery or Force Of Personality +4 times/dy"',
   'Fallen Courtier':
     'Section=feature,save,skill ' +
     'Note=' +
@@ -738,89 +1000,95 @@ LastAge.FEATURES_ADDED = {
       '"+2 Sense Motive (determine allegiance)/+2 to resist betraying Fallen Court"',
   'Fanatic':
     'Section=combat ' +
-    'Note="+1 attack, divine spell benefit when within 60\' of Shadow holy servant"',
+    'Note="+1 attack and divine spell benefits when within 60\' of a Shadow holy servant"',
   'Flexible Recovery':
-    'Section=magic Note="Recover 1 spell energy per hr rest, full after 6 hr"',
+    'Section=magic Note="Recovers 1 spell energy per hr rest, full after 6 hr"',
   'Friendly Agent':
     'Section=skill ' +
     'Note="+4 Diplomacy (convince allegiance)/+4 Sense Motive (determine allegiance)"',
   'Giant-Fighter':
-    'Section=combat Note="+4 AC, dbl critical range w/in 30\' vs. giants"',
+    'Section=combat Note="+4 AC and dbl critical range w/in 30\' vs. giants"',
   'Greater Draw On Earth Power':
-    'Section=magic Note="Draw %V spell energy/dy from nearby ancient monolith"',
+    'Section=magic ' +
+    'Note="May draw %V spell energy/dy from a nearby ancient monolith"',
   'Greater Masterwork':
     'Section=skill ' +
-    'Note="Weapon +2 attack and +1 damage; armor or shield -1 skill penalty, +1 max dex, -5% arcane spell failure, don or remove in half time, light shield use with ranged weapon; other items +4 DC"',
+    'Note="Weapon gains +2 attack and +1 damage; armor or shield gains -1 skill penalty, +1 maxmum Dexterity bonus, and -5% arcane spell failure and can be donned or removed in half normal time; light shield may be used with a ranged weapon; other item gains +4 DC"',
   'Hardy':
     'Section=feature,magic ' +
     'Note=' +
-      '"Functional on half food, sleep",' +
-      '"Regain half spell energy after 4 hrs rest"',
-  'Herbalist':'Section=magic Note="Create herbal concoctions"',
+      '"Remains functional on half food and sleep",' +
+      '"Regains half spell energy after 4 hrs rest"',
+  'Herbalist':'Section=magic Note="May create herbal concoctions"',
   'Huntsman':
     'Section=combat ' +
-    'Note="After 5 miles tracking, +1 attack and damage for 1 dy if exceed track DC by 5"',
+    'Note="After tracking 5 miles, gains +1 attack and damage for 1 dy if track attempt exceed DC by 5"',
   'Improved Flexible Recovery':
     'Section=magic ' +
-    'Note="DC 30 Concentration to recover %V spell energy per hr meditating"',
+    'Note="Successful DC 30 Concentration recovers %V spell energy per hr meditating"',
   'Improved Masterwork':
     'Section=skill ' +
-    'Note="Weapon +1 attack and damage; armor or shield -1 skill penalty and +1 max dex; other +2 DC"',
+    'Note="Weapon gains +1 attack and damage; armor or shield gains -1 skill penalty and +1 maximum Dexterity bonus; other item gains +2 DC"',
   'Improvised Weapon':
     'Section=combat ' +
-    'Note="No penalty for improvised weapon, -2 for non-proficient weapon"',
+    'Note="Suffers no penalty w/improvised weapons and a -2 attack penalty for non-proficient weapons"',
   'Inconspicuous':
     'Section=skill ' +
     'Note="+2 Bluff (shadow)/+2 Diplomacy (shadow)/+2 Hide (shadow)/+2 Sense Motive (shadow)"',
-  'Innate Magic':'Section=magic Note="%V %1 spells as at-will innate ability"',
-  'Knack For Charms':'Section=skill Note="+4 Craft for charm-making"',
+  'Innate Magic':
+    'Section=magic Note="May use %V %1 spells as at-will innate abilities"',
+  'Knack For Charms':'Section=skill Note="+4 Craft (charms)"',
   'Knife Thrower':
     'Section=combat ' +
-    'Note="R20\' +1 ranged attack w/racial knife, draw as free action (move action if hidden)"',
+    'Note="R20\' +1 ranged attack w/racial knife/May draw a knife as a free action (move action for a hidden knife)"',
   'Legate Of The Bluff':
     'Section=skill ' +
-    'Note="May make DC 10 Gather Information and Diplomacy checks to find district resident and call in a lesser favor 1/dy; DC 25 for a greater favor %{charismaModifier}/month"',
+    'Note="May make DC 10 Gather Information and Diplomacy checks to find a district resident and call in a lesser favor 1/dy; DC 25 for a greater favor %{charismaModifier}/month"',
   'Lesser Draw On Earth Power':
     'Section=magic ' +
-    'Note="Draw %V spell energy/dy from nearby menhir, dolmen, or tumuli"',
+    'Note="May draw %V spell energy/dy from a nearby menhir, dolmen, or tumuli"',
   'Living Talisman':
     'Section=magic Note="Chosen spell costs 1 fewer spell energy to cast"',
   'Lucky':'Section=save Note="+1 from luck charms and spells"',
   'Magic-Hardened':'Section=save Note="+2 vs. spells"',
   'Minor Draw On Earth Power':
-    'Section=magic Note="Draw %V spell energy/dy from nearby menhir or dolmen"',
+    'Section=magic ' +
+    'Note="May draw %V spell energy/dy from a nearby menhir or dolmen"',
   'Natural Healer':
     'Section=skill ' +
-    'Note="Heal raises patient to 1 HP, triple normal healing rate"',
+    'Note="Successful Heal raises patient to 1 HP and triples healing rate"',
   'Orc Slayer':
     'Section=combat,skill ' +
     'Note="+1 AC and melee damage vs. orcs and dworgs",' +
-         '"-4 Cha skills (orcs)"',
-  'Pikeman':'Section=combat Note="Receive charge as move action"',
+         '"-4 Charisma skills (orcs)"',
+  'Pikeman':'Section=combat Note="May receive a charge as a move action"',
   'Plains Warfare':
     'Section=combat,save,skill ' +
     'Note="+1 AC when mounted on plains",' +
          '"+1 Reflex when mounted on plains",' +
          '"+2 Listen and Spot vs. surprise when mounted on plains"',
   'Power Reservoir':
-    'Section=magic Note="Store +%V siphoned spell energy points"',
+    'Section=magic Note="Stores +%V siphoned spell energy points"',
   'Powerful Throw':
     'Section=combat ' +
-    'Note="Attacks w/focused weapon +10\' range and use Str instead of Dex"',
-  'Quickened Donning':'Section=feature Note="No penalty for hastened donning"',
+    'Note="Attacks w/focused weapon gain +10\' range and use Strength instead of Dexterity"',
+  'Quickened Donning':
+    'Section=feature Note="Suffers no penalty for hastened donning"',
   'Reinforcing':
     'Section=skill ' +
-    'Note="Item +5 HP; light weapon -1 attack, ranged weapon -2 attack"',
+    'Note="Item gains +5 HP; a light weapon suffers -1 attack and a ranged weapon -2"',
   'Resigned To Death':
-     'Section=save Note="+4 vs. fear, 1 step less intense on failure"',
-  'Ritual Magic':'Section=magic Note="Learn and lead magic rituals"',
+     'Section=save Note="+4 vs. fear, suffers 1 step less intense on failure"',
+  'Ritual Magic':'Section=magic Note="May learn and lead magic rituals"',
   'Sarcosan Pureblood':
     'Section=combat,skill ' +
     'Note="+2 AC (horseback)",' +
-         '"+%{level+charismaModifier} Diplomacy (horses), +2 Cha skills (horses and Sarcosans)"',
-  'Sense Nexus':'Section=magic Note="DC 15 Wis to sense nexus w/in 5 miles"',
+         '"+%{level+charismaModifier} Diplomacy (horses), +2 Charisma skills (horses and Sarcosans)"',
+  'Sense Nexus':
+    'Section=magic Note="Successful DC 15 Wisdom senses nexus w/in 5 miles"',
   'Sense Power':
-    'Section=magic Note="<i>Detect Magic</i> %V/dy, DC 13 Wis check w/in 20\'"',
+    'Section=magic ' +
+    'Note="May use <i>Detect Magic</i> %V/dy/Successful DC 13 Wisdom detects magical auras w/in 20\'"',
   'Shadow Cipher':
     'Section=skill ' +
     'Note="May take 10 or take 20 on Decipher Script (Shadow documents)"',
@@ -828,14 +1096,17 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="Sneak attack on Shadow servant inflicts +1d6 HP"',
   'Shield Mate':
     'Section=combat ' +
-    'Note="Adjacent allies +2 AC when self fighting defensively or using -2 Combat Expertise"',
-  'Sister Trained':'Section=magic Note="Use any metamagic feat for dbl cost"',
-  'Slow Learner':'Section=feature Note="Replace later with another feat"',
+    'Note="Adjacent allies gain +2 AC when self fighting defensively or using -2 Combat Expertise"',
+  'Sister Trained':
+    'Section=magic Note="May use any metamagic feat for dbl normal cost"',
+  'Slow Learner':
+    'Section=feature Note="May replace this later with another feat"',
   'Spell Knowledge':'Section=magic Note="+2 Channeler Spells"',
   'Spellcasting (%school)':
-    'Section=magic Note="Learn 1 Channeler %school spell; may learn more"',
+    'Section=magic Note="Knows 1 Channeler %school spell and may learn more"',
   'Stalwart':
-    'Section=save Note="Delay negative HP for 1 rd, dbl heal required"',
+    'Section=save ' +
+    'Note="May delay dropping to negative HP for 1 rd; requires dbl healing afterward"',
   'Stealthy Rider':
     'Section=companion ' +
     'Note="Mount may use rider\'s Hide and Move Silently ranks"',
@@ -844,92 +1115,99 @@ LastAge.FEATURES_ADDED = {
     'Note="+2 Bluff (disguise casting)/+2 Sleight Of Hand (disguise casting)"',
   'Swamp Taught':
     'Section=magic ' +
-    'Note="Spend 1 spell energy for +%V knowledge check from Whisper"',
+    'Note="May spend 1 spell energy for +%V knowledge check w/in Whisper"',
   'Tempering (Fireforged)':
     'Section=skill ' +
-    'Note="No item damage from fire, light/medium/heavy armor gives fire resistance 2/3/4"',
+    'Note="Item immune to fire; light/medium/heavy armor gives fire resistance 2/3/4"',
   'Tempering (Icebound)':
     'Section=skill ' +
-    'Note="No item damage from cold, light/medium/heavy armor gives cold resistance 2/3/4"',
+    'Note="Item immune to cold; light/medium/heavy armor gives cold resistance 2/3/4"',
   'Tempering (Quick-Cooled)':
-    'Section=skill Note="Increase item hardness 40%, decrease item HP 2x"',
+    'Section=skill ' +
+    'Note="Increases item hardness 40%; decreases item HP by half"',
   'Thick Skull':
     'Section=save ' +
-    'Note="DC 10 + damage save to retain 1 HP after hit would result in 0 or negative"',
+    'Note="Successful DC 10+damage Fort retains 1 HP after a hit that would result in 0 or negative HP"',
   'Touched By Magic':
     'Section=magic,save Note="+2 Spell Energy","-2 vs. spells"',
   'Trapsmith':
-    'Section=skill ' +
-    'Note="+2 Craft (Traps)/+2 Disable Device/+2 Search (find traps)"',
+    'Section=skill,skill ' +
+    'Note=' +
+      '"+2 Craft (Traps)/+2 Disable Device",' +
+      '"+2 Search (find traps)"',
   'Tunnel Fighting':
     'Section=combat ' +
-    'Note="No penalty to AC or attack w/one-handed weapon when squeezing"',
+    'Note="Suffers no penalty to AC or attack w/a one-handed weapon when squeezing"',
   'Urban Intrigue':
     'Section=skill ' +
-    'Note="Use Gather Information to counter investigation of self, allies"',
+    'Note="May use Gather Information to counter investigations of self and allies"',
   'Warrior Of Shadow':
-    'Section=combat Note="Trade Turn Undead use for %V rd of +%1 damage"',
+    'Section=combat Note="May spend 1 Turn Undead use for %V rd of +%1 damage"',
   'Well-Aimed Strike':
     'Section=combat Note="Canny Strike and Clever Fighting apply to all foes"',
   'Whirlwind Charge':
-    'Section=combat Note="Attack all adjacent foes after charge"',
+    'Section=combat Note="May attack all adjacent foes after a charge"',
   'Whispering Awareness':
-    'Section=feature Note="DC 12 Wis to hear Whispering Wood"',
-  'Willow Schooled':'Section=magic Note="Recreate legendary magic item"',
+    'Section=feature Note="Successful DC 12 Wisdom hears Whispering Wood"',
+  'Willow Schooled':'Section=magic Note="May recreate a legendary magic item"',
   'Witch Sight':
     'Section=magic ' +
-    'Note="Use water for divination focus in Erethor at half cost"',
+    'Note="May use water as a divination focus w/in Erethor at half cost"',
 
   // Class
   'Adapter':
-    'Section=skill Note="+%V skill points or %1 additional class skills"',
-  'Armor Class Bonus':'Section=combat Note="+%V AC"',
-  'Art Of Magic':'Section=magic Note="+1 character level for max spell level"',
-  'Astirax Companion':'Section=feature Note="Special bond/abilities"',
+    'Section=skill Note="Gains +%V skill points or %1 additional class skills"',
+  // Armor Class Bonus as SRD35
+  'Art Of Magic':
+    'Section=magic Note="+1 character level for maximum spell level"',
+  'Astirax Companion':'Section=feature Note="Special bond and abilities"',
   'Channeler Bonus Feats':'Section=feature Note="%V Channeler feats"',
   'Channeler Spellcasting':'Section=feature Note="%V Spellcasting feats"',
   'Confident Effect':'Section=combat Note="+4 Mastery checks"',
-  'Counterattack':'Section=combat Note="AOO on foe miss 1/rd"',
-  'Cover Ally':'Section=combat Note="Take hit for ally w/in 5\' 1/rd"',
+  'Counterattack':'Section=combat Note="May take AOO on a foe miss 1/rd"',
+  'Cover Ally':
+    'Section=combat Note="May suffer damage in place of an adjacent ally 1/rd"',
   'Danger Sense':
     'Section=combat,skill Note="+%V Initiative","+%V Listen/+%V Spot"',
   'Defender Abilities':
     'Section=combat ' +
-    'Note="Counterattack, Cover Ally, Defender Stunning Fist, Devastating Strike, Rapid Strike, Retaliatory Strike, Strike And Hold, or Weapon Trap %V/dy"',
+    'Note="May use Counterattack, Cover Ally, Defender Stunning Fist, Devastating Strike, Rapid Strike, Retaliatory Strike, Strike And Hold, or Weapon Trap %V/dy"',
   'Defender Stunning Fist':
-    'Section=combat Note="Struck foe stunned for 1 rd %V/dy (DC %1 Fort neg)"',
+    'Section=combat Note="May stun struck foe (DC %1 Fort neg) for 1 rd %V/dy"',
   'Defensive Mastery':'Section=save Note="+%V Fortitude/+%V Reflex/+%V Will"',
   'Devastating Strike':
-    'Section=combat Note="Bull Rush stunned opponent as free action w/no AOO"',
+    'Section=combat ' +
+    'Note="May Bull Rush stunned opponent as a free action w/no AOO"',
   'Divine Enhancement':
     'Section=combat ' +
-    'Note="Expend spell for spell level bonus to attack and damage %1/dy"',
+    'Note="May spend a spell slot to gain a spell level bonus to attack and damage %1/dy"',
   'Dodge Training':'Section=combat Note="+%V AC"',
   'Drain Vitality':
     'Section=magic ' +
-    'Note="<i>Inflict</i> spell restores equal amount of HP to self"',
+    'Note="Using an <i>Inflict</i> spell restores an equal amount of HP to self"',
   'Flurry Attack':
-    'Section=combat Note="Two-weapon off hand penalty reduced by %V"',
+    'Section=combat Note="Reduces two-weapon off hand penalty by %V"',
   'Foe Specialty':
     'Section=skill ' +
-    'Note="Take 10 on Knowledge checks about creature type chosen each day"',
+    'Note="May take 10 on Knowledge checks about a creature type chosen each day"',
   'Furious Grapple':
     'Section=combat ' +
-    'Note="Grapple attack roll during grapple for additional action 1/rd"',
+    'Note="Successful additional Grapple during grapple allows an additional action 1/rd"',
   'Grappling Training':
-    'Section=combat Note="Disarm, sunder, and trip attacks use grapple check"',
+    'Section=combat Note="May use Grapple to Disarm, Sunder, or Trip"',
   'Greater Confidence':
     'Section=magic ' +
-    'Note="<i>Break Enchantment</i> every 5 rd during Inspire Confidence"',
+    'Note="May use <i>Break Enchantment</i> effects every 5 rd during Inspire Confidence"',
   'Greater Fury':
-    'Section=magic Note="R30\' Ally gains 2d10 HP, +2 Attack, +1 Fortitude"',
+    'Section=magic ' +
+    'Note="R30\' May use Inspire Fury to give self or an ally +2d10 HP, +2 Attack, and +1 Fortitude"',
   'Hated Foe':
     'Section=combat ' +
-    'Note="Additional Hunter\'s Strike vs. Master Hunter creature"',
+    'Note="May make an additional Hunter\'s Strike vs. Master Hunter creature"',
   'Heightened Effect':
     'Section=combat Note="+2 level for Mastery checks"',
   'Hunted By The Shadow':
-    'Section=combat Note="No surprise by servant of shadow"',
+    'Section=combat Note="Never surprised by Shadow servants"',
   "Hunter's Strike":'Section=combat Note="x2 damage %V/dy"',
   'Improved Confidence':
     'Section=magic ' +
@@ -940,111 +1218,120 @@ LastAge.FEATURES_ADDED = {
     'Section=magic ' +
     'Note="+1 Initiative, Attack, and Damage during Inspire Fury"',
   'Improved Woodland Stride':
-    'Section=feature Note="Normal movement through enchanted terrain"',
+    'Section=feature Note="May move normally through enchanted terrain"',
   'Increase Morale':
     'Section=combat ' +
-    'Note="R60\' Allies dispel fear, +%V next attack and damage, and +%1 AC for 1 rd 1/dy"',
+    'Note="R60\' Allies recover from fear, gain +%V on next attack and damage, and gain +%1 AC for 1 rd 1/dy"',
   'Incredible Resilience':'Section=combat Note="+%V HP"',
   'Incredible Speed':'Section=ability Note="+%V Speed"',
   'Incredible Speed Or Resilience':'Section=feature Note="%V selections"',
   'Initiative Bonus':'Section=combat Note="+%V Initiative"',
   'Inspire Confidence':
     'Section=magic ' +
-    'Note="R60\' Allies +4 save vs. enchantment and fear for %V rd"',
+    'Note="R60\' Allies gain +4 save vs. enchantment and fear for %V rd"',
   'Inspire Fascination':
     'Section=magic ' +
-    'Note="R120\' Hold %V creatures spellbound for %2 rd (DC %1 Will neg)"',
+    'Note="R120\' May hold %V creatures spellbound for %2 rd (DC %1 Will neg)"',
   'Inspire Fury':
     'Section=magic ' +
-    'Note="R60\' Allies +1 Initiative, Attack, and Damage for conc + 5 rd"',
-  'Instinctive Response':'Section=combat Note="Re-roll Initiative"',
+    'Note="R60\' Allies gain +1 Initiative, attack, and damage for conc + 5 rd"',
+  'Instinctive Response':'Section=combat Note="May re-roll Initiative"',
   'Knowledge Specialty':
-    'Section=skill Note="+3 checks for Knowledge skill chosen each day"',
+    'Section=skill Note="+3 daily choice of Knowledge skill"',
   'Legate Martial Bonus Feats':'Section=feature Note="%V Legate Martial Feats"',
   'Literate':'Section=skill Note="+%V Language Count"',
   'Magecraft (Charismatic)':
-    'Section=magic Note="Learn 3 B0 and 1 B1 spells, %V Spell Energy"',
+    'Section=magic Note="Knows 3 B0 and 1 B1 spells/%V Spell Energy"',
   'Magecraft (Hermetic)':
-    'Section=magic Note="Learn 3 W0 and 1 W1 spells, %V Spell Energy"',
+    'Section=magic Note="Knows 3 W0 and 1 W1 spells/%V Spell Energy"',
   'Magecraft (Spiritual)':
-    'Section=magic Note="Learn 3 D0 and 1 D1 spells, %V Spell Energy"',
+    'Section=magic Note="Knows 3 D0 and 1 D1 spells/%V Spell Energy"',
   'Mass Suggestion':
-    'Section=magic Note="<i>Suggestion</i> to %V fascinated creatures"',
+    'Section=magic ' +
+    'Note="May use <i>Suggestion</i> effects on %V fascinated creatures"',
   'Master Hunter':
     'Section=combat,skill ' +
-    'Note="+2 or more damage vs. chosen creature type(s)",' +
-         '"+2 or more Bluff, Listen, Sense Motive, Spot and Survival vs. chosen creature type(s)"',
+    'Note="+2 or more damage vs. chosen creature type",' +
+         '"+2 or more Bluff, Listen, Sense Motive, Spot and Survival vs. chosen creature type"',
   'Masterful Strike':'Section=combat Note="%V Unarmed damage"',
   'Mastery Of Nature':
     'Section=combat ' +
-    'Note="Turn or rebuke %4d6+%1 HD of plants or animals of up to (d20+%2)/3 HD %3/dy"',
+    'Note="R60\' May turn or rebuke %4d6+%1 HD of plants or animals of up to (d20+%2)/3 HD %3/dy"',
   'Mastery Of Spirits':
     'Section=combat ' +
-    'Note="Exorcise %4d6+%1 HD of spirits of up to (d20+%2)/3 HD %3/dy"',
+    'Note="May exorcise %4d6+%1 HD of spirits of up to (d20+%2)/3 HD %3/dy"',
   'Mastery Of The Unnatural':
     'Section=combat ' +
-    'Note="Turn or rebuke %4d6+%1 HD of constructs or outsiders of up to (d20+%2)/3 HD %3/dy"',
+    'Note="May turn or rebuke %4d6+%1 HD of constructs or outsiders of up to (d20+%2)/3 HD %3/dy"',
   'Offensive Training':
     'Section=combat ' +
-    'Note="Stunned foe blind or deaf for %1 rd (DC %V Fort neg)"',
+    'Note="May blind or deafen stunned foe (DC %V Fort neg) for %1 rd"',
   'One With The Weapon':
     'Section=combat ' +
-    'Note="Masterful Strike, Precise Strike, or Stunning Fist w/chosen weapon"',
+    'Note="May use Masterful Strike, Precise Strike, or Stunning Fist w/chosen weapon"',
   'Overland Stride':
-    'Section=feature Note="Normal movement while using Survival"',
-  'Powerful Effect':'Section=combat Note="+1d6 mastery damage"',
-  'Precise Effect':'Section=combat Note="Choose type of creature to affect"',
-  'Precise Strike':
-    'Section=combat Note="Overcome %V points of foe damage reduction"',
-  'Quick Reference':'Section=skill Note="Reduce Lorebook scan penalty by %V"',
+    'Section=feature Note="May use Survival while moving at full speed"',
+  'Powerful Effect':'Section=combat Note="Mastery Of Nature, Spirits, or The Unnatural inflicts +1d6 HP"',
+  'Precise Effect':
+    'Section=combat ' +
+    'Note="May choose a type of creature to affect w/Master Of Two Worlds"',
+  'Precise Strike':'Section=combat Note="Ignores %V points of foe DR"',
+  'Quick Reference':'Section=skill Note="Reduces Lorebook scan penalty by %V"',
   'Quick Stride':'Section=ability Note="+%V Speed"',
   'Rapid Strike':
-    'Section=combat Note="Extra attack at highest attack bonus 1/rd"',
+    'Section=combat Note="May make an extra attack at highest attack bonus 1/rd"',
   'Retaliatory Strike':
-    'Section=combat Note="AOO vs. foe that strikes ally 1/rd"',
+    'Section=combat Note="May make AOO vs. a foe that strikes an ally 1/rd"',
   'Sense Dark Magic':
     'Section=feature,magic ' +
-    'Note="Scent vs. legate or outsider",' +
-         '"<i>Detect Magic</i> vs. legate or outsider at will"',
+    'Note=' +
+      '"May use Scent vs. a legate or outsider",' +
+      '"May use <i>Detect Magic</i> effects vs. a legate or outsider at will"',
   'Sense Dark Magic (Legate)':
-    'Section=magic Note="<i>Detect Magic</i> vs. legate at will"',
-  'Speak With Dead':'Section=magic Note="Cast <i>Speak With Dead</i> %V/dy"',
-  'Specific Effect':'Section=combat Note="Choose individuals to affect"',
-  'Speed Training':'Section=combat Note="Extra move action each rd"',
-  'Spell Specialty':'Section=skill Note="Each day choose a spell for +1 DC"',
+    'Section=magic ' +
+    'Note="May use <i>Detect Magic</i> effects vs. a legate at will"',
+  'Speak With Dead':
+    'Section=magic Note="May use <i>Speak With Dead</i> effects %V/dy"',
+  'Specific Effect':
+    'Section=combat ' +
+    'Note="May choose which individuals to affect w/Master Of Two Worlds"',
+  'Speed Training':'Section=combat Note="May make an extra move action each rd"',
+  'Spell Specialty':'Section=skill Note="+1 DC on spell chosen each day"',
   'Spontaneous Legate Spell':
-    'Section=magic Note="Cast <i>Inflict</i> in place of known spell"',
-  'Strike And Hold':'Section=combat Note="Extra Unarmed attack to grab foe"',
+    'Section=magic Note="May cast <i>Inflict</i> in place of known spell"',
+  'Strike And Hold':
+    'Section=combat Note="May make an extra unarmed attack to grab foe"',
   'Suggestion':
     'Section=magic ' +
-    'Note="<i>Suggestion</i> to 1 fascinated creature (DC %V Will neg)"',
+    'Note="May use <i>Suggestion</i> effects on 1 fascinated creature (DC %V Will neg)"',
   'Tactical Insight':
     'Section=combat ' +
-    'Note="R60\' Self and allies +%V attack and AC against chosen foe w/in 30\' after 1 rd of study"',
+    'Note="R60\' Self and allies gain +%V attack and AC against chosen foe w/in 30\' after 1 rd of study"',
   'Temple Dependency':
-    'Section=magic Note="Must participate at temple to receive spells"',
+    'Section=magic Note="Must participate at a temple to receive spells"',
   'Tradition Gift (Force Of Personality)':
     'Section=magic ' +
-    'Note="Inspire Confidence, Fascination, Fury, or Suggestion %V/dy"',
+    'Note="May use Inspire Confidence, Fascination, Fury, or Suggestion %V/dy"',
   'Tradition Gift (Lorebook)':
     'Section=skill ' +
-    'Note="+%V check for sought info after 1 min study; scan at -10"',
+    'Note="May attempt +%V Lorebook for sought info after 1 min study or scan at -10"',
   'Tradition Gift (Master Of Two Worlds)':
     'Section=magic ' +
-    'Note="Ability to control animals, plants, constructs and/or spirits"',
+    'Note="May control animals, plants, constructs, and/or spirits"',
   'True Aim':'Section=combat Note="x3 damage on Hunter\'s Strike"',
   // Turn Undead as heroic path
   'Universal Effect':
-    'Section=combat Note="Use multiple mastery powers simultaneously"',
+    'Section=combat ' +
+    'Note="May use multiple Master Of Two Worlds powers simultaneously"',
   'Weapon Trap':
     'Section=combat ' +
-    'Note="Attack to catch foe weapon for disarm, damage, AOO 1/rd"',
+    'Note="Successful attack to grab foe weapon allows choice of Disarm, damage, or AOO 1/rd"',
   'Wildlander Skill Mastery':
     'Section=feature,skill ' +
     'Note="+%V General Feat (Skill Focus)","Skill Mastery (%V skills)"',
   'Wildlander Traits':'Section=feature Note="%V selections"',
   'Wilderness Trapfinding':
-    'Section=skill Note="Search to find and Survival to remove DC 20+ traps"',
+    'Section=skill Note="May use Search to find and Survival to remove DC 20+ traps"',
   'Woodslore':
     'Section=skill Note="Automatic Search vs. trap or concealed door w/in 5\'"',
 
@@ -1337,7 +1624,7 @@ LastAge.FEATURES_ADDED = {
     'Note="Sneak attack after 3 rd of study causes death or paralysis 1d6+%1 rd (DC %V Fort neg)"',
   'Death Knell':
     'Section=magic ' +
-    'Note="Touched w/negative HP dies, self gain 1d8 HP, +2 Str, +1 caster level, 1d4 spell energy (%1 max) for 10*target HD min (DC %2 Will neg) %V/dy"',
+    'Note="Touched w/negative HP dies, self gain 1d8 HP, +2 Strength, +1 caster level, 1d4 spell energy (%1 max) for 10*target HD min (DC %2 Will neg) %V/dy"',
   'Deathwatch':
     'Section=magic ' +
     'Note="R30\' cone Reveals HP state of targets for %1 min %V/dy, 1 spell energy per additional use"',
@@ -1536,7 +1823,7 @@ LastAge.FEATURES_ADDED = {
   'Pale As Snow':
     'Section=combat,skill ' +
     'Note="Foe %V% miss chance in snow","+4 Hide and untrackable in snow"',
-  'Pale Heart':'Section=save Note="+%V vs Shadow minion spells and abilities"',
+  'Pale Heart':'Section=save Note="+%V vs. Shadow minion spells and abilities"',
   'Parables Of The Sorshef':
     'Section=skill ' +
     'Note="+%V Knowledge check wrt local notables, legendary items, and noteworthy places, additional +2 wrt Sorshef and Sarcosan history"',
@@ -1545,7 +1832,7 @@ LastAge.FEATURES_ADDED = {
   'Ranged Sneak Attack':'Section=combat Note="R%1\' +%Vd6 Sneak Attack"',
   'Rage Of Vengeance':
     'Section=combat ' +
-    'Note="Ally damage w/in 30\' by %V gives damage% chance of +2 Str, +2 Con, +1 Will, +1d6 damage, -2 AC, Cleave w/out limit against those foes while present"',
+    'Note="Ally damage w/in 30\' by %V gives damage% chance of +2 Strength, +2 Constitution, +1 Will, +1d6 damage, -2 AC, Cleave w/out limit against those foes while present"',
   'Razor Sharp':
     'Section=combat ' +
     'Note="Daily ritual keeps fighting knife keen (dbl threat range)"',
@@ -1678,7 +1965,7 @@ LastAge.FEATURES_ADDED = {
     'Section=magic,save ' +
     'Note=' +
       '"Additional automatic spells",' +
-      '"+%V vs weather and natural energy effects"',
+      '"+%V vs. weather and natural energy effects"',
   'What Was Will Be Again':
     'Section=combat ' +
     'Note="x2 attacks as full-round action w/%V 5\' steps 1/day"',
@@ -1705,6 +1992,165 @@ LastAge.FEATURES_ADDED = {
 };
 LastAge.FEATURES = Object.assign({}, SRD35.FEATURES, LastAge.FEATURES_ADDED);
 LastAge.GOODIES = Object.assign({}, SRD35.GOODIES);
+LastAge.HEROIC_PATHS = {
+  'None':'',
+  'Beast':
+    'Features=' +
+      '"1:Vicious Assault","2:Bestial Aura","5:Ability Boost",7:Rage,' +
+      '"12:Enhanced Bestial Aura" '+
+    'Selectables=' +
+      '"Low-Light Vision",Scent',
+  'Chanceborn':
+    'Features=' +
+      '"1:Luck Of Heroes",3:Unfettered,"4:Miss Chance",' +
+      '"6:Chanceborn Survivor","9:Take Ten","19:Take Twenty"',
+  'Charismatic':
+    'Features=' +
+      '"4:Inspiring Oration","5:Charisma Bonus",6:Leadership,' +
+      '"12:Natural Leader"',
+  'Dragonblooded':
+    'Features=' +
+      '"1:Bolster Spell","2:Bonus Spells","3:Bonus Spell Energy",' +
+      '"4:Quickened Counterspelling","6:Dragonblooded Improved Spellcasting",' +
+      '"9:Improved Spell Penetration","19:Frightful Presence"',
+  'Earthbonded':
+    'Features=' +
+      '"1:Extended Darkvision","3:Natural Armor",4:Stonecunning,' +
+      '"8:Improved Stonecunning",12:Tremorsense,16:Blindsense,' +
+      '20:Blindsight',
+  'Faithful':
+    'Features=' +
+      '"4:Turn Undead","5:Wisdom Bonus"',
+  'Fellhunter':
+    'Features=' +
+      '"1:Sense The Dead","2:Touch Of The Living","3:Ward Of Life",' +
+      '"5:Disrupting Attack"',
+  'Feyblooded':
+    'Features=' +
+      '"1:Low-Light Vision","7:Fey Vision" ' +
+    'Selectables=' +
+      '"Unearthly Grace (AC)","Unearthly Grace (Dexterity)",' +
+      '"Unearthly Grace (Fortitude)","Unearthly Grace (Reflex)",' +
+      '"Unearthly Grace (Will)"',
+  'Giantblooded':
+    'Features=' +
+      '"level < 10 ? 1:Size Features (Big)","2:Rock Throwing",' +
+      '"3:Intimidating Size","4:Fast Movement","5:Strength Bonus",' +
+      '"8:Fearsome Charge","10:Size Features (Large)",' +
+      '"20:Size Features (Extra Reach)"',
+  'Guardian':
+    'Features=' +
+      '"1:Inspire Valor","2:Detect Evil","3:Righteous Fury","4:Smite Evil",' +
+      '"5:Constitution Bonus",' +
+      '"charisma >= 12 ? 6:Lay On Hands","12:Aura Of Courage","16:Death Ward"',
+  'Healer':'',
+  'Ironborn':
+    'Features=' +
+      '"1:Incredible Resilience (Ironborn)","2:Fortitude Bonus",' +
+      '"3:Natural Armor","4:Improved Healing","5:Damage Reduction",' +
+      '"6:Elemental Resistance",9:Indefatigable,' +
+      '"14:Improved Healing (Ability Recovery)"',
+  'Jack-Of-All-Trades':
+    'Features=' +
+      '"1:Spell Choice","2:Spontaneous Spell","3:Skill Boost",' +
+      '"4:Ability Boost","5:Save Boost","7:Jack-Of-All-Trades Bonus Feats"',
+  'Mountainborn':
+    'Features=' +
+      '1:Mountaineer,3:Ambush,"4:Rallying Cry","5:Constitution Bonus",' +
+      '"8:Ambush (Extra Damage)","13:Ambush (Quick)","18:Ambush (Sniping)"',
+  'Naturefriend':
+    'Features=' +
+      '"1:Natural Bond","1:Wild Empathy","5:Animal Friend","10:Plant Friend",' +
+      '"15:Elemental Friend","20:One With Nature"',
+  'Northblooded':
+    'Features=' +
+      '1:Northborn,"1:Wild Empathy","2:Cold Resistance","3:Battle Cry",' +
+      '"4:Howling Winds","5:Constitution Bonus","6:Aura Of Warmth",' +
+      '"11:Improved Battle Cry","13:Frost Weapon","16:Cold Immunity",' +
+      '"18:Greater Frost Weapon"',
+  'Painless':
+    'Features=' +
+      '1:Painless,"2:Nonlethal Damage Reduction","3:Uncaring Mind",' +
+      '"4:Retributive Rage",5:Ferocity,"9:Last Stand",' +
+      '"10:Increased Damage Threshold"',
+  'Pureblood':
+    'Features=' +
+      '"1:Master Adventurer","2:Blood Of Kings","3:Pureblood Bonus Feats",' +
+      '"4:Skill Mastery","5:Ability Boost"',
+  'Quickened':
+    'Features=' +
+      '"1:Initiative Bonus","2:Armor Class Bonus","3:Fast Movement",' +
+      '"4:Burst Of Speed","5:Dexterity Bonus"',
+  'Seaborn':
+    'Features=' +
+      '"1:Dolphin\'s Grace","1:Natural Swimmer","2:Deep Lungs",' +
+      '"3:Aquatic Blindsight","4:Aquatic Ally","10:Aquatic Adaptation",' +
+      '"14:Cold Resistance","17:Aquatic Emissary","18:Assist Allies"',
+  'Seer':
+    'Features=' +
+      '"3:Seer Sight"',
+  'Shadow Walker':
+    'Features=' +
+      '1:Darkvision,"2:Shadow Veil","4:Shadow Jump","11:Hide In Plain Sight"',
+  'Speaker':
+    'Features=' +
+      '"2:Persuasive Speaker","3:Power Words","5:Charisma Bonus",' +
+      '"14:Language Savant"',
+  'Spellsoul':
+    'Features=' +
+      '"1:Untapped Potential","2:Metamagic Aura","3:Spellsoul Resistance",' +
+      '"4:Bonus Raw Energy"',
+  'Steelblooded':
+    'Features=' +
+      '"1:Steelblooded Bonus Feats","2:Offensive Tactics",' +
+      '"3:Strategic Blow","4:Skilled Warrior",14:Untouchable',
+  'Sunderborn':
+    'Features=' +
+      '"1:Detect Outsider","2:Blood Of The Planes","4:Planar Fury",' +
+      '"7:Spirit Sight (Darkness)","13:Spirit Sight (Magical Darkness)",' +
+      '"19:Spirit Sight (Invisible)"',
+  'Tactician':
+    'Features=' +
+      '"1:Aid Another (Move)","2:Combat Overview","3:Coordinated Initiative",' +
+      '"4:Coordinated Attack","5:Aid Another (Combat Bonus)",' +
+      '"13:Directed Attack","18:Telling Blow","20:Perfect Assault"',
+  'Warg':
+    'Features=' +
+      '"1:Wild Empathy","2:Animal Companion","5:Wild Shape",13:Ferocity,' +
+      '20:Blindsense ' +
+    'Selectables=' +
+      '"Low-Light Vision",Scent',
+  // Sorcery & Shadow
+  'Blessed':
+    'Features=' +
+      '"1:Body Of The Blessed","3:Aura Of Courage","5:Grant Protection",' +
+      '"6:Divine Grace","7:Mass Cure","8:Align Weapons","10:Bless Ground",' +
+      '"14:Sanctify"',
+  'Null':
+    'Features=' +
+      '"1:Sense Magic","2:Magic Resistance","3:Null Field",' +
+      '"5:Spell Resistance","9:Empowered Dispelling"',
+  'Shadowed':
+    'Features=' +
+      '"1:Body Of The Shadowed",1:Darkvision,"4:Coldness Of Shadow",' +
+      '"5:Gift Of Izrador","9:Turn Undead","14:Imposing Presence",' +
+      '"19:Shadowed Frightful Presence",' +
+      '"shadowedFeatures.Death Domain ? 1:Deadly Touch",' +
+      '"shadowedFeatures.Destruction Domain ? 1:Smite",' +
+      '"shadowedFeatures.Evil Domain ? 1:Empowered Evil",' +
+      '"shadowedFeatures.Magic Domain ? 1:Arcane Adept",' +
+      '"shadowedFeatures.War Domain ? 1:Weapon Of War" ' +
+    'Selectables=' +
+      '"5:Death Domain:Domain",' +
+      '"5:Destruction Domain:Domain",' +
+      '"5:Evil Domain:Domain",' +
+      '"5:Magic Domain:Domain",' +
+      '"5:War Domain:Domain"',
+  'Wiser':
+    'Features=' +
+      '"1:Wiser Skill Bonus","2:Wiser Bonus Feats","4:Insight",' +
+      '"5:Intelligence Bonus"'
+};
 LastAge.LANGUAGES = {
   'Black Tongue':
     '',
@@ -1734,363 +2180,6 @@ LastAge.LANGUAGES = {
     '',
   "Trader's Tongue":
     ''
-};
-LastAge.PATHS = {
-  'None':
-    'Group=None ' +
-    'Level=level',
-  'Beast':
-    'Group=Beast ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Vicious Assault","2:Bestial Aura","5:Ability Boost",7:Rage,' +
-      '"12:Enhanced Bestial Aura" '+
-    'Selectables=' +
-      '"Low-Light Vision",Scent ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Beast1:3=1;3=2,' + // Magic Fang 2/dy
-      'Beast2:4=1;9=2;14=3,' +
-      'Beast3:8=1,' +
-      'Beast4:19=1',
-  'Chanceborn':
-    'Group=Chanceborn ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Luck Of Heroes",3:Unfettered,"4:Miss Chance",' +
-      '"6:Chanceborn Survivor","9:Take Ten","19:Take Twenty" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Chanceborn0:2=1,' +
-      'Chanceborn1:7=1,' +
-      'Chanceborn2:12=1,' +
-      'Chanceborn3:17=1',
-  'Charismatic':
-    'Group=Charismatic ' +
-    'Level=level ' +
-    'Features=' +
-      '"4:Inspiring Oration","5:Charisma Bonus",6:Leadership,' +
-      '"12:Natural Leader" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Charismatic1:1=1;2=2;3=3,' +
-      'Charismatic2:7=1;8=2,' +
-      'Charismatic3:11=1;16=2,' +
-      'Charismatic4:13=1,' +
-      'Charismatic6:17=1',
-  'Dragonblooded':
-    'Group=Dragonblooded ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Bolster Spell","2:Bonus Spells","3:Bonus Spell Energy",' +
-      '"4:Quickened Counterspelling","6:Dragonblooded Improved Spellcasting",' +
-      '"9:Improved Spell Penetration","19:Frightful Presence"',
-  'Earthbonded':
-    'Group=Earthbonded ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Extended Darkvision","3:Natural Armor",4:Stonecunning,' +
-      '"8:Improved Stonecunning",12:Tremorsense,16:Blindsense,' +
-      '20:Blindsight ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Earthbonded1:2=1,' +
-      'Earthbonded2:5=1;6=2,' +
-      'Earthbonded3:11=1,' +
-      'Earthbonded4:7=1;9=2;14=3,' +
-      'Earthbonded5:13=1,' +
-      'Earthbonded6:15=1;17=2,' +
-      'Earthbonded8:19=1',
-  'Faithful':
-    'Group=Faithful ' +
-    'Level=level ' +
-    'Features=' +
-      '"4:Turn Undead","5:Wisdom Bonus" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Faithful1:1=1;2=2;3=3;7=4,' +
-      'Faithful2:6=1;8=2,' +
-      'Faithful3:11=1;12=2;13=3,' +
-      'Faithful4:16=1,' +
-      'Faithful5:17=1,' +
-      'Faithful8:18=1',
-  'Fellhunter':
-    'Group=Fellhunter ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Sense The Dead","2:Touch Of The Living","3:Ward Of Life",' +
-      '"5:Disrupting Attack" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Fellhunter1:1=1',
-  'Feyblooded':
-    'Group=Feyblooded ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Low-Light Vision","7:Fey Vision" ' +
-    'Selectables=' +
-      '"Unearthly Grace (AC)","Unearthly Grace (Dexterity)",' +
-      '"Unearthly Grace (Fortitude)","Unearthly Grace (Reflex)",' +
-      '"Unearthly Grace (Will)" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Feyblooded1:2=1;3=2;5=3,' +
-      'Feyblooded2:6=1,' +
-      'Feyblooded3:9=1;10=2;11=3,' +
-      'Feyblooded4:15=1,' +
-      'Feyblooded5:14=1;18=2,' +
-      'Feyblooded6:17=1',
-  'Giantblooded':
-    'Group=Giantblooded ' +
-    'Level=level ' +
-    'Features=' +
-      '"level < 10 ? 1:Size Features (Big)","2:Rock Throwing",' +
-      '"3:Intimidating Size","4:Fast Movement","5:Strength Bonus",' +
-      '"8:Fearsome Charge","10:Size Features (Large)",' +
-      '"20:Size Features (Extra Reach)"',
-  'Guardian':
-    'Group=Guardian ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Inspire Valor","2:Detect Evil","3:Righteous Fury","4:Smite Evil",' +
-      '"5:Constitution Bonus",' +
-      '"charisma >= 12 ? 6:Lay On Hands","12:Aura Of Courage","16:Death Ward" '+
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Guardian2:2=1',
-  'Healer':
-    'Group=Healer ' +
-    'Level=level ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Healer1:1=1;3=2,' + // Cure Light 2/dy
-      'Healer2:2=1;4=2;6=3,' + // Cure Moderate 2/dy
-      'Healer3:5=1;7=2;8=3;9=4;11=5,' + // Cure Serious 2/dy
-      'Healer4:10=1;12=2;14=3;17=4,' + // Cure Critical, Restoration 2/dy, 
-      'Healer5:13=1;15=2;20=3,' + // Mass Cure Light 2/dy
-      'Healer7:16=1;18=2,' + // Heal 2/dy
-      'Healer9:19=1',
-  'Ironborn':
-    'Group=Ironborn ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Ironborn Resilience","2:Fortitude Bonus","3:Natural Armor",' +
-      '"4:Improved Healing","5:Damage Reduction","6:Elemental Resistance",' +
-      '9:Indefatigable,"14:Improved Healing (Ability Recovery)"',
-  'Jack-Of-All-Trades':
-    'Group=Jack-Of-All-Trades ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Spell Choice","2:Spontaneous Spell","3:Skill Boost",' +
-      '"4:Ability Boost","5:Save Boost","7:Jack-Of-All-Trades Bonus Feats" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Jack0:1=1;2=2,' +
-      'Jack1:6=1;13=2,' +
-      'Jack2:10=1;19=2,' +
-      'Jack3:16=1',
-  'Mountainborn':
-    'Group=Mountainborn ' +
-    'Level=level ' +
-    'Features=' +
-      '1:Mountaineer,3:Ambush,"4:Rallying Cry","5:Constitution Bonus",' +
-      '"8:Ambush (Extra Damage)","13:Ambush (Quick)","18:Ambush (Sniping)" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Mountainborn1:2=1;7=2,' +
-      'Mountainborn3:12=1,' +
-      'Mountainborn6:17=1',
-  'Naturefriend':
-    'Group=Naturefriend ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Natural Bond","1:Wild Empathy","5:Animal Friend","10:Plant Friend",' +
-      '"15:Elemental Friend","20:One With Nature" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Naturefriend1:2=1;3=2;4=3;9=4,' +
-      'Naturefriend2:6=1;7=2;8=3,' +
-      'Naturefriend3:11=1;12=2;13=3;14=4;16=5,' +
-      'Naturefriend4:17=1;18=2;19=3,' +
-      'Naturefriend5:20=1',
-  'Northblooded':
-    'Group=Northblooded ' +
-    'Level=level ' +
-    'Features=' +
-      '1:Northborn,"1:Wild Empathy","2:Cold Resistance","3:Battle Cry",' +
-      '"4:Howling Winds","5:Constitution Bonus","6:Aura Of Warmth",' +
-      '"11:Improved Battle Cry","13:Frost Weapon","16:Cold Immunity",' +
-      '"18:Greater Frost Weapon"',
-  'Painless':
-    'Group=Painless ' +
-    'Level=level ' +
-    'Features=' +
-      '1:Painless,"2:Nonlethal Damage Reduction","3:Uncaring Mind",' +
-      '"4:Retributive Rage",5:Ferocity,"9:Last Stand",' +
-      '"10:Increased Damage Threshold"',
-  'Pureblood':
-    'Group=Pureblood ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Master Adventurer","2:Blood Of Kings","3:Pureblood Bonus Feats",' +
-      '"4:Skill Mastery","5:Ability Boost"',
-  'Quickened':
-    'Group=Quickened ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Initiative Bonus","2:Armor Class Bonus","3:Fast Movement",' +
-      '"4:Burst Of Speed","5:Dexterity Bonus"',
-  'Seaborn':
-    'Group=Seaborn ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Dolphin\'s Grace","1:Natural Swimmer","2:Deep Lungs",' +
-      '"3:Aquatic Blindsight","4:Aquatic Ally","10:Aquatic Adaptation",' +
-      '"14:Cold Resistance","17:Aquatic Emissary","18:Assist Allies" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Seaborn2:4=1;5=2;8=1;9=2,' +
-      'Seaborn3:8=2;12=0;13=1,' +
-      'Seaborn4:12=3;16=0,' +
-      'Seaborn5:16=4;20=0,' +
-      'Seaborn6:20=5',
-  'Seer':
-    'Group=Seer ' +
-    'Level=level ' +
-    'Features=' +
-      '"3:Seer Sight" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Seer1:1=1,' +
-      'Seer2:2=1;5=2,' +
-      'Seer3:4=1;8=2,' +
-      'Seer4:7=1;10=2;11=3;13=4,' +
-      'Seer5:16=1;19=2,' +
-      'Seer6:14=1;17=2,' +
-      'Seer7:20=1',
-  'Shadow Walker':
-    'Group="Shadow Walker" ' +
-    'Level=level ' +
-    'Features=' +
-      '1:Darkvision,"2:Shadow Veil","4:Shadow Jump","11:Hide In Plain Sight" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Shadow1:3=1;7=2;13=3;17=4,' + // Expeditious Retreat 2/dy; Undetectable Alignment 2/dy
-      'Shadow2:5=1;15=2,' + // Blur 2/dy
-      'Shadow3:9=1;19=2', // Displacement 2/dy
-  'Speaker':
-    'Group=Speaker ' +
-    'Level=level ' +
-    'Features=' +
-      '"2:Persuasive Speaker","3:Power Words","5:Charisma Bonus",' +
-      '"14:Language Savant" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Speaker1:1=1,' +
-      'Speaker2:4=1,' +
-      'Speaker3:8=1,' +
-      'Speaker4:12=1,' +
-      'Speaker8:18=1',
-  'Spellsoul':
-    'Group=Spellsoul ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Untapped Potential","2:Metamagic Aura","3:Spellsoul Resistance",' +
-      '"4:Bonus Raw Energy"',
-  'Steelblooded':
-    'Group=Steelblooded ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Steelblooded Bonus Feats","2:Offensive Tactics",' +
-      '"3:Strategic Blow","4:Skilled Warrior",14:Untouchable',
-  'Sunderborn':
-    'Group=Sunderborn ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Detect Outsider","2:Blood Of The Planes","4:Planar Fury",' +
-      '"7:Spirit Sight (Darkness)","13:Spirit Sight (Magical Darkness)",' +
-      '"19:Spirit Sight (Invisible)" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Sunderborn1:1=1;3=2,' +
-      'Sunderborn2:6=1,' +
-      'Sunderborn3:9=1,' +
-      'Sunderborn4:12=1,' +
-      'Sunderborn5:15=1,' +
-      'Sunderborn6:18=1',
-  'Tactician':
-    'Group=Tactician ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Aid Another (Move)","2:Combat Overview","3:Coordinated Initiative",' +
-      '"4:Coordinated Attack","5:Aid Another (Combat Bonus)",' +
-      '"13:Directed Attack","18:Telling Blow","20:Perfect Assault"',
-  'Warg':
-    'Group=Warg ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Wild Empathy","2:Animal Companion","5:Wild Shape",13:Ferocity,' +
-      '20:Blindsense ' +
-    'Selectables=' +
-      '"Low-Light Vision",Scent ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Warg1:4=1;7=2;12=3;17=4', // Charm Animal 2/dy; Speak w/Animals 2/dy
-  // Sorcery & Shadow
-  'Blessed':
-    'Group=Blessed ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Body Of The Blessed","3:Aura Of Courage","5:Grant Protection",' +
-      '"6:Divine Grace","7:Mass Cure","8:Align Weapons","10:Bless Ground",' +
-      '"14:Sanctify" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Blessed1:2=1;4=2;9=3;13=4;16=5;17=6,' + // Bless 4/dy; Protection From Evil 2/dy
-      'Blessed2:8=1;18=2,' +
-      'Blessed3:11=1,' +
-      'Blessed5:7=1;15=2;19=3,' +
-      'Blessed8:20=1',
-  'Null':
-    'Group=Null ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Sense Magic","2:Magic Resistance","3:Null Field",' +
-      '"5:Spell Resistance","9:Empowered Dispelling" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Null3:4=1;8=2;12=3,' + // Dispel Magic 3/dy
-      'Null4:17=1,' +
-      'Null6:13=1;18=2',
-  'Shadowed':
-    'Group=Shadowed ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Body Of The Shadowed",1:Darkvision,"4:Coldness Of Shadow",' +
-      '"5:Gift Of Izrador","9:Turn Undead","14:Imposing Presence",' +
-      '"19:Shadowed Frightful Presence",' +
-      '"shadowedFeatures.Death Domain ? 1:Deadly Touch",' +
-      '"shadowedFeatures.Destruction Domain ? 1:Smite",' +
-      '"shadowedFeatures.Evil Domain ? 1:Empowered Evil",' +
-      '"shadowedFeatures.Magic Domain ? 1:Arcane Adept",' +
-      '"shadowedFeatures.War Domain ? 1:Weapon Of War" ' +
-    'Selectables=' +
-      '"5:Death Domain:Domain",' +
-      '"5:Destruction Domain:Domain",' +
-      '"5:Evil Domain:Domain",' +
-      '"5:Magic Domain:Domain",' +
-      '"5:War Domain:Domain" ' +
-    'SpellAbility=charisma ' +
-    'SpellSlots=' +
-      'Shadowed1:3=1;6=2;7=3;11=4;12=5;16=6;17=7,' + // Bane 4/dy; Summon Monster I 3/dy
-      'Shadowed2:2=1;8=2;13=3;18=4,' + // Death Knell 3/dy
-      'Domain1:5=1;10=2;15=3;20=4',
-  'Wiser':
-    'Group=Wiser ' +
-    'Level=level ' +
-    'Features=' +
-      '"1:Wiser Skill Bonus","2:Wiser Bonus Feats","4:Insight",' +
-      '"5:Intelligence Bonus"'
 };
 LastAge.RACES = {
   'Agrarian Halfling':
@@ -2318,43 +2407,43 @@ LastAge.SPELLS_ADDED = {
   // question is probably moot.
   'Charm Repair':
     'School=Transmutation ' +
-    'Level=Ch3,Jack3 ' +
+    'Level=Ch3 ' +
     'Description="Restores touched minor or lesser charm"',
   'Detect Astirax':
     'School=Divination ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="R$RL\' Quarter circle gives self info on astiraxes for $L10 min"',
   'Detect Outsider':
     'School=Divination ' +
-    'Level=Sunderborn1 ' +
+    'Level=Sunderborn1 ' + // Only a Sunderborn spell
     'Description="R60\' Cone gives self info on outsiders for $L10 min"',
   'Disguise Ally':
     'School=Illusion ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="Willing touched changes appearance, gains +10 Disguise for $L10 min (Will disbelieve)"',
   'Disguise Weapon':
     'School=Illusion ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="$L touched weapons look benign for $L hr"',
   'Far Whisper':
     'School=Divination ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="Self gains +4 checks to hear Whispering Wood w/in $L10 miles for $L min"',
   'Greenshield':
     'School=Illusion ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="Touched surrounded by 30\' foliage sphere for $L hr"',
   'Halfling Burrow':
     'School=Transmutation ' +
-    'Level=Ch3,Jack3 ' +
+    'Level=Ch3 ' +
     'Description="Creates hidden hole that can hold $L small creatures for $L hr"',
   'Lifetrap':
     'School=Transmutation ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="R$RM\' Immobilizes undead in 50\' radius for $L rd and inflicts 3d6 HP (Ref half Speed, no damage)"',
   "Nature's Revelation":
     'School=Transmutation ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="R$RS\' Plants and animals in 30\' radius reveal hidden and invisible creatures"',
   'Nexus Fuel':
     'School=Necromancy ' +
@@ -2362,7 +2451,7 @@ LastAge.SPELLS_ADDED = {
     'Description="Sacrifice boosts nexus recovery rate 1 point/HD"',
   'Silver Blood':
     'School=Transmutation ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="Self blood damages astiraxes for 1 hr"',
   'Silver Storm':
     'School=Transmutation ' +
@@ -2370,16 +2459,16 @@ LastAge.SPELLS_ADDED = {
     'Description="R$RS\' Cone inflicts ${Lmin15}d4 HP (Ref half)"',
   'Silver Wind':
     'School=Conjuration ' +
-    'Level=Ch3,Jack3 ' +
+    'Level=Ch3 ' +
     'Description="R$RM\' Creatures in 10\' radius glow, suffer blindness (Will neg) and 1d6 HP/rd for $L rd"',
   'Stone Soup':
     'School=Transmutation ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="Stone buried 1 hr creates nourishing broth for $L creatures"',
   // Sorcery and Shadow
   'Arcane Impotence':
     'School=Abjuration ' +
-    'Level=Ch3,Jack3 ' +
+    'Level=Ch3 ' +
     'Description="R$RM\' Target Channeler must use $Ldiv2 Spell Energy to cast for next $L rd (Will $Ldiv2 rd)"',
   'Arcane Interference':
     'School=Abjuration ' +
@@ -2387,7 +2476,7 @@ LastAge.SPELLS_ADDED = {
     'Description="Spells require additional $Ldiv2 Spell Energy to affect 10\' radius of touched for $L min (Will neg)"',
   'Assist':
     'School=Enchantment ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="R$RS\' Targets in 30\' radius gain +2 skill checks for conc + 1 rd"',
   'Bestow Spell':
     'School=Evocation ' +
@@ -2395,7 +2484,7 @@ LastAge.SPELLS_ADDED = {
     'Description="Touched conveys spell"',
   'Bleed Power':
     'School="Greater Evocation" ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="Successful attacks on self inflict 1d6 HP each on up to $L attackers for $L10 min"',
   'Boil Blood':
     'School=Transmutation ' +
@@ -2403,27 +2492,27 @@ LastAge.SPELLS_ADDED = {
     'Description="R$RS\' Target suffers 1d8 HP for $L rd or conc + 1 rd (Fort half)"',
   'Burial':
     'School=Transmutation ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="R$RS\' Earth swallows target non-living, unattended object"',
   'Channel Might':
     'School=Evocation ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="Next successful melee attack by touched w/in $L rd inflicts maximum+$L HP"',
   'Confer Power':
     'School=Transmutation ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="Transfers self spell energy to adjacent casters for $L rd or conc + 1 rd"',
   'Fell Forbiddance':
     'School=Abjuration ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="R$RS\' $L 5\' sq area becomes impassible to undead for $L min (Will neg for intelligent)"',
   'Fey Fire':
     'School=Conjuration ' +
-    'Level=Ch2,D2,Jack2 ' +
+    'Level=Ch2,D2 ' +
     'Description="Touched point contains invisible 5\' radius fire that warms and heals 1 HP and all nonlethal damage for $L hr"',
   'Fey Hearth':
     'School=Abjuration ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="R$RS\' Creatures in 30\' radius of target fire gain +2 Will saves and heal 1.5 x level HP for as long as fire lasts"',
   'Greater Questing Bird':
     'School=Conjuration ' +
@@ -2431,7 +2520,7 @@ LastAge.SPELLS_ADDED = {
     'Description="Self temporarily learns up to 6th level spell"',
   'Inspiration':
     'School=Enchantment ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="Touched gains +10 on one Craft check"',
   'Inspirational Might':
     'School=Enchantment ' +
@@ -2439,15 +2528,15 @@ LastAge.SPELLS_ADDED = {
     'Description="R$RS\' 4 allies in 30\' radius gain +2d10 temporary HP, +2 attack, +1 Fort for $Ldiv2 rd"',
   'Joyful Speech':
     'School=Enchantment ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="R$RM\' Listeners in 15\' radius improve reaction to self, are unshaken, and gain +4 vs. fear for $L rd"',
   'Know The Name':
     'School=Divination ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="Self learns name(s) of touched (Will neg)"',
   'Lie':
     'School=Transmutation ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="Self gains +10 Bluff on next lie"',
   'Magic Circle Against Shadow':
     'School=Abjuration ' +
@@ -2455,27 +2544,27 @@ LastAge.SPELLS_ADDED = {
     'Description="10\' radius from touched gives +2 AC and saves, suppresses mental control, bars contact and entry (SR neg) by Shadow agents for $L10 min"',
   'Memorial':
     'School=Divination ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="Touched $L10\' radius replays previous or next $L min to next passerby"',
   'Pacify':
     'School=Abjuration ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="R$RS\' ${lvl//3+1} targets in 15\' radius cannot attack for $Ldiv2 rd (Will neg)"',
   "Peasant's Rest":
     'School=Conjuration ' +
-    'Level=Ch1,D1,Jack1 ' +
+    'Level=Ch1,D1 ' +
     'Description="Touched gets 8 hrs rest from 4 hrs sleep"',
   'Phantom Edge':
     'School=Transmutation ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="Touched weapon attacks as different type for $L min (Will neg)"',
   'Questing Bird':
     'School=Conjuration ' +
-    'Level=Ch3,Jack3 ' +
+    'Level=Ch3 ' +
     'Description="Self temporarily learns up to 3rd level spell"',
   "Scryer's Mark":
     'School=Divination ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="Touched suffers -4 Will vs. self scrying (Will neg)"',
   'Speak With Fell':
     'School=Necromancy ' +
@@ -2483,19 +2572,19 @@ LastAge.SPELLS_ADDED = {
     'Description="R$RS\' Compels 3 correct answers from target fell w/in $L min (Will neg)"',
   'Weather':
     'School=Conjuration ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="R$RM\' Creates 60\' radius, 30\' high cylinder of rain or snow"',
   'Willful Stand':
     'School=Abjuration ' +
-    'Level=Ch3,Jack3 ' +
+    'Level=Ch3 ' +
     'Description="R$RM\' Target cannot attack self or enter threat space for conc (Will neg)"',
   'Withering Speech':
     'School=Enchantment ' +
-    'Level=Ch2,Jack2 ' +
+    'Level=Ch2 ' +
     'Description="R$RS\' Target suffers -1 Wisdom and Charisma/min for conc"',
   'Woeful Speech':
     'School=Enchantment ' +
-    'Level=Ch1,Jack1 ' +
+    'Level=Ch1 ' +
     'Description="R$RM\' Listeners in 30\' radius become shaken, suffer -2 vs. fear for $L rd (Will neg)"',
 
   // Honor & Shadow
@@ -2518,79 +2607,72 @@ LastAge.SPELLS_ADDED = {
 
 };
 LastAge.SPELLS_LEVELS = {
-  'Acid Arrow':'Ch2,Jack2',
+  'Acid Arrow':'Ch2',
   'Acid Fog':'Ch6',
-  'Aid':'Chanceborn2,Charismatic2,Faithful2',
   'Air Walk':'Ch4',
-  'Alarm':'Ch1,Jack1,Seer1',
-  'Align Weapon':'Blessed2',
-  'Alter Self':'Ch2,Jack2',
+  'Alarm':'Ch1',
+  'Alter Self':'Ch2',
   'Analyze Dweomer':'Ch6',
   'Animal Growth':'Ch5',
-  'Animal Messenger':'Ch2,Jack2,Naturefriend2',
+  'Animal Messenger':'Ch2',
   'Animal Shapes':'Ch8',
-  'Animal Trance':'Ch2,Jack2',
+  'Animal Trance':'Ch2',
   'Animate Dead':'Ch4',
   'Animate Objects':'Ch6',
   'Animate Plants':'Ch7',
-  'Animate Rope':'Ch1,Jack1',
+  'Animate Rope':'Ch1',
   'Antilife Shell':'Ch6',
-  'Antimagic Field':'Ch6,Null6',
+  'Antimagic Field':'Ch6',
   'Antipathy':'Ch8',
   'Antiplant Shell':'Ch4',
-  'Arcane Eye':'Ch4,Seer4',
-  'Arcane Lock':'Ch2,Jack2',
-  'Arcane Sight':'Ch3,Jack3',
+  'Arcane Eye':'Ch4',
+  'Arcane Lock':'Ch2',
+  'Arcane Sight':'Ch3',
   'Astral Projection':'Ch9',
   'Atonement':'Ch5',
-  'Augury':'Seer2',
   'Awaken':'Ch5',
   'Baleful Polymorph':'Ch5',
-  'Bane':'Shadowed1',
   'Banishment':'Ch7',
-  'Barkskin':'Ch2,Jack2',
-  'Bear\'s Endurance':'Beast2,Ch2,Jack2',
+  'Barkskin':'Ch2',
+  "Bear's Endurance":'Ch2',
   'Bestow Curse':'Ch4',
   'Binding':'Ch8',
   'Black Tentacles':'Ch4',
-  'Bless Weapon':'Faithful1',
-  'Bless':'Blessed1,Faithful1',
+  'Bless Weapon':'Faithful1', // Need to list because we don't import P spells
   'Blight':'Ch4',
-  'Blindness/Deafness':'Ch2,Jack2',
-  'Blur':'Ch2,Jack2,Seaborn2,Shadow2',
+  'Blindness/Deafness':'Ch2',
+  'Blur':'Ch2',
   'Break Enchantment':'Ch5',
-  'Bull\'s Strength':'Beast2,Ch2,Jack2',
-  'Burning Hands':'Ch1,Jack1',
-  'Call Lightning':'Ch3,Jack3,Naturefriend3',
+  "Bull's Strength":'Ch2',
+  'Burning Hands':'Ch1',
+  'Call Lightning':'Ch3',
   'Call Lightning Storm':'Ch5',
-  'Calm Animals':'Ch1,Jack1,Naturefriend1',
-  'Cat\'s Grace':'Beast2,Ch2,Jack2',
-  'Cause Fear':'Ch1,Jack1',
+  'Calm Animals':'Ch1',
+  "Cat's Grace":'Ch2',
+  'Cause Fear':'Ch1',
   'Chain Lightning':'Ch6',
   'Changestaff':'Ch7',
-  'Charm Animal':'Ch1,Jack1,Warg1',
-  'Charm Monster':'Ch4,Charismatic4',
-  'Charm Person':'Ch1,Charismatic1,Jack1',
-  'Chill Metal':'Ch2,Jack2',
-  'Chill Touch':'Ch1,Jack1',
+  'Charm Animal':'Ch1',
+  'Charm Monster':'Ch4',
+  'Charm Person':'Ch1',
+  'Chill Metal':'Ch2',
+  'Chill Touch':'Ch1',
   'Circle Of Death':'Ch6',
-  'Clairaudience/Clairvoyance':'Ch3,Jack3,Seer3',
+  'Clairaudience/Clairvoyance':'Ch3',
   'Clenched Fist':'Ch8',
   'Clone':'Ch8',
   'Cloudkill':'Ch5',
-  'Color Spray':'Ch1,Jack1',
-  'Command Plants':'Ch4,Naturefriend4',
-  'Command Undead':'Ch2,Jack2',
-  'Commune With Nature':'Ch5,Naturefriend5',
-  'Commune':'Seer5',
-  'Comprehend Languages':'Ch1,Jack1,Speaker1',
+  'Color Spray':'Ch1',
+  'Command Plants':'Ch4',
+  'Command Undead':'Ch2',
+  'Commune With Nature':'Ch5',
+  'Comprehend Languages':'Ch1',
   'Cone Of Cold':'Ch5',
   'Confusion':'Ch4',
-  'Consecrate':'Faithful2',
   'Contact Other Plane':'Ch5',
-  'Contagion':'Ch3,Jack3',
+  'Contagion':'Ch3',
   'Contingency':'Ch6',
-  'Continual Flame':'Ch2,Jack2',
+  'Continual Flame':'Ch2',
   'Control Plants':'Ch8',
   'Control Undead':'Ch7',
   'Control Water':'Ch4',
@@ -2598,374 +2680,364 @@ LastAge.SPELLS_LEVELS = {
   'Control Winds':'Ch5',
   'Create Greater Undead':'Ch8',
   'Create Undead':'Ch6',
-  'Create Water':'Ch0,Jack0',
+  'Create Water':'Ch0',
   'Creeping Doom':'Ch7',
   'Crushing Despair':'Ch4',
   'Crushing Hand':'Ch9',
-  'Cure Critical Wounds':'Ch4,Healer4',
-  'Cure Light Wounds':'Ch1,Healer1,Jack1',
-  'Cure Minor Wounds':'Ch0,Jack0',
-  'Cure Moderate Wounds':'Ch2,Healer2,Jack2',
-  'Cure Serious Wounds':'Ch3,Healer3,Jack3',
-  'Dancing Lights':'Ch0,Jack0',
-  'Darkness':'Ch2,Jack2',
-  'Darkvision':'Ch2,Jack2',
-  'Daylight':'Ch3,Faithful3,Jack3',
-  'Daze':'Ch0,Jack0',
-  'Daze Monster':'Ch2,Charismatic2,Jack2',
-  'Death Knell':'Death2,Shadowed2',
+  'Cure Critical Wounds':'Ch4',
+  'Cure Light Wounds':'Ch1',
+  'Cure Minor Wounds':'Ch0',
+  'Cure Moderate Wounds':'Ch2',
+  'Cure Serious Wounds':'Ch3',
+  'Dancing Lights':'Ch0',
+  'Darkness':'Ch2',
+  'Darkvision':'Ch2',
+  'Daylight':'Ch3',
+  'Daze':'Ch0',
+  'Daze Monster':'Ch2',
+  'Death Knell':'Death2',
   'Death Ward':'Ch5',
-  'Deep Slumber':'Ch3,Feyblooded3,Jack3',
-  'Delay Poison':'Ch2,Jack2',
+  'Deep Slumber':'Ch3',
+  'Delay Poison':'Ch2',
   'Delayed Blast Fireball':'Ch7',
   'Demand':'Ch8',
-  'Detect Animals Or Plants':'Ch1,Jack1',
-  'Detect Chaos':'Ch2,Jack2',
-  'Detect Evil':'Ch2,Guardian2,Jack2,Shadowed2',
-  'Detect Good':'Ch2,Jack2,Shadowed2',
-  'Detect Law':'Ch2,Jack2',
-  'Detect Magic':'Ch0,Jack0',
-  'Detect Poison':'Ch0,Jack0',
+  'Detect Animals Or Plants':'Ch1',
+  'Detect Chaos':'Ch2',
+  'Detect Evil':'Ch2',
+  'Detect Good':'Ch2',
+  'Detect Law':'Ch2',
+  'Detect Magic':'Ch0',
+  'Detect Poison':'Ch0',
   'Detect Scrying':'Ch4',
-  'Detect Secret Doors':'Ch1,Jack1',
-  'Detect Snares And Pits':'Ch1,Jack1',
-  'Detect Thoughts':'Ch2,Jack2',
-  'Detect Undead':'Ch1,Fellhunter1,Jack1',
+  'Detect Secret Doors':'Ch1',
+  'Detect Snares And Pits':'Ch1',
+  'Detect Thoughts':'Ch2',
+  'Detect Undead':'Ch1',
   'Dimensional Anchor':'Ch4',
-  'Diminish Plants':'Ch3,Jack3',
+  'Diminish Plants':'Ch3',
   'Discern Location':'Ch8',
-  'Disguise Self':'Ch1,Feyblooded1,Jack1',
+  'Disguise Self':'Ch1',
   'Disintegrate':'Ch6',
   'Dismissal':'Ch5',
-  'Dispel Evil':'Blessed5,Faithful5',
-  'Dispel Magic':'Ch3,Jack3,Null3',
-  'Displacement':'Ch3,Jack3,Seaborn3,Shadow3',
-  'Disrupt Undead':'Ch0,Jack0',
-  'Divination':'Seer4',
-  'Divine Favor':'Faithful1',
-  'Dominate Animal':'Ch3,Jack3,Naturefriend3',
+  'Dispel Magic':'Ch3',
+  'Displacement':'Ch3',
+  'Disrupt Undead':'Ch0',
+  'Dominate Animal':'Ch3',
   'Dominate Monster':'Ch9',
   'Dominate Person':'Ch5',
   'Dream':'Ch5',
-  'Eagle\'s Splendor':'Ch2,Jack2',
-  'Earthquake':'Ch8,Earthbonded8',
+  "Eagle's Splendor":'Ch2',
+  'Earthquake':'Ch8',
   'Elemental Swarm':'Ch9',
-  'Endure Elements':'Ch1,Jack1,Mountainborn1',
+  'Endure Elements':'Ch1',
   'Energy Drain':'Ch9',
   'Enervation':'Ch4',
-  'Enlarge Person':'Ch1,Jack1',
-  'Entangle':'Ch1,Jack1,Naturefriend1',
-  'Erase':'Ch1,Jack1',
-  'Expeditious Retreat':'Ch1,Jack1,Shadow1',
-  'Explosive Runes':'Ch3,Jack3',
+  'Enlarge Person':'Ch1',
+  'Entangle':'Ch1',
+  'Erase':'Ch1',
+  'Expeditious Retreat':'Ch1',
+  'Explosive Runes':'Ch3',
   'Eyebite':'Ch6',
   'Fabricate':'Ch5',
-  'Faerie Fire':'Ch1,Jack1',
-  'False Life':'Ch2,Jack2',
-  'False Vision':'Ch5,Feyblooded5',
+  'Faerie Fire':'Ch1',
+  'False Life':'Ch2',
+  'False Vision':'Ch5',
   'Fear':'Ch4',
-  'Feather Fall':'Ch1,Jack1',
+  'Feather Fall':'Ch1',
   'Feeblemind':'Ch5',
-  'Find The Path':'Ch6,Seer6',
+  'Find The Path':'Ch6',
   'Finger Of Death':'Ch7',
   'Fire Seeds':'Ch6',
   'Fire Shield':'Ch4',
   'Fire Storm':'Ch7',
   'Fire Trap':'Ch4',
-  'Fireball':'Ch3,Jack3',
-  'Flame Arrow':'Ch3,Jack3',
-  'Flame Blade':'Ch2,Jack2',
+  'Fireball':'Ch3',
+  'Flame Arrow':'Ch3',
+  'Flame Blade':'Ch2',
   'Flame Strike':'Ch4',
-  'Flaming Sphere':'Ch2,Jack2',
-  'Flare':'Ch0,Jack0',
+  'Flaming Sphere':'Ch2',
+  'Flare':'Ch0',
   'Flesh To Stone':'Ch6',
-  'Floating Disk':'Ch1,Jack1',
-  'Fly':'Ch3,Jack3',
-  'Fog Cloud':'Ch2,Jack2,Seaborn2',
+  'Floating Disk':'Ch1',
+  'Fly':'Ch3',
+  'Fog Cloud':'Ch2',
   'Forcecage':'Ch7',
   'Forceful Hand':'Ch6',
   'Foresight':'Ch9',
-  'Fox\'s Cunning':'Ch2,Jack2',
-  'Freedom Of Movement':'Beast4,Ch4',
+  "Fox's Cunning":'Ch2',
+  'Freedom Of Movement':'Ch4',
   'Freedom':'Ch9',
   'Freezing Sphere':'Ch6',
-  'Gaseous Form':'Ch3,Jack3',
+  'Gaseous Form':'Ch3',
   'Gate':'Ch9',
   'Geas/Quest':'Ch6',
-  'Gentle Repose':'Ch3,Jack3',
-  'Ghost Sound':'Ch0,Jack0',
-  'Ghoul Touch':'Ch2,Jack2',
+  'Gentle Repose':'Ch3',
+  'Ghost Sound':'Ch0',
+  'Ghoul Touch':'Ch2',
   'Giant Vermin':'Ch4',
-  'Glibness':'Ch3,Feyblooded3,Jack3',
-  'Glitterdust':'Ch2,Jack2',
+  'Glibness':'Ch3',
+  'Glitterdust':'Ch2',
   'Globe Of Invulnerability':'Ch6',
-  'Good Hope':'Ch3,Jack3',
-  'Goodberry':'Ch1,Jack1',
+  'Good Hope':'Ch3',
+  'Goodberry':'Ch1',
   'Grasping Hand':'Ch7',
-  'Grease':'Ch1,Jack1',
+  'Grease':'Ch1',
   'Greater Arcane Sight':'Ch7',
-  'Greater Dispel Magic':'Ch6,Null6',
-  'Greater Heroism':'Ch6,Charismatic6',
+  'Greater Dispel Magic':'Ch6',
+  'Greater Heroism':'Ch6',
   'Greater Invisibility':'Ch4',
-  'Greater Magic Fang':'Beast3,Ch3,Jack3',
-  'Greater Magic Weapon':'Ch3,Jack3',
+  'Greater Magic Fang':'Ch3',
+  'Greater Magic Weapon':'Ch3',
   'Greater Planar Binding':'Ch8',
   'Greater Prying Eyes':'Ch8',
   'Greater Restoration':'Ch7',
   'Greater Scrying':'Ch7',
   'Greater Shadow Conjuration':'Ch7',
   'Greater Shadow Evocation':'Ch8',
-  'Greater Shout':'Ch8,Speaker8',
+  'Greater Shout':'Ch8',
   'Guards And Wards':'Ch6',
-  'Guidance':'Ch0,Jack0',
-  'Gust Of Wind':'Ch2,Jack2,Naturefriend2',
+  'Guidance':'Ch0',
+  'Gust Of Wind':'Ch2',
   'Hallow':'Ch5',
   'Hallucinatory Terrain':'Ch4',
-  'Halt Undead':'Ch3,Jack3',
-  'Haste':'Ch3,Jack3',
-  'Heal':'Ch7,Healer7',
-  'Heat Metal':'Ch2,Jack2',
-  'Heroes\' Feast':'Ch6',
-  'Heroism':'Ch3,Charismatic3,Jack3',
-  'Hide From Animals':'Ch1,Jack1',
-  'Hideous Laughter':'Ch2,Jack2',
-  'Hold Animal':'Ch2,Jack2',
+  'Halt Undead':'Ch3',
+  'Haste':'Ch3',
+  'Heal':'Ch7',
+  'Heat Metal':'Ch2',
+  "Heroes' Feast":'Ch6',
+  'Heroism':'Ch3',
+  'Hide From Animals':'Ch1',
+  'Hideous Laughter':'Ch2',
+  'Hold Animal':'Ch2',
   'Hold Monster':'Ch5',
-  'Hold Person':'Ch3,Jack3',
-  'Hold Portal':'Ch1,Earthbonded1,Jack1',
-  'Holy Aura':'Blessed8,Faithful8',
-  'Holy Smite':'Faithful4',
+  'Hold Person':'Ch3',
+  'Hold Portal':'Ch1',
+  'Holy Smite':'Faithful4', // Need to list because we don't import P spells
   'Horrid Wilting':'Ch8',
-  'Hypnotic Pattern':'Ch2,Jack2',
-  'Hypnotism':'Ch1,Charismatic1,Jack1',
-  'Ice Storm':'Ch4,Naturefriend4',
-  'Identify':'Ch1,Jack1',
-  'Illusory Script':'Ch3,Jack3',
+  'Hypnotic Pattern':'Ch2',
+  'Hypnotism':'Ch1',
+  'Ice Storm':'Ch4',
+  'Identify':'Ch1',
+  'Illusory Script':'Ch3',
   'Illusory Wall':'Ch4',
   'Imprisonment':'Ch9',
   'Incendiary Cloud':'Ch8',
   'Insanity':'Ch7',
   'Insect Plague':'Ch5',
   'Interposing Hand':'Ch5',
-  'Invisibility':'Ch2,Feyblooded2,Jack2',
-  'Invisibility Sphere':'Ch3,Jack3',
+  'Invisibility':'Ch2',
+  'Invisibility Sphere':'Ch3',
   'Iron Body':'Ch8',
   'Ironwood':'Ch6',
   'Irresistible Dance':'Ch8',
-  'Jump':'Ch1,Jack1',
-  'Keen Edge':'Ch3,Jack3',
-  'Knock':'Ch2,Jack2',
-  'Know Direction':'Ch0,Jack0',
-  'Legend Lore':'Ch6,Seer6',
-  'Lesser Confusion':'Ch1,Jack1',
+  'Jump':'Ch1',
+  'Keen Edge':'Ch3',
+  'Knock':'Ch2',
+  'Know Direction':'Ch0',
+  'Legend Lore':'Ch6',
+  'Lesser Confusion':'Ch1',
   'Lesser Geas':'Ch4',
   'Lesser Globe Of Invulnerability':'Ch4',
   'Lesser Planar Binding':'Ch5',
-  'Lesser Restoration':'Ch2,Healer2,Jack2',
-  'Levitate':'Ch2,Jack2',
-  'Light':'Ch0,Jack0',
-  'Lightning Bolt':'Ch3,Jack3',
+  'Lesser Restoration':'Ch2',
+  'Levitate':'Ch2',
+  'Light':'Ch0',
+  'Lightning Bolt':'Ch3',
   'Liveoak':'Ch6',
-  'Locate Creature':'Ch4,Seer4',
-  'Locate Object':'Ch2,Jack2,Seer2',
-  'Lullaby':'Ch0,Jack0',
-  'Mage Armor':'Ch1,Jack1',
-  'Mage Hand':'Ch0,Jack0',
-  'Mage\'s Disjunction':'Ch9',
-  'Mage\'s Faithful Hound':'Ch5',
-  'Mage\'s Lucubration':'Ch6',
-  'Mage\'s Private Sanctum':'Ch5',
-  'Mage\'s Sword':'Ch7',
-  'Magic Aura':'Ch1,Feyblooded1,Jack1',
-  'Magic Circle Against Chaos':'Ch3,Jack3',
-  'Magic Circle Against Evil':'Blessed3,Ch3,Faithful3,Jack3',
-  'Magic Circle Against Good':'Ch3,Jack3',
-  'Magic Circle Against Law':'Ch3,Jack3',
-  'Magic Fang':'Beast1,Ch1,Jack1',
+  'Locate Creature':'Ch4',
+  'Locate Object':'Ch2',
+  'Lullaby':'Ch0',
+  'Mage Armor':'Ch1',
+  'Mage Hand':'Ch0',
+  "Mage's Disjunction":'Ch9',
+  "Mage's Faithful Hound":'Ch5',
+  "Mage's Lucubration":'Ch6',
+  "Mage's Private Sanctum":'Ch5',
+  "Mage's Sword":'Ch7',
+  'Magic Aura':'Ch1',
+  'Magic Circle Against Chaos':'Ch3',
+  'Magic Circle Against Evil':'Ch3',
+  'Magic Circle Against Good':'Ch3',
+  'Magic Circle Against Law':'Ch3',
+  'Magic Fang':'Ch1',
   'Magic Jar':'Ch5',
-  'Magic Missile':'Ch1,Jack1',
-  'Magic Mouth':'Ch2,Jack2',
-  'Magic Stone':'Ch1,Jack1',
-  'Magic Weapon':'Ch1,Jack1',
+  'Magic Missile':'Ch1',
+  'Magic Mouth':'Ch2',
+  'Magic Stone':'Ch1',
+  'Magic Weapon':'Ch1',
   'Major Creation':'Ch5',
-  'Major Image':'Ch3,Jack3',
-  'Make Whole':'Earthbonded2',
-  'Mass Bear\'s Endurance':'Ch6',
-  'Mass Bull\'s Strength':'Ch6',
-  'Mass Cat\'s Grace':'Ch6',
+  'Major Image':'Ch3',
+  "Mass Bear's Endurance":'Ch6',
+  "Mass Bull's Strength":'Ch6',
+  "Mass Cat's Grace":'Ch6',
   'Mass Charm Monster':'Ch8',
   'Mass Cure Critical Wounds':'Ch8',
-  'Mass Cure Light Wounds':'Blessed5,Ch5,Healer5',
+  'Mass Cure Light Wounds':'Ch5',
   'Mass Cure Moderate Wounds':'Ch6',
   'Mass Cure Serious Wounds':'Ch7',
-  'Mass Eagle\'s Splendor':'Ch6',
+  "Mass Eagle's Splendor":'Ch6',
   'Mass Enlarge Person':'Ch4',
-  'Mass Fox\'s Cunning':'Ch6',
+  "Mass Fox's Cunning":'Ch6',
   'Mass Hold Monster':'Ch9',
   'Mass Hold Person':'Ch7',
   'Mass Invisibility':'Ch7',
-  'Mass Owl\'s Wisdom':'Ch6',
+  "Mass Owl's Wisdom":'Ch6',
   'Mass Reduce Person':'Ch4',
   'Mass Suggestion':'Ch6',
-  'Meld Into Stone':'Ch3,Earthbonded3,Jack3,Mountainborn3',
-  'Mending':'Ch0,Jack0',
-  'Message':'Ch0,Jack0',
+  'Meld Into Stone':'Ch3',
+  'Mending':'Ch0',
+  'Message':'Ch0',
   'Meteor Swarm':'Ch9',
   'Mind Blank':'Ch8',
   'Mind Fog':'Ch5',
   'Minor Creation':'Ch4',
-  'Minor Image':'Ch2,Jack2',
+  'Minor Image':'Ch2',
   'Mirage Arcana':'Ch5',
-  'Mirror Image':'Ch2,Jack2',
-  'Misdirection':'Ch2,Jack2',
-  'Mislead':'Ch6,Feyblooded6',
+  'Mirror Image':'Ch2',
+  'Misdirection':'Ch2',
+  'Mislead':'Ch6',
   'Mnemonic Enhancer':'Ch4',
   'Modify Memory':'Ch4',
   'Moment Of Prescience':'Ch8',
-  'Mount':'Ch1,Jack1',
-  'Move Earth':'Ch6,Earthbonded6',
-  'Neutralize Poison':'Ch3,Healer3,Jack3',
+  'Mount':'Ch1',
+  'Move Earth':'Ch6',
+  'Neutralize Poison':'Ch3',
   'Nightmare':'Ch5',
-  'Nondetection':'Ch3,Feyblooded3,Jack3',
-  'Obscure Object':'Ch2,Jack2',
-  'Obscuring Mist':'Ch1,Jack1,Naturefriend1',
-  'Open/Close':'Ch0,Jack0',
+  'Nondetection':'Ch3',
+  'Obscure Object':'Ch2',
+  'Obscuring Mist':'Ch1',
+  'Open/Close':'Ch0',
   'Overland Flight':'Ch5',
-  'Owl\'s Wisdom':'Ch2,Jack2',
-  'Pass Without Trace':'Ch1,Jack1,Mountainborn1',
+  "Owl's Wisdom":'Ch2',
+  'Pass Without Trace':'Ch1',
   'Passwall':'Ch5',
   'Permanent Image':'Ch6',
   'Persistent Image':'Ch5',
   'Phantasmal Killer':'Ch4',
-  'Phantom Steed':'Ch3,Jack3',
-  'Phantom Trap':'Ch2,Jack2',
+  'Phantom Steed':'Ch3',
+  'Phantom Trap':'Ch2',
   'Planar Binding':'Ch6',
-  'Plant Growth':'Ch3,Jack3',
-  'Poison':'Ch3,Jack3',
+  'Plant Growth':'Ch3',
+  'Poison':'Ch3',
   'Polar Ray':'Ch8',
   'Polymorph':'Ch4',
   'Polymorph Any Object':'Ch8',
   'Power Word Blind':'Ch7',
   'Power Word Kill':'Ch9',
   'Power Word Stun':'Ch8',
-  'Prayer':'Chanceborn3,Faithful3',
   'Prestidigitation':'Ch0',
   'Prismatic Sphere':'Ch9',
   'Prismatic Spray':'Ch7',
   'Prismatic Wall':'Ch8',
-  'Produce Flame':'Ch1,Jack1',
+  'Produce Flame':'Ch1',
   'Programmed Image':'Ch6',
   'Project Image':'Ch7',
-  'Protection From Arrows':'Ch2,Jack2',
-  'Protection From Chaos':'Ch1,Jack1',
-  'Protection From Energy':'Ch3,Jack3',
-  'Protection From Evil':'Blessed1,Ch1,Faithful1,Jack1',
-  'Protection From Good':'Ch1,Jack1',
-  'Protection From Law':'Ch1,Jack1',
+  'Protection From Arrows':'Ch2',
+  'Protection From Chaos':'Ch1',
+  'Protection From Energy':'Ch3',
+  'Protection From Evil':'Ch1',
+  'Protection From Good':'Ch1',
+  'Protection From Law':'Ch1',
   'Protection From Spells':'Ch8',
-  'Prying Eyes':'Ch5,Seer5',
-  'Pyrotechnics':'Ch2,Jack2',
+  'Prying Eyes':'Ch5',
+  'Pyrotechnics':'Ch2',
   'Quench':'Ch3',
-  'Rage':'Ch3,Jack3',
-  'Rainbow Pattern':'Ch4,Feyblooded4',
-  'Raise Dead':'Healer5',
-  'Ray Of Enfeeblement':'Ch1,Jack1',
-  'Ray Of Exhaustion':'Ch3,Jack3',
-  'Ray Of Frost':'Ch0,Jack0',
-  'Read Magic':'Ch0,Jack0',
-  'Reduce Animal':'Ch2,Jack2',
-  'Reduce Person':'Ch1,Jack1',
-  'Regenerate':'Ch9,Healer9',
+  'Rage':'Ch3',
+  'Rainbow Pattern':'Ch4',
+  'Ray Of Enfeeblement':'Ch1',
+  'Ray Of Exhaustion':'Ch3',
+  'Ray Of Frost':'Ch0',
+  'Read Magic':'Ch0',
+  'Reduce Animal':'Ch2',
+  'Reduce Person':'Ch1',
+  'Regenerate':'Ch9',
   'Reincarnate':'Ch4',
-  'Remove Blindness/Deafness':'Healer3',
   'Remove Curse':'Ch4',
-  'Remove Disease':'Ch3,Healer3,Jack3',
-  'Remove Fear':'Ch1,Charismatic1,Jack1',
+  'Remove Disease':'Ch3',
+  'Remove Fear':'Ch1',
   'Repel Metal Or Stone':'Ch8',
   'Repel Vermin':'Ch4',
   'Repel Wood':'Ch6',
   'Repulsion':'Ch6',
   'Resilient Sphere':'Ch4',
-  'Resist Energy':'Ch2,Jack2',
-  'Resistance':'Ch0,Chanceborn0,Jack0',
-  'Restoration':'Ch4,Healer4',
+  'Resist Energy':'Ch2',
+  'Resistance':'Ch0',
+  'Restoration':'Ch4',
   'Reverse Gravity':'Ch7',
   'Rusting Grasp':'Ch4',
-  'Scare':'Ch2,Jack2',
+  'Scare':'Ch2',
   'Scintillating Pattern':'Ch8',
-  'Scorching Ray':'Ch2,Jack2',
+  'Scorching Ray':'Ch2',
   'Screen':'Ch8',
-  'Scrying':'Ch4,Seer4',
-  'Sculpt Sound':'Ch3,Jack3',
+  'Scrying':'Ch4',
+  'Sculpt Sound':'Ch3',
   'Secret Chest':'Ch5',
-  'Secret Page':'Ch3,Jack3',
+  'Secret Page':'Ch3',
   'Secure Shelter':'Ch4',
-  'See Invisibility':'Ch2,Jack2',
-  'Seeming':'Ch5,Feyblooded5',
+  'See Invisibility':'Ch2',
+  'Seeming':'Ch5',
   'Sending':'Ch5',
-  'Sepia Snake Sigil':'Ch3,Jack3',
+  'Sepia Snake Sigil':'Ch3',
   'Sequester':'Ch7',
   'Shades':'Ch9',
   'Shadow Conjuration':'Ch4',
   'Shadow Evocation':'Ch5',
   'Shambler':'Ch9',
   'Shapechange':'Ch9',
-  'Shatter':'Ch2,Jack2',
-  'Shield':'Ch1,Jack1',
-  'Shillelagh':'Ch1,Jack1',
-  'Shocking Grasp':'Ch1,Jack1',
-  'Shout':'Ch4,Speaker4',
-  'Shrink Item':'Ch3,Jack3',
-  'Silence':'Ch2,Jack2',
-  'Silent Image':'Ch1,Jack1',
+  'Shatter':'Ch2',
+  'Shield':'Ch1',
+  'Shillelagh':'Ch1',
+  'Shocking Grasp':'Ch1',
+  'Shout':'Ch4',
+  'Shrink Item':'Ch3',
+  'Silence':'Ch2',
+  'Silent Image':'Ch1',
   'Simulacrum':'Ch7',
-  'Sleep':'Ch1,Jack1',
-  'Sleet Storm':'Ch3,Jack3,Naturefriend3',
-  'Slow':'Ch3,Jack3',
-  'Snare':'Ch3,Jack3',
-  'Soften Earth And Stone':'Ch2,Earthbonded2,Jack2',
+  'Sleep':'Ch1',
+  'Sleet Storm':'Ch3',
+  'Slow':'Ch3',
+  'Snare':'Ch3',
+  'Soften Earth And Stone':'Ch2',
   'Solid Fog':'Ch4',
   'Song Of Discord':'Ch5',
   'Soul Bind':'Ch9',
-  'Sound Burst':'Ch2,Jack2',
-  'Speak With Animals':'Ch1,Jack1,Naturefriend1,Warg1',
-  'Speak With Dead':'Seer3',
-  'Speak With Plants':'Ch3,Jack3,Naturefriend3',
-  'Spectral Hand':'Ch2,Jack2',
-  'Spell Immunity':'Null4',
+  'Sound Burst':'Ch2',
+  'Speak With Animals':'Ch1',
+  'Speak With Plants':'Ch3',
+  'Spectral Hand':'Ch2',
   'Spell Turning':'Ch7',
   'Spellstaff':'Ch6',
-  'Spider Climb':'Ch2,Jack2',
-  'Spike Growth':'Ch3,Jack3,Naturefriend3',
-  'Spike Stones':'Ch4,Earthbonded4',
+  'Spider Climb':'Ch2',
+  'Spike Growth':'Ch3',
+  'Spike Stones':'Ch4',
   'Statue':'Ch7',
-  'Stinking Cloud':'Ch3,Jack3',
-  'Stone Shape':'Ch4,Earthbonded4',
-  'Stone Tell':'Ch6,Earthbonded6,Mountainborn6',
+  'Stinking Cloud':'Ch3',
+  'Stone Shape':'Ch4',
+  'Stone Tell':'Ch6',
   'Stone To Flesh':'Ch6',
-  'Stoneskin':'Ch4,Earthbonded4',
+  'Stoneskin':'Ch4',
   'Storm Of Vengeance':'Ch9',
-  'Suggestion':'Ch3,Charismatic3,Jack3',
-  'Summon Instrument':'Ch0,Jack0',
-  'Summon Monster I':'Ch1,Jack1,Shadowed1,Sunderborn1',
-  'Summon Monster II':'Ch2,Jack2,Sunderborn2',
-  'Summon Monster III':'Ch3,Jack3,Sunderborn3',
-  'Summon Monster IV':'Ch4,Sunderborn4',
+  'Suggestion':'Ch3',
+  'Summon Instrument':'Ch0',
+  'Summon Monster I':'Ch1',
+  'Summon Monster II':'Ch2',
+  'Summon Monster III':'Ch3',
+  'Summon Monster IV':'Ch4',
   'Summon Monster IX':'Ch9',
-  'Summon Monster V':'Ch5,Sunderborn5',
-  'Summon Monster VI':'Ch6,Sunderborn6',
+  'Summon Monster V':'Ch5',
+  'Summon Monster VI':'Ch6',
   'Summon Monster VII':'Ch7',
   'Summon Monster VIII':'Ch8',
-  'Summon Nature\'s Ally I':'Ch1,Jack1',
-  'Summon Nature\'s Ally II':'Ch2,Jack2,Seaborn2',
-  'Summon Nature\'s Ally III':'Ch3,Jack3,Seaborn3',
-  'Summon Nature\'s Ally IV':'Ch4,Naturefriend4,Seaborn4',
-  'Summon Nature\'s Ally IX':'Ch9',
-  'Summon Nature\'s Ally V':'Ch5,Seaborn5',
-  'Summon Nature\'s Ally VI':'Ch6,Seaborn6',
-  'Summon Nature\'s Ally VII':'Ch7',
-  'Summon Nature\'s Ally VIII':'Ch8',
-  'Summon Swarm':'Ch2,Jack2',
+  "Summon Nature's Ally I":'Ch1',
+  "Summon Nature's Ally II":'Ch2',
+  "Summon Nature's Ally III":'Ch3',
+  "Summon Nature's Ally IV":'Ch4',
+  "Summon Nature's Ally IX":'Ch9',
+  "Summon Nature's Ally V":'Ch5',
+  "Summon Nature's Ally VI":'Ch6',
+  "Summon Nature's Ally VII":'Ch7',
+  "Summon Nature's Ally VIII":'Ch8',
+  'Summon Swarm':'Ch2',
   'Sunbeam':'Ch7',
   'Sunburst':'Ch8',
   'Symbol Of Death':'Ch8',
@@ -2983,27 +3055,27 @@ LastAge.SPELLS_LEVELS = {
   'Telepathic Bond':'Ch5',
   'Temporal Stasis':'Ch8',
   'Time Stop':'Ch9',
-  'Tiny Hut':'Ch3,Jack3',
-  'Tongues':'Ch3,Jack3,Speaker3',
-  'Touch Of Fatigue':'Ch0,Jack0',
-  'Touch Of Idiocy':'Ch2,Jack2',
+  'Tiny Hut':'Ch3',
+  'Tongues':'Ch3',
+  'Touch Of Fatigue':'Ch0',
+  'Touch Of Idiocy':'Ch2',
   'Transformation':'Ch6',
   'Transmute Metal To Wood':'Ch7',
   'Transmute Mud To Rock':'Ch5',
-  'Transmute Rock To Mud':'Ch5,Earthbonded5',
+  'Transmute Rock To Mud':'Ch5',
   'Trap The Soul':'Ch8',
-  'Tree Shape':'Ch2,Jack2',
+  'Tree Shape':'Ch2',
   'True Seeing':'Ch6',
-  'True Strike':'Ch1,Chanceborn1,Jack1',
+  'True Strike':'Ch1',
   'Undeath To Death':'Ch6',
-  'Undetectable Alignment':'Ch1,Jack1,Shadow1',
+  'Undetectable Alignment':'Ch1',
   'Unhallow':'Ch5',
-  'Unseen Servant':'Ch1,Jack1',
-  'Vampiric Touch':'Ch3,Jack3',
+  'Unseen Servant':'Ch1',
+  'Vampiric Touch':'Ch3',
   'Veil':'Ch6',
-  'Ventriloquism':'Ch1,Feyblooded1,Jack1',
-  'Virtue':'Ch0,Jack0',
-  'Vision':'Ch7,Seer7',
+  'Ventriloquism':'Ch1',
+  'Virtue':'Ch0',
+  'Vision':'Ch7',
   'Wail Of The Banshee':'Ch9',
   'Wall Of Fire':'Ch4',
   'Wall Of Force':'Ch5',
@@ -3011,18 +3083,18 @@ LastAge.SPELLS_LEVELS = {
   'Wall Of Iron':'Ch6',
   'Wall Of Stone':'Ch5',
   'Wall Of Thorns':'Ch5',
-  'Warp Wood':'Ch2,Jack2',
-  'Water Breathing':'Ch3,Jack3',
-  'Water Walk':'Ch3,Jack3',
+  'Warp Wood':'Ch2',
+  'Water Breathing':'Ch3',
+  'Water Walk':'Ch3',
   'Waves Of Exhaustion':'Ch7',
   'Waves Of Fatigue':'Ch5',
-  'Web':'Ch2,Jack2',
+  'Web':'Ch2',
   'Weird':'Ch9',
   'Whirlwind':'Ch8',
-  'Whispering Wind':'Ch2,Jack2,Speaker2',
+  'Whispering Wind':'Ch2',
   'Wind Walk':'Ch6',
-  'Wind Wall':'Ch3,Jack3',
-  'Wood Shape':'Ch2,Jack2,Naturefriend2',
+  'Wind Wall':'Ch3',
+  'Wood Shape':'Ch2',
   'Zone Of Silence':'Ch4'
 };
 LastAge.SPELLS_SCHOOLS = {
@@ -3742,6 +3814,7 @@ LastAge.PRESTIGE_CLASSES = {
       '"1:Evil Domain:Domain",' +
       '"1:Magic Domain:Domain",' +
       '"1:War Domain:Domain" ' +
+    'SpellAbility=wisdom ' +
     'SpellSlots=' +
       'Domain1:1=1,' +
       'Domain2:3=1,' +
@@ -3934,6 +4007,8 @@ LastAge.identityRules = function(
   rules, alignments, classes, deities, paths, races, prestigeClasses, npcClasses
 ) {
 
+  QuilvynUtils.checkAttrTable(paths, ['Features', 'Selectables']);
+
   if(rules.basePlugin == window.Pathfinder)
     Pathfinder.identityRules(
       rules, alignments, classes, deities, {}, paths, races,
@@ -3960,6 +4035,13 @@ LastAge.identityRules = function(
     );
   }
 
+  // Cancel base rules' calculation of Ch spell DC based on abilities;
+  // LastAge bases them on the Magecraft feat.
+  rules.defineRule('spellDifficultyClass.Ch',
+    'charismaModifier', '=', 'null',
+    'intelligenceModifier', '=', 'null',
+    'wisdomModifier', '=', 'null'
+  );
   // Remove Deity from editor and sheet; add heroic path and spell energy
   rules.defineEditorElement('deity');
   rules.defineSheetElement('Deity');
@@ -4000,6 +4082,8 @@ LastAge.talentRules = function(
  * related to selecting that choice.
  */
 LastAge.choiceRules = function(rules, type, name, attrs) {
+  if(type == 'Path')
+    type = 'Heroic Path';
   if(type == 'Alignment')
     LastAge.alignmentRules(rules, name);
   else if(type == 'Animal Companion')
@@ -4086,19 +4170,15 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'Section'),
       QuilvynUtils.getAttrValueArray(attrs, 'Note')
     );
-  else if(type == 'Language')
-    LastAge.languageRules(rules, name);
-  else if(type == 'Path') {
-    LastAge.pathRules(rules, name,
-      QuilvynUtils.getAttrValue(attrs, 'Group'),
-      QuilvynUtils.getAttrValue(attrs, 'Level'),
+  else if(type == 'Heroic Path') {
+    LastAge.heroicPathRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Features'),
-      QuilvynUtils.getAttrValueArray(attrs, 'Selectables'),
-      QuilvynUtils.getAttrValue(attrs, 'SpellAbility'),
-      QuilvynUtils.getAttrValueArray(attrs, 'SpellSlots')
+      QuilvynUtils.getAttrValueArray(attrs, 'Selectables')
     );
-    LastAge.pathRulesExtra(rules, name);
-  } else if(type == 'Race') {
+    LastAge.heroicPathRulesExtra(rules, name);
+  } else if(type == 'Language')
+    LastAge.languageRules(rules, name);
+  else if(type == 'Race') {
     LastAge.raceRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Require'),
       QuilvynUtils.getAttrValueArray(attrs, 'Features'),
@@ -4174,11 +4254,8 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
     console.log('Unknown choice type "' + type + '"');
     return;
   }
-  if(type != 'Feature' && (type != 'Path' || name.indexOf('Domain') < 0) &&
-     type != 'Spell') {
+  if(type != 'Spell') {
     type = type == 'Class' ? 'levels' :
-    type = type == 'Deity' ? 'deities' :
-    type = type == 'Path' ? 'heroicPaths' :
     (type.substring(0,1).toLowerCase() + type.substring(1).replaceAll(' ', '') + 's');
     rules.addChoice(type, name, attrs);
   }
@@ -4890,6 +4967,8 @@ LastAge.classRulesExtra = function(rules, name) {
       'dexterityModifier', '=', 'source > 0 ? source : 1'
     );
     rules.defineRule('companionMasterLevel', classLevel, '+=', null);
+    rules.defineRule
+      ('featureNotes.blindsense', "features.Wogren's Sight", '=', '30');
     rules.defineRule('featureNotes.mountedAbility',
       classLevel, '=', 'Math.floor(source / 2)'
     );
@@ -5609,6 +5688,13 @@ LastAge.featRulesExtra = function(rules, name) {
       ability + 'Modifier', '=', '10 + source'
     );
     rules.defineRule('spells.Prestidigitation(Ch0 Evoc)', note, '=', '1');
+    rules.defineRule('magecraftDC.' + tradition,
+      'features.' + name, '?', null,
+      ability + 'Modifier', '=', '10 + source'
+    );
+    rules.defineRule('spellDifficultyClass.Ch',
+      'magecraftDC.' + tradition, '^=', null
+    );
   } else if((matchInfo = name.match(/^Spellcasting\s\((.*)\)/)) != null) {
     let note = 'magicNotes.spellcasting('+matchInfo[1].replaceAll(' ', '')+')';
     rules.defineRule('channelerSpells', note, '+=', '1');
@@ -5737,39 +5823,28 @@ LastAge.languageRules = function(rules, name) {
 };
 
 /*
- * Defines in #rules# the rules associated with path #name#, which is a
- * selection for characters belonging to #group# and tracks path level via
- * #levelAttr#. The path grants the features listed in #features#. If the path
- * grants spell slots, #spellAbility# names the ability for computing spell
- * difficulty class, and #spellSlots# lists the number of spells per level per
- * day granted.
+ * Defines in #rules# the rules associated with heroic path #name#. The heroic
+ * path grants the features listed in #features# and #selectables#.
  */
-LastAge.pathRules = function(
-  rules, name, group, levelAttr, features, selectables, spellAbility,
-  spellSlots
-) {
+LastAge.heroicPathRules = function(rules, name, features, selectables) {
   if(rules.basePlugin == window.Pathfinder)
     rules.basePlugin.pathRules(
-      rules, name, group, levelAttr, features, selectables, [], [],
-      spellAbility, spellSlots
+      rules, name, name, 'level', features, selectables, [], [], null, []
     );
   else
     rules.basePlugin.pathRules(
-      rules, name, group, levelAttr, features, selectables, spellAbility,
-      spellSlots
+      rules, name, name, 'level', features, selectables, null, []
     );
-  if(!name.match(/Domain/)) {
-    rules.defineRule('features.' + name, 'heroicPath', '=', 'source == "' + name + '" ? 1 : null');
-    rules.defineSheetElement(name + ' Features', 'Feats+', null, '; ');
-    rules.defineChoice('extras', name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') + 'Features');
-  }
+  rules.defineRule('features.' + name, 'heroicPath', '=', 'source == "' + name + '" ? 1 : null');
+  rules.defineSheetElement(name + ' Features', 'Feats+', null, '; ');
+  rules.defineChoice('extras', name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') + 'Features');
 };
 
 /*
  * Defines in #rules# the rules associated with heroic path #name# that cannot
  * be derived directly from the abilities passed to heroicPathRules.
  */
-LastAge.pathRulesExtra = function(rules, name) {
+LastAge.heroicPathRulesExtra = function(rules, name) {
 
   let pathLevel =
     name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') + 'Level';
@@ -5805,7 +5880,7 @@ LastAge.pathRulesExtra = function(rules, name) {
       'smallViciousAssault', '=', null
     );
     rules.defineRule('mediumViciousAssault',
-      pathLevel, '=', 'source>=11 ? "d8" : source>=6 ? "d6" : "d4"'
+      pathLevel, '=', 'source>=11 ? 8 : source>=6 ? 6 : 4'
     );
     rules.defineRule
       ('selectableFeatureCount.Beast', pathLevel, '=', 'source >= 16 ? 2 : 1');
@@ -5813,6 +5888,13 @@ LastAge.pathRulesExtra = function(rules, name) {
       'features.Small', '?', null,
       'mediumViciousAssault', '=', 'SRD35.SMALL_DAMAGE[source]'
     );
+    rules.basePlugin.featureSpells(rules,
+      'Beast', 'Beast', 'charisma', 'level', '', [
+        '3:Magic Fang', "4:Bear's Endurance", '8:Greater Magic Fang',
+        "9:Cat's Grace", "14:Bull's Strength", '19:Freedom Of Movement'
+      ]
+    );
+    rules.defineRule('magicNotes.beast', 'level', '?', 'source>=3');
 
   } else if(name == 'Chanceborn') {
 
@@ -5837,6 +5919,12 @@ LastAge.pathRulesExtra = function(rules, name) {
       ('features.Slippery Mind', 'features.Chanceborn Survivor', '=', '1');
     rules.defineRule
       ('features.Uncanny Dodge', 'features.Chanceborn Survivor', '=', '1');
+    rules.basePlugin.featureSpells(rules,
+      'Chanceborn', 'Chanceborn', 'charisma', 'level', '', [
+        '2:Resistance', '7:True Strike', '12:Aid', '17:Prayer'
+      ]
+    );
+    rules.defineRule('magicNotes.chanceborn', 'level', '?', 'source>=2');
 
   } else if(name == 'Charismatic') {
 
@@ -5846,6 +5934,13 @@ LastAge.pathRulesExtra = function(rules, name) {
       ('featureNotes.naturalLeader', pathLevel, '=', 'source >= 18 ? 2 : 1');
     rules.defineRule('magicNotes.inspiringOration',
       pathLevel, '+=', 'Math.floor((source + 1) / 5)'
+    );
+    rules.basePlugin.featureSpells(rules,
+      'Charismatic', 'Charismatic', 'charisma', 'level', '', [
+        '1:Charm Person', '2:Remove Fear', '3:Hypnotism', '7:Aid',
+        '8:Daze Monster', '11:Heroism', '13:Charm Monster', '16:Suggestion',
+        '17:Greater Heroism'
+      ]
     );
 
   } else if(name == 'Dragonblooded') {
@@ -5875,9 +5970,20 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('combatNotes.naturalArmor',
       pathLevel, '+=', 'source >= 18 ? 3 : source >= 10 ? 2 : source >= 3 ? 1 : null'
     );
+    rules.defineRule
+      ('featureNotes.blindsense', 'earthbondedFeatures.Blindsense', '=', '30');
     rules.defineRule('skillNotes.stonecunning',
       'earthbondedFeatures.Stonecunning', '+=', '2'
     );
+    rules.basePlugin.featureSpells(rules,
+      'Earthbonded', 'Earthbonded', 'charisma', 'level', '', [
+        '2:Hold Portal', '5:Soften Earth And Stone', '6:Make Whole',
+        '7:Spike Stones', '9:Stone Shape', '11:Meld Into Stone',
+        '13:Transmute Rock To Mud', '14:Stoneskin', '15:Move Earth',
+        '17:Stone Tell', '19:Earthquake'
+      ]
+    );
+    rules.defineRule('magicNotes.earthbonded', 'level', '?', 'source>=2');
 
   } else if(name == 'Faithful') {
 
@@ -5888,6 +5994,14 @@ LastAge.pathRulesExtra = function(rules, name) {
     // Override SRD35 turning frequency
     rules.defineRule('combatNotes.turnUndead.3',
       pathLevel, '=', 'Math.floor((source + 1) / 5)'
+    );
+    rules.basePlugin.featureSpells(rules,
+      'Faithful', 'Faithful', 'charisma', 'level', '', [
+        '1:Bless', '2:Protection From Evil', '3:Divine Favor', '6:Aid',
+        '7:Bless Weapon', '8:Consecrate', '11:Daylight',
+        '12:Magic Circle Against Evil', '13:Prayer', '16:Holy Smite',
+        '17:Dispel Evil', '18:Holy Aura'
+      ]
     );
 
   } else if(name == 'Fellhunter') {
@@ -5915,6 +6029,10 @@ LastAge.pathRulesExtra = function(rules, name) {
       '(source >= 8 ? ", ability damage" : "") + ' +
       '(source >= 13 ? ", ability drain" : "") + ' +
       '(source >= 18 ? ", energy drain" : "")'
+    );
+    rules.basePlugin.featureSpells(rules,
+      'Sense The Dead', 'SenseTheDead', 'charisma', 'level', '',
+      ['1:Detect Undead']
     );
 
   } else if(name == 'Feyblooded') {
@@ -5947,6 +6065,14 @@ LastAge.pathRulesExtra = function(rules, name) {
       'source >= 19 ? "all magic" : ' +
       'source >= 13 ? "enchantment and illusion" : "enchantment"'
     );
+    rules.basePlugin.featureSpells(rules,
+      'Feyblooded', 'Feyblooded', 'charisma', 'level', '', [
+        '2:Disguise Self', '3:Ventriloquism', '5:Magic Aura', '6:Invisibility',
+        '9:Nondetection', '10:Glibness', '11:Deep Slumber', '14:False Vision',
+        '15:Rainbow Pattern', '17:Mislead', '18:Seeming'
+      ]
+    );
+    rules.defineRule('magicNotes.feyblooded', 'level', '?', 'source>=2');
 
   } else if(name == 'Giantblooded') {
 
@@ -6001,6 +6127,24 @@ LastAge.pathRulesExtra = function(rules, name) {
       'charismaModifier', '*', null
     );
     rules.defineRule('saveNotes.auraOfCourage', pathLevel, '=', '30');
+    rules.basePlugin.featureSpells(rules,
+      'Guardian', 'Guardian', 'charisma', 'level', '', [
+        '2:Detect Evil', '16:Death Ward'
+      ]
+    );
+    rules.defineRule('magicNotes.guardian', 'level', '?', 'source>=2');
+
+  } else if(name == 'Healer') {
+
+    rules.basePlugin.featureSpells(rules,
+      'Healer', 'Healer', 'charisma', 'level', '', [
+        '1:Cure Light Wounds', '2:Lesser Restoration', '4:Cure Moderate Wounds',
+        '5:Remove Disease', '7:Cure Serious Wounds',
+        '8:Remove Blindness/Deafness', '10:Cure Critical Wounds',
+        '11:Neutralize Poison', '13:Mass Cure Light Wounds', '14:Restoration',
+        '16:Heal', '19:Regenerate', '20:Raise Dead'
+      ]
+    );
 
   } else if(name == 'Ironborn') {
 
@@ -6040,12 +6184,12 @@ LastAge.pathRulesExtra = function(rules, name) {
     );
     rules.defineRule('magicNotes.spellChoice',
       pathLevel, '=',
-      'source>=16 ? "Jack0/Jack1/Jack2/Jack3" : ' +
-      'source>=10 ? "Jack0/Jack1/Jack2" : source>=6 ? "Jack0/Jack1" : "Jack0"'
+      'source>=16 ? "Ch0/Ch1/Ch2/Ch3" : ' +
+      'source>=10 ? "Ch0/Ch1/Ch2" : source>=6 ? "Ch0/Ch1" : "Ch0"'
     );
     rules.defineRule('magicNotes.spontaneousSpell',
       pathLevel, '=',
-      'source>=19 ? "Jack0/Jack1/Jack2" : source>=13 ? "Jack0/Jack1" : "Jack0"'
+      'source>=19 ? "Ch0/Ch1/Ch2" : source>=13 ? "Ch0/Ch1" : "Ch0"'
     );
     rules.defineRule('abilityNotes.abilityBoost',
       pathLevel, '=', 'source>=18 ? 4 : source>=13 ? 3 : Math.floor(source / 4)'
@@ -6055,6 +6199,20 @@ LastAge.pathRulesExtra = function(rules, name) {
     );
     rules.defineRule('skillNotes.skillBoost',
       pathLevel, '=', 'source>=20 ? 4 : source>=17 ? 3 : source>=11 ? 2 : 1'
+    );
+    // Calculate Ch caster level and spell DC for purposes of Jack's Spell
+    // Choice feature, but use only if the character isn't otherwise a caster.
+    rules.defineRule('casterLevels.Ch', 'jackCasterLevel', '^=', null);
+    rules.defineRule('spellDifficultyClass.Ch', 'jackSpellDC', '^=', null);
+    rules.defineRule('jackCasterLevel',
+      'features.Jack-Of-All-Trades', '?', null,
+      'level', '=', null,
+      'channelerSpells', '=', '0'
+    );
+    rules.defineRule('jackSpellDC',
+      'features.Jack-Of-All-Trades', '?', null,
+      'charismaModifier', '=', '10 + source',
+      'channelerSpells', '=', '0'
     );
 
   } else if(name == 'Mountainborn') {
@@ -6068,6 +6226,16 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('skillNotes.mountaineer',
       pathLevel, '+=', 'Math.floor((source + 4) / 5) * 2'
     );
+    rules.defineRule('skillNotes.mountaineer-1',
+      pathLevel, '+=', 'Math.floor((source + 4) / 5) * 2'
+    );
+    rules.basePlugin.featureSpells(rules,
+      'Mountainborn', 'Mountainborn', 'charisma', 'level', '', [
+        '2:Endure Elements', '7:Pass Without Trace', '12:Meld Into Stone',
+        '17:Stone Tell',
+      ]
+    );
+    rules.defineRule('magicNotes.mountainborn', 'level', '?', 'source>=2');
 
   } else if(name == 'Naturefriend') {
 
@@ -6078,6 +6246,28 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule
       ('combatNotes.plantFriend', 'charismaModifier', '=', '10 + source');
     rules.defineRule('skillNotes.wildEmpathy', pathLevel, '+=', null);
+    rules.basePlugin.featureSpells(rules,
+      'Naturefriend', 'Naturefriend', 'charisma', 'level', '', [
+        '2:Calm Animals', '3:Entangle', '4:Obscuring Mist',
+        '6:Animal Messenger', '7:Wood Shape', '8:Gust Of Wind',
+        '9:Speak With Animals', '11:Speak With Plants', '12:Call Lightning',
+        '13:Dominate Animal', '14:Spike Growth', '16:Sleet Storm',
+        "17:Summon Nature's Ally IV", '18:Command Plants', '19:Ice Storm'
+      ]
+    );
+    /* Work around SRD35.featureSpells bug--doesn't note space in school name. */
+    let allNotes = rules.getChoices('notes');
+    QuilvynUtils.getKeys(allNotes, /\(Naturefriend\d/).forEach(n => {
+      if(allNotes[n].includes('Greater Evocation'))
+        allNotes[n] =
+          allNotes[n].replaceAll('Greater Evocation', 'GreaterEvocation');
+    });
+    /* */
+    rules.defineRule('magicNotes.naturefriend', 'level', '?', 'source>=2');
+    rules.basePlugin.featureSpells(rules,
+      'One With Nature', 'OneWithNature', 'charisma', 'level', '', [
+      '20:Commune With Nature'
+    ]);
 
   } else if(name == 'Northblooded') {
 
@@ -6201,6 +6391,14 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('abilityNotes.naturalSwimmer',
       pathLevel, '+=', 'source >= 15 ? 60 : source >= 7 ? 40 : 20'
     );
+    rules.basePlugin.featureSpells(rules,
+      'Seaborn', 'Seaborn', 'charisma', 'level', '', [
+        "4:Summon Nature's Ally II", '5:Blur', "8:Summon Nature's Ally III",
+        '9:Fog Cloud', "12:Summon Nature's Ally IV", '13:Displacement',
+        "16:Summon Nature's Ally V", "20:Summon Nature's Ally IV"
+      ]
+    );
+    rules.defineRule('magicNotes.seaborn', 'level', '?', 'source>=4');
 
   } else if(name == 'Seer') {
 
@@ -6208,6 +6406,14 @@ LastAge.pathRulesExtra = function(rules, name) {
       ('magicNotes.seerSight', pathLevel, '=', 'Math.floor((source + 6) / 6)');
     rules.defineRule('magicNotes.seerSight.1',
       pathLevel, '=', 'source >= 15 ? "year" : source >= 9 ? "month" : "day"'
+    );
+    rules.basePlugin.featureSpells(rules,
+      'Seer', 'Seer', 'charisma', 'level', '', [
+        '1:Alarm', '2:Augury', '4:Clairaudience/Clairvoyance',
+        '5:Locate Object', '7:Locate Creature', '8:Speak With Dead',
+        '10:Divination', '11:Scrying', '13:Arcane Eye', '14:Find The Path',
+        '16:Prying Eyes', '17:Legend Lore', '19:Commune', '20:Vision'
+      ]
     );
 
   } else if(name == 'Shadow Walker') {
@@ -6218,6 +6424,13 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('skillNotes.shadowVeil',
       pathLevel, '+=', 'Math.floor((source + 2) / 4) * 2'
     );
+    rules.basePlugin.featureSpells(rules,
+      'Shadow Walker', 'ShadowWalker', 'charisma', 'level', '', [
+        '3:Expeditious Retreat', '5:Blur', '7:Undetectable Alignment',
+        '9:Displacement'
+      ]
+    );
+    rules.defineRule('magicNotes.shadowWalker', 'level', '?', 'source>=3');
 
   } else if(name == 'Speaker') {
 
@@ -6238,6 +6451,12 @@ LastAge.pathRulesExtra = function(rules, name) {
       ('magicNotes.powerWords.2', 'charismaModifier', '=', 'source + 10');
     rules.defineRule('skillNotes.persuasiveSpeaker',
       pathLevel, '=', 'source>=17 ? 8 : source>=11 ? 6 : source>=7 ? 4 : 2'
+    );
+    rules.basePlugin.featureSpells(rules,
+      'Speaker', 'Speaker', 'charisma', 'level', '', [
+        '1:Comprehend Languages', '4:Whispering Wind', '8:Tongues', '12:Shout',
+        '18:Greater Shout'
+      ]
     );
 
   } else if(name == 'Spellsoul') {
@@ -6289,8 +6508,8 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('combatNotes.strategicBlow',
       pathLevel, '+=', 'source>=16 ? 15 : source>=12 ? 12 : source>=9 ? 9 : source>=6 ? 6 : 3'
     );
-    rules.defineRule('combatNotes.untouchable',
-      pathLevel, '=', 'source >= 19 ? "special attacks, move, standard, and full-round actions" : "special attacks"'
+    rules.defineRule('combatNotes.untouchable.1',
+      pathLevel, '=', 'source>=19 ? ", move, standard, and full-round actions" : ""'
     );
     rules.defineRule('featCount.Steelblooded',
       'featureNotes.steelbloodedBonusFeats', '=', null
@@ -6309,6 +6528,18 @@ LastAge.pathRulesExtra = function(rules, name) {
     );
     rules.defineRule('skillNotes.bloodOfThePlanes',
       pathLevel, '+=', 'Math.floor((source + 1) / 3) * 2'
+    );
+    rules.basePlugin.featureSpells(rules,
+      'Sunderborn', 'Sunderborn', 'charisma', 'level', '', [
+        '3:Summon Monster I', '6:Summon Monster II', '9:Summon Monster III',
+        '12:Summon Monster IV', '15:Summon Monster V', '18:Summon Monster VI'
+      ]
+    );
+    rules.defineRule('magicNotes.sunderborn', 'level', '?', 'source>=3');
+    rules.basePlugin.featureSpells(rules,
+      'Detect Outsider', 'DetectOutsider', 'charisma', 'level', '', [
+        '1:Detect Outsider'
+      ]
     );
 
   } else if(name == 'Tactician') {
@@ -6331,19 +6562,28 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('featureNotes.animalCompanion',
       pathLevel, '+=', 'Math.floor((source + 2) / 4)'
     );
+    rules.defineRule
+      ('featureNotes.blindsense', 'wargFeatures.Blindsense', '=', '30');
     rules.defineRule('magicNotes.wildShape',
       pathLevel, '=',
       'source >= 19 ? "medium-huge" : ' +
       'source >= 11 ? "medium-large" : ' +
       'source >= 5 ? "medium" : null'
     );
-    rules.defineRule('magicNotes.wildShape.1',
+    rules.defineRule('magicNotes.wildShape.1', pathLevel, '=', null);
+    rules.defineRule('magicNotes.wildShape.2',
       pathLevel, '=', 'source >= 15 ? 3 : source >= 8 ? 2 : 1'
     );
     rules.defineRule('selectableFeatureCount.Warg',
       pathLevel, '=', 'source >= 16 ? 2 : source >= 9 ? 1 : null'
     );
     rules.defineRule('skillNotes.wildEmpathy', pathLevel, '+=', null);
+    rules.basePlugin.featureSpells(rules,
+      'Warg', 'Warg', 'charisma', 'level', '', [
+        '4:Charm Animal', '7:Speak With Animals'
+      ]
+    );
+    rules.defineRule('magicNotes.warg', 'level', '?', 'source>=4');
 
   } else if(name == 'Blessed') {
 
@@ -6365,6 +6605,13 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('saveNotes.divineGrace',
       'charismaModifier', '=', 'source > 0 ? source : null'
     );
+    rules.basePlugin.featureSpells(rules,
+      'Blessed', 'Blessed', 'charisma', 'level', '', [
+        '2:Bless', '4:Protection From Evil', '8:Align Weapon',
+        '11:Magic Circle Against Evil', '19:Dispel Evil', '20:Holy Aura'
+      ]
+    );
+    rules.defineRule('magicNotes.blessed', 'level', '?', 'source>=2');
 
   } else if(name == 'Null') {
 
@@ -6389,6 +6636,13 @@ LastAge.pathRulesExtra = function(rules, name) {
     );
     rules.defineRule
       ('spellResistance', 'saveNotes.spellResistance', '^=', null);
+    rules.basePlugin.featureSpells(rules,
+      'Null', 'Null', 'charisma', 'level', '', [
+        '4:Dispel Magic', '8:Dispel Magic', '13:Greater Dispel Magic',
+        '17:Spell Immunity', '18:Antimagic Field'
+      ]
+    );
+    rules.defineRule('magicNotes.null', 'level', '?', 'source>=4');
 
   } else if(name == 'Shadowed') {
 
@@ -6406,6 +6660,13 @@ LastAge.pathRulesExtra = function(rules, name) {
     );
     rules.defineRule
       ('turningLevel', pathLevel, '+=', 'source < 4 ? null : source');
+    rules.basePlugin.featureSpells(rules,
+      'Shadowed', 'Shadowed', 'charisma', 'level', '', [
+        '2:Detect Good', '2:Detect Evil', '3:Bane', '6:Summon Monster I',
+        '8:Death Knell'
+      ]
+    );
+    rules.defineRule('magicNotes.shadowed', 'level', '?', 'source>=2');
     // Override SRD35 turning frequency
     rules.defineRule('combatNotes.turnUndead.3', pathLevel, '=', '3');
     for(let s in rules.getChoices('selectableFeatures')) {
@@ -6436,10 +6697,6 @@ LastAge.pathRulesExtra = function(rules, name) {
     rules.defineRule('skillNotes.wiserSkillBonus',
       pathLevel, '=', 'source<3 ? 1 : source<6 ? 2 : source<9 ? 3 : source<11 ? 4 : source<13 ? 5 : source<16 ? 6 : source<18 ? 7 : 8'
     );
-
-  } else if(rules.basePlugin.pathRulesExtra) {
-
-    rules.basePlugin.pathRulesExtra(rules, name);
 
   }
 
@@ -6666,7 +6923,13 @@ LastAge.weaponRules = function(
  * item to #rules#.
  */
 LastAge.choiceEditorElements = function(rules, type) {
-  return rules.basePlugin.choiceEditorElements(rules, type);
+  if(type == 'Heroic Path')
+    return [
+      ['Features', 'Features', 'text', [40]],
+      ['Selectables', 'Selectable Features', 'text', [40]]
+    ];
+  else
+    return rules.basePlugin.choiceEditorElements(rules, type);
 };
 
 /* Sets #attributes#'s #attribute# attribute to a random value. */
