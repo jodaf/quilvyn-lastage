@@ -8,7 +8,7 @@
 var attributes = {
   "_path":"ztest/lastage/heroic/healer 10", 
   "alignment":"Neutral", "armor":"None", "charisma":13, "constitution":15, "dexterity":16, 
-  "experience":46764, "feats.Caste Status":1, "feats.Lucky":1, "feats.Negotiator":1, 
+  "experience":46764, "feats.Lucky":1, "feats.Magecraft (Charismatic)":1, "feats.Negotiator":1, 
   "feats.Spellcasting (Illusion)":1, "feats.Tunnel Fighting":1, "gender":"Female", "heroicPath":"Healer", 
   "hitPoints":39, "intelligence":12, "languages.High Elven":1, "languages.Jungle Mouth":1, 
   "levels.Rogue":10, "name":"Heroic-Healer 10", "race":"Plains Sarcosan", 
@@ -74,19 +74,13 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Caste Status; Lucky; Negotiator; Spellcasting (Illusion); Tunnel Fighting</td>
+        <td><b>Feats</b>: Lucky; Magecraft (Charismatic); Negotiator; Spellcasting (Illusion); Tunnel Fighting</td>
         <td><b>Plains Sarcosan Features</b>: Favored Region (Southern Erenland); Natural Horseman; Quick; Sarcosan Ability Adjustment; Sarcosan Extra Feat; Sarcosan Skill Bonus; Weapon Familiarity (Cedeku/Sarcosan Lance)</td>
         <td><b>Rogue Features</b>: Armor Proficiency (Light); Defensive Roll; Evasion; Improved Uncanny Dodge; Sneak Attack; Trap Sense; Trapfinding; Uncanny Dodge; Weapon Proficiency (Simple/Hand Crossbow/Rapier/Sap/Shortbow/Short Sword)</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
-      <td><b>Feature Notes</b>:       <table id="FeatureNotes" style="width:100%">
-      <tr style="text-align:center">
-        <td><i>Sarcosan Extra Feat: +1 General Feat</i></td>
-      </tr><tr style="text-align:center">
-        <td>Caste Status: Gains benefits of caste level</td>
-      </tr></table>
-</td>
+      <td><b>Feature Notes</b>: <i>Sarcosan Extra Feat: +1 General Feat</i></td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
@@ -251,8 +245,9 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="SpellStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Spell Slots</b>: Ch5</td>
-        <td><b>Spell DC</b>: Ch: 11</td>
+        <td><b>Spell Energy</b>: 2</td>
+        <td><b>Spell Slots</b>: B0: 3; B1: 1; Ch5: 1</td>
+        <td><b>Spell DC</b>: B: 12; Ch: 12</td>
       </tr></table>
 </td>
     </tr></table>
@@ -260,7 +255,7 @@ var attributes = {
   </tr><tr style="text-align:center">
     <td><b>Spells</b>:<br/>    <table id="Spells" style="width:100%">
     <tr style="text-align:left">
-      <td>Color Spray (Ch1 Illu): R15' Cone renders creatures with 2/4/any HD unconscious for 2d4 rd/blind for 1d4 rd/stunned for 1 rd (DC 12 Will neg)</td>
+      <td>Color Spray (Ch1 Illu): R15' Cone renders creatures with 2/4/any HD unconscious for 2d4 rd/blind for 1d4 rd/stunned for 1 rd (DC 13 Will neg)</td>
     </tr><tr style="text-align:left">
       <td>Cure Critical Wounds (Healer4 Conj): Touched heals (undead suffers) 4d8+10 HP (DC 16 Will half)</td>
     </tr><tr style="text-align:left">
@@ -272,6 +267,8 @@ var attributes = {
     </tr><tr style="text-align:left">
       <td>Lesser Restoration (Healer2 Conj): Dispels magical ability harm from touched or heals 1d4 temporary ability damage, removes fatigue, and reduces exhaustion</td>
     </tr><tr style="text-align:left">
+      <td>Prestidigitation (Ch0 Evoc): R10' Self performs minor tricks for 1 hr</td>
+    </tr><tr style="text-align:left">
       <td>Remove Blindness/Deafness (Healer3 Conj): Heals touched of blindness or deafness</td>
     </tr><tr style="text-align:left">
       <td>Remove Disease (Healer3 Conj): Cures touched of all diseases</td>
@@ -280,6 +277,8 @@ var attributes = {
   </tr><tr style="text-align:center">
     <td><b>Magic Notes</b>:     <table id="MagicNotes" style="width:100%">
     <tr style="text-align:center">
+      <td><i>Magecraft (Charismatic): Knows 3 B0 and 1 B1 spells/2 Spell Energy</i></td>
+    </tr><tr style="text-align:center">
       <td><i>Spellcasting (Illusion): Knows 1 Channeler Illusion spell and may learn more</i></td>
     </tr><tr style="text-align:center">
       <td>Healer: May use <i>Cure Light Wounds</i> 2/dy, <i>Lesser Restoration</i> 1/dy, <i>Cure Moderate Wounds</i> 2/dy, <i>Remove Disease</i> 1/dy, <i>Cure Serious Wounds</i> 2/dy, <i>Remove Blindness/Deafness</i> 1/dy, <i>Cure Critical Wounds</i> 1/dy</td>

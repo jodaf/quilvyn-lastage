@@ -23,9 +23,9 @@ var attributes = {
   "skills.Listen":18, "skills.Open Lock":2, "skills.Perform (Dance)":18, 
   "skills.Profession (Herbalist)":2, "skills.Ride":18, "skills.Search":18, "skills.Sense Motive":6, 
   "skills.Speak Language":10, "skills.Spellcraft":2, "skills.Spot":18, "skills.Swim":4, "skills.Tumble":8, 
-  "skills.Use Magic Device":18, "skills.Use Rope":6, "spells.Create Water(Jack0 Conj)":1, 
-  "spells.Far Whisper(Jack1 Divi)":1, "spells.Glitterdust(Jack2 Conj)":1, "spells.Mending(Jack0 Tran)":1, 
-  "spells.Summon Nature's Ally I(Jack1 Grea)":1, "strength":9, "weapons.Debris":1, "weapons.Longspear":1, 
+  "skills.Use Magic Device":18, "skills.Use Rope":6, "spells.Create Water(Ch0 Conj)":1, 
+  "spells.Far Whisper(Ch1 Divi)":1, "spells.Glitterdust(Ch2 Conj)":1, "spells.Mending(Ch0 Tran)":1, 
+  "spells.Summon Nature's Ally I(Ch1 Grea)":1, "strength":9, "weapons.Debris":1, "weapons.Longspear":1, 
   "weapons.Shortspear":1, "wisdom":14
 };
   </script>
@@ -285,22 +285,34 @@ var attributes = {
 </tr><tr style="text-align:center">
   <td style="border:1px solid black"><b>Magic</b><br/>  <table id="Magic" style="width:100%">
   <tr style="text-align:center">
+    <td>    <table id="SpellPart" style="width:100%">
+    <tr style="text-align:center">
+      <td>      <table id="SpellStats" style="width:100%">
+      <tr style="text-align:center">
+        <td><b>Spell DC</b>: Ch: 9</td>
+      </tr></table>
+</td>
+    </tr></table>
+</td>
+  </tr><tr style="text-align:center">
     <td><b>Spells</b>:<br/>    <table id="Spells" style="width:100%">
     <tr style="text-align:left">
-      <td>Create Water (Jack0 Conj)</td>
+      <td>Create Water (Ch0 Conj): R60' Creates 30 gallons of pure water</td>
     </tr><tr style="text-align:left">
-      <td>Far Whisper (Jack1 Divi)</td>
+      <td>Far Whisper (Ch1 Divi): Self gains +4 checks to hear Whispering Wood w/in 150 miles for 15 min</td>
     </tr><tr style="text-align:left">
-      <td>Glitterdust (Jack2 Conj)</td>
+      <td>Glitterdust (Ch2 Conj): R250' Creatures in 10' radius outlined and blinded for 15 rd (DC 11 Will outlined only)</td>
     </tr><tr style="text-align:left">
-      <td>Mending (Jack0 Tran)</td>
+      <td>Mending (Ch0 Tran): R10' Repairs minor damage to 1 lb object</td>
     </tr><tr style="text-align:left">
-      <td>Summon Nature's Ally I (Jack1 Grea)</td>
+      <td>Summon Nature's Ally I (Ch1 Grea): R60' 1 1st-level creature appears and fights foes for 15 rd</td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
     <td><b>Magic Notes</b>:     <table id="MagicNotes" style="width:100%">
     <tr style="text-align:center">
+      <td>Arcane Spell Failure: 25%</td>
+    </tr><tr style="text-align:center">
       <td>Spell Choice: May use chosen Ch0/Ch1/Ch2 spell as a spell-like ability 1/dy</td>
     </tr><tr style="text-align:center">
       <td>Spontaneous Spell: May use any Ch0/Ch1 spell as a spell-like ability 1/dy</td>

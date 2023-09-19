@@ -8,11 +8,11 @@
 var attributes = {
   "_path":"ztest/lastage/heroic/healer 20", 
   "alignment":"Chaotic Evil", "armor":"Padded", "charisma":17, "constitution":16, "dexterity":13, 
-  "experience":192086, "feats.Animal Affinity":1, "feats.Caste Status":1, "feats.Dodge":1, 
-  "feats.Inconspicuous":1, "feats.Iron Will":1, "feats.Quickened Donning":1, "feats.Self-Sufficient":1, 
-  "feats.Spellcasting (Enchantment)":1, "feats.Spellcasting (Transmutation)":1, "gender":"Female", 
-  "heroicPath":"Healer", "hitPoints":67, "intelligence":11, "levels.Rogue":20, 
-  "name":"Heroic-Healer 20", "race":"Erenlander", "selectableFeatures.Rogue - Crippling Strike":1, 
+  "experience":192086, "feats.Animal Affinity":1, "feats.Athletic":1, "feats.Blind-Fight":1, 
+  "feats.Caste Status":1, "feats.Dodge":1, "feats.Inconspicuous":1, "feats.Iron Will":1, 
+  "feats.Quickened Donning":1, "feats.Self-Sufficient":1, "gender":"Female", "heroicPath":"Healer", 
+  "hitPoints":67, "intelligence":11, "levels.Rogue":20, "name":"Heroic-Healer 20", 
+  "race":"Erenlander", "selectableFeatures.Rogue - Crippling Strike":1, 
   "selectableFeatures.Rogue - Improved Evasion":1, "selectableFeatures.Rogue - Skill Mastery":1, 
   "selectableFeatures.Rogue - Slippery Mind":1, "shield":"None", "skills.Appraise":23, "skills.Balance":11, 
   "skills.Bluff":2, "skills.Climb":11, "skills.Craft (Traps)":11, "skills.Diplomacy":11, 
@@ -76,7 +76,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Animal Affinity; Caste Status; Dodge; Inconspicuous; Iron Will; Quickened Donning; Self-Sufficient; Spellcasting (Enchantment); Spellcasting (Transmutation)</td>
+        <td><b>Feats</b>: Animal Affinity; Athletic; Blind-Fight; Caste Status; Dodge; Inconspicuous; Iron Will; Quickened Donning; Self-Sufficient</td>
         <td><b>Erenlander Features</b>: Erenlander Ability Adjustment; Erenlander Extra Feats; Erenlander Skill Bonus; Favored Region (Erenland); Skilled Worker; Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)</td>
         <td><b>Rogue Features</b>: Armor Proficiency (Light); Crippling Strike; Evasion; Improved Evasion; Improved Uncanny Dodge; Skill Mastery; Slippery Mind; Sneak Attack; Trap Sense; Trapfinding; Uncanny Dodge; Weapon Proficiency (Simple/Hand Crossbow/Rapier/Sap/Shortbow/Short Sword)</td>
       </tr></table>
@@ -115,7 +115,7 @@ var attributes = {
         <td>Handle Animal: (cha;cc) 1 (+5.5)</td>
         <td>Search: (int) 13 (+13)</td>
       </tr><tr style="text-align:left">
-        <td>Climb: (str) 11 (+10)</td>
+        <td>Climb: (str) 11 (+12)</td>
         <td>Heal: (wis;cc) 1 (+4.5)</td>
         <td>Sense Motive: (wis) 2 (+4)</td>
       </tr><tr style="text-align:left">
@@ -142,6 +142,8 @@ var attributes = {
       <td><b>Skill Notes</b>:       <table id="SkillNotes" style="width:100%">
       <tr style="text-align:center">
         <td><i>Animal Affinity: +2 Handle Animal/+2 Ride</i></td>
+      </tr><tr style="text-align:center">
+        <td><i>Athletic: +2 Climb/+2 Swim</i></td>
       </tr><tr style="text-align:center">
         <td><i>Erenlander Skill Bonus: +46 Skill Points</i></td>
       </tr><tr style="text-align:center">
@@ -209,6 +211,8 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Strength Damage Adjustment: -1</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Crippling Strike: Sneak attack inflicts 2 points Strength damage</td>
       </tr><tr style="text-align:center">
         <td>Improved Uncanny Dodge: Cannot be flanked, sneak attack only by rogue level 24+</td>
@@ -251,16 +255,6 @@ var attributes = {
 </tr><tr style="text-align:center">
   <td style="border:1px solid black"><b>Magic</b><br/>  <table id="Magic" style="width:100%">
   <tr style="text-align:center">
-    <td>    <table id="SpellPart" style="width:100%">
-    <tr style="text-align:center">
-      <td>      <table id="SpellStats" style="width:100%">
-      <tr style="text-align:center">
-        <td><b>Spell DC</b>: Ch: 12</td>
-      </tr></table>
-</td>
-    </tr></table>
-</td>
-  </tr><tr style="text-align:center">
     <td><b>Spells</b>:<br/>    <table id="Spells" style="width:100%">
     <tr style="text-align:left">
       <td>Cure Critical Wounds (Healer4 Conj): Touched heals (undead suffers) 4d8+20 HP (DC 17 Will half)</td>
@@ -291,17 +285,7 @@ var attributes = {
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
-    <td><b>Magic Notes</b>:     <table id="MagicNotes" style="width:100%">
-    <tr style="text-align:center">
-      <td><i>Spellcasting (Enchantment): Knows 1 Channeler Enchantment spell and may learn more</i></td>
-    </tr><tr style="text-align:center">
-      <td><i>Spellcasting (Transmutation): Knows 1 Channeler Transmutation spell and may learn more</i></td>
-    </tr><tr style="text-align:center">
-      <td>Arcane Spell Failure: 5%</td>
-    </tr><tr style="text-align:center">
-      <td>Healer: May use <i>Cure Light Wounds</i> 2/dy, <i>Lesser Restoration</i> 1/dy, <i>Cure Moderate Wounds</i> 2/dy, <i>Remove Disease</i> 1/dy, <i>Cure Serious Wounds</i> 2/dy, <i>Remove Blindness/Deafness</i> 1/dy, <i>Cure Critical Wounds</i> 2/dy, <i>Neutalize Poison</i> 1/dy, <i>Mass Cure Light Wounds</i> 2/dy, <i>Restoration</i> 2/dy, <i>Heal</i> 1/dy, <i>Regenerate</i> 1/dy, <i>Raise Dead</i> 1/dy</td>
-    </tr></table>
-</td>
+    <td><b>Magic Notes</b>: Healer: May use <i>Cure Light Wounds</i> 2/dy, <i>Lesser Restoration</i> 1/dy, <i>Cure Moderate Wounds</i> 2/dy, <i>Remove Disease</i> 1/dy, <i>Cure Serious Wounds</i> 2/dy, <i>Remove Blindness/Deafness</i> 1/dy, <i>Cure Critical Wounds</i> 2/dy, <i>Neutalize Poison</i> 1/dy, <i>Mass Cure Light Wounds</i> 2/dy, <i>Restoration</i> 2/dy, <i>Heal</i> 1/dy, <i>Regenerate</i> 1/dy, <i>Raise Dead</i> 1/dy</td>
   </tr></table>
 </td>
 </tr></table>

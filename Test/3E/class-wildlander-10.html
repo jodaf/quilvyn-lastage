@@ -8,19 +8,18 @@
 var attributes = {
   "_path":"ztest/lastage/class/wildlander 10", 
   "alignment":"Chaotic Evil", "armor":"Padded", "charisma":10, "constitution":17, "dexterity":13, 
-  "experience":50745, "feats.Athletic":1, "feats.Investigator":1, 
-  "feats.Skill Focus (Diplomacy)":1, "feats.Spell Knowledge":1, "feats.Spellcasting (Conjuration)":1, 
-  "feats.Trapsmith":1, "gender":"Female", "heroicPath":"None", "hitPoints":48, "intelligence":10, 
-  "languages.Black Tongue":1, "languages.Halfling":1, "languages.Norther":1, "languages.Old Dwarven":1, 
-  "languages.Orcish":1, "languages.Sylvan":1, "languages.Trader's Tongue":1, "levels.Wildlander":10, 
+  "experience":50745, "feats.Agile":1, "feats.Athletic":1, "feats.Blind-Fight":1, 
+  "feats.Investigator":1, "feats.Skill Focus (Diplomacy)":1, "feats.Trapsmith":1, "gender":"Female", 
+  "heroicPath":"None", "hitPoints":48, "intelligence":10, "languages.Black Tongue":1, 
+  "languages.Halfling":1, "languages.Norther":1, "languages.Old Dwarven":1, "languages.Orcish":1, 
+  "languages.Sylvan":1, "languages.Trader's Tongue":1, "levels.Wildlander":10, 
   "name":"Class-Wildlander 10", "race":"Erenlander", "selectableFeatures.Wildlander - Hated Foe":1, 
   "selectableFeatures.Wildlander - Master Hunter":1, "selectableFeatures.Wildlander - Quick Stride":1, 
   "selectableFeatures.Wildlander - Woodland Stride":1, "shield":"None", "skills.Balance":6, "skills.Climb":10, 
   "skills.Craft (Alchemy)":13, "skills.Diplomacy":1, "skills.Disable Device":6, 
   "skills.Gather Information":1, "skills.Heal":13, "skills.Hide":8, "skills.Jump":6, 
   "skills.Knowledge (Nature)":2, "skills.Listen":2, "skills.Profession (Tanner)":13, "skills.Ride":6, 
-  "skills.Speak Language":7, "skills.Swim":2, "skills.Use Rope":8, "spells.Peasant's Rest(Ch1 Conj)":1, 
-  "spells.Sepia Snake Sigil(Ch3 Conj)":1, "spells.Wall Of Thorns(Ch5 Conj)":1, "strength":15, 
+  "skills.Speak Language":7, "skills.Swim":2, "skills.Use Rope":8, "strength":15, 
   "weapons.Composite Shortbow":1, "weapons.Lance":1, "weapons.Quarterstaff":1, "wisdom":10
 };
   </script>
@@ -82,7 +81,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Athletic; Investigator; Skill Focus (Diplomacy); Spell Knowledge; Spellcasting (Conjuration); Trapsmith</td>
+        <td><b>Feats</b>: Agile; Athletic; Blind-Fight; Investigator; Skill Focus (Diplomacy); Trapsmith</td>
         <td><b>Erenlander Features</b>: Erenlander Ability Adjustment; Erenlander Extra Feats; Erenlander Skill Bonus; Favored Region (Erenland); Skilled Worker; Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)</td>
         <td><b>Wildlander Features</b>: Armor Proficiency (Medium); Danger Sense; Hated Foe; Hunter's Strike; Master Hunter; Quick Stride; Shield Proficiency; Track; Weapon Proficiency (Martial); Wildlander Traits; Woodland Stride</td>
       </tr></table>
@@ -109,7 +108,7 @@ var attributes = {
       <col style="width:33%"/>
       <col style="width:34%"/>
       <tr style="text-align:left">
-        <td>Balance: (dex) 6 (+7)</td>
+        <td>Balance: (dex) 6 (+9)</td>
         <td>Heal: (wis) 13 (+13)</td>
         <td>Ride: (dex) 6 (+7)</td>
       </tr><tr style="text-align:left">
@@ -139,6 +138,8 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td><b>Skill Notes</b>:       <table id="SkillNotes" style="width:100%">
       <tr style="text-align:center">
+        <td><i>Agile: +2 Balance/+2 Escape Artist</i></td>
+      </tr><tr style="text-align:center">
         <td><i>Athletic: +2 Climb/+2 Swim</i></td>
       </tr><tr style="text-align:center">
         <td><i>Danger Sense: +3 Listen/+3 Spot</i></td>
@@ -217,6 +218,8 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Two-Handed Wield Damage Adjustment: +1</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Hated Foe: May make an additional Hunter's Strike vs. Master Hunter creature</td>
       </tr><tr style="text-align:center">
         <td>Hunter's Strike: x2 damage 2/dy</td>
@@ -238,41 +241,6 @@ var attributes = {
         <td><i>Dexterity Reflex Adjustment: +1</i></td>
       </tr></table>
 </td>
-    </tr></table>
-</td>
-  </tr></table>
-</td>
-</tr><tr style="text-align:center">
-  <td style="border:1px solid black"><b>Magic</b><br/>  <table id="Magic" style="width:100%">
-  <tr style="text-align:center">
-    <td>    <table id="SpellPart" style="width:100%">
-    <tr style="text-align:center">
-      <td>      <table id="SpellStats" style="width:100%">
-      <tr style="text-align:center">
-        <td><b>Spell Slots</b>: Ch5: 3</td>
-        <td><b>Spell DC</b>: Ch: 10</td>
-      </tr></table>
-</td>
-    </tr></table>
-</td>
-  </tr><tr style="text-align:center">
-    <td><b>Spells</b>:<br/>    <table id="Spells" style="width:100%">
-    <tr style="text-align:left">
-      <td>Peasant's Rest (Ch1 Conj): Touched gets 8 hrs rest from 4 hrs sleep</td>
-    </tr><tr style="text-align:left">
-      <td>Sepia Snake Sigil (Ch3 Conj): Immobilizes reader (DC 13 Ref neg) for 1d4+10 dy</td>
-    </tr><tr style="text-align:left">
-      <td>Wall Of Thorns (Ch5 Conj): R200' 10 10' cu thorns inflict (25-AC) HP/rd when passing through for 100 min</td>
-    </tr></table>
-</td>
-  </tr><tr style="text-align:center">
-    <td><b>Magic Notes</b>:     <table id="MagicNotes" style="width:100%">
-    <tr style="text-align:center">
-      <td><i>Spell Knowledge: +2 Channeler Spells</i></td>
-    </tr><tr style="text-align:center">
-      <td><i>Spellcasting (Conjuration): Knows 1 Channeler Conjuration spell and may learn more</i></td>
-    </tr><tr style="text-align:center">
-      <td>Arcane Spell Failure: 5%</td>
     </tr></table>
 </td>
   </tr></table>

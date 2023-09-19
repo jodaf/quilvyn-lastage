@@ -8,8 +8,8 @@
 var attributes = {
   "_path":"ztest/lastage/prestige/avenging knife 10", 
   "alignment":"Lawful Good", "armor":"Leather", "charisma":12, 
-  "constitution":12, "dexterity":11, "experience":111272, "feats.Caste Status":1, 
-  "feats.Improved Initiative":1, "feats.Inconspicuous":1, "feats.Lightning Reflexes":1, 
+  "constitution":12, "dexterity":11, "experience":111272, "feats.Improved Initiative":1, 
+  "feats.Inconspicuous":1, "feats.Lightning Reflexes":1, "feats.Magecraft (Hermetic)":1, 
   "feats.Resigned To Death":1, "feats.Sense Nexus":1, "feats.Spellcasting (Abjuration)":1, 
   "feats.Spellcasting (Illusion)":1, "gender":"Male", "heroicPath":"Tactician", "hitPoints":51, 
   "intelligence":14, "languages.Clan Dwarven":1, "languages.Jungle Mouth":1, "levels.Rogue":5, 
@@ -74,7 +74,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Caste Status; Improved Initiative; Inconspicuous; Lightning Reflexes; Resigned To Death; Sense Nexus; Spellcasting (Abjuration); Spellcasting (Illusion)</td>
+        <td><b>Feats</b>: Improved Initiative; Inconspicuous; Lightning Reflexes; Magecraft (Hermetic); Resigned To Death; Sense Nexus; Spellcasting (Abjuration); Spellcasting (Illusion)</td>
         <td><b>Erenlander Features</b>: Erenlander Ability Adjustment; Erenlander Extra Feats; Erenlander Skill Bonus; Favored Region (Erenland); Skilled Worker; Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)</td>
         <td><b>Tactician Features</b>: Aid Another (Combat Bonus); Aid Another (Move); Combat Overview; Coordinated Attack; Coordinated Initiative; Directed Attack</td>
         <td><b>Avenging Knife Features</b>: Cover Story; Death Attack; Fast Hands; Improved Coup De Grace; Security Breach; Sneak Attack; Still As Stone; Stunning Sneak Attack; Target Study; The Drop</td>
@@ -82,13 +82,7 @@ var attributes = {
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
-      <td><b>Feature Notes</b>:       <table id="FeatureNotes" style="width:100%">
-      <tr style="text-align:center">
-        <td><i>Erenlander Extra Feats: +2 General Feat</i></td>
-      </tr><tr style="text-align:center">
-        <td>Caste Status: Gains benefits of caste level</td>
-      </tr></table>
-</td>
+      <td><b>Feature Notes</b>: <i>Erenlander Extra Feats: +2 General Feat</i></td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
@@ -209,7 +203,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Combat Overview: R60' May allow ally to avoid AOO or make foe flat-footed 4/dy</td>
       </tr><tr style="text-align:center">
-        <td>Coordinated Attack: R30' All allies may attack the same foe at +1 per ally (max +5) 3/dy</td>
+        <td>Coordinated Attack: R30' May allow all allies to attack the same foe at +1 per ally (max +5) 3/dy</td>
       </tr><tr style="text-align:center">
         <td>Coordinated Initiative: R30' Allies may use self Initiative 3/dy</td>
       </tr><tr style="text-align:center">
@@ -265,8 +259,9 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="SpellStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Spell Slots</b>: Ch7: 2</td>
-        <td><b>Spell DC</b>: Ch: 11</td>
+        <td><b>Spell Energy</b>: 2</td>
+        <td><b>Spell Slots</b>: Ch7: 2; W0: 3; W1: 1</td>
+        <td><b>Spell DC</b>: Ch: 12; W: 12</td>
       </tr></table>
 </td>
     </tr></table>
@@ -274,16 +269,20 @@ var attributes = {
   </tr><tr style="text-align:center">
     <td><b>Spells</b>:<br/>    <table id="Spells" style="width:100%">
     <tr style="text-align:left">
-      <td>Arcane Impotence (Ch3 Abju): R250' Target Channeler must use 7 Spell Energy to cast for next 15 rd (DC 14 Will 7 rd)</td>
+      <td>Arcane Impotence (Ch3 Abju): R250' Target Channeler must use 7 Spell Energy to cast for next 15 rd (DC 15 Will 7 rd)</td>
     </tr><tr style="text-align:left">
-      <td>Banishment (Ch7 Abju): R60' 30 HD extraplanar creatures in 15' radius banished from plane (DC 18 Will neg)</td>
+      <td>Banishment (Ch7 Abju): R60' 30 HD extraplanar creatures in 15' radius banished from plane (DC 19 Will neg)</td>
     </tr><tr style="text-align:left">
-      <td>Persistent Image (Ch5 Illu): R1000' Creates 19 10' cu scripted image w/sound, smell, and thermal effects (DC 16 Will disbelieve) for 15 min</td>
+      <td>Persistent Image (Ch5 Illu): R1000' Creates 19 10' cu scripted image w/sound, smell, and thermal effects (DC 17 Will disbelieve) for 15 min</td>
+    </tr><tr style="text-align:left">
+      <td>Prestidigitation (Ch0 Evoc): R10' Self performs minor tricks for 1 hr</td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
     <td><b>Magic Notes</b>:     <table id="MagicNotes" style="width:100%">
     <tr style="text-align:center">
+      <td><i>Magecraft (Hermetic): Knows 3 W0 and 1 W1 spells/2 Spell Energy</i></td>
+    </tr><tr style="text-align:center">
       <td><i>Spellcasting (Abjuration): Knows 1 Channeler Abjuration spell and may learn more</i></td>
     </tr><tr style="text-align:center">
       <td><i>Spellcasting (Illusion): Knows 1 Channeler Illusion spell and may learn more</i></td>

@@ -23,8 +23,8 @@ var attributes = {
   "skills.Intimidate":3, "skills.Jump":2, "skills.Knowledge (Nobility)":2, 
   "skills.Knowledge (Shadow)":6, "skills.Knowledge (Spirits)":11, "skills.Perform (Percussion)":2, 
   "skills.Profession (Herbalist)":4, "skills.Ride":13, "skills.Search":5, "skills.Sense Motive":6, 
-  "spells.Cure Minor Wounds(Jack0 Conj)":1, "spells.Detect Thoughts(Jack2 Divi)":1, 
-  "spells.Expeditious Retreat(Jack1 Tran)":1, "spells.Mage Hand(Jack0 Tran)":1, "strength":12, "weapons.Greatsword":1, 
+  "spells.Cure Minor Wounds(Ch0 Conj)":1, "spells.Detect Thoughts(Ch2 Divi)":1, 
+  "spells.Expeditious Retreat(Ch1 Tran)":1, "spells.Mage Hand(Ch0 Tran)":1, "strength":12, "weapons.Greatsword":1, 
   "weapons.Longsword":1, "weapons.Throwing Axe":1, "wisdom":17
 };
   </script>
@@ -268,7 +268,7 @@ var attributes = {
       <tr style="text-align:center">
         <td><b>Spell Energy</b>: 6</td>
         <td><b>Spell Slots</b>: B0: 3; B1: 1; D0: 3; D1: 1; W0: 3; W1: 1</td>
-        <td><b>Spell DC</b>: B: 13; D: 12; W: 11</td>
+        <td><b>Spell DC</b>: B: 13; Ch: 13; D: 12; W: 11</td>
       </tr></table>
 </td>
     </tr></table>
@@ -276,13 +276,13 @@ var attributes = {
   </tr><tr style="text-align:center">
     <td><b>Spells</b>:<br/>    <table id="Spells" style="width:100%">
     <tr style="text-align:left">
-      <td>Cure Minor Wounds (Jack0 Conj): 1</td>
+      <td>Cure Minor Wounds (Ch0 Conj): Touched heals (undead suffers) 1 HP (DC 13 Will neg)</td>
     </tr><tr style="text-align:left">
-      <td>Detect Thoughts (Jack2 Divi): 1</td>
+      <td>Detect Thoughts (Ch2 Divi): R60' Cone gives self info on thoughts (DC 15 Will neg) for conc or 10 min</td>
     </tr><tr style="text-align:left">
-      <td>Expeditious Retreat (Jack1 Tran): 1</td>
+      <td>Expeditious Retreat (Ch1 Tran): Self gains +30' Speed for 10 min</td>
     </tr><tr style="text-align:left">
-      <td>Mage Hand (Jack0 Tran): 1</td>
+      <td>Mage Hand (Ch0 Tran): R50' Self moves up to 5 lb target 15'/rd for conc</td>
     </tr><tr style="text-align:left">
       <td>Prestidigitation (Ch0 Evoc): R10' Self performs minor tricks for 1 hr</td>
     </tr></table>
@@ -295,6 +295,8 @@ var attributes = {
       <td><i>Magecraft (Hermetic): Knows 3 W0 and 1 W1 spells/1 Spell Energy</i></td>
     </tr><tr style="text-align:center">
       <td><i>Magecraft (Spiritual): Knows 3 D0 and 1 D1 spells/2 Spell Energy</i></td>
+    </tr><tr style="text-align:center">
+      <td>Arcane Spell Failure: 10%</td>
     </tr><tr style="text-align:center">
       <td>Craft Charm: May use Craft to create a single-use magic item</td>
     </tr><tr style="text-align:center">

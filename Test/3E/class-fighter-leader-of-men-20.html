@@ -8,13 +8,13 @@
 var attributes = {
   "_path":"ztest/lastage/class/fighter/leader of men 20", 
   "alignment":"Neutral Good", "armor":"Full Plate", "charisma":13, 
-  "constitution":8, "dexterity":8, "experience":202160, "feats.Agile":1, "feats.Alertness":1, 
-  "feats.Blind-Fight":1, "feats.Clear-Eyed":1, "feats.Combat Reflexes":1, "feats.Drive It Deep":1, 
-  "feats.Improved Shield Bash":1, "feats.Improved Unarmed Strike":1, "feats.Improvised Weapon":1, 
-  "feats.Innate Magic":1, "feats.Negotiator":1, "feats.Pikeman":1, "feats.Point-Blank Shot":1, 
-  "feats.Quick Draw":1, "feats.Quickened Donning":1, "feats.Slow Learner":1, 
-  "feats.Spellcasting (Abjuration)":1, "feats.Spellcasting (Illusion)":1, "feats.Thick Skull":1, 
-  "feats.Tunnel Fighting":1, "gender":"Female", "heroicPath":"None", "hitPoints":115, "intelligence":13, 
+  "constitution":8, "dexterity":8, "experience":202160, "feats.Acrobatic":1, "feats.Agile":1, 
+  "feats.Alertness":1, "feats.Athletic":1, "feats.Blind-Fight":1, "feats.Clear-Eyed":1, 
+  "feats.Combat Reflexes":1, "feats.Drive It Deep":1, "feats.Improved Shield Bash":1, 
+  "feats.Improved Unarmed Strike":1, "feats.Improvised Weapon":1, "feats.Innate Magic":1, "feats.Negotiator":1, 
+  "feats.Pikeman":1, "feats.Point-Blank Shot":1, "feats.Quick Draw":1, 
+  "feats.Quickened Donning":1, "feats.Slow Learner":1, "feats.Thick Skull":1, "feats.Tunnel Fighting":1, 
+  "gender":"Female", "heroicPath":"None", "hitPoints":115, "intelligence":13, 
   "languages.Old Dwarven":1, "levels.Fighter":20, "name":"Class-Fighter-Leader Of Men 20", 
   "race":"Erenlander", "selectableFeatures.Fighter - Iron Will":1, 
   "selectableFeatures.Fighter - Leader Of Men":1, "selectableFeatures.Fighter - Leadership":1, 
@@ -84,7 +84,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Agile; Alertness; Blind-Fight; Clear-Eyed; Combat Reflexes; Drive It Deep; Improved Shield Bash; Improved Unarmed Strike; Improvised Weapon; Innate Magic; Negotiator; Pikeman; Point-Blank Shot; Quick Draw; Quickened Donning; Slow Learner; Spellcasting (Abjuration); Spellcasting (Illusion); Thick Skull; Tunnel Fighting</td>
+        <td><b>Feats</b>: Acrobatic; Agile; Alertness; Athletic; Blind-Fight; Clear-Eyed; Combat Reflexes; Drive It Deep; Improved Shield Bash; Improved Unarmed Strike; Improvised Weapon; Innate Magic; Negotiator; Pikeman; Point-Blank Shot; Quick Draw; Quickened Donning; Slow Learner; Thick Skull; Tunnel Fighting</td>
         <td><b>Erenlander Features</b>: Erenlander Ability Adjustment; Erenlander Extra Feats; Erenlander Skill Bonus; Favored Region (Erenland); Skilled Worker; Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)</td>
         <td><b>Fighter Features</b>: Armor Proficiency (Heavy); Iron Will; Leader Of Men; Leadership; Shield Proficiency; Skill Focus (Diplomacy); Skill Focus (Profession (Soldier)); Tower Shield Proficiency; Weapon Proficiency (Martial)</td>
       </tr></table>
@@ -119,8 +119,8 @@ var attributes = {
         <td>Intimidate: (cha) 23 (+24)</td>
         <td>Profession (Soldier): (wis) 1 (+3)</td>
       </tr><tr style="text-align:left">
-        <td>Climb: (str) 11 (+7)</td>
-        <td>Jump: (str) 21 (+11)</td>
+        <td>Climb: (str) 11 (+9)</td>
+        <td>Jump: (str) 21 (+13)</td>
         <td>Ride: (dex) 11 (+10)</td>
       </tr><tr style="text-align:left">
         <td>Craft (Traps): (int) 23 (+24)</td>
@@ -129,7 +129,7 @@ var attributes = {
       </tr><tr style="text-align:left">
         <td>Decipher Script: (int;cc) 23 (+12.5)</td>
         <td>Perform (String): (cha;cc) 2 (+2)</td>
-        <td>Swim: (str) 23 (+13)</td>
+        <td>Swim: (str) 23 (+15)</td>
       </tr><tr style="text-align:left">
         <td>Diplomacy: (cha;cc) 1 (+6.5)</td>
         <td>Profession (Sailor): (wis) 2 (+1)</td>
@@ -141,6 +141,8 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td><b>Skill Notes</b>:       <table id="SkillNotes" style="width:100%">
       <tr style="text-align:center">
+        <td><i>Acrobatic: +2 Jump/+2 Tumble</i></td>
+      </tr><tr style="text-align:center">
         <td><i>Agile: +2 Balance/+2 Escape Artist</i></td>
       </tr><tr style="text-align:center">
         <td><i>Alertness: +2 Listen/+2 Spot</i></td>
@@ -148,6 +150,8 @@ var attributes = {
         <td><i>Armor Skill Check Penalty: -6 Balance/-6 Climb/-6 Escape Artist/-6 Hide/-6 Jump/-6 Move Silently/-6 Sleight Of Hand/-6 Tumble</i></td>
       </tr><tr style="text-align:center">
         <td><i>Armor Swim Check Penalty: -12 Swim</i></td>
+      </tr><tr style="text-align:center">
+        <td><i>Athletic: +2 Climb/+2 Swim</i></td>
       </tr><tr style="text-align:center">
         <td><i>Clear-Eyed: Spot is a class skill</i></td>
       </tr><tr style="text-align:center">
@@ -273,23 +277,13 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="SpellStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Spell DC</b>: B: 11; Ch: 9</td>
+        <td><b>Spell DC</b>: B: 11</td>
       </tr></table>
 </td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
-    <td><b>Magic Notes</b>:     <table id="MagicNotes" style="width:100%">
-    <tr style="text-align:center">
-      <td><i>Spellcasting (Abjuration): Knows 1 Channeler Abjuration spell and may learn more</i></td>
-    </tr><tr style="text-align:center">
-      <td><i>Spellcasting (Illusion): Knows 1 Channeler Illusion spell and may learn more</i></td>
-    </tr><tr style="text-align:center">
-      <td>Arcane Spell Failure: 35%</td>
-    </tr><tr style="text-align:center">
-      <td>Innate Magic: May use 1 B0 spells as at-will innate abilities</td>
-    </tr></table>
-</td>
+    <td><b>Magic Notes</b>: Innate Magic: May use 1 B0 spells as at-will innate abilities</td>
   </tr></table>
 </td>
 </tr><tr style="text-align:center">

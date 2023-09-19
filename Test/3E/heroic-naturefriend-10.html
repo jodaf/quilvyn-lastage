@@ -8,17 +8,17 @@
 var attributes = {
   "_path":"ztest/lastage/heroic/naturefriend 10", 
   "alignment":"Lawful Evil", "armor":"Chainmail", "charisma":14, "constitution":11, "dexterity":12, 
-  "experience":49432, "feats.Cleave":1, "feats.Drive It Deep":1, "feats.Improved Sunder":1, 
-  "feats.Improved Unarmed Strike":1, "feats.Improvised Weapon":1, "feats.Power Attack":1, "feats.Quick Draw":1, 
-  "feats.Quickened Donning":1, "feats.Sense Nexus":1, "feats.Skill Focus (Diplomacy)":1, 
-  "feats.Spellcasting (Enchantment)":1, "feats.Survivor":1, "gender":"Female", "heroicPath":"Naturefriend", 
+  "experience":49432, "feats.Caste Status":1, "feats.Cleave":1, "feats.Drive It Deep":1, 
+  "feats.Improved Sunder":1, "feats.Improved Unarmed Strike":1, "feats.Improvised Weapon":1, 
+  "feats.Power Attack":1, "feats.Quick Draw":1, "feats.Quickened Donning":1, "feats.Sense Nexus":1, 
+  "feats.Skill Focus (Diplomacy)":1, "feats.Survivor":1, "gender":"Female", "heroicPath":"Naturefriend", 
   "hitPoints":68, "intelligence":10, "levels.Fighter":10, "name":"Heroic-Naturefriend 10", 
   "race":"Erenlander", "selectableFeatures.Fighter - Adapter":1, "shield":"Buckler", 
   "skills.Climb":8, "skills.Craft (Alchemy)":6, "skills.Diplomacy":1, 
   "skills.Gather Information":4, "skills.Handle Animal":1, "skills.Heal":13, "skills.Knowledge (Nature)":13, 
   "skills.Profession (Sailor)":3, "skills.Profession (Soldier)":1, "skills.Ride":13, "skills.Survival":2, 
-  "skills.Swim":13, "spells.Hold Animal(Ch2 Ench)":1, "strength":15, "weapons.Halberd":1, 
-  "weapons.Lance":1, "weapons.Spiked Armor":1, "wisdom":13
+  "skills.Swim":13, "strength":15, "weapons.Halberd":1, "weapons.Lance":1, 
+  "weapons.Spiked Armor":1, "wisdom":13
 };
   </script>
 </head>
@@ -79,7 +79,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Cleave; Drive It Deep; Improved Sunder; Improved Unarmed Strike; Improvised Weapon; Power Attack; Quick Draw; Quickened Donning; Sense Nexus; Skill Focus (Diplomacy); Spellcasting (Enchantment); Survivor</td>
+        <td><b>Feats</b>: Caste Status; Cleave; Drive It Deep; Improved Sunder; Improved Unarmed Strike; Improvised Weapon; Power Attack; Quick Draw; Quickened Donning; Sense Nexus; Skill Focus (Diplomacy); Survivor</td>
         <td><b>Erenlander Features</b>: Erenlander Ability Adjustment; Erenlander Extra Feats; Erenlander Skill Bonus; Favored Region (Erenland); Skilled Worker; Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)</td>
         <td><b>Naturefriend Features</b>: Animal Friend; Natural Bond; Plant Friend; Wild Empathy</td>
         <td><b>Fighter Features</b>: Adapter; Armor Proficiency (Heavy); Shield Proficiency; Tower Shield Proficiency; Weapon Proficiency (Martial)</td>
@@ -89,6 +89,8 @@ var attributes = {
       <td><b>Feature Notes</b>:       <table id="FeatureNotes" style="width:100%">
       <tr style="text-align:center">
         <td><i>Erenlander Extra Feats: +2 General Feat</i></td>
+      </tr><tr style="text-align:center">
+        <td>Caste Status: Gains benefits of caste level</td>
       </tr><tr style="text-align:center">
         <td>Quickened Donning: Suffers no penalty for hastened donning</td>
       </tr></table>
@@ -241,17 +243,6 @@ var attributes = {
 </tr><tr style="text-align:center">
   <td style="border:1px solid black"><b>Magic</b><br/>  <table id="Magic" style="width:100%">
   <tr style="text-align:center">
-    <td>    <table id="SpellPart" style="width:100%">
-    <tr style="text-align:center">
-      <td>      <table id="SpellStats" style="width:100%">
-      <tr style="text-align:center">
-        <td><b>Spell Slots</b>: Ch5</td>
-        <td><b>Spell DC</b>: Ch: 11</td>
-      </tr></table>
-</td>
-    </tr></table>
-</td>
-  </tr><tr style="text-align:center">
     <td><b>Spells</b>:<br/>    <table id="Spells" style="width:100%">
     <tr style="text-align:left">
       <td>Animal Messenger (Naturefriend2 Ench): R50' Tiny animal target goes to specified place for 10 dy</td>
@@ -261,8 +252,6 @@ var attributes = {
       <td>Entangle (Naturefriend1 Tran): R800' Creatures in 40' radius entangled (DC 13 Ref half speed) for 10 min</td>
     </tr><tr style="text-align:left">
       <td>Gust Of Wind (Naturefriend2 Grea): 60' 50 MPH gust affects medium or smaller creatures (DC null Fort neg) for 1 rd</td>
-    </tr><tr style="text-align:left">
-      <td>Hold Animal (Ch2 Ench): R200' Immobilizes target animal (DC 13 Will neg) for 10 rd</td>
     </tr><tr style="text-align:left">
       <td>Obscuring Mist (Naturefriend1 Conj): Fog in 20' radius obscures vision for 10 min</td>
     </tr><tr style="text-align:left">
@@ -274,10 +263,6 @@ var attributes = {
   </tr><tr style="text-align:center">
     <td><b>Magic Notes</b>:     <table id="MagicNotes" style="width:100%">
     <tr style="text-align:center">
-      <td><i>Spellcasting (Enchantment): Knows 1 Channeler Enchantment spell and may learn more</i></td>
-    </tr><tr style="text-align:center">
-      <td>Arcane Spell Failure: 35%</td>
-    </tr><tr style="text-align:center">
       <td>Naturefriend: May use <i>Calm Animals</i>, <i>Entangle</i>, <i>Obsuring Mist</i>, <i>Animal Messenger</i>, <i>Wood Shape</i>, <i>Gust Of Wind</i>, <i>Speak With Animals</i> 1/dy</td>
     </tr><tr style="text-align:center">
       <td>Sense Nexus: Successful DC 15 Wisdom senses nexus w/in 5 miles</td>

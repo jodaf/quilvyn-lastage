@@ -14,9 +14,9 @@ var attributes = {
   "heroicPath":"Jack-Of-All-Trades", "hitPoints":147, "intelligence":7, "levels.Barbarian":20, 
   "name":"Heroic-Jack 20", "race":"Dorn", "shield":"Buckler", "skills.Craft (Weapons)":11, 
   "skills.Handle Animal":2, "skills.Intimidate":2, "skills.Jump":23, "skills.Open Lock":1, 
-  "skills.Spot":1, "skills.Swim":6, "spells.Arcane Lock(Jack2 Abju)":1, 
-  "spells.Detect Magic(Jack0 Divi)":1, "spells.Entangle(Jack1 Tran)":1, "spells.Faerie Fire(Jack1 Evoc)":1, 
-  "spells.Gaseous Form(Jack3 Tran)":1, "spells.Glitterdust(Jack2 Conj)":1, "spells.Know Direction(Jack0 Divi)":1, 
+  "skills.Spot":1, "skills.Swim":6, "spells.Arcane Lock(Ch2 Abju)":1, 
+  "spells.Detect Magic(Ch0 Divi)":1, "spells.Entangle(Ch1 Tran)":1, "spells.Faerie Fire(Ch1 Evoc)":1, 
+  "spells.Gaseous Form(Ch3 Tran)":1, "spells.Glitterdust(Ch2 Conj)":1, "spells.Know Direction(Ch0 Divi)":1, 
   "strength":16, "weapons.Greatsword":1, "weapons.Light Pick":1, "weapons.Longsword":1, 
   "wisdom":13
 };
@@ -245,26 +245,38 @@ var attributes = {
 </tr><tr style="text-align:center">
   <td style="border:1px solid black"><b>Magic</b><br/>  <table id="Magic" style="width:100%">
   <tr style="text-align:center">
+    <td>    <table id="SpellPart" style="width:100%">
+    <tr style="text-align:center">
+      <td>      <table id="SpellStats" style="width:100%">
+      <tr style="text-align:center">
+        <td><b>Spell DC</b>: Ch: 12</td>
+      </tr></table>
+</td>
+    </tr></table>
+</td>
+  </tr><tr style="text-align:center">
     <td><b>Spells</b>:<br/>    <table id="Spells" style="width:100%">
     <tr style="text-align:left">
-      <td>Arcane Lock (Jack2 Abju)</td>
+      <td>Arcane Lock (Ch2 Abju): Magical lock on touched door, portal, or chest inflicts +10 DC to open</td>
     </tr><tr style="text-align:left">
-      <td>Detect Magic (Jack0 Divi)</td>
+      <td>Detect Magic (Ch0 Divi): R60' Cone gives self info on magical auras for conc or 20 min</td>
     </tr><tr style="text-align:left">
-      <td>Entangle (Jack1 Tran)</td>
+      <td>Entangle (Ch1 Tran): R1200' Creatures in 40' radius entangled (DC 13 Ref half speed) for 20 min</td>
     </tr><tr style="text-align:left">
-      <td>Faerie Fire (Jack1 Evoc)</td>
+      <td>Faerie Fire (Ch1 Evoc): R1200' Creatures in 5' radius glow for 20 min</td>
     </tr><tr style="text-align:left">
-      <td>Gaseous Form (Jack3 Tran)</td>
+      <td>Gaseous Form (Ch3 Tran): Touched becomes insubstantial (DR 10/magic, immune to poison and critical hits, unable to use spell components, fly 10') for 40 min</td>
     </tr><tr style="text-align:left">
-      <td>Glitterdust (Jack2 Conj)</td>
+      <td>Glitterdust (Ch2 Conj): R300' Creatures in 10' radius outlined and blinded for 20 rd (DC 14 Will outlined only)</td>
     </tr><tr style="text-align:left">
-      <td>Know Direction (Jack0 Divi)</td>
+      <td>Know Direction (Ch0 Divi): Self learns direction of north</td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
     <td><b>Magic Notes</b>:     <table id="MagicNotes" style="width:100%">
     <tr style="text-align:center">
+      <td>Arcane Spell Failure: 25%</td>
+    </tr><tr style="text-align:center">
       <td>Born Of The Grave: R15' May use <i>Deathwatch</i> effects at will</td>
     </tr><tr style="text-align:center">
       <td>Sense Nexus: Successful DC 15 Wisdom senses nexus w/in 5 miles</td>

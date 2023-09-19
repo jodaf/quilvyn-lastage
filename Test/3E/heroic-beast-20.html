@@ -8,23 +8,23 @@
 var attributes = {
   "_path":"ztest/lastage/heroic/beast 20", 
   "alignment":"Neutral", "armor":"Padded", "charisma":11, "constitution":17, "dexterity":15, 
-  "experience":200430, "feats.Athletic":1, "feats.Deceitful":1, "feats.Deflect Arrows":1, 
-  "feats.Dodge":1, "feats.Drive It Deep":1, "feats.Endurance":1, "feats.Hardy":1, 
-  "feats.Improved Initiative":1, "feats.Improved Two-Weapon Fighting":1, "feats.Investigator":1, 
-  "feats.Leadership":1, "feats.Mobility":1, "feats.Pikeman":1, "feats.Quickened Donning":1, 
-  "feats.Sense Nexus":1, "feats.Shield Mate":1, "feats.Snatch Arrows":1, 
-  "feats.Spellcasting (Evocation)":1, "feats.Tunnel Fighting":1, "feats.Two-Weapon Fighting":1, "gender":"Male", 
-  "heroicPath":"Beast", "hitPoints":104, "intelligence":13, "languages.Black Tongue":1, 
-  "languages.Patrol Sign":1, "languages.Trader's Tongue":1, "levels.Fighter":20, 
-  "name":"Heroic-Beast 20", "notes":"* +2 Dexterity; +2 Strength", "race":"Erenlander", 
-  "selectableFeatures.Beast - Low-Light Vision":1, "selectableFeatures.Beast - Scent":1, 
-  "selectableFeatures.Fighter - Improved Grapple":1, "selectableFeatures.Fighter - Improved Unarmed Strike":1, 
-  "selectableFeatures.Fighter - Improviser":1, "selectableFeatures.Fighter - Stunning Fist":1, "shield":"Heavy Steel", 
-  "skills.Climb":14, "skills.Concentration":23, "skills.Craft (Armor)":23, "skills.Disguise":1, 
-  "skills.Gather Information":1, "skills.Knowledge (Local)":2, "skills.Listen":23, 
-  "skills.Perform (Wind)":11, "skills.Profession (Sailor)":21, "skills.Ride":6, "skills.Speak Language":2, 
-  "skills.Survival":11, "skills.Swim":23, "strength":11, "weapons.Farmer's Rope":1, 
-  "weapons.Punching Dagger":1, "weapons.Warhammer":1, "wisdom":17
+  "experience":200430, "feats.Athletic":1, "feats.Blind-Fight":1, "feats.Deceitful":1, 
+  "feats.Deflect Arrows":1, "feats.Dodge":1, "feats.Drive It Deep":1, "feats.Endurance":1, 
+  "feats.Hardy":1, "feats.Improved Initiative":1, "feats.Improved Two-Weapon Fighting":1, 
+  "feats.Investigator":1, "feats.Leadership":1, "feats.Mobility":1, "feats.Pikeman":1, 
+  "feats.Quickened Donning":1, "feats.Sense Nexus":1, "feats.Shield Mate":1, "feats.Snatch Arrows":1, 
+  "feats.Tunnel Fighting":1, "feats.Two-Weapon Fighting":1, "gender":"Male", "heroicPath":"Beast", 
+  "hitPoints":104, "intelligence":13, "languages.Black Tongue":1, "languages.Patrol Sign":1, 
+  "languages.Trader's Tongue":1, "levels.Fighter":20, "name":"Heroic-Beast 20", 
+  "notes":"* +2 Dexterity; +2 Strength", "race":"Erenlander", "selectableFeatures.Beast - Low-Light Vision":1, 
+  "selectableFeatures.Beast - Scent":1, "selectableFeatures.Fighter - Improved Grapple":1, 
+  "selectableFeatures.Fighter - Improved Unarmed Strike":1, "selectableFeatures.Fighter - Improviser":1, 
+  "selectableFeatures.Fighter - Stunning Fist":1, "shield":"Heavy Steel", "skills.Climb":14, "skills.Concentration":23, 
+  "skills.Craft (Armor)":23, "skills.Disguise":1, "skills.Gather Information":1, 
+  "skills.Knowledge (Local)":2, "skills.Listen":23, "skills.Perform (Wind)":11, 
+  "skills.Profession (Sailor)":21, "skills.Ride":6, "skills.Speak Language":2, "skills.Survival":11, 
+  "skills.Swim":23, "strength":11, "weapons.Farmer's Rope":1, "weapons.Punching Dagger":1, 
+  "weapons.Warhammer":1, "wisdom":17
 };
   </script>
 </head>
@@ -89,7 +89,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Athletic; Deceitful; Deflect Arrows; Dodge; Drive It Deep; Endurance; Hardy; Improved Initiative; Improved Two-Weapon Fighting; Investigator; Leadership; Mobility; Pikeman; Quickened Donning; Sense Nexus; Shield Mate; Snatch Arrows; Spellcasting (Evocation); Tunnel Fighting; Two-Weapon Fighting</td>
+        <td><b>Feats</b>: Athletic; Blind-Fight; Deceitful; Deflect Arrows; Dodge; Drive It Deep; Endurance; Hardy; Improved Initiative; Improved Two-Weapon Fighting; Investigator; Leadership; Mobility; Pikeman; Quickened Donning; Sense Nexus; Shield Mate; Snatch Arrows; Tunnel Fighting; Two-Weapon Fighting</td>
         <td><b>Erenlander Features</b>: Erenlander Ability Adjustment; Erenlander Extra Feats; Erenlander Skill Bonus; Favored Region (Erenland); Skilled Worker; Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)</td>
         <td><b>Beast Features</b>: Ability Boost; Bestial Aura; Enhanced Bestial Aura; Low-Light Vision; Rage; Scent; Vicious Assault</td>
         <td><b>Fighter Features</b>: Armor Proficiency (Heavy); Improved Grapple; Improved Unarmed Strike; Improviser; Shield Proficiency; Stunning Fist; Tower Shield Proficiency; Weapon Proficiency (Martial)</td>
@@ -231,6 +231,8 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Bestial Aura: May turn 2d6+20 HD of animals of up to (d20+50)/3 HD 6/dy</td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Deflect Arrows: Suffers no damage from ranged hit 1/rd</td>
       </tr><tr style="text-align:center">
         <td>Drive It Deep: May suffer up to -20 attack for equal damage bonus w/a light or one-handed weapon</td>
@@ -285,16 +287,6 @@ var attributes = {
 </tr><tr style="text-align:center">
   <td style="border:1px solid black"><b>Magic</b><br/>  <table id="Magic" style="width:100%">
   <tr style="text-align:center">
-    <td>    <table id="SpellPart" style="width:100%">
-    <tr style="text-align:center">
-      <td>      <table id="SpellStats" style="width:100%">
-      <tr style="text-align:center">
-        <td><b>Spell DC</b>: Ch: 13</td>
-      </tr></table>
-</td>
-    </tr></table>
-</td>
-  </tr><tr style="text-align:center">
     <td><b>Spells</b>:<br/>    <table id="Spells" style="width:100%">
     <tr style="text-align:left">
       <td>Bear's Endurance (Beast2 Tran): Touched gains +4 Constitution for 20 min</td>
@@ -313,10 +305,6 @@ var attributes = {
   </tr><tr style="text-align:center">
     <td><b>Magic Notes</b>:     <table id="MagicNotes" style="width:100%">
     <tr style="text-align:center">
-      <td><i>Spellcasting (Evocation): Knows 1 Channeler Evocation spell and may learn more</i></td>
-    </tr><tr style="text-align:center">
-      <td>Arcane Spell Failure: 20%</td>
-    </tr><tr style="text-align:center">
       <td>Beast: May use <i>Magic Fang</i> 2/dy, <i>Bear's Endurance</i> 1/dy, <i>Greater Magic Fang</i> 2/dy, <i>Cat's Grace</i> 1/dy, <i>Bull's Strength</i> 1/dy, <i>Freedom Of Movement</i> 1/dy</td>
     </tr><tr style="text-align:center">
       <td>Hardy: Regains half spell energy after 4 hrs rest</td>

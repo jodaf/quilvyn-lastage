@@ -8,20 +8,19 @@
 var attributes = {
   "_path":"ztest/lastage/heroic/mountainborn 10", 
   "alignment":"Lawful Neutral", "armor":"Chain Shirt", "charisma":5, "constitution":11, "dexterity":16, 
-  "experience":54290, "feats.Alertness":1, "feats.Clear-Eyed":1, "feats.Diehard":1, 
-  "feats.Improved Initiative":1, "feats.Improvised Weapon":1, "feats.Magical Aptitude":1, 
-  "feats.Orc Slayer":1, "feats.Pikeman":1, "feats.Quick Draw":1, "feats.Quickened Donning":1, 
-  "feats.Shield Mate":1, "feats.Spellcasting (Transmutation)":1, "gender":"Male", 
-  "heroicPath":"Mountainborn", "hitPoints":57, "intelligence":16, "languages.Clan Dwarven":1, 
-  "languages.Halfling":1, "languages.Sylvan":1, "levels.Fighter":10, "name":"Heroic-Mountainborn 10", 
-  "race":"Erenlander", "selectableFeatures.Fighter - Dodge":1, 
-  "selectableFeatures.Fighter - Endurance":1, "selectableFeatures.Fighter - Survivor":1, "shield":"None", 
-  "skills.Appraise":13, "skills.Climb":8, "skills.Concentration":2, "skills.Craft (Traps)":2, 
-  "skills.Forgery":6, "skills.Handle Animal":2, "skills.Intimidate":13, "skills.Jump":13, 
-  "skills.Move Silently":13, "skills.Perform (Sing)":6, "skills.Profession (Herbalist)":6, 
-  "skills.Search":6, "skills.Spot":8, "skills.Swim":2, "skills.Tumble":4, 
-  "skills.Use Magic Device":13, "spells.Whispering Wind(Ch2 Tran)":1, "strength":13, "weapons.Glaive":1, 
-  "weapons.Longspear":1, "weapons.Shortspear":1, "wisdom":17
+  "experience":54290, "feats.Alertness":1, "feats.Caste Status":1, "feats.Clear-Eyed":1, 
+  "feats.Diehard":1, "feats.Improved Initiative":1, "feats.Improvised Weapon":1, 
+  "feats.Magical Aptitude":1, "feats.Orc Slayer":1, "feats.Pikeman":1, "feats.Quick Draw":1, 
+  "feats.Quickened Donning":1, "feats.Shield Mate":1, "gender":"Male", "heroicPath":"Mountainborn", 
+  "hitPoints":57, "intelligence":16, "languages.Clan Dwarven":1, "languages.Halfling":1, 
+  "languages.Sylvan":1, "levels.Fighter":10, "name":"Heroic-Mountainborn 10", "race":"Erenlander", 
+  "selectableFeatures.Fighter - Dodge":1, "selectableFeatures.Fighter - Endurance":1, 
+  "selectableFeatures.Fighter - Survivor":1, "shield":"None", "skills.Appraise":13, "skills.Climb":8, 
+  "skills.Concentration":2, "skills.Craft (Traps)":2, "skills.Forgery":6, "skills.Handle Animal":2, 
+  "skills.Intimidate":13, "skills.Jump":13, "skills.Move Silently":13, "skills.Perform (Sing)":6, 
+  "skills.Profession (Herbalist)":6, "skills.Search":6, "skills.Spot":8, "skills.Swim":2, "skills.Tumble":4, 
+  "skills.Use Magic Device":13, "strength":13, "weapons.Glaive":1, "weapons.Longspear":1, 
+  "weapons.Shortspear":1, "wisdom":17
 };
   </script>
 </head>
@@ -82,7 +81,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Alertness; Clear-Eyed; Diehard; Improved Initiative; Improvised Weapon; Magical Aptitude; Orc Slayer; Pikeman; Quick Draw; Quickened Donning; Shield Mate; Spellcasting (Transmutation)</td>
+        <td><b>Feats</b>: Alertness; Caste Status; Clear-Eyed; Diehard; Improved Initiative; Improvised Weapon; Magical Aptitude; Orc Slayer; Pikeman; Quick Draw; Quickened Donning; Shield Mate</td>
         <td><b>Erenlander Features</b>: Erenlander Ability Adjustment; Erenlander Extra Feats; Erenlander Skill Bonus; Favored Region (Erenland); Skilled Worker; Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)</td>
         <td><b>Mountainborn Features</b>: Ambush (Extra Damage); Ambush; Constitution Bonus; Mountaineer; Rallying Cry</td>
         <td><b>Fighter Features</b>: Armor Proficiency (Heavy); Dodge; Endurance; Shield Proficiency; Survivor; Tower Shield Proficiency; Weapon Proficiency (Martial)</td>
@@ -92,6 +91,8 @@ var attributes = {
       <td><b>Feature Notes</b>:       <table id="FeatureNotes" style="width:100%">
       <tr style="text-align:center">
         <td><i>Erenlander Extra Feats: +2 General Feat</i></td>
+      </tr><tr style="text-align:center">
+        <td>Caste Status: Gains benefits of caste level</td>
       </tr><tr style="text-align:center">
         <td>Clear-Eyed: Suffers half distance penalty for approaching creatures/x2 normal vision in dim light when on plains</td>
       </tr><tr style="text-align:center">
@@ -264,36 +265,15 @@ var attributes = {
 </tr><tr style="text-align:center">
   <td style="border:1px solid black"><b>Magic</b><br/>  <table id="Magic" style="width:100%">
   <tr style="text-align:center">
-    <td>    <table id="SpellPart" style="width:100%">
-    <tr style="text-align:center">
-      <td>      <table id="SpellStats" style="width:100%">
-      <tr style="text-align:center">
-        <td><b>Spell Slots</b>: Ch5</td>
-        <td><b>Spell DC</b>: Ch: 13</td>
-      </tr></table>
-</td>
-    </tr></table>
-</td>
-  </tr><tr style="text-align:center">
     <td><b>Spells</b>:<br/>    <table id="Spells" style="width:100%">
     <tr style="text-align:left">
       <td>Endure Elements (Mountainborn1 Abju): Touched remains comfortable between -50F and 140F for 1 dy</td>
     </tr><tr style="text-align:left">
       <td>Pass Without Trace (Mountainborn1 Tran): 10 touched leave no tracks or scent for 10 hr</td>
-    </tr><tr style="text-align:left">
-      <td>Whispering Wind (Ch2 Tran): R10 miles Self sends 25-word message or sound to 10' area</td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
-    <td><b>Magic Notes</b>:     <table id="MagicNotes" style="width:100%">
-    <tr style="text-align:center">
-      <td><i>Spellcasting (Transmutation): Knows 1 Channeler Transmutation spell and may learn more</i></td>
-    </tr><tr style="text-align:center">
-      <td>Arcane Spell Failure: 20%</td>
-    </tr><tr style="text-align:center">
-      <td>Mountainborn: May use <i>Endure Elements</i>, <i>Pass Without Trace</i> 1/dy</td>
-    </tr></table>
-</td>
+    <td><b>Magic Notes</b>: Mountainborn: May use <i>Endure Elements</i>, <i>Pass Without Trace</i> 1/dy</td>
   </tr></table>
 </td>
 </tr></table>

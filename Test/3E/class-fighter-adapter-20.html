@@ -8,16 +8,16 @@
 var attributes = {
   "_path":"ztest/lastage/class/fighter/adapter 20", 
   "alignment":"Lawful Evil", "armor":"Hide", "charisma":9, "constitution":14, "dexterity":11, 
-  "experience":202902, "feats.Blind-Fight":1, "feats.Caste Status":1, "feats.Combat Reflexes":1, 
-  "feats.Deceitful":1, "feats.Far Shot":1, "feats.Improved Initiative":1, "feats.Improviser":1, 
-  "feats.Innate Magic":1, "feats.Investigator":1, "feats.Lucky":1, "feats.Persuasive":1, 
-  "feats.Pikeman":1, "feats.Point-Blank Shot":1, "feats.Precise Shot":1, "feats.Quick Draw":1, 
-  "feats.Quickened Donning":1, "feats.Sense Nexus":1, "feats.Spell Focus (Conjuration)":1, 
-  "feats.Spellcasting (Conjuration)":1, "feats.Tunnel Fighting":1, "gender":"Male", "heroicPath":"None", 
-  "hitPoints":114, "intelligence":11, "languages.Black Tongue":1, "languages.Clan Dwarven":1, 
-  "languages.Colonial":1, "languages.Courtier":1, "languages.Halfling":1, "languages.High Elven":1, 
-  "languages.Jungle Mouth":1, "languages.Old Dwarven":1, "languages.Orcish":1, "languages.Sylvan":1, 
-  "languages.Trader's Tongue":1, "levels.Fighter":20, "name":"Class-Fighter-Adapter 20", "race":"Erenlander", 
+  "experience":202902, "feats.Agile":1, "feats.Athletic":1, "feats.Blind-Fight":1, 
+  "feats.Caste Status":1, "feats.Combat Reflexes":1, "feats.Deceitful":1, "feats.Far Shot":1, 
+  "feats.Improved Initiative":1, "feats.Improviser":1, "feats.Innate Magic":1, "feats.Investigator":1, 
+  "feats.Lucky":1, "feats.Persuasive":1, "feats.Pikeman":1, "feats.Point-Blank Shot":1, 
+  "feats.Precise Shot":1, "feats.Quick Draw":1, "feats.Quickened Donning":1, "feats.Sense Nexus":1, 
+  "feats.Tunnel Fighting":1, "gender":"Male", "heroicPath":"None", "hitPoints":114, "intelligence":11, 
+  "languages.Black Tongue":1, "languages.Clan Dwarven":1, "languages.Colonial":1, "languages.Courtier":1, 
+  "languages.Halfling":1, "languages.High Elven":1, "languages.Jungle Mouth":1, 
+  "languages.Old Dwarven":1, "languages.Orcish":1, "languages.Sylvan":1, "languages.Trader's Tongue":1, 
+  "levels.Fighter":20, "name":"Class-Fighter-Adapter 20", "race":"Erenlander", 
   "selectableFeatures.Fighter - Adapter":1, "shield":"Buckler", "skills.Appraise":11, "skills.Balance":11, 
   "skills.Climb":11, "skills.Concentration":11, "skills.Craft (Alchemy)":13, "skills.Disguise":1, 
   "skills.Gather Information":1, "skills.Handle Animal":11, "skills.Hide":2, "skills.Intimidate":1, 
@@ -84,7 +84,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Blind-Fight; Caste Status; Combat Reflexes; Deceitful; Far Shot; Improved Initiative; Improviser; Innate Magic; Investigator; Lucky; Persuasive; Pikeman; Point-Blank Shot; Precise Shot; Quick Draw; Quickened Donning; Sense Nexus; Spell Focus (Conjuration); Spellcasting (Conjuration); Tunnel Fighting</td>
+        <td><b>Feats</b>: Agile; Athletic; Blind-Fight; Caste Status; Combat Reflexes; Deceitful; Far Shot; Improved Initiative; Improviser; Innate Magic; Investigator; Lucky; Persuasive; Pikeman; Point-Blank Shot; Precise Shot; Quick Draw; Quickened Donning; Sense Nexus; Tunnel Fighting</td>
         <td><b>Erenlander Features</b>: Erenlander Ability Adjustment; Erenlander Extra Feats; Erenlander Skill Bonus; Favored Region (Erenland); Skilled Worker; Weapon Familiarity (Bastard Sword/Cedeku/Dornish Horse Spear/Sarcosan Lance)</td>
         <td><b>Fighter Features</b>: Adapter; Armor Proficiency (Heavy); Shield Proficiency; Tower Shield Proficiency; Weapon Proficiency (Martial)</td>
       </tr></table>
@@ -115,11 +115,11 @@ var attributes = {
         <td>Disguise: (cha;cc) 1 (+1.5)</td>
         <td>Knowledge (Shadow): (int) 11 (+11)</td>
       </tr><tr style="text-align:left">
-        <td>Balance: (dex;cc) 11 (+1.5)</td>
+        <td>Balance: (dex;cc) 11 (+3.5)</td>
         <td>Gather Information: (cha;cc) 1 (+1.5)</td>
         <td>Perform (Oratory): (cha;cc) 11 (+4.5)</td>
       </tr><tr style="text-align:left">
-        <td>Climb: (str) 11 (+8)</td>
+        <td>Climb: (str) 11 (+10)</td>
         <td>Handle Animal: (cha) 11 (+10)</td>
         <td>Perform (Wind): (cha;cc) 9 (+3.5)</td>
       </tr><tr style="text-align:left">
@@ -137,9 +137,13 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td><b>Skill Notes</b>:       <table id="SkillNotes" style="width:100%">
       <tr style="text-align:center">
+        <td><i>Agile: +2 Balance/+2 Escape Artist</i></td>
+      </tr><tr style="text-align:center">
         <td><i>Armor Skill Check Penalty: -4 Balance/-4 Climb/-4 Escape Artist/-4 Hide/-4 Jump/-4 Move Silently/-4 Sleight Of Hand/-4 Tumble</i></td>
       </tr><tr style="text-align:center">
         <td><i>Armor Swim Check Penalty: -8 Swim</i></td>
+      </tr><tr style="text-align:center">
+        <td><i>Athletic: +2 Climb/+2 Swim</i></td>
       </tr><tr style="text-align:center">
         <td><i>Deceitful: +2 Disguise/+2 Forgery</i></td>
       </tr><tr style="text-align:center">
@@ -251,7 +255,7 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="SpellStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Spell DC</b>: Ch: 11; D: 11</td>
+        <td><b>Spell DC</b>: D: 11</td>
       </tr></table>
 </td>
     </tr></table>
@@ -259,12 +263,6 @@ var attributes = {
   </tr><tr style="text-align:center">
     <td><b>Magic Notes</b>:     <table id="MagicNotes" style="width:100%">
     <tr style="text-align:center">
-      <td><i>Spell Focus (Conjuration): +1 Spell DC (Conjuration)</i></td>
-    </tr><tr style="text-align:center">
-      <td><i>Spellcasting (Conjuration): Knows 1 Channeler Conjuration spell and may learn more</i></td>
-    </tr><tr style="text-align:center">
-      <td>Arcane Spell Failure: 25%</td>
-    </tr><tr style="text-align:center">
       <td>Innate Magic: May use 1 D0 spells as at-will innate abilities</td>
     </tr><tr style="text-align:center">
       <td>Sense Nexus: Successful DC 15 Wisdom senses nexus w/in 5 miles</td>

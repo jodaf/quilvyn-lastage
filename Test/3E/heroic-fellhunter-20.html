@@ -8,23 +8,22 @@
 var attributes = {
   "_path":"ztest/lastage/heroic/fellhunter 20", 
   "alignment":"Neutral Good", "armor":"Padded", "charisma":13, "constitution":10, "dexterity":10, 
-  "experience":194139, "feats.Alertness":1, "feats.Combat Reflexes":1, "feats.Dodge":1, 
-  "feats.Drive It Deep":1, "feats.Far Shot":1, "feats.Improved Initiative":1, "feats.Improviser":1, 
-  "feats.Mobility":1, "feats.Natural Healer":1, "feats.Nimble Fingers":1, 
-  "feats.Point-Blank Shot":1, "feats.Precise Shot":1, "feats.Rapid Shot":1, "feats.Shield Mate":1, 
-  "feats.Skill Focus (Disable Device)":1, "feats.Spellcasting (Abjuration)":1, "feats.Spellcasting (Enchantment)":1, 
-  "feats.Tunnel Fighting":1, "gender":"Male", "heroicPath":"Fellhunter", "hitPoints":127, 
-  "intelligence":15, "languages.Black Tongue":1, "languages.Clan Dwarven":1, 
-  "languages.Colonial":1, "languages.Norther":1, "levels.Fighter":20, "name":"Heroic-Fellhunter 20", 
-  "race":"Danisil-Raised Elfling", "selectableFeatures.Fighter - Iron Will":1, 
-  "selectableFeatures.Fighter - Leader Of Men":1, "selectableFeatures.Fighter - Leadership":1, 
-  "selectableFeatures.Fighter - Skill Focus (Profession (Soldier))":1, "shield":"Tower", "skills.Appraise":11, "skills.Climb":3, 
-  "skills.Craft (Traps)":2, "skills.Disable Device":1, "skills.Handle Animal":2, "skills.Heal":1, 
-  "skills.Intimidate":20, "skills.Knowledge (Spirits)":23, "skills.Listen":11, "skills.Open Lock":1, 
-  "skills.Perform (Comedy)":23, "skills.Profession (Sailor)":2, "skills.Profession (Soldier)":5, 
-  "skills.Ride":2, "skills.Speak Language":2, "skills.Swim":6, "skills.Use Magic Device":23, 
-  "strength":10, "weapons.Farmer's Rope":1, "weapons.Gauntlet":1, "weapons.Light Hammer":1, 
-  "wisdom":13
+  "experience":194139, "feats.Alertness":1, "feats.Blind-Fight":1, "feats.Caste Status":1, 
+  "feats.Combat Reflexes":1, "feats.Dodge":1, "feats.Drive It Deep":1, "feats.Far Shot":1, 
+  "feats.Improved Initiative":1, "feats.Improviser":1, "feats.Mobility":1, "feats.Natural Healer":1, 
+  "feats.Nimble Fingers":1, "feats.Point-Blank Shot":1, "feats.Precise Shot":1, "feats.Rapid Shot":1, 
+  "feats.Shield Mate":1, "feats.Skill Focus (Disable Device)":1, "feats.Tunnel Fighting":1, 
+  "gender":"Male", "heroicPath":"Fellhunter", "hitPoints":127, "intelligence":15, 
+  "languages.Black Tongue":1, "languages.Clan Dwarven":1, "languages.Colonial":1, "languages.Norther":1, 
+  "levels.Fighter":20, "name":"Heroic-Fellhunter 20", "race":"Danisil-Raised Elfling", 
+  "selectableFeatures.Fighter - Iron Will":1, "selectableFeatures.Fighter - Leader Of Men":1, 
+  "selectableFeatures.Fighter - Leadership":1, "selectableFeatures.Fighter - Skill Focus (Profession (Soldier))":1, 
+  "shield":"Tower", "skills.Appraise":11, "skills.Climb":3, "skills.Craft (Traps)":2, 
+  "skills.Disable Device":1, "skills.Handle Animal":2, "skills.Heal":1, "skills.Intimidate":20, 
+  "skills.Knowledge (Spirits)":23, "skills.Listen":11, "skills.Open Lock":1, "skills.Perform (Comedy)":23, 
+  "skills.Profession (Sailor)":2, "skills.Profession (Soldier)":5, "skills.Ride":2, "skills.Speak Language":2, 
+  "skills.Swim":6, "skills.Use Magic Device":23, "strength":10, "weapons.Farmer's Rope":1, 
+  "weapons.Gauntlet":1, "weapons.Light Hammer":1, "wisdom":13
 };
   </script>
 </head>
@@ -85,7 +84,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Alertness; Combat Reflexes; Dodge; Drive It Deep; Far Shot; Improved Initiative; Improviser; Mobility; Natural Healer; Nimble Fingers; Point-Blank Shot; Precise Shot; Rapid Shot; Shield Mate; Skill Focus (Disable Device); Spellcasting (Abjuration); Spellcasting (Enchantment); Tunnel Fighting</td>
+        <td><b>Feats</b>: Alertness; Blind-Fight; Caste Status; Combat Reflexes; Dodge; Drive It Deep; Far Shot; Improved Initiative; Improviser; Mobility; Natural Healer; Nimble Fingers; Point-Blank Shot; Precise Shot; Rapid Shot; Shield Mate; Skill Focus (Disable Device); Tunnel Fighting</td>
         <td><b>Danisil-Raised Elfling Features</b>: Alert Senses; Dexterous Healer; Elfling Ability Adjustment; Favored Region (Aruun); Favored Region (Erethor); Fortunate; Innate Magic; Low-Light Vision; Mixed Blood; Nimble; Small; Weapon Familiarity (Atharak/Sepi)</td>
         <td><b>Fellhunter Features</b>: Disrupting Attack; Sense The Dead; Touch Of The Living; Ward Of Life</td>
         <td><b>Fighter Features</b>: Armor Proficiency (Heavy); Iron Will; Leader Of Men; Leadership; Shield Proficiency; Skill Focus (Profession (Soldier)); Tower Shield Proficiency; Weapon Proficiency (Martial)</td>
@@ -94,6 +93,8 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td><b>Feature Notes</b>:       <table id="FeatureNotes" style="width:100%">
       <tr style="text-align:center">
+        <td>Caste Status: Gains benefits of caste level</td>
+      </tr><tr style="text-align:center">
         <td>Leadership: Attracts followers</td>
       </tr><tr style="text-align:center">
         <td>Low-Light Vision: x2 normal distance in poor light</td>
@@ -231,6 +232,8 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Tower Shield Penalty: -2 attack</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Combat Reflexes: May take AOO while flat-footed and 3 AOO/rd</td>
       </tr><tr style="text-align:center">
         <td>Disrupting Attack: May destroy undead 4/dy (DC 21 Will neg)</td>
@@ -287,22 +290,16 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="SpellStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Spell DC</b>: Ch: 11; W: 12</td>
+        <td><b>Spell DC</b>: W: 12</td>
       </tr></table>
 </td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
-    <td><b>Spells</b>:<br/>Detect Undead (Fellhunter1 Divi): R60' Cone gives self info on undead auras for conc or 20 min</td>
+    <td><b>Spells</b>:<br/>Detect Undead (Sense The Dead1 Divi): R60' Cone gives self info on undead auras for conc or 20 min</td>
   </tr><tr style="text-align:center">
     <td><b>Magic Notes</b>:     <table id="MagicNotes" style="width:100%">
     <tr style="text-align:center">
-      <td><i>Spellcasting (Abjuration): Knows 1 Channeler Abjuration spell and may learn more</i></td>
-    </tr><tr style="text-align:center">
-      <td><i>Spellcasting (Enchantment): Knows 1 Channeler Enchantment spell and may learn more</i></td>
-    </tr><tr style="text-align:center">
-      <td>Arcane Spell Failure: 55%</td>
-    </tr><tr style="text-align:center">
       <td>Innate Magic: May use 2 W0 spells as at-will innate abilities</td>
     </tr><tr style="text-align:center">
       <td>Sense The Dead: R80' May use +21 <i>Detect Undead</i> effects (DC 10 + undead HD) at will</td>
