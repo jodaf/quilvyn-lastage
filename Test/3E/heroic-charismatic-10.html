@@ -8,14 +8,15 @@
 var attributes = {
   "_path":"ztest/lastage/heroic/charismatic 10", 
   "alignment":"Neutral Good", "armor":"Padded", "charisma":12, "constitution":10, "dexterity":15, 
-  "experience":54680, "feats.Diligent":1, "feats.Drive It Deep":1, "feats.Persuasive":1, 
-  "feats.Run":1, "gender":"Female", "heroicPath":"Charismatic", "hitPoints":45, 
-  "intelligence":13, "levels.Rogue":10, "name":"Heroic-Charismatic 10", "race":"Dorn", 
-  "selectableFeatures.Rogue - Improved Evasion":1, "shield":"None", "skills.Balance":13, "skills.Climb":9, 
-  "skills.Craft (Armor)":13, "skills.Decipher Script":1, "skills.Disguise":13, "skills.Escape Artist":13, 
-  "skills.Heal":11, "skills.Hide":13, "skills.Intimidate":1, "skills.Listen":2, 
-  "skills.Move Silently":2, "skills.Perform (Percussion)":13, "skills.Tumble":13, "strength":12, 
-  "weapons.Quarterstaff":1, "weapons.Shortbow":1, "weapons.Shortspear":1, "wisdom":6
+  "experience":54680, "feats.Blind-Fight":1, "feats.Diligent":1, "feats.Drive It Deep":1, 
+  "feats.Persuasive":1, "feats.Run":1, "gender":"Female", "heroicPath":"Charismatic", 
+  "hitPoints":45, "intelligence":13, "levels.Rogue":10, "name":"Heroic-Charismatic 10", 
+  "race":"Dorn", "selectableFeatures.Rogue - Improved Evasion":1, "shield":"None", 
+  "skills.Balance":13, "skills.Climb":9, "skills.Craft (Armor)":13, "skills.Decipher Script":1, 
+  "skills.Disguise":13, "skills.Escape Artist":13, "skills.Heal":11, "skills.Hide":13, 
+  "skills.Intimidate":1, "skills.Listen":2, "skills.Move Silently":2, 
+  "skills.Perform (Percussion)":13, "skills.Tumble":13, "strength":12, "weapons.Quarterstaff":1, 
+  "weapons.Shortbow":1, "weapons.Shortspear":1, "wisdom":6
 };
   </script>
 </head>
@@ -71,14 +72,14 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="FeatStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feat Count</b>: General: 4</td>
+        <td><b>Feat Count</b>: Fighter: 1; General: 4</td>
         <td><b>Selectable Feature Count</b>: Rogue (Special Ability)</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Diligent; Drive It Deep; Persuasive; Run</td>
+        <td><b>Feats</b>: Blind-Fight; Diligent; Drive It Deep; Persuasive; Run</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Charismatic Features</b>: Charisma Bonus; Inspiring Oration; Leadership</td>
         <td><b>Rogue Features</b>: Armor Proficiency (Light); Evasion; Improved Evasion; Improved Uncanny Dodge; Sneak Attack; Trap Sense; Trapfinding; Uncanny Dodge; Weapon Proficiency (Simple/Hand Crossbow/Rapier/Sap/Shortbow/Short Sword)</td>
@@ -87,7 +88,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td><b>Feature Notes</b>:       <table id="FeatureNotes" style="width:100%">
       <tr style="text-align:center">
-        <td><i>Dorn Extra Feat: +1 Fighter Feat</i></td>
+        <td><i>Dorn Extra Feat: 1 Fighter Feat</i></td>
       </tr><tr style="text-align:center">
         <td>Leadership: Attracts followers</td>
       </tr></table>
@@ -192,6 +193,8 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Two-Handed Wield Damage Adjustment: +1</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
       </tr><tr style="text-align:center">
         <td>Drive It Deep: May suffer up to -7 attack for equal damage bonus w/a light or one-handed weapon</td>
@@ -202,7 +205,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Sneak Attack: Hit inflicts +5d6 HP when foe is surprised or flanked</td>
       </tr><tr style="text-align:center">
-        <td>Two-Handed Focus: +1 attack using weapon two-handed</td>
+        <td>Two-Handed Focus: +1 attack when using a weapon two-handed</td>
       </tr><tr style="text-align:center">
         <td>Uncanny Dodge: Always adds Dexterity modifier to AC</td>
       </tr></table>
@@ -222,7 +225,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Wisdom Will Adjustment: -2</i></td>
       </tr><tr style="text-align:center">
-        <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
+        <td>Cold Fortitude: +5 vs. cold/Takes half nonlethal damage from cold</td>
       </tr><tr style="text-align:center">
         <td>Evasion: Reflex save yields no damage instead of half</td>
       </tr><tr style="text-align:center">

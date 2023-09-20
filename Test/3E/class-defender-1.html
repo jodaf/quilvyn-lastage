@@ -8,9 +8,9 @@
 var attributes = {
   "_path":"ztest/lastage/class/defender 1", 
   "alignment":"Lawful Neutral", "armor":"None", "charisma":14, "constitution":16, "dexterity":8, 
-  "experience":820, "feats.Deceitful":1, "gender":"Female", "heroicPath":"Painless", 
-  "hitPoints":8, "intelligence":16, "languages.Black Tongue":1, "languages.Jungle Mouth":1, 
-  "languages.Orcish":1, "languages.Trader's Tongue":1, "levels.Defender":1, 
+  "experience":820, "feats.Blind-Fight":1, "feats.Deceitful":1, "gender":"Female", 
+  "heroicPath":"Painless", "hitPoints":8, "intelligence":16, "languages.Black Tongue":1, 
+  "languages.Jungle Mouth":1, "languages.Orcish":1, "languages.Trader's Tongue":1, "levels.Defender":1, 
   "name":"Class-Defender 1", "race":"Dorn", "shield":"None", "skills.Balance":4, "skills.Craft (Bows)":3, 
   "skills.Disguise":1, "skills.Jump":2, "skills.Knowledge (Engineering)":4, "skills.Listen":2, 
   "skills.Perform (Wind)":2, "skills.Profession (Tanner)":2, "skills.Ride":2, "skills.Speak Language":2, 
@@ -63,20 +63,20 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="FeatStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feat Count</b>: General</td>
+        <td><b>Feat Count</b>: Fighter; General</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Deceitful</td>
+        <td><b>Feats</b>: Blind-Fight; Deceitful</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Painless Features</b>: Painless</td>
         <td><b>Defender Features</b>: Armor Class Bonus; Armor Proficiency (Padded); Improved Unarmed Strike; Masterful Strike; Weapon Proficiency (Club/Dagger/Dart/Farmer's Rope/Handaxe/Inutek/Light Hammer/Light Pick/Quarterstaff/Sap/Sickle/Throwing Axe/Sling/Great Sling)</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
-      <td><b>Feature Notes</b>: <i>Dorn Extra Feat: +1 Fighter Feat</i></td>
+      <td><b>Feature Notes</b>: <i>Dorn Extra Feat: 1 Fighter Feat</i></td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
@@ -179,11 +179,13 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Two-Handed Wield Damage Adjustment: +1</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
       </tr><tr style="text-align:center">
         <td>Improved Unarmed Strike: Unarmed attack provokes no AOO and may deal lethal damage</td>
       </tr><tr style="text-align:center">
-        <td>Two-Handed Focus: +1 attack using weapon two-handed</td>
+        <td>Two-Handed Focus: +1 attack when using a weapon two-handed</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
@@ -203,7 +205,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Wisdom Will Adjustment: -1</i></td>
       </tr><tr style="text-align:center">
-        <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
+        <td>Cold Fortitude: +5 vs. cold/Takes half nonlethal damage from cold</td>
       </tr><tr style="text-align:center">
         <td>Painless: +5 vs. pain effects</td>
       </tr></table>

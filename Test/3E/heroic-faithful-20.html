@@ -8,10 +8,10 @@
 var attributes = {
   "_path":"ztest/lastage/heroic/faithful 20", 
   "alignment":"Lawful Good", "armor":"None", "charisma":12, "constitution":15, "dexterity":11, 
-  "experience":206075, "feats.Agile":1, "feats.Magecraft (Hermetic)":1, "feats.Power Attack":1, 
-  "feats.Resigned To Death":1, "feats.Sense Nexus":1, "feats.Toughness":1, "feats.Tunnel Fighting":1, 
-  "gender":"Female", "heroicPath":"Faithful", "hitPoints":107, "intelligence":9, 
-  "levels.Defender":20, "name":"Heroic-Faithful 20", "race":"Dorn", 
+  "experience":206075, "feats.Agile":1, "feats.Blind-Fight":1, "feats.Magecraft (Hermetic)":1, 
+  "feats.Power Attack":1, "feats.Resigned To Death":1, "feats.Sense Nexus":1, "feats.Toughness":1, 
+  "feats.Tunnel Fighting":1, "gender":"Female", "heroicPath":"Faithful", "hitPoints":107, 
+  "intelligence":9, "levels.Defender":20, "name":"Heroic-Faithful 20", "race":"Dorn", 
   "selectableFeatures.Defender - Counterattack":1, "selectableFeatures.Defender - Cover Ally":1, 
   "selectableFeatures.Defender - Dodge Training":1, "selectableFeatures.Defender - Flurry Attack":1, 
   "selectableFeatures.Defender - Grappling Training":1, "selectableFeatures.Defender - Incredible Resilience":1, 
@@ -77,14 +77,14 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="FeatStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feat Count</b>: General: 7</td>
+        <td><b>Feat Count</b>: Fighter: 1; General: 7</td>
         <td><b>Selectable Feature Count</b>: Defender: 12</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Agile; Magecraft (Hermetic); Power Attack; Resigned To Death; Sense Nexus; Toughness; Tunnel Fighting</td>
+        <td><b>Feats</b>: Agile; Blind-Fight; Magecraft (Hermetic); Power Attack; Resigned To Death; Sense Nexus; Toughness; Tunnel Fighting</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Faithful Features</b>: Turn Undead; Wisdom Bonus</td>
         <td><b>Defender Features</b>: Armor Class Bonus; Armor Proficiency (Padded); Counterattack; Cover Ally; Defender Abilities; Defender Stunning Fist; Dodge Training; Flurry Attack; Grappling Training; Improved Grapple; Improved Unarmed Strike; Incredible Resilience; Incredible Speed Or Resilience; Incredible Speed; Masterful Strike; Offensive Training; One With The Weapon; Precise Strike; Rapid Strike; Retaliatory Strike; Speed Training; Weapon Proficiency (Club/Dagger/Dart/Farmer's Rope/Handaxe/Inutek/Light Hammer/Light Pick/Quarterstaff/Sap/Sickle/Throwing Axe/Sling/Great Sling)</td>
@@ -93,7 +93,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td><b>Feature Notes</b>:       <table id="FeatureNotes" style="width:100%">
       <tr style="text-align:center">
-        <td><i>Dorn Extra Feat: +1 Fighter Feat</i></td>
+        <td><i>Dorn Extra Feat: 1 Fighter Feat</i></td>
       </tr><tr style="text-align:center">
         <td><i>Incredible Speed Or Resilience: 5 selections</i></td>
       </tr></table>
@@ -196,6 +196,8 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Two-Handed Wield Damage Adjustment: +1</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
       </tr><tr style="text-align:center">
         <td>Counterattack: May take AOO on a foe miss 1/rd</td>
@@ -232,7 +234,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Turn Undead: R60' May turn or rebuke 2d6+21 HD of undead creatures of up to (d20+51)/3 HD 5/dy</td>
       </tr><tr style="text-align:center">
-        <td>Two-Handed Focus: +1 attack using weapon two-handed</td>
+        <td>Two-Handed Focus: +1 attack when using a weapon two-handed</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
@@ -250,7 +252,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Wisdom Will Adjustment: +4</i></td>
       </tr><tr style="text-align:center">
-        <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
+        <td>Cold Fortitude: +5 vs. cold/Takes half nonlethal damage from cold</td>
       </tr><tr style="text-align:center">
         <td>Resigned To Death: +4 vs. fear, suffers 1 step less intense on failure</td>
       </tr></table>

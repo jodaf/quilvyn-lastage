@@ -9,9 +9,9 @@ var attributes = {
   "_path":"ztest/lastage/class/channeler/spiritual 10", 
   "alignment":"Neutral", "armor":"None", "charisma":11, "constitution":12, 
   "dexterity":10, "experience":50993, "familiar.Toad":1, "familiarName":"Lordof", 
-  "feats.Craft Wand":1, "feats.Craft Wondrous Item":1, "feats.Endurance":1, "feats.Scribe Scroll":1, 
-  "feats.Shield Proficiency":1, "feats.Simple Weapon Proficiency":1, "feats.Spell Focus (Transmutation)":1, 
-  "feats.Spellcasting (Abjuration)":1, "feats.Spellcasting (Enchantment)":1, 
+  "feats.Blind-Fight":1, "feats.Craft Wand":1, "feats.Craft Wondrous Item":1, "feats.Endurance":1, 
+  "feats.Scribe Scroll":1, "feats.Shield Proficiency":1, "feats.Simple Weapon Proficiency":1, 
+  "feats.Spell Focus (Transmutation)":1, "feats.Spellcasting (Abjuration)":1, "feats.Spellcasting (Enchantment)":1, 
   "feats.Spellcasting (Transmutation)":1, "gender":"Male", "heroicPath":"Mountainborn", "hitPoints":29, 
   "intelligence":6, "levels.Spiritual Channeler":10, "name":"Class-Channeler-Spiritual 10", 
   "race":"Dorn", "selectableFeatures.Spiritual Channeler - Confident Effect":1, 
@@ -86,14 +86,14 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="FeatStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feat Count</b>: General: 4; Spellcasting: 3; Spiritual Channeler: 3</td>
+        <td><b>Feat Count</b>: Fighter: 1; General: 4; Spellcasting: 3; Spiritual Channeler: 3</td>
         <td><b>Selectable Feature Count</b>: Spiritual Channeler: 3</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Craft Wand; Craft Wondrous Item; Endurance; Scribe Scroll; Shield Proficiency; Simple Weapon Proficiency; Spell Focus (Transmutation); Spellcasting (Abjuration); Spellcasting (Enchantment); Spellcasting (Transmutation)</td>
+        <td><b>Feats</b>: Blind-Fight; Craft Wand; Craft Wondrous Item; Endurance; Scribe Scroll; Shield Proficiency; Simple Weapon Proficiency; Spell Focus (Transmutation); Spellcasting (Abjuration); Spellcasting (Enchantment); Spellcasting (Transmutation)</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Mountainborn Features</b>: Ambush (Extra Damage); Ambush; Constitution Bonus; Mountaineer; Rallying Cry</td>
         <td><b>Spiritual Channeler Features</b>: Art Of Magic; Bonus Spell Energy; Bonus Spells; Channeler Bonus Feats; Channeler Spellcasting; Confident Effect; Heightened Effect; Magecraft (Spiritual); Mastery Of Nature; Mastery Of Spirits; Mastery Of The Unnatural; Powerful Effect; Precise Effect; Specific Effect; Summon Familiar; Tradition Gift (Master Of Two Worlds); Universal Effect; Weapon Proficiency (Simple)</td>
@@ -106,7 +106,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Channeler Spellcasting: 3 Spellcasting feats</i></td>
       </tr><tr style="text-align:center">
-        <td><i>Dorn Extra Feat: +1 Fighter Feat</i></td>
+        <td><i>Dorn Extra Feat: 1 Fighter Feat</i></td>
       </tr><tr style="text-align:center">
         <td>Summon Familiar: Special bond and abilities</td>
       </tr></table>
@@ -209,6 +209,8 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Ambush (Extra Damage): R30' Allies gain +2 damage vs. flat-footed foes on surprise and 1st melee rd</td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
       </tr><tr style="text-align:center">
         <td>Confident Effect: +4 Mastery checks</td>
@@ -225,7 +227,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Specific Effect: May choose which individuals to affect w/Master Of Two Worlds</td>
       </tr><tr style="text-align:center">
-        <td>Two-Handed Focus: +1 attack using weapon two-handed</td>
+        <td>Two-Handed Focus: +1 attack when using a weapon two-handed</td>
       </tr><tr style="text-align:center">
         <td>Universal Effect: May use multiple Master Of Two Worlds powers simultaneously</td>
       </tr></table>
@@ -245,7 +247,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Wisdom Will Adjustment: +2</i></td>
       </tr><tr style="text-align:center">
-        <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
+        <td>Cold Fortitude: +5 vs. cold/Takes half nonlethal damage from cold</td>
       </tr><tr style="text-align:center">
         <td>Endurance: +4 extended physical action</td>
       </tr></table>

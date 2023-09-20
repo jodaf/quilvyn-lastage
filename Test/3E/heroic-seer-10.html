@@ -8,18 +8,18 @@
 var attributes = {
   "_path":"ztest/lastage/heroic/seer 10", 
   "alignment":"Lawful Neutral", "armor":"Padded", "charisma":14, "constitution":13, "dexterity":12, 
-  "experience":46346, "feats.Magecraft (Charismatic)":1, "feats.Orc Slayer":1, 
-  "feats.Spellcasting (Necromancy)":1, "feats.Toughness":1, "gender":"Female", "heroicPath":"Seer", "hitPoints":35, 
-  "intelligence":14, "languages.Black Tongue":1, "languages.Orcish":1, 
-  "languages.Trader's Tongue":1, "levels.Rogue":10, "name":"Heroic-Seer 10", "race":"Dorn", 
-  "selectableFeatures.Rogue - Skill Mastery":1, "shield":"None", "skills.Appraise":4, "skills.Balance":6, 
-  "skills.Craft (Alchemy)":2, "skills.Forgery":2, "skills.Gather Information":4, "skills.Handle Animal":6, 
-  "skills.Intimidate":13, "skills.Knowledge (Shadow)":6, "skills.Move Silently":13, 
-  "skills.Open Lock":13, "skills.Perform (Dance)":2, "skills.Search":9, "skills.Sense Motive":2, 
-  "skills.Sleight Of Hand":4, "skills.Speak Language":2, "skills.Spot":13, "skills.Swim":6, 
-  "skills.Tumble":13, "skills.Use Magic Device":8, "skills.Use Rope":2, 
-  "spells.Enervation(Ch4 Necr)":1, "strength":11, "weapons.Club":1, "weapons.Morningstar":1, 
-  "weapons.Rapier":1, "wisdom":9
+  "experience":46346, "feats.Blind-Fight":1, "feats.Magecraft (Charismatic)":1, 
+  "feats.Orc Slayer":1, "feats.Spellcasting (Necromancy)":1, "feats.Toughness":1, "gender":"Female", 
+  "heroicPath":"Seer", "hitPoints":35, "intelligence":14, "languages.Black Tongue":1, 
+  "languages.Orcish":1, "languages.Trader's Tongue":1, "levels.Rogue":10, "name":"Heroic-Seer 10", 
+  "race":"Dorn", "selectableFeatures.Rogue - Skill Mastery":1, "shield":"None", 
+  "skills.Appraise":4, "skills.Balance":6, "skills.Craft (Alchemy)":2, "skills.Forgery":2, 
+  "skills.Gather Information":4, "skills.Handle Animal":6, "skills.Intimidate":13, 
+  "skills.Knowledge (Shadow)":6, "skills.Move Silently":13, "skills.Open Lock":13, 
+  "skills.Perform (Dance)":2, "skills.Search":9, "skills.Sense Motive":2, "skills.Sleight Of Hand":4, 
+  "skills.Speak Language":2, "skills.Spot":13, "skills.Swim":6, "skills.Tumble":13, 
+  "skills.Use Magic Device":8, "skills.Use Rope":2, "spells.Enervation(Ch4 Necr)":1, "strength":11, 
+  "weapons.Club":1, "weapons.Morningstar":1, "weapons.Rapier":1, "wisdom":9
 };
   </script>
 </head>
@@ -67,21 +67,21 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="FeatStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feat Count</b>: General: 4</td>
+        <td><b>Feat Count</b>: Fighter: 1; General: 4</td>
         <td><b>Selectable Feature Count</b>: Rogue (Special Ability)</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Magecraft (Charismatic); Orc Slayer; Spellcasting (Necromancy); Toughness</td>
+        <td><b>Feats</b>: Blind-Fight; Magecraft (Charismatic); Orc Slayer; Spellcasting (Necromancy); Toughness</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Seer Features</b>: Seer Sight</td>
         <td><b>Rogue Features</b>: Armor Proficiency (Light); Evasion; Improved Uncanny Dodge; Skill Mastery; Sneak Attack; Trap Sense; Trapfinding; Uncanny Dodge; Weapon Proficiency (Simple/Hand Crossbow/Rapier/Sap/Shortbow/Short Sword)</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
-      <td><b>Feature Notes</b>: <i>Dorn Extra Feat: +1 Fighter Feat</i></td>
+      <td><b>Feature Notes</b>: <i>Dorn Extra Feat: 1 Fighter Feat</i></td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
@@ -194,6 +194,8 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Toughness: +3 HP</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
       </tr><tr style="text-align:center">
         <td>Improved Uncanny Dodge: Cannot be flanked, sneak attack only by rogue level 14+</td>
@@ -202,7 +204,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Sneak Attack: Hit inflicts +5d6 HP when foe is surprised or flanked</td>
       </tr><tr style="text-align:center">
-        <td>Two-Handed Focus: +1 attack using weapon two-handed</td>
+        <td>Two-Handed Focus: +1 attack when using a weapon two-handed</td>
       </tr><tr style="text-align:center">
         <td>Uncanny Dodge: Always adds Dexterity modifier to AC</td>
       </tr></table>
@@ -224,7 +226,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Wisdom Will Adjustment: -1</i></td>
       </tr><tr style="text-align:center">
-        <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
+        <td>Cold Fortitude: +5 vs. cold/Takes half nonlethal damage from cold</td>
       </tr><tr style="text-align:center">
         <td>Evasion: Reflex save yields no damage instead of half</td>
       </tr><tr style="text-align:center">

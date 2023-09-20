@@ -9,10 +9,10 @@ var attributes = {
   "_path":"ztest/lastage/npc/legate 20", 
   "alignment":"Chaotic Evil", "animalCompanion.Hawk":1, "animalCompanionName":"Opsti", "armor":"Leather", 
   "charisma":16, "constitution":11, "dexterity":9, "experience":193289, 
-  "feats.Empower Spell":1, "feats.Enlarge Spell":1, "feats.Eschew Materials":1, "feats.Forge Ring":1, 
-  "feats.Iron Will":1, "feats.Self-Sufficient":1, "feats.Widen Spell":1, "gender":"Female", 
-  "heroicPath":"None", "hitPoints":92, "intelligence":15, "languages.Patrol Sign":1, 
-  "name":"Npc-Legate 20", "npc.Legate":20, "race":"Dorn", 
+  "feats.Blind-Fight":1, "feats.Empower Spell":1, "feats.Enlarge Spell":1, 
+  "feats.Eschew Materials":1, "feats.Forge Ring":1, "feats.Iron Will":1, "feats.Self-Sufficient":1, 
+  "feats.Widen Spell":1, "gender":"Female", "heroicPath":"None", "hitPoints":92, "intelligence":15, 
+  "languages.Patrol Sign":1, "name":"Npc-Legate 20", "npc.Legate":20, "race":"Dorn", 
   "selectableFeatures.Legate - Death Domain":1, "selectableFeatures.Legate - War Domain":1, "shield":"Buckler", 
   "skills.Balance":2, "skills.Concentration":23, "skills.Craft (Weapons)":2, 
   "skills.Diplomacy":23, "skills.Handle Animal":13, "skills.Heal":23, "skills.Intimidate":4, 
@@ -87,14 +87,14 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="FeatStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feat Count</b>: General: 7</td>
+        <td><b>Feat Count</b>: Fighter: 1; General: 7</td>
         <td><b>Selectable Feature Count</b>: Legate (Domain): 2</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Empower Spell; Enlarge Spell; Eschew Materials; Forge Ring; Iron Will; Self-Sufficient; Widen Spell</td>
+        <td><b>Feats</b>: Blind-Fight; Empower Spell; Enlarge Spell; Eschew Materials; Forge Ring; Iron Will; Self-Sufficient; Widen Spell</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Legate Features</b>: Armor Proficiency (Heavy); Astirax Companion; Deadly Touch; Death Domain; Shield Proficiency; Spontaneous Legate Spell; Temple Dependency; Turn Undead; War Domain; Weapon Of War; Weapon Proficiency (Simple)</td>
       </tr></table>
@@ -102,7 +102,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td><b>Feature Notes</b>:       <table id="FeatureNotes" style="width:100%">
       <tr style="text-align:center">
-        <td><i>Dorn Extra Feat: +1 Fighter Feat</i></td>
+        <td><i>Dorn Extra Feat: 1 Fighter Feat</i></td>
       </tr><tr style="text-align:center">
         <td><i>Weapon Of War: Weapon Proficiency (Longsword)/Weapon Focus (Longsword)</i></td>
       </tr><tr style="text-align:center">
@@ -205,11 +205,13 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Weapon Focus (Longsword): +1 Longsword Attack Modifier</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
       </tr><tr style="text-align:center">
         <td>Turn Undead: R60' May turn or rebuke 2d6+23 HD of undead creatures of up to (d20+53)/3 HD 6/dy</td>
       </tr><tr style="text-align:center">
-        <td>Two-Handed Focus: +1 attack using weapon two-handed</td>
+        <td>Two-Handed Focus: +1 attack when using a weapon two-handed</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
@@ -229,7 +231,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Wisdom Will Adjustment: +2</i></td>
       </tr><tr style="text-align:center">
-        <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
+        <td>Cold Fortitude: +5 vs. cold/Takes half nonlethal damage from cold</td>
       </tr></table>
 </td>
     </tr></table>
@@ -431,15 +433,15 @@ var attributes = {
   </tr><tr style="text-align:center">
     <td><b>Companion Notes</b>:     <table id="CompanionNotes" style="width:100%">
     <tr style="text-align:center">
-      <td>Companion Empathy: Continuous emotional link w/no range limit</td>
+      <td>Companion Empathy: May maintain an emotional link w/no range limit</td>
     </tr><tr style="text-align:center">
       <td>Companion Evasion: Reflex save yields no damage instead of half</td>
     </tr><tr style="text-align:center">
       <td>Empathic Link: May share emotions up to 1 mile</td>
     </tr><tr style="text-align:center">
-      <td>Enhanced Sense: +10 mile channeled event detection</td>
+      <td>Enhanced Sense: +10 mile range for detecting channeled events</td>
     </tr><tr style="text-align:center">
-      <td>Telepathy: R100' Companion-controlled telepathic communication</td>
+      <td>Telepathy: R100' Companion can establish and control telepathic communication</td>
     </tr></table>
 </td>
   </tr></table>

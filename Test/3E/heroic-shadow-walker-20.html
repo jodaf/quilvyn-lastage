@@ -8,16 +8,17 @@
 var attributes = {
   "_path":"ztest/lastage/heroic/shadow walker 20", 
   "alignment":"Neutral", "armor":"Leather", "charisma":10, "constitution":14, "dexterity":12, 
-  "experience":205361, "feats.Lucky":1, "feats.Magecraft (Charismatic)":1, "feats.Negotiator":1, 
-  "feats.Power Reservoir":1, "feats.Spell Focus (Necromancy)":1, "feats.Spellcasting (Necromancy)":1, 
-  "feats.Tower Shield Proficiency":1, "gender":"Female", "heroicPath":"Shadow Walker", "hitPoints":102, 
-  "intelligence":14, "languages.Halfling":1, "levels.Barbarian":20, 
-  "name":"Heroic-Shadow Walker 20", "race":"Dorn", "shield":"None", "skills.Craft (Traps)":23, 
-  "skills.Disable Device":23, "skills.Handle Animal":2, "skills.Hide":1, "skills.Intimidate":23, 
-  "skills.Profession (Herbalist)":2, "skills.Ride":11, "skills.Sense Motive":22, "skills.Survival":11, 
-  "skills.Swim":20, "spells.Cure Light Wounds(B1 Conj)":1, "spells.Dancing Lights(B0 Evoc)":1, 
-  "spells.Mending(B0 Tran)":1, "spells.Read Magic(B0 Divi)":1, "strength":14, "weapons.Club":1, 
-  "weapons.Rapier":1, "weapons.Scythe":1, "wisdom":9
+  "experience":205361, "feats.Blind-Fight":1, "feats.Lucky":1, "feats.Magecraft (Charismatic)":1, 
+  "feats.Negotiator":1, "feats.Power Reservoir":1, "feats.Spell Focus (Necromancy)":1, 
+  "feats.Spellcasting (Necromancy)":1, "feats.Tower Shield Proficiency":1, "gender":"Female", 
+  "heroicPath":"Shadow Walker", "hitPoints":102, "intelligence":14, "languages.Halfling":1, 
+  "levels.Barbarian":20, "name":"Heroic-Shadow Walker 20", "race":"Dorn", "shield":"None", 
+  "skills.Craft (Traps)":23, "skills.Disable Device":23, "skills.Handle Animal":2, "skills.Hide":1, 
+  "skills.Intimidate":23, "skills.Profession (Herbalist)":2, "skills.Ride":11, 
+  "skills.Sense Motive":22, "skills.Survival":11, "skills.Swim":20, 
+  "spells.Cure Light Wounds(B1 Conj)":1, "spells.Dancing Lights(B0 Evoc)":1, "spells.Mending(B0 Tran)":1, 
+  "spells.Read Magic(B0 Divi)":1, "strength":14, "weapons.Club":1, "weapons.Rapier":1, "weapons.Scythe":1, 
+  "wisdom":9
 };
   </script>
 </head>
@@ -65,13 +66,13 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="FeatStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feat Count</b>: General: 7</td>
+        <td><b>Feat Count</b>: Fighter: 1; General: 7</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Lucky; Magecraft (Charismatic); Negotiator; Power Reservoir; Spell Focus (Necromancy); Spellcasting (Necromancy); Tower Shield Proficiency</td>
+        <td><b>Feats</b>: Blind-Fight; Lucky; Magecraft (Charismatic); Negotiator; Power Reservoir; Spell Focus (Necromancy); Spellcasting (Necromancy); Tower Shield Proficiency</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Shadow Walker Features</b>: Darkvision; Hide In Plain Sight; Shadow Jump; Shadow Veil</td>
         <td><b>Barbarian Features</b>: Armor Proficiency (Medium); Damage Reduction; Fast Movement; Greater Rage; Illiteracy; Improved Uncanny Dodge; Indomitable Will; Mighty Rage; Rage; Shield Proficiency; Tireless Rage; Trap Sense; Uncanny Dodge; Weapon Proficiency (Martial)</td>
@@ -80,7 +81,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td><b>Feature Notes</b>:       <table id="FeatureNotes" style="width:100%">
       <tr style="text-align:center">
-        <td><i>Dorn Extra Feat: +1 Fighter Feat</i></td>
+        <td><i>Dorn Extra Feat: 1 Fighter Feat</i></td>
       </tr><tr style="text-align:center">
         <td>Darkvision: 60' b/w vision in darkness</td>
       </tr><tr style="text-align:center">
@@ -190,6 +191,8 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Two-Handed Wield Damage Adjustment: +1</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
       </tr><tr style="text-align:center">
         <td>Greater Rage: Gains +6 Strength, +6 Constitution, +3 Will during rage</td>
@@ -202,7 +205,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Tireless Rage: Suffers no fatigue after rage</td>
       </tr><tr style="text-align:center">
-        <td>Two-Handed Focus: +1 attack using weapon two-handed</td>
+        <td>Two-Handed Focus: +1 attack when using a weapon two-handed</td>
       </tr><tr style="text-align:center">
         <td>Uncanny Dodge: Always adds Dexterity modifier to AC</td>
       </tr></table>
@@ -224,7 +227,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Wisdom Will Adjustment: -1</i></td>
       </tr><tr style="text-align:center">
-        <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
+        <td>Cold Fortitude: +5 vs. cold/Takes half nonlethal damage from cold</td>
       </tr><tr style="text-align:center">
         <td>Indomitable Will: +4 Will vs. enchantment during rage</td>
       </tr><tr style="text-align:center">

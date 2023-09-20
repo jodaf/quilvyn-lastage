@@ -8,15 +8,16 @@
 var attributes = {
   "_path":"ztest/lastage/heroic/jack 10", 
   "alignment":"Chaotic Good", "armor":"Chainmail", "charisma":12, "constitution":16, "dexterity":6, 
-  "experience":50832, "feats.Diligent":1, "feats.Lightning Reflexes":1, "feats.Pikeman":1, 
-  "feats.Quick Draw":1, "feats.Skill Focus (Profession (Soldier))":1, "gender":"Female", 
-  "heroicPath":"Jack-Of-All-Trades", "hitPoints":64, "intelligence":13, "levels.Barbarian":10, 
-  "name":"Heroic-Jack 10", "race":"Dorn", "shield":"Light Steel", "skills.Craft (Traps)":13, 
-  "skills.Decipher Script":1, "skills.Handle Animal":13, "skills.Listen":13, "skills.Perform (Comedy)":6, 
-  "skills.Profession (Sailor)":6, "skills.Profession (Soldier)":1, "skills.Spot":6, "skills.Survival":6, 
-  "spells.Ghost Sound(Ch0 Illu)":1, "spells.Locate Object(Ch2 Divi)":1, 
-  "spells.Ray Of Enfeeblement(Ch1 Necr)":1, "spells.Virtue(Ch0 Tran)":1, "strength":12, "weapons.Composite Shortbow":1, 
-  "weapons.Farmer's Rope":1, "weapons.Light Shield":1, "wisdom":13
+  "experience":50832, "feats.Blind-Fight":1, "feats.Diligent":1, "feats.Lightning Reflexes":1, 
+  "feats.Pikeman":1, "feats.Quick Draw":1, "feats.Skill Focus (Profession (Soldier))":1, 
+  "gender":"Female", "heroicPath":"Jack-Of-All-Trades", "hitPoints":64, "intelligence":13, 
+  "levels.Barbarian":10, "name":"Heroic-Jack 10", "race":"Dorn", "shield":"Light Steel", 
+  "skills.Craft (Traps)":13, "skills.Decipher Script":1, "skills.Handle Animal":13, "skills.Listen":13, 
+  "skills.Perform (Comedy)":6, "skills.Profession (Sailor)":6, "skills.Profession (Soldier)":1, 
+  "skills.Spot":6, "skills.Survival":6, "spells.Ghost Sound(Ch0 Illu)":1, 
+  "spells.Locate Object(Ch2 Divi)":1, "spells.Ray Of Enfeeblement(Ch1 Necr)":1, "spells.Virtue(Ch0 Tran)":1, 
+  "strength":12, "weapons.Composite Shortbow":1, "weapons.Farmer's Rope":1, 
+  "weapons.Light Shield":1, "wisdom":13
 };
   </script>
 </head>
@@ -72,13 +73,13 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="FeatStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feat Count</b>: General: 5</td>
+        <td><b>Feat Count</b>: Fighter: 1; General: 5</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Diligent; Lightning Reflexes; Pikeman; Quick Draw; Skill Focus (Profession (Soldier))</td>
+        <td><b>Feats</b>: Blind-Fight; Diligent; Lightning Reflexes; Pikeman; Quick Draw; Skill Focus (Profession (Soldier))</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Jack-Of-All-Trades Features</b>: Ability Boost; Jack-Of-All-Trades Bonus Feats; Save Boost; Skill Boost; Spell Choice; Spontaneous Spell</td>
         <td><b>Barbarian Features</b>: Armor Proficiency (Medium); Damage Reduction; Fast Movement; Illiteracy; Improved Uncanny Dodge; Rage; Shield Proficiency; Trap Sense; Uncanny Dodge; Weapon Proficiency (Martial)</td>
@@ -87,7 +88,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td><b>Feature Notes</b>:       <table id="FeatureNotes" style="width:100%">
       <tr style="text-align:center">
-        <td><i>Dorn Extra Feat: +1 Fighter Feat</i></td>
+        <td><i>Dorn Extra Feat: 1 Fighter Feat</i></td>
       </tr><tr style="text-align:center">
         <td><i>Jack-Of-All-Trades Bonus Feats: +1 General Feat</i></td>
       </tr></table>
@@ -191,6 +192,8 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Strength Damage Adjustment: +2</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
       </tr><tr style="text-align:center">
         <td>Improved Uncanny Dodge: Cannot be flanked, sneak attack only by rogue level 14+</td>
@@ -201,7 +204,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Rage: Gains +4 Strength, +4 Constitution, +2 Will and suffers -2 AC for 8 rd 3/dy</td>
       </tr><tr style="text-align:center">
-        <td>Two-Handed Focus: +1 attack using weapon two-handed</td>
+        <td>Two-Handed Focus: +1 attack when using a weapon two-handed</td>
       </tr><tr style="text-align:center">
         <td>Uncanny Dodge: Always adds Dexterity modifier to AC</td>
       </tr></table>
@@ -225,7 +228,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Wisdom Will Adjustment: +1</i></td>
       </tr><tr style="text-align:center">
-        <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
+        <td>Cold Fortitude: +5 vs. cold/Takes half nonlethal damage from cold</td>
       </tr><tr style="text-align:center">
         <td>Save Boost: 2 to distribute</td>
       </tr><tr style="text-align:center">

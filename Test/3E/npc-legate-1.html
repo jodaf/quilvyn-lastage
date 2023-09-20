@@ -8,16 +8,17 @@
 var attributes = {
   "_path":"ztest/lastage/npc/legate 1", 
   "alignment":"Neutral Good", "armor":"Splint Mail", "charisma":11, "constitution":15, "dexterity":11, 
-  "experience":743, "feats.Spell Penetration":1, "gender":"Female", "heroicPath":"None", 
-  "hitPoints":8, "intelligence":15, "languages.Black Tongue":1, "languages.Halfling":1, 
-  "languages.Patrol Sign":1, "languages.Sylvan":1, "languages.Trader's Tongue":1, "name":"Npc-Legate 1", 
-  "npc.Legate":1, "race":"Dorn", "selectableFeatures.Legate - Destruction Domain":1, 
-  "selectableFeatures.Legate - Evil Domain":1, "shield":"None", "skills.Climb":2, "skills.Concentration":2, 
-  "skills.Craft (Alchemy)":2, "skills.Disguise":2, "skills.Forgery":4, "skills.Handle Animal":4, 
-  "skills.Heal":2, "skills.Knowledge (Arcana)":2, "skills.Speak Language":4, 
-  "spells.Detect Evil(C1 Divi)":1, "spells.Detect Magic(C0 Divi)":1, "spells.Guidance(C0 Divi)":1, 
-  "spells.Inflict Minor Wounds(C0 Necr)":1, "spells.Protection From Good(Evil1 Abju)":1, "strength":10, 
-  "weapons.Farmer's Rope":1, "weapons.Heavy Crossbow":1, "weapons.Spear":1, "wisdom":15
+  "experience":743, "feats.Blind-Fight":1, "feats.Spell Penetration":1, "gender":"Female", 
+  "heroicPath":"None", "hitPoints":8, "intelligence":15, "languages.Black Tongue":1, 
+  "languages.Halfling":1, "languages.Patrol Sign":1, "languages.Sylvan":1, 
+  "languages.Trader's Tongue":1, "name":"Npc-Legate 1", "npc.Legate":1, "race":"Dorn", 
+  "selectableFeatures.Legate - Destruction Domain":1, "selectableFeatures.Legate - Evil Domain":1, "shield":"None", 
+  "skills.Climb":2, "skills.Concentration":2, "skills.Craft (Alchemy)":2, "skills.Disguise":2, 
+  "skills.Forgery":4, "skills.Handle Animal":4, "skills.Heal":2, "skills.Knowledge (Arcana)":2, 
+  "skills.Speak Language":4, "spells.Detect Evil(C1 Divi)":1, "spells.Detect Magic(C0 Divi)":1, 
+  "spells.Guidance(C0 Divi)":1, "spells.Inflict Minor Wounds(C0 Necr)":1, 
+  "spells.Protection From Good(Evil1 Abju)":1, "strength":10, "weapons.Farmer's Rope":1, "weapons.Heavy Crossbow":1, 
+  "weapons.Spear":1, "wisdom":15
 };
   </script>
 </head>
@@ -71,20 +72,20 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="FeatStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feat Count</b>: General</td>
+        <td><b>Feat Count</b>: Fighter; General</td>
         <td><b>Selectable Feature Count</b>: Legate (Domain): 2</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Spell Penetration</td>
+        <td><b>Feats</b>: Blind-Fight; Spell Penetration</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Legate Features</b>: Armor Proficiency (Heavy); Destruction Domain; Empowered Evil; Evil Domain; Shield Proficiency; Smite; Spontaneous Legate Spell; Temple Dependency; Turn Undead; Weapon Proficiency (Simple)</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
-      <td><b>Feature Notes</b>: <i>Dorn Extra Feat: +1 Fighter Feat</i></td>
+      <td><b>Feature Notes</b>: <i>Dorn Extra Feat: 1 Fighter Feat</i></td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
@@ -175,13 +176,15 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Strength Damage Adjustment: +1</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
       </tr><tr style="text-align:center">
         <td>Smite: +4 attack, +1 damage 1/dy</td>
       </tr><tr style="text-align:center">
         <td>Turn Undead: R60' May turn or rebuke 2d6+1 HD of undead creatures of up to (d20-7)/3 HD 3/dy</td>
       </tr><tr style="text-align:center">
-        <td>Two-Handed Focus: +1 attack using weapon two-handed</td>
+        <td>Two-Handed Focus: +1 attack when using a weapon two-handed</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
@@ -199,7 +202,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Wisdom Will Adjustment: +2</i></td>
       </tr><tr style="text-align:center">
-        <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
+        <td>Cold Fortitude: +5 vs. cold/Takes half nonlethal damage from cold</td>
       </tr></table>
 </td>
     </tr></table>

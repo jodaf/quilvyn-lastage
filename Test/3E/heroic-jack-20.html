@@ -9,12 +9,12 @@ var attributes = {
   "_path":"ztest/lastage/heroic/jack 20", 
   "alignment":"Neutral Evil", "armor":"Chain Shirt", "charisma":14, "constitution":12, "dexterity":11, 
   "experience":206629, "feats.Alertness":1, "feats.Armor Proficiency (Heavy)":1, 
-  "feats.Born Of The Grave":1, "feats.Improved Sunder":1, "feats.Iron Will":1, "feats.Natural Healer":1, 
-  "feats.Nimble Fingers":1, "feats.Power Attack":1, "feats.Sense Nexus":1, "gender":"Male", 
-  "heroicPath":"Jack-Of-All-Trades", "hitPoints":147, "intelligence":7, "levels.Barbarian":20, 
-  "name":"Heroic-Jack 20", "race":"Dorn", "shield":"Buckler", "skills.Craft (Weapons)":11, 
-  "skills.Handle Animal":2, "skills.Intimidate":2, "skills.Jump":23, "skills.Open Lock":1, 
-  "skills.Spot":1, "skills.Swim":6, "spells.Arcane Lock(Ch2 Abju)":1, 
+  "feats.Blind-Fight":1, "feats.Born Of The Grave":1, "feats.Improved Sunder":1, "feats.Iron Will":1, 
+  "feats.Natural Healer":1, "feats.Nimble Fingers":1, "feats.Power Attack":1, "feats.Sense Nexus":1, 
+  "gender":"Male", "heroicPath":"Jack-Of-All-Trades", "hitPoints":147, "intelligence":7, 
+  "levels.Barbarian":20, "name":"Heroic-Jack 20", "race":"Dorn", "shield":"Buckler", 
+  "skills.Craft (Weapons)":11, "skills.Handle Animal":2, "skills.Intimidate":2, "skills.Jump":23, 
+  "skills.Open Lock":1, "skills.Spot":1, "skills.Swim":6, "spells.Arcane Lock(Ch2 Abju)":1, 
   "spells.Detect Magic(Ch0 Divi)":1, "spells.Entangle(Ch1 Tran)":1, "spells.Faerie Fire(Ch1 Evoc)":1, 
   "spells.Gaseous Form(Ch3 Tran)":1, "spells.Glitterdust(Ch2 Conj)":1, "spells.Know Direction(Ch0 Divi)":1, 
   "strength":16, "weapons.Greatsword":1, "weapons.Light Pick":1, "weapons.Longsword":1, 
@@ -72,13 +72,13 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="FeatStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feat Count</b>: General: 9</td>
+        <td><b>Feat Count</b>: Fighter: 1; General: 9</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Alertness; Armor Proficiency (Heavy); Born Of The Grave; Improved Sunder; Iron Will; Natural Healer; Nimble Fingers; Power Attack; Sense Nexus</td>
+        <td><b>Feats</b>: Alertness; Armor Proficiency (Heavy); Blind-Fight; Born Of The Grave; Improved Sunder; Iron Will; Natural Healer; Nimble Fingers; Power Attack; Sense Nexus</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Jack-Of-All-Trades Features</b>: Ability Boost; Jack-Of-All-Trades Bonus Feats; Save Boost; Skill Boost; Spell Choice; Spontaneous Spell</td>
         <td><b>Barbarian Features</b>: Armor Proficiency (Medium); Damage Reduction; Fast Movement; Greater Rage; Illiteracy; Improved Uncanny Dodge; Indomitable Will; Mighty Rage; Rage; Shield Proficiency; Tireless Rage; Trap Sense; Uncanny Dodge; Weapon Proficiency (Martial)</td>
@@ -87,7 +87,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td><b>Feature Notes</b>:       <table id="FeatureNotes" style="width:100%">
       <tr style="text-align:center">
-        <td><i>Dorn Extra Feat: +1 Fighter Feat</i></td>
+        <td><i>Dorn Extra Feat: 1 Fighter Feat</i></td>
       </tr><tr style="text-align:center">
         <td><i>Jack-Of-All-Trades Bonus Feats: +2 General Feat</i></td>
       </tr></table>
@@ -191,6 +191,8 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Two-handed Weapon With Buckler Penalty: -1 attack and AC</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
       </tr><tr style="text-align:center">
         <td>Greater Rage: Gains +6 Strength, +6 Constitution, +3 Will during rage</td>
@@ -207,7 +209,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Tireless Rage: Suffers no fatigue after rage</td>
       </tr><tr style="text-align:center">
-        <td>Two-Handed Focus: +1 attack using weapon two-handed</td>
+        <td>Two-Handed Focus: +1 attack when using a weapon two-handed</td>
       </tr><tr style="text-align:center">
         <td>Uncanny Dodge: Always adds Dexterity modifier to AC</td>
       </tr></table>
@@ -229,7 +231,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Wisdom Will Adjustment: +1</i></td>
       </tr><tr style="text-align:center">
-        <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
+        <td>Cold Fortitude: +5 vs. cold/Takes half nonlethal damage from cold</td>
       </tr><tr style="text-align:center">
         <td>Indomitable Will: +4 Will vs. enchantment during rage</td>
       </tr><tr style="text-align:center">

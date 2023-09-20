@@ -8,16 +8,16 @@
 var attributes = {
   "_path":"ztest/lastage/class/channeler/hermetic 1", 
   "alignment":"Neutral Good", "armor":"None", "charisma":11, 
-  "constitution":14, "dexterity":7, "experience":587, "feats.Pikeman":1, "gender":"Male", 
-  "heroicPath":"Healer", "hitPoints":6, "intelligence":15, "languages.Jungle Mouth":1, 
-  "languages.Patrol Sign":1, "levels.Hermetic Channeler":1, "name":"Class-Channeler-Hermetic 1", 
-  "race":"Dorn", "shield":"None", "skills.Concentration":2, "skills.Craft (Armor)":2, 
-  "skills.Craft (Traps)":4, "skills.Escape Artist":4, "skills.Knowledge (Old Gods)":2, 
-  "skills.Perform (Oratory)":2, "skills.Profession (Sailor)":4, "skills.Use Magic Device":2, 
-  "skills.Use Rope":2, "spells.Color Spray(W1 Illu)":1, "spells.Cure Light Wounds(Healer1 Conj)":1, 
-  "spells.Detect Magic(W0 Divi)":1, "spells.Detect Poison(W0 Divi)":1, "spells.Mending(W0 Tran)":1, 
-  "strength":13, "weapons.Dart":1, "weapons.Heavy Mace":1, "weapons.Punching Dagger":1, 
-  "wisdom":14
+  "constitution":14, "dexterity":7, "experience":587, "feats.Blind-Fight":1, "feats.Pikeman":1, 
+  "gender":"Male", "heroicPath":"Healer", "hitPoints":6, "intelligence":15, 
+  "languages.Jungle Mouth":1, "languages.Patrol Sign":1, "levels.Hermetic Channeler":1, 
+  "name":"Class-Channeler-Hermetic 1", "race":"Dorn", "shield":"None", "skills.Concentration":2, 
+  "skills.Craft (Armor)":2, "skills.Craft (Traps)":4, "skills.Escape Artist":4, 
+  "skills.Knowledge (Old Gods)":2, "skills.Perform (Oratory)":2, "skills.Profession (Sailor)":4, 
+  "skills.Use Magic Device":2, "skills.Use Rope":2, "spells.Color Spray(W1 Illu)":1, 
+  "spells.Cure Light Wounds(Healer1 Conj)":1, "spells.Detect Magic(W0 Divi)":1, "spells.Detect Poison(W0 Divi)":1, 
+  "spells.Mending(W0 Tran)":1, "strength":13, "weapons.Dart":1, "weapons.Heavy Mace":1, 
+  "weapons.Punching Dagger":1, "wisdom":14
 };
   </script>
 </head>
@@ -65,19 +65,19 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="FeatStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feat Count</b>: General</td>
+        <td><b>Feat Count</b>: Fighter; General</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Pikeman</td>
+        <td><b>Feats</b>: Blind-Fight; Pikeman</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Hermetic Channeler Features</b>: Art Of Magic; Bonus Spell Energy; Literate; Magecraft (Hermetic); Weapon Proficiency (Simple)</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
-      <td><b>Feature Notes</b>: <i>Dorn Extra Feat: +1 Fighter Feat</i></td>
+      <td><b>Feature Notes</b>: <i>Dorn Extra Feat: 1 Fighter Feat</i></td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
@@ -170,11 +170,13 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Two-Handed Wield Damage Adjustment: +1</i></td>
       </tr><tr style="text-align:center">
+        <td>Blind-Fight: May reroll miss due to concealment/Invisible foe gains no melee bonus/Suffers half penalty for impaired vision</td>
+      </tr><tr style="text-align:center">
         <td>Brotherhood: +1 attack when fighting among 5+ Dorns</td>
       </tr><tr style="text-align:center">
         <td>Pikeman: May receive a charge as a move action</td>
       </tr><tr style="text-align:center">
-        <td>Two-Handed Focus: +1 attack using weapon two-handed</td>
+        <td>Two-Handed Focus: +1 attack when using a weapon two-handed</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
@@ -194,7 +196,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Wisdom Will Adjustment: +2</i></td>
       </tr><tr style="text-align:center">
-        <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
+        <td>Cold Fortitude: +5 vs. cold/Takes half nonlethal damage from cold</td>
       </tr></table>
 </td>
     </tr></table>

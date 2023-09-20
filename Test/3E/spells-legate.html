@@ -9,9 +9,9 @@ var attributes = {
   "_path":"ztest/lastage/spells/legate", 
   "alignment":"Lawful Good", "animalCompanion.Hawk":1, "animalCompanionName":"Goph", "armor":"None", 
   "charisma":14, "constitution":12, "dexterity":9, "experience":59540, "feats.Athletic":1, 
-  "feats.Blind-Fight":1, "feats.Caste Status":1, "feats.Combat Reflexes":1, "gender":"Male", 
-  "heroicPath":"None", "hitPoints":48, "intelligence":14, "languages.Black Tongue":1, 
-  "name":"Spells-Legate", "npc.Legate":11, "race":"Dorn", 
+  "feats.Blind-Fight":1, "feats.Brew Potion":1, "feats.Caste Status":1, "feats.Combat Reflexes":1, 
+  "gender":"Male", "heroicPath":"None", "hitPoints":48, "intelligence":14, 
+  "languages.Black Tongue":1, "name":"Spells-Legate", "npc.Legate":11, "race":"Dorn", 
   "selectableFeatures.Legate - Death Domain":1, "selectableFeatures.Legate - Magic Domain":1, "shield":"Light Wooden", 
   "skills.Bluff":14, "skills.Climb":1, "skills.Craft (Traps)":2, "skills.Decipher Script":3, 
   "skills.Diplomacy":14, "skills.Handle Animal":14, "skills.Heal":2, "skills.Knowledge (Nobility)":6, 
@@ -152,14 +152,14 @@ var attributes = {
     <tr style="text-align:center">
       <td>      <table id="FeatStats" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feat Count</b>: General: 4</td>
+        <td><b>Feat Count</b>: Fighter: 1; General: 4</td>
         <td><b>Selectable Feature Count</b>: Legate (Domain): 2</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
       <td>      <table id="FeatLists" style="width:100%">
       <tr style="text-align:center">
-        <td><b>Feats</b>: Athletic; Blind-Fight; Caste Status; Combat Reflexes</td>
+        <td><b>Feats</b>: Athletic; Blind-Fight; Brew Potion; Caste Status; Combat Reflexes</td>
         <td><b>Dorn Features</b>: Brotherhood; Cold Fortitude; Dorn Ability Adjustment; Dorn Extra Feat; Dorn Skill Bonus; Favored Region (Northlands); Fortitude Bonus; Two-Handed Focus; Weapon Familiarity (Bastard Sword/Dornish Horse Spear)</td>
         <td><b>Legate Features</b>: Arcane Adept; Armor Proficiency (Heavy); Astirax Companion; Deadly Touch; Death Domain; Magic Domain; Shield Proficiency; Spontaneous Legate Spell; Temple Dependency; Turn Undead; Weapon Proficiency (Simple)</td>
       </tr></table>
@@ -167,7 +167,7 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td><b>Feature Notes</b>:       <table id="FeatureNotes" style="width:100%">
       <tr style="text-align:center">
-        <td><i>Dorn Extra Feat: +1 Fighter Feat</i></td>
+        <td><i>Dorn Extra Feat: 1 Fighter Feat</i></td>
       </tr><tr style="text-align:center">
         <td>Astirax Companion: Special bond and abilities</td>
       </tr><tr style="text-align:center">
@@ -280,7 +280,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td>Turn Undead: R60' May turn or rebuke 2d6+13 HD of undead creatures of up to (d20+25)/3 HD 5/dy</td>
       </tr><tr style="text-align:center">
-        <td>Two-Handed Focus: +1 attack using weapon two-handed</td>
+        <td>Two-Handed Focus: +1 attack when using a weapon two-handed</td>
       </tr></table>
 </td>
     </tr><tr style="text-align:center">
@@ -300,7 +300,7 @@ var attributes = {
       </tr><tr style="text-align:center">
         <td><i>Wisdom Will Adjustment: +1</i></td>
       </tr><tr style="text-align:center">
-        <td>Cold Fortitude: +5 cold, half nonlethal damage</td>
+        <td>Cold Fortitude: +5 vs. cold/Takes half nonlethal damage from cold</td>
       </tr></table>
 </td>
     </tr></table>
@@ -809,6 +809,8 @@ var attributes = {
     </tr><tr style="text-align:center">
       <td>Arcane Adept: May use a magic device as Ch5</td>
     </tr><tr style="text-align:center">
+      <td>Brew Potion: May create potion for up to 3rd level spell</td>
+    </tr><tr style="text-align:center">
       <td>Deadly Touch: Touch kills target w/up to 11d6 HP 1/dy</td>
     </tr><tr style="text-align:center">
       <td>Spontaneous Legate Spell: May cast <i>Inflict</i> in place of known spell</td>
@@ -856,9 +858,9 @@ var attributes = {
     <tr style="text-align:center">
       <td>Empathic Link: May share emotions up to 1 mile</td>
     </tr><tr style="text-align:center">
-      <td>Enhanced Sense: +5 mile channeled event detection</td>
+      <td>Enhanced Sense: +5 mile range for detecting channeled events</td>
     </tr><tr style="text-align:center">
-      <td>Telepathy: R100' Companion-controlled telepathic communication</td>
+      <td>Telepathy: R100' Companion can establish and control telepathic communication</td>
     </tr></table>
 </td>
   </tr></table>
