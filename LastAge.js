@@ -1061,17 +1061,21 @@ LastAge.FEATURES_ADDED = {
     'Note="Gains dbl Spell Energy for first two Constitution points lost"',
   'Born Of Duty':
     'Section=magic ' +
-    'Note="R100\' Cry inflicts shaken on undead (DC %V Will neg) and gives Dorn +2 vs. fear and enchantment 1/dy"',
+    'Note="R100\' Cry inflicts shaken on undead (DC %{level//2+10+charismaModifier} Will neg) and gives Dorn +2 vs. fear and enchantment 1/dy"',
   'Born Of The Grave':
     'Section=magic Note="R15\' May use <i>Deathwatch</i> effects at will"',
-  'Canny Strike':'Section=combat Note="Inflicts +%Vd4 HP w/finesse weapon"',
+  'Canny Strike':
+    'Section=combat ' +
+    'Note="Inflicts +%{intelligenceModifier}d4 HP w/finesse weapon"',
   'Caste Status':'Section=feature Note="Gains benefits of caste level"',
   'Clear-Eyed':
     'Section=feature,skill ' +
     'Note=' +
       '"Suffers half distance penalty for approaching creatures/x2 normal vision in dim light when on plains",' +
       '"Spot is a class skill"',
-  'Clever Fighting':'Section=combat Note="Inficts +%V HP w/finesse weapon"',
+  'Clever Fighting':
+    'Section=combat ' +
+    'Note="Inficts +%{dexterityModifier-strengthModifier} HP w/finesse weapon"',
   'Clouding':
     'Section=skill ' +
     'Note="Item has half normal weight; thrown item has +10\' range"',
@@ -1090,7 +1094,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="May make a full attack after mount moves"',
   'Drive It Deep':
     'Section=combat ' +
-    'Note="May suffer up to -%V attack for equal damage bonus w/a light or one-handed weapon"',
+    'Note="May suffer up to -%{baseAttack} attack for equal damage bonus w/a light or one-handed weapon"',
   'Dwarvencraft':'Section=feature Note="Knows %V Dwarvencraft techniques"',
   'Extra Gift':
     'Section=feature ' +
@@ -1113,7 +1117,7 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="+4 AC and dbl critical range w/in 30\' vs. giants"',
   'Greater Draw On Earth Power':
     'Section=magic ' +
-    'Note="May draw %V Spell Energy/dy from a nearby ancient monolith"',
+    'Note="May draw %{wisdomModifier*3} Spell Energy/dy from a nearby ancient monolith"',
   'Greater Masterwork':
     'Section=skill ' +
     'Note="Weapon gains +2 attack and +1 damage; armor or shield gains -1 skill penalty, +1 maximum Dexterity bonus, and -5% arcane spell failure and can be donned or removed in half normal time; light shield may be used with a ranged weapon; other item gains +4 DC"',
@@ -1128,7 +1132,7 @@ LastAge.FEATURES_ADDED = {
     'Note="After tracking 5 miles, gains +1 attack and damage for 1 dy if track attempt exceed DC by 5"',
   'Improved Flexible Recovery':
     'Section=magic ' +
-    'Note="Successful DC 30 Concentration recovers %V Spell Energy per hr meditating"',
+    'Note="Successful DC 30 Concentration recovers %{highestMagicModifier} Spell Energy per hr meditating"',
   'Improved Masterwork':
     'Section=skill ' +
     'Note="Weapon gains +1 attack and damage; armor or shield gains -1 skill penalty and +1 maximum Dexterity bonus; other item gains +2 DC"',
@@ -1149,14 +1153,14 @@ LastAge.FEATURES_ADDED = {
     'Note="May make DC 10 Gather Information and Diplomacy checks to find a district resident and call in a lesser favor 1/dy; DC 25 for a greater favor %{charismaModifier}/month"',
   'Lesser Draw On Earth Power':
     'Section=magic ' +
-    'Note="May draw %V Spell Energy/dy from a nearby menhir, dolmen, or tumuli"',
+    'Note="May draw %{wisdomModifier*2} Spell Energy/dy from a nearby menhir, dolmen, or tumuli"',
   'Living Talisman':
     'Section=magic Note="Chosen spell costs 1 fewer Spell Energy to cast"',
   'Lucky':'Section=save Note="+1 from luck charms and spells"',
   'Magic-Hardened':'Section=save Note="+2 vs. spells"',
   'Minor Draw On Earth Power':
     'Section=magic ' +
-    'Note="May draw %V Spell Energy/dy from a nearby menhir or dolmen"',
+    'Note="May draw %{wisdomModifier} Spell Energy/dy from a nearby menhir or dolmen"',
   'Natural Healer':
     'Section=skill ' +
     'Note="Successful Heal raises patient to 1 HP and triples healing rate"',
@@ -1170,7 +1174,7 @@ LastAge.FEATURES_ADDED = {
     'Note="+1 AC when mounted on plains",' +
          '"+1 Reflex when mounted on plains",' +
          '"+2 Listen and Spot vs. surprise when mounted on plains"',
-  'Power Reservoir':'Section=magic Note="Stores +%V siphoned Spell Energy"',
+  'Power Reservoir':'Section=magic Note="Stores +%{highestMagicModifier} siphoned Spell Energy"',
   'Powerful Throw':
     'Section=combat ' +
     'Note="Attacks w/focused weapon gain +10\' range and use Strength instead of Dexterity"',
@@ -1190,7 +1194,7 @@ LastAge.FEATURES_ADDED = {
     'Section=magic Note="Successful DC 15 Wisdom senses nexus w/in 5 miles"',
   'Sense Power':
     'Section=magic ' +
-    'Note="May use <i>Detect Magic</i> %V/dy/Successful DC 13 Wisdom detects magical auras w/in 20\'"',
+    'Note="May use <i>Detect Magic</i> %{wisdomModifier}/dy/Successful DC 13 Wisdom detects magical auras w/in 20\'"',
   'Shadow Cipher':
     'Section=skill ' +
     'Note="May take 10 or take 20 on Decipher Script (Shadow documents)"',
@@ -1217,7 +1221,7 @@ LastAge.FEATURES_ADDED = {
     'Note="+2 Bluff (disguise casting)/+2 Sleight Of Hand (disguise casting)"',
   'Swamp Taught':
     'Section=magic ' +
-    'Note="May spend 1 Spell Energy for +%V knowledge check w/in Whisper"',
+    'Note="May spend 1 Spell Energy for +%{level+(intelligenceModifier>?wisdomModifier)} knowledge check w/in Whisper"',
   'Tempering (Fireforged)':
     'Section=skill ' +
     'Note="Item immune to fire; light/medium/heavy armor gives fire resistance 2/3/4"',
@@ -1244,7 +1248,8 @@ LastAge.FEATURES_ADDED = {
     'Section=skill ' +
     'Note="May use Gather Information to counter investigations of self and allies"',
   'Warrior Of Shadow':
-    'Section=combat Note="May spend 1 Turn Undead use for %V rd of +%1 damage"',
+    'Section=combat ' +
+    'Note="May spend 1 Turn Undead use for %{charismaModifier} rd of +%{charismaModifier} damage"',
   'Well-Aimed Strike':
     'Section=combat Note="Canny Strike and Clever Fighting apply to all foes"',
   'Whirlwind Charge':
@@ -5755,9 +5760,7 @@ LastAge.featRulesExtra = function(rules, name) {
 
   let matchInfo;
 
-  if(name == 'Drive It Deep') {
-    rules.defineRule('combatNotes.driveItDeep', 'baseAttack', '=', null);
-  } if(name == 'Extra Gift') {
+  if(name == 'Extra Gift') {
     rules.defineRule
       ('combatNotes.masteryOfNature.3', 'featureNotes.extraGift', '+', '4');
     rules.defineRule
@@ -5838,11 +5841,6 @@ LastAge.featRulesExtra = function(rules, name) {
     );
     rules.defineRule('casterLevels.Ch', 'casterLevels.Spellcasting', '=', null);
     rules.defineRule('casterLevelArcane', 'casterLevels.Ch', '=', null);
-  } else if(name == 'Warrior Of Shadow') {
-    rules.defineRule
-      ('combatNotes.warriorOfShadow', 'charismaModifier', '=', null);
-    rules.defineRule
-      ('combatNotes.warriorOfShadow.1', 'charismaModifier', '=', null);
   } else if(name == 'Dwarvencraft') {
     rules.defineRule('featureNotes.dwarvencraft',
       'skills.Craft (Armor)', '+=', 'Math.floor(source / 4)',
@@ -5851,49 +5849,6 @@ LastAge.featRulesExtra = function(rules, name) {
     );
     rules.defineRule
       ('featCount.Dwarvencraft', 'featureNotes.dwarvencraft', '=', null);
-  } else if(name == 'Born Of Duty') {
-    rules.defineRule('magicNotes.bornOfDuty',
-      'level', '=', '10 + Math.floor(source / 2)',
-      'charismaModifier', '+', null
-    );
-  } else if(name == 'Improved Flexible Recovery') {
-    rules.defineRule('magicNotes.improvedFlexibleRecovery',
-      'highestMagicModifier', '=', null
-    );
-  } else if(name == 'Power Reservoir') {
-    rules.defineRule
-      ('magicNotes.powerReservoir', 'highestMagicModifier', '=', null);
-  } else if(name == 'Sense Power') {
-    rules.defineRule('magicNotes.sensePower', 'wisdomModifier', '=', null);
-  } else if(name == 'Canny Strike') {
-    rules.defineRule
-      ('combatNotes.cannyStrike', 'intelligenceModifier', '=', null);
-  } else if(name == 'Clever Fighting') {
-    rules.defineRule('combatNotes.cleverFighting',
-      'dexterityModifier', '=', null,
-      'strengthModifier', '+', '-source'
-    );
-  } else if(name == 'Greater Draw On Earth Power') {
-    rules.defineRule('magicNotes.greaterDrawOnEarthPower',
-      'wisdomModifier', '=', '3 * source'
-    );
-  } else if(name == 'Lesser Draw On Earth Power') {
-    rules.defineRule('magicNotes.lesserDrawOnEarthPower',
-      'wisdomModifier', '=', '2 * source'
-    );
-  } else if(name == 'Minor Draw On Earth Power') {
-    rules.defineRule
-      ('magicNotes.minorDrawOnEarthPower', 'wisdomModifier', '=', null);
-  } else if(name == 'Swamp Taught') {
-    rules.defineRule('magicNotes.swampTaught',
-      'level', '=', null,
-      'magicNotes.swampTaught.1', '+', null
-    );
-    rules.defineRule('magicNotes.swampTaught.1',
-      'features.Swamp Taught', '?', null,
-      'intelligenceModifier', '=', null,
-      'wisdomModifier', '^', null
-    );
   } else if(rules.basePlugin.featRulesExtra) {
     rules.basePlugin.featRulesExtra(rules, name);
   }
