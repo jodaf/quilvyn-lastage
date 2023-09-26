@@ -708,7 +708,7 @@ LastAge.FEATURES_ADDED = {
       '%{level>=7 ? \', <i>Cure Serious Wounds</i>\' : \'\'}%{level<7 ? \'\' : level<9 ? \' 1/dy\' : \' 2/dy\'}' +
       '%{level>=8 ? \', <i>Remove Blindness/Deafness</i> 1/dy\' : \'\'}' +
       '%{level>=10 ? \', <i>Cure Critical Wounds</i>\' : \'\'}%{level<10 ? \'\' : level<12 ? \' 1/dy\' : \' 2/dy\'}' +
-      '%{level>=11 ? \', <i>Neutalize Poison</i> 1/dy\' : \'\'}' +
+      '%{level>=11 ? \', <i>Neutralize Poison</i> 1/dy\' : \'\'}' +
       '%{level>=13 ? \', <i>Mass Cure Light Wounds</i>\' : \'\'}%{level<13 ? \'\' : level<15 ? \' 1/dy\' : \' 2/dy\'}' +
       '%{level>=14? \', <i>Restoration</i>\' : \'\'}%{level<14 ? \'\' : level<17 ? \' 1/dy\' : \' 2/dy\'}' +
       '%{level>=18 ? \', <i>Heal</i> 1/dy\' : \'\'}' +
@@ -1077,7 +1077,7 @@ LastAge.FEATURES_ADDED = {
       '"Spot is a class skill"',
   'Clever Fighting':
     'Section=combat ' +
-    'Note="Inficts +%{dexterityModifier-strengthModifier} HP w/finesse weapon"',
+    'Note="Inflicts +%{dexterityModifier-strengthModifier} HP w/finesse weapon"',
   'Clouding':
     'Section=skill ' +
     'Note="Item has half normal weight; thrown item has +10\' range"',
@@ -2074,7 +2074,7 @@ LastAge.FEATURES_ADDED = {
     'Section=feature,skill ' +
     'Note=' +
       '"May receive services from Elven contacts",' +
-      '"+%V Diplomacy (Elves and allies)"',
+      '"+%V Diplomacy (elves and allies)"',
   'Still As Stone':'Section=skill Note="+10 Hide (exploiting security breach)"',
   'Strength Of My Ancestors':
     'Section=feature Note="+2 ability, attack, save, or skill check 1/dy"',
@@ -2502,7 +2502,7 @@ LastAge.RACES = {
     'Features=' +
       '"Elf Ability Adjustment",' +
       '"Weapon Familiarity (Net)",' +
-      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow/Guisarme/Ranseur/Tident)",' +
+      '"Weapon Proficiency (Composite Longbow/Composite Shortbow/Longbow/Shortbow/Guisarme/Ranseur/Trident)",' +
       '"Favored Region (Erethor)","Favored Region (Miraleen)",' +
       '"Alert Senses","At Home In The Trees","Deep Lungs","Innate Magic",' +
       '"Low-Light Vision","Natural Channeler","Natural Sailor",' +
@@ -4730,17 +4730,22 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Legate') {
 
+    rules.defineRule('combatNotes.charismaTurningAdjustment',
+      'turningLevel', '?', null,
+      'charismaModifier', '=', null
+    );
+    rules.defineChoice('notes', 'combatNotes.charismaTurningAdjustment:%S');
     rules.defineRule('combatNotes.turnUndead.1',
       'turningLevel', '=', null,
-      'charismaModifier', '+', null
+      'combatNotes.charismaTurningAdjustment', '+', null
     );
     rules.defineRule('combatNotes.turnUndead.2',
       'turningLevel', '=', 'source * 3 - 10',
-      'charismaModifier', '+', null
+      'combatNotes.charismaTurningAdjustment', '+', null
     );
     rules.defineRule('combatNotes.turnUndead.3',
       'turningLevel', '=', '3',
-      'charismaModifier', '+', null
+      'combatNotes.charismaTurningAdjustment', '+', null
     );
     rules.defineRule('deity', classLevel, '=', '"Izrador"');
     rules.defineRule
@@ -5771,24 +5776,6 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
 
   } else if(name == 'Feyblooded') {
 
-/*
-    rules.defineRule('combatNotes.unearthlyGrace(AC)',
-      'charismaModifier', '=', null,
-      pathLevel, 'v', 'Math.floor(source / 4)',
-    );
-    rules.defineRule('saveNotes.unearthlyGrace(Fortitude)',
-      'charismaModifier', '=', null,
-      pathLevel, 'v', 'Math.floor(source / 4)',
-    );
-    rules.defineRule('saveNotes.unearthlyGrace(Reflex)',
-      'charismaModifier', '=', null,
-      pathLevel, 'v', 'Math.floor(source / 4)',
-    );
-    rules.defineRule('saveNotes.unearthlyGrace(Will)',
-      'charismaModifier', '=', null,
-      pathLevel, 'v', 'Math.floor(source / 4)',
-    );
-*/
     rules.defineRule('selectableFeatureCount.Feyblooded',
       pathLevel, '=', 'Math.floor(source / 4)'
     );
@@ -6195,7 +6182,7 @@ LastAge.raceRulesExtra = function(rules, name) {
     );
   } else if(name == 'Danisil-Raised Elfling') {
     rules.defineRule('featureNotes.mixedBlood',
-      'danisil-RaisedElflingFeatures.Mixed Blood', '=', '"Elf and Halfling"'
+      'danisil-RaisedElflingFeatures.Mixed Blood', '=', '"Elf and halfling"'
     );
   } else if(name == 'Clan Dwarf') {
     rules.defineRule
@@ -6209,7 +6196,7 @@ LastAge.raceRulesExtra = function(rules, name) {
     rules.defineRule('skillNotes.dornSkillBonus', raceLevel, '=', 'source + 3');
   } else if(name == 'Dwarf-Raised Dwarrow') {
     rules.defineRule('featureNotes.mixedBlood',
-      'dwarf-RaisedDwarrowFeatures.Mixed Blood', '=', '"Dwarf and Gnome"'
+      'dwarf-RaisedDwarrowFeatures.Mixed Blood', '=', '"Dwarf and gnome"'
     );
     rules.defineRule('selectableFeatureCount.Dwarf-Raised Dwarrow',
       'race', '=', 'source == "Dwarf-Raised Dwarrow" ? 1 : null'
@@ -6219,7 +6206,7 @@ LastAge.raceRulesExtra = function(rules, name) {
     );
   } else if(name == 'Dworg') {
     rules.defineRule('featureNotes.mixedBlood',
-      'dworgFeatures.Mixed Blood', '=', '"Dwarf and Orc"'
+      'dworgFeatures.Mixed Blood', '=', '"Dwarf and orc"'
     );
     rules.defineRule('selectableFeatureCount.Dworg',
       'race', '=', 'source == "Dworg" ? 1 : null'
@@ -6228,7 +6215,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       ('skillNotes.stonecunning', 'dworgFeatures.Stonecunning', '+=', '2');
   } else if(name == 'Halfling-Raised Elfling') {
     rules.defineRule('featureNotes.mixedBlood',
-      'halfling-RaisedElflingFeatures.Mixed Blood', '=', '"Elf and Halfling"'
+      'halfling-RaisedElflingFeatures.Mixed Blood', '=', '"Elf and halfling"'
     );
   } else if(name == 'Erenlander') {
     rules.defineRule
@@ -6255,7 +6242,7 @@ LastAge.raceRulesExtra = function(rules, name) {
       'gnome-RaisedDwarrowFeatures.Deep Lungs', '=', '3'
     );
     rules.defineRule('featureNotes.mixedBlood',
-      'gnome-RaisedDwarrowFeatures.Mixed Blood', '=', '"Dwarf and Gnome"'
+      'gnome-RaisedDwarrowFeatures.Mixed Blood', '=', '"Dwarf and gnome"'
     );
     rules.defineRule('skillNotes.deepLungs',
       'deepLungsMultiplier', '=', null,
@@ -6479,15 +6466,16 @@ LastAge.ruleNotes = function() {
     '    and "Improved Initiative" directly, instead of the "Rapid Response"\n'+
     '    trait that allows a choice between these two feats.\n' +
     '  </li><li>\n' +
-    '    Quilvyn removes the racial requirement (Elf or Halfling) from the\n' +
+    '    Quilvyn removes the racial requirement (elf or halfling) from the\n' +
     '    Innate Magic feat. Since these races automatically receive this\n' +
     '    feat, enforcing the requirement would eliminate the possibility\n' +
-    '    of any character selecting the feat.\n' +
+    '    of any character selecting it.\n' +
     '  </li><li>\n' +
     '    <i>Sorcery And Shadow</i> and other supplement books describe the\n' +
     '    Art Of Magic and Improved Spellcasting features differently than\n' +
     '    does the core rulebook. Quilvyn uses the core rulebook\n' +
-    '    definitions, changing prestige class features as appropriate.\n' +
+    '    definitions, changing prestige class features from the supplements\n'+
+    '    as appropriate.\n' +
     '  </li><li>\n' +
     '    For Pale Legates, Quilvyn retains the base attack and save bonuses\n' +
     '    derived from levels in the Legate class. Other Legate features are\n' +
@@ -6516,9 +6504,9 @@ LastAge.ruleNotes = function() {
     '<h3>Known Bugs</h3>\n' +
     '<ul>\n' +
     '  <li>\n' +
-    '    The bonuses of the Feyblooded Unearthly Grace feature rise as the\n' +
-    '    character advances in level, rather than remaining fixed as\n'+
-    '    specified in the rule book.\n' +
+    '    Quilvyn increases the bonuses of the Feyblooded Unearthly Grace\n' +
+    "    feature rise as the character's level and abilities increase,\n" +
+    '    rather than leaving them fixed as specified in the rule book.\n' +
     '  </li><li>\n' +
     '    Quilvyn gives Wildlander characters boosts in both initiative and\n' +
     '    skills at levels 6, 9, 12, etc. instead of a choice of the two.\n' +
@@ -6549,36 +6537,33 @@ LastAge.ruleNotes = function() {
     '</p><p>\n' +
     'MIDNIGHT 2ND EDITION Copyright 2005, Fantasy Flight Publishing, Inc.\n' +
     '</p><p>\n' +
-    'Against the Shadow Copyright 2003, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
-    'Crown of Shadow Copyright 2003, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
-    'Minions of the Shadow Copyright 2003, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
     'City of Shadow Copyright 2003, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
-    'Sorcery and Shadow Copyright 2003, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
-    'Under the Shadow Copyright 2004, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
-    'Forge of Shadow Copyright 2004, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
-    'Fury of Shadow Copyright 2004, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
-    'Steel and Shadow Copyright 2004, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
-    'Heart of Shadow Copyright 2005, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
-    'Star and Shadow Copyright 2005, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
-    'Hammer and Shadow Copyright 2005, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
-    'Hand of Shadow Copyright 2006, Fantasy Flight Publishing, Inc.\n' +
-    '</p><p>\n' +
-    'Legends of Shadow Copyright 2006, Fantasy Flight Publishing, Inc.\n' +
     '</p><p>\n' +
     'Destiny and Shadow Copyright 2006, Fantasy Flight Publishing, Inc.\n' +
     '</p><p>\n' +
+    'Fury of Shadow Copyright 2004, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Hammer and Shadow Copyright 2005, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
     'Honor and Shadow Copyright 2007, Fantasy Flight Publishing, Inc.\n' +
-    '</p>\n';
+    '</p>\n' +
+    'Sorcery and Shadow Copyright 2003, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Star and Shadow Copyright 2005, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Under the Shadow Copyright 2004, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    // Presently, no material is taken from the supplements listed below
+    'Forge of Shadow Copyright 2004, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Hand of Shadow Copyright 2006, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Heart of Shadow Copyright 2005, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Legends of Shadow Copyright 2006, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Minions of the Shadow Copyright 2003, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n' +
+    'Steel and Shadow Copyright 2004, Fantasy Flight Publishing, Inc.\n' +
+    '</p><p>\n';
 };
