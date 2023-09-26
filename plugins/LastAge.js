@@ -49,7 +49,8 @@ function LastAge(baseRules) {
   rules.basePlugin = usePathfinder ? Pathfinder : SRD35;
   LastAge.rules = rules;
 
-  LastAge.CHOICES = rules.basePlugin.CHOICES.concat(LastAge.CHOICES_ADDED);
+  LastAge.CHOICES =
+    rules.basePlugin.CHOICES.filter(x => !x.match(/Deity|Faction/)).concat(LastAge.CHOICES_ADDED);
   rules.defineChoice('choices', LastAge.CHOICES);
   rules.choiceEditorElements = LastAge.choiceEditorElements;
   rules.choiceRules = LastAge.choiceRules;
@@ -167,7 +168,8 @@ function LastAge(baseRules) {
 LastAge.VERSION = '2.4.1.0';
 
 LastAge.CHOICES_ADDED = ['Heroic Path'];
-LastAge.CHOICES = SRD35.CHOICES.concat(LastAge.CHOICES_ADDED);
+LastAge.CHOICES =
+  SRD35.CHOICES.filter(x => x != 'Deity').concat(LastAge.CHOICES_ADDED);
 LastAge.RANDOMIZABLE_ATTRIBUTES_ADDED = ['heroicPath'];
 LastAge.RANDOMIZABLE_ATTRIBUTES =
   SRD35.RANDOMIZABLE_ATTRIBUTES.concat(LastAge.RANDOMIZABLE_ATTRIBUTES_ADDED);
@@ -1787,7 +1789,7 @@ LastAge.FEATURES_ADDED = {
     'Section=magic ' +
     'Note="R60\' May use +%{$\'levels.Pale Legate\'+levels.Legate+wisdomModifier} <i>Dispel Magic</i> vs. Legate spell %{$\'levels.Pale Legate\'//3}/dy"',
   'Destiny Marked':'Section=feature Note="%{feats.Leadership?\'+4 Leadership\':\'Has Leadership feature\'}"',
-  'Destroy Undead':'Section=combat Note="Raises undead turning level to %V"',
+  'Destroy Undead':'Section=combat Note="Turns undead as a level %V cleric"',
   'Disarming Shot':
     'Section=combat Note="May use Disarm via ranged touch attack"',
   'Disguise Contraband':
@@ -4731,8 +4733,8 @@ LastAge.classRulesExtra = function(rules, name) {
   } else if(name == 'Legate') {
 
     rules.defineRule('combatNotes.charismaTurningAdjustment',
-      'turningLevel', '?', null,
-      'charismaModifier', '=', null
+      'legateFeatures.Turn Undead', '=', '0',
+      'charismaModifier', '+', null
     );
     rules.defineChoice('notes', 'combatNotes.charismaTurningAdjustment:%S');
     rules.defineRule('combatNotes.turnUndead.1',
@@ -4744,8 +4746,7 @@ LastAge.classRulesExtra = function(rules, name) {
       'combatNotes.charismaTurningAdjustment', '+', null
     );
     rules.defineRule('combatNotes.turnUndead.3',
-      'turningLevel', '=', '3',
-      'combatNotes.charismaTurningAdjustment', '+', null
+      'combatNotes.charismaTurningAdjustment', '=', 'source + 3'
     );
     rules.defineRule('deity', classLevel, '=', '"Izrador"');
     rules.defineRule
@@ -5047,6 +5048,9 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == 'Lightbearer') {
 
+    rules.defineRule('combatNotes.charismaTurningAdjustment',
+      'lightbearerFeatures.Turn Undead', '=', '0',
+    );
     rules.defineRule
       ('combatNotes.destroyUndead', classLevel, '=', 'source * 2');
     rules.defineRule('combatNotes.smiteEvil',
@@ -5060,8 +5064,8 @@ LastAge.classRulesExtra = function(rules, name) {
       'wisdomModifier', '=', 'Math.max(source, 0)'
     );
     rules.defineRule('turningLevel',
-      classLevel, '^=', 'source>=4 ? source-3 : null',
-      'combatNotes.destroyUndead', '^=', null
+      classLevel, '+=', 'source>=4 ? source - 3 : null',
+      'combatNotes.destroyUndead', '+', 'source / 2 + 3'
     );
 
   } else if(name == 'Harrower') {
@@ -5753,10 +5757,9 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
   } else if(name == 'Faithful') {
 
     rules.defineRule
-      ('turningLevel', pathLevel, '+=', 'source < 4 ? null : source');
-    // Override SRD35 turning frequency
+      ('turningLevel', pathLevel, '+=', 'source<4 ? null : source');
     rules.defineRule('combatNotes.turnUndead.3',
-      pathLevel, '=', 'Math.floor((source + 1) / 5)'
+      pathLevel, '+=', 'Math.floor((source + 1) / 5)'
     );
     rules.basePlugin.featureSpells(rules,
       'Faithful', 'Faithful', 'charisma', 'level', '', [
@@ -6115,25 +6118,27 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
 
     rules.defineRule
       ('casterLevels.Domain', pathLevel, '=', 'source<5 ? null : 1');
+    rules.defineRule('combatNotes.charismaTurningAdjustment',
+      'shadowedFeatures.Turn Undead', '=', '0',
+    );
     rules.defineRule('deity', pathLevel, '=', '"Izrador"');
     rules.defineRule
       ('magicNotes.giftOfIzrador', pathLevel, '=', 'Math.floor(source / 5)');
     rules.defineRule('selectableFeatureCount.Shadowed (Domain)',
       'magicNotes.giftOfIzrador', '=', null
     );
+    rules.defineRule('magicNotes.shadowed', 'level', '?', 'source>=2');
     rules.defineRule
       ('spellSlots.Domain1', 'magicNotes.giftOfIzrador', '=', null);
+    // Note: assume full level; book doesn't say whether to use this or level-8
     rules.defineRule
-      ('turningLevel', pathLevel, '+=', 'source < 4 ? null : source');
+      ('turningLevel', pathLevel, '+=', 'source<9 ? null : source');
     rules.basePlugin.featureSpells(rules,
       'Shadowed', 'Shadowed', 'charisma', 'level', '', [
         '2:Detect Good', '2:Detect Evil', '3:Bane', '6:Summon Monster I',
         '8:Death Knell'
       ]
     );
-    rules.defineRule('magicNotes.shadowed', 'level', '?', 'source>=2');
-    // Override SRD35 turning frequency
-    rules.defineRule('combatNotes.turnUndead.3', pathLevel, '=', '3');
     for(let s in rules.getChoices('selectableFeatures')) {
       if(s.match(/Shadowed - .* Domain/)) {
         let domain = s.replace('Shadowed - ', '').replace(' Domain', '');
