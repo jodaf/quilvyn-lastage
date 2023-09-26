@@ -2586,47 +2586,47 @@ LastAge.SPELLS_ADDED = {
   'Charm Repair':
     'School=Transmutation ' +
     'Level=Ch3 ' +
-    'Description="Restores touched minor or lesser charm"',
+    'Description="Restores touched minor or lesser charm, once per charm"',
   'Detect Astirax':
     'School=Divination ' +
     'Level=Ch1 ' +
-    'Description="R$RL\' Quarter circle gives self info on astiraxes for $L10 min"',
+    'Description="R%{lvl*40+400}\' Quarter circle gives self info on astiraxes for %{lvl*10} min"',
   'Detect Outsider':
     'School=Divination ' +
     'Level=Sunderborn1 ' + // Only a Sunderborn spell
-    'Description="R60\' Cone gives self info on outsiders for $L10 min"',
+    'Description="R60\' Cone gives self info on outsiders for %{lvl*10} min"',
   'Disguise Ally':
     'School=Illusion ' +
     'Level=Ch2 ' +
-    'Description="Willing touched changes appearance, gains +10 Disguise for $L10 min (Will disbelieve)"',
+    'Description="Willing touched changes appearance and gains +10 Disguise for %{lvl*10} min (Will disbelieve)"',
   'Disguise Weapon':
     'School=Illusion ' +
     'Level=Ch1 ' +
-    'Description="$L touched weapons look benign for $L hr"',
+    'Description="%{lvl} touched weapons look benign for %{lvl} hr"',
   'Far Whisper':
     'School=Divination ' +
     'Level=Ch1 ' +
-    'Description="Self gains +4 checks to hear Whispering Wood w/in $L10 miles for $L min"',
+    'Description="Self gains +4 checks to hear Whispering Wood w/in %{lvl*10} miles for %{lvl} min"',
   'Greenshield':
     'School=Illusion ' +
     'Level=Ch2 ' +
-    'Description="Touched surrounded by 30\' foliage sphere for $L hr"',
+    'Description="Surrounds touched with a 30\' foliage sphere for %{lvl} hr"',
   'Halfling Burrow':
     'School=Transmutation ' +
     'Level=Ch3 ' +
-    'Description="Creates hidden hole that can hold $L small creatures for $L hr"',
+    'Description="Creates a hidden hole that can hold %{lvl} small creatures for %{lvl} hr"',
   'Lifetrap':
     'School=Transmutation ' +
     'Level=Ch2 ' +
-    'Description="R$RM\' Immobilizes undead in 50\' radius for $L rd and inflicts 3d6 HP (Ref half Speed, no damage)"',
+    'Description="R%{lvl*10+100}\' Immobilizes undead in 50\' radius for %{lvl} rd and inflicts 3d6 HP (Ref half Speed only)"',
   "Nature's Revelation":
     'School=Transmutation ' +
     'Level=Ch2 ' +
-    'Description="R$RS\' Plants and animals in 30\' radius reveal hidden and invisible creatures"',
+    'Description="R%{lvl//2*5+25}\' Plants and animals in 30\' radius reveal hidden and invisible creatures"',
   'Nexus Fuel':
     'School=Necromancy ' +
     'Level=Ch5 ' +
-    'Description="Sacrifice boosts nexus recovery rate 1 point/HD"',
+    'Description="Sacrifice boosts nexus recovery rate by 1 point/HD"',
   'Silver Blood':
     'School=Transmutation ' +
     'Level=Ch2 ' +
@@ -2634,28 +2634,28 @@ LastAge.SPELLS_ADDED = {
   'Silver Storm':
     'School=Transmutation ' +
     'Level=Ch4 ' +
-    'Description="R$RS\' Cone inflicts ${Lmin15}d4 HP (Ref half)"',
+    'Description="R%{lvl//2*5+25}\' Cone inflicts %{lvl<?15}d4 HP (Ref half)"',
   'Silver Wind':
     'School=Conjuration ' +
     'Level=Ch3 ' +
-    'Description="R$RM\' Creatures in 10\' radius glow, suffer blindness (Will neg) and 1d6 HP/rd for $L rd"',
+    'Description="R%{lvl*10+100}\' Creatures in 10\' radius glow, suffer blindness (Will neg) and 1d6 HP/rd for %{lvl} rd"',
   'Stone Soup':
     'School=Transmutation ' +
     'Level=Ch1 ' +
-    'Description="Stone buried 1 hr creates nourishing broth for $L creatures"',
+    'Description="Stone buried for 1 hr creates a nourishing broth for %{lvl} creatures"',
   // Sorcery and Shadow
   'Arcane Impotence':
     'School=Abjuration ' +
     'Level=Ch3 ' +
-    'Description="R$RM\' Target Channeler must use $Ldiv2 Spell Energy to cast for next $L rd (Will $Ldiv2 rd)"',
+    'Description="R%{lvl*10+100}\' Channeler target must use %{lvl//2} Spell Energy to cast for next %{lvl} rd (Will %{lvl//2} rd)"',
   'Arcane Interference':
     'School=Abjuration ' +
     'Level=Ch5 ' +
-    'Description="Spells require additional $Ldiv2 Spell Energy to affect 10\' radius of touched for $L min (Will neg)"',
+    'Description="Spells require +%{lvl//2} Spell Energy to affect 10\' radius of touched for %{lvl} min (Will neg)"',
   'Assist':
     'School=Enchantment ' +
     'Level=Ch1 ' +
-    'Description="R$RS\' Targets in 30\' radius gain +2 skill checks for conc + 1 rd"',
+    'Description="R%{lvl//2*5+25}\' Targets in 30\' radius gain +2 skill checks for conc + 1 rd"',
   'Bestow Spell':
     'School=Evocation ' +
     'Level=Ch4 ' +
@@ -2663,35 +2663,35 @@ LastAge.SPELLS_ADDED = {
   'Bleed Power':
     'School="Greater Evocation" ' +
     'Level=Ch2 ' +
-    'Description="Successful attacks on self inflict 1d6 HP each on up to $L attackers for $L10 min"',
+    'Description="Successful attacks on self inflict 1d6 HP each on up to %{lvl} attackers for %{lvl*10} min"',
   'Boil Blood':
     'School=Transmutation ' +
     'Level=C3 ' +
-    'Description="R$RS\' Target suffers 1d8 HP for $L rd or conc + 1 rd (Fort half)"',
+    'Description="R%{lvl//2*5+25}\' Target suffers 1d8 HP for %{lvl} rd or conc + 1 rd (Fort half)"',
   'Burial':
     'School=Transmutation ' +
     'Level=Ch1 ' +
-    'Description="R$RS\' Earth swallows target non-living, unattended object"',
+    'Description="R%{lvl//2*5+25}\' Earth swallows non-living, unattended object target"',
   'Channel Might':
     'School=Evocation ' +
     'Level=Ch1 ' +
-    'Description="Next successful melee attack by touched w/in $L rd inflicts maximum+$L HP"',
+    'Description="Next successful melee attack by touched w/in %{lvl} rd inflicts maximum+%{lvl} HP"',
   'Confer Power':
     'School=Transmutation ' +
     'Level=Ch2 ' +
-    'Description="Transfers self Spell Energy to adjacent casters for $L rd or conc + 1 rd"',
+    'Description="Transfers self Spell Energy to adjacent casters for %{lvl} rd or conc + 1 rd"',
   'Fell Forbiddance':
     'School=Abjuration ' +
     'Level=Ch2 ' +
-    'Description="R$RS\' $L 5\' sq area becomes impassible to undead for $L min (Will neg for intelligent)"',
+    'Description="R%{lvl//2*5+25}\' %{lvl} 5\' sq become impassible to undead for %{lvl} min (Will neg for intelligent undead)"',
   'Fey Fire':
     'School=Conjuration ' +
     'Level=Ch2,D2 ' +
-    'Description="Touched point contains invisible 5\' radius fire that warms and heals 1 HP and all nonlethal damage for $L hr"',
+    'Description="Touched point contains an invisible 5\' radius fire that warms and heals 1 HP and all nonlethal damage for %{lvl} hr"',
   'Fey Hearth':
     'School=Abjuration ' +
     'Level=Ch2 ' +
-    'Description="R$RS\' Creatures in 30\' radius of target fire gain +2 Will saves and heal 1.5 x level HP for as long as fire lasts"',
+    'Description="R%{lvl//2*5+25}\' Creatures in 30\' radius of target fire gain +2 Will saves and heal 1.5 x level HP for as long as fire lasts"',
   'Greater Questing Bird':
     'School=Conjuration ' +
     'Level=Ch6 ' +
@@ -2703,15 +2703,15 @@ LastAge.SPELLS_ADDED = {
   'Inspirational Might':
     'School=Enchantment ' +
     'Level=Ch5 ' +
-    'Description="R$RS\' 4 allies in 30\' radius gain +2d10 temporary HP, +2 attack, +1 Fort for $Ldiv2 rd"',
+    'Description="R%{lvl//2*5+25}\' 4 allies in 30\' radius gain +2d10 temporary HP, +2 attack, and +1 Fort for %{lvl//2} rd"',
   'Joyful Speech':
     'School=Enchantment ' +
     'Level=Ch1 ' +
-    'Description="R$RM\' Listeners in 15\' radius improve reaction to self, are unshaken, and gain +4 vs. fear for $L rd"',
+    'Description="R%{lvl*10+100}\' Listeners in 15\' radius improve reaction to self 1 step, are unshaken, and gain +4 vs. fear for %{lvl} rd"',
   'Know The Name':
     'School=Divination ' +
     'Level=Ch1 ' +
-    'Description="Self learns name(s) of touched (Will neg)"',
+    'Description="Self learns names of touched (Will neg)"',
   'Lie':
     'School=Transmutation ' +
     'Level=Ch1 ' +
@@ -2719,23 +2719,23 @@ LastAge.SPELLS_ADDED = {
   'Magic Circle Against Shadow':
     'School=Abjuration ' +
     'Level=Ch5 ' +
-    'Description="10\' radius from touched gives +2 AC and saves, suppresses mental control, bars contact and entry (SR neg) by Shadow agents for $L10 min"',
+    'Description="10\' radius from touched gives +2 AC and saves, suppresses mental control, bars contact and entry (SR neg) by Shadow agents for %{lvl*10} min or traps Shadow agents (SR neg) for %{lvl} dy"',
   'Memorial':
     'School=Divination ' +
     'Level=Ch2 ' +
-    'Description="Touched $L10\' radius replays previous or next $L min to next passerby"',
+    'Description="Touched %{lvl*10}\' radius replays %{lvl} min events to next passerby"',
   'Pacify':
     'School=Abjuration ' +
     'Level=Ch2 ' +
-    'Description="R$RS\' ${lvl//3+1} targets in 15\' radius cannot attack for $Ldiv2 rd (Will neg)"',
+    'Description="R%{lvl//2*5+25}\' %{lvl//3+1} targets in 15\' radius cannot attack for %{lvl//2} rd (Will neg)"',
   "Peasant's Rest":
     'School=Conjuration ' +
     'Level=Ch1,D1 ' +
-    'Description="Touched gets 8 hrs rest from 4 hrs sleep"',
+    'Description="Touched receives benefits of 8 hr rest from 4 hr sleep"',
   'Phantom Edge':
     'School=Transmutation ' +
     'Level=Ch1 ' +
-    'Description="Touched weapon attacks as different type for $L min (Will neg)"',
+    'Description="Touched weapon attacks as a different weapon type for %{lvl} min (Will neg)"',
   'Questing Bird':
     'School=Conjuration ' +
     'Level=Ch3 ' +
@@ -2747,41 +2747,41 @@ LastAge.SPELLS_ADDED = {
   'Speak With Fell':
     'School=Necromancy ' +
     'Level=C3 ' +
-    'Description="R$RS\' Compels 3 correct answers from target fell w/in $L min (Will neg)"',
+    'Description="R%{lvl//2*5+25}\' Compels 3 correct answers from Fell target w/in %{lvl} min (Will neg)"',
   'Weather':
     'School=Conjuration ' +
     'Level=Ch2 ' +
-    'Description="R$RM\' Creates 60\' radius, 30\' high cylinder of rain or snow"',
+    'Description="R%{lvl*10+100}\' Creates 60\' radius, 30\' high cylinder of rain or snow"',
   'Willful Stand':
     'School=Abjuration ' +
     'Level=Ch3 ' +
-    'Description="R$RM\' Target cannot attack self or enter threat space for conc (Will neg)"',
+    'Description="R%{lvl*10+100}\' Target cannot attack self or enter threat space for conc (Will neg)"',
   'Withering Speech':
     'School=Enchantment ' +
     'Level=Ch2 ' +
-    'Description="R$RS\' Target suffers -1 Wisdom and Charisma/min for conc"',
+    'Description="R%{lvl//2*5+25}\' Target suffers -1 Wisdom and Charisma each min for conc"',
   'Woeful Speech':
     'School=Enchantment ' +
     'Level=Ch1 ' +
-    'Description="R$RM\' Listeners in 30\' radius become shaken, suffer -2 vs. fear for $L rd (Will neg)"',
+    'Description="R%{lvl*10+100}\' Listeners in 30\' radius become shaken and suffer -2 vs. fear for %{lvl} rd (Will neg)"',
 
   // Honor & Shadow
   'Form Of The Meruros':
     'School=Transmutation ' +
     'Level=Ch3 ' +
-    'Description="Willing touched changes to Meruros-possessed wolf w/continuous <i>Hide From Undead</i> for $L10 min"',
+    'Description="Willing touched becomes a Meruros-possessed wolf w/continuous <i>Hide From Undead</i> effects for %{lvl*10} min"',
   'Form Of The Tadulos':
     'School=Transmutation ' +
     'Level=Ch5 ' +
-    'Description="Willing touched changes to Tadulos-possessed raven w/continuous <i>Death Ward</i> and <i>Freedom Of Movement</i> for $L10 min"',
+    'Description="Willing touched becomes a Tadulos-possessed raven w/continuous <i>Death Ward</i> and <i>Freedom Of Movement</i> effects for %{lvl*10} min"',
   'Summon Ancestral Hero':
     'School=Conjuration ' +
     'Level=Ch7 ' +
-    'Description="R$RS\' Self bargains with Dornish spirit for service"',
+    'Description="R%{lvl//2*5+25}\' Self bargains with Dornish spirit for service"',
   'Summon Ancestral Warrior':
     'School=Conjuration ' +
     'Level=Ch4 ' +
-    'Description="R$RS\' Self bargains with Dornish spirit for service"'
+    'Description="R%{lvl//2*5+25}\' Self bargains with Dornish spirit for service"'
 
 };
 LastAge.SPELLS_LEVELS = {
