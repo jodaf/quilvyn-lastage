@@ -6486,8 +6486,13 @@ LastAge.ruleNotes = function() {
     '    derived from levels in the Legate class. Other Legate features are\n' +
     '    canceled by the Gone Pale feature.\n' +
     '  </li><li>\n' +
-    '    Quilvyn uses charisma instead of wisdom to calculate the Turn\n' +
-    '    Undead abilities of the Lightbearer prestige class\n' +
+    '    The LastAge rule set allows you to add homebrew choices for all\n' +
+    '    of the same types discussed in the <a href="plugins/homebrew-srd35.html">SRD v3.5 Homebrew Examples document</a>,\n' +
+    '    with the exception of deity. When using Pathfinder as the base\n' +
+    '    rule set, homebrew traits are also allowed. In addition, the\n' +
+    '    rule set supports adding homebrew heroic paths, which require the\n' +
+    '    name and lists of features and selectable features similar to\' +
+    '    those specified for homebrew classes.\n' +
     '  </li>\n' +
     '</ul>\n' +
     '\n' +
@@ -6515,6 +6520,9 @@ LastAge.ruleNotes = function() {
     '  </li><li>\n' +
     '    Quilvyn gives Wildlander characters boosts in both initiative and\n' +
     '    skills at levels 6, 9, 12, etc. instead of a choice of the two.\n' +
+    '  </li><li>\n' +
+    '    Quilvyn uses charisma instead of wisdom to calculate the Turn\n' +
+    '    Undead abilities of the Lightbearer prestige class\n' +
     '  </li>\n' +
     '</ul>\n' +
     '<h3>Copyrights and Licensing</h3>\n' +
