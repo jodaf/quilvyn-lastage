@@ -1940,19 +1940,24 @@ LastAge.FEATURES_ADDED = {
     'Section=feature ' +
     'Note="May use Mindbond at will to contact known Master Spies, apprentices, and those in homeland"',
   'Mediator':
-    'Section=feature Note="May shift attitude of %V creatures 1 step %1/dy"',
-  'Melee Caster':'Section=magic Note="May deliver spell up to Ch%V via weapon"',
+    'Section=feature ' +
+    'Note="May shift attitude of %{$\'levels.Warden Of Erenland\'*5} creatures 1 step %{($\'levels.Warden Of Erenland\'+2)//3}/dy"',
+  'Melee Caster':
+    'Section=magic ' +
+    'Note="May deliver spell up to Ch%{$\'levels.Warrior Arcanist\'//2} via weapon"',
   'Meticulous Aim':
     'Section=combat ' +
-    'Note="Gains +1 critical range for every 2 rd spent aiming (+%V maximum)"',
+    'Note="Gains +1 critical range for every 2 rd spent aiming (+%{$\'levels.Elven Raider\'//2} maximum)"',
   'Mindbond':
     'Section=feature Note="May establish a telepathic link to mentor 1/dy"',
   'Mounted Ability':'Section=feature Note="%V selections"',
-  'Mounted Hide':'Section=skill Note="+%V Hide while mounted"',
+  'Mounted Hide':
+    'Section=skill ' +
+    'Note="Hide modifier is +%{(skillModifier.Hide||0)+(features.Small?-4:0)+(animalCompanionStats.Size==\'S\'?4:animalCompanionStats.Size==\'L\'?-4:0)} when mounted on wogren"',
   'Mounted Maneuver':'Section=feature Note="%V selections"',
   'Mystifying Speech':
     'Section=magic ' +
-    'Note="May change 5 min of memory of %1 listeners (DC %2 Will neg) %V/dy"',
+    'Note="May change 5 min of memory of %{levels.Smuggler} listeners (DC %{levels.Smuggler+10+charismaModifier} Will neg) %{levels.Smuggler<7?1:2}/dy"',
   'Narrowswending':
     'Section=ability ' +
     'Note="May move normally through 2 sq of difficult terrain and squeeze through narrows at full speed"',
@@ -1973,18 +1978,21 @@ LastAge.FEATURES_ADDED = {
     'Note="May spend 1 Vision use to use <i>Scrying</i> effects on oathbound target"',
   'Obsidian Tongue':
     'Section=skill ' +
-    'Note="+%V Bluff, Diplomacy, and Gather Information (Shadow minions)"',
+    'Note="+%{(levels.Collaborator+1)//2*2} Bluff, Diplomacy, and Gather Information (Shadow minions)"',
   'Omen Of The Sorshef':
-    'Section=magic Note="May use <i>Augury</i> effects w/%V% success 1/dy"',
+    'Section=magic ' +
+    'Note="May use <i>Augury</i> effects w/%{levels.Sahi+70}% success 1/dy"',
   'Pale As Snow':
     'Section=combat,skill ' +
     'Note=' +
       '"Foes suffer %V% miss chance in snow",' +
       '"+4 Hide and untrackable in snow"',
-  'Pale Heart':'Section=save Note="+%V vs. Shadow minion spells and abilities"',
+  'Pale Heart':
+    'Section=save ' +
+    'Note="+%{($\'levels.Pale Legate\'+2)//3+(levels.Legate||0)//3} vs. Shadow minion spells and abilities"',
   'Parables Of The Sorshef':
     'Section=skill ' +
-    'Note="+%V Knowledge check wrt local notables, legendary items, and noteworthy places; additional +2 wrt Sorshef and Sarcosan history"',
+    'Note="+%{levels.Sahi+wisdomModifier} Knowledge check wrt local notables, legendary items, and noteworthy places; additional +2 wrt Sorshef and Sarcosan history"',
   'Pride Of The Sorshef':'Section=save Note="Immune to disease and poison"',
   'Primal Foe':'Section=feature Note="May not associate with %{ancestralFoe}"',
   'Ranged Sneak Attack':'Section=combat Note="R%1\' +%Vd6 Sneak Attack"',
@@ -1995,15 +2003,17 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="Daily ritual gives fighting knife dbl threat range"',
   'Recharge Nexus':
     'Section=magic ' +
-    'Note="May spend %V Spell Energy to recharge a nexus 1 point"',
+    'Note="May spend %{$\'levels.Dwarven Loremaster\'<6?3:2} Spell Energy to recharge a nexus 1 point"',
   'Regenerative Strike':
     'Section=magic ' +
     'Note="Critical hit on foe restores up to 2x crit multiplier Spell Energy"',
-  "Resist Izrador's Will":'Section=save Note="SR %V vs. legate magic"',
+  "Resist Izrador's Will":
+    'Section=save Note="SR %{$\'levels.Bane Of Legates\'+10} vs. legate magic"',
   'Respect':'Section=feature Note="Has Leadership feature w/Shadow minions"',
   'Roofjumping':'Section=skill Note="+10 Jump (rooftop), 10\' running jump"',
   'Rune Magic':
-    'Section=magic Note="May carve runes to evoke R60\' spell up to level %V"',
+    'Section=magic ' +
+    'Note="May carve runes to evoke R60\' spell up to level %{$\'levels.Dwarven Loremaster\'-1}"',
   'Sahi Bonus Feats':'Section=feature Note="%V Sahi Feat"',
   'Sahi Literacy':'Section=skill Note="Literate in Colonial and Courtier"',
   'Savvy Host':
@@ -2015,13 +2025,14 @@ LastAge.FEATURES_ADDED = {
     'Section=combat Note="May reduce damage bonus vs. %{ancestralFoe} by half to gain an equal attack bonus"',
   'Seance':
     'Section=magic ' +
-    'Note="May use <i>Augury</i> or R100\' <i>Legend Lore</i> effects about past%1 %V/dy"',
+    'Note="May use <i>Augury</i> or R100\' <i>Legend Lore</i> effects about past%{$\'levels.Haunted One\'<4?\' dy\':$\'levels.Haunted One\'<7?\' yr\':$\'levels.Haunted One\'<10?\' century\':\'\'} %{($\'levels.Haunted One\'+2)//3}/dy"',
   'Security Breach':
-    'Section=skill Note="Successful Gather Information gives +%V to Bluff, Hide, and Move Silently to exploit chinks in site security"',
+    'Section=skill ' +
+    'Note="Successful Gather Information gives +%{$\'levels.Avenging Knife\'} to Bluff, Hide, and Move Silently to exploit chinks in site security"',
   'See Astirax':'Section=feature Note="Can see astiraxes as shadowy forms"',
   'Shadow Contacts':
     'Section=skill ' +
-    'Note="Successful Gather Information obtains a %V favor from a Shadow minion"',
+    'Note="Successful Gather Information obtains a DC 20 minor%{$\'levels.Insurgent Spy\'<3?\'\':$\'levels.Insurgent Spy\'<5?\' or DC 25 major\':\', DC 25 major, or DC 30 incredible\'} favor from a Shadow minion"',
   'Shadow Speak':
     'Section=skill ' +
     'Note="+%V Bluff, Diplomacy, Intimidate, and Sense Motive w/Shadow minions"',
@@ -2030,7 +2041,7 @@ LastAge.FEATURES_ADDED = {
     'Section=skill Note="+4 Move Silently (forests and mountains)"',
   "Smuggler's Trade":
     'Section=skill ' +
-    'Note="+%V and may take 10 on Bluff, Disguise, Forgery, and Gather Information when smuggling"',
+    'Note="+%{(levels.Smuggler+1)//2*2} and may take 10 on Bluff, Disguise, Forgery, and Gather Information when smuggling"',
   'Speak With Dead':
     'Section=magic ' +
     'Note="May use <i>Speak With Dead</i> effects %{levels.Harrower//3}/dy"',
@@ -2041,7 +2052,7 @@ LastAge.FEATURES_ADDED = {
     'Note="Blood-syphoning transfers a spell from target to self; grapple allows use of target Spell Energy"',
   'Spirit Manipulation':
     'Section=magic ' +
-    'Note="May use %V chosen Divination or Necromancy spells as spell-like ability 1/dy"',
+    'Note="May use %{$\'levels.Haunted One\'//2} chosen Divination or Necromancy spells as spell-like ability 1/dy"',
   'Spirit Speaker':
     'Section=magic,magic ' +
     'Note=' +
@@ -2053,12 +2064,12 @@ LastAge.FEATURES_ADDED = {
     'Note="Reduces cost of Divination and Necromancy spells by 1"',
   'Spiritual Link':
     'Section=magic ' +
-    'Note="May use <i>Alarm</i> effects, gains +1 caster level, and reduces spell cost by 1 in %V chosen areas of up to 1/2 mile diameter each"',
+    'Note="May use <i>Alarm</i> effects, gains +1 caster level, and reduces spell cost by 1 in %{$\'levels.Gardener Of Erethor\'//2} chosen areas of up to 1/2 mile diameter each"',
   'Spur On':
     'Section=feature Note="Mount gains dbl speed during charge or dbl move"',
   'Spy':
     'Section=feature ' +
-    'Note="Has %V% chance of receiving help from 1d3 Aradil\'s Eyes when in dire need"',
+    'Note="Has %{$\\"levels.Aradil\'s Eye\\"*10}% chance of receiving help from 1d3 Aradil\'s Eyes when in dire need"',
   'Spy Initiate':
     'Section=feature,skill ' +
     'Note=' +
@@ -2066,19 +2077,21 @@ LastAge.FEATURES_ADDED = {
       '"+%V Diplomacy (Elves and allies)"',
   'Still As Stone':'Section=skill Note="+10 Hide (exploiting security breach)"',
   'Strength Of My Ancestors':
-    'Section=feature Note="+2 ability, attack, save, or skill check %V/dy"',
+    'Section=feature Note="+2 ability, attack, save, or skill check 1/dy"',
   'Strength Of The Wood':
     'Section=magic Note="Recovers 1 Spell Energy/hr during Tree Meld"',
   'Stunning Sneak Attack':
     'Section=combat ' +
-    'Note="May stun foe for 1 rd w/Sneak Attack (DC %V neg) 3/dy"',
+    'Note="May stun foe for 1 rd w/Sneak Attack (DC %{$\'levels.Avenging Knife\'+10+intelligenceModifier} neg) 3/dy"',
   'Summon Ancestor':
     'Section=magic ' +
     'Note="Casting <i>Summon Ancestral Warrior</i> and <i>Summon Ancestral Hero</i> costs 50 vp less than normal"',
   'Sundered Spirit':
     'Section=magic ' +
     'Note="Radiates 5\'-50\' <i>Antimagic Field</i> for divine magic"',
-  'Survival Of The Skilled':'Section=skill Note="+%V on %1 chosen skills"',
+  'Survival Of The Skilled':
+    'Section=skill ' +
+    'Note="+%{$\'levels.Vigilant Defender\'//2} on %{($\'levels.Vigilant Defender\'+1)//3} chosen skills"',
   'Sweeping Strike':
     'Section=combat ' +
     'Note="May attack all threatened foes w/out provoking AOO during mount move"',
@@ -2087,23 +2100,26 @@ LastAge.FEATURES_ADDED = {
     'Note="R60\' May give self and allies +%{($\'levels.Legate Martial\'+3)//4} attack and AC against chosen foe w/in 30\' after 1 rd of study"',
   'Tales Of The Sorshef (Agony)':
     'Section=magic ' +
-    'Note="R60\' Any foe striking an ally suffers <i>Symbol Of Pain</i> effects (DC %2 neg, +2 if a Sarcosan ally) during storytelling (%1 rd maximum) +%V rd"',
+    'Note="R60\' Any foe striking an ally suffers <i>Symbol Of Pain</i> effects (DC %{highestMagicModifier+15} neg, +2 if a Sarcosan ally) during storytelling (%{$\'skills.Perform (Storytelling)\'} rd maximum) + %{levels.Sahi} rd"',
   'Tales Of The Sorshef (Determination)':
     'Section=magic ' +
-    'Note="R60\' Allies gain +1 attack, +1 saves, and +1d8 HP during storytelling (%1 rd maximum) +%V rd"',
+    'Note="R60\' Allies gain +1 attack, +1 saves, and +1d8 HP during storytelling (%{$\'skills.Perform (Storytelling)\'} rd maximum) + %{levels.Sahi} rd"',
   'Tales Of The Sorshef (Freedom)':
     'Section=magic ' +
-    'Note="R60\' Allies gain immunity to paralysis, stunning, nausea, and petrification during storytelling (%1 rd maximum) +%V rd"',
+    'Note="R60\' Allies gain immunity to paralysis, stunning, nausea, and petrification during storytelling (%{$\'skills.Perform (Storytelling)\'} rd maximum) + %{levels.Sahi} rd"',
   'Tales Of The Sorshef (Heart)':
     'Section=magic ' +
-    'Note="R60\' Allies gain +%2 vs. fear and compulsion during storytelling (%1 rd maximum) +%V rd"',
+    'Note="R60\' Allies gain +%{levels.Sahi//2} vs. fear and compulsion during storytelling (%{$\'skills.Perform (Storytelling)\'} rd maximum) + %{levels.Sahi} rd"',
   'Target Study':
     'Section=combat ' +
     'Note="Successful Gather Information (DC 10 + target HD) gives +2 attack, +2 damage, or +4 AC vs. target"',
-  'The Drop':'Section=combat Note="+%V attack and damage vs. flat-footed foe"',
+  'The Drop':
+    'Section=combat ' +
+    'Note="+%{($\'levels.Avenging Knife\'+2)//3} attack and damage vs. flat-footed foe"',
+
   'Tree Meld':
     'Section=magic ' +
-    'Note="May merge into a tree for up to %V hr; suffers 5d6 HP from involuntary exit"',
+    'Note="May merge into a tree for up to %{$\'levels.Whisper Adept\'} hr; suffers 5d6 HP from involuntary exit"',
   'Unbreakable Blade':'Section=combat Note="Ancestral weapon cannot be harmed"',
   'Undetectable Alignment':'Section=save Note="Immune to alignment detection"',
   'Urban Mobility':'Section=feature Note="%V selections"',
@@ -2117,7 +2133,7 @@ LastAge.FEATURES_ADDED = {
   'Wallscaling':
     'Section=ability,skill ' +
     'Note=' +
-      '"%V climb speed in urban settings",' +
+      '"%{speed//2} climb speed in urban settings",' +
       '"+8 Climb (urban); may take 10 when rushed or threatened"',
   "Warden's Vows":
     'Section=feature ' +
@@ -2126,10 +2142,10 @@ LastAge.FEATURES_ADDED = {
     'Section=magic,save ' +
     'Note=' +
       '"Knows additional spells",' +
-      '"+%V vs. weather and natural energy effects"',
+      '"+%{$\'levels.Snow Witch\'<4?2:4} vs. weather and natural energy effects"',
   'What Was Will Be Again':
     'Section=combat ' +
-    'Note="Gains x2 attacks and %V 5\' steps in a full-round action 1/day"',
+    'Note="Gains x2 attacks and %{dexterityModifier>?1} 5\' steps in a full-round action 1/day"',
   'Wheel About':
     'Section=combat Note="May make 90 degree turn during mounted charge"',
   "Whisper's Ward":
@@ -2139,7 +2155,7 @@ LastAge.FEATURES_ADDED = {
     'Note=' +
       '"%V w/in Erethor",' +
       '"Requires no check to hear Whispering Wood in Erethor",' +
-      '"%V w/in Erethor"',
+      '"May use %V effects w/in Erethor at will"',
   'Wizard Bonus Feats':'Section=feature Note="%V Wizard Feats"',
   'Wizardcraft':
     'Section=magic Note="May prepare spells ahead of time for half Spell Energy cost"',
@@ -2148,7 +2164,7 @@ LastAge.FEATURES_ADDED = {
   'Woodsman':'Section=skill Note="+2 Handle Animal/+2 Survival"',
   "Xione's Herald":
     'Section=combat ' +
-    'Note="R30\' Foes panicked for 10 rd (DC %V Will shaken for 1 rd)"'
+    'Note="R30\' Foes panicked for 10 rd (DC %{charismaModifier+15} Will shaken for 1 rd)"'
 
 };
 LastAge.FEATURES = Object.assign({}, SRD35.FEATURES, LastAge.FEATURES_ADDED);
@@ -4825,22 +4841,14 @@ LastAge.classRulesExtra = function(rules, name) {
 
   } else if(name == "Aradil's Eye") {
 
-    rules.defineRule('featureNotes.spy', classLevel, '=', 'source * 10');
     rules.defineRule('skillNotes.spyInitiate',
-      classLevel, '=', 'source >= 10 ? 10 : source >= 5 ? 8 : 4'
+      "levels.Aradil's Eye", '=', 'source<5? 4 : source<10 ? 8 : 10'
     );
 
   } else if(name == 'Avenging Knife') {
 
     rules.defineRule
       ('combatNotes.sneakAttack', classLevel, '+=', 'Math.floor(source / 3)');
-    rules.defineRule('combatNotes.stunningSneakAttack',
-      classLevel, '=', '10 + source',
-      'intelligenceModifier', '+', null
-    );
-    rules.defineRule
-      ('combatNotes.theDrop', classLevel, '=', 'Math.floor((source + 2) / 3)');
-    rules.defineRule('skillNotes.securityBreach', classLevel, '=', null);
 
   } else if(name == 'Bane Of Legates') {
 
@@ -4855,8 +4863,6 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
     rules.defineRule
       ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
-    rules.defineRule
-      ("saveNotes.resistIzrador'sWill", classLevel, '=', 'source + 10');
 
   } else if(name == 'Druid') {
 
@@ -4909,9 +4915,6 @@ LastAge.classRulesExtra = function(rules, name) {
       'elvenRaiderFeatures.Ranged Sneak Attack', '=', '30',
       'combatNotes.improvedSneakAttackRange', '+', null
     );
-    rules.defineRule('combatNotes.meticulousAim',
-      classLevel, '+=', 'Math.floor(source / 2)'
-    );
 
   } else if(name == 'Freerider') {
 
@@ -4952,15 +4955,6 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule
       ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
     rules.defineRule
-      ('magicNotes.seance', classLevel, '=', 'Math.floor((source + 2) / 3)');
-    rules.defineRule('magicNotes.seance.1',
-      classLevel, '=',
-        'source<4 ? " dy" : source<7 ? " yr" : source<10 ? " century" : ""'
-    );
-    rules.defineRule('magicNotes.spiritManipulation',
-      classLevel, '=', 'Math.floor(source / 2)'
-    );
-    rules.defineRule
       ('spellEnergy', 'magicNotes.hauntedOneSpellEnergy', '+', null);
     rules.defineRule
       ('spellsKnownBonus', 'magicNotes.hauntedOneSpellsKnown', '+', null);
@@ -4970,31 +4964,13 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('combatNotes.sneakAttack',
       classLevel, '+=', 'Math.floor((source - 1) / 2)'
     );
-    rules.defineRule('skillNotes.shadowContacts',
-      classLevel, '=',
-        'source>=5 ? "DC 20 minor, DC 25 major, or DC 30 incredible" : ' +
-        'source>=3 ? "DC 20 minor or DC 25 major" : "DC 20 minor"'
+    rules.defineRule('skillNotes.shadowSpeak',
+      'levels.Insurgent Spy', '+=', 'Math.floor(source / 2)'
     );
-    rules.defineRule
-      ('skillNotes.shadowSpeak', classLevel, '=', 'Math.floor(source / 2)');
 
   } else if(name == 'Smuggler') {
 
     rules.defineRule('baseAttack', 'smugglerBaseAttackAdjustment', '+', null);
-    rules.defineRule
-      ('magicNotes.mystifyingSpeech', classLevel, '=', 'source>=7 ? 2 : 1');
-    rules.defineRule('magicNotes.mystifyingSpeech.1',
-      'features.Mystifying Speech', '?', null,
-      classLevel, '=', null
-    );
-    rules.defineRule('magicNotes.mystifyingSpeech.2',
-      'features.Mystifying Speech', '?', null,
-      classLevel, '=', '10 + source',
-      'charismaModifier', '+', null
-    );
-    rules.defineRule("skillNotes.smuggler'sTrade",
-      classLevel, '=', 'Math.floor((source + 1) / 2) * 2'
-    );
     rules.defineRule('smugglerBaseAttackAdjustment',
       classLevel, '=', 'source==8 || source==10 ? -1 : null'
     );
@@ -5014,25 +4990,22 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('magicNotes.improvedSpellcasting.1',
       classLevel, '+=', 'Math.floor(source / 2)'
     );
-    rules.defineRule
-      ('magicNotes.meleeCaster', classLevel, '=', 'Math.floor(source / 2)');
 
   } else if(name == 'Whisper Adept') {
 
     rules.defineRule('combatNotes.whisperSense',
       classLevel, '=',
         'source<2 ? null : source<4 ? "+2 Initiative" : ' +
-        '"+2 Initiative, cannot be surprised"'
+        '"+2 Initiative and cannot be surprised"'
     );
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
     rules.defineRule
       ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
-    rules.defineRule('magicNotes.treeMeld', classLevel, '=', null);
     rules.defineRule('magicNotes.whisperSense',
       classLevel, '=',
         'source<6 ? null : source<8 ? "<i>Clairaudience</i>" : ' +
-        'source<10 ? "<i>Clairaudience</i>, <i>Clairvoyance</i>" : ' +
-        '"<i>Clairaudience</i>, <i>Clairvoyance</i>, <i>Commune With Nature</i>"'
+        'source<10 ? "<i>Clairaudience/Clairvoyance</i>" : ' +
+        '"<i>Clairaudience/Clairvoyance</i>, <i>Commune With Nature</i>"'
     );
 
   } else if(name == 'Wizard') {
@@ -5063,14 +5036,6 @@ LastAge.classRulesExtra = function(rules, name) {
       ('features.Rapid Shot', 'features.Improved Mounted Archery', '=', '1');
     rules.defineRule('selectableFeatureCount.Wogren Rider',
       'featureNotes.mountedAbility', '=', null
-    );
-    rules.defineRule('skillNotes.mountedHide',
-      classLevel, '=', '0',
-      'skillModifier.Hide', '+', null,
-      // Use wogren's size modifier, not character's
-      'features.Small', '+', '-4',
-      'animalCompanionStats.Size', '+',
-        'source=="S" ? 4 : source=="L" ? -4 : null'
     );
 
   // Supplements
@@ -5168,22 +5133,14 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('featureNotes.senseDarkMagic',
       'features.Master Hunter', '?', null
     );
-    rules.defineRule('saveNotes.paleHeart',
-      classLevel, '=', 'Math.floor((source + 2) / 3)',
-      'levels.Legate', '+', 'Math.floor(source / 3)'
-    );
     rules.defineRule('skillNotes.shadowSpeak',
-      classLevel, '=', 'Math.floor((source+1) / 3)',
-      'levels.Legate', '+', 'Math.floor(source / 2)'
+      'levels.Legate', '+', 'Math.floor(source / 2)',
+      'levels.Pale Legate', '+=', 'Math.floor((source + 1) / 3)'
     );
 
   } else if(name == 'Warden Of Erenland') {
 
     rules.defineRule('channelerSpells', 'magicNotes.spiritSpeaker', '+', '1');
-    rules.defineRule('featureNotes.mediator', classLevel, '=', 'source * 5');
-    rules.defineRule('featureNotes.mediator.1',
-      classLevel, '=', 'Math.floor((source + 2) / 3)'
-    );
 
   } else if(name == 'Ancestral Foe') {
 
@@ -5210,9 +5167,6 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
     rules.defineRule
       ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
-    rules.defineRule
-      ('magicNotes.rechargeNexus', classLevel, '=', 'source<6 ? 3 : 2');
-    rules.defineRule('magicNotes.runeMagic', classLevel, '=', 'source - 1');
     rules.defineRule
       ('skillNotes.traditionGift(Lorebook)', classLevel, '=', null);
 
@@ -5261,9 +5215,6 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('selectableFeatureCount.Collaborator (Domain)',
       classLevel, '=', 'source<6 ? null : 2'
     );
-    rules.defineRule('skillNotes.obsidianTongue',
-      classLevel, '=', 'Math.floor((source + 1) / 2) * 2'
-    );
     for(let s in rules.getChoices('selectableFeatures')) {
       if(s.match(/Collaborator - .* Domain/)) {
         let domain = s.replace('Collaborator - ', '').replace(' Domain', '');
@@ -5301,8 +5252,6 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('magicNotes.gardenerOfErethorBonusSpells',
       classLevel, '=', 'Math.floor(source / 2)'
     );
-    rules.defineRule
-      ('magicNotes.spiritualLink', classLevel, '=', 'Math.floor(source / 2)');
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
     rules.defineRule
       ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
@@ -5346,8 +5295,6 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('saveNotes.coldResistance',
       classLevel, '^=', 'source>= 10 ? Infinity : Math.floor((source+1)/3) * 5'
     );
-    rules.defineRule
-      ('saveNotes.wayOfTheSnowWitch', classLevel, '=', 'source<4 ? 2 : 4');
 
   } else if(name == 'Syphon') {
 
@@ -5372,9 +5319,6 @@ LastAge.classRulesExtra = function(rules, name) {
 
     rules.defineRule('combatNotes.fluidDefense',
       classLevel, '=', 'Math.floor((source + 1) / 2)'
-    );
-    rules.defineRule('combatNotes.whatWasWillBeAgain',
-      'dexterityModifier', '=', 'Math.max(source, 1)'
     );
     rules.defineRule('featureNotes.bladeDancerBonusFeats',
       classLevel, '=', 'Math.floor(source / 2) - (source == 10 ? 1 : 0)'
@@ -5403,9 +5347,6 @@ LastAge.classRulesExtra = function(rules, name) {
     );
     rules.defineRule
       ('features.Low-Light Vision', 'featureNotes.visionOfTheNight', '=', '1');
-    rules.defineRule('featureNotes.strengthOfMyAncestors',
-      classLevel, '+=', 'source<4 ? null : 1'
-    );
     rules.defineRule
       ('features.Low-Light Vision', 'featureNotes.VisionOfTheNight', '=', '1');
     rules.defineRule('featureNotes.sahiBonusFeats',
@@ -5414,49 +5355,9 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('magicNotes.improvedSpellcasting', classLevel, '+=', null);
     rules.defineRule
       ('magicNotes.improvedSpellcasting.1', classLevel, '+=', null);
-    rules.defineRule
-      ('magicNotes.omenOfTheSorshef', classLevel, '=', 'source + 70');
-    rules.defineRule
-      ('magicNotes.talesOfTheSorshef(Agony)', classLevel, '=', null);
-    rules.defineRule('magicNotes.talesOfTheSorshef(Agony).1',
-      'features.Tales Of The Sorshef (Agony)', '?', null,
-      'skills.Perform (Storytelling)', '=', null
-    );
-    rules.defineRule('magicNotes.talesOfTheSorshef(Agony).2',
-      'features.Tales Of The Sorshef (Agony)', '?', null,
-      'highestMagicModifier', '=', 'source + 15'
-    );
-    rules.defineRule
-      ('magicNotes.talesOfTheSorshef(Determination)', classLevel, '=', null);
-    rules.defineRule('magicNotes.talesOfTheSorshef(Determination).1',
-      'features.Tales Of The Sorshef (Determination)', '?', null,
-      'skills.Perform (Storytelling)', '=', null
-    );
-    rules.defineRule
-      ('magicNotes.talesOfTheSorshef(Freedom)', classLevel, '=', null);
-    rules.defineRule('magicNotes.talesOfTheSorshef(Freedom).1',
-      'features.Tales Of The Sorshef (Freedom)', '?', null,
-      'skills.Perform (Storytelling)', '=', null
-    );
-    rules.defineRule
-      ('magicNotes.talesOfTheSorshef(Heart)', classLevel, '=', null);
-    rules.defineRule('magicNotes.talesOfTheSorshef(Heart).1',
-      'features.Tales Of The Sorshef (Heart)', '?', null,
-      'skills.Perform (Storytelling)', '=', null
-    );
-    rules.defineRule('magicNotes.talesOfTheSorshef(Heart).2',
-      'features.Tales Of The Sorshef (Heart)', '?', null,
-      classLevel, '=', 'Math.floor(source / 2)'
-    );
-    rules.defineRule('skillNotes.parablesOfTheSorshef',
-      classLevel, '=', null,
-      'wisdomModifier', '+', null
-    );
 
   } else if(name == 'Vigilant Defender') {
 
-    rules.defineRule
-      ('abilityNotes.wallscaling', 'speed', '=', 'Math.floor(source / 2)');
     rules.defineRule
       ('combatNotes.blade', classLevel, '=', 'Math.floor((source + 2) / 3)');
     rules.defineRule('combatNotes.improvedUncannyDodge',
@@ -5476,19 +5377,11 @@ LastAge.classRulesExtra = function(rules, name) {
     rules.defineRule('selectableFeatureCount.Vigilant Defender',
       'featureNotes.urbanMobility', '=', null
     );
-    rules.defineRule('skillNotes.survivalOfTheSkilled',
-      classLevel, '=', 'Math.floor(source / 2)'
-    );
-    rules.defineRule('skillNotes.survivalOfTheSkilled.1',
-      classLevel, '=', 'Math.floor((source + 1) / 3)'
-    );
 
   } else if(name == 'Erunsil Blood') {
 
     rules.defineRule
       ('combatNotes.paleAsSnow', classLevel, '=', 'source>=8 ? 15 : null');
-    rules.defineRule
-      ("combatNotes.xione'sHerald", 'charismaModifier', '=', '15 + source');
     rules.defineRule('featureNotes.cutsLikeIce',
       '', '=', '" and Weapon Specialization (Fighting Knife)"',
       'feats.Weapon Specialization (Fighting Knife)', '=', '" and Greater Weapon Specialization (Fighting Knife)"',
