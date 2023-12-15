@@ -26,7 +26,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
  * parts of the rules; raceRules for character races, magicRules for spells,
  * etc. These member methods can be called independently in order to use a
  * subset of the rules. Similarly, the constant fields of MidnightLegacy
- * (BACKGROUNDS, PATHS, etc.) can be manipulated to modify the choices.
+ * (BACKGROUNDS, HEROIC_PATHS, etc.) can be manipulated to modify the choices.
  */
 function MidnightLegacy() {
 
@@ -39,16 +39,19 @@ function MidnightLegacy() {
 
   var rules = new QuilvynRules('Midnight Legacy', MidnightLegacy.VERSION);
   MidnightLegacy.rules = rules;
+  rules.plugin = MidnightLegacy;
 
-  rules.defineChoice('choices', SRD5E.CHOICES);
+  rules.defineChoice('choices', SRD5E.CHOICES.concat(['Heroic Path']));
   rules.choiceEditorElements = SRD5E.choiceEditorElements;
   rules.choiceRules = MidnightLegacy.choiceRules;
+  rules.removeChoice = SRD5E.removeChoice;
   rules.editorElements = SRD5E.initialEditorElements();
   rules.getFormats = SRD5E.getFormats;
   rules.getPlugins = MidnightLegacy.getPlugins;
   rules.makeValid = SRD5E.makeValid;
   rules.randomizeOneAttribute = SRD5E.randomizeOneAttribute;
   rules.defineChoice('random', SRD5E.RANDOMIZABLE_ATTRIBUTES);
+  rules.getChoices = SRD5E.getChoices;
   rules.ruleNotes = MidnightLegacy.ruleNotes;
 
   SRD5E.createViewers(rules, SRD5E.VIEWERS);
@@ -64,19 +67,22 @@ function MidnightLegacy() {
 
   MidnightLegacy.BACKGROUNDS =
     Object.assign({}, basePlugin.BACKGROUNDS, MidnightLegacy.BACKGROUNDS_ADDED);
-  MidnightLegacy.CLASSES = Object.assign({}, basePlugin.CLASSES);
-  MidnightLegacy.CLASSES.Cleric +=
-    ' Selectables="1:' + QuilvynUtils.getKeys(MidnightLegacy.PATHS_ADDED, /Domain/i).join(':Divine Domain","1:') + ':Divine Domain"';
-  delete MidnightLegacy.CLASSES.Monk;
-  delete MidnightLegacy.CLASSES.Warlock;
+  if(window.PHB5E != null) {
+    for(let c in MidnightLegacy.CLASSES)
+      if(c != 'Cleric')
+        MidnightLegacy.CLASSES[c] = PHB5E.CLASSES[c];
+  }
   MidnightLegacy.FEATS =
     Object.assign({}, basePlugin.FEATS, MidnightLegacy.FEATS_ADDED);
   MidnightLegacy.FEATURES =
     Object.assign({}, basePlugin.FEATURES, MidnightLegacy.FEATURES_ADDED);
-  MidnightLegacy.PATHS = Object.assign({}, MidnightLegacy.PATHS_ADDED);
-  for(var p in basePlugin.PATHS) {
-    if(!basePlugin.PATHS[p].match(/Group=(Cleric|Monk|Warlock)/i))
-      MidnightLegacy.PATHS[p] = basePlugin.PATHS[p];
+  for(let f in MidnightLegacy.FEATURES) {
+    if(basePlugin.CLASSES.Monk.includes(f) ||
+       basePlugin.CLASSES.Warlock.includes(f) ||
+       (basePlugin.CLASSES.Cleric.includes(f) &&
+        !(MidnightLegacy.CLASSES.Cleric.includes(f))) ||
+       Object.values(basePlugin.RACES).join('').includes(f))
+      delete MidnightLegacy.FEATURES[f];
   }
   MidnightLegacy.SPELLS =
     Object.assign({}, basePlugin.SPELLS, MidnightLegacy.SPELLS_ADDED);
@@ -93,7 +99,7 @@ function MidnightLegacy() {
   MidnightLegacy.magicRules(rules, SRD5E.SCHOOLS, MidnightLegacy.SPELLS);
   MidnightLegacy.identityRules(
     rules, SRD5E.ALIGNMENTS, MidnightLegacy.BACKGROUNDS,
-    MidnightLegacy.CLASSES, MidnightLegacy.DEITIES, MidnightLegacy.PATHS,
+    MidnightLegacy.CLASSES, MidnightLegacy.DEITIES, MidnightLegacy.HEROIC_PATHS,
     MidnightLegacy.RACES
   );
   MidnightLegacy.talentRules
@@ -115,7 +121,7 @@ function MidnightLegacy() {
 
 }
 
-MidnightLegacy.VERSION = '2.3.2.0';
+MidnightLegacy.VERSION = '2.4.1.0';
 
 MidnightLegacy.BACKGROUNDS_ADDED = {
   'Deserter':
@@ -160,9 +166,61 @@ MidnightLegacy.BACKGROUNDS_ADDED = {
 };
 MidnightLegacy.BACKGROUNDS =
   Object.assign({}, SRD5E.BACKGROUNDS, MidnightLegacy.BACKGROUNDS_ADDED);
-MidnightLegacy.CLASSES = Object.assign({}, SRD5E.CLASSES);
-delete MidnightLegacy.CLASSES.Monk;
-delete MidnightLegacy.CLASSES.Warlock;
+MidnightLegacy.CLASSES = {
+  'Barbarian':SRD5E.CLASSES.Barbarian,
+  'Bard':SRD5E.CLASSES.Bard,
+  'Cleric':
+    'HitDie=d8 ' +
+    'Features=' +
+      '"1:Armor Proficiency (Medium/Shield)",' +
+      '"1:Save Proficiency (Charisma/Wisdom)",' +
+      '"1:Skill Proficiency (Choose 2 from History, Insight, Medicine, Persuasion, Religion)",' +
+      '"1:Weapon Proficiency (Simple)",' +
+      '"1:Divine Domain","1:Ritual Casting",1:Spellcasting,' +
+      '"2:Channel Divinity","2:Turn Undead","5:Destroy Undead",' +
+      '"10:Divine Intervention",' +
+      '"features.Keeper Of Obsidian Domain ? 1:Dark God\'s Blessing",' +
+      '"features.Keeper Of Obsidian Domain ? 1:Necromantic Arts",' +
+      '"features.Keeper Of Obsidian Domain || features.Witch Taker Domain ? 2:Astirax Servant",' +
+      '"features.Keeper Of Obsidian Domain ? 6:Dominate Undead",' +
+      '"features.Keeper Of Obsidian Domain ? 8:Potent Spellcasting",' +
+      '"features.Keeper Of Obsidian Domain ? 17:Aura Of Darkness",' +
+      '"features.Soldier Legate Domain ? 1:Weapon Proficiency (Martial)",' +
+      '"features.Soldier Legate Domain ? 1:Dark Warrior",' +
+      '"features.Soldier Legate Domain ? 2:Ferocious Blow",' +
+      '"features.Soldier Legate Domain ? 6:Dire Bodyguard",' +
+      '"features.Soldier Legate Domain ? 8:Bestial Astirax Servant",' +
+      '"features.Soldier Legate Domain ? 17:Dread Avatar",' +
+      '"features.Witch Taker Domain ? 1:Weapon Proficiency (Halberd/Longsword/Rapier/Shortsword)",' +
+      // Handled above '"features.Witch Taker Domain ? 1:Astirax Servant",' +
+      '"features.Witch Taker Domain ? 2:Mage Hunter",' +
+      '"features.Witch Taker Domain ? 6:Improved Astirax Bond",' +
+      '"features.Witch Taker Domain ? 8:Master Mage Hunter",' +
+      '"features.Witch Taker Domain ? 17:Impervious To Magic" ' +
+    'Selectables=' +
+      '"deityDomains =~ \'Obsidian\' ? 1:Keeper Of Obsidian Domain:Divine Domain",' +
+      '"deityDomains =~ \'Soldier\' ? 1:Soldier Legate Domain:Divine Domain",' +
+      '"deityDomains =~ \'Taker\' ? 1:Witch Taker Domain:Divine Domain" ' +
+    'SpellAbility=Wisdom ' +
+    'SpellSlots=' +
+      'C0:3@1;4@4;5@10,' +
+      'C1:2@1;3@2;4@3,' +
+      'C2:2@3;3@4,' +
+      'C3:2@5;3@6,' +
+      'C4:1@7;2@8;3@9,' +
+      'C5:1@9;2@10;3@18,' +
+      'C6:1@11;2@19,' +
+      'C7:1@13;2@20,' +
+      'C8:1@15,' +
+      'C9:1@17',
+  'Druid':SRD5E.CLASSES.Druid,
+  'Fighter':SRD5E.CLASSES.Fighter,
+  'Paladin':SRD5E.CLASSES.Paladin,
+  'Ranger':SRD5E.CLASSES.Ranger,
+  'Rogue':SRD5E.CLASSES.Rogue,
+  'Sorcerer':SRD5E.CLASSES.Sorcerer,
+  'Wizard':SRD5E.CLASSES.Wizard
+};
 MidnightLegacy.DEITIES = {
   'Izrador':
     'Alignment=NE ' +
@@ -307,30 +365,35 @@ MidnightLegacy.FEATURES_ADDED = {
   // Backgrounds
   'Knowledge Of The Enemy':
     'Section=feature ' +
-    'Note="Know basics of Shadow military organization; can get messages to slaves undetected"',
+    'Note="Knows the basics of Shadow military organization/Can get messages to slaves undetected"',
   'Military Rank':
-    'Section=feature Note="Receive respect and deference from fellow soldiers"',
+    'Section=feature ' +
+    'Note="Receives respect and deference from fellow soldiers"',
   'Old Veteran':
-    'Section=feature Note="Know how to infiltrate military organizations"',
+    'Section=feature Note="Knows how to infiltrate military organizations"',
   'Survivalist':
     'Section=skill ' +
-    'Note="Can find shelter from weather and detect presence of hostile creatures and blighted lands"',
+    'Note="Can find shelter from weather and detect the presence of hostile creatures and blighted lands"',
   'Sympathetic Ally':
      'Section=feature ' +
-     'Note="Receive support and info from contact in occupied lands"',
+     'Note="May receive support and info from a contact in occupied lands"',
 
   // Feats
   'Battlefield Healer':
     'Section=combat,skill ' +
-    'Note="Allies regain extra HD from long rest",' +
-         '"Successful DC 15 Medicine with healer\'s kit brings 0 HP to 3 HP"',
+    'Note=' +
+      '"Allies regain extra HD from a long rest",' +
+      '"Successful DC 15 Medicine with healer\'s kit brings patient from 0 HP to 3 HP"',
   'Brawler':
-    'Section=combat ' +
-    'Note="Unarmed strike inflicts d4 damage; may use bonus action for second strike, grapple, or knock prone"',
+    'Section=combat,combat ' +
+    'Note=' +
+      '"Unarmed strike inflicts d4 damage",' +
+      '"May use a bonus action for a second strike, grapple, or knock prone"',
   'Captor':
     'Section=ability,combat ' +
-    'Note="+1 Strength",' +
-         '"Adv on Athletics to grapple when unseen; grapple silently; move at full speed w/out OA while grappling"',
+    'Note=' +
+      '"+1 Strength",' +
+      '"Adv on Athletics to grapple when unseen/May grapple silently/May move at full speed while grappling w/out provoking OA"',
   'Fellhunter':
     'Section=skill ' +
     'Note="Successful DC 12 Religion gives self Adv on saves vs. undead and inflicts Disadv on undead targets\' saves for 1 min 1/long rest"',
@@ -338,243 +401,292 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="Mounted 30\' move negates foe OA and causes successful melee attacks to knock prone"',
   'Improvised Fighter':
-    'Section=combat ' +
-    'Note="Weapon Proficiency (Improvised)/Improvised weapon damage increased to 1d6/May destroy improvised weapon for +1 damage die"',
+    'Section=combat,combat ' +
+    'Note=' +
+      '"Weapon Proficiency (Improvised)/Improvised inflicts 1d6 damage",' +
+      '"May destroy an improvised weapon for +1 damage die"',
   'Knife Fighter':
     'Section=ability,combat ' +
-    'Note="+1 Dexterity",' +
-         '"Dagger crits on 18; crit hit inflicts Disadv on combat for 1 rd"',
+    'Note=' +
+      '"+1 Dexterity",' +
+      '"Dagger crits on 18 and crit inflicts Disadv on combat for 1 rd"',
   'Learned':
-    'Section=skill ' +
-    'Note="Language (Choose 1 from any)/Can read and write/Skill Proficiency (Choose 1 from History, Religion)"',
+    'Section=skill,skill ' +
+    'Note=' +
+      '"Language (Choose 1 from any)/Skill Proficiency (Choose 1 from History, Religion)",' +
+      '"Can read and write"',
   'Paranoid':
     'Section=combat ' +
     'Note="Cannot be surprised when asleep/Automatic Dodge in first round"',
   'Polyglot':
     'Section=skill ' +
-    'Note="Gain general language understanding after listening for 1 dy; successful DC 15 Int after 1 wk gives fluency"',
+    'Note="Gains general language understanding after listening for 1 dy; successful DC 15 Intelligence after 1 wk gives fluency"',
   'Scavenger':
     'Section=ability,skill ' +
-    'Note="Ability Boost (Choose 1 from Intelligence, Wisdom)",' +
-         '"Successful DC 15 Perception recovers all spent ammo/Successful DC 12 Investigation scavenges weapon or armor materials"',
+    'Note=' +
+      '"Ability Boost (Choose 1 from Intelligence, Wisdom)",' +
+      '"Successful DC 15 Perception recovers all spent ammo/Successful DC 12 Investigation scavenges weapon or armor materials"',
   'Seamaster':
-    'Section=ability,feature,skill ' +
-    'Note="Ability Boost (Choose 1 from Dexterity, Wisdom)/Climb rope at full speed",' +
-         '"Increase speed of commanded ship by 2 MPH",' +
-         '"No Disadv to pilot ship through storm"',
+    'Section=ability,ability,feature,skill ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
+      '"May climb rope at full speed",' +
+      '"Increases speed of commanded ship by 2 MPH",' +
+      '"No Disadv to pilot a ship through a storm"',
   'Shieldwall Soldier':
-    'Section=combat Note="R5\' Allies gain +1 AC (+2 if self holding shield)"',
+    'Section=combat Note="R5\' Allies gain +1 AC (+2 if self holds a shield)"',
   'Subtle Spellcaster':
     'Section=magic,skill ' +
-    'Note="Cast 2 chosen level 1 spells 1/long rest",' +
-         '"Successful Sleight Of Hand vs. passive Perception casts spells unnoticed"',
+    'Note=' +
+      '"May cast 2 chosen level 1 spells 1/long rest",' +
+      '"Successful Sleight Of Hand vs. passive Perception allows casting spells unnoticed"',
   'Suspicious':
-    'Section=ability,skill ' +
-    'Note="+1 Intelligence",' +
-         '"Skill Proficiency (Insight)/+%V Insight/+%V passive Perception/Successful DC 20 Investigation notes flaws in story detail"',
+    'Section=ability,skill,skill ' +
+    'Note=' +
+      '"+1 Intelligence",' +
+      '"Skill Proficiency (Insight)/+%V Insight",' +
+      '"+%V passive Perception/Successful DC 20 Investigation notes flaws in story detail"',
   'Unremarkable':
     'Section=ability,feature ' +
-    'Note="+1 Wisdom",' +
-         '"May run through crowds unnoticed/Foe passive Perception to notice self reduced to 12"',
+    'Note=' +
+      '"+1 Wisdom",' +
+      '"May run through crowds unnoticed/Reduces foe\'s passive Perception to notice self to 12"',
 
   // Heroic Paths
   'Acts Of Service':
     'Section=ability,combat,skill ' +
-    'Note="Ability Boost (Choose 1 from Strength, Wisdom)",' +
-         '"Foes suffer Disadv attacking adjacent incapacitated allies; self gains Adv on attacks",' +
-         '"May spend 2 uses of Healer\'s Kit to reduce exhaustion or to restore ability or HP maximum"',
+    'Note=' +
+      '"Ability Boost (Choose 1 from Strength, Wisdom)",' +
+      '"Foes suffer Disadv attacking adjacent incapacitated allies; self gains Adv on attacks",' +
+      '"May spend 2 uses of healer\'s kit to reduce exhaustion or to restore ability or HP maximum"',
   'Apex Predator':
     'Section=ability,combat,feature ' +
-    'Note="+2 Strength",' +
-         '"+20 Hit Points/Unarmed strike inflicts 1d8 damage",' +
-         '"Pack Alpha affects all creatures"',
+    'Note=' +
+      '"+2 Strength",' +
+      '"+20 Hit Points/Unarmed strike inflicts 1d8 damage",' +
+      '"Pack Alpha feature affects all creatures"',
   'Avatar Of Aryth':
-    'Section=magic Note="Summon friendly earth elemental 1/long rest"',
+    'Section=magic Note="May summon a friendly earth elemental 1/long rest"',
   'Bulwark Of Faith':
     'Section=ability,save ' +
-    'Note="Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
-         '"Adv vs. spells of celestials, fiends, undead, and Shadow agents"',
+    'Note=' +
+      '"Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
+      '"Adv vs. spells of celestials, fiends, undead, and Shadow agents"',
   'Changed To The Core':
     'Section=combat ' +
     'Note="R50\' Successful Persuasion vs. Insight causes target foe to flee (%{level//2+1}+ HD) or switch sides 1/long rest"',
   'Channeled Magic':'Section=magic Note="%V additional %1 spell slot"',
-  'Conduit':'Section=magic Note="Know 2 Sorcerer cantrips"',
+  'Conduit':'Section=magic Note="Knows 2 Sorcerer cantrips"',
   'Courage Of Your Convictions':
     'Section=combat ' +
-    'Note="R50\' Use inspiration and bonus action to remove charmed, frightened, paralyzed, or stunned from self and allies"',
+    'Note="R50\' May use inspiration and a bonus action to remove charmed, frightened, paralyzed, or stunned from self and allies"',
   'Crowd Rouser':
     'Section=magic ' +
-    'Note="R50\' May charm and convince listeners (DC %{8+charismaModifier+proficiencyBonus} Wis neg) for 1 wk 1/short rest"',
+    'Note="R50\' May charm and convince listeners (DC %{8+charismaModifier+proficiencyBonus} Wisdom neg) for 1 wk 1/short rest"',
   'Crucial Strike':
     'Section=ability,combat ' +
-    'Note="+1 Charisma",' +
-         '"Use Reaction to give ally additional attack with +%{proficiencyBonus} damage"',
+    'Note=' +
+      '"+1 Charisma",' +
+      '"May use Reaction to give an ally an additional attack with +%{proficiencyBonus} damage"',
   'Deadly Strike':
-    'Section=combat Note="May automatically crit on successful melee attack w/Adv 1/short rest"',
-  'Ethereal Presence':'Section=magic Note="Spend 1 HD for 1 min etherealness"',
+    'Section=combat ' +
+    'Note="May automatically crit on a successful melee attack w/Adv 1/short rest"',
+  'Ethereal Presence':
+    'Section=magic Note="May spend 1 HD for 1 min etherealness"',
   'Fallen Sense':
     'Section=ability,feature,magic ' +
-    'Note="Ability Boost (Choose 1 from any)",' +
-         '"Communicate with outsider for conc or 1 hr",' +
-         '"R60\' Detect location and type of Fallen"',
+    'Note=' +
+      '"Ability Boost (Choose 1 from any)",' +
+      '"May communicate with a Fallen for conc up to 1 hr",' +
+      '"R60\' Knows location and type of Fallen"',
   'Fireheart':
     'Section=magic,save ' +
-    'Note="May reroll fire spell damage","Resistance to fire damage"',
+    'Note=' +
+      '"May reroll fire spell damage",' +
+      '"Resistance to fire damage"',
   'Folk Medicine':
     'Section=skill ' +
-    'Note="Restore 1d6+%{wisdomModifier} per use of Healer\'s Kit"',
+    'Note="Restores 1d6+%{wisdomModifier} per use of healer\'s kit"',
   'For Victory!':
     'Section=ability,combat ' +
-    'Note="+1 Charisma",' +
-         '"R30\' DC 15 Charisma gives allies +%{proficiencyBonus} attack and damage for 1 min 1/long rest"',
+    'Note=' +
+      '"+1 Charisma",' +
+      '"R30\' Successful DC 15 Charisma gives allies +%{proficiencyBonus} attack and damage for 1 min 1/long rest"',
   'Friends Until The End':
     'Section=ability,combat,feature ' +
-    'Note="Ability Boost (Choose 1 from Dexterity, Strength)",' +
-         '"Make take damage for adjacent Animal Companion",' +
-         '"Animal Companion guards self when incapacitated"',
+    'Note=' +
+      '"Ability Boost (Choose 1 from Dexterity, Strength)",' +
+      '"May take damage for adjacent wild companion",' +
+      '"Wild companion guards self when incapacitated"',
   'Guard':
     'Section=combat ' +
-    'Note="Use bonus action to give adjacent ally +1 AC (+2 with shield)"',
+    'Note="May use a bonus action to give an adjacent ally +1 AC (+2 with shield)"',
   'Hard To Kill':
-    'Section=save Note="Death save succeeds on roll of 6; 16 restores 1 HP"',
+    'Section=save ' +
+    'Note="Death save succeeds on a roll of 6 or higher; 16 or higher restores 1 HP"',
   'Holy Terror':
     'Section=combat ' +
-    'Note="R30\' Use inspiration to turn foes (DC %{8+wisdomModifier+proficiencyBonus} Wisdom neg) for 1 min"',
+    'Note="R30\' May use inspiration to turn foes (DC %{8+wisdomModifier+proficiencyBonus} Wisdom neg) for 1 min"',
   'Indefatigable':
-    'Section=ability,feature ' +
-    'Note="Ability Boost (Choose 1 from Constitution, Strength)/No Disadv on Con or Str checks due to exhaustion",' +
-         '"Successful DC 15 Constitution check doubles exhaustion recovery"',
-  'Inspiring Faith':'Section=feature Note="Gain inspiration after short rest"',
+    'Section=ability,ability,feature ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Constitution, Strength)",' +
+      '"No Disadv on Constitution or Strength checks due to exhaustion",' +
+      '"Successful DC 15 Constitution doubles exhaustion recovery"',
+  'Inspiring Faith':
+    'Section=feature Note="Gains inspiration after a short rest"',
   'Intimidating Presence (Dragonblooded)':
     'Section=ability,magic ' +
-    'Note="+1 Charisma",' +
-         '"R30\' Casting spell frightens foes (Wis neg)"',
+    'Note=' +
+      '"+1 Charisma",' +
+      '"R30\' Casting a spell frightens foes (Wisdom neg)"',
   'Lurk':
     'Section=skill ' +
-    'Note="Make Stealth vs. passive Perception to become unnoticed"',
+    'Note="Successful Stealth vs. passive Perception make self unnoticed"',
   'Masterful Focus':
     'Section=ability,save ' +
-    'Note="Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
-         '"+%{proficiencyBonus} concentration to maintain spell"',
+    'Note=' +
+      '"Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
+      '"+%{proficiencyBonus} concentration to maintain a spell"',
   'Mind Within The Weave':
     'Section=magic ' +
     'Note="May simultaneously maintain concentration on two spells"',
   'Natural Bond':
     'Section=feature ' +
-    'Note="Animals treat self as a friend (DC %{8+proficiencyBonus+wisdomModifier} Wis neg)"',
+    'Note="Animals treat self as a friend (DC %{8+proficiencyBonus+wisdomModifier} Wisdom neg)"',
   'Nexus Affinity':
     'Section=ability,feature,skill ' +
-    'Note="+1 Wisdom",' +
-         '"+1d6 ability, attack, and save w/in 1 mile of a power nexus or black mirror 3/long rest",' +
-         '"DC 16 Insight to detect power nexus or black mirror w/in 5 miles"',
+    'Note=' +
+      '"+1 Wisdom",' +
+      '"+1d6 ability, attack, and save w/in 1 mile of a power nexus or a black mirror 3/long rest",' +
+      '"Successful DC 16 Insight detects a power nexus or a black mirror w/in 5 miles"',
   'Nexus Guardian':
     'Section=feature ' +
-    'Note="May attune to nexus, which grants remote charge use, teleportation to nexus, agelessness, and reincarnation"',
+    'Note="May attune to a nexus, gaining remote charge use, teleportation to nexus, agelessness, and reincarnation"',
   'One With The Earth':
     'Section=feature,skill ' +
-    'Note="Know north, direction of water and geologic features w/in 5 miles, direction of buildings w/in 1 mile",' +
-         '"Skill Proficiency (Perception/Survival)"',
+    'Note=' +
+      '"Knows north, direction of water and geologic features w/in 5 miles, and direction of buildings w/in 1 mile",' +
+      '"Skill Proficiency (Perception/Survival)"',
   'Pack Alpha':
     'Section=feature,skill ' +
-    'Note="May frighten beasts in 30\' radius (DC %{8+proficiencyBonus+strengthModifier} Wis neg)",' +
-         '"Adv Animal Handling (predatory beasts)"',
+    'Note=' +
+      '"May frighten beasts in a 30\' radius (DC %{8+proficiencyBonus+strengthModifier} Wisdom neg)",' +
+      '"Adv on Animal Handling (predatory beasts)"',
   'Pack Fighter':
     'Section=ability,combat ' +
-    'Note="+1 Wisdom",' +
-         '"Adjacent Animal Companion can attack at same time as self"',
+    'Note=' +
+      '"+1 Wisdom",' +
+      '"Adjacent wild companion can attack simultaneously w/self"',
   'Pure Magic':'Section=magic Note="+%V spell attack and save DC"',
   'Quick Recovery':
     'Section=ability,combat ' +
-    'Note="+1 Constitution",' +
-         '"May suffer 1 level of exhaustion to recover hit dice, adding %{constitutionModifier} to each"',
+    'Note=' +
+      '"+1 Constitution",' +
+      '"May suffer 1 level of exhaustion to recover hit dice, adding %{constitutionModifier} to each"',
   'Raging Fury':
-    'Section=magic ' +
-    'Note="Increased Pure Magic effects/May cast 1 action spell as a bonus action"',
+    'Section=magic,magic ' +
+    'Note=' +
+      '"Increased Pure Magic effects",' +
+      '"May cast a 1 action spell as a bonus action"',
   'Rallying Cry':
     'Section=ability,combat ' +
-    'Note="+1 Charisma",' +
-         '"R50\' Successful DC 15 Persuasion gives allies %{level} temporary HP 1/long rest"',
+    'Note=' +
+      '"+1 Charisma",' +
+      '"R50\' Successful DC 15 Persuasion gives allies %{level} temporary HP 1/long rest"',
   'Reassuring Presence':
     'Section=ability,combat ' +
-    'Note="Ability Boost (Choose 1 from Charisma, Wisdom)",' +
-         '"R60\' 6 allies gain %{level} temporary HP at start of combat"',
+    'Note=' +
+      '"Ability Boost (Choose 1 from Charisma, Wisdom)",' +
+      '"R60\' 6 allies gain %{level} temporary HP when combat begins"',
   'Resourceful':
     'Section=ability,skill ' +
-    'Note="+1 Wisdom",' +
-         '"Long rest restores 1d6+1 uses of Healer\'s Kit"',
+    'Note=' +
+      '"+1 Wisdom",' +
+      '"Long rest restores 1d6+1 uses of healer\'s kit"',
   'Rooted':
     'Section=ability,combat ' +
-    'Note="+1 Constitution",' +
-         '"Cannot be moved or knocked prone/Adv on grappling"',
+    'Note=' +
+      '"+1 Constitution",' +
+      '"Cannot be moved or knocked prone/Adv on grappling"',
   'Scathing Rebuke':
     'Section=combat ' +
     'Note="R50\' Successful Intimidation vs. Insight stuns target for 1 min 3/long rest"',
   'Silencing Strike':
     'Section=combat ' +
-    'Note="Melee hit silences target for 1 min (DC %{8+proficiencyBonus+intelligenceModifier} Con neg) 1/short rest"',
+    'Note="Melee hit silences target for 1 min (DC %{8+proficiencyBonus+intelligenceModifier} Constitution neg) 1/short rest"',
   'Skilled Healer':
     'Section=skill ' +
-    'Note="May spend 1 Healer\'s Kit use to remove blindness, deafness, paralysis, or poison or to give Adv on next save vs. disease"',
+    'Note="May spend 1 healer\'s kit use to remove blindness, deafness, paralysis, or poison or to give Adv on next save vs. disease"',
   'Strength Of Faith':
     'Section=ability,save ' +
-    'Note="Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
-         '"R30\' successful Charisma, Intelligence, or Wisdom save gives inspiration to self or ally"',
+    'Note=' +
+      '"Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
+      '"R30\' successful Charisma, Intelligence, or Wisdom save gives inspiration to self or ally"',
   'Study The Target':
     'Section=ability,skill ' +
-    'Note="Ability Boost (Choose 1 from Dexterity, Intelligence)",' +
-         '"8 hr observation and research plus DC 10+HD Investigation gives Adv on Deception and Stealth to gain access to target"',
+    'Note=' +
+      '"Ability Boost (Choose 1 from Dexterity, Intelligence)",' +
+      '"8 hr observation and research plus DC 10+HD Investigation gives Adv on Deception and Stealth to gain access to target"',
   'Sundered Blood':
     'Section=save ' +
     'Note="%{level<12?\'Resistance\':\'Immunity\'} to chosen damage type"',
   'Sundered Form':
-    'Section=magic Note="Spend 8 HD to assume Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and 30\' radius that inflicts 10 HP damage on foes"',
+    'Section=magic ' +
+    'Note="May spend 8 HD to assume Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and create a 30\' radius that inflicts 10 HP damage on foes"',
   'Sundered Fury':
     'Section=ability,combat ' +
-    'Note="Ability Boost (Choose 1 from any)",' +
-          '"Spend 1 HD for 2 HD damage w/weapon or spell"',
+    'Note=' +
+      '"Ability Boost (Choose 1 from any)",' +
+      '"May spend 1 HD for 2 HD damage w/a weapon or spell"',
   'Tactical Direction':
     'Section=feature ' +
-    'Note="Take Initiative 1 to give each ally a bonus attack, Dash, or Disengage on first turn"',
+    'Note="May take Initiative 1 to give each ally a bonus attack, Dash, or Disengage on their first turn"',
   'The Channeling':
     'Section=magic ' +
-    'Note="May spend level 1 slot to change spell damage type, level 2 slot to reroll 1 or 2 on spell damage die, or level 3 slot to give three spell targets Disadv on spell save"',
+    'Note="May spend a level 1 slot to change the spell damage type, a level 2 slot to reroll 1 or 2 on a spell damage die, or a level 3 slot to give three spell targets Disadv on spell save"',
   'The Eye Opens':
     'Section=ability,magic ' +
-    'Note="+1 Wisdom",' +
-         '"May cast <i>True Seeing</i> 3/long rest"',
+    'Note=' +
+      '"+1 Wisdom",' +
+      '"May cast <i>True Seeing</i> 3/long rest"',
   'The Wild Hunt':
     'Section=magic ' +
-    'Note="May summon 1 CR 4, 2 CR 2, or 4 CR 1 to assist for 10 min"',
+    'Note="May summon 1 CR 4, 2 CR 2, or 4 CR 1 beasts to assist for 10 min"',
   'Tough As Iron':
     'Section=combat ' +
-    'Note="May reduce damage by %{(level/3+1)<?6} for 10 min; suffer 1 level of exhaustion afterward"',
+    'Note="May reduce damage by %{(level/3+1)<?6} for 10 min; suffers 1 level of exhaustion afterward"',
   'Unbroken':
     'Section=combat ' +
-    'Note="Suffer 1 level of exhaustion to negate attack damage"',
+    'Note="May suffer 1 level of exhaustion to negate attack damage"',
   'Unseen Lurker':
     'Section=ability,skill ' +
-    'Note="Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
-         '"Invisible during Lurk; may Lurk during combat"',
+    'Note=' +
+      '"Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
+      '"Invisible during Lurk; may Lurk during combat"',
   'Vicious Assault':
     'Section=ability,combat ' +
-    'Note="+1 Strength",' +
-          '"Unarmed strike inflicts 1d6 HP; may use bonus action for second unarmed strike"',
+    'Note=' +
+      '"+1 Strength",' +
+      '"Unarmed strike inflicts 1d6 HP; may use a bonus action for a second unarmed strike"',
   'Warding Presence':
     'Section=combat ' +
     'Note="Adjacent foes suffer half speed and Disadv on attacks on others"',
   'Well-Spoken':
     'Section=feature,skill ' +
-    'Note="Dbl skill proficiency on %V choices from Deception, Intimidation, Persuasion",' +
-         '"Skill Proficiency (Deception/Intimidation/Persuasion)"',
+    'Note=' +
+      '"Dbl skill proficiency on %V choices from Deception, Intimidation, Persuasion",' +
+      '"Skill Proficiency (Deception/Intimidation/Persuasion)"',
   'Wild Companion':
     'Section=feature ' +
     'Note="CR 1 companion gains +%{proficiencyBonus} AC, attack, damage, and proficient skills and saves; HP increases to %{level*4}"',
   'Wild Resilience':
     'Section=ability,save ' +
-    'Note="+1 Constitution",' +
-         '"May reroll Str, Dex, or Con save %V/long rest"',
+    'Note=' +
+      '"+1 Constitution",' +
+      '"May reroll a Strength, Dexterity, or Constitution save %V/long rest"',
   'Wild Sense':
-    'Section=feature Note="Have Darkvision; can sense invisible foes"',
+    'Section=feature Note="Has Darkvision and can sense invisible foes"',
 
   // Paths
   'Astirax Servant':
@@ -582,37 +694,37 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="R%{level<10?\\"100\'\\":\\"1 mile\\"} May communicate telepathically w/bound astirax"',
   'Aura Of Darkness':
     'Section=feature ' +
-    'Note="May create 20\' radius of darkness that others cannot see through for 1 min"',
+    'Note="May create a 20\' radius of darkness that others cannot see through for 1 min"',
   'Bestial Astirax Servant':
     'Section=feature ' +
-    'Note="R100\' May communicate telepathically w/bound astirax; astirax can possess Large creature"',
+    'Note="R100\' May communicate telepathically w/bound astirax/Astirax may possess a Large creature"',
   'Dark Warrior':
     'Section=feature ' +
-    'Note="Additional attack as bonus action %{wisdomModifier>?1}/long rest"',
+    'Note="May make an additional attack as a bonus action %{wisdomModifier>?1}/long rest"',
   "Dark God's Blessing":
     'Section=combat Note="Self regains %{level<10?2:4}d6 HP from killing"',
   'Dire Bodyguard':
     'Section=feature ' +
-    'Note="R5\' Foe attacks on others have Disadv and self can use Reaction for melee attack"',
+    'Note="R5\' Foe attacks on others have Disadv and self can use Reaction for a melee attack"',
   'Dominate Undead':
     'Section=combat ' +
-    'Note="R30\' Use Channel Energy to control undead (Wis neg) for 1 hr"',
+    'Note="R30\' May use Channel Energy to control undead (Wisdom neg) for 1 hr"',
   'Dread Avatar':
     'Section=save ' +
     'Note="Resistance to nonmagical bludgeoning, piercing, and slashing damage/Immunity to radiant damage"',
   'Ferocious Blow':
     'Section=feature ' +
-    'Note="Use Channel Divinity for +2d6 HP thunder; medium foe pushed 10\' and knocked prone"',
+    'Note="May use Channel Divinity for +2d6 HP thunder; medium foe pushed 10\' and knocked prone"',
   'Impervious To Magic':
-     'Section=magic Note="Use Reaction to cast <i>Counterspell</i>"',
+     'Section=magic Note="May use Reaction to cast <i>Counterspell</i>"',
   'Improved Astirax Bond':
     'Section=feature ' +
     'Note="Astirax gains +%{proficiencyBonus} AC, attack, and damage; may extend scent magic to 1 mile for 1 min 1/dy"',
   'Mage Hunter':
     'Section=combat ' +
-    'Note="R%V\' Use Channel Divinity to inflict Disadv on concentration of %1 and Adv on saves vs. spells of %1 (Wis neg) for 1 min"',
-  'Master Mage Hunter':'Section=combat Note="Extends Mage Hunter effect"',
-  'Necromantic Arts':'Section=magic Note="Know <i>Chill Touch</i> cantrip"',
+    'Note="R%V\' May use Channel Divinity to inflict Disadv on concentration of %1 and Adv on saves vs. spells of %1 (Wisdom neg) for 1 min"',
+  'Master Mage Hunter':'Section=combat Note="Increased Mage Hunter effects"',
+  'Necromantic Arts':'Section=magic Note="Knows <i>Chill Touch</i> cantrip"',
   'Potent Spellcasting':
     'Section=magic Note="+%{wisdomModifier} Cleric cantrip damage"',
 
@@ -623,8 +735,9 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=skill Note="Adv to control, persuade, or communicate w/animals"',
   'Born Of The Sea':
     'Section=ability,skill ' +
-    'Note="Use bonus action for 1 hr water breathing 1/short rest",' +
-         '"Tool Proficiency (Water Vehicles)"',
+    'Note=' +
+      '"May use a bonus action for 1 hr water breathing 1/short rest",' +
+      '"Tool Proficiency (Water Vehicles)"',
   'Caransil Ability Adjustment':
     'Section=ability Note="+2 Dexterity/+1 Charisma"',
   'Caransil Weapon Training':
@@ -649,15 +762,15 @@ MidnightLegacy.FEATURES_ADDED = {
   'Erunsil Weapon Training':
     'Section=combat Note="Weapon Proficiency (Erunsil Fighting Knife/Longbow)"',
   'Fast':'Section=ability Note="+5 Speed"',
-  'Ferocity':'Section=combat Note="+2 Str melee damage"',
+  'Ferocity':'Section=combat Note="+2 Strength melee damage"',
   'Gnome Ability Adjustment':
     'Section=ability Note="+2 Intelligence/+1 Charisma"',
   'Gnomish Cunning':SRD5E.FEATURES['Gnome Cunning'],
   'Halfling Magic':
-    'Section=magic Note="Know <i>Mending</i> and <i>Prestidigitation<i>"',
-  'Human Feat Bonus':'Section=feature Note="+1 General Feat"',
-  'Innate Magic User':'Section=magic Note="Know 1 Sorcerer cantrip"',
-  'Innate Magical Scholar':'Section=magic Note="Know 2 Wizard cantrips"',
+    'Section=magic Note="Knows <i>Mending</i> and <i>Prestidigitation<i>"',
+  'Human Feat Bonus':'Section=feature Note="+1 Feat"',
+  'Innate Magic User':'Section=magic Note="Knows 1 Sorcerer cantrip"',
+  'Innate Magical Scholar':'Section=magic Note="Knows 2 Wizard cantrips"',
   'Kurgun Dwarf Ability Adjustment':
     'Section=ability Note="+2 Constitution/+2 Wisdom"',
   'Kurgun Warrior Training':
@@ -685,11 +798,42 @@ MidnightLegacy.FEATURES_ADDED = {
   'Unexpected Blow':
     'Section=combat Note="May reroll 1 damage die from unexpected attack"',
   'Wraith Of The North':
-    'Section=skill Note="Hide in nature when lightly obscured"'
+    'Section=skill Note="May Hide in nature when lightly obscured"',
+
+  // Legate domains
+  'Keeper Of Obsidian Domain':
+    'Spells=' +
+      '"1:Detect Magic","1:Inflict Wounds",' +
+      '3:Blindness/Deafness,"3:See Invisibility",' +
+      '"5:Bind/Banish Astirax","5:Bestow Curse",' +
+      '7:Blight,"7:Phantasmal Killer",' +
+      '9:Cloudkill,9:Contagion',
+  'Soldier Legate Domain':
+    'Spells=' +
+      '1:Bane,"1:Hellish Rebuke",' +
+      '"3:Magic Weapon",3:Darkvision,' +
+      '5:Haste,"5:Vampiric Touch",' +
+      '7:Regenerate,7:Stoneskin,' + // Replace Banishment as per errata
+      '"9:Cone Of Cold","9:Hold Monster"',
+  'Witch Taker Domain':
+    'Spells=' +
+      '"1:Detect Magic","1:Disguise Self",' +
+      '"3:Detect Thoughts","3:Ray Of Enfeeblement",' +
+      '"5:Bind/Banish Astirax",5:Counterspell,' +
+      '7:Confusion,"7:Freedom Of Movement",' +
+      '9:Scrying,"9:Dominate Person"'
 
 };
 MidnightLegacy.FEATURES =
   Object.assign({}, SRD5E.FEATURES, MidnightLegacy.FEATURES_ADDED);
+for(let f in MidnightLegacy.FEATURES) {
+  if(SRD5E.CLASSES.Monk.includes(f) ||
+     SRD5E.CLASSES.Warlock.includes(f) ||
+     (SRD5E.CLASSES.Cleric.includes(f) &&
+      !(MidnightLegacy.CLASSES.Cleric.includes(f))) ||
+     Object.values(SRD5E.RACES).join('').includes(f))
+    delete MidnightLegacy.FEATURES[f];
+}
 MidnightLegacy.LANGUAGES = {
   'Clan Dialect':'',
   'Colonial':'',
@@ -705,99 +849,21 @@ MidnightLegacy.LANGUAGES = {
   'Sylvan':'',
   "Trader's Tongue":''
 };
-MidnightLegacy.PATHS_ADDED = {
-  'Keeper Of Obsidian Domain':
-    'Group=Cleric Level=levels.Cleric ' +
-    'Features=' +
-      '"1:Dark God\'s Blessing",' +
-      '"1:Necromantic Arts",' +
-      '"2:Astirax Servant",' +
-      '"6:Dominate Undead",' +
-      '"8:Potent Spellcasting",' +
-      '"17:Aura Of Darkness" ' +
-    'Spells=' +
-      '"1:Detect Magic,Inflict Wounds",' +
-      '"2:Blindness/Deafness,See Invisibility",' +
-      '"3:Bind/Banish Astirax,Bestow Curse",' +
-      '"4:Blight,Phantasmal Killer",' +
-      '"5:Cloudkill,Contagion"',
-  'Soldier Legate Domain':
-    'Group=Cleric Level=levels.Cleric ' +
-    'Features=' +
-      '"1:Weapon Proficiency (Martial)",' +
-      '"1:Dark Warrior",' +
-      '"2:Ferocious Blow",' +
-      '"6:Dire Bodyguard",' +
-      '"8:Bestial Astirax Servant",' +
-      '"17:Dread Avatar" ' +
-    'Spells=' +
-      '"1:Bane,Hellish Rebuke",' +
-      '"2:Magic Weapon,Darkvision",' +
-      '"3:Haste,Vampiric Touch",' +
-      '"4:Banishment,Stoneskin",' +
-      '"5:Cone Of Cold,Hold Monster"',
-  'Witch Taker Domain':
-    'Group=Cleric Level=levels.Cleric ' +
-    'Features=' +
-      '"1:Weapon Proficiency (Halberd/Longsword/Rapier/Shortsword)",' +
-      '"1:Astirax Servant",' +
-      '"2:Mage Hunter",' +
-      '"6:Improved Astirax Bond",' +
-      '"8:Master Mage Hunter",' +
-      '"17:Impervious To Magic" ' +
-    'Spells=' +
-      '"1:Detect Magic,Disguise Self",' +
-      '"2:Detect Thoughts,Ray Of Enfeeblement",' +
-      '"3:Bind/Banish Astirax,Counterspell",' +
-      '"4:Confusion,Freedom Of Movement",' +
-      '"5:Scrying,Dominate Person"',
-  'Avenger':
-    'Group=Avenger ' +
-    'Level=level',
-  'Beastborn':
-    'Group=Beastborn ' +
-    'Level=level',
-  'Believer':
-    'Group=Believer ' +
-    'Level=level',
-  'Channeler':
-    'Group=Channeler ' +
-    'Level=level',
-  'Dragonblooded':
-    'Group=Dragonblooded ' +
-    'Level=level',
-  'Earthblooded':
-    'Group=Earthblooded ' +
-    'Level=level',
-  'Guardian':
-    'Group=Guardian ' +
-    'Level=level',
-  'Ironborn':
-    'Group=Ironborn ' +
-    'Level=level',
-  'None':
-    'Group=None ' +
-    'Level=level',
-  'Preserver':
-    'Group=Preserver ' +
-    'Level=level',
-  'Speaker':
-    'Group=Speaker ' +
-    'Level=level',
-  'Sunderborn':
-    'Group=Sunderborn ' +
-    'Level=level',
-  'Wildblooded':
-    'Group=Wildblooded ' +
-    'Level=level'
+MidnightLegacy.HEROIC_PATHS = {
+  'Avenger':'',
+  'Beastborn':'',
+  'Believer':'',
+  'Channeler':'',
+  'Dragonblooded':'',
+  'Earthblooded':'',
+  'Guardian':'',
+  'Ironborn':'',
+  'None':'',
+  'Preserver':'',
+  'Speaker':'',
+  'Sunderborn':'',
+  'Wildblooded':''
 };
-MidnightLegacy.PATHS = Object.assign({}, MidnightLegacy.PATHS_ADDED);
-for(var p in SRD5E.PATHS) {
-  if(!SRD5E.PATHS[p].match(/Group=(Cleric|Monk|Warlock)/i))
-    MidnightLegacy.PATHS[p] = SRD5E.PATHS[p];
-}
-MidnightLegacy.CLASSES.Cleric +=
-  ' Selectables="1:' + QuilvynUtils.getKeys(MidnightLegacy.PATHS_ADDED, /Domain/i).join(':Divine Domain","1:') + ':Divine Domain"';
 MidnightLegacy.RACES = {
   'Caransil Elf':
     'Features=' +
@@ -888,7 +954,7 @@ MidnightLegacy.SPELLS_ADDED = {
     'School=Divination ' +
     'Level=C3,D3,P3 ' +
     'Description=' +
-      '"R200\' Self senses astiraxes, R10\' may control for 1 yr or inflict 4d12 HP radiant (Wis neg)"',
+      '"R200\' Self senses astiraxes, R10\' may control for 1 yr or inflict 4d12 HP radiant (Wisdom neg)"',
   'Disguise Ally':
     'School=Illusion ' +
     'Level=B2,S2,W2 ' +
@@ -907,7 +973,7 @@ MidnightLegacy.SPELLS_ADDED = {
     'School=Transmutation ' +
     'Level=D1,R1 ' +
     'Description=' +
-      '"R150\' Target creature restrained (Str neg) for conc or 1 min; undead suffers 1d12 HP/tn radiant at end"',
+      '"R150\' Target creature restrained (Strength neg) for conc or 1 min; undead suffers 1d12 HP/tn radiant at end"',
   "Nature's Revelation":
     'School=Transmutation ' +
     'Level=D2,R2 ' +
@@ -922,12 +988,12 @@ MidnightLegacy.SPELLS_ADDED = {
     'School=Transmutation ' +
     'Level=S5,W5 ' +
     'Description=' +
-      '"70\' cone of silver needles inflicts 10d4 piercing (10d8 if vulnerable; Dex half)"',
+      '"70\' cone of silver needles inflicts 10d4 piercing (10d8 if vulnerable; Dexterity half)"',
   'Silver Wind':
     'School=Conjuration ' +
     'Level=S4,W4 ' +
     'Description=' +
-      '"R200\' 40\' sphere reveals creatures, inflicts stun on vulnerable (Con neg)"',
+      '"R200\' 40\' sphere reveals creatures, inflicts stun on vulnerable (Constitution neg)"',
   // Removed
   'Astral Projection':null,
   'Augury':null,
@@ -988,10 +1054,14 @@ MidnightLegacy.combatRules = function(rules, armors, shields, weapons) {
 
 /* Defines rules related to basic character identity. */
 MidnightLegacy.identityRules = function(
-  rules, alignments, backgrounds, classes, deities, paths, races
+  rules, alignments, backgrounds, classes, deities, heroicPaths, races
 ) {
+  QuilvynUtils.checkAttrTable(heroicPaths, []);
   SRD5E.identityRules
-    (rules, alignments, backgrounds, classes, deities, paths, races);
+    (rules, alignments, backgrounds, classes, deities, {}, races);
+  for(let hp in heroicPaths) {
+    MidnightLegacy.choiceRules(rules, 'Heroic Path', hp, heroicPaths[hp]);
+  }
   // Remove Deity from editor and sheet; add heroic path
   delete rules.getChoices('random').deity;
   rules.defineEditorElement('deity');
@@ -1024,16 +1094,17 @@ MidnightLegacy.talentRules = function(
  */
 MidnightLegacy.choiceRules = function(rules, type, name, attrs) {
   var basePlugin = window.PHB5E != null ? PHB5E : SRD5E;
-  basePlugin.choiceRules(rules, type, name, attrs);
+  if(type != 'Heroic Path')
+    basePlugin.choiceRules(rules, type, name, attrs);
   if(type == 'Class')
     MidnightLegacy.classRulesExtra(rules, name);
   else if(type == 'Feat')
     MidnightLegacy.featRulesExtra(rules, name);
-  else if(type == 'Path')
-    MidnightLegacy.pathRulesExtra(rules, name);
+  else if(type == 'Heroic Path')
+    MidnightLegacy.heroicPathRulesExtra(rules, name);
   else if(type == 'Race')
     MidnightLegacy.raceRulesExtra(rules, name);
-  if(type == 'Path' && attrs.includes('Group=' + name)) {
+  if(type == 'Heroic Path') {
     rules.addChoice('heroicPaths', name, attrs);
     rules.defineRule('features.' + name, 'heroicPath', '=', 'source == "' + name + '" ? 1 : null');
     rules.defineSheetElement(name + ' Features', 'Feats+', null, '; ');
@@ -1047,8 +1118,21 @@ MidnightLegacy.choiceRules = function(rules, type, name, attrs) {
  */
 MidnightLegacy.classRulesExtra = function(rules, name) {
   var classLevel = 'levels.' + name;
-  if(name == 'Cleric')
+  if(name == 'Cleric') {
+    rules.defineRule('clericHasPotentSpellcasting',
+      'features.Keeper Of Obsidian Domain', '=', '1'
+    );
     rules.defineRule('deity', classLevel, '=', '"Izrador"');
+    rules.defineRule('combatNotes.mageHunter',
+      'levels.Cleric', '=', '30',
+      'combatNotes.masterMageHunter', '+', '30'
+    );
+    rules.defineRule('combatNotes.mageHunter.1',
+      'features.Mage Hunter', '?', null,
+      'levels.Cleric', '=', '"target caster"',
+      'combatNotes.masterMageHunter', '=', '"all casters"'
+    );
+  }
 };
 
 /*
@@ -1056,31 +1140,12 @@ MidnightLegacy.classRulesExtra = function(rules, name) {
  * derived directly from the attributes passed to featRules.
  */
 MidnightLegacy.featRulesExtra = function(rules, name) {
-  if(name == 'Brawler') {
-    rules.defineRule('weapons.Unarmed.2', 'combatNotes.brawler', '^', '"1d4"');
-  } else if(name == 'Suspicious') {
-    rules.defineRule('skillNotes.suspicious', 'proficiencyBonus', '=', null);
+  if(name == 'Apex Predator') {
     rules.defineRule
-      ('skillProficiency.Insight', 'skillNotes.suspicious', '=', '1');
-    rules.defineRule('skills.Insight', 'skillNotes.suspicious', '+', null);
-  }
-};
-
-/*
- * Defines in #rules# the rules associated with heroic path #name# that cannot
- * be derived directly from the abilities passed to heroicPathRules.
- */
-MidnightLegacy.pathRulesExtra = function(rules, name) {
-  if(name == 'Beastborn') {
-    rules.defineRule('features.Darkvision', 'featureNotes.wildSense', '=', '1');
-    rules.defineRule('saveNotes.wildResilience',
-      'level', '=', 'source<9 ? 1 : source<18 ? 2 : 3'
-    );
-    rules.defineRule('weapons.Unarmed.2',
-      'combatNotes.viciousAssault', '^', '"1d6"',
-      'combatNotes.apexPredator', '^', '"1d8"'
-    );
-  } else if(name == 'Channeler') {
+      ('weapons.Unarmed.2', 'combatNotes.viciousAssault', '^', '"1d8"');
+  } else if(name == 'Brawler') {
+    rules.defineRule('weapons.Unarmed.2', 'combatNotes.brawler', '^', '"1d4"');
+  } else if(name == 'Channeled Magic') {
     rules.defineRule
       ('magicNotes.channeledMagic', 'level', '=', 'source<10 ? 1 : 2');
     ['B', 'C', 'D', 'P', 'R', 'S', 'W'].forEach(spellGroup => {
@@ -1101,35 +1166,48 @@ MidnightLegacy.pathRulesExtra = function(rules, name) {
           ('spellSlots.' + slot, 'channeledSlots.' + slot, '+', null);
       });
     });
-  } else if(name == 'Dragonblooded') {
+  } else if(name == 'Conduit') {
+    rules.defineRule('spellSlots.S0', 'magicNotes.conduit', '+=', '2');
+  } else if(name == 'Pure Magic') {
+    rules.defineRule('magicNotes.pureMagic', '', '=', '1');
+    rules.defineRule
+      ('spellAttackModifier.S', 'magicNotes.pureMagic', '+', null);
+    rules.defineRule
+      ('spellDifficultyClass.S', 'magicNotes.pureMagic', '+', null);
+  } else if(name == 'Raging Fury') {
+    rules.defineRule('magicNotes.pureMagic', 'magicNotes.ragingFury', '+', '1');
+  } else if(name == 'Suspicious') {
+    rules.defineRule('skillNotes.suspicious', 'proficiencyBonus', '=', null);
+    rules.defineRule
+      ('skillProficiency.Insight', 'skillNotes.suspicious', '=', '1');
+    rules.defineRule('skills.Insight', 'skillNotes.suspicious', '+', null);
+  } else if(name == 'Vicious Assault') {
+    rules.defineRule
+      ('weapons.Unarmed.2', 'combatNotes.viciousAssault', '^', '"1d6"');
+  } else if(name == 'Well-Spoken') {
+    rules.defineRule('featureNotes.well-Spoken',
+      'level', '=', 'Math.min(Math.floor(source / 5), 3)'
+    );
+  } else if(name == 'Wild Resilience') {
+    rules.defineRule('saveNotes.wildResilience',
+      'level', '=', 'source<9 ? 1 : source<18 ? 2 : 3'
+    );
+  } else if(name == 'Wild Sense') {
+    rules.defineRule('features.Darkvision', 'featureNotes.wildSense', '=', '1');
+  }
+};
+
+/*
+ * Defines in #rules# the rules associated with heroic path #name# that cannot
+ * be derived directly from the abilities passed to heroicPathRules.
+ */
+MidnightLegacy.heroicPathRulesExtra = function(rules, name) {
+  if(name == 'Dragonblooded') {
     rules.defineRule('casterLevels.Dragonblooded',
       'heroicPath', '?', 'source == "Dragonblooded"',
       'level', '=', null
     );
     rules.defineRule('casterLevel.S', 'casterLevels.Dragonblooded', '^=', null);
-    rules.defineRule('magicNotes.pureMagic',
-      '', '=', '1',
-      'magicNotes.ragingFury', '+', '1'
-    );
-    rules.defineRule
-      ('spellAttackModifier.S', 'magicNotes.pureMagic', '+', null);
-    rules.defineRule
-      ('spellDifficultyClass.S', 'magicNotes.pureMagic', '+', null);
-    rules.defineRule('spellSlots.S0', 'magicNotes.conduit', '+=', '2');
-  } else if(name == 'Speaker') {
-    rules.defineRule('featureNotes.well-Spoken',
-      'level', '=', 'Math.min(Math.floor(source / 5), 3)'
-    );
-  } else if(name == 'Witch Taker Domain') {
-    rules.defineRule('combatNotes.mageHunter',
-      'levels.Cleric', '=', '30',
-      'combatNotes.masterMageHunter', '+', '30'
-    );
-    rules.defineRule('combatNotes.mageHunter.1',
-      'features.Mage Hunter', '?', null,
-      'levels.Cleric', '=', '"target caster"',
-      'combatNotes.masterMageHunter', '=', '"all casters"'
-    );
   }
 };
 
