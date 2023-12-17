@@ -35,9 +35,9 @@ function MidnightLegacy() {
     return;
   }
 
-  var basePlugin = window.PHB5E != null ? PHB5E : SRD5E;
+  let basePlugin = window.PHB5E != null ? PHB5E : SRD5E;
 
-  var rules = new QuilvynRules('Midnight Legacy', MidnightLegacy.VERSION);
+  let rules = new QuilvynRules('Midnight Legacy', MidnightLegacy.VERSION);
   MidnightLegacy.rules = rules;
   rules.plugin = MidnightLegacy;
 
@@ -76,22 +76,39 @@ function MidnightLegacy() {
     Object.assign({}, basePlugin.FEATS, MidnightLegacy.FEATS_ADDED);
   MidnightLegacy.FEATURES =
     Object.assign({}, basePlugin.FEATURES, MidnightLegacy.FEATURES_ADDED);
-  for(let f in MidnightLegacy.FEATURES) {
-    if(basePlugin.CLASSES.Monk.includes(f) ||
-       basePlugin.CLASSES.Warlock.includes(f) ||
-       (basePlugin.CLASSES.Cleric.includes(f) &&
-        !(MidnightLegacy.CLASSES.Cleric.includes(f))) ||
-       Object.values(basePlugin.RACES).join('').includes(f))
-      delete MidnightLegacy.FEATURES[f];
-  }
   MidnightLegacy.SPELLS =
     Object.assign({}, basePlugin.SPELLS, MidnightLegacy.SPELLS_ADDED);
-  for(var s in MidnightLegacy.SPELLS) {
+  for(let s in MidnightLegacy.SPELLS) {
     if(MidnightLegacy.SPELLS[s] == null)
       delete MidnightLegacy.SPELLS[s];
   }
   MidnightLegacy.WEAPONS =
     Object.assign({}, SRD5E.WEAPONS, MidnightLegacy.WEAPONS_ADDED);
+  // Drop disused features to avoid extraneous error messages
+  let disused = [].concat(
+    QuilvynUtils.getAttrValueArray(basePlugin.CLASSES.Cleric, 'Features'),
+    QuilvynUtils.getAttrValueArray(basePlugin.CLASSES.Cleric, 'Selectables'),
+    QuilvynUtils.getAttrValueArray(basePlugin.CLASSES.Monk, 'Features'),
+    QuilvynUtils.getAttrValueArray(basePlugin.CLASSES.Monk, 'Selectables'),
+    QuilvynUtils.getAttrValueArray(basePlugin.CLASSES.Warlock, 'Features'),
+    QuilvynUtils.getAttrValueArray(basePlugin.CLASSES.Warlock, 'Selectables'),
+    QuilvynUtils.getAttrValueArray(basePlugin.RACES.Dragonborn, 'Features'),
+    QuilvynUtils.getAttrValueArray(basePlugin.RACES.Dragonborn, 'Selectables'),
+    QuilvynUtils.getAttrValueArray(basePlugin.RACES['Half-Elf'], 'Features'),
+    QuilvynUtils.getAttrValueArray(basePlugin.RACES['Half-Elf'], 'Selectables'),
+    QuilvynUtils.getAttrValueArray(basePlugin.RACES['Half-Orc'], 'Features'),
+    QuilvynUtils.getAttrValueArray(basePlugin.RACES['Half-Orc'], 'Selectables'),
+    QuilvynUtils.getAttrValueArray(basePlugin.RACES.Tiefling, 'Features'),
+    QuilvynUtils.getAttrValueArray(basePlugin.RACES.Tiefling, 'Selectables')
+  );
+  disused = disused.map(x => x.replace(/^.*\d+:/, '').replace(/:.*/, ''));
+  for(let f in MidnightLegacy.FEATURES) {
+    if(f != 'Darkvision' && f != 'Evasion' && f != 'Fey Ancestry' &&
+       f != 'Slow' &&
+       !MidnightLegacy.CLASSES.Cleric.includes(f) &&
+       disused.includes(f))
+      delete MidnightLegacy.FEATURES[f];
+  }
 
   MidnightLegacy.abilityRules(rules);
   MidnightLegacy.combatRules
@@ -409,7 +426,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,combat ' +
     'Note=' +
       '"+1 Dexterity",' +
-      '"Dagger crits on 18 and crit inflicts Disadv on combat for 1 rd"',
+      '"Dagger crits on 18, and crit inflicts Disadv on combat for 1 rd"',
   'Learned':
     'Section=skill,skill ' +
     'Note=' +
@@ -542,7 +559,7 @@ MidnightLegacy.FEATURES_ADDED = {
       '"R30\' Casting a spell frightens foes (Wisdom neg)"',
   'Lurk':
     'Section=skill ' +
-    'Note="Successful Stealth vs. passive Perception make self unnoticed"',
+    'Note="Successful Stealth vs. passive Perception makes self unnoticed/Adv on Perception to overhear nearby conversations"',
   'Masterful Focus':
     'Section=ability,save ' +
     'Note=' +
@@ -571,7 +588,7 @@ MidnightLegacy.FEATURES_ADDED = {
   'Pack Alpha':
     'Section=feature,skill ' +
     'Note=' +
-      '"May frighten beasts in a 30\' radius (DC %{8+proficiencyBonus+strengthModifier} Wisdom neg)",' +
+      '"May frighten beasts in a 30\' radius (DC %{8+proficiencyBonus+strengthModifier} Wisdom ends)",' +
       '"Adv on Animal Handling (predatory beasts)"',
   'Pack Fighter':
     'Section=ability,combat ' +
@@ -627,7 +644,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,skill ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Dexterity, Intelligence)",' +
-      '"8 hr observation and research plus DC 10+HD Investigation gives Adv on Deception and Stealth to gain access to target"',
+      '"8 hr observation and research, plus a successful DC 10+HD Investigation, gives Adv on Deception and Stealth to gain access to target"',
   'Sundered Blood':
     'Section=save ' +
     'Note="%{level<12?\'Resistance\':\'Immunity\'} to chosen damage type"',
@@ -665,10 +682,11 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
       '"Invisible during Lurk; may Lurk during combat"',
   'Vicious Assault':
-    'Section=ability,combat ' +
+    'Section=ability,combat,combat ' +
     'Note=' +
       '"+1 Strength",' +
-      '"Unarmed strike inflicts 1d6 HP; may use a bonus action for a second unarmed strike"',
+      '"Unarmed strike inflicts 1d6 HP",' +
+      '"May use a bonus action for a second unarmed strike and add ability modifier to damage"',
   'Warding Presence':
     'Section=combat ' +
     'Note="Adjacent foes suffer half speed and Disadv on attacks on others"',
@@ -686,7 +704,10 @@ MidnightLegacy.FEATURES_ADDED = {
       '"+1 Constitution",' +
       '"May reroll a Strength, Dexterity, or Constitution save %V/long rest"',
   'Wild Sense':
-    'Section=feature Note="Has Darkvision and can sense invisible foes"',
+    'Section=feature,feature ' +
+    'Note=' +
+      '"Has Darkvision feature",' +
+      '"Can sense invisible foes"',
 
   // Paths
   'Astirax Servant':
@@ -729,14 +750,14 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=magic Note="+%{wisdomModifier} Cleric cantrip damage"',
 
   // Races
-  // SRD5E defines Darkvision, Dwarven Resilience, Dwarven Toughness,
-  // Fey Ancestry, Halfling Nimbleness, Lucky Halfling, Slow, Steady, and Trance
+  // SRD5E defines Darkvision, Dwarven Resilience, Fey Ancestry,
+  // Halfling Nimbleness, Lucky (Halfling), Slow, Steady, and Trance
   'Animal Bond':
     'Section=skill Note="Adv to control, persuade, or communicate w/animals"',
   'Born Of The Sea':
     'Section=ability,skill ' +
     'Note=' +
-      '"May use a bonus action for 1 hr water breathing 1/short rest",' +
+      '"May use a bonus action to gain 1 hr water breathing 1/short rest",' +
       '"Tool Proficiency (Water Vehicles)"',
   'Caransil Ability Adjustment':
     'Section=ability Note="+2 Dexterity/+1 Charisma"',
@@ -753,6 +774,8 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=combat Note="Weapon Proficiency (Scimitar/Shortbow)"',
   'Dorn Ability Adjustment':
     'Section=ability Note="+1 Strength/Ability Boost (Choose 2 from any)"',
+  // Override SRD5E
+  'Dwarven Toughness':'Section=Combat Note="+%{level + 2} Hit Points"',
   'Enslaved Halfling Ability Adjustment':
     'Section=ability Note="+2 Dexterity/+1 Constitution"',
   'Erenlander Ability Adjustment':
@@ -767,8 +790,10 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability Note="+2 Intelligence/+1 Charisma"',
   'Gnomish Cunning':SRD5E.FEATURES['Gnome Cunning'],
   'Halfling Magic':
-    'Section=magic Note="Knows <i>Mending</i> and <i>Prestidigitation<i>"',
-  'Human Feat Bonus':'Section=feature Note="+1 Feat"',
+    'Section=magic ' +
+    'Note="Knows <i>Mending</i> and <i>Prestidigitation</i> cantrips" ' +
+    'Spells="Mending,Prestidigitation"',
+  'Human Feat Bonus':'Section=feature Note="+1 general feat"',
   'Innate Magic User':'Section=magic Note="Knows 1 Sorcerer cantrip"',
   'Innate Magical Scholar':'Section=magic Note="Knows 2 Wizard cantrips"',
   'Kurgun Dwarf Ability Adjustment':
@@ -794,11 +819,13 @@ MidnightLegacy.FEATURES_ADDED = {
   'Stonemaster\'s Cunning':
     'Section=skill ' +
     'Note="Adv on stonework origin and underground direction and construction"',
-  'Troubled Dreams':'Section=combat Note="Long rest recovers 1 fewer hit die"',
+  'Troubled Dreams':
+    'Section=combat Note="Recovers 1 fewer hit die from a long rest"',
   'Unexpected Blow':
-    'Section=combat Note="May reroll 1 damage die from unexpected attack"',
+    'Section=combat ' +
+    'Note="May reroll 1 damage die when attacking an unaware foe"',
   'Wraith Of The North':
-    'Section=skill Note="May Hide in nature when lightly obscured"',
+    'Section=skill Note="May hide in nature when lightly obscured"',
 
   // Legate domains
   'Keeper Of Obsidian Domain':
@@ -826,14 +853,6 @@ MidnightLegacy.FEATURES_ADDED = {
 };
 MidnightLegacy.FEATURES =
   Object.assign({}, SRD5E.FEATURES, MidnightLegacy.FEATURES_ADDED);
-for(let f in MidnightLegacy.FEATURES) {
-  if(SRD5E.CLASSES.Monk.includes(f) ||
-     SRD5E.CLASSES.Warlock.includes(f) ||
-     (SRD5E.CLASSES.Cleric.includes(f) &&
-      !(MidnightLegacy.CLASSES.Cleric.includes(f))) ||
-     Object.values(SRD5E.RACES).join('').includes(f))
-    delete MidnightLegacy.FEATURES[f];
-}
 MidnightLegacy.LANGUAGES = {
   'Clan Dialect':'',
   'Colonial':'',
@@ -874,7 +893,7 @@ MidnightLegacy.RACES = {
       '"Innate Magic User",Trance',
   'Clan Dwarf':
     'Features=' +
-      '"Tool Proficiency (Choose 1 from any Artisan)",' +
+      '"Tool Proficiency (Choose 1 from Brewer\'s Supplies, Mason\'s Tools, Smith\'s Tools)",' +
       '"Language (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
       '"Clan Dwarf Ability Adjustment",' +
       '"Clan Warrior Training",Darkvision,"Dwarven Resilience",' +
@@ -896,7 +915,7 @@ MidnightLegacy.RACES = {
     'Features=' +
       '"Language (Erenlander/Halfling/Choose 1 from Orcish, Trader\'s Tongue)",' +
       '"Enslaved Halfling Ability Adjustment",' +
-      '"Halfling Magic","Halfling Nimbleness","Lucky Halfling",Slow,Small,' +
+      '"Halfling Magic","Halfling Nimbleness","Lucky (Halfling)",Slow,Small,' +
       '"Unexpected Blow"',
   'Erenlander Human':
     'Features=' +
@@ -919,7 +938,7 @@ MidnightLegacy.RACES = {
       'Darkvision,"Gnomish Cunning",Riverfolk,Slow,Small',
   'Kurgun Dwarf':
     'Features=' +
-      '"Tool Proficiency (Choose 1 from any Artisan)",' +
+      '"Tool Proficiency (Choose 1 from Brewer\'s Supplies, Mason\'s Tools, Smith\'s Tools)",' +
       '"Language (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
       '"Kurgun Dwarf Ability Adjustment",' +
       '"Kurgun Warrior Training",Darkvision,"Dwarven Resilience",Slow,Steady',
@@ -934,7 +953,7 @@ MidnightLegacy.RACES = {
     'Features=' +
       '"Language (Erenlander/Halfling/Choose 1 from Orcish, Trader\'s Tongue)",' +
       '"Nomadic Halfling Ability Adjustment",' +
-      '"Halfling Magic","Halfling Nimbleness","Lucky Halfling",Slow,Small,' +
+      '"Halfling Magic","Halfling Nimbleness","Lucky (Halfling)",Slow,Small,' +
       '"Animal Bond"',
   'Orc':
     'Features=' +
@@ -1021,7 +1040,7 @@ MidnightLegacy.SPELLS_ADDED = {
 };
 MidnightLegacy.SPELLS =
   Object.assign({}, SRD5E.SPELLS, MidnightLegacy.SPELLS_ADDED);
-for(var s in MidnightLegacy.SPELLS) {
+for(let s in MidnightLegacy.SPELLS) {
   if(MidnightLegacy.SPELLS[s] == null)
     delete MidnightLegacy.SPELLS[s];
 }
@@ -1093,7 +1112,7 @@ MidnightLegacy.talentRules = function(
  * related to selecting that choice.
  */
 MidnightLegacy.choiceRules = function(rules, type, name, attrs) {
-  var basePlugin = window.PHB5E != null ? PHB5E : SRD5E;
+  let basePlugin = window.PHB5E != null ? PHB5E : SRD5E;
   if(type != 'Heroic Path')
     basePlugin.choiceRules(rules, type, name, attrs);
   if(type == 'Class')
@@ -1117,7 +1136,7 @@ MidnightLegacy.choiceRules = function(rules, type, name, attrs) {
  * derived directly from the abilities passed to classRules.
  */
 MidnightLegacy.classRulesExtra = function(rules, name) {
-  var classLevel = 'levels.' + name;
+  let classLevel = 'levels.' + name;
   if(name == 'Cleric') {
     rules.defineRule('clericHasPotentSpellcasting',
       'features.Keeper Of Obsidian Domain', '=', '1'
@@ -1150,8 +1169,8 @@ MidnightLegacy.featRulesExtra = function(rules, name) {
       ('magicNotes.channeledMagic', 'level', '=', 'source<10 ? 1 : 2');
     ['B', 'C', 'D', 'P', 'R', 'S', 'W'].forEach(spellGroup => {
       [0, 1, 2, 3, 4, 5, 6].forEach(spellLevel => {
-        var slot = spellGroup + spellLevel;
-        var sorter = spellLevel + spellGroup;
+        let slot = spellGroup + spellLevel;
+        let sorter = spellLevel + spellGroup;
         rules.defineRule
           ('highestSpellSlot', 'spellSlots.' + slot, '^=', '"' + sorter + '"');
         rules.defineRule('magicNotes.channeledMagic.1',
@@ -1168,16 +1187,22 @@ MidnightLegacy.featRulesExtra = function(rules, name) {
     });
   } else if(name == 'Conduit') {
     rules.defineRule('spellSlots.S0', 'magicNotes.conduit', '+=', '2');
+  } else if(name == 'Improvised Fighter') {
+    SRD5E.weaponRules
+      (rules, 'Improvised', 'Simple Melee', ['Thrown'], '1d4', '20/60');
+    rules.defineRule
+      ('weapons.Improvised', 'combatNotes.improvisedFighter', '=', '1');
+    rules.defineRule
+      ('weapons.Improvised.2', 'combatNotes.improvisedFighter', '^=', '"1d6"');
   } else if(name == 'Pure Magic') {
     rules.defineRule('magicNotes.pureMagic', '', '=', '1');
     rules.defineRule
       ('spellAttackModifier.S', 'magicNotes.pureMagic', '+', null);
-    rules.defineRule
-      ('spellDifficultyClass.S', 'magicNotes.pureMagic', '+', null);
   } else if(name == 'Raging Fury') {
     rules.defineRule('magicNotes.pureMagic', 'magicNotes.ragingFury', '+', '1');
   } else if(name == 'Suspicious') {
     rules.defineRule('skillNotes.suspicious', 'proficiencyBonus', '=', null);
+    rules.defineRule('skillNotes.suspicious-1', 'proficiencyBonus', '=', null);
     rules.defineRule
       ('skillProficiency.Insight', 'skillNotes.suspicious', '=', '1');
     rules.defineRule('skills.Insight', 'skillNotes.suspicious', '+', null);
@@ -1216,14 +1241,13 @@ MidnightLegacy.heroicPathRulesExtra = function(rules, name) {
  * derived directly from the abilities passed to raceRules.
  */
 MidnightLegacy.raceRulesExtra = function(rules, name) {
-  var raceLevel =
+  let raceLevel =
     name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') +
     'Level';
   if(name == 'Caransil Elf')
     rules.defineRule
       ('spellSlots.S0', 'magicNotes.innateMagicUser', '+=', '1');
   else if(name == 'Clan Dwarf') {
-    rules.defineRule('combatNotes.dwarvenToughness', raceLevel, '+', '2');
     // The Clan Warrior Training note isn't formatted in a way that allows
     // featureRules to auto-generate rules
     rules.defineRule('armorProficiency.Medium',
@@ -1249,6 +1273,9 @@ MidnightLegacy.raceRulesExtra = function(rules, name) {
       ('skillProficiency.Persuasion', 'skillNotes.riverfolk', '=', '1');
     rules.defineRule
       ('toolProficiency.Water Vehicles', 'skillNotes.riverfolk', '=', '1');
+  } else if(name.match(/Human/)) {
+    rules.defineRule
+      ('featCount.General', 'featureNotes.humanFeatBonus', '+=', '1');
   } else if(name == 'Kurgun Dwarf') {
     // The Kurgun Warrior Training note isn't formatted in a way that allows
     // featureRules to auto-generate rules
@@ -1269,7 +1296,7 @@ MidnightLegacy.raceRulesExtra = function(rules, name) {
 
 /* Returns an array of plugins upon which this one depends. */
 MidnightLegacy.getPlugins = function() {
-  var result = [];
+  let result = [];
   if(window.PHB5E != null)
     result.push(PHB5E);
   result.push(SRD5E);
