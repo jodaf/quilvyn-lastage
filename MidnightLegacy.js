@@ -475,7 +475,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note=' +
       '"Ability Boost (Choose 1 from Strength, Wisdom)",' +
       '"Foes suffer Disadv attacking adjacent incapacitated allies; self gains Adv on attacks",' +
-      '"May spend 2 uses of healer\'s kit to reduce exhaustion or to restore ability or HP maximum"',
+      '"May spend 2 uses of healer\'s kit to reduce exhaustion by 1 or to restore ability or HP maximum"',
   'Apex Predator':
     'Section=ability,combat,feature ' +
     'Note=' +
@@ -483,15 +483,17 @@ MidnightLegacy.FEATURES_ADDED = {
       '"+20 Hit Points/Unarmed strike inflicts 1d8 damage",' +
       '"Pack Alpha feature affects all creatures"',
   'Avatar Of Aryth':
-    'Section=magic Note="May summon a friendly earth elemental 1/long rest"',
+    'Section=magic ' +
+    'Note="May use <i>Conjure Elemental</i> effects to summon a friendly earth elemental 1/long rest" ' +
+    'Spells="Conjure Elemental"',
   'Bulwark Of Faith':
     'Section=ability,save ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
-      '"Adv vs. spells of celestials, fiends, undead, and Shadow agents"',
+      '"Adv vs. spell effects of celestials, fiends, undead, and Shadow agents"',
   'Changed To The Core':
     'Section=combat ' +
-    'Note="R50\' Successful Persuasion vs. Insight causes target foe to flee (%{level//2+1}+ HD) or switch sides 1/long rest"',
+    'Note="R50\' Successful Persuasion vs. Insight causes target foe to switch sides (up to %{level//2} HD) or to flee (%{level//2+1}+ HD) 1/long rest"',
   'Channeled Magic':'Section=magic Note="%V additional %1 spell slot"',
   'Conduit':'Section=magic Note="Knows 2 Sorcerer cantrips"',
   'Courage Of Your Convictions':
@@ -509,12 +511,12 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="May automatically crit on a successful melee attack w/Adv 1/short rest"',
   'Ethereal Presence':
-    'Section=magic Note="May spend 1 HD for 1 min etherealness"',
+    'Section=magic Note="May spend 1 HD to become ethereal for 1 min"',
   'Fallen Sense':
     'Section=ability,feature,magic ' +
     'Note=' +
       '"Ability Boost (Choose 1 from any)",' +
-      '"May communicate with a Fallen for conc up to 1 hr",' +
+      '"May communicate with chosen Fallen for conc up to 1 hr",' +
       '"R60\' Knows location and type of Fallen"',
   'Fireheart':
     'Section=magic,save ' +
@@ -523,7 +525,7 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Resistance to fire damage"',
   'Folk Medicine':
     'Section=skill ' +
-    'Note="Restores 1d6+%{wisdomModifier} per use of healer\'s kit"',
+    'Note="May restore 1d6+%{wisdomModifier} HP per use of healer\'s kit"',
   'For Victory!':
     'Section=ability,combat ' +
     'Note=' +
@@ -533,7 +535,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,combat,feature ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Dexterity, Strength)",' +
-      '"May take damage for adjacent wild companion",' +
+      '"May use Reaction to redirect damage suffered by adjacent wild companion to self",' +
       '"Wild companion guards self when incapacitated"',
   'Guard':
     'Section=combat ' +
@@ -543,12 +545,12 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Death save succeeds on a roll of 6 or higher; 16 or higher restores 1 HP"',
   'Holy Terror':
     'Section=combat ' +
-    'Note="R30\' May use inspiration to turn foes (DC %{8+wisdomModifier+proficiencyBonus} Wisdom neg) for 1 min"',
+    'Note="R30\' May use inspiration to turn foes (DC %{8+wisdomModifier+proficiencyBonus} Wisdom neg; damage ends) for 1 min"',
   'Indefatigable':
     'Section=ability,ability,feature ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Constitution, Strength)",' +
-      '"No Disadv on Constitution or Strength checks due to exhaustion",' +
+      '"Suffers no Disadv on Constitution or Strength checks due to exhaustion",' +
       '"Successful DC 15 Constitution doubles exhaustion recovery"',
   'Inspiring Faith':
     'Section=feature Note="Gains inspiration after a short rest"',
@@ -556,7 +558,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,magic ' +
     'Note=' +
       '"+1 Charisma",' +
-      '"R30\' Casting a spell frightens foes (Wisdom neg)"',
+      '"R30\' Casting a spell frightens foes (Wisdom neg) for 1 rd"',
   'Lurk':
     'Section=skill ' +
     'Note="Successful Stealth vs. passive Perception makes self unnoticed/Adv on Perception to overhear nearby conversations"',
@@ -564,10 +566,10 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,save ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
-      '"+%{proficiencyBonus} concentration to maintain a spell"',
+      '"+%{proficiencyBonus} Constitution (maintain spell concentration)"',
   'Mind Within The Weave':
     'Section=magic ' +
-    'Note="May simultaneously maintain concentration on two spells"',
+    'Note="May maintain concentration on two spells simultaneously"',
   'Natural Bond':
     'Section=feature ' +
     'Note="Animals treat self as a friend (DC %{8+proficiencyBonus+wisdomModifier} Wisdom neg)"',
@@ -575,15 +577,15 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,feature,skill ' +
     'Note=' +
       '"+1 Wisdom",' +
-      '"+1d6 ability, attack, and save w/in 1 mile of a power nexus or a black mirror 3/long rest",' +
-      '"Successful DC 16 Insight detects a power nexus or a black mirror w/in 5 miles"',
+      '"+1d6 ability, attack, and save when w/in 1 mile of a power nexus or a black mirror",' +
+      '"Successful DC 16 Insight detects a power nexus or a black mirror w/in 5 miles 3/long rest"',
   'Nexus Guardian':
     'Section=feature ' +
     'Note="May attune to a nexus, gaining remote charge use, teleportation to nexus, agelessness, and reincarnation"',
   'One With The Earth':
     'Section=feature,skill ' +
     'Note=' +
-      '"Knows north, direction of water and geologic features w/in 5 miles, and direction of buildings w/in 1 mile",' +
+      '"Knows north, direction and potability of water and geologic features w/in 5 miles, and direction of buildings w/in 1 mile",' +
       '"Skill Proficiency (Perception/Survival)"',
   'Pack Alpha':
     'Section=feature,skill ' +
@@ -595,16 +597,16 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note=' +
       '"+1 Wisdom",' +
       '"Adjacent wild companion can attack simultaneously w/self"',
-  'Pure Magic':'Section=magic Note="+%V spell attack and save DC"',
+  'Pure Magic':'Section=magic Note="+1 spell attack and save DC"',
   'Quick Recovery':
     'Section=ability,combat ' +
     'Note=' +
       '"+1 Constitution",' +
-      '"May suffer 1 level of exhaustion to recover hit dice, adding %{constitutionModifier} to each"',
+      '"May suffer 1 level of exhaustion as a bonus action to recover hit dice, adding %{constitutionModifier} to each"',
   'Raging Fury':
     'Section=magic,magic ' +
     'Note=' +
-      '"Increased Pure Magic effects",' +
+      '"+1 spell attack and save DC",' +
       '"May cast a 1 action spell as a bonus action"',
   'Rallying Cry':
     'Section=ability,combat ' +
@@ -620,7 +622,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,skill ' +
     'Note=' +
       '"+1 Wisdom",' +
-      '"Long rest restores 1d6+1 uses of healer\'s kit"',
+      '"May restore 1d6+1 uses of a healer\'s kit or create a kit w/1d4+1 uses after a long rest"',
   'Rooted':
     'Section=ability,combat ' +
     'Note=' +
@@ -628,13 +630,13 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Cannot be moved or knocked prone/Adv on grappling"',
   'Scathing Rebuke':
     'Section=combat ' +
-    'Note="R50\' Successful Intimidation vs. Insight stuns target for 1 min 3/long rest"',
+    'Note="R50\' Successful Intimidation vs. Insight stuns target for 1 min (damage ends) 3/long rest"',
   'Silencing Strike':
     'Section=combat ' +
     'Note="Melee hit silences target for 1 min (DC %{8+proficiencyBonus+intelligenceModifier} Constitution neg) 1/short rest"',
   'Skilled Healer':
     'Section=skill ' +
-    'Note="May spend 1 healer\'s kit use to remove blindness, deafness, paralysis, or poison or to give Adv on next save vs. disease"',
+    'Note="May spend 1 healer\'s kit use to remove blindness, deafness, paralysis, or poison or to give Adv on next Constitution save vs. disease"',
   'Strength Of Faith':
     'Section=ability,save ' +
     'Note=' +
@@ -655,18 +657,19 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,combat ' +
     'Note=' +
       '"Ability Boost (Choose 1 from any)",' +
-      '"May spend 1 HD for 2 HD damage w/a weapon or spell"',
+      '"May spend 1 HD for +2 HD weapon or spell damage"',
   'Tactical Direction':
     'Section=feature ' +
     'Note="May take Initiative 1 to give each ally a bonus attack, Dash, or Disengage on their first turn"',
   'The Channeling':
     'Section=magic ' +
-    'Note="May spend a level 1 slot to change the spell damage type, a level 2 slot to reroll 1 or 2 on a spell damage die, or a level 3 slot to give three spell targets Disadv on spell save"',
+    'Note="May spend a level 1 spell slot to change a spell\'s damage type, a level 2 spell slot to reroll 1s and 2s on a spell\'s damage dice, or a level 3 spell slot to give 3 spell targets Disadv on a spell save"',
   'The Eye Opens':
     'Section=ability,magic ' +
     'Note=' +
       '"+1 Wisdom",' +
-      '"May cast <i>True Seeing</i> 3/long rest"',
+      '"May cast self <i>True Seeing</i> 3/long rest" ' +
+    'Spells="True Seeing"',
   'The Wild Hunt':
     'Section=magic ' +
     'Note="May summon 1 CR 4, 2 CR 2, or 4 CR 1 beasts to assist for 10 min"',
@@ -689,15 +692,15 @@ MidnightLegacy.FEATURES_ADDED = {
       '"May use a bonus action for a second unarmed strike and add ability modifier to damage"',
   'Warding Presence':
     'Section=combat ' +
-    'Note="Adjacent foes suffer half speed and Disadv on attacks on others"',
+    'Note="Adjacent foes suffer half speed and Disadv on attacks on an adjacent ally"',
   'Well-Spoken':
-    'Section=feature,skill ' +
+    'Section=skill,skill ' +
     'Note=' +
-      '"Dbl skill proficiency on %V choices from Deception, Intimidation, Persuasion",' +
-      '"Skill Proficiency (Deception/Intimidation/Persuasion)"',
+      '"Skill Proficiency (Deception/Intimidation/Persuasion)",' +
+      '"+%{proficiencyBonus} on %V choices from Deception, Intimidation, Persuasion"',
   'Wild Companion':
     'Section=feature ' +
-    'Note="CR 1 companion gains +%{proficiencyBonus} AC, attack, damage, and proficient skills and saves; HP increases to %{level*4}"',
+    'Note="CR 1 companion beast gains +%{proficiencyBonus} AC, attack, damage, and proficient skills and saves; hit points increase to %{level*4}"',
   'Wild Resilience':
     'Section=ability,save ' +
     'Note=' +
@@ -1195,11 +1198,10 @@ MidnightLegacy.featRulesExtra = function(rules, name) {
     rules.defineRule
       ('weapons.Improvised.2', 'combatNotes.improvisedFighter', '^=', '"1d6"');
   } else if(name == 'Pure Magic') {
-    rules.defineRule('magicNotes.pureMagic', '', '=', '1');
-    rules.defineRule
-      ('spellAttackModifier.S', 'magicNotes.pureMagic', '+', null);
+    rules.defineRule('spellAttackModifier.S', 'magicNotes.pureMagic', '+', '1');
   } else if(name == 'Raging Fury') {
-    rules.defineRule('magicNotes.pureMagic', 'magicNotes.ragingFury', '+', '1');
+    rules.defineRule
+      ('spellAttackModifier.S', 'magicNotes.ragingFury', '+', '1');
   } else if(name == 'Suspicious') {
     rules.defineRule('skillNotes.suspicious', 'proficiencyBonus', '=', null);
     rules.defineRule('skillNotes.suspicious-1', 'proficiencyBonus', '=', null);
@@ -1210,7 +1212,7 @@ MidnightLegacy.featRulesExtra = function(rules, name) {
     rules.defineRule
       ('weapons.Unarmed.2', 'combatNotes.viciousAssault', '^', '"1d6"');
   } else if(name == 'Well-Spoken') {
-    rules.defineRule('featureNotes.well-Spoken',
+    rules.defineRule('skillNotes.well-Spoken-1',
       'level', '=', 'Math.min(Math.floor(source / 5), 3)'
     );
   } else if(name == 'Wild Resilience') {
@@ -1321,17 +1323,18 @@ MidnightLegacy.ruleNotes = function() {
     '<h3>Usage Notes</h3>\n' +
     '<ul>\n' +
     '  <li>\n' +
-    '    Quilvyn makes available the expanded options, feats, spells, etc.\n' +
-    "    from the Player's Handbook if the D&amp;D 5E rule set is loaded.\n" +
+    '  Quilvyn makes available the expanded options, feats, spells, etc.' +
+    "  from the Player's Handbook if the D&amp;D 5E rule set is loaded." +
     '  </li><li>\n' +
-    '    Racial origin choices (Dorn, Erenlander, or Sarcosan Human; Clan\n' +
-    '    or Kurgun Dwarf, etc.) are absorbed into the list of races.\n' +
+    '  Racial origin choices (Dorn, Erenlander, or Sarcosan Human; Clan' +
+    '  or Kurgun Dwarf, etc.) are absorbed into the list of races.' +
     '  </li><li>\n' +
-    '    Quilvyn drops the spell <i>Banishment</i> from the list of domain\n' +
-    '    spells for the Soldier Legate class option, since that spell is\n' +
-    "    included in the rule book's list of spells that do not exist in Midnight.\n" +
-    '    The same is true for some spells from some class options from the\n' +
-    "    SRD (e.g., <i>Divination</i> from Druid's Circle Of the Land).\n" +
+    '  As noted by the Legacy of Darkness errata, Quilvyn replaces the' +  
+    '  <i>Banishment</i> spell in the list of domain spells for the Soldier' +
+    '  Legate class option with <i>Regeneration</i>. Quilvyn also drops some' +
+    '  spells that do not exist in Midnight from some SRD class options' +
+    '  (e.g., Quilvyn drops <i>Divination</i> from the spells acquired by' +
+    '  Circle Of the Land druids).\n' +
     '  </li>\n' +
     '</ul>\n' +
     '<h3>Copyrights and Licensing</h3>\n' +
