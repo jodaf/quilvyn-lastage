@@ -462,8 +462,8 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,skill,skill ' +
     'Note=' +
       '"+1 Intelligence",' +
-      '"Skill Proficiency (Insight)/+%V Insight",' +
-      '"+%V passive Perception/Successful DC 20 Investigation notes flaws in story detail"',
+      '"Skill Proficiency (Insight)/+%{proficiencyBonus} Insight",' +
+      '"+%{proficiencyBonus} passive Perception/Successful DC 20 Investigation notes flaws in story detail"',
   'Unremarkable':
     'Section=ability,feature ' +
     'Note=' +
@@ -698,7 +698,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=skill,skill ' +
     'Note=' +
       '"Skill Proficiency (Deception/Intimidation/Persuasion)",' +
-      '"+%{proficiencyBonus} on %V choices from Deception, Intimidation, Persuasion"',
+      '"+%{proficiencyBonus} on %{level//5<?3} choices from Deception, Intimidation, Persuasion"',
   'Wild Companion':
     'Section=feature ' +
     'Note="CR 1 companion beast gains +%{proficiencyBonus} AC, attack, damage, and proficient skills and saves; hit points increase to %{level*4}"',
@@ -706,7 +706,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,save ' +
     'Note=' +
       '"+1 Constitution",' +
-      '"May reroll a Strength, Dexterity, or Constitution save %V/long rest"',
+      '"May reroll a Strength, Dexterity, or Constitution save %{level//9+1}/long rest"',
   'Wild Sense':
     'Section=feature,feature ' +
     'Note=' +
@@ -747,7 +747,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Astirax gains +%{proficiencyBonus} AC, attack, and damage; may extend scent magic to 1 mile for 1 min 1/dy"',
   'Mage Hunter':
     'Section=combat ' +
-    'Note="R%V\' May use Channel Divinity to inflict Disadv on concentration of %1 and Adv on saves vs. spells of %1 (Wisdom neg) for 1 min"',
+    'Note="R%{30+(combatNotes.masterMageHunter?30:0)}\' May use Channel Divinity to inflict Disadv on concentration of %{combatNotes.masterMageHunter?\'all casters\':\'target caster\'} and Adv on saves vs. spells of %{combatNotes.masterMageHunter?\'all casters\':\'target caster\'} (Wisdom neg) for 1 min"',
   'Master Mage Hunter':'Section=combat Note="Increased Mage Hunter effects"',
   'Necromantic Arts':'Section=magic Note="Knows <i>Chill Touch</i> cantrip"',
   'Potent Spellcasting':
@@ -1146,14 +1146,8 @@ MidnightLegacy.classRulesExtra = function(rules, name) {
       'features.Keeper Of Obsidian Domain', '=', '1'
     );
     rules.defineRule('deity', classLevel, '=', '"Izrador"');
-    rules.defineRule('combatNotes.mageHunter',
-      'levels.Cleric', '=', '30',
-      'combatNotes.masterMageHunter', '+', '30'
-    );
-    rules.defineRule('combatNotes.mageHunter.1',
-      'features.Mage Hunter', '?', null,
-      'levels.Cleric', '=', '"target caster"',
-      'combatNotes.masterMageHunter', '=', '"all casters"'
+    rules.defineRule('combatNotes.mageHunter', // Italics noop
+      'combatNotes.masterMageHunter', '+', 'null'
     );
   }
 };
@@ -1203,23 +1197,9 @@ MidnightLegacy.featRulesExtra = function(rules, name) {
   } else if(name == 'Raging Fury') {
     rules.defineRule
       ('spellAttackModifier.S', 'magicNotes.ragingFury', '+', '1');
-  } else if(name == 'Suspicious') {
-    rules.defineRule('skillNotes.suspicious', 'proficiencyBonus', '=', null);
-    rules.defineRule('skillNotes.suspicious-1', 'proficiencyBonus', '=', null);
-    rules.defineRule
-      ('skillProficiency.Insight', 'skillNotes.suspicious', '=', '1');
-    rules.defineRule('skills.Insight', 'skillNotes.suspicious', '+', null);
   } else if(name == 'Vicious Assault') {
     rules.defineRule
       ('weapons.Unarmed.2', 'combatNotes.viciousAssault', '^', '"1d6"');
-  } else if(name == 'Well-Spoken') {
-    rules.defineRule('skillNotes.well-Spoken-1',
-      'level', '=', 'Math.min(Math.floor(source / 5), 3)'
-    );
-  } else if(name == 'Wild Resilience') {
-    rules.defineRule('saveNotes.wildResilience',
-      'level', '=', 'source<9 ? 1 : source<18 ? 2 : 3'
-    );
   } else if(name == 'Wild Sense') {
     rules.defineRule('features.Darkvision', 'featureNotes.wildSense', '=', '1');
   }
@@ -1244,57 +1224,15 @@ MidnightLegacy.heroicPathRulesExtra = function(rules, name) {
  * derived directly from the abilities passed to raceRules.
  */
 MidnightLegacy.raceRulesExtra = function(rules, name) {
-  let raceLevel =
-    name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') +
-    'Level';
   if(name == 'Caransil Elf')
     rules.defineRule
       ('spellSlots.S0', 'magicNotes.innateMagicUser', '+=', '1');
-  else if(name == 'Clan Dwarf') {
-    // The Clan Warrior Training note isn't formatted in a way that allows
-    // featureRules to auto-generate rules
-    rules.defineRule('armorProficiency.Medium',
-      'combatNotes.clanWarriorTraining', '=', '1'
-    );
-    rules.defineRule('weaponProficiency.Battleaxe',
-      'combatNotes.clanWarriorTraining', '=', '1'
-    );
-    rules.defineRule('weaponProficiency.Warhammer',
-      'combatNotes.clanWarriorTraining', '=', '1'
-    );
-  } else if(name == 'Danisil Elf') {
+  else if(name == 'Danisil Elf')
     rules.defineRule
       ('spellSlots.W0', 'magicNotes.innateMagicalScholar', '+=', '2');
-  } else if(name == 'Gnome') {
-    // The Riverfolk note isn't formatted in a way that allows
-    // featureRules to auto-generate rules
-    rules.defineRule
-      ('skillProficiency.Athletics', 'skillNotes.riverfolk', '=', '1');
-    rules.defineRule
-      ('skillProficiency.Insight', 'skillNotes.riverfolk', '=', '1');
-    rules.defineRule
-      ('skillProficiency.Persuasion', 'skillNotes.riverfolk', '=', '1');
-    rules.defineRule
-      ('toolProficiency.Water Vehicles', 'skillNotes.riverfolk', '=', '1');
-  } else if(name.match(/Human/)) {
+  else if(name.match(/Human/))
     rules.defineRule
       ('featCount.General', 'featureNotes.humanFeatBonus', '+=', '1');
-  } else if(name == 'Kurgun Dwarf') {
-    // The Kurgun Warrior Training note isn't formatted in a way that allows
-    // featureRules to auto-generate rules
-    rules.defineRule('armorProficiency.Medium',
-      'combatNotes.kurgunWarriorTraining', '=', '1'
-    );
-    rules.defineRule('weaponProficiency.Handaxe',
-      'combatNotes.kurgunWarriorTraining', '=', '1'
-    );
-    rules.defineRule('weaponProficiency.Spear',
-      'combatNotes.kurgunWarriorTraining', '=', '1'
-    );
-    rules.defineRule('weaponProficiency.Shortbow',
-      'combatNotes.kurgunWarriorTraining', '=', '1'
-    );
-  }
 };
 
 /* Returns an array of plugins upon which this one depends. */
