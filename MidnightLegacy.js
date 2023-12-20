@@ -385,12 +385,12 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Knows the basics of Shadow military organization/Can get messages to slaves undetected"',
   'Military Rank':
     'Section=feature ' +
-    'Note="Receives respect and deference from fellow soldiers"',
+    'Note="Receives respect, deference, and lend of resources from fellow soldiers"',
   'Old Veteran':
     'Section=feature Note="Knows how to infiltrate military organizations"',
   'Survivalist':
     'Section=skill ' +
-    'Note="Can find shelter from weather and detect the presence of hostile creatures and blighted lands"',
+    'Note="Can find shelter from the weather and detect the presence of blighted lands, hostile creatures, and animals possessed by an astirax"',
   'Sympathetic Ally':
      'Section=feature ' +
      'Note="May receive support and info from a contact in occupied lands"',
@@ -400,12 +400,12 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=combat,skill ' +
     'Note=' +
       '"Allies regain extra HD from a long rest",' +
-      '"Successful DC 15 Medicine with healer\'s kit brings patient from 0 HP to 3 HP"',
+      '"Successful DC 15 Medicine with healer\'s kit use brings patient from 0 HP to 3 HP"',
   'Brawler':
     'Section=combat,combat ' +
     'Note=' +
       '"Unarmed strike inflicts d4 damage",' +
-      '"May use a bonus action for a second strike, grapple, or knock prone"',
+      '"May use a bonus action after a successful unarmed strike to make a second strike, grapple, or knock prone"',
   'Captor':
     'Section=ability,combat ' +
     'Note=' +
@@ -442,20 +442,21 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,skill ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Intelligence, Wisdom)",' +
-      '"Successful DC 15 Perception recovers all spent ammo/Successful DC 12 Investigation scavenges weapon or armor materials"',
+      '"Successful DC 15 Perception recovers all spent ammo/Successful DC 12 Investigation scavenges weapon or armor materials worth up to 3d10+%{intelligenceModifier} GP"',
   'Seamaster':
     'Section=ability,ability,feature,skill ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
       '"May climb rope at full speed",' +
       '"Increases speed of commanded ship by 2 MPH",' +
-      '"No Disadv to pilot a ship through a storm"',
+      '"No Disadv to pilot a ship during a storm"',
   'Shieldwall Soldier':
-    'Section=combat Note="R5\' Allies gain +1 AC (+2 if self holds a shield)"',
+    'Section=combat ' +
+    'Note="Adjacent allies gain +1 AC (+2 if self holds a shield)"',
   'Subtle Spellcaster':
     'Section=magic,skill ' +
     'Note=' +
-      '"May cast 2 chosen level 1 spells 1/long rest",' +
+      '"May cast 2 chosen level 1 bard, druid, sorcerer, or wizard spells 1/long rest",' +
       '"Successful Sleight Of Hand vs. passive Perception allows casting spells unnoticed"',
   'Suspicious':
     'Section=ability,skill,skill ' +
