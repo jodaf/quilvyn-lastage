@@ -1283,7 +1283,7 @@ MidnightLegacy.ruleNotes = function() {
     '  Legate class option with <i>Regeneration</i>. Quilvyn also drops some' +
     '  spells that do not exist in Midnight from some SRD class options' +
     '  (e.g., Quilvyn drops <i>Divination</i> from the spells acquired by' +
-    '  Circle Of the Land druids).\n' +
+    '  Circle Of The Land (Forest) druids).\n' +
     '  </li>\n' +
     '</ul>\n' +
     '<h3>Copyrights and Licensing</h3>\n' +
