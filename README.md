@@ -14,9 +14,10 @@ by the quilvyn-pathfinder package.
 
 ### Installation
 
-To use quilvyn-lastage, unbundle the release package into the plugins/
-subdirectory within the Quilvyn installation directory, then append the
-following lines to the file plugins/plugins.js:
+To use quilvyn-lastage, unbundle the release package, making sure that the
+contents of the plugins/ subdirectory are placed into the corresponding Quilvyn
+installation subdirectory, then append the following lines to the file
+plugins/plugins.js:
 
     RULESETS['Midnight Campaign Setting using SRD v3.5 rules'] = {
       url:'plugins/LastAge.js',
@@ -38,6 +39,5 @@ following lines to the file plugins/plugins.js:
 ### Usage
 
 Once the LastAge plugin is installed as described above, start Quilvyn and
-check the box next to "Midnight Campaign Setting using SRD v3.5 rules" and/or
-the box next to "Midnight Campaign Setting using Pathfinder 1E rules" from the
-rule sets menu in the initial window.
+check the box next to one or more of the Midnight rule sets in the menu in the
+initial window.
