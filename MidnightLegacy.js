@@ -1284,6 +1284,11 @@ MidnightLegacy.ruleNotes = function() {
     '  spells that do not exist in Midnight from some SRD class options' +
     '  (e.g., Quilvyn drops <i>Divination</i> from the spells acquired by' +
     '  Circle Of The Land (Forest) druids).\n' +
+    '  </li><li>\n' +
+    '  The Midnight Legacy rule set allows you to add homebrew choices for' +
+    '  all of the same types discussed in the <a href="plugins/homebrew-srd5e.html">SRD 5E Homebrew Examples document</a>.' +
+    '  In addition, the ML rule set allows adding homebrew heroic paths,' +
+    '  which require specifying only the heroic path name.\n' +
     '  </li>\n' +
     '</ul>\n' +
     '<h3>Copyrights and Licensing</h3>\n' +
