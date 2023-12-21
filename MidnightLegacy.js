@@ -716,13 +716,13 @@ MidnightLegacy.FEATURES_ADDED = {
   // Paths
   'Astirax Servant':
     'Section=feature ' +
-    'Note="R%{level<10?\\"100\'\\":\\"1 mile\\"} May communicate telepathically w/bound astirax"',
+    'Note="May communicate telepathically %{level<10?\\"100\'\\":\\"1 mile\\"} w/bound astirax"',
   'Aura Of Darkness':
     'Section=feature ' +
     'Note="May create a 20\' radius of darkness that others cannot see through for 1 min"',
   'Bestial Astirax Servant':
     'Section=feature ' +
-    'Note="R100\' May communicate telepathically w/bound astirax/Astirax may possess a Large creature"',
+    'Note="May communicate telepathically 100\' w/bound astirax/Astirax may possess a Large creature"',
   'Dark Warrior':
     'Section=feature ' +
     'Note="May make an additional attack as a bonus action %{wisdomModifier>?1}/long rest"',
@@ -730,7 +730,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=combat Note="Self regains %{level<10?2:4}d6 HP from killing"',
   'Dire Bodyguard':
     'Section=feature ' +
-    'Note="R5\' Foe attacks on others have Disadv and self can use Reaction for a melee attack"',
+    'Note="Adjacent foes suffer Disadv on attacks on others; self can use Reaction to make a melee attack"',
   'Dominate Undead':
     'Section=combat ' +
     'Note="R30\' May use Channel Energy to control undead (Wisdom neg) for 1 hr"',
@@ -739,17 +739,20 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Resistance to nonmagical bludgeoning, piercing, and slashing damage/Immunity to radiant damage"',
   'Ferocious Blow':
     'Section=feature ' +
-    'Note="May use Channel Divinity for +2d6 HP thunder; medium foe pushed 10\' and knocked prone"',
+    'Note="May use Channel Divinity to inflict +2d6 HP thunder; medium foe pushed 10\' and knocked prone"',
   'Impervious To Magic':
      'Section=magic Note="May use Reaction to cast <i>Counterspell</i>"',
   'Improved Astirax Bond':
     'Section=feature ' +
-    'Note="Astirax gains +%{proficiencyBonus} AC, attack, and damage; may extend scent magic to 1 mile for 1 min 1/dy"',
+    'Note="Astirax gains +%{proficiencyBonus} AC, attack, damage, and proficient saves and skills/May extend scent magic to 1 mile for 1 min 1/dy"',
   'Mage Hunter':
     'Section=combat ' +
     'Note="R%{30+(combatNotes.masterMageHunter?30:0)}\' May use Channel Divinity to inflict Disadv on concentration of %{combatNotes.masterMageHunter?\'all casters\':\'target caster\'} and Adv on saves vs. spells of %{combatNotes.masterMageHunter?\'all casters\':\'target caster\'} (Wisdom neg) for 1 min"',
   'Master Mage Hunter':'Section=combat Note="Increased Mage Hunter effects"',
-  'Necromantic Arts':'Section=magic Note="Knows <i>Chill Touch</i> cantrip"',
+  'Necromantic Arts':
+    'Section=magic ' +
+    'Note="Knows <i>Chill Touch</i> cantrip" ' +
+    'Spells="Chill Touch"',
   'Potent Spellcasting':
     'Section=magic Note="+%{wisdomModifier} Cleric cantrip damage"',
 
@@ -977,46 +980,53 @@ MidnightLegacy.SPELLS_ADDED = {
     'School=Divination ' +
     'Level=C3,D3,P3 ' +
     'Description=' +
-      '"R200\' Self senses astiraxes, R10\' may control for 1 yr or inflict 4d12 HP radiant (Wisdom neg)"',
+      '"R200\' Self senses astiraxes, R10\' may control for 366 dy or inflict 4d12 HP radiant (Wisdom neg; Adv if possessing an animal)"',
   'Disguise Ally':
     'School=Illusion ' +
     'Level=B2,S2,W2 ' +
+    'AtHigherLevels="affects +1 target" ' +
     'Description=' +
-      '"R100\' Alters appearance of willing target and clothing while w/in range for conc or 1 hr"',
+      '"R100\' Alters appearance of willing target and possessions (Investigation detects) while w/in range for conc up to 1 hr"',
   'Greenshield':
     'School=Abjuration ' +
     'Level=D2 ' +
-    'Description="Vegetation in 20\' radius allows only allies to pass"',
+    'Description=' +
+      '"Vegetation in 20\' radius allows only allies to pass (Investigation detects; Disadv in nature) for 12 hr"',
   'Heed The Whisper':
     'School=Divination ' +
     'Level=D1,R1 ' +
+    'AtHigherLevels="may sense from any known spot in Erethor" ' +
     'Description=' +
-      '"R300\' Self senses creatures while w/in 1 mile of Erethor for 8 hr"',
+      '"RSelf May sense creatures in a 300\' radius and cannot be surprised, even during sleep, while w/in 1 mile of Erethor for 8 hr"',
   'Lifetrap':
     'School=Transmutation ' +
     'Level=D1,R1 ' +
+    'AtHigherLevels="affects +1 target" ' +
     'Description=' +
-      '"R150\' Target creature restrained (Strength neg) for conc or 1 min; undead suffers 1d12 HP/tn radiant at end"',
+      '"R150\' Target creature restrained (Strength ends) for conc up to 1 min; undead suffers 1d12 HP radiant per rd restrained at end"',
   "Nature's Revelation":
     'School=Transmutation ' +
     'Level=D2,R2 ' +
+    'AtHigherLevels="+10\' radius" ' +
     'Description=' +
-      '"R120\' Plants and animals indicate location of hidden creatures for conc or 1 min"',
+      '"R120\' Plants and animals indicate location of hidden creatures for conc up to 1 min"',
   'Silver Blood':
     'School=Abjuration ' +
     'Level=B2,S2,W2 ' +
+    'Ritual=true ' +
     'Description=' +
-      '"Self suffers 1d4 HP to create silver ammo, warding line, or astirax barrier for 1 hr"',
+      '"Self suffers 1d4 HP to create silver ammo, warding line (DC 14 Wisdom neg), or astirax scent barrier for 1 hr"',
   'Silver Storm':
     'School=Transmutation ' +
     'Level=S5,W5 ' +
+    'AtHigherLevels="+10\' cone" ' +
     'Description=' +
-      '"70\' cone of silver needles inflicts 10d4 piercing (10d8 if vulnerable; Dexterity half)"',
+      '"70\' cone inflicts 10d4 HP piercing (10d8 HP if vulnerable; Dexterity half)"',
   'Silver Wind':
     'School=Conjuration ' +
     'Level=S4,W4 ' +
     'Description=' +
-      '"R200\' 40\' sphere reveals creatures, inflicts stun on vulnerable (Constitution neg)"',
+      '"R200\' 40\' sphere reveals invisible creatures and stuns vulnerable targets (Constitution ends) for conc up to 1 min"',
   // Removed
   'Astral Projection':null,
   'Augury':null,
