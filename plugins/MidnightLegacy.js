@@ -410,7 +410,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,combat ' +
     'Note=' +
       '"+1 Strength",' +
-      '"Adv on Athletics to grapple when unseen/May grapple silently/May move at full speed while grappling w/out provoking OA"',
+      '"Adv on Athletics to grapple when unseen/May grapple silently/May move at full speed while grappling w/out provoking an OA"',
   'Fellhunter':
     'Section=skill ' +
     'Note="Successful DC 12 Religion gives self Adv on saves vs. undead and inflicts Disadv on undead targets\' saves for 1 min 1/long rest"',
@@ -798,8 +798,7 @@ MidnightLegacy.FEATURES_ADDED = {
   'Gnomish Cunning':SRD5E.FEATURES['Gnome Cunning'],
   'Halfling Magic':
     'Section=magic ' +
-    'Note="Knows <i>Mending</i> and <i>Prestidigitation</i> cantrips" ' +
-    'Spells="Mending,Prestidigitation"',
+    'Note="Knows <i>Mending</i> and <i>Prestidigitation</i> cantrips"',
   'Human Feat Bonus':'Section=feature Note="+1 general feat"',
   'Innate Magic User':'Section=magic Note="Knows 1 Sorcerer cantrip"',
   'Innate Magical Scholar':'Section=magic Note="Knows 2 Wizard cantrips"',
@@ -1240,7 +1239,27 @@ MidnightLegacy.raceRulesExtra = function(rules, name) {
   else if(name == 'Danisil Elf')
     rules.defineRule
       ('spellSlots.W0', 'magicNotes.innateMagicalScholar', '+=', '2');
-  else if(name.match(/Human/))
+  else if(name.match(/Halfling/)) {
+    let raceLevel =
+      name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') + 'Level';
+    SRD5E.featureSpells(rules,
+      'Halfling Magic', 'Halfling', raceLevel, ['Mending', 'Prestidigitation']
+    );
+    rules.defineRule('casterLevels.Halfling', raceLevel, '=', null);
+    rules.defineRule('spellModifier.Halfling',
+      'casterLevels.Halfling', '?', null,
+      // NOTE: Rules don't specify the ability, but most classes
+      // w/Prestidigitation in their spell lists use charisma
+      'charismaModifier', '=', null
+    );
+    rules.defineRule('spellAttackModifier.Halfling',
+      'spellModifier.Halfling', '=', null,
+      'proficiencyBonus', '+', null
+    );
+    rules.defineRule('spellDifficultyClass.Halfling',
+      'spellAttackModifier.Halfling', '=', '8 + source'
+    );
+  } else if(name.match(/Human/))
     rules.defineRule
       ('featCount.General', 'featureNotes.humanFeatBonus', '+=', '1');
 };
