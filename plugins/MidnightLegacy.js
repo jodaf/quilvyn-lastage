@@ -413,7 +413,7 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Adv on Athletics to grapple when unseen/May grapple silently/May move at full speed while grappling w/out provoking an OA"',
   'Fellhunter':
     'Section=skill ' +
-    'Note="Successful DC 12 Religion gives self Adv on saves vs. undead and inflicts Disadv on undead targets\' saves for 1 min 1/long rest"',
+    'Note="May use a bonus action to make a DC 12 Religion check; success gives self Adv on saves vs. undead and inflicts Disadv on undead targets\' saves for 1 min 1/long rest"',
   'Harrier':
     'Section=combat ' +
     'Note="Mounted 30\' move negates foe OA and causes successful melee attacks to knock prone"',
@@ -512,7 +512,8 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="May automatically crit on a successful melee attack w/Adv 1/short rest"',
   'Ethereal Presence':
-    'Section=magic Note="May spend 1 HD to become ethereal for 1 min"',
+    'Section=magic ' +
+    'Note="May spend 1 HD and use a bonus action to become ethereal for 1 min"',
   'Fallen Sense':
     'Section=ability,feature,magic ' +
     'Note=' +
@@ -653,7 +654,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="%{level<12?\'Resistance\':\'Immunity\'} to chosen damage type"',
   'Sundered Form':
     'Section=magic ' +
-    'Note="May spend 8 HD to assume Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and create a 30\' radius that inflicts 10 HP damage on foes"',
+    'Note="May spend 8 HD and use a bonus action to assume Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and create a 30\' radius that inflicts 10 HP damage on foes"',
   'Sundered Fury':
     'Section=ability,combat ' +
     'Note=' +
@@ -661,7 +662,7 @@ MidnightLegacy.FEATURES_ADDED = {
       '"May spend 1 HD for +2 HD weapon or spell damage"',
   'Tactical Direction':
     'Section=feature ' +
-    'Note="May take Initiative 1 to give each ally a bonus attack, Dash, or Disengage on their first turn"',
+    'Note="May take Initiative 1 to give each ally a bonus action to attack, Dash, or Disengage on their first turn"',
   'The Channeling':
     'Section=magic ' +
     'Note="May spend a level 1 spell slot to change a spell\'s damage type, a level 2 spell slot to reroll 1s and 2s on a spell\'s damage dice, or a level 3 spell slot to give 3 spell targets Disadv on a spell save"',
@@ -725,7 +726,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="May communicate telepathically 100\' w/bound astirax/Astirax may possess a Large creature"',
   'Dark Warrior':
     'Section=feature ' +
-    'Note="May make an additional attack as a bonus action %{wisdomModifier>?1}/long rest"',
+    'Note="May use a bonus action to make an additional attack %{wisdomModifier>?1}/long rest"',
   "Dark God's Blessing":
     'Section=combat Note="Self regains %{level<10?2:4}d6 HP from killing"',
   'Dire Bodyguard':
