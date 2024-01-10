@@ -699,7 +699,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=skill,skill ' +
     'Note=' +
       '"Skill Proficiency (Deception/Intimidation/Persuasion)",' +
-      '"+%{proficiencyBonus} on %{level//5<?3} choices from Deception, Intimidation, Persuasion"',
+      '"Dbl proficiency bonus +%{proficiencyBonus} on %{level//5<?3} choices from Deception, Intimidation, Persuasion"',
   'Wild Companion':
     'Section=feature ' +
     'Note="CR 1 companion beast gains +%{proficiencyBonus} AC, attack, damage, and proficient skills and saves; hit points increase to %{level*4}"',
