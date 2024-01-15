@@ -4,14 +4,14 @@ The quilvyn-lastage package bundles modules that extend Quilvyn to work with
 Fantasy Flight's Midnight campaign setting, applying the rules of the
 <a href="https://www.drivethrurpg.com/product/2718/Midnight-2nd-Edition-Core-Rulebook">2nd edition Core Rulebook</a>
 and the
-<a href="https://www.drivethrurpg.com/product/369174/MIDNIGHT--Legacy-of-Darkness?src=hottest">Midnight Legacy of Shadow</a> rule book.
+<a href="https://www.drivethrurpg.com/product/369174/MIDNIGHT--Legacy-of-Darkness?src=hottest">Midnight Legacy of Darkness</a> rule book.
 
 ### Requirements
 
-quilvyn-lastage relies on the core and srd35 modules installed by the
+quilvyn-lastage relies on the core and SRD35 modules installed by the
 quilvyn-core package. quilvyn-lastage can also work with the modules installed
 by the quilvyn-pathfinder package. The 5E Legacy of Shadow module relies on the
-srd5e module and can make use of the phb5e, Tasha's, Xanathar's, and Volo's
+SRD5E module and can make use of the PHB5E, Tasha's, Xanathar's, and Volo's
 modules from the quilvyn-5e-supplements package.
 
 ### Installation
