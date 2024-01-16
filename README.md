@@ -31,7 +31,7 @@ plugins/plugins.js:
       group:'Pathfinder 1E',
       require:'Pathfinder.js'
     };
-    RULESETS['Midnight Legacy of Darkness Campain Setting using SRD 5E rules'] = {
+    RULESETS['Midnight Legacy of Darkness Campaign Setting using SRD 5E rules'] = {
       url:'plugins/MidnightLegacy.js',
       group:'5E',
       require:'SRD5E.js'

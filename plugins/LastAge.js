@@ -1663,7 +1663,7 @@ LastAge.FEATURES_ADDED = {
   'Alter Ego':
     'Section=feature ' +
     'Note="May transform into %{$\\"levels.Aradil\'s Eye\\"<3?\'a designed human\':$\\"levels.Aradil\'s Eye\\"<7?\'a designed human or humanoid\':\'any humanoid\'} in 1 %{$\\"levels.Aradil\'s Eye\\"<5?\'min\':\'rd\'} as %{$\\"levels.Aradil\'s Eye\\"<9?\'a supernatural\':\'an extraordinary\'} ability"',
-  'Ancestral Advisor':
+  'Ancestral Advisor': // dictionary prefers Adviser; rule book reads "Advisor"
     'Section=magic Note="May use blade for %{(level+70)<?90}% chance to learn weal or woe outcome of a proposed action up to 30 min in the future %{charismaModifier>?1}/dy"',
   'Ancestral Bladebearer Bonus Feats':'Section=feature Note="+%V Fighter Feat"',
   'Ancestral Favor':'Section=save Note="May reroll a save 1/dy"',
@@ -5049,7 +5049,7 @@ LastAge.classRulesExtra = function(rules, name) {
   } else if(name == 'Lightbearer') {
 
     rules.defineRule('combatNotes.charismaTurningAdjustment',
-      'lightbearerFeatures.Turn Undead', '=', '0',
+      'lightbearerFeatures.Turn Undead', '=', '0'
     );
     rules.defineRule
       ('combatNotes.destroyUndead', classLevel, '=', 'source * 2');
@@ -6119,7 +6119,7 @@ LastAge.heroicPathRulesExtra = function(rules, name) {
     rules.defineRule
       ('casterLevels.Domain', pathLevel, '=', 'source<5 ? null : 1');
     rules.defineRule('combatNotes.charismaTurningAdjustment',
-      'shadowedFeatures.Turn Undead', '=', '0',
+      'shadowedFeatures.Turn Undead', '=', '0'
     );
     rules.defineRule('deity', pathLevel, '=', '"Izrador"');
     rules.defineRule
@@ -6491,7 +6491,7 @@ LastAge.ruleNotes = function() {
     '    with the exception of deity. When using Pathfinder as the base\n' +
     '    rule set, homebrew traits are also allowed. In addition, the\n' +
     '    rule set supports adding homebrew heroic paths, which require the\n' +
-    '    name and lists of features and selectable features similar to\' +
+    '    name and lists of features and selectable features similar to\n' +
     '    those specified for homebrew classes.\n' +
     '  </li>\n' +
     '</ul>\n' +
