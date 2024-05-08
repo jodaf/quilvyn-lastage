@@ -82,7 +82,7 @@ function LastAge(baseRules) {
     'race:Race,select-one,races',
     'heroicPath:Heroic Path,select-one,heroicPaths',
     'levels:Class Levels,bag,levels',
-    'prestige:Prestige Levels,bag,prestiges', 'npc:NPC Levels,bag,npcs');
+    'prestige:Prestige Levels,bag,prestiges', 'npc:NPC Levels,bag,nPCs');
 
   LastAge.ALIGNMENTS = Object.assign({}, rules.basePlugin.ALIGNMENTS);
   LastAge.ANIMAL_COMPANIONS = Object.assign(
@@ -100,18 +100,6 @@ function LastAge(baseRules) {
   LastAge.NPC_CLASSES.Aristocrat =
     rules.basePlugin.NPC_CLASSES.Aristocrat;
   LastAge.NPC_CLASSES.Commoner = rules.basePlugin.NPC_CLASSES.Commoner;
-  // TODO
-  // If basePlugin is Pathfinder, replace Legate domain features with
-  //  '"clericDomainFeatures.Death ? 1:Bleeding Touch",' +
-  //  '"clericDomainFeatures.Death ? 8:Death\'s Embrace",' +
-  //  '"clericDomainFeatures.Destruction ? 1:Destructive Smite",' +
-  //  '"clericDomainFeatures.Destruction ? 8:Destructive Aura",' +
-  //  '"clericDomainFeatures.Evil ? 1:Touch Of Evil",' +
-  //  '"clericDomainFeatures.Evil ? 8:Scythe Of Evil",' +
-  //  '"clericDomainFeatures.Magic ? 1:Hand Of The Acolyte",' +
-  //  '"clericDomainFeatures.Magic ? 8:Dispelling Touch",' +
-  //  '"clericDomainFeatures.War ? 1:Battle Rage",' +
-  //  '"clericDomainFeatures.War ? 8:Weapon Master",' +
   LastAge.NPC_CLASSES.Expert = rules.basePlugin.NPC_CLASSES.Expert;
   LastAge.NPC_CLASSES.Warrior = rules.basePlugin.NPC_CLASSES.Warrior;
   LastAge.FAMILIARS = Object.assign({}, rules.basePlugin.FAMILIARS);
@@ -146,6 +134,26 @@ function LastAge(baseRules) {
   }
   LastAge.WEAPONS =
     Object.assign({}, rules.basePlugin.WEAPONS, LastAge.WEAPONS_ADDED);
+  if(usePathfinder) {
+    let domainObjects =
+      Object.assign({}, LastAge.HEROIC_PATHS, LastAge.NPC_CLASSES, LastAge.PRESTIGE_CLASSES);
+    for(let p in domainObjects) {
+      if(!(domainObjects[p].includes('Domain')))
+        continue;
+      domainObjects[p] = domainObjects[p]
+        .replace(/"([^=,]*)1:Deadly Touch"/, '"$11:Bleeding Touch","$18:Death\'s Embrace"')
+        .replace(/"([^=,]*)1:Smite"/, '"$11:Destructive Smite","$18:Destructive Aura"')
+        .replace(/"([^=,]*)1:Empowered Evil"/, '"$11:Touch Of Evil","$18:Scythe Of Evil"')
+        .replace(/"([^=,]*)1:Arcane Adept"/, '"$11:Hand Of The Acolyte","$18:Dispelling Touch"')
+        .replace(/"([^=,]*)1:Weapon Of War"/, '"$11:Arcane Adept","$18:Weapon Master"');
+      if(p in LastAge.HEROIC_PATHS)
+        LastAge.HEROIC_PATHS[p] = domainObjects[p];
+      else if(p in LastAge.NPC_CLASSES)
+        LastAge.NPC_CLASSES[p] = domainObjects[p];
+      else if(p in LastAge.PRESTIGE_CLASSES)
+        LastAge.PRESTIGE_CLASSES[p] = domainObjects[p];
+    }
+  }
 
   LastAge.abilityRules(rules);
   LastAge.aideRules(rules, LastAge.ANIMAL_COMPANIONS, LastAge.FAMILIARS);
@@ -165,7 +173,7 @@ function LastAge(baseRules) {
 
 }
 
-LastAge.VERSION = '2.4.1.0';
+LastAge.VERSION = '2.4.1.1';
 
 LastAge.CHOICES_ADDED = ['Heroic Path'];
 LastAge.CHOICES =
@@ -3989,11 +3997,11 @@ LastAge.PRESTIGE_CLASSES = {
       '"collaboratorFeatures.Magic Domain ? 1:Arcane Adept",' +
       '"collaboratorFeatures.War Domain ? 1:Weapon Of War" ' +
     'Selectables=' +
-      '"1:Death Domain:Domain",' +
-      '"1:Destruction Domain:Domain",' +
-      '"1:Evil Domain:Domain",' +
-      '"1:Magic Domain:Domain",' +
-      '"1:War Domain:Domain" ' +
+      '"6:Death Domain:Domain",' +
+      '"6:Destruction Domain:Domain",' +
+      '"6:Evil Domain:Domain",' +
+      '"6:Magic Domain:Domain",' +
+      '"6:War Domain:Domain" ' +
     'SpellAbility=wisdom ' +
     'SpellSlots=' +
       'Domain1:1=1,' +
@@ -4289,7 +4297,7 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValue(attrs, 'Skill'),
       QuilvynUtils.getAttrValue(attrs, 'Spell')
     );
-  else if(type == 'Class' || type.match(/^npc$/i) || type == 'Prestige') {
+  else if(type == 'Class' || type == 'NPC' || type == 'Prestige') {
     LastAge.classRules(rules, name,
       QuilvynUtils.getAttrValueArray(attrs, 'Require'),
       QuilvynUtils.getAttrValue(attrs, 'HitDie'),
@@ -4308,6 +4316,10 @@ LastAge.choiceRules = function(rules, type, name, attrs) {
       QuilvynUtils.getAttrValueArray(attrs, 'SpellSlots')
     );
     LastAge.classRulesExtra(rules, name);
+    if(type == 'Prestige')
+      rules.defineRule('levels.' + name, 'prestige.' + name, '=', null);
+    else if(type == 'NPC')
+      rules.defineRule('levels.' + name, 'npc.' + name, '=', null);
   } else if(type == 'Deity')
     LastAge.deityRules(rules, name,
       QuilvynUtils.getAttrValue(attrs, 'Alignment'),
@@ -4787,6 +4799,10 @@ LastAge.classRulesExtra = function(rules, name) {
         );
       }
     }
+
+    if(rules.basePlugin == window.Pathfinder)
+      // Pick up domain rules; will affect Collaborator and Shadowed as well
+      Pathfinder.classRulesExtra(rules, 'Cleric');
 
   } else if(name == 'Wildlander') {
 
