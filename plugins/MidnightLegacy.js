@@ -1,5 +1,5 @@
 /*
-Copyright 2021, James J. Hayes
+Copyright 2026, James J. Hayes
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -138,7 +138,7 @@ function MidnightLegacy() {
 
 }
 
-MidnightLegacy.VERSION = '2.4.1.0';
+MidnightLegacy.VERSION = '2.4.2.0';
 
 MidnightLegacy.BACKGROUNDS_ADDED = {
   'Deserter':
@@ -758,81 +758,142 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=magic Note="+%{wisdomModifier} Cleric cantrip damage"',
 
   // Races
-  // SRD5E defines Darkvision, Dwarven Resilience, Fey Ancestry,
-  // Halfling Nimbleness, Lucky (Halfling), Slow, Steady, and Trance
-  'Animal Bond':
-    'Section=skill Note="Adv to control, persuade, or communicate w/animals"',
+  // Human
+  'Human Ability Adjustment':
+    'Section=ability Note="Ability Boost (Choose 2 from any)"',
+  'Human Feat Bonus':'Section=feature Note="+1 general feat"',
+  'Human Skills':
+    'Section=skill ' +
+    'Note="Skill Proficiency (Choose 1 from any)/Language (Erenlander; Choose 1 from any)"',
+  // Dorn
+  'Dorn Ability Adjustment':'Section=ability Note="+1 Strength"',
+  'Dorn Skills':
+    'Section=skill Note="Skill Proficiency (Survival)/Language (Norther)"',
+  // Erenlander
+  'Erenlander Skills':
+    'Section=skill ' +
+    'Note="Skill Proficiency (Choose 2 from any)/Tool Proficiency (Land Vehicles; Choose 1 from any Artisan)"',
+  // Sarcosan
+  'Sarcosan Ability Adjustment':'Section=ability Note="+1 Dexterity"',
+  'Sarcosan Skills':
+    'Section=skill ' +
+    'Note="Skill Proficiency (Choose 1 from Animal Handling, History)/Language (Colonial)"',
+
+  // Dwarf
+  // Darkvision as SRD5E
+  // Dwarf Ability Adjustment as SRD5E
+  // Dwarven Resilience as SRD5E
+  'Dwarf Skills':
+    'Section=skill ' +
+    'Note="Tool Proficiency (Choose 1 from Brewer\'s Supplies, Mason\'s Tools, Smith\'s Tools)/Language (Clan Dialect; Old Dwarven; Choose 1 from Erenlander, Trader\'s Tongue, Orcish)"',
+  // Steady as SRD5E
+  // Clan Dwarf
+  'Clan Warrior Training':
+    'Section=combat ' +
+    'Note="Weapon Proficiency (Battleaxe; Warhammer)/Armor Proficiency (Light; Medium)"',
+  // Override SRD5E
+  'Dwarven Toughness':'Section=Combat Note="+%{level + 2} Hit Points"',
+  'Stonemaster\'s Cunning':
+    'Section=skill ' +
+    'Note="Has advantage to determine stonework origin, to determine direction underground, and to spot traps, hidden passages, and recent construction underground"',
+  // Kurgun Dwarf
+  'Kurgun Dwarf Ability Adjustment':'Section=ability Note="+2 Wisdom"',
+  'Kurgun Warrior Training':
+    'Section=combat ' +
+    'Note="Weapon Proficiency (Handaxe; Shortbow; Spear)/Armor Proficiency (Light; Medium)"',
+
+  // Elf
+  // Darkvision as SRD5E
+  // Elf Ability Adjustment as SRD5E
+  'Elf Skills':'Section=skill Note="Language (High Elven)"',
+  // Fey Ancestry as SRD5E
+  // Trance as SRD5E
+  // Caransil
+  'Caransil Ability Adjustment':'Section=ability Note="+1 Charisma"',
+  'Caransil Skills':
+    'Section=skill ' +
+    'Note="Skill Proficiency (Perception; Stealth)/Language (Erenlander; Choose 1 from Trader\'s Tongue, Old Dwarven, Orcish)"',
+  'Caransil Weapon Training':
+    'Section=combat Note="Weapon Proficiency (Longbow; Longsword)"',
+  'Innate Magic User':'Section=magic Note="Knows 1 Sorcerer cantrip"',
+  // Danisil
+  'Danisil Elf Ability Adjustment':'Section=ability Note="+1 Intelligence"',
+  'Danisil Skills':
+    'Section=skill ' +
+    'Note="Skill Proficiency (History)/Language (Choose 1 from Sylvan, Halfling)"',
+  'Danisil Weapon Training':
+    'Section=combat Note="Weapon Proficiency (Scimitar; Shortbow)"',
+  'Innate Magical Scholar':'Section=magic Note="Knows 2 Wizard cantrips"',
+  // Erunsil
+  'Erunsil Elf Ability Adjustment':'Section=ability Note="+1 Strength"',
+  'Erunsil Skills':
+    'Section=skill ' +
+    'Note="Skill Proficiency (Survival)/Language (Orcish; Trader\'s Tongue)"',
+  'Erunsil Weapon Training':
+    'Section=combat ' +
+    'Note="Weapon Proficiency (Erunsil Fighting Knife; Longbow)"',
+  'Wraith Of The North':
+    'Section=skill Note="Can hide in nature when lightly obscured"',
+  // Miransil
   'Born Of The Sea':
     'Section=ability,skill ' +
     'Note=' +
-      '"May use a bonus action to gain 1 hr water breathing 1/short rest",' +
+      '"Can use a bonus action to breathe water for 1 hr once per short rest",' +
       '"Tool Proficiency (Water Vehicles)"',
-  'Caransil Ability Adjustment':
-    'Section=ability Note="+2 Dexterity/+1 Charisma"',
-  'Caransil Weapon Training':
-    'Section=combat Note="Weapon Proficiency (Longbow/Longsword)"',
-  'Child Of The North':'Section=save Note="Adv vs. extreme cold"',
-  'Clan Dwarf Ability Adjustment':'Section=ability Note="+2 Constitution"',
-  'Clan Warrior Training':
-    'Section=combat ' +
-    'Note="Weapon Proficiency (Battleaxe/Warhammer)/Armor Proficiency (Medium)"',
-  'Danisil Elf Ability Adjustment':
-    'Section=ability Note="+2 Dexterity/+1 Intelligence"',
-  'Danisil Weapon Training':
-    'Section=combat Note="Weapon Proficiency (Scimitar/Shortbow)"',
-  'Dorn Ability Adjustment':
-    'Section=ability Note="+1 Strength/Ability Boost (Choose 2 from any)"',
-  // Override SRD5E
-  'Dwarven Toughness':'Section=Combat Note="+%{level + 2} Hit Points"',
-  'Enslaved Halfling Ability Adjustment':
-    'Section=ability Note="+2 Dexterity/+1 Constitution"',
-  'Erenlander Ability Adjustment':
-    'Section=ability Note="Ability Boost (Choose 2 from any)"',
-  'Erunsil Elf Ability Adjustment':
-    'Section=ability Note="+2 Dexterity/+1 Strength"',
-  'Erunsil Weapon Training':
-    'Section=combat Note="Weapon Proficiency (Erunsil Fighting Knife/Longbow)"',
-  'Fast':'Section=ability Note="+5 Speed"',
-  'Ferocity':'Section=combat Note="+2 Strength melee damage"',
+  'Miransil Elf Ability Adjustment':'Section=ability Note="+1 Wisdom"',
+  'Miransil Skills':
+    'Section=skill ' +
+    'Note="Skill Proficiency (Athletics; Insight)/Language (Colonial; Trader\'s Tongue)"',
+  'Miransil Weapon Training':
+    'Section=combat Note="Weapon Proficiency (Javelin; Trident)"',
+
+  // Gnome
+  // Darkvision as SRD5E
   'Gnome Ability Adjustment':
     'Section=ability Note="+2 Intelligence/+1 Charisma"',
+  'Gnome Skills':
+    'Section=skill ' +
+    'Note="Language (Erenlander; Trader\'s Tongue; Choose 2 from any)"',
   'Gnomish Cunning':SRD5E.FEATURES['Gnome Cunning'],
-  'Halfling Magic':
-    'Section=magic ' +
-    'Note="Knows <i>Mending</i> and <i>Prestidigitation</i> cantrips"',
-  'Human Feat Bonus':'Section=feature Note="+1 general feat"',
-  'Innate Magic User':'Section=magic Note="Knows 1 Sorcerer cantrip"',
-  'Innate Magical Scholar':'Section=magic Note="Knows 2 Wizard cantrips"',
-  'Kurgun Dwarf Ability Adjustment':
-    'Section=ability Note="+2 Constitution/+2 Wisdom"',
-  'Kurgun Warrior Training':
-    'Section=combat ' +
-    'Note="Weapon Proficiency (Handaxe/Shortbow/Spear)/Armor Proficiency (Medium)"',
-  'Militant Culture':
-    'Section=combat ' +
-    'Note="Weapon Proficiency (Battleaxe/Greataxe/Longbow/Spear)"',
-  'Miransil Elf Ability Adjustment':
-    'Section=ability Note="+2 Dexterity/+1 Wisdom"',
-  'Miransil Weapon Training':
-    'Section=combat Note="Weapon Proficiency (Javelin/Trident)"',
-  'Nomadic Halfling Ability Adjustment':
-    'Section=ability Note="+2 Dexterity/+1 Wisdom"',
-  'Orc Ability Adjustment':'Section=ability Note="+2 Constitution/+2 Strength"',
   'Riverfolk':
     'Section=skill ' +
-    'Note="Skill Proficiency (Athletics/Insight/Persuasion)/Tool Proficiency (Water Vehicles)"',
-  'Sarcosan Ability Adjustment':
-    'Section=ability Note="+1 Dexterity/Ability Boost (Choose 2 from any)"',
-  'Stonemaster\'s Cunning':
+    'Note="Skill Proficiency (Athletics; Insight; Persuasion)/Tool Proficiency (Water Vehicles)"',
+
+  // Halfling
+  // Halfling Ability Adjustment as SRD5E
+  'Halfling Magic':
+    'Section=magic ' +
+    'Note="Knows the <i>Mending</i> and <i>Prestidigitation</i> cantrips"',
+  // Halfling Nimbleness as SRD5E
+  'Halfling Skills':
     'Section=skill ' +
-    'Note="Adv on stonework origin and underground direction and construction"',
-  'Troubled Dreams':
-    'Section=combat Note="Recovers 1 fewer hit die from a long rest"',
+    'Note="Language (Halfling; Erenlander; Choose 1 from Trader\'s Tongue, Orcish)"',
+  // Lucky (Halfling) as SRD5E
+  // Enslaved Halfling
+  'Enslaved Halfling Ability Adjustment':
+    'Section=ability Note="+1 Constitution"',
   'Unexpected Blow':
     'Section=combat ' +
-    'Note="May reroll 1 damage die when attacking an unaware foe"',
-  'Wraith Of The North':
-    'Section=skill Note="May hide in nature when lightly obscured"',
+    'Note="Can reroll 1 damage die when attacking an unaware foe"',
+  // Nomadic Halfling
+  'Animal Bond':
+    'Section=skill ' +
+    'Note="Has advantage to control, persuade, or communicate with animals"',
+  'Nomadic Halfling Ability Adjustment':'Section=ability Note="+1 Wisdom"',
+  'Nomadic Halfling Skills':'Section=skill Note="Can read and write Halfling"',
+
+  // Orc
+  'Child Of The North':'Section=save Note="Has advantage vs. extreme cold"',
+  // Darkvision as SRD5E
+  'Ferocity':'Section=combat Note="+2 Strength melee damage"',
+  'Militant Culture':
+    'Section=combat ' +
+    'Note="Weapon Proficiency (Battleaxe; Greataxe; Longbow; Spear)"',
+  'Orc Ability Adjustment':'Section=ability Note="+2 Constitution/+2 Strength"',
+  'Orc Skills':
+    'Section=skill Note="Language (Orcish; Shadow Tongue; Choose 2 from any)"',
+  'Troubled Dreams':
+    'Section=combat Note="Recovers 1 fewer hit die from a long rest"',
 
   // Legate domains
   'Keeper Of Obsidian Domain':
@@ -892,88 +953,98 @@ MidnightLegacy.HEROIC_PATHS = {
 };
 MidnightLegacy.RACES = {
   'Caransil Elf':
+    'Size=Medium ' +
+    'Speed=35 ' +
     'Features=' +
-      '"Skill Proficiency (Perception/Stealth)",' +
-      '"Language (High Elven/Erenlander/Choose 1 from Trader\'s Tongue, Old Dwarven, Orcish)",' +
-      '"Caransil Ability Adjustment",' +
-      '"Caransil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
-      '"Innate Magic User",Trance',
+      '"1:Darkvision","1:Elf Ability Adjustment","1:Elf Skills",' +
+      '"1:Fey Ancestry","1:Trance",' +
+      '"1:Caransil Ability Adjustment","1:Caransil Skills",' +
+      '"1:Caransil Weapon Training","1:Innate Magic User"',
   'Clan Dwarf':
+    'Size=Medium ' +
+    'Speed=25 ' +
     'Features=' +
-      '"Tool Proficiency (Choose 1 from Brewer\'s Supplies, Mason\'s Tools, Smith\'s Tools)",' +
-      '"Language (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
-      '"Clan Dwarf Ability Adjustment",' +
-      '"Clan Warrior Training",Darkvision,"Dwarven Resilience",' +
-      '"Dwarven Toughness",Slow,Steady,"Stonemaster\'s Cunning"',
+      '"1:Darkvision","1:Dwarf Ability Adjustment","1:Dwarf Skills",' +
+      '"1:Dwarven Resilience","1:Steady",' +
+      '"1:Clan Warrior Training","1:Dwarven Toughness",' +
+      '"1:Stonemaster\'s Cunning"',
   'Danisil Elf':
+    'Size=Medium ' +
+    'Speed=35 ' +
     'Features=' +
-      '"Skill Proficiency (History)",' +
-      '"Language (High Elven/Choose 1 from Sylvan, Halfling)",' +
-      '"Danisil Elf Ability Adjustment",' +
-      '"Danisil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
-      '"Innate Magical Scholar",Trance',
+      '"1:Darkvision","1:Elf Ability Adjustment","1:Elf Skills",' +
+      '"1:Fey Ancestry","1:Trance",' +
+      '"1:Danisil Elf Ability Adjustment","1:Danisil Skills",' +
+      '"1:Danisil Weapon Training","1:Innate Magical Scholar"',
   'Dorn Human':
+    'Size=Medium ' +
+    'Speed=30 ' +
     'Features=' +
-      '"Skill Proficiency (Survival/Choose 1 from any)",' +
-      '"Language (Erenlander/Norther/Choose 1 from any)",' +
-      '"Dorn Ability Adjustment",' +
-      '"Human Feat Bonus"',
+      '"1:Human Ability Adjustment","1:Human Feat Bonus","1:Human Skills",' +
+      '"1:Dorn Ability Adjustment","1:Dorn Skills"',
   'Enslaved Halfling':
+    'Size=Small ' +
+    'Speed=25 ' +
     'Features=' +
-      '"Language (Erenlander/Halfling/Choose 1 from Orcish, Trader\'s Tongue)",' +
-      '"Enslaved Halfling Ability Adjustment",' +
-      '"Halfling Magic","Halfling Nimbleness","Lucky (Halfling)",Slow,Small,' +
-      '"Unexpected Blow"',
+      '"1:Halfling Ability Adjustment","1:Halfling Magic",' +
+      '"1:Halfling Nimbleness","1:Halfling Skills","1:Lucky (Halfling)",' +
+      '"1:Enslaved Halfling Ability Adjustment","1:Unexpected Blow"',
   'Erenlander Human':
+    'Size=Medium ' +
+    'Speed=30 ' +
     'Features=' +
-      '"Skill Proficiency (Choose 3 from any)",' +
-      '"Tool Proficiency (Land Vehicles/Choose 1 from any Artisan)",' +
-      '"Language (Erenlander/Choose 1 from any)",' +
-      '"Erenlander Ability Adjustment","Human Feat Bonus"',
+      '"1:Human Ability Adjustment","1:Human Feat Bonus","1:Human Skills",' +
+      '"1:Erenlander Skills"',
   'Erunsil Elf':
+    'Size=Medium ' +
+    'Speed=35 ' +
     'Features=' +
-      '"Skill Proficiency (Survival)",' +
-      '"Language (High Elven/Orcish/Trader\'s Tongue)",' +
-      '"Erunsil Elf Ability Adjustment",' +
-      '"Erunsil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
-      'Trance,"Wraith Of The North"',
+      '"1:Darkvision","1:Elf Ability Adjustment","1:Elf Skills",' +
+      '"1:Fey Ancestry","1:Trance",' +
+      '"1:Erunsil Elf Ability Adjustment","1:Erunsil Skills",' +
+      '"1:Erunsil Weapon Training","1:Wraith Of The North"',
   'Gnome':
+    'Size=Small ' +
+    'Speed=25 ' +
     'Features=' +
-      '"Tool Proficiency (Choose 1 from any Artisan)",' +
-      '"Language (Erenlander/Trader\'s Tongue/Choose 2 from any)",' +
-      '"Gnome Ability Adjustment",' +
-      'Darkvision,"Gnomish Cunning",Riverfolk,Slow,Small',
+      '"1:Darkvision","1:Gnome Ability Adjustment","1:Gnome Skills",' +
+      '"1:Gnomish Cunning","1:Riverfolk"',
   'Kurgun Dwarf':
+    'Size=Medium ' +
+    'Speed=25 ' +
     'Features=' +
-      '"Tool Proficiency (Choose 1 from Brewer\'s Supplies, Mason\'s Tools, Smith\'s Tools)",' +
-      '"Language (Clan Dialect/Old Dwarven/Choose 1 from Erenlander, Trader\'s Tongue, Orcish)",' +
-      '"Kurgun Dwarf Ability Adjustment",' +
-      '"Kurgun Warrior Training",Darkvision,"Dwarven Resilience",Slow,Steady',
+      '"1:Darkvision","1:Dwarf Ability Adjustment","1:Dwarf Skills",' +
+      '"1:Dwarven Resilience","1:Steady",' +
+      '"1:Kurgun Dwarf Ability Adjustment","1:Kurgun Warrior Training"',
   'Miransil Elf':
+    'Size=Medium ' +
+    'Speed=35 ' +
     'Features=' +
-      '"Skill Proficiency (Athletics/Insight)",' +
-      '"Language (High Elven/Colonial/Trader\'s Tongue)",' +
-      '"Miransil Elf Ability Adjustment",' +
-      '"Miransil Weapon Training",Darkvision,Fast,"Fey Ancestry",' +
-      'Trance,"Born Of The Sea"',
+      '"1:Darkvision","1:Elf Ability Adjustment","1:Elf Skills",' +
+      '"1:Fey Ancestry","1:Trance",' +
+      '"1:Miransil Elf Ability Adjustment","1:Miransil Skills",' +
+      '"1:Miransil Weapon Training","1:Born Of The Sea"',
   'Nomadic Halfling':
+    'Size=Small ' +
+    'Speed=25 ' +
     'Features=' +
-      '"Language (Erenlander/Halfling/Choose 1 from Orcish, Trader\'s Tongue)",' +
-      '"Nomadic Halfling Ability Adjustment",' +
-      '"Halfling Magic","Halfling Nimbleness","Lucky (Halfling)",Slow,Small,' +
-      '"Animal Bond"',
+      '"1:Halfling Ability Adjustment","1:Halfling Magic",' +
+      '"1:Halfling Nimbleness","1:Halfling Skills","1:Lucky (Halfling)",' +
+      '"1:Animal Bond","1:Nomadic Halfling Ability Adjustment",' +
+      '"1:Nomadic Halfling Skills"',
   'Orc':
+    'Size=Medium ' +
+    'Speed=30 ' +
     'Features=' +
-      '"Language (Orcish/Shadow Tongue/Choose 2 from any)",' +
-      '"Orc Ability Adjustment",' +
-      '"Child Of The North",Darkvision,Ferocity,"Militant Culture",' +
-      '"Troubled Dreams"',
+      '"1:Child Of The North","1:Darkvision","1:Ferocity",' +
+      '"1:Militant Culture","1:Orc Ability Adjustment","1:Orc Skills",' +
+      '"1:Troubled Dreams"',
   'Sarcosan Human':
+    'Size=Medium ' +
+    'Speed=30 ' +
     'Features=' +
-      '"Skill Proficiency (Choose 1 from Animal Handling, History/Choose 1 from any)",' +
-      '"Language (Erenlander/Colonial/Choose 1 from any)",' +
-      '"Sarcosan Ability Adjustment",' +
-      '"Human Feat Bonus"'
+      '"1:Human Ability Adjustment","1:Human Feat Bonus","1:Human Skills",' +
+      '"1:Sarcosan Ability Adjustment","1:Sarcosan Skills"'
 };
 MidnightLegacy.SPELLS_ADDED = {
   'Bind/Banish Astirax':
