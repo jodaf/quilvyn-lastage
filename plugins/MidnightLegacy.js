@@ -379,385 +379,8 @@ MidnightLegacy.FEATS =
   Object.assign({}, SRD5E.FEATS, MidnightLegacy.FEATS_ADDED);
 MidnightLegacy.FEATURES_ADDED = {
 
-  // Backgrounds
-  'Knowledge Of The Enemy':
-    'Section=feature ' +
-    'Note="Knows the basics of Shadow military organization/Can get messages to slaves undetected"',
-  'Military Rank':
-    'Section=feature ' +
-    'Note="Receives respect, deference, and lend of resources from fellow soldiers"',
-  'Old Veteran':
-    'Section=feature Note="Knows how to infiltrate military organizations"',
-  'Survivalist':
-    'Section=skill ' +
-    'Note="Can find shelter from the weather and detect the presence of blighted lands, hostile creatures, and animals possessed by an astirax"',
-  'Sympathetic Ally':
-     'Section=feature ' +
-     'Note="May receive support and info from a contact in occupied lands"',
-
-  // Feats
-  'Battlefield Healer':
-    'Section=combat,skill ' +
-    'Note=' +
-      '"Allies regain extra HD from a long rest",' +
-      '"Successful DC 15 Medicine with healer\'s kit use brings patient from 0 HP to 3 HP"',
-  'Brawler':
-    'Section=combat,combat ' +
-    'Note=' +
-      '"Unarmed strike inflicts d4 damage",' +
-      '"May use a bonus action after a successful unarmed strike to make a second strike, grapple, or knock prone"',
-  'Captor':
-    'Section=ability,combat ' +
-    'Note=' +
-      '"+1 Strength",' +
-      '"Adv on Athletics to grapple when unseen/May grapple silently/May move at full speed while grappling w/out provoking an OA"',
-  'Fellhunter':
-    'Section=skill ' +
-    'Note="May use a bonus action to make a DC 12 Religion check; success gives self Adv on saves vs. undead and inflicts Disadv on undead targets\' saves for 1 min 1/long rest"',
-  'Harrier':
-    'Section=combat ' +
-    'Note="Mounted 30\' move negates foe OA and causes successful melee attacks to knock prone"',
-  'Improvised Fighter':
-    'Section=combat,combat ' +
-    'Note=' +
-      '"Weapon Proficiency (Improvised)/Improvised inflicts 1d6 damage",' +
-      '"May destroy an improvised weapon for +1 damage die"',
-  'Knife Fighter':
-    'Section=ability,combat ' +
-    'Note=' +
-      '"+1 Dexterity",' +
-      '"Dagger crits on 18, and crit inflicts Disadv on combat for 1 rd"',
-  'Learned':
-    'Section=skill,skill ' +
-    'Note=' +
-      '"Language (Choose 1 from any)/Skill Proficiency (Choose 1 from History, Religion)",' +
-      '"Can read and write"',
-  'Paranoid':
-    'Section=combat ' +
-    'Note="Cannot be surprised when asleep/Automatic Dodge in first round"',
-  'Polyglot':
-    'Section=skill ' +
-    'Note="Gains general language understanding after listening for 1 dy; successful DC 15 Intelligence after 1 wk gives fluency"',
-  'Scavenger':
-    'Section=ability,skill ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from Intelligence, Wisdom)",' +
-      '"Successful DC 15 Perception recovers all spent ammo/Successful DC 12 Investigation scavenges weapon or armor materials worth up to 3d10+%{intelligenceModifier} GP"',
-  'Seamaster':
-    'Section=ability,ability,feature,skill ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
-      '"May climb rope at full speed",' +
-      '"Increases speed of commanded ship by 2 MPH",' +
-      '"No Disadv to pilot a ship during a storm"',
-  'Shieldwall Soldier':
-    'Section=combat ' +
-    'Note="Adjacent allies gain +1 AC (+2 if self holds a shield)"',
-  'Subtle Spellcaster':
-    'Section=magic,skill ' +
-    'Note=' +
-      '"May cast 2 chosen level 1 bard, druid, sorcerer, or wizard spells 1/long rest",' +
-      '"Successful Sleight Of Hand vs. passive Perception allows casting spells unnoticed"',
-  'Suspicious':
-    'Section=ability,skill,skill ' +
-    'Note=' +
-      '"+1 Intelligence",' +
-      '"Skill Proficiency (Insight)/+%{proficiencyBonus} Insight",' +
-      '"+%{proficiencyBonus} passive Perception/Successful DC 20 Investigation notes flaws in story detail"',
-  'Unremarkable':
-    'Section=ability,feature ' +
-    'Note=' +
-      '"+1 Wisdom",' +
-      '"May run through crowds unnoticed/Reduces foe\'s passive Perception to notice self to 12"',
-
-  // Heroic Paths
-  'Acts Of Service':
-    'Section=ability,combat,skill ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from Strength, Wisdom)",' +
-      '"Foes suffer Disadv attacking adjacent incapacitated allies; self gains Adv on attacks",' +
-      '"May spend 2 uses of healer\'s kit to reduce exhaustion by 1 or to restore ability or HP maximum"',
-  'Apex Predator':
-    'Section=ability,combat,feature ' +
-    'Note=' +
-      '"+2 Strength",' +
-      '"+20 Hit Points/Unarmed strike inflicts 1d8 damage",' +
-      '"Pack Alpha feature affects all creatures"',
-  'Avatar Of Aryth':
-    'Section=magic ' +
-    'Note="May use <i>Conjure Elemental</i> effects to summon a friendly earth elemental 1/long rest" ' +
-    'Spells="Conjure Elemental"',
-  'Bulwark Of Faith':
-    'Section=ability,save ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
-      '"Adv vs. spell effects of celestials, fiends, undead, and Shadow agents"',
-  'Changed To The Core':
-    'Section=combat ' +
-    'Note="R50\' Successful Persuasion vs. Insight causes target foe to switch sides (up to %{level//2} HD) or to flee (%{level//2+1}+ HD) 1/long rest"',
-  'Channeled Magic':'Section=magic Note="%V additional %1 spell slot"',
-  'Conduit':'Section=magic Note="Knows 2 Sorcerer cantrips"',
-  'Courage Of Your Convictions':
-    'Section=combat ' +
-    'Note="R50\' May use inspiration and a bonus action to remove charmed, frightened, paralyzed, or stunned from self and allies"',
-  'Crowd Rouser':
-    'Section=magic ' +
-    'Note="R50\' May charm and convince listeners (DC %{8+charismaModifier+proficiencyBonus} Wisdom neg) for 1 wk 1/short rest"',
-  'Crucial Strike':
-    'Section=ability,combat ' +
-    'Note=' +
-      '"+1 Charisma",' +
-      '"May use Reaction to give an ally an additional attack with +%{proficiencyBonus} damage"',
-  'Deadly Strike':
-    'Section=combat ' +
-    'Note="May automatically crit on a successful melee attack w/Adv 1/short rest"',
-  'Ethereal Presence':
-    'Section=magic ' +
-    'Note="May spend 1 HD and use a bonus action to become ethereal for 1 min"',
-  'Fallen Sense':
-    'Section=ability,feature,magic ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from any)",' +
-      '"May communicate with chosen Fallen for conc up to 1 hr",' +
-      '"R60\' Knows location and type of Fallen"',
-  'Fireheart':
-    'Section=magic,save ' +
-    'Note=' +
-      '"May reroll fire spell damage",' +
-      '"Resistance to fire damage"',
-  'Folk Medicine':
-    'Section=skill ' +
-    'Note="May restore 1d6+%{wisdomModifier} HP per use of healer\'s kit"',
-  'For Victory!':
-    'Section=ability,combat ' +
-    'Note=' +
-      '"+1 Charisma",' +
-      '"R30\' Successful DC 15 Charisma gives allies +%{proficiencyBonus} attack and damage for 1 min 1/long rest"',
-  'Friends Until The End':
-    'Section=ability,combat,feature ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from Dexterity, Strength)",' +
-      '"May use Reaction to redirect damage suffered by adjacent wild companion to self",' +
-      '"Wild companion guards self when incapacitated"',
-  'Guard':
-    'Section=combat ' +
-    'Note="May use a bonus action to give an adjacent ally +1 AC (+2 with shield)"',
-  'Hard To Kill':
-    'Section=save ' +
-    'Note="Death save succeeds on a roll of 6 or higher; 16 or higher restores 1 HP"',
-  'Holy Terror':
-    'Section=combat ' +
-    'Note="R30\' May use inspiration to turn foes (DC %{8+wisdomModifier+proficiencyBonus} Wisdom neg; damage ends) for 1 min"',
-  'Indefatigable':
-    'Section=ability,ability,feature ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from Constitution, Strength)",' +
-      '"Suffers no Disadv on Constitution or Strength checks due to exhaustion",' +
-      '"Successful DC 15 Constitution doubles exhaustion recovery"',
-  'Inspiring Faith':
-    'Section=feature Note="Gains inspiration after a short rest"',
-  'Intimidating Presence (Dragonblooded)':
-    'Section=ability,magic ' +
-    'Note=' +
-      '"+1 Charisma",' +
-      '"R30\' Casting a spell frightens foes (Wisdom neg) for 1 rd"',
-  'Lurk':
-    'Section=skill ' +
-    'Note="Successful Stealth vs. passive Perception makes self unnoticed/Adv on Perception to overhear nearby conversations"',
-  'Masterful Focus':
-    'Section=ability,save ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
-      '"+%{proficiencyBonus} Constitution (maintain spell concentration)"',
-  'Mind Within The Weave':
-    'Section=magic ' +
-    'Note="May maintain concentration on two spells simultaneously"',
-  'Natural Bond':
-    'Section=feature ' +
-    'Note="Animals treat self as a friend (DC %{8+proficiencyBonus+wisdomModifier} Wisdom neg)"',
-  'Nexus Affinity':
-    'Section=ability,feature,skill ' +
-    'Note=' +
-      '"+1 Wisdom",' +
-      '"+1d6 ability, attack, and save when w/in 1 mile of a power nexus or a black mirror",' +
-      '"Successful DC 16 Insight detects a power nexus or a black mirror w/in 5 miles 3/long rest"',
-  'Nexus Guardian':
-    'Section=feature ' +
-    'Note="May attune to a nexus, gaining remote charge use, teleportation to nexus, agelessness, and reincarnation"',
-  'One With The Earth':
-    'Section=feature,skill ' +
-    'Note=' +
-      '"Knows north, direction and potability of water and geologic features w/in 5 miles, and direction of buildings w/in 1 mile",' +
-      '"Skill Proficiency (Perception/Survival)"',
-  'Pack Alpha':
-    'Section=feature,skill ' +
-    'Note=' +
-      '"May frighten beasts in a 30\' radius (DC %{8+proficiencyBonus+strengthModifier} Wisdom ends)",' +
-      '"Adv on Animal Handling (predatory beasts)"',
-  'Pack Fighter':
-    'Section=ability,combat ' +
-    'Note=' +
-      '"+1 Wisdom",' +
-      '"Adjacent wild companion can attack simultaneously w/self"',
-  'Pure Magic':'Section=magic Note="+1 spell attack and save DC"',
-  'Quick Recovery':
-    'Section=ability,combat ' +
-    'Note=' +
-      '"+1 Constitution",' +
-      '"May suffer 1 level of exhaustion as a bonus action to recover hit dice, adding %{constitutionModifier} to each"',
-  'Raging Fury':
-    'Section=magic,magic ' +
-    'Note=' +
-      '"+1 spell attack and save DC",' +
-      '"May cast a 1 action spell as a bonus action"',
-  'Rallying Cry':
-    'Section=ability,combat ' +
-    'Note=' +
-      '"+1 Charisma",' +
-      '"R50\' Successful DC 15 Persuasion gives allies %{level} temporary HP 1/long rest"',
-  'Reassuring Presence':
-    'Section=ability,combat ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from Charisma, Wisdom)",' +
-      '"R60\' 6 allies gain %{level} temporary HP when combat begins"',
-  'Resourceful':
-    'Section=ability,skill ' +
-    'Note=' +
-      '"+1 Wisdom",' +
-      '"May restore 1d6+1 uses of a healer\'s kit or create a kit w/1d4+1 uses after a long rest"',
-  'Rooted':
-    'Section=ability,combat ' +
-    'Note=' +
-      '"+1 Constitution",' +
-      '"Cannot be moved or knocked prone/Adv on grappling"',
-  'Scathing Rebuke':
-    'Section=combat ' +
-    'Note="R50\' Successful Intimidation vs. Insight stuns target for 1 min (damage ends) 3/long rest"',
-  'Silencing Strike':
-    'Section=combat ' +
-    'Note="Melee hit silences target for 1 min (DC %{8+proficiencyBonus+intelligenceModifier} Constitution neg) 1/short rest"',
-  'Skilled Healer':
-    'Section=skill ' +
-    'Note="May spend 1 healer\'s kit use to remove blindness, deafness, paralysis, or poison or to give Adv on next Constitution save vs. disease"',
-  'Strength Of Faith':
-    'Section=ability,save ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
-      '"R30\' successful Charisma, Intelligence, or Wisdom save gives inspiration to self or ally"',
-  'Study The Target':
-    'Section=ability,skill ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from Dexterity, Intelligence)",' +
-      '"8 hr observation and research, plus a successful DC 10+HD Investigation, gives Adv on Deception and Stealth to gain access to target"',
-  'Sundered Blood':
-    'Section=save ' +
-    'Note="%{level<12?\'Resistance\':\'Immunity\'} to chosen damage type"',
-  'Sundered Form':
-    'Section=magic ' +
-    'Note="May spend 8 HD and use a bonus action to assume Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and create a 30\' radius that inflicts 10 HP damage on foes"',
-  'Sundered Fury':
-    'Section=ability,combat ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from any)",' +
-      '"May spend 1 HD for +2 HD weapon or spell damage"',
-  'Tactical Direction':
-    'Section=feature ' +
-    'Note="May take Initiative 1 to give each ally a bonus action to attack, Dash, or Disengage on their first turn"',
-  'The Channeling':
-    'Section=magic ' +
-    'Note="May spend a level 1 spell slot to change a spell\'s damage type, a level 2 spell slot to reroll 1s and 2s on a spell\'s damage dice, or a level 3 spell slot to give 3 spell targets Disadv on a spell save"',
-  'The Eye Opens':
-    'Section=ability,magic ' +
-    'Note=' +
-      '"+1 Wisdom",' +
-      '"May cast self <i>True Seeing</i> 3/long rest" ' +
-    'Spells="True Seeing"',
-  'The Wild Hunt':
-    'Section=magic ' +
-    'Note="May summon 1 CR 4, 2 CR 2, or 4 CR 1 beasts to assist for 10 min"',
-  'Tough As Iron':
-    'Section=combat ' +
-    'Note="May reduce damage by %{(level/3+1)<?6} for 10 min; suffers 1 level of exhaustion afterward"',
-  'Unbroken':
-    'Section=combat ' +
-    'Note="May suffer 1 level of exhaustion to negate attack damage"',
-  'Unseen Lurker':
-    'Section=ability,skill ' +
-    'Note=' +
-      '"Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
-      '"Invisible during Lurk; may Lurk during combat"',
-  'Vicious Assault':
-    'Section=ability,combat,combat ' +
-    'Note=' +
-      '"+1 Strength",' +
-      '"Unarmed strike inflicts 1d6 HP",' +
-      '"May use a bonus action for a second unarmed strike and add ability modifier to damage"',
-  'Warding Presence':
-    'Section=combat ' +
-    'Note="Adjacent foes suffer half speed and Disadv on attacks on an adjacent ally"',
-  'Well-Spoken':
-    'Section=skill,skill ' +
-    'Note=' +
-      '"Skill Proficiency (Deception/Intimidation/Persuasion)",' +
-      '"Dbl proficiency bonus +%{proficiencyBonus} on %{level//5<?3} choices from Deception, Intimidation, Persuasion"',
-  'Wild Companion':
-    'Section=feature ' +
-    'Note="CR 1 companion beast gains +%{proficiencyBonus} AC, attack, damage, and proficient skills and saves; hit points increase to %{level*4}"',
-  'Wild Resilience':
-    'Section=ability,save ' +
-    'Note=' +
-      '"+1 Constitution",' +
-      '"May reroll a Strength, Dexterity, or Constitution save %{level//9+1}/long rest"',
-  'Wild Sense':
-    'Section=feature,feature ' +
-    'Note=' +
-      '"Has Darkvision feature",' +
-      '"Can sense invisible foes"',
-
-  // Paths
-  'Astirax Servant':
-    'Section=feature ' +
-    'Note="May communicate telepathically %{level<10?\\"100\'\\":\\"1 mile\\"} w/bound astirax"',
-  'Aura Of Darkness':
-    'Section=feature ' +
-    'Note="May create a 20\' radius of darkness that others cannot see through for 1 min"',
-  'Bestial Astirax Servant':
-    'Section=feature ' +
-    'Note="May communicate telepathically 100\' w/bound astirax/Astirax may possess a Large creature"',
-  'Dark Warrior':
-    'Section=feature ' +
-    'Note="May use a bonus action to make an additional attack %{wisdomModifier>?1}/long rest"',
-  "Dark God's Blessing":
-    'Section=combat Note="Self regains %{level<10?2:4}d6 HP from killing"',
-  'Dire Bodyguard':
-    'Section=feature ' +
-    'Note="Adjacent foes suffer Disadv on attacks on others; self can use Reaction to make a melee attack"',
-  'Dominate Undead':
-    'Section=combat ' +
-    'Note="R30\' May use Channel Energy to control undead (Wisdom neg) for 1 hr"',
-  'Dread Avatar':
-    'Section=save ' +
-    'Note="Resistance to nonmagical bludgeoning, piercing, and slashing damage/Immunity to radiant damage"',
-  'Ferocious Blow':
-    'Section=feature ' +
-    'Note="May use Channel Divinity to inflict +2d6 HP thunder; medium foe pushed 10\' and knocked prone"',
-  'Impervious To Magic':
-     'Section=magic Note="May use Reaction to cast <i>Counterspell</i>"',
-  'Improved Astirax Bond':
-    'Section=feature ' +
-    'Note="Astirax gains +%{proficiencyBonus} AC, attack, damage, and proficient saves and skills/May extend scent magic to 1 mile for 1 min 1/dy"',
-  'Mage Hunter':
-    'Section=combat ' +
-    'Note="R%{30+(combatNotes.masterMageHunter?30:0)}\' May use Channel Divinity to inflict Disadv on concentration of %{combatNotes.masterMageHunter?\'all casters\':\'target caster\'} and Adv on saves vs. spells of %{combatNotes.masterMageHunter?\'all casters\':\'target caster\'} (Wisdom neg) for 1 min"',
-  'Master Mage Hunter':'Section=combat Note="Increased Mage Hunter effects"',
-  'Necromantic Arts':
-    'Section=magic ' +
-    'Note="Knows <i>Chill Touch</i> cantrip" ' +
-    'Spells="Chill Touch"',
-  'Potent Spellcasting':
-    'Section=magic Note="+%{wisdomModifier} Cleric cantrip damage"',
-
   // Races
+
   // Human
   'Human Ability Adjustment':
     'Section=ability Note="Ability Boost (Choose 2 from any)"',
@@ -894,6 +517,408 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=skill Note="Language (Orcish; Shadow Tongue; Choose 2 from any)"',
   'Troubled Dreams':
     'Section=combat Note="Recovers 1 fewer hit die from a long rest"',
+
+  // Heroic Path Feats
+
+  // Avenger
+  'Deadly Strike':
+    'Section=combat ' +
+    'Note="Can automatically crit on a successful melee attack made with advantage once per short rest"',
+  'Lurk':
+    'Section=skill ' +
+    'Note="Successful Stealth vs. passive Perception makes self unnoticed and gives advantage on Perception to overhear nearby conversations"',
+  'Silencing Strike':
+    'Section=combat ' +
+    'Note="Melee hit silences the target for 1 min (save DC %{8+proficiencyBonus+intelligenceModifier} Constitution negates) once per short rest"',
+  'Study The Target':
+    'Section=ability,skill ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Dexterity, Intelligence)",' +
+      '"Successful DC 10+HD Investigation after 8 hr observation and research gives advantage on Deception and Stealth to gain access to the target"',
+  'Unseen Lurker':
+    'Section=ability,skill ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
+      '"Becomes invisible during Lurk and can Lurk during combat"',
+
+  // Beastborn
+  'Apex Predator':
+    'Section=ability,combat,combat ' +
+    'Note=' +
+      '"+2 Strength",' +
+      '"+20 Hit Points/Unarmed strike inflicts 1d8 HP",' +
+      '"Pack Alpha affects all living creatures"',
+  'Pack Alpha':
+    'Section=combat,skill ' +
+    'Note=' +
+      '"Can frighten beasts in a 30\' radius (save DC %{8+proficiencyBonus+strengthModifier} Wisdom ends)",' +
+      '"Has advantage on Animal Handling with predatory beasts"',
+  'Vicious Assault':
+    'Section=ability,combat,combat ' +
+    'Note=' +
+      '"+1 Strength",' +
+      '"Unarmed strike inflicts 1d6 HP",' +
+      '"Can use a bonus action for a second unarmed strike and add the ability modifier to its damage"',
+  'Wild Resilience':
+    'Section=ability,save ' +
+    'Note=' +
+      '"+1 Constitution",' +
+      '"Can reroll a Strength, Dexterity, or Constitution save %{level<9?\'once\':level<18?\'2 times\':\'3 times\'} per long rest"',
+  'Wild Sense':
+    'Section=feature,skill ' +
+    'Note=' +
+      '"Has the Darkvision feature",' +
+      '"Can sense invisible foes"',
+
+  // Believer
+  'Bulwark Of Faith':
+    'Section=ability,save ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
+      '"Has advantage vs. the spell effects of celestials, fiends, undead, and Shadow agents"',
+  'Courage Of Your Convictions':
+    'Section=combat ' +
+    'Note="R50\' Can use inspiration and a bonus action to remove charmed, frightened, paralyzed, or stunned from self and allies"',
+  'Holy Terror':
+    'Section=combat ' +
+    'Note="R30\' Can use inspiration to turn foes (save DC %{8+wisdomModifier+proficiencyBonus} Wisdom negates; damage ends) for 1 min"',
+  'Inspiring Faith':
+    'Section=feature Note="Gains inspiration after a short rest"',
+  'Strength Of Faith':
+    'Section=ability,save ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
+      '"R30\' Successful Charisma, Intelligence, or Wisdom save gives inspiration to self or an ally"',
+
+  // Channeler
+  'Channeled Magic':
+    'Section=magic ' +
+    'Note="+%V %1 spell slot%{magicNotes.channeledMagic>1?\'s\':\'\'}"',
+  'Masterful Focus':
+    'Section=ability,save ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Charisma, Intelligence, Wisdom)",' +
+      '"+%{proficiencyBonus} Constitution to maintain spell concentration"',
+  'Mind Within The Weave':
+    'Section=magic ' +
+    'Note="Can maintain concentration on two spells simultaneously"',
+  'The Channeling':
+    'Section=magic ' +
+    'Note="Can spend a level 1 spell slot to change a spell\'s damage type, a level 2 spell slot to reroll 1s and 2s on a spell\'s damage dice, or a level 3 spell slot to give 3 spell targets disadvantage on their first saves"',
+  'The Eye Opens':
+    'Section=ability,magic ' +
+    'Note=' +
+      '"+1 Wisdom",' +
+      '"Can cast self <i>True Seeing</i> 3 times per long rest" ' +
+    'Spells="True Seeing"',
+
+  // Dragonblooded
+  'Conduit':'Section=magic Note="Knows 2 Sorcerer cantrips"',
+  'Fireheart':
+    'Section=magic,save ' +
+    'Note=' +
+      '"Can reroll fire spell damage",' +
+      '"Has resistance to fire damage"',
+  'Intimidating Presence (Dragonblooded)':
+    'Section=ability,magic ' +
+    'Note=' +
+      '"+1 Charisma",' +
+      '"R30\' Casting a spell frightens foes (save Wisdom negates) for 1 rd"',
+  'Pure Magic':'Section=magic Note="+1 spell attack and save DC"',
+  'Raging Fury':
+    'Section=magic,magic ' +
+    'Note=' +
+      '"+1 spell attack and save DC",' +
+      '"Can use a bonus action to cast a 1 action spell"',
+
+  // Earthblooded
+  'Avatar Of Aryth':
+    'Section=magic ' +
+    'Note="Can use <i>Conjure Elemental</i> effects to summon a friendly earth elemental once per long rest" ' +
+    'Spells="Conjure Elemental"',
+  'Nexus Affinity':
+    'Section=ability,feature,skill ' +
+    'Note=' +
+      '"+1 Wisdom",' +
+      '"+1d6 ability checks, attacks, and saves when within 1 mile of a power nexus or a black mirror",' +
+      '"Successful DC 16 Insight locates a power nexus or a black mirror within 5 miles 3 times per long rest"',
+  'Nexus Guardian':
+    'Section=feature ' +
+    'Note="Can attune to a nexus, gaining remote charge use, teleportation to the nexus, agelessness, and reincarnation"',
+  'One With The Earth':
+    'Section=feature,skill ' +
+    'Note=' +
+      '"Knows north, the direction and potability of water and geologic features within 5 miles, and the direction of structures within 1 mile",' +
+      '"Skill Proficiency (Perception; Survival)"',
+  'Rooted':
+    'Section=ability,combat ' +
+    'Note=' +
+      '"+1 Constitution",' +
+      '"Cannot be unwillingly moved or knocked prone, and has advantage on grappling and retraint checks and saves"',
+
+  // Guardian
+  'Crucial Strike':
+    'Section=ability,combat ' +
+    'Note=' +
+      '"+1 Charisma",' +
+      '"Can use a reaction to give an ally an additional attack with +%{proficiencyBonus} damage"',
+  'For Victory!':
+    'Section=ability,combat ' +
+    'Note=' +
+      '"+1 Charisma",' +
+      '"Successful DC 15 Charisma gives allies +%{proficiencyBonus} attack and damage when within 30\' for 1 min once per long rest"',
+  'Guard':
+    'Section=combat ' +
+    'Note="May use a bonus action to give an adjacent ally +1 AC (+2 with shield)"',
+  'Tactical Direction':
+    'Section=feature ' +
+    'Note="Can take 1 on an initiative roll to give each ally a bonus action on their first turn to Attack, Dash, or Disengage"',
+  'Warding Presence':
+    'Section=combat ' +
+    'Note="Adjacent foes suffer half speed and disadvantage on attacks on adjacent allies"',
+
+  // Ironborn
+  'Hard To Kill':
+    'Section=save ' +
+    'Note="Death save succeeds on a roll of 6 or higher, and 16 or higher restores 1 hit point"',
+  'Indefatigable':
+    'Section=ability,ability,feature ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Constitution, Strength)",' +
+      '"Suffers no disadvantage on Constitution or Strength checks due to exhaustion",' +
+      '"Finishing a short rest reduces exhaustion by 1, or by 2 with a successful DC 15 Constitution check"',
+  'Quick Recovery':
+    'Section=ability,combat ' +
+    'Note=' +
+      '"+1 Constitution",' +
+      '"Can use a bonus action and suffer 1 level of exhaustion to spend Hit Dice to regain hit points"',
+  'Tough As Iron':
+    'Section=combat ' +
+    'Note="Can reduce damage suffered by %{(level/3+1)<?6} HP for 10 min; suffers 1 level of exhaustion afterward"',
+  'Unbroken':
+    'Section=combat ' +
+    'Note="Can suffer 1 level of exhaustion to negate taking damage"',
+
+  // Preserver
+  'Acts Of Service':
+    'Section=ability,combat,skill ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Strength, Wisdom)",' +
+      '"Foes suffer disadvantage on attacks on an adjacent incapacitated ally, and self gains advantage on attacks on foes adjacent to an incapacitated ally",' +
+      '"Can spend 2 uses of healer\'s kit to reduce exhaustion by 1 or to end an effect that reduces an ability score or hit point maximum"',
+  'Folk Medicine':
+    'Section=skill ' +
+    'Note="Can restore 1d6+%{wisdomModifier} hit points per use of a healer\'s kit"',
+  'Reassuring Presence':
+    'Section=ability,combat ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Charisma, Wisdom)",' +
+      '"R60\' 6 allies gain %{level} temporary hit points when combat begins"',
+  'Resourceful':
+    'Section=ability,skill ' +
+    'Note=' +
+      '"+1 Wisdom",' +
+      '"At the end of a long rest, can restore 1d6+1 uses of a healer\'s kit or create a kit with 1d4+1 uses"',
+  'Skilled Healer':
+    'Section=skill ' +
+    'Note="Can spend 1 healer\'s kit use to remove blindness, deafness, paralysis, or poison or to give advantage on the target\'s next Constitution save vs. disease"',
+
+  // Speaker
+  'Changed To The Core':
+    'Section=combat ' +
+    'Note="R50\' Successful Persuasion vs. Insight causes the target foe with up to %{level//2} Hit Dice to switch sides, or to flee if it has %{level//2+1}+ Hit Dice, once per long rest"',
+  'Crowd Rouser':
+    'Section=magic ' +
+    'Note="R50\' Can charm and convince listeners (save DC %{8+charismaModifier+proficiencyBonus} Wisdom negates) for 1 week once per short rest"',
+  'Rallying Cry':
+    'Section=ability,combat ' +
+    'Note=' +
+      '"+1 Charisma",' +
+      '"R50\' Successful DC 15 Persuasion gives allies %{level} temporary hit points once per long rest"',
+  'Scathing Rebuke':
+    'Section=combat ' +
+    'Note="R50\' Successful Intimidation vs. Insight stuns the target for 1 min (damage ends) 3 times per long rest"',
+  'Well-Spoken':
+    'Section=skill,skill ' +
+    'Note=' +
+      '"Skill Proficiency (Deception; Intimidation; Persuasion)",' +
+      '"+%{proficiencyBonus} on %{level<5?\'1 choice from \':level<10?\'2 choices from \':\'\'}Deception, Intimidation, and Persuasion"',
+
+  // Sunderborn
+  'Ethereal Presence':
+    'Section=magic ' +
+    'Note="Can spend 1 HD and use a bonus action to become ethereal for up to 1 min"',
+  'Fallen Sense':
+    'Section=ability,skill ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from any)",' +
+      '"R60\' Knows the location and type of Fallen, and can communicate with a chosen Fallen for concentration up to 1 hr"',
+  'Sundered Blood':
+    'Section=save ' +
+    'Note="Has %{level<12?\'resistance\':\'immunity\'} to a chosen damage type"',
+  'Sundered Form':
+    'Section=magic ' +
+    'Note="Can spend 8 HD and use a bonus action to assume a Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and create a 30\' radius that inflicts 10 HP damage of the Sundered Blood type on foes"',
+  'Sundered Fury':
+    'Section=ability,combat ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from any)",' +
+      '"Can spend 1 Hit Die to inflict +2 Hit Dice damage of the Sundered Blood type"',
+
+  // Wildblooded
+  'Friends Until The End':
+    'Section=ability,combat ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Dexterity, Strength)",' +
+      '"Can use a reaction to redirect damage suffered by adjacent wild companion to self, and wild companion guards self when incapacitated"',
+  'Natural Bond':
+    'Section=feature ' +
+    'Note="Animals treat self as a friend (save DC %{8+proficiencyBonus+wisdomModifier} Wisdom negates)"',
+  'Pack Fighter':
+    'Section=ability,combat ' +
+    'Note=' +
+      '"+1 Wisdom",' +
+      '"Adjacent wild companion can attack simultaneously with self"',
+  'The Wild Hunt':
+    'Section=magic ' +
+    'Note="Can summon 1 Huge CR 4, 2 Large CR 2, or 4 Medium CR 1 beasts to assist self for 10 min or until reduced to 10 hit points"',
+  'Wild Companion':
+    'Section=feature ' +
+    'Note="Obedient CR 1 Large or smaller companion beast gains +%{proficiencyBonus} armor class, attacks, damage, and proficient skills and saves, and its hit points increase to %{level*4}"',
+
+  // Backgrounds
+  'Knowledge Of The Enemy':
+    'Section=feature ' +
+    'Note="Knows the basics of Shadow military organization/Can get messages to slaves undetected"',
+  'Military Rank':
+    'Section=feature ' +
+    'Note="Receives respect, deference, and lend of resources from fellow soldiers"',
+  'Old Veteran':
+    'Section=feature Note="Knows how to infiltrate military organizations"',
+  'Survivalist':
+    'Section=skill ' +
+    'Note="Can find shelter from the weather and detect the presence of blighted lands, hostile creatures, and animals possessed by an astirax"',
+  'Sympathetic Ally':
+     'Section=feature ' +
+     'Note="May receive support and info from a contact in occupied lands"',
+
+  // Feats
+  'Battlefield Healer':
+    'Section=combat,skill ' +
+    'Note=' +
+      '"Allies regain extra HD from a long rest",' +
+      '"Successful DC 15 Medicine with healer\'s kit use brings patient from 0 HP to 3 HP"',
+  'Brawler':
+    'Section=combat,combat ' +
+    'Note=' +
+      '"Unarmed strike inflicts d4 damage",' +
+      '"May use a bonus action after a successful unarmed strike to make a second strike, grapple, or knock prone"',
+  'Captor':
+    'Section=ability,combat ' +
+    'Note=' +
+      '"+1 Strength",' +
+      '"Adv on Athletics to grapple when unseen/May grapple silently/May move at full speed while grappling w/out provoking an OA"',
+  'Fellhunter':
+    'Section=skill ' +
+    'Note="May use a bonus action to make a DC 12 Religion check; success gives self Adv on saves vs. undead and inflicts Disadv on undead targets\' saves for 1 min 1/long rest"',
+  'Harrier':
+    'Section=combat ' +
+    'Note="Mounted 30\' move negates foe OA and causes successful melee attacks to knock prone"',
+  'Improvised Fighter':
+    'Section=combat,combat ' +
+    'Note=' +
+      '"Weapon Proficiency (Improvised)/Improvised inflicts 1d6 damage",' +
+      '"May destroy an improvised weapon for +1 damage die"',
+  'Knife Fighter':
+    'Section=ability,combat ' +
+    'Note=' +
+      '"+1 Dexterity",' +
+      '"Dagger crits on 18, and crit inflicts Disadv on combat for 1 rd"',
+  'Learned':
+    'Section=skill,skill ' +
+    'Note=' +
+      '"Language (Choose 1 from any)/Skill Proficiency (Choose 1 from History, Religion)",' +
+      '"Can read and write"',
+  'Paranoid':
+    'Section=combat ' +
+    'Note="Cannot be surprised when asleep/Automatic Dodge in first round"',
+  'Polyglot':
+    'Section=skill ' +
+    'Note="Gains general language understanding after listening for 1 dy; successful DC 15 Intelligence after 1 wk gives fluency"',
+  'Scavenger':
+    'Section=ability,skill ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Intelligence, Wisdom)",' +
+      '"Successful DC 15 Perception recovers all spent ammo/Successful DC 12 Investigation scavenges weapon or armor materials worth up to 3d10+%{intelligenceModifier} GP"',
+  'Seamaster':
+    'Section=ability,ability,feature,skill ' +
+    'Note=' +
+      '"Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
+      '"May climb rope at full speed",' +
+      '"Increases speed of commanded ship by 2 MPH",' +
+      '"No Disadv to pilot a ship during a storm"',
+  'Shieldwall Soldier':
+    'Section=combat ' +
+    'Note="Adjacent allies gain +1 AC (+2 if self holds a shield)"',
+  'Subtle Spellcaster':
+    'Section=magic,skill ' +
+    'Note=' +
+      '"May cast 2 chosen level 1 bard, druid, sorcerer, or wizard spells 1/long rest",' +
+      '"Successful Sleight Of Hand vs. passive Perception allows casting spells unnoticed"',
+  'Suspicious':
+    'Section=ability,skill,skill ' +
+    'Note=' +
+      '"+1 Intelligence",' +
+      '"Skill Proficiency (Insight)/+%{proficiencyBonus} Insight",' +
+      '"+%{proficiencyBonus} passive Perception/Successful DC 20 Investigation notes flaws in story detail"',
+  'Unremarkable':
+    'Section=ability,feature ' +
+    'Note=' +
+      '"+1 Wisdom",' +
+      '"May run through crowds unnoticed/Reduces foe\'s passive Perception to notice self to 12"',
+
+  // Paths
+  'Astirax Servant':
+    'Section=feature ' +
+    'Note="May communicate telepathically %{level<10?\\"100\'\\":\\"1 mile\\"} w/bound astirax"',
+  'Aura Of Darkness':
+    'Section=feature ' +
+    'Note="May create a 20\' radius of darkness that others cannot see through for 1 min"',
+  'Bestial Astirax Servant':
+    'Section=feature ' +
+    'Note="May communicate telepathically 100\' w/bound astirax/Astirax may possess a Large creature"',
+  'Dark Warrior':
+    'Section=feature ' +
+    'Note="May use a bonus action to make an additional attack %{wisdomModifier>?1}/long rest"',
+  "Dark God's Blessing":
+    'Section=combat Note="Self regains %{level<10?2:4}d6 HP from killing"',
+  'Dire Bodyguard':
+    'Section=feature ' +
+    'Note="Adjacent foes suffer Disadv on attacks on others; self can use Reaction to make a melee attack"',
+  'Dominate Undead':
+    'Section=combat ' +
+    'Note="R30\' May use Channel Energy to control undead (Wisdom neg) for 1 hr"',
+  'Dread Avatar':
+    'Section=save ' +
+    'Note="Resistance to nonmagical bludgeoning, piercing, and slashing damage/Immunity to radiant damage"',
+  'Ferocious Blow':
+    'Section=feature ' +
+    'Note="May use Channel Divinity to inflict +2d6 HP thunder; medium foe pushed 10\' and knocked prone"',
+  'Impervious To Magic':
+     'Section=magic Note="May use Reaction to cast <i>Counterspell</i>"',
+  'Improved Astirax Bond':
+    'Section=feature ' +
+    'Note="Astirax gains +%{proficiencyBonus} AC, attack, damage, and proficient saves and skills/May extend scent magic to 1 mile for 1 min 1/dy"',
+  'Mage Hunter':
+    'Section=combat ' +
+    'Note="R%{30+(combatNotes.masterMageHunter?30:0)}\' May use Channel Divinity to inflict Disadv on concentration of %{combatNotes.masterMageHunter?\'all casters\':\'target caster\'} and Adv on saves vs. spells of %{combatNotes.masterMageHunter?\'all casters\':\'target caster\'} (Wisdom neg) for 1 min"',
+  'Master Mage Hunter':'Section=combat Note="Increased Mage Hunter effects"',
+  'Necromantic Arts':
+    'Section=magic ' +
+    'Note="Knows <i>Chill Touch</i> cantrip" ' +
+    'Spells="Chill Touch"',
+  'Potent Spellcasting':
+    'Section=magic Note="+%{wisdomModifier} Cleric cantrip damage"',
 
   // Legate domains
   'Keeper Of Obsidian Domain':
