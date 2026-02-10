@@ -259,7 +259,7 @@ MidnightLegacy.FEATS_ADDED = {
   'Seamaster':'Type=General',
   'Shieldwall Soldier':
     'Type=General ' +
-    'Require="features.Armor Proficiency (Medium) || features.Armor Proficiency (Heavy)","constitution >= 13"',
+    'Require="armorProficiency.Medium || armorProficiency.Heavy","constitution >= 13"',
   'Subtle Spellcaster':'Type=General',
   'Suspicious':'Type=General',
   'Unremarkable':'Type=General',
@@ -789,7 +789,7 @@ MidnightLegacy.FEATURES_ADDED = {
   // Backgrounds
   'Knowledge Of The Enemy':
     'Section=feature ' +
-    'Note="Knows the basics of Shadow military organization/Can get messages to slaves undetected"',
+    'Note="Knows the basics of Shadow military organization and can get messages to slaves undetected"',
   'Military Rank':
     'Section=feature ' +
     'Note="Receives respect, deference, and lend of resources from fellow soldiers"',
@@ -800,40 +800,41 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Can find shelter from the weather and detect the presence of blighted lands, hostile creatures, and animals possessed by an astirax"',
   'Sympathetic Ally':
      'Section=feature ' +
-     'Note="May receive support and info from a contact in occupied lands"',
+     'Note="Can receive support and info from a contact within occupied lands"',
 
   // Feats
   'Battlefield Healer':
     'Section=combat,skill ' +
     'Note=' +
-      '"Allies regain extra HD from a long rest",' +
-      '"Successful DC 15 Medicine with healer\'s kit use brings patient from 0 HP to 3 HP"',
+      '"Self and allies regain an extra Hit Die from a long rest",' +
+      '"Successful DC 15 Medicine with a healer\'s kit use restores 3 hit points to a patient with 0 hit points"',
   'Brawler':
     'Section=combat,combat ' +
     'Note=' +
-      '"Unarmed strike inflicts d4 damage",' +
-      '"May use a bonus action after a successful unarmed strike to make a second strike, grapple, or knock prone"',
+      '"Unarmed strike inflicts 1d4 damage, or 1d8 on a grappled target",' +
+      '"Can use a bonus action after a successful unarmed strike to knock prone a %{size} or smaller target, make a second strike, or grapple"',
   'Captor':
     'Section=ability,combat ' +
     'Note=' +
       '"+1 Strength",' +
-      '"Adv on Athletics to grapple when unseen/May grapple silently/May move at full speed while grappling w/out provoking an OA"',
+      '"Has advantage on Athletics to grapple when unseen, silences grappled creatures, and can move at full speed while grappling without provoking opportunity attacks"',
   'Fellhunter':
     'Section=skill ' +
-    'Note="May use a bonus action to make a DC 12 Religion check; success gives self Adv on saves vs. undead and inflicts Disadv on undead targets\' saves for 1 min 1/long rest"',
+    'Note="Can use a bonus action to make a DC 12 Religion check once per long rest; success gives self advantage on saves vs. undead and inflicts disadvantage on undead targets\' saves for 1 min"',
   'Harrier':
     'Section=combat ' +
-    'Note="Mounted 30\' move negates foe OA and causes successful melee attacks to knock prone"',
+    'Note="30\' mounted move negates foe opportunity attacks and causes successful melee attacks to knock prone"',
   'Improvised Fighter':
     'Section=combat,combat ' +
     'Note=' +
-      '"Weapon Proficiency (Improvised)/Improvised inflicts 1d6 damage",' +
-      '"May destroy an improvised weapon for +1 damage die"',
+      '"Weapon Proficiency (Improvised)/Improvised weapons inflict 1d6 damage",' +
+      '"Can destroy an improvised weapon to gain +1 damage die"',
   'Knife Fighter':
     'Section=ability,combat ' +
     'Note=' +
       '"+1 Dexterity",' +
-      '"Dagger crits on 18, and crit inflicts Disadv on combat for 1 rd"',
+      // errata changes "combat checks" to "attack rolls"
+      '"Dagger crits on a roll of 18-20, and a critical hit inflicts disadvantage on attacks for 1 rd"',
   'Learned':
     'Section=skill,skill ' +
     'Note=' +
@@ -841,41 +842,41 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Can read and write"',
   'Paranoid':
     'Section=combat ' +
-    'Note="Cannot be surprised when asleep/Automatic Dodge in first round"',
+    'Note="Cannot be surprised when asleep/Can take a free Dodge action during initiative"',
   'Polyglot':
     'Section=skill ' +
-    'Note="Gains general language understanding after listening for 1 dy; successful DC 15 Intelligence after 1 wk gives fluency"',
+    'Note="Gains general language understanding after listening for 1 day, and a successful DC 15 Intelligence each week gives fluency"',
   'Scavenger':
     'Section=ability,skill ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Intelligence, Wisdom)",' +
-      '"Successful DC 15 Perception recovers all spent ammo/Successful DC 12 Investigation scavenges weapon or armor materials worth up to 3d10+%{intelligenceModifier} GP"',
+      '"Successful DC 15 Perception after a battle recovers all spent ammo, and a successful DC 12 Investigation in a settlement scavenges weapon or armor materials worth up to 3d10+%{intelligenceModifier} GP"',
   'Seamaster':
     'Section=ability,ability,feature,skill ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
-      '"May climb rope at full speed",' +
-      '"Increases speed of commanded ship by 2 MPH",' +
-      '"No Disadv to pilot a ship during a storm"',
+      '"Can climb ropes at full speed",' +
+      '"Increases the speed of a commanded ship by 2 MPH",' +
+      '"Suffers no disadvantage to pilot a ship during a storm"',
   'Shieldwall Soldier':
     'Section=combat ' +
-    'Note="Adjacent allies gain +1 AC (+2 if self holds a shield)"',
+    'Note="Adjacent allies gain +1 armor class, or +2 if self holds a shield"',
   'Subtle Spellcaster':
     'Section=magic,skill ' +
     'Note=' +
-      '"May cast 2 chosen level 1 bard, druid, sorcerer, or wizard spells 1/long rest",' +
+      '"Can cast 2 chosen level 1 bard, druid, sorcerer, or wizard spells once per long rest",' +
       '"Successful Sleight Of Hand vs. passive Perception allows casting spells unnoticed"',
   'Suspicious':
     'Section=ability,skill,skill ' +
     'Note=' +
       '"+1 Intelligence",' +
       '"Skill Proficiency (Insight)/+%{proficiencyBonus} Insight",' +
-      '"+%{proficiencyBonus} passive Perception/Successful DC 20 Investigation notes flaws in story detail"',
+      '"+%{proficiencyBonus} passive Perception/Successful DC 20 Investigation reveals flaws in a creature\'s story details"',
   'Unremarkable':
     'Section=ability,feature ' +
     'Note=' +
       '"+1 Wisdom",' +
-      '"May run through crowds unnoticed/Reduces foe\'s passive Perception to notice self to 12"',
+      '"Can run through crowds unnoticed/Reduces foes\' passive Perception to notice self to 12"',
 
   // Paths
   'Astirax Servant':
