@@ -202,13 +202,13 @@ MidnightLegacy.CLASSES = {
       '"features.Keeper Of Obsidian Domain ? 6:Dominate Undead",' +
       '"features.Keeper Of Obsidian Domain ? 8:Potent Spellcasting",' +
       '"features.Keeper Of Obsidian Domain ? 17:Aura Of Darkness",' +
-      '"features.Soldier Legate Domain ? 1:Weapon Proficiency (Martial)",' +
+      '"features.Soldier Legate Domain ? 1:Bonus Proficiency (Soldier Legate)",' +
       '"features.Soldier Legate Domain ? 1:Dark Warrior",' +
       '"features.Soldier Legate Domain ? 2:Ferocious Blow",' +
       '"features.Soldier Legate Domain ? 6:Dire Bodyguard",' +
       '"features.Soldier Legate Domain ? 8:Bestial Astirax Servant",' +
       '"features.Soldier Legate Domain ? 17:Dread Avatar",' +
-      '"features.Witch Taker Domain ? 1:Weapon Proficiency (Halberd/Longsword/Rapier/Shortsword)",' +
+      '"features.Witch Taker Domain ? 1:Bonus Proficiency (Witch Taker)",' +
       // Handled above '"features.Witch Taker Domain ? 1:Astirax Servant",' +
       '"features.Witch Taker Domain ? 2:Mage Hunter",' +
       '"features.Witch Taker Domain ? 6:Improved Astirax Bond",' +
@@ -245,25 +245,7 @@ MidnightLegacy.DEITIES = {
 };
 MidnightLegacy.FEATS_ADDED = {
 
-  'Battlefield Healer':'Type=General',
-  'Brawler':'Type=General',
-  'Captor':'Type=General',
-  'Fellhunter':'Type=General',
-  'Harrier':'Type=General',
-  'Improvised Fighter':'Type=General',
-  'Knife Fighter':'Type=General',
-  'Learned':'Type=General',
-  'Paranoid':'Type=General',
-  'Polyglot':'Type=General',
-  'Scavenger':'Type=General',
-  'Seamaster':'Type=General',
-  'Shieldwall Soldier':
-    'Type=General ' +
-    'Require="armorProficiency.Medium || armorProficiency.Heavy","constitution >= 13"',
-  'Subtle Spellcaster':'Type=General',
-  'Suspicious':'Type=General',
-  'Unremarkable':'Type=General',
-
+  // Heroic Paths
   'Lurk':'Type=General,Heroic Require="heroicPath == \'Avenger\'"',
   'Silencing Strike':
     'Type=General,Heroic Require="level >= 4",features.Lurk',
@@ -372,7 +354,27 @@ MidnightLegacy.FEATS_ADDED = {
     'Type=General,Heroic Require="level >= 12","features.Pack Fighter"',
   'The Wild Hunt':
     'Type=General,Heroic ' +
-    'Require="level >= 16","features.Friends Until The End"'
+    'Require="level >= 16","features.Friends Until The End"',
+
+  // General Feats
+  'Battlefield Healer':'Type=General',
+  'Brawler':'Type=General',
+  'Captor':'Type=General',
+  'Fellhunter':'Type=General',
+  'Harrier':'Type=General',
+  'Improvised Fighter':'Type=General',
+  'Knife Fighter':'Type=General',
+  'Learned':'Type=General',
+  'Paranoid':'Type=General',
+  'Polyglot':'Type=General',
+  'Scavenger':'Type=General',
+  'Seamaster':'Type=General',
+  'Shieldwall Soldier':
+    'Type=General ' +
+    'Require="armorProficiency.Medium || armorProficiency.Heavy","constitution >= 13"',
+  'Subtle Spellcaster':'Type=General',
+  'Suspicious':'Type=General',
+  'Unremarkable':'Type=General'
 
 };
 MidnightLegacy.FEATS =
@@ -878,71 +880,81 @@ MidnightLegacy.FEATURES_ADDED = {
       '"+1 Wisdom",' +
       '"Can run through crowds unnoticed/Reduces foes\' passive Perception to notice self to 12"',
 
-  // Paths
+  // Class - Cleric (Legate)
+  // Keeper Of Obsidian
   'Astirax Servant':
     'Section=feature ' +
-    'Note="May communicate telepathically %{level<10?\\"100\'\\":\\"1 mile\\"} w/bound astirax"',
+    'Note="Can communicate telepathically %{level<10?\\"100\'\\":\'1 mile\'} with a bound astirax"',
   'Aura Of Darkness':
     'Section=feature ' +
-    'Note="May create a 20\' radius of darkness that others cannot see through for 1 min"',
-  'Bestial Astirax Servant':
-    'Section=feature ' +
-    'Note="May communicate telepathically 100\' w/bound astirax/Astirax may possess a Large creature"',
-  'Dark Warrior':
-    'Section=feature ' +
-    'Note="May use a bonus action to make an additional attack %{wisdomModifier>?1}/long rest"',
+    'Note="Can create a 20\' radius of darkness that others cannot see through for 1 min"',
   "Dark God's Blessing":
-    'Section=combat Note="Self regains %{level<10?2:4}d6 HP from killing"',
-  'Dire Bodyguard':
-    'Section=feature ' +
-    'Note="Adjacent foes suffer Disadv on attacks on others; self can use Reaction to make a melee attack"',
+    'Section=combat ' +
+    // errata adds sentient
+    'Note="Killing a sentient creature restores %{level<10?2:4}d6 hit points to self"',
   'Dominate Undead':
     'Section=combat ' +
-    'Note="R30\' May use Channel Energy to control undead (Wisdom neg) for 1 hr"',
-  'Dread Avatar':
-    'Section=save ' +
-    'Note="Resistance to nonmagical bludgeoning, piercing, and slashing damage/Immunity to radiant damage"',
-  'Ferocious Blow':
-    'Section=feature ' +
-    'Note="May use Channel Divinity to inflict +2d6 HP thunder; medium foe pushed 10\' and knocked prone"',
-  'Impervious To Magic':
-     'Section=magic Note="May use Reaction to cast <i>Counterspell</i>"',
-  'Improved Astirax Bond':
-    'Section=feature ' +
-    'Note="Astirax gains +%{proficiencyBonus} AC, attack, damage, and proficient saves and skills/May extend scent magic to 1 mile for 1 min 1/dy"',
-  'Mage Hunter':
-    'Section=combat ' +
-    'Note="R%{30+(combatNotes.masterMageHunter?30:0)}\' May use Channel Divinity to inflict Disadv on concentration of %{combatNotes.masterMageHunter?\'all casters\':\'target caster\'} and Adv on saves vs. spells of %{combatNotes.masterMageHunter?\'all casters\':\'target caster\'} (Wisdom neg) for 1 min"',
-  'Master Mage Hunter':'Section=combat Note="Increased Mage Hunter effects"',
-  'Necromantic Arts':
-    'Section=magic ' +
-    'Note="Knows <i>Chill Touch</i> cantrip" ' +
-    'Spells="Chill Touch"',
-  'Potent Spellcasting':
-    'Section=magic Note="+%{wisdomModifier} Cleric cantrip damage"',
-
-  // Legate domains
+    'Note="R30\' Can use Channel Energy to control undead (save Wisdom neg) for 1 hr"',
   'Keeper Of Obsidian Domain':
     'Spells=' +
       '"1:Detect Magic","1:Inflict Wounds",' +
-      '3:Blindness/Deafness,"3:See Invisibility",' +
+      '"3:Blindness/Deafness","3:See Invisibility",' +
       '"5:Bind/Banish Astirax","5:Bestow Curse",' +
-      '7:Blight,"7:Phantasmal Killer",' +
-      '9:Cloudkill,9:Contagion',
+      '"7:Blight","7:Phantasmal Killer",' +
+      '"9:Cloudkill","9:Contagion"',
+  'Necromantic Arts':
+    'Section=magic Note="Knows the <i>Chill Touch</i> cantrip" ' +
+    'Spells="Chill Touch"',
+  'Potent Spellcasting': // ref PHB5E
+    'Section=magic Note="+%{wisdomModifier} HP Cleric cantrip damage"',
+  // Soldier Legate
+  'Bestial Astirax Servant':
+    'Section=feature ' +
+    'Note="Can communicate telepathically 100\' with a bound astirax"',
+  'Bonus Proficiency (Soldier Legate)':
+    'Section=combat Note="Weapon Proficiency (Martial Weapons)"',
+  'Dark Warrior':
+    'Section=feature ' +
+    'Note="Can use a bonus action to make an additional attack %{wisdomModifier>1?wisdomModifier+\' times\':\'once\'} per long rest"',
+  'Dire Bodyguard':
+    'Section=feature ' +
+    'Note="Adjacent foes suffer disadvantage on attacks on others; such attacks allow self to use a reaction to make a melee attack on the attacker"',
+  'Dread Avatar':
+    'Section=save ' +
+    'Note="Has resistance to nonmagical bludgeoning, piercing, and slashing and immunity to radiant"',
+  'Ferocious Blow':
+    'Section=feature ' +
+    'Note="Can use Channel Divinity to inflict +2d6 HP thunder, also inflicting a 10\' push and knocked prone on a Medium or smaller target"',
   'Soldier Legate Domain':
     'Spells=' +
-      '1:Bane,"1:Hellish Rebuke",' +
+      '"1:Bane","1:Hellish Rebuke",' +
       '"3:Magic Weapon",3:Darkvision,' +
-      '5:Haste,"5:Vampiric Touch",' +
-      '7:Regenerate,7:Stoneskin,' + // Replace Banishment as per errata
+      '"5:Haste","5:Vampiric Touch",' +
+      // errata replaces Banishment with Regenerate
+      '"7:Regenerate","7:Stoneskin",' +
       '"9:Cone Of Cold","9:Hold Monster"',
+  // Witch Taker
+  // Astirax Servant as above
+  'Bonus Proficiency (Witch Taker)':
+    'Section=combat ' +
+    'Note="Weapon Proficiency (Halberd; Longsword; Rapier; Shortsword)"',
+  'Impervious To Magic':
+     'Section=magic Note="Can use a reaction to cast <i>Counterspell</i>" ' +
+     'Spells=Counterspell',
+  'Improved Astirax Bond':
+    'Section=feature ' +
+    'Note="Astirax gains +%{proficiencyBonus} armor class, attack, damage, and proficient saves and skills and can extend its Scent Magic range to 1 mile for 1 min once per day"',
+  'Mage Hunter':
+    'Section=combat ' +
+    'Note="R%{combatNotes.masterMageHunter?60:30}\' Can use Channel Divinity to inflict disadvantage on the concentration saves of %{combatNotes.masterMageHunter?\'enemny casters\':\'a target caster\'} and give advantage on saves vs. %{combatNotes.masterMageHunter?\'their\':\'its\'} spells (save Wisdom neg) for 1 min"',
+  'Master Mage Hunter':'Section=combat Note="Increased Mage Hunter effects"',
   'Witch Taker Domain':
     'Spells=' +
       '"1:Detect Magic","1:Disguise Self",' +
       '"3:Detect Thoughts","3:Ray Of Enfeeblement",' +
-      '"5:Bind/Banish Astirax",5:Counterspell,' +
-      '7:Confusion,"7:Freedom Of Movement",' +
-      '9:Scrying,"9:Dominate Person"'
+      '"5:Bind/Banish Astirax","5:Counterspell",' +
+      '"7:Confusion","7:Freedom Of Movement",' +
+      '"9:Scrying","9:Dominate Person"'
 
 };
 MidnightLegacy.FEATURES =
@@ -1077,53 +1089,53 @@ MidnightLegacy.SPELLS_ADDED = {
     'School=Divination ' +
     'Level=C3,D3,P3 ' +
     'Description=' +
-      '"R200\' Self senses astiraxes, R10\' may control for 366 dy or inflict 4d12 HP radiant (Wisdom neg; Adv if possessing an animal)"',
+      '"R200\' Reveals the presence of astiraxes for concentation up to 10 min and allows controlling for a year and a day or inflicting 4d12 HP radiant on those within 10\' (save Wisdom negates, with advantage if possessing an animal, and 3 saves within 24 hr gives immunity to binding by self)"',
   'Disguise Ally':
     'School=Illusion ' +
     'Level=B2,S2,W2 ' +
     'AtHigherLevels="affects +1 target" ' +
     'Description=' +
-      '"R100\' Alters appearance of willing target and possessions (Investigation detects) while w/in range for conc up to 1 hr"',
+      '"R100\' Alters the appearance of a willing target and its possessions (Investigation detects) while within range for concentration up to 1 hr"',
   'Greenshield':
     'School=Abjuration ' +
     'Level=D2 ' +
     'Description=' +
-      '"Vegetation in 20\' radius allows only allies to pass (Investigation detects; Disadv in nature) for 12 hr"',
+      '"Vegetation in a 20\' radius allows only allies to pass (save Investigation detects; natural surroundings give disadvantage) for 12 hr"',
   'Heed The Whisper':
     'School=Divination ' +
     'Level=D1,R1 ' +
-    'AtHigherLevels="may sense from any known spot in Erethor" ' +
+    'AtHigherLevels="allows sensing from any known spot in Erethor" ' +
     'Description=' +
-      '"RSelf May sense creatures in a 300\' radius and cannot be surprised, even during sleep, while w/in 1 mile of Erethor for 8 hr"',
+      '"Reveals the presence of creatures in a 300\' radius and prevents being surprised, even during sleep, while within 1 mile of Erethor for 8 hr"',
   'Lifetrap':
     'School=Transmutation ' +
     'Level=D1,R1 ' +
     'AtHigherLevels="affects +1 target" ' +
     'Description=' +
-      '"R150\' Target creature restrained (Strength ends) for conc up to 1 min; undead suffers 1d12 HP radiant per rd restrained at end"',
+      '"R150\' Restrains a target (save Strength ends) for concentration up to 1 min; an undead target suffers 1d12 HP radiant per rd restrained when the spell ends"',
   "Nature's Revelation":
     'School=Transmutation ' +
     'Level=D2,R2 ' +
     'AtHigherLevels="+10\' radius" ' +
     'Description=' +
-      '"R120\' Plants and animals indicate location of hidden creatures for conc up to 1 min"',
+      '"R120\' Plants and animals indicate location of hidden creatures, negating cover, for concentration up to 1 min"',
   'Silver Blood':
     'School=Abjuration ' +
     'Level=B2,S2,W2 ' +
     'Ritual=true ' +
     'Description=' +
-      '"Self suffers 1d4 HP to create silver ammo, warding line (DC 14 Wisdom neg), or astirax scent barrier for 1 hr"',
+      '"For 1 hr, allows self to suffer 1d4 HP to create silvered ammo, a warding line (save DC 14 Wisdom negates), or a barrier to the astirax Scent Magic ability"',
   'Silver Storm':
     'School=Transmutation ' +
     'Level=S5,W5 ' +
     'AtHigherLevels="+10\' cone" ' +
     'Description=' +
-      '"70\' cone inflicts 10d4 HP piercing (10d8 HP if vulnerable; Dexterity half)"',
+      '"70\' cone inflicts 10d4 HP piercing, or 10d8 HP if vulnerable (save Dexterity half)"',
   'Silver Wind':
     'School=Conjuration ' +
     'Level=S4,W4 ' +
     'Description=' +
-      '"R200\' 40\' sphere reveals invisible creatures and stuns vulnerable targets (Constitution ends) for conc up to 1 min"',
+      '"R200\' 40\' sphere reveals invisible creatures and stuns vulnerable targets (save Constitution ends) for concentration up to 1 min"',
   // Removed
   'Astral Projection':null,
   'Augury':null,
