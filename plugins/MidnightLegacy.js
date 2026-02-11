@@ -549,7 +549,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,skill ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Dexterity, Intelligence)",' +
-      '"Successful DC 10+HD Investigation after 8 hr observation and research gives advantage on Deception and Stealth to gain access to the target"',
+      '"Successful Investigation (DC 10 + the number of target Hit Dice) after 8 hr observation and research gives advantage on Deception and Stealth to gain access to the target"',
   'Unseen Lurker':
     'Section=ability,skill ' +
     'Note=' +
@@ -669,7 +669,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,combat ' +
     'Note=' +
       '"+1 Constitution",' +
-      '"Cannot be unwillingly moved or knocked prone, and has advantage on grappling and retraint checks and saves"',
+      '"Cannot be unwillingly moved or knocked prone, and has advantage on grappling and restraint checks and saves"',
 
   // Guardian
   'Crucial Strike':
@@ -762,7 +762,7 @@ MidnightLegacy.FEATURES_ADDED = {
   // Sunderborn
   'Ethereal Presence':
     'Section=magic ' +
-    'Note="Can spend 1 HD and use a bonus action to become ethereal for up to 1 min"',
+    'Note="Can spend 1 Hit Die and use a bonus action to become ethereal for up to 1 min"',
   'Fallen Sense':
     'Section=ability,skill ' +
     'Note=' +
@@ -773,7 +773,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Has %{level<12?\'resistance\':\'immunity\'} to %{sunderedBloodDamageType}"',
   'Sundered Form':
     'Section=magic ' +
-    'Note="Can spend 8 HD and use a bonus action to assume a Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and create a 30\' radius that inflicts 10 HP %{sunderedBloodDamageType} on foes"',
+    'Note="Can spend 8 Hit Dice and use a bonus action to assume a Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and create a 30\' radius that inflicts 10 HP %{sunderedBloodDamageType} on foes"',
   'Sundered Fury':
     'Section=ability,combat ' +
     'Note=' +
@@ -956,7 +956,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Astirax gains +%{proficiencyBonus} armor class, attack, damage, and proficient saves and skills and can extend its Scent Magic range to 1 mile for 1 min once per day"',
   'Mage Hunter':
     'Section=combat ' +
-    'Note="R%{combatNotes.masterMageHunter?60:30}\' Can use Channel Divinity to inflict disadvantage on the concentration saves of %{combatNotes.masterMageHunter?\'enemny casters\':\'a target caster\'} and give advantage on saves vs. %{combatNotes.masterMageHunter?\'their\':\'its\'} spells (save Wisdom negates) for 1 min"',
+    'Note="R%{combatNotes.masterMageHunter?60:30}\' Can use Channel Divinity to inflict disadvantage on the concentration saves of %{combatNotes.masterMageHunter?\'enemy casters\':\'a target caster\'} and give advantage on saves vs. %{combatNotes.masterMageHunter?\'their\':\'its\'} spells (save Wisdom negates) for 1 min"',
   'Master Mage Hunter':
     'Section=combat Note="Has increased Mage Hunter effects"',
   'Witch Taker Domain':
@@ -1100,7 +1100,7 @@ MidnightLegacy.SPELLS_ADDED = {
     'School=Divination ' +
     'Level=C3,D3,P3 ' +
     'Description=' +
-      '"R200\' Reveals the presence of astiraxes for concentation up to 10 min and, for astiraxes within 10\', allows controlling for a year and a day or inflicting 4d12 HP radiant (save Wisdom negates, with advantage if possessing an animal, and 3 saves within 24 hr gives immunity to binding by self)"',
+      '"R200\' Reveals the presence of astiraxes for concentration up to 10 min and, for astiraxes within 10\', allows controlling for a year and a day or inflicting 4d12 HP radiant (save Wisdom negates, with advantage if possessing an animal, and 3 saves within 24 hr gives immunity to binding by self)"',
   'Disguise Ally':
     'School=Illusion ' +
     'Level=B2,S2,W2 ' +
@@ -1440,13 +1440,12 @@ MidnightLegacy.ruleNotes = function() {
     '</ul>\n' +
     '<h3>Copyrights and Licensing</h3>\n' +
     '<p>\n' +
-    "Quilvyn\'s Midnight Rule Set uses Open Game Content " +
-    'released by Edge Studio under the Open Game ' +
-    'License. Copyright 2021, Edge Studio under license of Fantasy Flight' +
-    'Games. Authors: Greg Benage and Robert Vaughn.\n' +
+    "Quilvyn\'s Midnight Rule Set uses Open Game Content released by Edge " +
+    'Studio under the Open Game License. Copyright 2021, Edge Studio under ' +
+    'license of Fantasy Flight Games. Authors: Greg Benage and Robert Vaughn.\n' +
     '</p><p>\n' +
-    'Quilvyn is not approved or endorsed by Edge Studio. Portions ' +
-    'of the materials used are property of Edge Studio. © Edge Studio.\n' +
+    'Quilvyn is not approved or endorsed by Edge Studio. Portions of the ' +
+    'materials used are property of Edge Studio. © Edge Studio.\n' +
     '</p><p>\n' +
     'Open Game License v 1.0a Copyright 2000, Wizards of the Coast, LLC. You ' +
     'should have received a copy of the Open Game License with this program; ' +
