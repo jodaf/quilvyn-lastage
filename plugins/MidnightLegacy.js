@@ -146,14 +146,14 @@ MidnightLegacy.BACKGROUNDS_ADDED = {
        '"Uniform With Insignia","Sturdy Boots",Bedroll,Backpack,' +
        '"1 Week\'s Rations" ' +
     'Features=' +
-      '"Skill Proficiency (Athletics/Perception)",' +
+      '"Skill Proficiency (Athletics; Perception)",' +
       '"Weapon Proficiency (Choose 1 from any Martial)",' +
       '"Old Veteran"',
   'Former Slave':
     'Equipment=' +
        '"Common Clothes","50\' Rope","Basic Tool","Pair Of Shackles" ' + 
     'Features=' +
-      '"Skill Proficiency (Athletics/Deception)",' +
+      '"Skill Proficiency (Athletics; Deception)",' +
       '"Tool Proficiency (Choose 1 from any Artisan)",' +
       '"Knowledge Of The Enemy"',
   'Freedom Fighter':
@@ -161,7 +161,7 @@ MidnightLegacy.BACKGROUNDS_ADDED = {
       '"Disguise Kit","Forgery Kit","Poisoner\'s Kit","Nondescript Clothing",' +
       '"Dark Cloak And Hood","Belt With Hidden Pouch" ' +
     'Features=' +
-      '"Skill Proficiency (Animal Handling/Investigation)",' +
+      '"Skill Proficiency (Animal Handling; Investigation)",' +
       '"Tool Proficiency (Choose 1 from Disguise Kit, Forgery Kit, Poisoner\'s Kit)",' +
       '"Sympathetic Ally"',
   'Veteran Soldier':
@@ -169,7 +169,7 @@ MidnightLegacy.BACKGROUNDS_ADDED = {
        '"Uniform With Insignia","Sturdy Boots",Bedroll,Backpack,' +
        '"1 Week\'s Rations" ' +
     'Features=' +
-      '"Skill Proficiency (Athletics/Perception)",' +
+      '"Skill Proficiency (Athletics; Perception)",' +
       '"Weapon Proficiency (Choose 1 from any Martial)",' +
       '"Military Rank"',
   'Wildlander':
@@ -177,8 +177,8 @@ MidnightLegacy.BACKGROUNDS_ADDED = {
       'Staff,"Traveler\'s Clothes",Backpack,"2 Weeks\' Rations",' +
       '"Hunting Trap" '+
     'Features=' +
-      '"Language (Trader\'s Tongue/Choose 1 from any)",' +
-      '"Skill Proficiency (Perception/Survival)",' +
+      '"Language (Trader\'s Tongue; Choose 1 from any)",' +
+      '"Skill Proficiency (Perception; Survival)",' +
       'Survivalist'
 };
 MidnightLegacy.BACKGROUNDS =
@@ -189,13 +189,12 @@ MidnightLegacy.CLASSES = {
   'Cleric':
     'HitDie=d8 ' +
     'Features=' +
-      '"1:Armor Proficiency (Medium/Shield)",' +
-      '"1:Save Proficiency (Charisma/Wisdom)",' +
+      '"1:Armor Proficiency (Medium; Shield)",' +
+      '"1:Save Proficiency (Charisma; Wisdom)",' +
       '"1:Skill Proficiency (Choose 2 from History, Insight, Medicine, Persuasion, Religion)",' +
-      '"1:Weapon Proficiency (Simple)",' +
-      '"1:Divine Domain","1:Ritual Casting",1:Spellcasting,' +
-      '"2:Channel Divinity","2:Turn Undead","5:Destroy Undead",' +
-      '"10:Divine Intervention",' +
+      '"1:Weapon Proficiency (Simple Weapons)",' +
+      '"1:Divine Domain","1:Spellcasting","2:Channel Divinity",' +
+      '"2:Turn Undead","5:Destroy Undead","10:Divine Intervention",' +
       '"features.Keeper Of Obsidian Domain ? 1:Dark God\'s Blessing",' +
       '"features.Keeper Of Obsidian Domain ? 1:Necromantic Arts",' +
       '"features.Keeper Of Obsidian Domain || features.Witch Taker Domain ? 2:Astirax Servant",' +
@@ -337,7 +336,21 @@ MidnightLegacy.FEATS_ADDED = {
   'Changed To The Core':
     'Type=General,Heroic Require="level >= 16","features.Scathing Rebuke"',
   'Fallen Sense':'Type=General,Heroic Require="heroicPath == \'Sunderborn\'"',
-  'Sundered Blood':
+  'Sundered Blood (Acid)':
+    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+  'Sundered Blood (Cold)':
+    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+  'Sundered Blood (Fire)':
+    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+  'Sundered Blood (Lightning)':
+    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+  'Sundered Blood (Necrotic)':
+    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+  'Sundered Blood (Psychic)':
+    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+  'Sundered Blood (Radiant)':
+    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+  'Sundered Blood (Thunder)':
     'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
   'Sundered Fury':
     'Type=General,Heroic Require="level >= 8","features.Sundered Blood"',
@@ -422,7 +435,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=skill ' +
     'Note="Has advantage to determine stonework origin, to determine direction underground, and to spot traps, hidden passages, and recent construction underground"',
   // Kurgun Dwarf
-  'Kurgun Dwarf Ability Adjustment':'Section=ability Note="+2 Wisdom"',
+  'Kurgun Ability Adjustment':'Section=ability Note="+2 Wisdom"',
   'Kurgun Warrior Training':
     'Section=combat ' +
     'Note="Weapon Proficiency (Handaxe; Shortbow; Spear)/Armor Proficiency (Light; Medium)"',
@@ -442,7 +455,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=combat Note="Weapon Proficiency (Longbow; Longsword)"',
   'Innate Magic User':'Section=magic Note="Knows 1 Sorcerer cantrip"',
   // Danisil
-  'Danisil Elf Ability Adjustment':'Section=ability Note="+1 Intelligence"',
+  'Danisil Ability Adjustment':'Section=ability Note="+1 Intelligence"',
   'Danisil Skills':
     'Section=skill ' +
     'Note="Skill Proficiency (History)/Language (Choose 1 from Sylvan, Halfling)"',
@@ -450,7 +463,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=combat Note="Weapon Proficiency (Scimitar; Shortbow)"',
   'Innate Magical Scholar':'Section=magic Note="Knows 2 Wizard cantrips"',
   // Erunsil
-  'Erunsil Elf Ability Adjustment':'Section=ability Note="+1 Strength"',
+  'Erunsil Ability Adjustment':'Section=ability Note="+1 Strength"',
   'Erunsil Skills':
     'Section=skill ' +
     'Note="Skill Proficiency (Survival)/Language (Orcish; Trader\'s Tongue)"',
@@ -465,7 +478,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note=' +
       '"Can use a bonus action to breathe water for 1 hr once per short rest",' +
       '"Tool Proficiency (Water Vehicles)"',
-  'Miransil Elf Ability Adjustment':'Section=ability Note="+1 Wisdom"',
+  'Miransil Ability Adjustment':'Section=ability Note="+1 Wisdom"',
   'Miransil Skills':
     'Section=skill ' +
     'Note="Skill Proficiency (Athletics; Insight)/Language (Colonial; Trader\'s Tongue)"',
@@ -549,7 +562,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note=' +
       '"+2 Strength",' +
       '"+20 Hit Points/Unarmed strike inflicts 1d8 HP",' +
-      '"Pack Alpha affects all living creatures"',
+      '"Pack Alpha fright affects all living creatures"',
   'Pack Alpha':
     'Section=combat,skill ' +
     'Note=' +
@@ -650,7 +663,7 @@ MidnightLegacy.FEATURES_ADDED = {
   'One With The Earth':
     'Section=feature,skill ' +
     'Note=' +
-      '"Knows north, the direction and potability of water and geologic features within 5 miles, and the direction of structures within 1 mile",' +
+      '"Knows north, the direction and potability of water and geologic features within 5 miles, and the direction of artificial structures within 1 mile",' +
       '"Skill Proficiency (Perception; Survival)"',
   'Rooted':
     'Section=ability,combat ' +
@@ -671,9 +684,9 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Successful DC 15 Charisma gives allies +%{proficiencyBonus} attack and damage when within 30\' for 1 min once per long rest"',
   'Guard':
     'Section=combat ' +
-    'Note="May use a bonus action to give an adjacent ally +1 AC (+2 with shield)"',
+    'Note="Can use a bonus action to give an adjacent ally +1 armor class, or +2 if self holds a shield"',
   'Tactical Direction':
-    'Section=feature ' +
+    'Section=combat ' +
     'Note="Can take 1 on an initiative roll to give each ally a bonus action on their first turn to Attack, Dash, or Disengage"',
   'Warding Presence':
     'Section=combat ' +
@@ -682,9 +695,9 @@ MidnightLegacy.FEATURES_ADDED = {
   // Ironborn
   'Hard To Kill':
     'Section=save ' +
-    'Note="Death save succeeds on a roll of 6 or higher, and 16 or higher restores 1 hit point"',
+    'Note="Death saves succeed on a roll of 6 or higher, and 16 or higher restore 1 hit point"',
   'Indefatigable':
-    'Section=ability,ability,feature ' +
+    'Section=ability,ability,save ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Constitution, Strength)",' +
       '"Suffers no disadvantage on Constitution or Strength checks due to exhaustion",' +
@@ -706,7 +719,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,combat,skill ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Strength, Wisdom)",' +
-      '"Foes suffer disadvantage on attacks on an adjacent incapacitated ally, and self gains advantage on attacks on foes adjacent to an incapacitated ally",' +
+      '"Has advantage on attacks on foes adjacent to an incapacitated ally, and those foes suffer disadvantage on attacks on those allies",' +
       '"Can spend 2 uses of healer\'s kit to reduce exhaustion by 1 or to end an effect that reduces an ability score or hit point maximum"',
   'Folk Medicine':
     'Section=skill ' +
@@ -730,15 +743,15 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="R50\' Successful Persuasion vs. Insight causes the target foe with up to %{level//2} Hit Dice to switch sides, or to flee if it has %{level//2+1}+ Hit Dice, once per long rest"',
   'Crowd Rouser':
-    'Section=magic ' +
+    'Section=skill ' +
     'Note="R50\' Can charm and convince listeners (save DC %{8+charismaModifier+proficiencyBonus} Wisdom negates) for 1 week once per short rest"',
   'Rallying Cry':
-    'Section=ability,combat ' +
+    'Section=ability,skill ' +
     'Note=' +
       '"+1 Charisma",' +
       '"R50\' Successful DC 15 Persuasion gives allies %{level} temporary hit points once per long rest"',
   'Scathing Rebuke':
-    'Section=combat ' +
+    'Section=skill ' +
     'Note="R50\' Successful Intimidation vs. Insight stuns the target for 1 min (damage ends) 3 times per long rest"',
   'Well-Spoken':
     'Section=skill,skill ' +
@@ -757,15 +770,15 @@ MidnightLegacy.FEATURES_ADDED = {
       '"R60\' Knows the location and type of Fallen, and can communicate with a chosen Fallen for concentration up to 1 hr"',
   'Sundered Blood':
     'Section=save ' +
-    'Note="Has %{level<12?\'resistance\':\'immunity\'} to a chosen damage type"',
+    'Note="Has %{level<12?\'resistance\':\'immunity\'} to %{sunderedBloodDamageType}"',
   'Sundered Form':
     'Section=magic ' +
-    'Note="Can spend 8 HD and use a bonus action to assume a Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and create a 30\' radius that inflicts 10 HP damage of the Sundered Blood type on foes"',
+    'Note="Can spend 8 HD and use a bonus action to assume a Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and create a 30\' radius that inflicts 10 HP %{sunderedBloodDamageType} on foes"',
   'Sundered Fury':
     'Section=ability,combat ' +
     'Note=' +
       '"Ability Boost (Choose 1 from any)",' +
-      '"Can spend 1 Hit Die to inflict +2 Hit Dice damage of the Sundered Blood type"',
+      '"Can spend 1 Hit Die to inflict +2 Hit Dice %{sunderedBloodDamageType}"',
 
   // Wildblooded
   'Friends Until The End':
@@ -774,7 +787,7 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Ability Boost (Choose 1 from Dexterity, Strength)",' +
       '"Can use a reaction to redirect damage suffered by adjacent wild companion to self, and wild companion guards self when incapacitated"',
   'Natural Bond':
-    'Section=feature ' +
+    'Section=skill ' +
     'Note="Animals treat self as a friend (save DC %{8+proficiencyBonus+wisdomModifier} Wisdom negates)"',
   'Pack Fighter':
     'Section=ability,combat ' +
@@ -822,7 +835,7 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Has advantage on Athletics to grapple when unseen, silences grappled creatures, and can move at full speed while grappling without provoking opportunity attacks"',
   'Fellhunter':
     'Section=skill ' +
-    'Note="Can use a bonus action to make a DC 12 Religion check once per long rest; success gives self advantage on saves vs. undead and inflicts disadvantage on undead targets\' saves for 1 min"',
+    'Note="Can use a bonus action to make a DC 12 Religion check once per long rest; success gives self advantage on saves vs. undead and inflicts disadvantage on undead\'s saves vs. self for 1 min"',
   'Harrier':
     'Section=combat ' +
     'Note="30\' mounted move negates foe opportunity attacks and causes successful melee attacks to knock prone"',
@@ -844,7 +857,7 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Can read and write"',
   'Paranoid':
     'Section=combat ' +
-    'Note="Cannot be surprised when asleep/Can take a free Dodge action during initiative"',
+    'Note="Cannot be surprised when asleep and can take a free Dodge action during initiative"',
   'Polyglot':
     'Section=skill ' +
     'Note="Gains general language understanding after listening for 1 day, and a successful DC 15 Intelligence each week gives fluency"',
@@ -854,20 +867,17 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Ability Boost (Choose 1 from Intelligence, Wisdom)",' +
       '"Successful DC 15 Perception after a battle recovers all spent ammo, and a successful DC 12 Investigation in a settlement scavenges weapon or armor materials worth up to 3d10+%{intelligenceModifier} GP"',
   'Seamaster':
-    'Section=ability,ability,feature,skill ' +
+    'Section=ability,ability,skill ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Dexterity, Wisdom)",' +
       '"Can climb ropes at full speed",' +
-      '"Increases the speed of a commanded ship by 2 MPH",' +
-      '"Suffers no disadvantage to pilot a ship during a storm"',
+      '"Increases the speed of a commanded ship by 2 MPH and suffers no disadvantage to pilot a ship during a storm"',
   'Shieldwall Soldier':
     'Section=combat ' +
     'Note="Adjacent allies gain +1 armor class, or +2 if self holds a shield"',
   'Subtle Spellcaster':
-    'Section=magic,skill ' +
-    'Note=' +
-      '"Can cast 2 chosen level 1 bard, druid, sorcerer, or wizard spells once per long rest",' +
-      '"Successful Sleight Of Hand vs. passive Perception allows casting spells unnoticed"',
+    'Section=magic ' +
+    'Note="Can cast 2 chosen level 1 bard, druid, sorcerer, or wizard spells once per long rest/Successful Sleight Of Hand vs. passive Perception allows casting spells unnoticed"',
   'Suspicious':
     'Section=ability,skill,skill ' +
     'Note=' +
@@ -886,15 +896,15 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=feature ' +
     'Note="Can communicate telepathically %{level<10?\\"100\'\\":\'1 mile\'} with a bound astirax"',
   'Aura Of Darkness':
-    'Section=feature ' +
+    'Section=magic ' +
     'Note="Can create a 20\' radius of darkness that others cannot see through for 1 min"',
   "Dark God's Blessing":
     'Section=combat ' +
     // errata adds sentient
-    'Note="Killing a sentient creature restores %{level<10?2:4}d6 hit points to self"',
+    'Note="Killing a creature with 1+ Hit Dice restores %{level<10?2:4}d6 hit points to self"',
   'Dominate Undead':
     'Section=combat ' +
-    'Note="R30\' Can use Channel Energy to control undead (save Wisdom neg) for 1 hr"',
+    'Note="R30\' Can use Channel Energy to control undead (save Wisdom negates) for 1 hr"',
   'Keeper Of Obsidian Domain':
     'Spells=' +
       '"1:Detect Magic","1:Inflict Wounds",' +
@@ -914,17 +924,17 @@ MidnightLegacy.FEATURES_ADDED = {
   'Bonus Proficiency (Soldier Legate)':
     'Section=combat Note="Weapon Proficiency (Martial Weapons)"',
   'Dark Warrior':
-    'Section=feature ' +
+    'Section=combat ' +
     'Note="Can use a bonus action to make an additional attack %{wisdomModifier>1?wisdomModifier+\' times\':\'once\'} per long rest"',
   'Dire Bodyguard':
-    'Section=feature ' +
-    'Note="Adjacent foes suffer disadvantage on attacks on others; such attacks allow self to use a reaction to make a melee attack on the attacker"',
+    'Section=combat ' +
+    'Note="Adjacent foes suffer disadvantage on attacks on others, and such attacks allow self to use a reaction to make a melee attack on the attacker"',
   'Dread Avatar':
     'Section=save ' +
     'Note="Has resistance to nonmagical bludgeoning, piercing, and slashing and immunity to radiant"',
   'Ferocious Blow':
-    'Section=feature ' +
-    'Note="Can use Channel Divinity to inflict +2d6 HP thunder, also inflicting a 10\' push and knocked prone on a Medium or smaller target"',
+    'Section=combat ' +
+    'Note="Can use Channel Divinity to inflict +2d6 HP thunder, plus a 10\' push and knocked prone if the target is Medium or smaller"',
   'Soldier Legate Domain':
     'Spells=' +
       '"1:Bane","1:Hellish Rebuke",' +
@@ -946,8 +956,9 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Astirax gains +%{proficiencyBonus} armor class, attack, damage, and proficient saves and skills and can extend its Scent Magic range to 1 mile for 1 min once per day"',
   'Mage Hunter':
     'Section=combat ' +
-    'Note="R%{combatNotes.masterMageHunter?60:30}\' Can use Channel Divinity to inflict disadvantage on the concentration saves of %{combatNotes.masterMageHunter?\'enemny casters\':\'a target caster\'} and give advantage on saves vs. %{combatNotes.masterMageHunter?\'their\':\'its\'} spells (save Wisdom neg) for 1 min"',
-  'Master Mage Hunter':'Section=combat Note="Increased Mage Hunter effects"',
+    'Note="R%{combatNotes.masterMageHunter?60:30}\' Can use Channel Divinity to inflict disadvantage on the concentration saves of %{combatNotes.masterMageHunter?\'enemny casters\':\'a target caster\'} and give advantage on saves vs. %{combatNotes.masterMageHunter?\'their\':\'its\'} spells (save Wisdom negates) for 1 min"',
+  'Master Mage Hunter':
+    'Section=combat Note="Has increased Mage Hunter effects"',
   'Witch Taker Domain':
     'Spells=' +
       '"1:Detect Magic","1:Disguise Self",' +
@@ -1012,7 +1023,7 @@ MidnightLegacy.RACES = {
     'Features=' +
       '"1:Darkvision","1:Elf Ability Adjustment","1:Elf Skills",' +
       '"1:Fey Ancestry","1:Trance",' +
-      '"1:Danisil Elf Ability Adjustment","1:Danisil Skills",' +
+      '"1:Danisil Ability Adjustment","1:Danisil Skills",' +
       '"1:Danisil Weapon Training","1:Innate Magical Scholar"',
   'Dorn Human':
     'Size=Medium ' +
@@ -1039,7 +1050,7 @@ MidnightLegacy.RACES = {
     'Features=' +
       '"1:Darkvision","1:Elf Ability Adjustment","1:Elf Skills",' +
       '"1:Fey Ancestry","1:Trance",' +
-      '"1:Erunsil Elf Ability Adjustment","1:Erunsil Skills",' +
+      '"1:Erunsil Ability Adjustment","1:Erunsil Skills",' +
       '"1:Erunsil Weapon Training","1:Wraith Of The North"',
   'Gnome':
     'Size=Small ' +
@@ -1053,14 +1064,14 @@ MidnightLegacy.RACES = {
     'Features=' +
       '"1:Darkvision","1:Dwarf Ability Adjustment","1:Dwarf Skills",' +
       '"1:Dwarven Resilience","1:Steady",' +
-      '"1:Kurgun Dwarf Ability Adjustment","1:Kurgun Warrior Training"',
+      '"1:Kurgun Ability Adjustment","1:Kurgun Warrior Training"',
   'Miransil Elf':
     'Size=Medium ' +
     'Speed=35 ' +
     'Features=' +
       '"1:Darkvision","1:Elf Ability Adjustment","1:Elf Skills",' +
       '"1:Fey Ancestry","1:Trance",' +
-      '"1:Miransil Elf Ability Adjustment","1:Miransil Skills",' +
+      '"1:Miransil Ability Adjustment","1:Miransil Skills",' +
       '"1:Miransil Weapon Training","1:Born Of The Sea"',
   'Nomadic Halfling':
     'Size=Small ' +
@@ -1089,7 +1100,7 @@ MidnightLegacy.SPELLS_ADDED = {
     'School=Divination ' +
     'Level=C3,D3,P3 ' +
     'Description=' +
-      '"R200\' Reveals the presence of astiraxes for concentation up to 10 min and allows controlling for a year and a day or inflicting 4d12 HP radiant on those within 10\' (save Wisdom negates, with advantage if possessing an animal, and 3 saves within 24 hr gives immunity to binding by self)"',
+      '"R200\' Reveals the presence of astiraxes for concentation up to 10 min and, for astiraxes within 10\', allows controlling for a year and a day or inflicting 4d12 HP radiant (save Wisdom negates, with advantage if possessing an animal, and 3 saves within 24 hr gives immunity to binding by self)"',
   'Disguise Ally':
     'School=Illusion ' +
     'Level=B2,S2,W2 ' +
@@ -1106,7 +1117,7 @@ MidnightLegacy.SPELLS_ADDED = {
     'Level=D1,R1 ' +
     'AtHigherLevels="allows sensing from any known spot in Erethor" ' +
     'Description=' +
-      '"Reveals the presence of creatures in a 300\' radius and prevents being surprised, even during sleep, while within 1 mile of Erethor for 8 hr"',
+      '"While within 1 mile of Erethor, reveals the presence of creatures in a 300\' radius and prevents being surprised, even during sleep, for 8 hr"',
   'Lifetrap':
     'School=Transmutation ' +
     'Level=D1,R1 ' +
@@ -1118,7 +1129,7 @@ MidnightLegacy.SPELLS_ADDED = {
     'Level=D2,R2 ' +
     'AtHigherLevels="+10\' radius" ' +
     'Description=' +
-      '"R120\' Plants and animals indicate location of hidden creatures, negating cover, for concentration up to 1 min"',
+      '"Plants and animals in a 120\' radius indicate the location of hidden creatures, negating cover, for concentration up to 1 min"',
   'Silver Blood':
     'School=Abjuration ' +
     'Level=B2,S2,W2 ' +
@@ -1130,12 +1141,12 @@ MidnightLegacy.SPELLS_ADDED = {
     'Level=S5,W5 ' +
     'AtHigherLevels="+10\' cone" ' +
     'Description=' +
-      '"70\' cone inflicts 10d4 HP piercing, or 10d8 HP if vulnerable (save Dexterity half)"',
+      '"70\' cone inflicts 10d4 HP piercing, or 10d8 HP if vulnerable to silver (save Dexterity half)"',
   'Silver Wind':
     'School=Conjuration ' +
     'Level=S4,W4 ' +
     'Description=' +
-      '"R200\' 40\' sphere reveals invisible creatures and stuns vulnerable targets (save Constitution ends) for concentration up to 1 min"',
+      '"R200\' 40\' sphere reveals invisible creatures and stuns targets vulnerable to silver (save Constitution ends) for concentration up to 1 min"',
   // Removed
   'Astral Projection':null,
   'Augury':null,
@@ -1316,6 +1327,13 @@ MidnightLegacy.featRulesExtra = function(rules, name) {
   } else if(name == 'Raging Fury') {
     rules.defineRule
       ('spellAttackModifier.S', 'magicNotes.ragingFury', '+', '1');
+  } else if(name.match(/^Sundered Blood/)) {
+    rules.defineRule('features.Sundered Blood', 'features.' + name, '=', '1');
+    let damageType =
+      name.replace('Sundered Blood (', '').replace(')', '').toLowerCase();
+    rules.defineRule('sunderedBloodDamageType',
+      'features.' + name, '=', '"' + damageType + '"'
+    );
   } else if(name == 'Vicious Assault') {
     rules.defineRule
       ('weapons.Unarmed.2', 'combatNotes.viciousAssault', '^', '"1d6"');
