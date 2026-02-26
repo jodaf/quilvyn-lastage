@@ -110,7 +110,7 @@ function MidnightLegacy() {
       delete MidnightLegacy.FEATURES[f];
   }
 
-  MidnightLegacy.abilityRules(rules);
+  MidnightLegacy.abilityRules(rules, SRD5E.ABILITIES);
   MidnightLegacy.combatRules
     (rules, SRD5E.ARMORS, SRD5E.SHIELDS, MidnightLegacy.WEAPONS);
   MidnightLegacy.magicRules(rules, SRD5E.SCHOOLS, MidnightLegacy.SPELLS);
@@ -1194,8 +1194,8 @@ MidnightLegacy.WEAPONS =
   Object.assign({}, SRD5E.WEAPONS, MidnightLegacy.WEAPONS_ADDED);
 
 /* Defines the rules related to character abilities. */
-MidnightLegacy.abilityRules = function(rules) {
-  SRD5E.abilityRules(rules);
+MidnightLegacy.abilityRules = function(rules, abilities) {
+  SRD5E.abilityRules(rules, abilities);
   // No changes needed to the rules defined by base method
 };
 
