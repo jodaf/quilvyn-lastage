@@ -154,7 +154,7 @@ MidnightLegacy.BACKGROUNDS_ADDED = {
        '"Common Clothes","50\' Rope","Basic Tool","Pair Of Shackles" ' + 
     'Features=' +
       '"Skill Proficiency (Athletics; Deception)",' +
-      '"Tool Proficiency (Choose 1 from any Artisan)",' +
+      '"Tool Proficiency (Choose 1 from any Artisan\'s Tools)",' +
       '"Knowledge Of The Enemy"',
   'Freedom Fighter':
     'Equipment=' +
@@ -245,149 +245,149 @@ MidnightLegacy.DEITIES = {
 MidnightLegacy.FEATS_ADDED = {
 
   // Heroic Paths
-  'Lurk':'Type=General,Heroic Require="heroicPath == \'Avenger\'"',
+  'Lurk':'Category=General,Heroic Require="heroicPath == \'Avenger\'"',
   'Silencing Strike':
-    'Type=General,Heroic Require="level >= 4",features.Lurk',
+    'Category=General,Heroic Require="level >= 4",features.Lurk',
   'Study The Target':
-    'Type=General,Heroic Require="level >= 8","features.Silencing Strike"',
+    'Category=General,Heroic Require="level >= 8","features.Silencing Strike"',
   'Deadly Strike':
-    'Type=General,Heroic Require="level >= 12","features.Study The Target"',
+    'Category=General,Heroic Require="level >= 12","features.Study The Target"',
   'Unseen Lurker':
-    'Type=General,Heroic Require="level >= 16","features.Deadly Strike"',
-  'Wild Resilience':'Type=General,Heroic Require="heroicPath == \'Beastborn\'"',
+    'Category=General,Heroic Require="level >= 16","features.Deadly Strike"',
+  'Wild Resilience':'Category=General,Heroic Require="heroicPath == \'Beastborn\'"',
   'Vicious Assault':
-    'Type=General,Heroic Require="level >= 4","features.Wild Resilience"',
+    'Category=General,Heroic Require="level >= 4","features.Wild Resilience"',
   'Pack Alpha':
-    'Type=General,Heroic Require="level >= 8","features.Vicious Assault"',
+    'Category=General,Heroic Require="level >= 8","features.Vicious Assault"',
   'Wild Sense':
-    'Type=General,Heroic Require="level >= 12","features.Pack Alpha"',
+    'Category=General,Heroic Require="level >= 12","features.Pack Alpha"',
   'Apex Predator':
-    'Type=General,Heroic Require="level >= 16","features.Wild Sense"',
-  'Inspiring Faith':'Type=General,Heroic Require="heroicPath == \'Believer\'"',
+    'Category=General,Heroic Require="level >= 16","features.Wild Sense"',
+  'Inspiring Faith':'Category=General,Heroic Require="heroicPath == \'Believer\'"',
   'Courage Of Your Convictions':
-    'Type=General,Heroic Require="level >= 4","features.Inspiring Faith"',
+    'Category=General,Heroic Require="level >= 4","features.Inspiring Faith"',
   'Bulwark Of Faith':
-    'Type=General,Heroic ' +
+    'Category=General,Heroic ' +
     'Require="level >= 8","features.Courage Of Your Convictions"',
   'Holy Terror':
-    'Type=General,Heroic Require="level >= 12","features.Bulwark Of Faith"',
+    'Category=General,Heroic Require="level >= 12","features.Bulwark Of Faith"',
   'Strength Of Faith':
-    'Type=General,Heroic Require="level >= 16","features.Holy Terror"',
-  'Channeled Magic':'Type=General,Heroic Require="heroicPath == \'Channeler\'"',
+    'Category=General,Heroic Require="level >= 16","features.Holy Terror"',
+  'Channeled Magic':'Category=General,Heroic Require="heroicPath == \'Channeler\'"',
   'Masterful Focus':
-    'Type=General,Heroic Require="level >= 4","features.Channeled Magic"',
+    'Category=General,Heroic Require="level >= 4","features.Channeled Magic"',
   'Mind Within The Weave':
-    'Type=General,Heroic Require="level >= 8","features.Masterful Focus"',
+    'Category=General,Heroic Require="level >= 8","features.Masterful Focus"',
   'The Eye Opens':
-    'Type=General,Heroic ' +
+    'Category=General,Heroic ' +
     'Require="level >= 12","features.Mind Within The Weave"',
   'The Channeling':
-    'Type=General,Heroic Require="level >= 16","features.The Eye Opens"',
-  'Conduit':'Type=General,Heroic Require="heroicPath == \'Dragonblooded\'"',
-  'Pure Magic':'Type=General,Heroic Require="level >= 4",features.Conduit',
+    'Category=General,Heroic Require="level >= 16","features.The Eye Opens"',
+  'Conduit':'Category=General,Heroic Require="heroicPath == \'Dragonblooded\'"',
+  'Pure Magic':'Category=General,Heroic Require="level >= 4",features.Conduit',
   'Intimidating Presence (Dragonblooded)':
-    'Type=General,Heroic Require="level >= 8","features.Pure Magic"',
+    'Category=General,Heroic Require="level >= 8","features.Pure Magic"',
   'Fireheart':
-    'Type=General,Heroic ' +
+    'Category=General,Heroic ' +
     'Require="level >= 12","features.Intimidating Presence (Dragonblooded)"',
-  'Raging Fury':'Type=General,Heroic Require="level >= 16",features.Fireheart',
+  'Raging Fury':'Category=General,Heroic Require="level >= 16",features.Fireheart',
   'One With The Earth':
-    'Type=General,Heroic Require="heroicPath == \'Earthblooded\'"',
+    'Category=General,Heroic Require="heroicPath == \'Earthblooded\'"',
   'Nexus Affinity':
-    'Type=General,Heroic Require="level >= 4","features.One With The Earth"',
+    'Category=General,Heroic Require="level >= 4","features.One With The Earth"',
   'Avatar Of Aryth':
-    'Type=General,Heroic Require="level >= 8","features.Nexus Affinity"',
+    'Category=General,Heroic Require="level >= 8","features.Nexus Affinity"',
   'Rooted':
-    'Type=General,Heroic Require="level >= 12","features.Avatar Of Aryth"',
-  'Nexus Guardian':'Type=General,Heroic Require="level >= 16",features.Rooted',
-  'Guard':'Type=General,Heroic Require="heroicPath == \'Guardian\'"',
-  'Crucial Strike':'Type=General,Heroic Require="level >= 4",features.Guard',
+    'Category=General,Heroic Require="level >= 12","features.Avatar Of Aryth"',
+  'Nexus Guardian':'Category=General,Heroic Require="level >= 16",features.Rooted',
+  'Guard':'Category=General,Heroic Require="heroicPath == \'Guardian\'"',
+  'Crucial Strike':'Category=General,Heroic Require="level >= 4",features.Guard',
   'Tactical Direction':
-    'Type=General,Heroic Require="level >= 8","features.Crucial Strike"',
+    'Category=General,Heroic Require="level >= 8","features.Crucial Strike"',
   'Warding Presence':
-    'Type=General,Heroic Require="level >= 12","features.Tactical Direction"',
+    'Category=General,Heroic Require="level >= 12","features.Tactical Direction"',
   'For Victory!':
-    'Type=General,Heroic Require="level >= 16","features.Warding Presence"',
-  'Hard To Kill':'Type=General,Heroic Require="heroicPath == \'Ironborn\'"',
+    'Category=General,Heroic Require="level >= 16","features.Warding Presence"',
+  'Hard To Kill':'Category=General,Heroic Require="heroicPath == \'Ironborn\'"',
   'Tough As Iron':
-    'Type=General,Heroic Require="level >= 4","features.Hard To Kill"',
+    'Category=General,Heroic Require="level >= 4","features.Hard To Kill"',
   'Indefatigable':
-    'Type=General,Heroic Require="level >= 8","features.Tough As Iron"',
+    'Category=General,Heroic Require="level >= 8","features.Tough As Iron"',
   'Quick Recovery':
-    'Type=General,Heroic Require="level >= 12",features.Indefatigable',
+    'Category=General,Heroic Require="level >= 12",features.Indefatigable',
   'Unbroken':
-    'Type=General,Heroic Require="level >= 16","features.Quick Recovery"',
-  'Folk Medicine':'Type=General,Heroic Require="heroicPath == \'Preserver\'"',
+    'Category=General,Heroic Require="level >= 16","features.Quick Recovery"',
+  'Folk Medicine':'Category=General,Heroic Require="heroicPath == \'Preserver\'"',
   'Resourceful':
-    'Type=General,Heroic Require="level >= 4","features.Folk Medicine"',
+    'Category=General,Heroic Require="level >= 4","features.Folk Medicine"',
   'Skilled Healer':
-    'Type=General,Heroic Require="level >= 8",features.Resourceful',
+    'Category=General,Heroic Require="level >= 8",features.Resourceful',
   'Acts Of Service':
-    'Type=General,Heroic Require="level >= 12","features.Skilled Healer"',
+    'Category=General,Heroic Require="level >= 12","features.Skilled Healer"',
   'Reassuring Presence':
-    'Type=General,Heroic Require="level >= 16","features.Acts Of Service"',
-  'Well-Spoken':'Type=General,Heroic Require="heroicPath == \'Speaker\'"',
+    'Category=General,Heroic Require="level >= 16","features.Acts Of Service"',
+  'Well-Spoken':'Category=General,Heroic Require="heroicPath == \'Speaker\'"',
   'Crowd Rouser':
-    'Type=General,Heroic Require="level >= 4",features.Well-Spoken',
+    'Category=General,Heroic Require="level >= 4",features.Well-Spoken',
   'Rallying Cry':
-    'Type=General,Heroic Require="level >= 8","features.Crowd Rouser"',
+    'Category=General,Heroic Require="level >= 8","features.Crowd Rouser"',
   'Scathing Rebuke':
-    'Type=General,Heroic Require="level >= 12","features.Rallying Cry"',
+    'Category=General,Heroic Require="level >= 12","features.Rallying Cry"',
   'Changed To The Core':
-    'Type=General,Heroic Require="level >= 16","features.Scathing Rebuke"',
-  'Fallen Sense':'Type=General,Heroic Require="heroicPath == \'Sunderborn\'"',
+    'Category=General,Heroic Require="level >= 16","features.Scathing Rebuke"',
+  'Fallen Sense':'Category=General,Heroic Require="heroicPath == \'Sunderborn\'"',
   'Sundered Blood (Acid)':
-    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+    'Category=General,Heroic Require="level >= 4","features.Fallen Sense"',
   'Sundered Blood (Cold)':
-    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+    'Category=General,Heroic Require="level >= 4","features.Fallen Sense"',
   'Sundered Blood (Fire)':
-    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+    'Category=General,Heroic Require="level >= 4","features.Fallen Sense"',
   'Sundered Blood (Lightning)':
-    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+    'Category=General,Heroic Require="level >= 4","features.Fallen Sense"',
   'Sundered Blood (Necrotic)':
-    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+    'Category=General,Heroic Require="level >= 4","features.Fallen Sense"',
   'Sundered Blood (Psychic)':
-    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+    'Category=General,Heroic Require="level >= 4","features.Fallen Sense"',
   'Sundered Blood (Radiant)':
-    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+    'Category=General,Heroic Require="level >= 4","features.Fallen Sense"',
   'Sundered Blood (Thunder)':
-    'Type=General,Heroic Require="level >= 4","features.Fallen Sense"',
+    'Category=General,Heroic Require="level >= 4","features.Fallen Sense"',
   'Sundered Fury':
-    'Type=General,Heroic Require="level >= 8","features.Sundered Blood"',
+    'Category=General,Heroic Require="level >= 8","features.Sundered Blood"',
   'Ethereal Presence':
-    'Type=General,Heroic Require="level >= 12","features.Sundered Fury"',
+    'Category=General,Heroic Require="level >= 12","features.Sundered Fury"',
   'Sundered Form':
-    'Type=General,Heroic Require="level >= 12","features.Ethereal Presence"',
-  'Natural Bond':'Type=General,Heroic Require="heroicPath == \'Wildblooded\'"',
+    'Category=General,Heroic Require="level >= 12","features.Ethereal Presence"',
+  'Natural Bond':'Category=General,Heroic Require="heroicPath == \'Wildblooded\'"',
   'Wild Companion':
-    'Type=General,Heroic Require="level >= 4","features.Natural Bond"',
+    'Category=General,Heroic Require="level >= 4","features.Natural Bond"',
   'Pack Fighter':
-    'Type=General,Heroic Require="level >= 8","features.Wild Companion"',
+    'Category=General,Heroic Require="level >= 8","features.Wild Companion"',
   'Friends Until The End':
-    'Type=General,Heroic Require="level >= 12","features.Pack Fighter"',
+    'Category=General,Heroic Require="level >= 12","features.Pack Fighter"',
   'The Wild Hunt':
-    'Type=General,Heroic ' +
+    'Category=General,Heroic ' +
     'Require="level >= 16","features.Friends Until The End"',
 
   // General Feats
-  'Battlefield Healer':'Type=General',
-  'Brawler':'Type=General',
-  'Captor':'Type=General',
-  'Fellhunter':'Type=General',
-  'Harrier':'Type=General',
-  'Improvised Fighter':'Type=General',
-  'Knife Fighter':'Type=General',
-  'Learned':'Type=General',
-  'Paranoid':'Type=General',
-  'Polyglot':'Type=General',
-  'Scavenger':'Type=General',
-  'Seamaster':'Type=General',
+  'Battlefield Healer':'Category=General',
+  'Brawler':'Category=General',
+  'Captor':'Category=General',
+  'Fellhunter':'Category=General',
+  'Harrier':'Category=General',
+  'Improvised Fighter':'Category=General',
+  'Knife Fighter':'Category=General',
+  'Learned':'Category=General',
+  'Paranoid':'Category=General',
+  'Polyglot':'Category=General',
+  'Scavenger':'Category=General',
+  'Seamaster':'Category=General',
   'Shieldwall Soldier':
-    'Type=General ' +
+    'Category=General ' +
     'Require="armorProficiency.Medium || armorProficiency.Heavy","constitution >= 13"',
-  'Subtle Spellcaster':'Type=General',
-  'Suspicious':'Type=General',
-  'Unremarkable':'Type=General'
+  'Subtle Spellcaster':'Category=General',
+  'Suspicious':'Category=General',
+  'Unremarkable':'Category=General'
 
 };
 MidnightLegacy.FEATS =
@@ -410,7 +410,7 @@ MidnightLegacy.FEATURES_ADDED = {
   // Erenlander
   'Erenlander Skills':
     'Section=skill ' +
-    'Note="Skill Proficiency (Choose 2 from any)/Tool Proficiency (Land Vehicles; Choose 1 from any Artisan)"',
+    'Note="Skill Proficiency (Choose 2 from any)/Tool Proficiency (Land Vehicles; Choose 1 from any Artisan\'s Tools)"',
   // Sarcosan
   'Sarcosan Ability Adjustment':'Section=ability Note="+1 Dexterity"',
   'Sarcosan Skills':
@@ -453,7 +453,10 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Skill Proficiency (Perception; Stealth)/Language (Erenlander; Choose 1 from Trader\'s Tongue, Old Dwarven, Orcish)"',
   'Caransil Weapon Training':
     'Section=combat Note="Weapon Proficiency (Longbow; Longsword)"',
-  'Innate Magic User':'Section=magic Note="Knows 1 Sorcerer cantrip"',
+  'Innate Magic User':
+    'Section=magic ' +
+    'Note="Knows 1 Sorcerer cantrip" ' +
+    'SpellAbility=Charisma',
   // Danisil
   'Danisil Ability Adjustment':'Section=ability Note="+1 Intelligence"',
   'Danisil Skills':
@@ -461,7 +464,10 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Skill Proficiency (History)/Language (Choose 1 from Sylvan, Halfling)"',
   'Danisil Weapon Training':
     'Section=combat Note="Weapon Proficiency (Scimitar; Shortbow)"',
-  'Innate Magical Scholar':'Section=magic Note="Knows 2 Wizard cantrips"',
+  'Innate Magical Scholar':
+    'Section=magic ' +
+    'Note="Knows 2 Wizard cantrips" ' +
+    'SpellAbility=Intelligence',
   // Erunsil
   'Erunsil Ability Adjustment':'Section=ability Note="+1 Strength"',
   'Erunsil Skills':
@@ -544,7 +550,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Successful Stealth vs. passive Perception makes self unnoticed and gives advantage on Perception to overhear nearby conversations"',
   'Silencing Strike':
     'Section=combat ' +
-    'Note="Melee hit silences the target for 1 min (save DC %{8+proficiencyBonus+intelligenceModifier} Constitution negates) once per short rest"',
+    'Note="Melee hit silences the target (save DC %{8+proficiencyBonus+intelligenceModifier} Constitution negates) for 1 min once per short rest"',
   'Study The Target':
     'Section=ability,skill ' +
     'Note=' +
@@ -566,7 +572,7 @@ MidnightLegacy.FEATURES_ADDED = {
   'Pack Alpha':
     'Section=combat,skill ' +
     'Note=' +
-      '"Can frighten beasts in a 30\' radius (save DC %{8+proficiencyBonus+strengthModifier} Wisdom ends)",' +
+      '"R30\' Can frighten beasts (save DC %{8+proficiencyBonus+strengthModifier} Wisdom negates; additional saves each rd end)",' +
       '"Has advantage on Animal Handling with predatory beasts"',
   'Vicious Assault':
     'Section=ability,combat,combat ' +
@@ -583,7 +589,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=feature,skill ' +
     'Note=' +
       '"Has the Darkvision feature",' +
-      '"Can sense invisible foes"',
+      '"Can use smell and hearing to sense invisible foes"',
 
   // Believer
   'Bulwark Of Faith':
@@ -593,12 +599,11 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Has advantage vs. the spell effects of celestials, fiends, undead, and Shadow agents"',
   'Courage Of Your Convictions':
     'Section=combat ' +
-    'Note="R50\' Can use inspiration and a bonus action to remove charmed, frightened, paralyzed, or stunned from self and allies"',
+    'Note="R50\' Can use a bonus action and expend inspiration to remove charmed, frightened, paralyzed, or stunned from self and allies"',
   'Holy Terror':
     'Section=combat ' +
-    'Note="R30\' Can use inspiration to turn foes (save DC %{8+wisdomModifier+proficiencyBonus} Wisdom negates; damage ends) for 1 min"',
-  'Inspiring Faith':
-    'Section=feature Note="Gains inspiration after a short rest"',
+    'Note="R30\' Can expend inspiration to turn foes (save DC %{8+wisdomModifier+proficiencyBonus} Wisdom negates) for 1 min or until damaged"',
+  'Inspiring Faith':'Section=feature Note="Gains inspiration after a rest"',
   'Strength Of Faith':
     'Section=ability,save ' +
     'Note=' +
@@ -607,8 +612,10 @@ MidnightLegacy.FEATURES_ADDED = {
 
   // Channeler
   'Channeled Magic':
-    'Section=magic ' +
-    'Note="+%V %1 spell slot%{magicNotes.channeledMagic>1?\'s\':\'\'}"',
+    'Section=magic,magic ' +
+    'Note=' +
+      '"+%V %1 spell slot%{magicNotes.channeledMagic>1?\'s\':\'\'}",' +
+      '"Regains %{magicNotes.channeledMagic} %{magicNotes.channeledMagic.1} spell slot%{magicNotes.channeledMagic>1?\'s\':\'\'} after a short rest"',
   'Masterful Focus':
     'Section=ability,save ' +
     'Note=' +
@@ -619,12 +626,12 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Can maintain concentration on two spells simultaneously"',
   'The Channeling':
     'Section=magic ' +
-    'Note="Can spend a level 1 spell slot to change a spell\'s damage type, a level 2 spell slot to reroll 1s and 2s on a spell\'s damage dice, or a level 3 spell slot to give 3 spell targets disadvantage on their first saves"',
+    'Note="Can expend a level 1 spell slot to change a spell\'s damage type, a level 2 spell slot to reroll 1s and 2s on a spell\'s damage dice, or a level 3 spell slot to give 3 spell targets disadvantage on their initial saves vs. a self spell"',
   'The Eye Opens':
     'Section=ability,magic ' +
     'Note=' +
       '"+1 Wisdom",' +
-      '"Can cast self <i>True Seeing</i> 3 times per long rest" ' +
+      '"Can cast self <i>True Seeing</i> without expending a spell slot 3 times per long rest" ' +
     'Spells="True Seeing"',
 
   // Dragonblooded
@@ -633,23 +640,23 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=magic,save ' +
     'Note=' +
       '"Can reroll fire spell damage",' +
-      '"Has resistance to fire damage"',
+      '"Has resistance to fire"',
   'Intimidating Presence (Dragonblooded)':
     'Section=ability,magic ' +
     'Note=' +
       '"+1 Charisma",' +
-      '"R30\' Casting a spell frightens foes (save Wisdom negates) for 1 rd"',
+      '"R30\' Casting a spell frightens foes (save Wisdom negates) until the end of the next turn"',
   'Pure Magic':'Section=magic Note="+1 spell attack and save DC"',
   'Raging Fury':
     'Section=magic,magic ' +
     'Note=' +
       '"+1 spell attack and save DC",' +
-      '"Can use a bonus action to cast a 1 action spell"',
+      '"Can use a bonus action to cast a 1-action spell"',
 
   // Earthblooded
   'Avatar Of Aryth':
     'Section=magic ' +
-    'Note="Can use <i>Conjure Elemental</i> effects to summon a friendly earth elemental once per long rest" ' +
+    'Note="Can cast <i>Conjure Elemental</i> without expending a spell slot to summon an earth elemental once per long rest; it remains friendly if concentration is lost" ' +
     'Spells="Conjure Elemental"',
   'Nexus Affinity':
     'Section=ability,feature,skill ' +
@@ -669,14 +676,14 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,combat ' +
     'Note=' +
       '"+1 Constitution",' +
-      '"Cannot be unwillingly moved or knocked prone, and has advantage on grappling and restraint checks and saves"',
+      '"Cannot be unwillingly moved or knocked prone and has advantage on grappling and restraint checks and saves"',
 
   // Guardian
   'Crucial Strike':
     'Section=ability,combat ' +
     'Note=' +
       '"+1 Charisma",' +
-      '"Can use a reaction to give an ally an additional attack with +%{proficiencyBonus} damage"',
+      '"Can use a reaction during an ally\'s turn to give it an additional attack with +%{proficiencyBonus} damage"',
   'For Victory!':
     'Section=ability,combat ' +
     'Note=' +
@@ -684,7 +691,7 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Successful DC 15 Charisma gives allies +%{proficiencyBonus} attack and damage when within 30\' for 1 min once per long rest"',
   'Guard':
     'Section=combat ' +
-    'Note="Can use a bonus action to give an adjacent ally +1 armor class, or +2 if self holds a shield"',
+    'Note="Can use a bonus action to give an adjacent ally +1 Armor Class, or +2 if self holds a shield, until the start of the next turn"',
   'Tactical Direction':
     'Section=combat ' +
     'Note="Can take 1 on an initiative roll to give each ally a bonus action on their first turn to Attack, Dash, or Disengage"',
@@ -695,13 +702,13 @@ MidnightLegacy.FEATURES_ADDED = {
   // Ironborn
   'Hard To Kill':
     'Section=save ' +
-    'Note="Death saves succeed on a roll of 6 or higher, and 16 or higher restore 1 hit point"',
+    'Note="Death saves succeed on a roll of 6 or higher, and a 16 or higher restores 1 hit point/Has vulnerability to a choice of acid, blood-forged iron, bronze, cold, fire, lightning, obsidian, or silver"',
   'Indefatigable':
     'Section=ability,ability,save ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Constitution, Strength)",' +
       '"Suffers no disadvantage on Constitution or Strength checks due to exhaustion",' +
-      '"Finishing a short rest reduces exhaustion by 1, or by 2 with a successful DC 15 Constitution check"',
+      '"Finishing a rest reduces exhaustion by 1, or by 2 with a successful DC 15 Constitution check"',
   'Quick Recovery':
     'Section=ability,combat ' +
     'Note=' +
@@ -709,7 +716,7 @@ MidnightLegacy.FEATURES_ADDED = {
       '"Can use a bonus action and suffer 1 level of exhaustion to spend Hit Dice to regain hit points"',
   'Tough As Iron':
     'Section=combat ' +
-    'Note="Can reduce damage suffered by %{(level/3+1)<?6} HP for 10 min; suffers 1 level of exhaustion afterward"',
+    'Note="Can reduce non-vulnerability damage suffered by %{(level/3+1)<?6} HP for 10 min; suffers 1 level of exhaustion afterward"',
   'Unbroken':
     'Section=combat ' +
     'Note="Can suffer 1 level of exhaustion to negate taking damage"',
@@ -719,11 +726,11 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,combat,skill ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Strength, Wisdom)",' +
-      '"Has advantage on attacks on foes adjacent to an incapacitated ally, and those foes suffer disadvantage on attacks on those allies",' +
+      '"Foes suffer disadvantage when attacking an adjacent, incapacitated ally, and self has advantage on attacks on foes adjacent to that ally",' +
       '"Can spend 2 uses of healer\'s kit to reduce exhaustion by 1 or to end an effect that reduces an ability score or hit point maximum"',
   'Folk Medicine':
     'Section=skill ' +
-    'Note="Can restore 1d6+%{wisdomModifier} hit points per use of a healer\'s kit"',
+    'Note="Can use a healer\'s kit to restore up to %{proficiencyBonus}d6+%{wisdomModifier} hit points, expending 1 use of the kit per d6"',
   'Reassuring Presence':
     'Section=ability,combat ' +
     'Note=' +
@@ -733,7 +740,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,skill ' +
     'Note=' +
       '"+1 Wisdom",' +
-      '"At the end of a long rest, can restore 1d6+1 uses of a healer\'s kit or create a kit with 1d4+1 uses"',
+      '"At the end of a long rest, can restore 1d6+1 uses of a healer\'s kit or create a kit that contains 1d4+1 uses"',
   'Skilled Healer':
     'Section=skill ' +
     'Note="Can spend 1 healer\'s kit use to remove blindness, deafness, paralysis, or poison or to give advantage on the target\'s next Constitution save vs. disease"',
@@ -741,7 +748,7 @@ MidnightLegacy.FEATURES_ADDED = {
   // Speaker
   'Changed To The Core':
     'Section=combat ' +
-    'Note="R50\' Successful Persuasion vs. Insight causes the target foe with up to %{level//2} Hit Dice to switch sides, or to flee if it has %{level//2+1}+ Hit Dice, once per long rest"',
+    'Note="R50\' Successful Persuasion vs. Insight causes the target foe with up to %{level//2} Hit Dice to switch sides, or to flee if it has at least %{level//2+1} Hit Dice, once per long rest"',
   'Crowd Rouser':
     'Section=skill ' +
     'Note="R50\' Can charm and convince listeners (save DC %{8+charismaModifier+proficiencyBonus} Wisdom negates) for 1 week once per short rest"',
@@ -752,28 +759,46 @@ MidnightLegacy.FEATURES_ADDED = {
       '"R50\' Successful DC 15 Persuasion gives allies %{level} temporary hit points once per long rest"',
   'Scathing Rebuke':
     'Section=skill ' +
-    'Note="R50\' Successful Intimidation vs. Insight stuns the target for 1 min (damage ends) 3 times per long rest"',
+    'Note="R50\' Successful Intimidation vs. Insight stuns the target for 1 min or until damaged 3 times per long rest"',
   'Well-Spoken':
     'Section=skill,skill ' +
     'Note=' +
       '"Skill Proficiency (Deception; Intimidation; Persuasion)",' +
-      '"+%{proficiencyBonus} on %{level<5?\'1 choice from \':level<10?\'2 choices from \':\'\'}Deception, Intimidation, and Persuasion"',
+      '"Expertise (Choose %V from Deception, Intimidation, Persuasion)"',
 
   // Sunderborn
   'Ethereal Presence':
-    'Section=magic ' +
-    'Note="Can spend 1 Hit Die and use a bonus action to become ethereal for up to 1 min"',
+    'Section=combat ' +
+    'Note="Can use a bonus action and expend 1 Hit Die to become ethereal, allowing passage through solid objects and gaining immunity to all effects from non-ethereal creatures, for up to 1 min"',
   'Fallen Sense':
     'Section=ability,skill ' +
     'Note=' +
       '"Ability Boost (Choose 1 from any)",' +
       '"R60\' Knows the location and type of Fallen, and can communicate with a chosen Fallen for concentration up to 1 hr"',
-  'Sundered Blood':
+  'Sundered Blood (Acid)':
+    'Section=save Note="Has %{level<12?\'resistance\':\'immunity\'} to acid"',
+  'Sundered Blood (Cold)':
+    'Section=save Note="Has %{level<12?\'resistance\':\'immunity\'} to cold"',
+  'Sundered Blood (Fire)':
+    'Section=save Note="Has %{level<12?\'resistance\':\'immunity\'} to fire"',
+  'Sundered Blood (Lightning)':
     'Section=save ' +
-    'Note="Has %{level<12?\'resistance\':\'immunity\'} to %{sunderedBloodDamageType}"',
+    'Note="Has %{level<12?\'resistance\':\'immunity\'} to lightning"',
+  'Sundered Blood (Necrotic)':
+    'Section=save ' +
+    'Note="Has %{level<12?\'resistance\':\'immunity\'} to necrotic"',
+  'Sundered Blood (Psychic)':
+    'Section=save ' +
+    'Note="Has %{level<12?\'resistance\':\'immunity\'} to psychic"',
+  'Sundered Blood (Radiant)':
+    'Section=save ' +
+    'Note="Has %{level<12?\'resistance\':\'immunity\'} to radiant"',
+  'Sundered Blood (Thunder)':
+    'Section=save ' +
+    'Note="Has %{level<12?\'resistance\':\'immunity\'} to thunder"',
   'Sundered Form':
     'Section=magic ' +
-    'Note="Can spend 8 Hit Dice and use a bonus action to assume a Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and create a 30\' radius that inflicts 10 HP %{sunderedBloodDamageType} on foes"',
+    'Note="Can use a bonus action and expend 8 Hit Dice to assume a Fallen form, gain resistance to nonmagical bludgeoning, piercing, and slashing damage, and create a 30\' radius that inflicts 10 HP %{sunderedBloodDamageType} on foes"',
   'Sundered Fury':
     'Section=ability,combat ' +
     'Note=' +
@@ -785,17 +810,17 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=ability,combat ' +
     'Note=' +
       '"Ability Boost (Choose 1 from Dexterity, Strength)",' +
-      '"Can use a reaction to redirect damage suffered by adjacent wild companion to self, and wild companion guards self when incapacitated"',
+      '"Can use a reaction to redirect damage suffered by adjacent wild companion to self, and wild companion protects self when incapacitated"',
   'Natural Bond':
     'Section=skill ' +
-    'Note="Animals treat self as a friend (save DC %{8+proficiencyBonus+wisdomModifier} Wisdom negates)"',
+    'Note="Beasts treat self as a friend (save DC %{8+proficiencyBonus+wisdomModifier} Wisdom negates)"',
   'Pack Fighter':
     'Section=ability,combat ' +
     'Note=' +
       '"+1 Wisdom",' +
       '"Adjacent wild companion can attack simultaneously with self"',
   'The Wild Hunt':
-    'Section=magic ' +
+    'Section=combat ' +
     'Note="Can summon 1 Huge CR 4, 2 Large CR 2, or 4 Medium CR 1 beasts to assist self for 10 min or until reduced to 10 hit points"',
   'Wild Companion':
     'Section=feature ' +
@@ -838,18 +863,18 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Can use a bonus action to make a DC 12 Religion check once per long rest; success gives self advantage on saves vs. undead and inflicts disadvantage on undead\'s saves vs. self for 1 min"',
   'Harrier':
     'Section=combat ' +
-    'Note="30\' mounted move negates foe opportunity attacks and causes successful melee attacks to knock prone"',
+    'Note="30\' mounted move negates foe opportunity attacks and causes successful melee attacks to knock prone until the end of the turn"',
   'Improvised Fighter':
     'Section=combat,combat ' +
     'Note=' +
-      '"Weapon Proficiency (Improvised)/Improvised weapons inflict 1d6 damage",' +
-      '"Can destroy an improvised weapon to gain +1 damage die"',
+      '"Weapon Proficiency (Improvised Weapons)",' +
+      '"Improvised weapons inflict 1d6 damage; can destroy one to gain +1 damage die"',
   'Knife Fighter':
     'Section=ability,combat ' +
     'Note=' +
       '"+1 Dexterity",' +
       // errata changes "combat checks" to "attack rolls"
-      '"Dagger crits on a roll of 18-20, and a critical hit inflicts disadvantage on attacks for 1 rd"',
+      '"Dagger crits on a roll of 18-20, and a critical hit with one inflicts disadvantage on attacks until the end of the target\'s next turn"',
   'Learned':
     'Section=skill,skill ' +
     'Note=' +
@@ -877,7 +902,7 @@ MidnightLegacy.FEATURES_ADDED = {
     'Note="Adjacent allies gain +1 armor class, or +2 if self holds a shield"',
   'Subtle Spellcaster':
     'Section=magic ' +
-    'Note="Can cast 2 chosen level 1 bard, druid, sorcerer, or wizard spells once per long rest/Successful Sleight Of Hand vs. passive Perception allows casting spells unnoticed"',
+    'Note="Can cast 2 chosen level 1 bard, druid, sorcerer, or wizard spells without expending a spell slot once per long rest/Successful Sleight Of Hand vs. passive Perception allows casting spells unnoticed"',
   'Suspicious':
     'Section=ability,skill,skill ' +
     'Note=' +
@@ -901,7 +926,7 @@ MidnightLegacy.FEATURES_ADDED = {
   "Dark God's Blessing":
     'Section=combat ' +
     // errata adds sentient
-    'Note="Killing a creature with 1+ Hit Dice restores %{level<10?2:4}d6 hit points to self"',
+    'Note="Killing a creature with at least 1 Hit Die restores %{level<10?2:4}d6 hit points to self"',
   'Dominate Undead':
     'Section=combat ' +
     'Note="R30\' Can use Channel Energy to control undead (save Wisdom negates) for 1 hr"',
@@ -913,10 +938,9 @@ MidnightLegacy.FEATURES_ADDED = {
       '"7:Blight","7:Phantasmal Killer",' +
       '"9:Cloudkill","9:Contagion"',
   'Necromantic Arts':
-    'Section=magic Note="Knows the <i>Chill Touch</i> cantrip" ' +
     'Spells="Chill Touch"',
-  'Potent Spellcasting': // ref PHB5E
-    'Section=magic Note="+%{wisdomModifier} HP Cleric cantrip damage"',
+  'Potent Spellcasting': // ref PHB5E, but any cantrip
+    'Section=magic Note="Cantrips inflict +%{wisdomModifier} HP"',
   // Soldier Legate
   'Bestial Astirax Servant':
     'Section=feature ' +
@@ -949,7 +973,8 @@ MidnightLegacy.FEATURES_ADDED = {
     'Section=combat ' +
     'Note="Weapon Proficiency (Halberd; Longsword; Rapier; Shortsword)"',
   'Impervious To Magic':
-     'Section=magic Note="Can use a reaction to cast <i>Counterspell</i>" ' +
+     'Section=magic ' +
+     'Note="Can use a reaction to cast <i>Counterspell</i> without expending a spell slot" ' +
      'Spells=Counterspell',
   'Improved Astirax Bond':
     'Section=feature ' +
@@ -1276,9 +1301,6 @@ MidnightLegacy.classRulesExtra = function(rules, name) {
       'features.Keeper Of Obsidian Domain', '=', '1'
     );
     rules.defineRule('deity', classLevel, '=', '"Izrador"');
-    rules.defineRule('combatNotes.mageHunter', // Italics noop
-      'combatNotes.masterMageHunter', '+', 'null'
-    );
   }
 };
 
@@ -1289,9 +1311,10 @@ MidnightLegacy.classRulesExtra = function(rules, name) {
 MidnightLegacy.featRulesExtra = function(rules, name) {
   if(name == 'Apex Predator') {
     rules.defineRule
-      ('weapons.Unarmed.2', 'combatNotes.viciousAssault', '^', '"1d8"');
+      ('weapons.Unarmed Strike.2', 'combatNotes.viciousAssault', '^', '"1d8"');
   } else if(name == 'Brawler') {
-    rules.defineRule('weapons.Unarmed.2', 'combatNotes.brawler', '^', '"1d4"');
+    rules.defineRule
+      ('weapons.Unarmed Strike.2', 'combatNotes.brawler', '^', '"1d4"');
   } else if(name == 'Channeled Magic') {
     rules.defineRule
       ('magicNotes.channeledMagic', 'level', '=', 'source<10 ? 1 : 2');
@@ -1314,29 +1337,26 @@ MidnightLegacy.featRulesExtra = function(rules, name) {
       });
     });
   } else if(name == 'Conduit') {
-    rules.defineRule('spellSlots.S0', 'magicNotes.conduit', '+=', '2');
-  } else if(name == 'Improvised Fighter') {
-    SRD5E.weaponRules
-      (rules, 'Improvised', 'Simple Melee', ['Thrown'], '1d4', '20/60');
-    rules.defineRule
-      ('weapons.Improvised', 'combatNotes.improvisedFighter', '=', '1');
-    rules.defineRule
-      ('weapons.Improvised.2', 'combatNotes.improvisedFighter', '^=', '"1d6"');
+    rules.defineRule('spellsAvailable.S0', 'magicNotes.conduit', '+=', '2');
   } else if(name == 'Pure Magic') {
     rules.defineRule('spellAttackModifier.S', 'magicNotes.pureMagic', '+', '1');
   } else if(name == 'Raging Fury') {
     rules.defineRule
       ('spellAttackModifier.S', 'magicNotes.ragingFury', '+', '1');
   } else if(name.match(/^Sundered Blood/)) {
-    rules.defineRule('features.Sundered Blood', 'features.' + name, '=', '1');
     let damageType =
       name.replace('Sundered Blood (', '').replace(')', '').toLowerCase();
+    rules.defineRule('features.Sundered Blood', 'features.' + name, '=', '1');
     rules.defineRule('sunderedBloodDamageType',
       'features.' + name, '=', '"' + damageType + '"'
     );
   } else if(name == 'Vicious Assault') {
     rules.defineRule
-      ('weapons.Unarmed.2', 'combatNotes.viciousAssault', '^', '"1d6"');
+      ('weapons.Unarmed Strike.2', 'combatNotes.viciousAssault', '^', '"1d6"');
+  } else if(name == 'Well-Spoken') {
+    rules.defineRule('skillNotes.well-Spoken-1',
+      'level', '=', 'source<5 ? null : source<10 ? 1 : source<15 ? 2 : 3'
+    );
   } else if(name == 'Wild Sense') {
     rules.defineRule('features.Darkvision', 'featureNotes.wildSense', '=', '1');
   }
@@ -1363,10 +1383,10 @@ MidnightLegacy.heroicPathRulesExtra = function(rules, name) {
 MidnightLegacy.raceRulesExtra = function(rules, name) {
   if(name == 'Caransil Elf')
     rules.defineRule
-      ('spellSlots.S0', 'magicNotes.innateMagicUser', '+=', '1');
+      ('spellsAvailable.S0', 'magicNotes.innateMagicUser', '+=', '1');
   else if(name == 'Danisil Elf')
     rules.defineRule
-      ('spellSlots.W0', 'magicNotes.innateMagicalScholar', '+=', '2');
+      ('spellsAvailable.W0', 'magicNotes.innateMagicalScholar', '+=', '2');
   else if(name.match(/Halfling/)) {
     let raceLevel =
       name.charAt(0).toLowerCase() + name.substring(1).replaceAll(' ', '') + 'Level';
