@@ -9,20 +9,21 @@ var attributes = {
   "_path":"ztest/midnight-legacy/feats", 
   "abilityBoosts.Constitution":2, "abilityBoosts.Dexterity":1, "abilityBoosts.Strength":1, 
   "alignment":"Neutral", "armor":"Leather", "background":"Deserter", "charisma":11, 
-  "constitution":13, "dexterity":9, "experience":106088, "feats.Battlefield Healer":1, 
-  "feats.Brawler":1, "feats.Captor":1, "feats.Fellhunter":1, "feats.Harrier":1, 
-  "feats.Improvised Fighter":1, "feats.Knife Fighter":1, "feats.Learned":1, "feats.Paranoid":1, 
-  "feats.Polyglot":1, "feats.Scavenger":1, "feats.Seamaster":1, "feats.Shieldwall Soldier":1, 
-  "feats.Subtle Spellcaster":1, "feats.Suspicious":1, "feats.Unremarkable":1, "gender":"Male", 
-  "heroicPath":"Preserver", "hitPoints":41, "intelligence":11, "languagesChosen.High Elven":1, 
-  "languagesChosen.Trader's Tongue":1, "levels.Fighter":1, "levels.Rogue":11, "name":"Feats", 
-  "race":"Erenlander Human", "selectableFeatures.Fighter - Fighting Style (Great Weapon Fighting)":1, 
-  "selectableFeatures.Rogue - Thief":1, "shield":"None", "skillsChosen.Arcana":1, "skillsChosen.Athletics":1, 
-  "skillsChosen.Deception":1, "skillsChosen.History":1, "skillsChosen.Intimidation":1, 
-  "skillsChosen.Nature":1, "skillsChosen.Perception":1, "skillsChosen.Performance":1, 
-  "skillsChosen.Sleight Of Hand":1, "skillsChosen.Stealth":1, "strength":12, 
-  "toolsChosen.Glassblower's Tools":1, "weapons.Dart":1, "weapons.Sling":1, "weapons.Staghorn":1, 
-  "weaponsChosen.Atharak":1, "wisdom":12
+  "constitution":13, "dexterity":9, "experience":106088, "expertise.Arcana":1, 
+  "expertise.Deception":1, "expertise.Perception":1, "expertise.Stealth":1, 
+  "feats.Battlefield Healer":1, "feats.Brawler":1, "feats.Captor":1, "feats.Fellhunter":1, 
+  "feats.Harrier":1, "feats.Improvised Fighter":1, "feats.Knife Fighter":1, "feats.Learned":1, 
+  "feats.Paranoid":1, "feats.Polyglot":1, "feats.Scavenger":1, "feats.Seamaster":1, 
+  "feats.Shieldwall Soldier":1, "feats.Subtle Spellcaster":1, "feats.Suspicious":1, "feats.Unremarkable":1, 
+  "gender":"Male", "heroicPath":"Preserver", "hitPoints":41, "intelligence":11, 
+  "languagesChosen.High Elven":1, "languagesChosen.Trader's Tongue":1, "levels.Fighter":1, "levels.Rogue":11, 
+  "name":"Feats", "race":"Erenlander Human", 
+  "selectableFeatures.Fighter - Fighting Style (Great Weapon Fighting)":1, "selectableFeatures.Rogue - Thief":1, "shield":"None", 
+  "skillsChosen.Arcana":1, "skillsChosen.Athletics":1, "skillsChosen.Deception":1, 
+  "skillsChosen.History":1, "skillsChosen.Intimidation":1, "skillsChosen.Nature":1, 
+  "skillsChosen.Perception":1, "skillsChosen.Performance":1, "skillsChosen.Sleight Of Hand":1, 
+  "skillsChosen.Stealth":1, "strength":12, "toolsChosen.Glassblower's Tools":1, "weapons.Dart":1, 
+  "weapons.Sling":1, "weapons.Staghorn":1, "weaponsChosen.Atharak":1, "wisdom":12
 };
   </script>
 </head>
@@ -143,7 +144,7 @@ var attributes = {
       <td>Intimidation: (cha) +4</td>
       <td>Persuasion: (cha) +0</td>
     </tr><tr style="text-align:left">
-      <td>Arcana: (int) +5</td>
+      <td>Arcana: (int) +9</td>
       <td>Investigation: (int) +1</td>
       <td>Religion: (int) +1</td>
     </tr><tr style="text-align:left">
@@ -151,17 +152,19 @@ var attributes = {
       <td>Medicine: (wis) +1</td>
       <td>Sleight Of Hand: (dex) +4</td>
     </tr><tr style="text-align:left">
-      <td>Deception: (cha) +4</td>
+      <td>Deception: (cha) +8</td>
       <td>Nature: (int) +5</td>
-      <td>Stealth: (dex) +4</td>
+      <td>Stealth: (dex) +8</td>
     </tr><tr style="text-align:left">
       <td>History: (int) +5</td>
-      <td>Perception: (wis) +5</td>
+      <td>Perception: (wis) +9</td>
       <td>Survival: (wis) +1</td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
     <td><b>Skill Proficiency</b>: Arcana; Athletics; Deception; History; Insight; Intimidation; Nature; Perception; Performance; Sleight Of Hand; Stealth</td>
+  </tr><tr style="text-align:center">
+    <td><b>Expertise</b>: Arcana; Deception; Perception; Stealth</td>
   </tr><tr style="text-align:center">
     <td><b>Tool Proficiency</b>: Glassblower's Tools; Land Vehicles; Thieves' Tools</td>
   </tr><tr style="text-align:center">
@@ -296,13 +299,7 @@ var attributes = {
   <tr style="text-align:center">
     <td>    <table id="ValidationPart" style="width:100%">
     <tr style="text-align:center">
-      <td><b>Validation Errors</b>:       <table id="ValidationNotes" style="width:100%">
-      <tr style="text-align:center">
-        <td>Expertise Allocation: 4 available vs. 0 allocated</td>
-      </tr><tr style="text-align:center">
-        <td>Feat Allocation: 5 available vs. 16 allocated</td>
-      </tr></table>
-</td>
+      <td><b>Validation Errors</b>: Feat Allocation: 5 available vs. 16 allocated</td>
     </tr></table>
 </td>
   </tr></table>
