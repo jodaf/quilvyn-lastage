@@ -1122,56 +1122,65 @@ MidnightLegacy.RACES = {
 };
 MidnightLegacy.SPELLS_ADDED = {
   'Bind/Banish Astirax':
+    'CastingTime="10 Minutes" ' +
     'School=Divination ' +
     'Level=C3,D3,P3 ' +
     'Description=' +
-      '"R200\' Reveals the presence of astiraxes for concentration up to 10 min and, for astiraxes within 10\', allows controlling for a year and a day or inflicting 4d12 HP radiant (save Wisdom negates, with advantage if possessing an animal, and 3 saves within 24 hr gives immunity to binding by self)"',
+      '"R200\' Reveals the presence of astiraxes for concentration up to 10 min and, for astiraxes within 10\', allows controlling for a year and a day or inflicting 4d12 HP radiant (save Wisdom negates, with advantage if possessing an animal, and 3 saves within 24 hr gives immunity to binding by self for a year and a day)"',
   'Disguise Ally':
+    'CastingTime=Action ' +
     'School=Illusion ' +
     'Level=B2,S2,W2 ' +
     'AtHigherLevels="affects +1 target" ' +
     'Description=' +
-      '"R100\' Alters the appearance of a willing target and its possessions (Investigation detects) while within range for concentration up to 1 hr"',
+      '"R100\' Changes the appearance of a willing target and its possessions (contact or Investigation detects) for concentration up to 1 hr; moving more than 100\' away ends"',
   'Greenshield':
+    'CastingTime=Minute ' +
     'School=Abjuration ' +
     'Level=D2 ' +
     'Description=' +
       '"Vegetation in a 20\' radius allows only allies to pass (save Investigation detects; natural surroundings give disadvantage) for 12 hr"',
   'Heed The Whisper':
+    'CastingTime=Action ' +
     'School=Divination ' +
     'Level=D1,R1 ' +
     'AtHigherLevels="allows sensing from any known spot in Erethor" ' +
     'Description=' +
       '"While within 1 mile of Erethor, reveals the presence of creatures in a 300\' radius and prevents being surprised, even during sleep, for 8 hr"',
   'Lifetrap':
+    'CastingTime=Action ' +
     'School=Transmutation ' +
     'Level=D1,R1 ' +
     'AtHigherLevels="affects +1 target" ' +
     'Description=' +
-      '"R150\' Restrains a target (save Strength ends) for concentration up to 1 min; an undead target suffers 1d12 HP radiant per rd restrained when the spell ends"',
+      '"R150\' Restrains a target (save Strength negates; additional saves each rd end) for concentration up to 1 min; can end the spell early to inflict upon an undead target 1d12 HP radiant per rd restrained"',
   "Nature's Revelation":
+    'CastingTime=Action ' +
     'School=Transmutation ' +
     'Level=D2,R2 ' +
     'AtHigherLevels="+10\' radius" ' +
     'Description=' +
-      '"Plants and animals in a 120\' radius indicate the location of hidden creatures, negating cover, for concentration up to 1 min"',
+      '"Plants and animals in a 120\' radius indicate the location of hidden and invisible creatures, negating cover, for concentration up to 1 min"',
   'Silver Blood':
+    'CastingTime=Minute ' +
     'School=Abjuration ' +
     'Level=B2,S2,W2 ' +
     'Ritual=true ' +
     'Description=' +
-      '"For 1 hr, allows self to suffer 1d4 HP to create silvered ammo, a warding line (save DC 14 Wisdom negates), or a barrier to the astirax Scent Magic ability"',
+      '"For 1 hr, allows self to suffer 1d4 HP in order to make 10 pieces of ammo silvered, to create a 2\' silvered warding line (save DC 14 Wisdom negates), or to make self immune to the astirax Scent Magic ability; each effect lasts for 1 hr"',
   'Silver Storm':
+    'CastingTime=Action ' +
     'School=Transmutation ' +
     'Level=S5,W5 ' +
     'AtHigherLevels="+10\' cone" ' +
     'Description=' +
       '"70\' cone inflicts 10d4 HP piercing, or 10d8 HP if vulnerable to silver (save Dexterity half)"',
   'Silver Wind':
+    'CastingTime=Action ' +
     'School=Conjuration ' +
     'Level=S4,W4 ' +
     'Description=' +
-      '"R200\' 40\' sphere reveals invisible creatures and stuns targets vulnerable to silver (save Constitution ends) for concentration up to 1 min"',
+      '"R200\' 40\' sphere reveals invisible creatures and stuns targets vulnerable to silver (save Constitution negates; additional saves each rd end) for concentration up to 1 min"',
   // Removed
   'Astral Projection':null,
   'Augury':null,

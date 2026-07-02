@@ -16,9 +16,13 @@ var attributes = {
   "selectableFeatures.Wizard - School Of Evocation":1, "shield":"Shield", "skillsChosen.Acrobatics":1, 
   "skillsChosen.Animal Handling":1, "skillsChosen.Athletics":1, "skillsChosen.Medicine":1, 
   "skillsChosen.Religion":1, "skillsChosen.Sleight Of Hand":1, "skillsChosen.Survival":1, 
-  "spells.Bind/Banish Astirax(D3 Divi)":1, "spells.Disguise Ally(W2 Illu)":1, "spells.Greenshield(D2 Abju)":1, 
-  "spells.Heed The Whisper(D1 Divi)":1, "spells.Lifetrap(D1 Tran)":1, "spells.Nature's Revelation(D2 Tran)":1, 
-  "spells.Silver Blood(W2 Abju)":1, "spells.Silver Storm(W5 Tran)":1, "spells.Silver Wind(W4 Conj)":1, 
+  "spells.Bind/Banish Astirax(C3 Divi)":1, "spells.Bind/Banish Astirax(D3 Divi)":1, 
+  "spells.Bind/Banish Astirax(P3 Divi)":1, "spells.Disguise Ally(B2 Illu)":1, "spells.Disguise Ally(S2 Illu)":1, 
+  "spells.Disguise Ally(W2 Illu)":1, "spells.Greenshield(D2 Abju)":1, "spells.Heed The Whisper(D1 Divi)":1, 
+  "spells.Heed The Whisper(R1 Divi)":1, "spells.Lifetrap(D1 Tran)":1, "spells.Lifetrap(R1 Tran)":1, 
+  "spells.Nature's Revelation(D2 Tran)":1, "spells.Nature's Revelation(R2 Tran)":1, "spells.Silver Blood(B2 Abju)":1, 
+  "spells.Silver Blood(S2 Abju)":1, "spells.Silver Blood(W2 Abju)":1, "spells.Silver Storm(S5 Tran)":1, 
+  "spells.Silver Storm(W5 Tran)":1, "spells.Silver Wind(S4 Conj)":1, "spells.Silver Wind(W4 Conj)":1, 
   "strength":10, "toolsChosen.Carpenter's Tools":1, "weapons.Dagger":1, 
   "weapons.Quarterstaff":1, "weapons.Scimitar":1, "weaponsChosen.Shortsword":1, "wisdom":12
 };
@@ -235,31 +239,53 @@ var attributes = {
   </tr><tr style="text-align:center">
     <td><b>Spells</b>:     <table id="Spells" style="width:100%">
     <tr style="text-align:left">
-      <td>Bind/Banish Astirax (D3 Divi): R200' Reveals the presence of astiraxes for concentration up to 10 min and, for astiraxes within 10', allows controlling for a year and a day or inflicting 4d12 HP radiant (save Wisdom negates, with advantage if possessing an animal, and 3 saves within 24 hr gives immunity to binding by self)</td>
+      <td>Bind/Banish Astirax (C3 Divi): R200' Reveals the presence of astiraxes for concentration up to 10 min and, for astiraxes within 10', allows controlling for a year and a day or inflicting 4d12 HP radiant (save Wisdom negates, with advantage if possessing an animal, and 3 saves within 24 hr gives immunity to binding by self for a year and a day)</td>
     </tr><tr style="text-align:left">
-      <td>Disguise Ally (W2 Illu): R100' Alters the appearance of a willing target and its possessions (Investigation detects) while within range for concentration up to 1 hr [+Level affects +1 target]</td>
+      <td>Bind/Banish Astirax (D3 Divi): R200' Reveals the presence of astiraxes for concentration up to 10 min and, for astiraxes within 10', allows controlling for a year and a day or inflicting 4d12 HP radiant (save Wisdom negates, with advantage if possessing an animal, and 3 saves within 24 hr gives immunity to binding by self for a year and a day)</td>
+    </tr><tr style="text-align:left">
+      <td>Bind/Banish Astirax (P3 Divi): R200' Reveals the presence of astiraxes for concentration up to 10 min and, for astiraxes within 10', allows controlling for a year and a day or inflicting 4d12 HP radiant (save Wisdom negates, with advantage if possessing an animal, and 3 saves within 24 hr gives immunity to binding by self for a year and a day)</td>
+    </tr><tr style="text-align:left">
+      <td>Disguise Ally (B2 Illu): R100' Changes the appearance of a willing target and its possessions (contact or Investigation detects) for concentration up to 1 hr; moving more than 100' away ends [+Level affects +1 target]</td>
+    </tr><tr style="text-align:left">
+      <td>Disguise Ally (S2 Illu): R100' Changes the appearance of a willing target and its possessions (contact or Investigation detects) for concentration up to 1 hr; moving more than 100' away ends [+Level affects +1 target]</td>
+    </tr><tr style="text-align:left">
+      <td>Disguise Ally (W2 Illu): R100' Changes the appearance of a willing target and its possessions (contact or Investigation detects) for concentration up to 1 hr; moving more than 100' away ends [+Level affects +1 target]</td>
     </tr><tr style="text-align:left">
       <td>Greenshield (D2 Abju): Vegetation in a 20' radius allows only allies to pass (save Investigation detects; natural surroundings give disadvantage) for 12 hr</td>
     </tr><tr style="text-align:left">
       <td>Heed The Whisper (D1 Divi): While within 1 mile of Erethor, reveals the presence of creatures in a 300' radius and prevents being surprised, even during sleep, for 8 hr [+Level allows sensing from any known spot in Erethor]</td>
     </tr><tr style="text-align:left">
-      <td>Lifetrap (D1 Tran): R150' Restrains a target (save Strength ends) for concentration up to 1 min; an undead target suffers 1d12 HP radiant per rd restrained when the spell ends [+Level affects +1 target]</td>
+      <td>Heed The Whisper (R1 Divi): While within 1 mile of Erethor, reveals the presence of creatures in a 300' radius and prevents being surprised, even during sleep, for 8 hr [+Level allows sensing from any known spot in Erethor]</td>
+    </tr><tr style="text-align:left">
+      <td>Lifetrap (D1 Tran): R150' Restrains a target (save Strength negates; additional saves each rd end) for concentration up to 1 min; can end the spell early to inflict upon an undead target 1d12 HP radiant per rd restrained [+Level affects +1 target]</td>
+    </tr><tr style="text-align:left">
+      <td>Lifetrap (R1 Tran): R150' Restrains a target (save Strength negates; additional saves each rd end) for concentration up to 1 min; can end the spell early to inflict upon an undead target 1d12 HP radiant per rd restrained [+Level affects +1 target]</td>
     </tr><tr style="text-align:left">
       <td>Lightning Bolt (D3 [Circle Spells (Mountain)] Evoc): 100'x5' line inflicts 8d6 HP lightning (save Dexterity half) and ignites unattended flammable objects [+Level inflicts +1d6 HP]</td>
     </tr><tr style="text-align:left">
-      <td>Meld Into Stone (D3 [Circle Spells (Mountain)] Tran): Self steps into rock, losing sight and suffering disadvantage on hearing Perception but allowing casting spells on self, for up to 8 hr; significant partial destruction of the stone inflicts 6d6 HP bludgeoning, expulsion, and prone to self, and complete destruction increases the damage to 50 HP [R]</td>
+      <td>Meld Into Stone (D3 [Circle Spells (Mountain)] Tran): Self steps into rock, losing sight and suffering disadvantage on hearing Perception but allowing casting spells on self, for up to 8 hr; significant partial destruction of the stone inflicts 6d6 HP bludgeoning, expulsion, and prone on self, and complete destruction increases the damage to 50 HP [R]</td>
     </tr><tr style="text-align:left">
-      <td>Nature's Revelation (D2 Tran): Plants and animals in a 120' radius indicate the location of hidden creatures, negating cover, for concentration up to 1 min [+Level +10' radius]</td>
+      <td>Nature's Revelation (D2 Tran): Plants and animals in a 120' radius indicate the location of hidden and invisible creatures, negating cover, for concentration up to 1 min [+Level +10' radius]</td>
     </tr><tr style="text-align:left">
-      <td>Silver Blood (W2 Abju): For 1 hr, allows self to suffer 1d4 HP to create silvered ammo, a warding line (save DC 14 Wisdom negates), or a barrier to the astirax Scent Magic ability [R]</td>
+      <td>Nature's Revelation (R2 Tran): Plants and animals in a 120' radius indicate the location of hidden and invisible creatures, negating cover, for concentration up to 1 min [+Level +10' radius]</td>
+    </tr><tr style="text-align:left">
+      <td>Silver Blood (B2 Abju): For 1 hr, allows self to suffer 1d4 HP in order to make 10 pieces of ammo silvered, to create a 2' silvered warding line (save DC 14 Wisdom negates), or to make self immune to the astirax Scent Magic ability; each effect lasts for 1 hr [R]</td>
+    </tr><tr style="text-align:left">
+      <td>Silver Blood (S2 Abju): For 1 hr, allows self to suffer 1d4 HP in order to make 10 pieces of ammo silvered, to create a 2' silvered warding line (save DC 14 Wisdom negates), or to make self immune to the astirax Scent Magic ability; each effect lasts for 1 hr [R]</td>
+    </tr><tr style="text-align:left">
+      <td>Silver Blood (W2 Abju): For 1 hr, allows self to suffer 1d4 HP in order to make 10 pieces of ammo silvered, to create a 2' silvered warding line (save DC 14 Wisdom negates), or to make self immune to the astirax Scent Magic ability; each effect lasts for 1 hr [R]</td>
+    </tr><tr style="text-align:left">
+      <td>Silver Storm (S5 Tran): 70' cone inflicts 10d4 HP piercing, or 10d8 HP if vulnerable to silver (save Dexterity half) [+Level +10' cone]</td>
     </tr><tr style="text-align:left">
       <td>Silver Storm (W5 Tran): 70' cone inflicts 10d4 HP piercing, or 10d8 HP if vulnerable to silver (save Dexterity half) [+Level +10' cone]</td>
     </tr><tr style="text-align:left">
-      <td>Silver Wind (W4 Conj): R200' 40' sphere reveals invisible creatures and stuns targets vulnerable to silver (save Constitution ends) for concentration up to 1 min</td>
+      <td>Silver Wind (S4 Conj): R200' 40' sphere reveals invisible creatures and stuns targets vulnerable to silver (save Constitution negates; additional saves each rd end) for concentration up to 1 min</td>
+    </tr><tr style="text-align:left">
+      <td>Silver Wind (W4 Conj): R200' 40' sphere reveals invisible creatures and stuns targets vulnerable to silver (save Constitution negates; additional saves each rd end) for concentration up to 1 min</td>
     </tr><tr style="text-align:left">
       <td>Spider Climb (D2 [Circle Spells (Mountain)] Tran): Touched willing creature can crawl on walls and ceilings and gains a climb Speed equal to its Speed for concentration up to 1 hr</td>
     </tr><tr style="text-align:left">
-      <td>Spike Growth (D2 [Circle Spells (Mountain)] Tran): R150' 20' radius becomes difficult terrain and inflicts 2d4 HP piercing per 5' movement for concentration up to 10 min</td>
+      <td>Spike Growth (D2 [Circle Spells (Mountain)] Tran): R150' Camouflaged spikes in a 20' radius inflict difficult terrain and 2d4 HP piercing per 5' movement for concentration up to 10 min</td>
     </tr></table>
 </td>
   </tr><tr style="text-align:center">
